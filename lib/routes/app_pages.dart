@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/bindings/gifts_binding.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/leads__filter_binding.dart';
 import 'package:flutter_tech_sales/bindings/login_binding.dart';
 import 'package:flutter_tech_sales/bindings/search_binding.dart';
@@ -15,15 +16,14 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencerView.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/add_new_influencer_form.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_view.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
@@ -68,7 +68,7 @@ class AppPages {
     GetPage(
         name: Routes.HOME_SCREEN,
         page: () => HomeScreen(),
-        binding: HomeScreenBinding()),
+        bindings: [AppBinding(), HomeScreenBinding(), SRBinding()]),
     GetPage(
         name: Routes.VERIFY_OTP,
         page: () => LoginOtpScreen(),
@@ -100,7 +100,7 @@ class AppPages {
     GetPage(
         name: Routes.ADD_EVENT_SCREEN,
         page: () => AddEvent(),
-        binding: AppBinding()),
+        bindings: [AppBinding(), InfBinding()]),
     GetPage(
         name: Routes.ADD_CALENDER_SCREEN,
         page: () => AddCalenderEventPage(),
@@ -141,9 +141,14 @@ class AppPages {
       binding: TutorialBinding(),
     ),
     GetPage(
+      name: Routes.INFLUENCER_LIST,
+      page: () => InfluencerView(),
+      binding: InfBinding(),
+    ),
+    GetPage(
       name: Routes.ADD_INFLUENCER,
-      page: () => AddInfluencerView(),
-      binding: TutorialBinding(),
+      page: () => FormAddInfluencer(),
+      binding: InfBinding(),
     ),
      GetPage(
       name: Routes.DASHBOARD,

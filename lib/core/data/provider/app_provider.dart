@@ -16,12 +16,14 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitReque
 import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActualModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:package_info/package_info.dart';
@@ -29,13 +31,14 @@ import 'package:package_info/package_info.dart';
 class MyApiClientApp {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-String version;
+  String version;
   MyApiClientApp({@required this.httpClient});
 
   getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      //version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       // print('Response body is : ${json.decode(response.body)}');
@@ -80,8 +83,9 @@ String version;
   saveMWPData(String accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
-    //  print('body is  :: $body');
+      //print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
@@ -91,9 +95,16 @@ String version;
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveMWPResponse;
+        print('Response body is : ${(data)}');
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
+
+          //print('Access key Object is :: $accessKeyModel');
+          return saveMWPResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -105,6 +116,7 @@ String version;
   saveVisitRequest(String accessKey, String userSecurityKey, String url,
       SaveVisitRequest saveVisitRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
      // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
@@ -112,12 +124,18 @@ String version;
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-      print('Response body is : ${json.decode(response.body)}');
+     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -129,6 +147,7 @@ String version;
   saveMeetRequest(String accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
      print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
@@ -139,9 +158,15 @@ String version;
      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -153,20 +178,28 @@ String version;
   updateVisitPlan(String accessKey, String userSecurityKey, String url,
       UpdateVisitResponseModel updateVisitRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
-     // print('body is  :: $body');
-    //  print(url);
+      // print(url);
+      // print('body is  :: $body');
       var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
     //  print(response.body);
-     // print('Response body is : ${json.decode(response.body)}');
+     //  print('Response for update visit body is : ${json.decode(response.body)}');
+      print("Request: ${json.encode(updateVisitRequest)}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-     //   print(saveVisitResponse);
-        //print('Access key Object is :: $accessKeyModel');
-        return saveVisitResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
+              data);
+          //   print(saveVisitResponse);
+          //print('Access key Object is :: $accessKeyModel');
+          return saveVisitResponse;
+        }
       } else {
       //  print('Error in else');
       }
@@ -178,6 +211,7 @@ String version;
   updateMeetPlan(String accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) async {
     try {
+      version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
     //  print('body is  :: $body');
       var response = await httpClient.post(url,
@@ -201,6 +235,7 @@ String version;
 
   getMWPData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -210,7 +245,12 @@ String version;
          print('ho');
          print(data['mwpplanModel']);
          print("view-mwp     $data");
-        return GetMWPResponse.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          return GetMWPResponse.fromJson(data);
+        }
       } else {
         print('Error in else');
       }
@@ -221,16 +261,23 @@ String version;
 
   getDealerList(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        return DealerListResponse.fromJson(data);
-      } else {
+//       if (response.statusCode == 200) {
+         var data = json.decode(response.body);
+//         if(data["resp_code"] == "DM1005"){
+//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//               data["resp_msg"]), barrierDismissible: false);
+//         }
+// else {
+          return DealerListResponse.fromJson(data);
+       // }
+     // } else {
       //  print('Error in else');
-      }
+     // }
     } catch (_) {
     //  print('exception ${_.toString()}');
     }
@@ -238,6 +285,7 @@ String version;
 
   getVisitData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -255,6 +303,7 @@ String version;
 
   getMeetData(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
@@ -272,12 +321,18 @@ String version;
 
   Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return CalendarPlanModel.fromJson(data);
       } else {
         print('Error in else');
@@ -290,12 +345,17 @@ String version;
   getCalenderPlanByDay(
       String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return CalendarDataByDay.fromJson(data);
       } else {
       //  print('Error in else');
@@ -308,12 +368,17 @@ String version;
   getTargetSsActualPlan(
       String accessKey, String userSecurityKey, String url) async {
     try {
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return TargetVsActualModel.fromJson(data);
       } else {
         // print('Error in else');

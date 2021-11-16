@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -19,7 +20,8 @@ class MyApiClientSplash {
   getAccessKey() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      //version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
@@ -36,11 +38,12 @@ class MyApiClientSplash {
   }
 
   getSecretKey(String empId, String mobile) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -51,6 +54,7 @@ class MyApiClientSplash {
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
       print('Response body is : ${json.decode(response.body)}');
+      print("Hraders: ${requestHeadersEmpIdAndNo}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
@@ -65,11 +69,12 @@ class MyApiClientSplash {
   }
 
   getRefreshData(String url, String accessKey, String securityKey) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'access-key': accessKey,
         'user-security-key': securityKey,
       };
@@ -82,6 +87,8 @@ class MyApiClientSplash {
         var data = json.decode(response.body);
         print("data['employee-details']   $data");
         print(data['employee-details']);
+        print("-------------");
+        print("versionUpdateModel: ${data['versionUpdateModel']}");
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         print(splashDataModel.employeeDetails);
         //print('Access key Object is :: $accessKeyModel');

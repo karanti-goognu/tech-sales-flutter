@@ -30,10 +30,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AppController _appController = Get.find();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
-  SiteController _siteController = Get.find();
+
   // DashboardController _dashboardController =Get.find();
 
 
@@ -43,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Dashboard", "assets/images/speedometer.png"),
     new MenuDetailsModel("MWP", "assets/images/mwp.png"),
     new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
+    new MenuDetailsModel("Influencer", "assets/images/influencer.png"),
     new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
     new MenuDetailsModel("Events & Gifts", "assets/images/calendar.png")
   ];
@@ -120,9 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
           _homeController.checkInStatus = StringConstants.journeyEnded;
         }
       }
-
-
-
 
 
       _homeController.employeeName = prefs.getString(StringConstants.employeeName);
@@ -407,14 +404,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           //  height: 130,
                            // width: MediaQuery.of(context).size.width - 24,
                             child: GridView.count(
+                              scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               // itemCount: 4,
-                              physics: NeverScrollableScrollPhysics(),
+                              //physics: NeverScrollableScrollPhysics(),
                               crossAxisCount: 2,
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(
 
-                              childAspectRatio: 2.8,
+                              childAspectRatio: 2.5,
                               // ),
                               //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
                               //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
@@ -841,7 +839,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   internetChecking().then((result) => {
                     if (result == true)
                       {
-                        Get.toNamed(Routes.VIDEO_TUTORIAL),
+                        Get.toNamed(Routes.INFLUENCER_LIST),
                       }else{
                       Get.snackbar(
                           "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
@@ -852,6 +850,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                   break;
                 case 6:
+                  internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                        Get.toNamed(Routes.VIDEO_TUTORIAL),
+                      }else{
+                      Get.snackbar(
+                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM),
+                    }
+                  });
+                  break;
+                case 7:
                   internetChecking().then((result) => {
                     if (result == true)
                       {
@@ -955,7 +967,13 @@ class _HomeScreenState extends State<HomeScreen> {
          Get.toNamed(Routes.SERVICE_REQUESTS);
          break;
        case 5:
+         Get.toNamed(Routes.INFLUENCER_LIST);
+         break;
+       case 6:
          Get.toNamed(Routes.VIDEO_TUTORIAL);
+         break;
+       case 7:
+         Get.toNamed(Routes.EVENTS_GIFTS);
          break;
      }
    }

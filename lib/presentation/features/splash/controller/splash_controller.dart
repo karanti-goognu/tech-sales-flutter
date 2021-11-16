@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -11,10 +13,12 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 class SplashController extends GetxController {
   final MyRepositorySplash repository;
@@ -63,7 +67,8 @@ class SplashController extends GetxController {
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
                 print("on splash_controller.dart :::: getAccessKey");
-                getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_SPLASH);
+                getRefreshData(this.accessKeyResponse.accessKey,
+                    RequestIds.GET_MASTER_DATA_FOR_SPLASH);
                 break;
             }
           }
@@ -82,6 +87,8 @@ class SplashController extends GetxController {
     String mobileNumber = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
+      String isUserLoggedIn =
+          prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       print('$empId$mobileNumber');
@@ -90,12 +97,23 @@ class SplashController extends GetxController {
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
       print('$empIdEncrypted \n$mobileNumberEncrypted');
-      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted).then((data) {
+      repository
+          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+          .then((data) {
         Get.back();
         this.secretKeyResponse = data;
 
-        print(data);
+        print("DDD:$data");
         if (data != null) {
+          if (this.secretKeyResponse.respCode == "DM1005") {
+            Get.dialog(
+                CustomDialogs()
+                    .appUserInactiveDialog(this.secretKeyResponse.respMsg),
+                barrierDismissible: false);
+          }
+          if (isUserLoggedIn == "false") {
+            Get.offNamed(Routes.LOGIN);
+          }
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
           return getAccessKey(requestId);
@@ -106,30 +124,103 @@ class SplashController extends GetxController {
     });
   }
 
-   getRefreshData(String accessKey, int reqId ) async {
+  getRefreshData(String accessKey, int reqId) async {
+    List<VersionUpdateModel> versionUpdateModel = new List();
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String encryptedEmpId =
+          encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       debugPrint('Url is : $url');
-    await  repository.getRefreshData(url, accessKey, userSecurityKey).then((data) {
+      await repository
+          .getRefreshData(url, accessKey, userSecurityKey)
+          .then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
-          var journeyDate= splashDataModel.journeyDetails.journeyDate;
-          var journeyEndTime= splashDataModel.journeyDetails.journeyEndTime;
-          prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-          prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+          // log('data: ${json.encode(this.splashDataModel)}');
+          // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
+          versionUpdateModel = this.splashDataModel.versionUpdateModel;
+          if (versionUpdateModel != null && versionUpdateModel.length > 0) {
+            //print("In If");
+            for (int i = 0; i < versionUpdateModel.length; i++) {
+              if (versionUpdateModel[i].platform == "ANDROID") {
+                if (versionUpdateModel[i].oldVersion !=
+                    versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "SOFT") {
+                  print("in android");
+                  Get.dialog(
+                      CustomDialogs().appUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "ANDROID"),
+                      barrierDismissible: true)
+                      .then((value) => openNextPage());
+                } else if (versionUpdateModel[i].oldVersion !=
+                    versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "HARD") {
+                  Get.dialog(
+                      CustomDialogs().appForceUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "ANDROID"),
+                      barrierDismissible: false);
+                }
+              }
+              if (versionUpdateModel[i].platform == "IOS") {
+                if (versionUpdateModel[i].oldVersion !=
+                    versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "SOFT") {
+                  print("in ios");
+                  Get.dialog(
+                      CustomDialogs().appUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "IOS"),
+                      barrierDismissible: true)
+                      .then((value) => openNextPage());
+                } else if (versionUpdateModel[i].oldVersion !=
+                    versionUpdateModel[i].newVersion &&
+                    versionUpdateModel[i].updateType == "HARD") {
+                  Get.dialog(
+                      CustomDialogs().appForceUpdateDialog(
+                          versionUpdateModel[i].versionUpdateText,
+                          versionUpdateModel[i].appId,
+                          "IOS"),
+                      barrierDismissible: false);
+                }
+              }
+            }
+            var journeyDate = splashDataModel.journeyDetails.journeyDate;
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+          }
+         else {
+           print("In else");
+            var journeyDate = splashDataModel.journeyDetails.journeyDate;
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+              openNextPage();
+          }
 
-          if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-          openNextPage();
+          // var journeyDate = splashDataModel.journeyDetails.journeyDate;
+          // var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+          // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+          // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+
+          // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
+         //  openNextPage();
 
         }
       });
@@ -177,3 +268,17 @@ class SplashController extends GetxController {
 //    }
 //  }
 }
+//    if (splashDataModel.versionUpdateModel.oldVersion !=
+//        splashDataModel.versionUpdateModel.newVersion &&
+//        splashDataModel.versionUpdateModel.updateType == "SOFT") {
+//      print("inin");
+//      Get.dialog(CustomDialogs().appUpdateDialog(
+//          splashDataModel.versionUpdateModel.versionUpdateText),
+//          barrierDismissible: true).then((value) => openNextPage());
+//    } else if (splashDataModel.versionUpdateModel.oldVersion !=
+//        splashDataModel.versionUpdateModel.newVersion &&
+//        splashDataModel.versionUpdateModel.updateType == "HARD") {
+//      Get.dialog(CustomDialogs().appForceUpdateDialog(
+//          splashDataModel.versionUpdateModel.versionUpdateText),
+//          barrierDismissible: false);
+//    }

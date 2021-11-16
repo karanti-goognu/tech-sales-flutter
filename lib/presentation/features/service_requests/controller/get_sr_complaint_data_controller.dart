@@ -55,7 +55,7 @@ class SrFormDataController extends GetxController {
   }
 
   Future<RequestorDetailsModel> getRequestorDetails(
-      String accessKey, String requestorType) async {
+      String accessKey, String requestorType,String siteId) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -63,7 +63,7 @@ class SrFormDataController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       requestorData = await repository.getRequestorDetails(
-          accessKey, userSecurityKey, empID, requestorType);
+          accessKey, userSecurityKey, empID, requestorType,siteId);
     });
     return requestorData;
   }
@@ -84,5 +84,7 @@ class SrFormDataController extends GetxController {
     });
     return siteLocationData;
   }
+
+
 
 }

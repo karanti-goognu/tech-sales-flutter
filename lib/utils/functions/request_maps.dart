@@ -52,3 +52,18 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(St
   print(requestHeaders);
   return requestHeaders;
 }
+
+Map<String, String> requestHeadersWithAccessKeyAndSecretKeyAndReferenceId(String accessKey , String userSecurityKey, String version, String refernceId) {
+  Map<String, String> requestHeaders = new Map();
+  requestHeaders = {
+    'Content-type': 'application/json',
+    'app-name': StringConstants.appName,
+    'app-version': version,
+    'access-key': accessKey,
+    'user-security-key' : userSecurityKey,
+    'reference-id' : refernceId
+  };
+  print(requestHeaders);
+
+  return requestHeaders;
+}

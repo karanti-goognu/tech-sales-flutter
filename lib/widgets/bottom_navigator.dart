@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/event_search.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_search.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -90,6 +91,8 @@ class BottomNavigator extends StatelessWidget {
                   onPressed: () {
                     // Get.back();
                     searchType=='event'?Get.to(()=>EventSearch()):
+                    searchType == "influencer"?Get.to(()=>InfluencerSearch()):
+
                     Get.toNamed(Routes.SEARCH_SCREEN);
                   },
                   child: Column(

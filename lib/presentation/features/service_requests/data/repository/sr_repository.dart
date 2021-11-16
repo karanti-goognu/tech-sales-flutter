@@ -11,7 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/p
 
 class SrRepository{
 
-  final MyApiClient apiClient;
+  final MyApiClientSR apiClient;
   SrRepository({this.apiClient});
 
   Future<AccessKeyModel> getAccessKey(){
@@ -22,8 +22,8 @@ class SrRepository{
     return apiClient.getSrComplaintData(accessKey, userSecretKey,empId);
   }
 
-  Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType) async{
-    return apiClient.getRequestorDetails(accessKey, userSecretKey, empID, requesterType);
+  Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType,String siteId) async{
+    return apiClient.getRequestorDetails(accessKey, userSecretKey, empID, requesterType,siteId);
   }
 
   Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID, int offset) async{

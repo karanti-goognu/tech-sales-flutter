@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
@@ -10,15 +11,45 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repos
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddLeadsController extends GetxController {
+
+  List<File> imageList = List<File>();
+
+  updateImageList(File value) {
+    if(value!=null) {
+      imageList.add(value);
+      print(imageList.length);
+      print(":::::::::::::::");
+      update();
+    }
+  }
+
+  updateImageAfterDelete(int index) {
+    if(index!=null && index>=0) {
+      imageList.removeAt(index);
+      print(imageList.length);
+      print(":::::::::::::::");
+      update();
+    }
+  }
+
+
   @override
   void onInit() {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
+  }
+
+  @override
+  void onClose(){
+    print("onClose called");
+    imageList.clear();
+    super.dispose();
   }
 
   final MyRepositoryLeads repository;
@@ -52,10 +83,12 @@ class AddLeadsController extends GetxController {
   getAddLeadsData(String accessKey) async {
     //debugPrint('Access Key Response :: ');
     String userSecurityKey = "";
+    String empID = "";
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
       print('User Security Key :: $userSecurityKey');
       addLeadInitialModel =
           await repository.getAddLeadsData(accessKey, userSecurityKey);
@@ -132,17 +165,33 @@ class AddLeadsController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
-      viewLeadDataResponse =
-
-          await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
+      viewLeadDataResponse = await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
      });
     print(viewLeadDataResponse);
 
     return viewLeadDataResponse;
   }
 
+  Future<ViewLeadDataResponse>getLeadDataNew(int leadId) async {
+    ViewLeadDataResponse viewLeadDataResponse;
+    print(":::getLeadData()");
+    String userSecurityKey = "";
+    String empID = "";
+    String accessKey = await repository.getAccessKeyNew();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
+      viewLeadDataResponse = await repository.getLeadDataNew(accessKey, userSecurityKey, leadId, empID);
+    });
+    print(viewLeadDataResponse);
+
+    return viewLeadDataResponse;
+  }
+
   void updateLeadData(var updateRequestModel, List<File> imageList,
-      BuildContext context, int leadId) {
+      BuildContext context, int leadId,int from) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -152,12 +201,12 @@ class AddLeadsController extends GetxController {
 
       this.accessKeyResponse = data;
 //print(this.accessKeyResponse.accessKey);
-      updateLeadDataInBackend(updateRequestModel, imageList, context, leadId);
+      updateLeadDataInBackend(updateRequestModel, imageList, context, leadId,from);
     });
   }
 
   Future<void> updateLeadDataInBackend(var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
+      List<File> imageList, BuildContext context, int leadId,int from) async {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
@@ -165,7 +214,25 @@ class AddLeadsController extends GetxController {
       print('User Security Key :: $userSecurityKey');
 
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
-          userSecurityKey, updateRequestModel, imageList, context, leadId);
+          userSecurityKey, updateRequestModel, imageList, context, leadId,from);
     });
+  }
+
+  Future<InfluencerDetailModel> getInfNewData(String accessKey) async {
+    InfluencerDetailModel _infDetailModel;
+    InfluencerModel _influencerModel;
+    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+    //It is working fine without the progress indicator
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    // String accessKey = await repository.getAccessKey();
+
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      _infDetailModel = await repository.getInflNewDetailsData(accessKey, userSecurityKey, this.phoneNumber);
+      _influencerModel = _infDetailModel.influencerModel;
+    });
+    return _infDetailModel;
   }
 }

@@ -1,10 +1,19 @@
+import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+
 class ViewSiteDataResponse {
   String respCode;
   String respMsg;
   SitesModal sitesModal;
+  MwpVisitModel mwpVisitModel;
   List<SiteFloorsEntity> siteFloorsEntity;
   List<SitephotosEntity> sitephotosEntity;
-  List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+
+  List<SiteStageHistory> siteStageHistorys;
+  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+ // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
+
   List<SiteStageEntity> siteStageEntity;
   List<ConstructionStageEntity> constructionStageEntity;
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
@@ -18,6 +27,8 @@ class ViewSiteDataResponse {
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
+  List<SiteStagePotentialEntity> siteStagePotentialEntity;
+
 
 
 
@@ -27,9 +38,13 @@ class ViewSiteDataResponse {
       {this.respCode,
       this.respMsg,
       this.sitesModal,
+        this.mwpVisitModel,
       this.siteFloorsEntity,
       this.sitephotosEntity,
-      this.siteVisitHistoryEntity,
+
+      this.siteStageHistorys,
+
+     // this.siteVisitHistoryEntity,
       this.siteStageEntity,
       this.constructionStageEntity,
       this.siteProbabilityWinningEntity,
@@ -42,13 +57,17 @@ class ViewSiteDataResponse {
       this.influencerCategoryEntity,
       this.siteOpportunityStatusEntity,
       this.siteInfluencerEntity,
-      this.counterListModel});
+      this.counterListModel,
+      this.siteStagePotentialEntity});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     sitesModal = json['sitesModal'] != null
         ? new SitesModal.fromJson(json['sitesModal'])
+        : null;
+    mwpVisitModel = json['mwpVisitModel'] != null
+        ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;
     if (json['siteFloorsEntity'] != null) {
       siteFloorsEntity = new List<SiteFloorsEntity>();
@@ -62,12 +81,21 @@ class ViewSiteDataResponse {
         sitephotosEntity.add(new SitephotosEntity.fromJson(v));
       });
     }
-    if (json['siteVisitHistoryEntity'] != null) {
-      siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
-      json['siteVisitHistoryEntity'].forEach((v) {
-        siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
+    // if (json['siteVisitHistoryEntity'] != null) {
+    //   siteVisitHistoryEntity = new List<SiteVisitHistoryEntity>();
+    //   json['siteVisitHistoryEntity'].forEach((v) {
+    //     siteVisitHistoryEntity.add(new SiteVisitHistoryEntity.fromJson(v));
+    //   });
+    // }
+
+
+    if (json['siteStageHistorys'] != null) {
+      siteStageHistorys = new List<SiteStageHistory>();
+      json['siteStageHistorys'].forEach((v) {
+        siteStageHistorys.add(new SiteStageHistory.fromJson(v));
       });
     }
+
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>();
       json['siteStageEntity'].forEach((v) {
@@ -147,6 +175,13 @@ class ViewSiteDataResponse {
         counterListModel.add(new CounterListModel.fromJson(v));
       });
     }
+
+    if (json['siteStagePotentialEntity'] != null) {
+      siteStagePotentialEntity = new List<SiteStagePotentialEntity>();
+      json['siteStagePotentialEntity'].forEach((v) {
+        siteStagePotentialEntity.add(new SiteStagePotentialEntity.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -156,6 +191,9 @@ class ViewSiteDataResponse {
     if (this.sitesModal != null) {
       data['sitesModal'] = this.sitesModal.toJson();
     }
+    if (this.mwpVisitModel != null) {
+      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
+    }
     if (this.siteFloorsEntity != null) {
       data['siteFloorsEntity'] =
           this.siteFloorsEntity.map((v) => v.toJson()).toList();
@@ -164,10 +202,17 @@ class ViewSiteDataResponse {
       data['sitephotosEntity'] =
           this.sitephotosEntity.map((v) => v.toJson()).toList();
     }
-    if (this.siteVisitHistoryEntity != null) {
-      data['siteVisitHistoryEntity'] =
-          this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
+    // if (this.siteVisitHistoryEntity != null) {
+    //   data['siteVisitHistoryEntity'] =
+    //       this.siteVisitHistoryEntity.map((v) => v.toJson()).toList();
+    // }
+
+
+    if (this.siteStageHistorys != null) {
+      data['siteStageHistorys'] =
+          this.siteStageHistorys.map((v) => v.toJson()).toList();
     }
+
     if (this.siteStageEntity != null) {
       data['siteStageEntity'] =
           this.siteStageEntity.map((v) => v.toJson()).toList();
@@ -216,6 +261,40 @@ class ViewSiteDataResponse {
       data['siteInfluencerEntity'] =
           this.siteInfluencerEntity.map((v) => v.toJson()).toList();
     }
+
+    if (this.siteStagePotentialEntity != null) {
+      data['siteStagePotentialEntity'] =
+          this.siteStagePotentialEntity.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+
+class SiteStagePotentialEntity {
+  int id;
+  int nosFloors;
+  int siteFloorsId;
+  int constructionStageId;
+  double potentialPercentage;
+
+  SiteStagePotentialEntity({this.id, this.nosFloors,this.siteFloorsId,this.constructionStageId,this.potentialPercentage});
+
+  SiteStagePotentialEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nosFloors = json['nosFloors'];
+    siteFloorsId = json['siteFloorsId'];
+    constructionStageId = json['constructionStageId'];
+    potentialPercentage = json['potentialPercentage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['nosFloors'] = this.nosFloors;
+    data['siteFloorsId'] = this.siteFloorsId;
+    data['constructionStageId'] = this.constructionStageId;
+    data['potentialPercentage'] = this.potentialPercentage;
     return data;
   }
 }
@@ -266,6 +345,10 @@ class SitesModal {
   String subdealerId;
   String siteSubDealerName;
 
+  String totalBalancePotential;
+  int kitchenCount;
+  int bathroomCount;
+
   SitesModal(
       {this.assignedTo,
         this.createdOn,
@@ -310,7 +393,10 @@ class SitesModal {
         this.updatedBy,
         this.updatedOn,
         this.isDealerConfirmedChangedBySo,
-        this.subdealerId
+        this.subdealerId,
+        this.totalBalancePotential,
+        this.kitchenCount,
+        this.bathroomCount
       });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
@@ -358,6 +444,10 @@ class SitesModal {
     isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'].toString() ?? "";
     subdealerId = json['subdealerId'].toString() ?? "";
     siteSubDealerName = json['siteSubDealerName'].toString() ?? "";
+
+    totalBalancePotential = json['totalBalancePotential']!=null? json['totalBalancePotential'].toString():"";
+    kitchenCount = json['kitchenCount'];
+    bathroomCount = json['bathroomCount'];
 
   }
 
@@ -407,7 +497,83 @@ class SitesModal {
     data['isDealerConfirmedChangedBySo'] = this.isDealerConfirmedChangedBySo;
     data['subdealerId'] = this.subdealerId;
     data['siteSubDealerName'] = this.siteSubDealerName;
+    data['totalBalancePotential'] = this.totalBalancePotential;
+    data['kitchenCount'] = this.kitchenCount;
+    data['bathroomCount'] = this.bathroomCount;
+    return data;
+  }
+}
 
+class MwpVisitModel {
+  int id;
+  String visitSubType;
+  int docId;
+  String visitDate;
+  String visitType;
+  String visitStartTime;
+  String visitStartLat;
+  String visitStartLong;
+  String visitEndTime;
+  String visitEndLat;
+  String visitEndLong;
+  int nextVisitDate;
+  String visitOutcomes;
+  String remark;
+  String inflName;
+
+  MwpVisitModel(
+      {this.id,
+        this.visitSubType,
+        this.docId,
+        this.visitDate,
+        this.visitType,
+        this.visitStartTime,
+        this.visitStartLat,
+        this.visitStartLong,
+        this.visitEndTime,
+        this.visitEndLat,
+        this.visitEndLong,
+        this.nextVisitDate,
+        this.visitOutcomes,
+        this.remark,
+        this.inflName});
+
+  MwpVisitModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    visitSubType = json['visitSubType'];
+    docId = json['docId'];
+    visitDate = json['visitDate'];
+    visitType = json['visitType'];
+    visitStartTime = json['visitStartTime'];
+    visitStartLat = json['visitStartLat'];
+    visitStartLong = json['visitStartLong'];
+    visitEndTime = json['visitEndTime'];
+    visitEndLat = json['visitEndLat'];
+    visitEndLong = json['visitEndLong'];
+    nextVisitDate = json['nextVisitDate'];
+    visitOutcomes = json['visitOutcomes'];
+    remark = json['remark'];
+    inflName = json['inflName'];
+  }
+
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['visitSubType'] = this.visitSubType;
+    data['docId'] = this.docId;
+    data['visitDate'] = this.visitDate;
+    data['visitType'] = this.visitType;
+    data['visitStartTime'] = this.visitStartTime;
+    data['visitStartLat'] = this.visitStartLat;
+    data['visitStartLong'] = this.visitStartLong;
+    data['visitEndTime'] = this.visitEndTime;
+    data['visitEndLat'] = this.visitEndLat;
+    data['visitEndLong'] = this.visitEndLong;
+    data['nextVisitDate'] = this.nextVisitDate;
+    data['visitOutcomes'] = this.visitOutcomes;
+    data['remark'] = this.remark;
+    data['inflName'] = this.inflName;
     return data;
   }
 }
@@ -546,10 +712,10 @@ class SitephotosEntity {
 //     return data;
 //   }
 // }
-
+/*
 class SiteVisitHistoryEntity {
   int id;
-  String totalBalancePotential;
+  // String totalBalancePotential;
   int constructionStageId;
   int floorId;
   String stagePotential;
@@ -574,7 +740,7 @@ class SiteVisitHistoryEntity {
 
   SiteVisitHistoryEntity(
       {this.id,
-        this.totalBalancePotential,
+        // this.totalBalancePotential,
         this.constructionStageId,
         this.floorId,
         this.stagePotential,
@@ -595,7 +761,7 @@ class SiteVisitHistoryEntity {
 
   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
+    // totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
     constructionStageId = json['constructionStageId'];
     floorId = json['floorId'];
     stagePotential = json['stagePotential'].toString() ?? "";
@@ -621,7 +787,7 @@ class SiteVisitHistoryEntity {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['totalBalancePotential'] = this.totalBalancePotential;
+    // data['totalBalancePotential'] = this.totalBalancePotential;
     data['constructionStageId'] = this.constructionStageId;
     data['floorId'] = this.floorId;
     data['stagePotential'] = this.stagePotential;
@@ -644,7 +810,7 @@ class SiteVisitHistoryEntity {
     return data;
   }
 }
-
+*/
 class SiteStageEntity {
   int id;
   String siteStageDesc;
@@ -770,7 +936,7 @@ class InfluencerEntity {
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     inflName = json['inflName'].toString() ?? "";
-    inflContact = json['inflContact'].toString() ?? "";
+    inflContact = json['inflContactNumber'].toString() ?? "";
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'].toString() ?? "";
@@ -784,7 +950,7 @@ class InfluencerEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['inflName'] = this.inflName;
-    data['inflContact'] = this.inflContact;
+    data['inflContactNumber'] = this.inflContact;
     data['inflTypeId'] = this.inflTypeId;
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;
@@ -1013,18 +1179,21 @@ class CounterListModel {
   String soldToPartyName;
   String shipToParty;
   String shipToPartyName;
+  String availableKittyPoint;
 
   CounterListModel(
       {this.soldToParty,
         this.soldToPartyName,
         this.shipToParty,
-        this.shipToPartyName});
+        this.shipToPartyName,
+        this.availableKittyPoint});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
     soldToParty = json['soldToParty'].toString() ?? "";
     soldToPartyName = json['soldToPartyName'].toString() ?? "";
     shipToParty = json['shipToParty'].toString() ?? "";
     shipToPartyName = json['shipToPartyName'].toString() ?? "";
+    availableKittyPoint = json['availableKittyPoint']?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1033,6 +1202,197 @@ class CounterListModel {
     data['soldToPartyName'] = this.soldToPartyName;
     data['shipToParty'] = this.shipToParty;
     data['shipToPartyName'] = this.shipToPartyName;
+    data['availableKittyPoint'] = this.availableKittyPoint;
     return data;
   }
 }
+class ProductListModel {
+  int brandId;
+  var brandPrice = TextEditingController();
+  var supplyDate = TextEditingController();
+  var supplyQty = TextEditingController();
+  var isExpanded = ExpandableController();
+  BrandModelforDB brandModelForDB;
+  var dealerName = TextEditingController();
+
+
+  ProductListModel(
+      {this.brandId,
+        this.brandPrice,
+        this.supplyDate,
+        this.supplyQty,
+      this.isExpanded,
+      this.brandModelForDB,
+      this.dealerName});
+
+  ProductListModel.fromJson(Map<String, dynamic> json) {
+    brandId = json['brandId'];
+    brandPrice.text = json['brandPrice'].toString() ?? "";
+    supplyDate.text = json['supplyDate'].toString() ?? "";
+    supplyQty.text = json['supplyQty'].toString() ?? "";
+    isExpanded.expanded = json['isExpanded'];
+    brandModelForDB = json['brandModelForDB'];
+    dealerName = json['dealerName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['brandId'] = this.brandId;
+    data['brandPrice'] = this.brandPrice.text;
+    data['supplyDate'] = this.supplyDate.text;
+    data['supplyQty'] = this.supplyQty.text;
+    data['isExpanded'] = this.isExpanded.expanded;
+    data['brandModelForDB'] = this.brandModelForDB;
+    data['dealerName'] = this.dealerName;
+    return data;
+  }
+}
+
+class SiteStageHistory {
+  int siteStageHistoryId;
+  int constructionStageId;
+  int siteId;
+  int floorId;
+  String stagePotential;
+  String constructionDate;
+  String stageStatus;
+  String createdBy;
+  int createdOn;
+  List<SiteSupplyHistorys> siteSupplyHistorys;
+  bool isExpanded;
+  String stagePotentialAutoCalc;
+
+
+  SiteStageHistory(
+      {this.siteStageHistoryId,
+        this.constructionStageId,
+        this.siteId,
+        this.floorId,
+        this.stagePotential,
+        this.constructionDate,
+        this.stageStatus,
+        this.createdOn,
+        this.createdBy,
+        this.siteSupplyHistorys,
+        this.isExpanded,
+        this.stagePotentialAutoCalc
+        });
+
+  SiteStageHistory.fromJson(Map<String, dynamic> json) {
+    siteStageHistoryId = json['siteStageHistoryId'];
+    constructionStageId = json['constructionStageId'];
+    siteId = json['siteId'];
+    floorId = json['floorId'];
+    stagePotential = json['stagePotential'].toString() ?? "";
+    constructionDate = json['constructionDate'].toString() ?? "";
+    stageStatus = json['stageStatus'].toString() ?? "";
+    createdOn = json['createdOn'];
+    createdBy = json['createdBy'].toString() ?? "";
+    stagePotentialAutoCalc = json['stagePotentialAutoCalc'].toString() ?? "";
+
+    if (json['siteSupplyHistorys'] != null) {
+      siteSupplyHistorys = new List<SiteSupplyHistorys>();
+      json['siteSupplyHistorys'].forEach((v) {
+        siteSupplyHistorys.add(new SiteSupplyHistorys.fromJson(v));
+      });
+    }
+    isExpanded = false;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['siteStageHistoryId'] = this.siteStageHistoryId;
+    data['constructionStageId'] = this.constructionStageId;
+    data['floorId'] = this.floorId;
+    data['stagePotential'] = this.stagePotential;
+    data['constructionDate'] = this.constructionDate;
+    data['siteId'] = this.siteId;
+    data['stageStatus'] = this.stageStatus;
+    data['createdOn'] = this.createdOn;
+    data['createdBy'] = this.createdBy;
+    data['stagePotentialAutoCalc'] = this.stagePotentialAutoCalc;
+    if (this.siteSupplyHistorys != null) {
+      data['siteSupplyHistorys'] =
+          this.siteSupplyHistorys.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+
+}
+
+class SiteSupplyHistorys {
+  int siteSupplyHistoryId;
+  int siteStageHistoryId;
+  int siteId;
+  int brandId;
+  String brandPrice;
+  String supplyDate;
+  String supplyQty;
+  String soCode;
+  String soldToParty;
+  String shipToParty;
+  String isAuthorised;
+  String receiptNumber;
+  String authorisedBy;
+  String authorisedOn;
+  String createdBy;
+  int createdOn;
+
+  SiteSupplyHistorys(
+      {this.siteSupplyHistoryId,
+        this.siteStageHistoryId,
+        this.brandId,
+        this.brandPrice,
+        this.siteId,
+        this.supplyDate,
+        this.supplyQty,
+        this.createdOn,
+        this.createdBy,
+        this.soldToParty,
+        this.shipToParty,
+        this.soCode,
+        this.isAuthorised,
+        this.receiptNumber,this.authorisedBy, this.authorisedOn});
+
+  SiteSupplyHistorys.fromJson(Map<String, dynamic> json) {
+    siteSupplyHistoryId = json['siteSupplyHistoryId'];
+    siteStageHistoryId = json['siteStageHistoryId'];
+    brandId = json['brandId'];
+    brandPrice = json['brandPrice'].toString() ?? "";
+    siteId = json['siteId'];
+    supplyDate = json['supplyDate'].toString() ?? "";
+    supplyQty = json['supplyQty'].toString() ?? "";
+    createdOn = json['createdOn'];
+    createdBy = json['createdBy'].toString() ?? "";
+    soldToParty = json['soldToParty'].toString() ?? "";
+    shipToParty = json['shipToParty'].toString() ?? "";
+    soCode = json['soCode'].toString() ?? "";
+    isAuthorised = json['isAuthorised'].toString() ?? "";
+    receiptNumber = json['receiptNumber'].toString() ?? "";
+    authorisedBy = json['authorisedBy'].toString()??"";
+    authorisedOn = json['authorisedOn'].toString() ??"";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['siteSupplyHistoryId'] = this.siteSupplyHistoryId;
+    data['siteStageHistoryId'] = this.siteStageHistoryId;
+    data['brandId'] = this.brandId;
+    data['brandPrice'] = this.brandPrice;
+    data['siteId'] = this.siteId;
+    data['supplyDate'] = this.supplyDate;
+    data['supplyQty'] = this.supplyQty;
+    data['createdOn'] = this.createdOn;
+    data['createdBy'] = this.createdBy;
+    data['soldToParty'] = this.soldToParty;
+    data['shipToParty'] = this.shipToParty;
+    data['soCode'] = this.soCode;
+    data['isAuthorised'] = this.isAuthorised;
+    data['receiptNumber'] = this.receiptNumber;
+    data['authorisedBy'] = this.authorisedBy;
+    data['authorisedOn'] = this.authorisedOn;
+    return data;
+  }
+}
+
+

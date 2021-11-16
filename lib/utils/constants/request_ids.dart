@@ -28,9 +28,14 @@ abstract class RequestIds {
   static const int UPDATE_SR_REQUEST = 27;
   static const int HOME_DASHBOARD = 28;
   static const int SHARE_REPORT = 29;
-
   static const int GET_MASTER_DATA_FOR_SPLASH = 30;
   static const int GET_MASTER_DATA_FOR_HOME = 31;
+
+  /// Service Request
+  static const int GET_REQUEST_DETAILS_FOR_UPDATE = 32;
+  // static const int GET_MASTER_DATA_FOR_HOME = 31;
+  // static const int GET_MASTER_DATA_FOR_HOME = 31;
+
 
 
   // static const int GET_DEALER_TYPE = 32;

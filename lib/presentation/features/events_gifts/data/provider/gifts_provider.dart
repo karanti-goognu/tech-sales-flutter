@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -17,8 +20,9 @@ String version;
 
   Future<String> getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -35,14 +39,19 @@ String version;
   Future getGiftStockData(String empID,String accessKey, String userSecurityKey)async{
     try{
       var url=UrlConstants.getGiftStock +empID;
-      print(url);
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        GetGiftStockModel getGiftStockModel;
-        getGiftStockModel = GetGiftStockModel.fromJson(data);
-        return getGiftStockModel;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          GetGiftStockModel getGiftStockModel;
+          getGiftStockModel = GetGiftStockModel.fromJson(data);
+          return getGiftStockModel;
+        }
       } else
         print('error');
 
@@ -55,14 +64,20 @@ String version;
 
   Future getViewLogsData(String accessKey, String userSecurityKey, String empID, String monthYear )async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
       print(url);
       var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        LogsModel logsModel;
-        logsModel = LogsModel.fromJson(data);
-        return logsModel;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          LogsModel logsModel;
+          logsModel = LogsModel.fromJson(data);
+          return logsModel;
+        }
       } else
         print('error');
 
@@ -75,6 +90,7 @@ String version;
 
   Future addGiftStockData(String empID, String userSecurityKey, String accessKey, String comment, String giftTypeId, String giftTypeText, String giftInHandQty,String giftInHandQtyNew)async{
     try{
+      version = VersionClass.getVersion();
       var url=UrlConstants.addGiftStock ;
       print(empID);
       var response = await httpClient.post(url,
@@ -94,9 +110,14 @@ String version;
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SaveVisitResponse addGiftResponse;
-        addGiftResponse= SaveVisitResponse.fromJson(data);
-        return addGiftResponse;
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else {
+          SaveVisitResponse addGiftResponse;
+          addGiftResponse = SaveVisitResponse.fromJson(data);
+          return addGiftResponse;
+        }
       } else
         print('error');
 

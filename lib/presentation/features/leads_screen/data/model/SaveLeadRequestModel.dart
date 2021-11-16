@@ -32,7 +32,11 @@ class SaveLeadRequestModel {
       this.comments,
       this.influencerList,
       this.listLeadImage,
-      this.leadBags});
+      this.leadBags,
+      this.leadSource,
+      this.leadSourceUser,
+      this.leadSourcePlatform,
+      this.isIhbCommercial});
 
   // String leadSegmane;
   int eventId;
@@ -60,6 +64,11 @@ class SaveLeadRequestModel {
   List<InfluencerDetail> influencerList;
   List<ListLeadImage> listLeadImage;
 
+  String leadSource;
+  String leadSourceUser;
+  String leadSourcePlatform;
+  String isIhbCommercial;
+
   SaveLeadRequestModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
     assignedTo = json['assignedTo'];
@@ -81,6 +90,13 @@ class SaveLeadRequestModel {
     assignDate = json['assignDate'];
     isStatus = json['isStatus'];
     leadBags = json['leadBags'];
+
+
+    leadSource = json['leadSource'];
+    leadSourceUser = json['leadSourceUser'];
+    leadSourcePlatform = json['leadSourcePlatform'];
+    isIhbCommercial = json['isIhbCommercial'];
+
     // photos = json['photos'];
     if (json['comments'] != null) {
       comments = new List<CommentsDetail>();
@@ -130,6 +146,11 @@ class SaveLeadRequestModel {
     data['influencerList'] =
         this.influencerList.map((e) => e.toJson()).toList();
     data['listLeadImage'] = this.listLeadImage.map((e) => e.toJson()).toList();
+
+    data['leadSource'] = this.leadSource;
+    data['leadSourceUser'] = this.leadSourceUser;
+    data['leadSourcePlatform'] = this.leadSourcePlatform;
+    data['isIhbCommercial'] = this.isIhbCommercial;
 
     return data;
   }

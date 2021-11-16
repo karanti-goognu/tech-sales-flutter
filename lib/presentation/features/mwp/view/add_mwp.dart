@@ -51,7 +51,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.backgroundColor,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       body: _buildAddEventInterface(context),
       floatingActionButton: Container(
         height: 68.0,
@@ -67,87 +67,95 @@ class AddMWPScreenPageState extends State<AddMWP> {
     SizeConfig().init(context);
     return SafeArea(
       child: SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        "MWP Planning",
-                        style: TextStyle(
-                            color: ColorConstants.greenText,
-                            fontFamily: "Muli-Semibold.ttf",
-                            fontSize: 20,
-                            letterSpacing: .15),
-                      ),
-                    ),
-                    Obx(
-                          () =>
-                      (_mwpPlanController.getMWPResponse.listOfMonthYear != null) ?
-                      Flexible(
+        child: GestureDetector(
+          onTap: (){
+            //FocusScopeNode currentFocus = FocusScope.of(context);
+          },
+          child: Padding(
+              padding:
+              //EdgeInsets.all(16),
+              EdgeInsets.only(left: 16, right: 16, top: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
                         flex: 2,
-                              child: Container(
-                                  width: double.infinity,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(12, 4, 4, 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      new BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 8.0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: Obx(
-                                      () => DropdownButton<String>(
-                                        value: _mwpPlanController.selectedMonth,
-                                        onChanged: (String newValue) {
-                                          _mwpPlanController.selectedMonth =
-                                              newValue;
-                                          _appController.getAccessKey(
-                                              RequestIds.GET_MWP_PLAN);
-                                          _mwpPlanController.isLoading = true;
-                                        },
-                                        items: _mwpPlanController
-                                            .getMWPResponse.listOfMonthYear
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value, style: TextStyle(
-                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
-                                                  fontWeight: FontWeight.bold),
-
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  )),
-                            ) : Container(
-//                        child: Text("Error"),
-                      child: CupertinoActivityIndicator(),
+                        child: Text(
+                          "MWP Planning",
+                          style: TextStyle(
+                              color: ColorConstants.greenText,
+                              fontFamily: "Muli-Semibold.ttf",
+                              fontSize: 20,
+                              letterSpacing: .15),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                AddMWPPlan(),
-              ],
-            )),
+                      Obx(
+                            () =>
+                        (_mwpPlanController.getMWPResponse.listOfMonthYear != null) ?
+                        Flexible(
+                          flex: 2,
+                                child: Container(
+                                    width: double.infinity,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(12, 4, 4, 4),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        new BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 8.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: DropdownButtonHideUnderline(
+                                      child: Obx(
+                                        () => DropdownButton<String>(
+                                          value: _mwpPlanController.selectedMonth,
+                                          onChanged: (String newValue) {
+                                            _mwpPlanController.selectedMonth =
+                                                newValue;
+                                            _appController.getAccessKey(
+                                                RequestIds.GET_MWP_PLAN);
+                                            _mwpPlanController.isLoading = true;
+                                          },
+                                          items: _mwpPlanController
+                                              .getMWPResponse.listOfMonthYear
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value, style: TextStyle(
+                                                    fontSize: SizeConfig.safeBlockHorizontal*3.5,
+                                                    fontWeight: FontWeight.bold),
+
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    )),
+                              ) : Container(
+//                        child: Text("Error"),
+                        child: CupertinoActivityIndicator(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  AddMWPPlan(),
+                ],
+              )),
+        ),
       ),
     );
   }

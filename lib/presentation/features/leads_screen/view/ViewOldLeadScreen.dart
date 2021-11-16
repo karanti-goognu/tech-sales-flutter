@@ -2224,9 +2224,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                                         _totalMT.text == "") {
                                       _totalBags.clear();
                                     } else {
-                                      _totalBags.text =
-                                          (int.parse(_totalMT.text) * 20)
-                                              .toString();
+                                      _totalBags.text =(double.parse(_totalMT.text) * 20).toInt().toString();
                                     }
                                   });
                                 },
@@ -2827,6 +2825,7 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
         Get.back();
         Get.dialog(CustomDialogs().errorDialog(
             "Access to location data denied "));
+
         print(e);
       });
     }

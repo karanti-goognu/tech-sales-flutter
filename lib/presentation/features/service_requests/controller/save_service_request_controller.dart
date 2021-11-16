@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
+import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,6 @@ class SaveServiceRequestController extends GetxController {
   getAccessKeyAndSaveRequest(
       List<File> imageList, SaveServiceRequest saveRequestModel) {
     String userSecurityKey = "";
-    String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     Future.delayed(
@@ -48,22 +48,25 @@ class SaveServiceRequestController extends GetxController {
         saveServiceRequest(
                 imageList, data.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
-          // print(value);
+           print(value);
           Get.back();
           if (value['resp-code'] == 'SRC2035') {
             Get.defaultDialog(
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
                 confirm: MaterialButton(
-                  onPressed: () =>
-                      Get.back(),
+                  onPressed: () {
+                     Get.back();
+                     Get.offAndToNamed(Routes.SERVICE_REQUESTS);
+                  },
+                  //Get.toNamed(Routes.SERVICE_REQUESTS),
                   child: Text('OK'),
                 ),
                 barrierDismissible: false);
           } else {
-            Get.back();
+            //Get.back();
             Get.dialog(
-                CustomDialogs().messageDialogMWP(value['resp-msg'].toString()),
+                CustomDialogs().messageDialogSRC(value['resp-msg'].toString()),
                 barrierDismissible: false);
             // Get.defaultDialog(title:"Message",
             //   middleText: value['resp-msg'].toString(),

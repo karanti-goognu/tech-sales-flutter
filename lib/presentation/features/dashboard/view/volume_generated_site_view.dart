@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -113,7 +114,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreen(siteId: _dashboardController
+                                          ViewSiteScreenNew(siteId: _dashboardController
                                               .mtdGeneratedVolumeSiteList
                                               .sitesEntity[index]
                                               .siteId,tabIndex: 0,)));

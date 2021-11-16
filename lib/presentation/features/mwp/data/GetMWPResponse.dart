@@ -59,6 +59,8 @@ class MwpplanModel {
   int actualContractorMeetNo;
   int actualMiniContractorMeetNo;
   int actualConsumerMeetNo;
+
+
   String status;
   String createdBy;
   int createdOn;
@@ -85,6 +87,11 @@ class MwpplanModel {
   int actualTechVanService;
   int actualTechnocratMeet;
   int actualTechnocratVisit;
+
+  int headMasonMeet;
+  int actualHeadMasonMeet;
+  int newInfluencer;
+  int actualNewInfluencer;
 
 
      MwpplanModel(
@@ -142,7 +149,12 @@ class MwpplanModel {
         this.actualTechnocratMeet,
         this.actualTechnocratVisit,
         this.actualTechVanDemo,
-        this.actualTechVanService
+        this.actualTechVanService,
+
+        this.headMasonMeet,
+        this.newInfluencer,
+        this.actualHeadMasonMeet,
+        this.actualNewInfluencer
       });
 
   MwpplanModel.fromJson(Map<String, dynamic> json) {
@@ -199,6 +211,10 @@ class MwpplanModel {
     actualTechnocratVisit = json['actualTechnocratVisit'];
     actualTechVanDemo = json['actualTechVanDemo'];
     actualTechVanService = json['actualTechVanService'];
+    headMasonMeet = json['headMasonMeet'];
+    newInfluencer = json['newInfluencer'];
+    actualHeadMasonMeet = json['actualHeadMasonMeet'];
+    actualNewInfluencer = json['actualNewInfluencer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -256,6 +272,10 @@ class MwpplanModel {
     data['actualTechnocratVisit'] = this.actualTechnocratVisit;
     data['actualTechVanDemo'] = this.actualTechVanDemo;
     data['actualTechVanService'] = this.actualTechVanService;
+    data['headMasonMeet'] = this.headMasonMeet;
+    data['newInfluencer'] = this.newInfluencer;
+    data['actualHeadMasonMeet'] = this.actualHeadMasonMeet;
+    data['actualNewInfluencer'] = this.actualNewInfluencer;
     return data;
   }
 }

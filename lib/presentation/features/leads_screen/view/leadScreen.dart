@@ -59,10 +59,11 @@ class _LeadScreenState extends State<LeadScreen> {
     } catch (_) {
       print('${_.toString()}');
     }*/
-    print("------------------------------");
+    _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
     internetChecking().then((result) {
       if (result)
+        _leadsFilterController.offset = 0;
         _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
     });
 
@@ -80,16 +81,21 @@ class _LeadScreenState extends State<LeadScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    //_connectivity.disposeStream();
-    super.dispose();
-    _leadsFilterController?.dispose();
+  // @override
+  // void dispose() {
+  //   //_connectivity.disposeStream();
+  //   super.dispose();
+  //   _leadsFilterController.offset = 0;
+  //   _leadsFilterController?.dispose();
+  //   // Route.dispose();
+  // }
+  void disposeController(BuildContext context){
+//or what you wnat to dispose/clear
     _leadsFilterController.offset = 0;
-    print(_leadsFilterController.offset);
-    // Route.dispose();
-  }
+    _leadsFilterController?.dispose();
 
+   // print(_leadsFilterController.offset);
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -98,6 +104,7 @@ class _LeadScreenState extends State<LeadScreen> {
     // print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
+          disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
@@ -129,50 +136,89 @@ class _LeadScreenState extends State<LeadScreen> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        _settingModalBottomSheet(context);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.white)),
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(
-                          children: [
-                            //  Icon(Icons.exposure_zero_outlined),
-                            Container(
-                                height: 18,
-                                width: 18,
-                                // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                                decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.0),
-                                  borderRadius:
-                                      new BorderRadius.all(Radius.circular(3)),
+                    Row(
+                      children: [
+                        FlatButton(
+                          onPressed: () {
+                            _settingModalBottomSheet(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.white)),
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Row(
+                              children: [
+                                //  Icon(Icons.exposure_zero_outlined),
+                                Container(
+                                    height: 18,
+                                    width: 18,
+                                    // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
+                                    decoration: new BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.0),
+                                      borderRadius:
+                                          new BorderRadius.all(Radius.circular(3)),
+                                    ),
+                                    child: Center(
+                                        child: Obx(() => Text(
+                                            "${_leadsFilterController.selectedFilterCount}",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                //fontFamily: 'Raleway',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.normal))))),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'FILTER',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
                                 ),
-                                child: Center(
-                                    child: Obx(() => Text(
-                                        "${_leadsFilterController.selectedFilterCount}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            //fontFamily: 'Raleway',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal))))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'FILTER',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    )
+
+                        Obx(() => Visibility(
+                          visible: (_leadsFilterController.selectedFilterCount == 0)?false:true,
+                          child: IconButton(
+                                icon: Icon(Icons.close, color: Colors.white,),
+                                onPressed: (){
+                                  setState(() {
+                                    _leadsFilterController.selectedLeadStage =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStageValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStatus =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadStatusValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.assignToDate =
+                                        StringConstants.empty;
+                                    _leadsFilterController.assignFromDate =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadPotential =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadPotentialValue =
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedFilterCount = 0;
+                                    _leadsFilterController.offset = 0;
+                                    _leadsFilterController.leadsListResponse.leadsEntity = null;
+                                    _leadsFilterController
+                                        .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                  });
+                                },
+                          ),
+
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
                 SingleChildScrollView(
@@ -407,7 +453,7 @@ class _LeadScreenState extends State<LeadScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          "Total Count : ${(_leadsFilterController.leadsListResponse.leadsEntity == null) ? 0 : _leadsFilterController.leadsListResponse.leadsEntity.length}",
+                          "Total Count : ${(_leadsFilterController.leadsListResponse.totalLeadCount == null) ? 0 : _leadsFilterController.leadsListResponse.totalLeadCount}",
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
@@ -517,6 +563,32 @@ class _LeadScreenState extends State<LeadScreen> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Container(
+                                    width: 15,
+                                    height: 15,
+                                    child: Image.asset("assets/images/callcenter.png"),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Text(
+                                    "Call Center Leads",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize: 14,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       scrollDirection: Axis.horizontal,
@@ -566,6 +638,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 ),
                                 RaisedButton(
                                   onPressed: () {
+                                    _leadsFilterController.offset = 0;
                                     _leadsFilterController.getAccessKey(
                                         RequestIds.GET_LEADS_LIST);
                                   },
@@ -660,15 +733,32 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         const EdgeInsets.all(
                                                             2.0),
                                                     child: Obx(
-                                                      () => Text(
-                                                        "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontFamily: "Muli",
-                                                            fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
+                                                      () => Row(
+                                                        children: [
+                                                          Visibility(
+                                                            visible: (_leadsFilterController.leadsListResponse.leadsEntity[index].leadSourcePlatform == "CALL_CENTRE")? true:false,
+                                                              child: Container(
+                                                                width: 15,
+                                                                height: 15,
+                                                                child: Image.asset("assets/images/callcenter.png"),
+                                                              ),),
+                                                          // Container(
+                                                          //   margin: EdgeInsets.only(left: 5, right: 8),
+                                                          //   width: 15,
+                                                          //   height: 15,
+                                                          //   child: Image.asset("assets/images/callcenter.png"),
+                                                          // ),
+                                                          Text(
+                                                            "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontFamily: "Muli",
+                                                                fontWeight:
+                                                                    FontWeight.bold
+                                                                //fontWeight: FontWeight.normal
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     )),
                                                 Padding(
