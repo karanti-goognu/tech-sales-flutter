@@ -51,6 +51,11 @@ abstract class TextStyles {
       fontSize: 18,
       fontWeight: FontWeight.bold);
 
+  static TextStyle muliBold25 = TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+          fontFamily: "Muli");
+
   static TextStyle mulliBoldBlue = TextStyle(
       color: ColorConstants.darkBlue,
       fontFamily: "Muli-Bold.ttf",
@@ -134,6 +139,12 @@ abstract class TextStyles {
       fontSize: ScreenUtil().setSp(15)
   );
 
+  static TextStyle btnOrange = TextStyle(
+      color: ColorConstants.btnOrange,
+      fontWeight: FontWeight.bold,
+      fontSize: ScreenUtil().setSp(15)
+  );
+
 
   static TextStyle mulliRegular14Italic = TextStyle(
       color: Colors.blueAccent,
@@ -142,6 +153,18 @@ abstract class TextStyles {
       fontStyle: FontStyle.italic,
       fontWeight: FontWeight.normal);
 
+  static TextStyle contactTextStyle = TextStyle(
+      fontFamily: "Muli",
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      decoration: TextDecoration.underline,
+      letterSpacing: .25,
+      color: ColorConstants.clearAllTextColor);
+
+  static TextStyle muliBoldOrange17 = TextStyle(
+      color: ColorConstants.btnOrange,
+      fontWeight: FontWeight.bold,
+      fontSize: ScreenUtil().setSp(17));
 
 
 }

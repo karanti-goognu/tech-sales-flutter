@@ -190,7 +190,7 @@ class AllEventController extends GetxController {
     print("Get All Event Data called");
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     String empID = "";
     String accessKey = await repository.getAccessKey();
@@ -221,13 +221,14 @@ class AllEventController extends GetxController {
         eventStatus = "&eventStatus=${this.eventStatusValue}";
       }
 
+
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
-      print(url);
+      print("%%%%%$url");
 
       egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
 
     });
-    Get.back();
+    //Get.back();
     return egAllEventData;
   }
 
@@ -257,17 +258,17 @@ class AllEventController extends GetxController {
     String empID = "";
     String accessKey = await repository.getAccessKey();
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
 
     EventResponse endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
-    Get.back();
+   // Get.back();
     return endEventModel;
   }
 

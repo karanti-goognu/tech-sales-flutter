@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/Da
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/MonthlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/repository/dashboard_repository.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/Data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
@@ -118,7 +119,7 @@ class DashboardController extends GetxController {
 
     var data= await repository.getYearlyViewDetails(empID, this.accessKeyResponse.accessKey,userSecurityCode );
           this.dashboardYearlyViewModel = data;
-//          print(":::: $data ::::");
+         // print(":::: ${json.decode(data)} ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
               .map(
                 (e) => e.showMonth,
@@ -181,6 +182,8 @@ class DashboardController extends GetxController {
     print("EMP ID inside controller: $empID");
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
+    var value= await repository.getAccessKey();
+    this.accessKeyResponse = value;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
 

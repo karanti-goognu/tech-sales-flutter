@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -91,10 +93,11 @@ class _FormAddEventState extends State<FormAddEvent> {
 
 
   getDropdownData() async {
-
     await eventController.getEventType().then((data) {
       setState(() {
-        addEventModel = data;
+        if(data!=null) {
+          addEventModel = data;
+        }
       });
       print('RESPONSE, ${data}');
     });
@@ -113,6 +116,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
     final eventDropDwn = DropdownButtonFormField(
+
       onChanged: (value) {
         setState(() {
           _eventTypeId = value;
@@ -201,7 +205,19 @@ class _FormAddEventState extends State<FormAddEvent> {
       },
       controller: _dalmiaInflController,
       style: TextStyles.formfieldLabelText,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(signed: true),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          try {
+            final text = newValue.text;
+            if (text.isNotEmpty) double.parse(text);
+            return newValue;
+          } catch (e) {}
+          return oldValue;
+        }
+        ),
+      ],
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
     );
@@ -222,7 +238,19 @@ class _FormAddEventState extends State<FormAddEvent> {
       },
 
       style: TextStyles.formfieldLabelText,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(signed: true),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          try {
+            final text = newValue.text;
+            if (text.isNotEmpty) double.parse(text);
+            return newValue;
+          } catch (e) {}
+          return oldValue;
+        }
+        ),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Non-Dalmia influencers"),
     );
@@ -264,6 +292,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
+      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")), ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Venue address (if booked)"),
     );
@@ -304,8 +333,6 @@ class _FormAddEventState extends State<FormAddEvent> {
                     .toList(),
               ),
             ),
-
-
           );
         },
       ),
@@ -320,7 +347,10 @@ class _FormAddEventState extends State<FormAddEvent> {
       // },
       controller: _expectedLeadsController,
       style: TextStyles.formfieldLabelText,
-      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      keyboardType: TextInputType.numberWithOptions(signed: true),
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Expected Leads"),
     );
@@ -334,7 +364,10 @@ class _FormAddEventState extends State<FormAddEvent> {
       // },
       controller: _giftsDistributionController,
       style: TextStyles.formfieldLabelText,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.numberWithOptions(signed: true),
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Gift distribution (proposed)"),
     );
@@ -406,6 +439,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
+        print('SSS: $sessionToken');
         final Suggestion result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
@@ -436,84 +470,89 @@ class _FormAddEventState extends State<FormAddEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: addEventModel != null
-                ? ListView(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        height: 56,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Add Event',
-                              style: TextStyles.titleGreenStyle,
-                            ),
-                            Chip(
-                              shape: StadiumBorder(
-                                  side: BorderSide(color: HexColor("#39B54A"))),
-                              backgroundColor:
-                                  HexColor("#39B54A").withOpacity(0.1),
-                              label: Text('Status: Not Submitted'),
-                            ),
-                          ],
+      body: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: addEventModel != null
+                  ? ListView(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12),
+                          height: 56,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Add Event',
+                                style: TextStyles.titleGreenStyle,
+                              ),
+                              Chip(
+                                shape: StadiumBorder(
+                                    side: BorderSide(color: HexColor("#39B54A"))),
+                                backgroundColor:
+                                    HexColor("#39B54A").withOpacity(0.1),
+                                label: Text('Status: Not Submitted'),
+                              ),
+                            ],
+                          ),
+                          // decoration: BoxDecoration(
+                          //     border: Border(bottom: BorderSide(width: 0.3))),
                         ),
-                        // decoration: BoxDecoration(
-                        //     border: Border(bottom: BorderSide(width: 0.3))),
-                      ),
-                      SizedBox(height: 16),
-                      Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Form(
-                            key: _addEventFormKey,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  eventDropDwn,
-                                  SizedBox(height: 16),
-                                  date,
-                                  SizedBox(height: 16),
-                                  time,
-                                  SizedBox(height: 16),
-                                  Text(
-                                    "Tentative Members",
-                                    style: TextStyles.welcomeMsgTextStyle20,
-                                  ),
-                                  SizedBox(height: 16),
-                                  dalmiaInfluencer,
-                                  SizedBox(height: 16),
-                                  nondalmia,
-                                  SizedBox(height: 16),
-                                  total,
-                                  SizedBox(height: 16),
-                                  venueDropDwn,
-                                  SizedBox(height: 16),
-                                  venueAddress,
-                                  SizedBox(height: 16),
-                                  dealer,
-                                  SizedBox(height: 16),
-                                  expectedLeads,
-                                  SizedBox(height: 16),
-                                  giftDistribution,
-                                  SizedBox(height: 16),
-                                  location,
-                                  SizedBox(height: 16),
-                                  comment,
-                                  SizedBox(height: 16),
-                                  btns,
-                                  SizedBox(height: 16),
-                                ]),
-                          )),
-                    ],
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
-          ),
-        ],
+                        SizedBox(height: 16),
+                        Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Form(
+                              key: _addEventFormKey,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    eventDropDwn,
+                                    SizedBox(height: 16),
+                                    date,
+                                    SizedBox(height: 16),
+                                    time,
+                                    SizedBox(height: 16),
+                                    Text(
+                                      "Tentative Members",
+                                      style: TextStyles.welcomeMsgTextStyle20,
+                                    ),
+                                    SizedBox(height: 16),
+                                    dalmiaInfluencer,
+                                    SizedBox(height: 16),
+                                    nondalmia,
+                                    SizedBox(height: 16),
+                                    total,
+                                    SizedBox(height: 16),
+                                    venueDropDwn,
+                                    SizedBox(height: 16),
+                                    venueAddress,
+                                    SizedBox(height: 16),
+                                    dealer,
+                                    SizedBox(height: 16),
+                                    expectedLeads,
+                                    SizedBox(height: 16),
+                                    giftDistribution,
+                                    SizedBox(height: 16),
+                                    location,
+                                    SizedBox(height: 16),
+                                    comment,
+                                    SizedBox(height: 16),
+                                    btns,
+                                    SizedBox(height: 16),
+                                  ]),
+                            )),
+                      ],
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -792,6 +831,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
             mwpeventFormRequest: _mwpeventFormRequest,
             eventDealersModelList: _save.eventDealersModelList);
+        print("Request: ${json.encode(_saveEventFormModel)}");
 
         internetChecking().then((result) => {
               if (result == true)

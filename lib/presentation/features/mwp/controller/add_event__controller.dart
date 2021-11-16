@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
@@ -19,7 +20,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventController extends GetxController {
@@ -44,14 +44,15 @@ class AddEventController extends GetxController {
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
-  final _siteIdText = "Site Id".obs;
+  final _siteIdText = "Lead Id".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _visitId = 0.obs;
   final _meetAction = "S".obs;
   final _visitActionType = "UPDATE".obs;
   final _retryOtpActive = false.obs;
-  final _visitSubType = 'RETENTION SITE'.obs;
+  // final _visitSubType = 'RETENTION SITE'.obs;
+  final _visitSubType = 'LEADS'.obs;
   final _visitType = 'PHYSICAL'.obs;
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = "Visit Date".obs;
@@ -61,7 +62,6 @@ class AddEventController extends GetxController {
   final _visitStartTime = StringConstants.empty.obs;
   final _nextVisitDate = "Next Visit Date".obs;
   final _visitRemarks = StringConstants.empty.obs;
-
 
   final _totalParticipants = StringConstants.empty.obs;
   final _isLoading = false.obs;
@@ -76,6 +76,9 @@ class AddEventController extends GetxController {
   final _isSaveDraft = StringConstants.empty.obs;
   final _createdBy = StringConstants.empty.obs;
   final _meetInitiatorName = StringConstants.empty.obs;
+  final _dspAvailableQty = StringConstants.empty.obs;
+  final _isDspAvailable = StringConstants.empty.obs;
+  final _isDspAvailablePt = StringConstants.empty.obs;
 
   get isLoading => this._isLoading.value;
 
@@ -154,11 +157,16 @@ class AddEventController extends GetxController {
 
   get meetInitiatorName => this._meetInitiatorName.value;
 
+  get dspAvailableQty => this._dspAvailableQty.value;
+
+  get isDspAvailable => this._isDspAvailable.value;
+
+  get isDspAvailablePt => this._isDspAvailablePt.value;
+
   set isLoading(value) => this._isLoading.value = value;
 
   set siteIdText(value) => this._siteIdText.value = value;
   set visitOutcomes(value) => this._visitOutcomes.value = value;
-
 
   set visitActionType(value) => this._visitActionType.value = value;
 
@@ -207,7 +215,7 @@ class AddEventController extends GetxController {
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
-  set visitRemarks(value) => this._visitRemarks.value = value ;
+  set visitRemarks(value) => this._visitRemarks.value = value;
 
   set dalmiaInflCount(value) => this._dalmiaInflCount.value = value;
 
@@ -233,8 +241,18 @@ class AddEventController extends GetxController {
 
   set meetInitiatorName(value) => this._meetInitiatorName.value = value;
 
+  set dspAvailableQty(value) => this._dspAvailableQty.value = value;
+
+  set isDspAvailable(value) => this._isDspAvailable.value = value;
+
+  set isDspAvailablePt(value) => this._isDspAvailablePt.value = value;
+
+  TextEditingController bagsController = new TextEditingController();
+  TextEditingController mtController = new TextEditingController();
+
   saveVisit(String accessKey) {
-    Future.delayed(Duration.zero,()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    Future.delayed(Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -250,7 +268,7 @@ class AddEventController extends GetxController {
         "VISIT",
         this.visitSubType,
         this.visitSiteId,
-        this.visitDateTime=="Visit Date"?null:this.visitDateTime,
+        this.visitDateTime == "Visit Date" ? null : this.visitDateTime,
         this.visitRemarks,
       );
 
@@ -271,11 +289,12 @@ class AddEventController extends GetxController {
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          }else if(saveVisitResponse.respCode == "DM2144"){
-            Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          }
-          else {
+          } else if(saveVisitResponse.respCode == "DM2144"){
+        Get.dialog(
+        CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+        }
+
+        else {
             print('Success');
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
@@ -341,7 +360,7 @@ class AddEventController extends GetxController {
   getDealersList(String accessKey) async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -356,12 +375,14 @@ class AddEventController extends GetxController {
           debugPrint('Dealer List Response is null');
         } else {
           debugPrint('Dealer List Response is not null');
+          debugPrint("Data: ${json.encode(data)}");
           this.dealerListResponse = data;
           this.isLoading = false;
-          if (this.dealerListResponse.dealerList.length != 0) {
+          if (this.dealerListResponse.dealerList.length != 0 && this.dealerList.length == 0) {
             for (int i = 0;
                 i < this.dealerListResponse.dealerList.length;
                 i++) {
+
               this.dealerList.add(new DealerModel(
                   dealerListResponse.dealerList[i].dealerId,
                   dealerListResponse.dealerList[i].dealerName,
@@ -381,7 +402,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  Future<VisitResponseModel>viewVisitData(String accessKey) async {
+  Future<VisitResponseModel> viewVisitData(String accessKey) async {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -397,11 +418,14 @@ class AddEventController extends GetxController {
         } else {
           debugPrint('Dealer List Response is not null');
           this.visitResponseModel = data;
+          log(json.encode(visitResponseModel));
           this.visitSiteId =
               this.visitResponseModel.mwpVisitModel.docId.toString();
           // this.visitDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
-          this.visitViewDateTime = this.visitResponseModel.mwpVisitModel.visitDate.toString();
-          this.visitOutcomes = this.visitResponseModel.mwpVisitModel.visitOutcomes.toString();
+          this.visitViewDateTime =
+              this.visitResponseModel.mwpVisitModel.visitDate.toString();
+          this.visitOutcomes =
+              this.visitResponseModel.mwpVisitModel.visitOutcomes.toString();
           if (this.visitResponseModel.mwpVisitModel.visitStartTime != null) {
             this.visitStartTime =
                 this.visitResponseModel.mwpVisitModel.visitStartTime.toString();
@@ -413,7 +437,7 @@ class AddEventController extends GetxController {
             final String formattedDate = formatter.format(date);
             this.nextVisitDate = formattedDate;
           }
-          if(this.visitResponseModel.mwpVisitModel.nextVisitDate == null){
+          if (this.visitResponseModel.mwpVisitModel.nextVisitDate == null) {
             this.nextVisitDate = "Next Visit Date";
           }
 
@@ -425,14 +449,22 @@ class AddEventController extends GetxController {
           }
           this.visitSubType = this.visitResponseModel.mwpVisitModel.visitSubType.toString();
           this.visitRemarks = this.visitResponseModel.mwpVisitModel.remark.toString();
+          this.dspAvailableQty = this.visitResponseModel.mwpVisitModel.dspAvailableQty.toString();
+          this.isDspAvailable = this.visitResponseModel.mwpVisitModel.isDspAvailable.toString();
+          if(this.visitResponseModel.mwpVisitModel.dspAvailableQty == null || this.visitResponseModel.mwpVisitModel.dspAvailableQty == "null"){
+            this.bagsController.text = "";
+            this.mtController.text = "";
+          }else {
+            this.bagsController.text =
+                this.visitResponseModel.mwpVisitModel.dspAvailableQty
+                    .toString();
+            this.mtController.text = ((int.parse(this.visitResponseModel.mwpVisitModel.dspAvailableQty) / 20).toString());
+          }
         }
       });
     });
-
     return visitResponseModel;
-
   }
-
 
   viewMeetData(String accessKey) async {
     this.isLoadingVisitView = true;
@@ -487,12 +519,12 @@ class AddEventController extends GetxController {
     // this.isLoadingVisitView = true;
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) async{
+    _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       print('$empId');
       userSecurityKey =
@@ -503,7 +535,7 @@ class AddEventController extends GetxController {
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
       print('=============================');
-      // debugPrint('Url is : $url');
+      debugPrint('Url is : $url');
       if (this.visitActionType == "UPDATE") {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
@@ -516,19 +548,25 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
-          this.visitOutcomes,
-          this.visitRemarks,
-          this.visitSubType,
-          this.visitSiteId
-        );
-        print('&&&&&&'+url);
-        print('visitId'+this.visitId.toString());
-        print(json.encode(mwpVisitModelUpdate));
+            this.nextVisitDate == "Next Visit Date" ? null : this.nextVisitDate,
+            this.visitOutcomes,
+            this.visitRemarks,
+            this.visitSubType,
+            this.visitSiteId,
+        this.dspAvailableQty,
+        this.isDspAvailable);
+        print('&&&&&&' + url);
+        print('visitId' + this.visitId.toString());
+        // print(json.encode(mwpVisitModelUpdate));@kum
         // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+        //print(json.encode(mwpVisitModelUpdate));
         repository
-            .updateVisitPlan(accessKey, userSecurityKey, url,
-                new UpdateVisitResponseModel(mwpVisitModel: mwpVisitModelUpdate,mwpMeetModel: null))
+            .updateVisitPlan(
+                accessKey,
+                userSecurityKey,
+                url,
+                new UpdateVisitResponseModel(
+                    mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
             .then((data) {
           // this.isLoadingVisitView = false;
           Get.back();
@@ -542,7 +580,8 @@ class AddEventController extends GetxController {
                   CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
               //SitesDetailWidget();
-            } else {
+            }
+            else {
               Get.dialog(
                   CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
@@ -550,71 +589,87 @@ class AddEventController extends GetxController {
           }
         });
       } else if (this.visitActionType == "START") {
+
         if (!(await Geolocator().isLocationServiceEnabled())) {
           Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
-      "Please enable your location service from device settings"));
-      }
+          Get.dialog(CustomDialogs().errorDialog(
+              "Please enable your location service from device settings"));
 
-        else {
-          geolocator
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-              .then((Position position) {
-            print('start');
-            var journeyStartLat = position.latitude;
-            var journeyStartLong = position.longitude;
-            print('$journeyStartLong   $journeyStartLat');
-            DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-            print(this.visitViewDateTime);
-            mwpVisitModelUpdate = new MwpVisitModelUpdate(
-                this.visitId,
-                this.visitViewDateTime,
-                visitType,
-                dateFormat.format(DateTime.now()),
-                journeyStartLat,
-                journeyStartLong,
-                "",
-                0.0,
-                0.0,
-                this.nextVisitDate == "Next Visit Date" ? null : this
-                    .nextVisitDate,
-                this.visitOutcomes,
-                this.visitRemarks,
-                this.visitSubType,
-                this.visitSiteId);
-            // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
-            repository
-                .updateVisitPlan(accessKey, userSecurityKey, url,
-                new UpdateVisitResponseModel(
-                    mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
-                .then((data) {
-              this.isLoadingVisitView = false;
-              if (data == null) {
-                debugPrint('Save Visit Response is null');
-              } else {
-                debugPrint('Save Visit Response is not null');
-                this.saveVisitResponse = data;
-                if (saveVisitResponse.respCode == "MWP2028") {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
-                  //SitesDetailWidget();
+        } else {
+          //if ((await Geolocator().isLocationServiceEnabled())) {
+
+            geolocator
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+                .then((Position position) {
+              print('start');
+              var journeyStartLat = position.latitude;
+              var journeyStartLong = position.longitude;
+              print('$journeyStartLong   $journeyStartLat');
+              DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+              print(this.visitViewDateTime);
+              mwpVisitModelUpdate = new MwpVisitModelUpdate(
+                  this.visitId,
+                  this.visitViewDateTime,
+                  visitType,
+                  dateFormat.format(DateTime.now()),
+                  journeyStartLat,
+                  journeyStartLong,
+                  "",
+                  0.0,
+                  0.0,
+                  this.nextVisitDate == "Next Visit Date"
+                      ? null
+                      : this.nextVisitDate,
+                  this.visitOutcomes,
+                  this.visitRemarks,
+                  this.visitSubType,
+                  this.visitSiteId,
+                  this.dspAvailableQty,
+                  this.isDspAvailable);
+              print(json.encode(mwpVisitModelUpdate));
+              //print(json.encode(UpdateVisitResponseModel));
+              // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
+              repository
+                  .updateVisitPlan(
+                  accessKey,
+                  userSecurityKey,
+                  url,
+                  new UpdateVisitResponseModel(
+                      mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
+                  .then((data) {
+                this.isLoadingVisitView = false;
+                if (data == null) {
+                  debugPrint('Save Visit Response is null');
                 } else {
-                  Get.dialog(CustomDialogs()
-                      .messageDialogMWP(saveVisitResponse.respMsg));
-                  print('${saveVisitResponse.respMsg}');
+                  debugPrint('Save Visit Response is not null');
+                  this.saveVisitResponse = data;
+                  print("DATA: ${json.encode(data)}");
+                  if (saveVisitResponse.respCode == "MWP2028") {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('${saveVisitResponse.respMsg}');
+                    //SitesDetailWidget();
+                  }
+                  else {
+                    Get.dialog(CustomDialogs()
+                        .messageDialogMWP(saveVisitResponse.respMsg));
+                    print('---${saveVisitResponse.respMsg}');
+                  }
                 }
-              }
+              });
+            }).catchError((e) {
+              Get.back();
+              Get.dialog(CustomDialogs().errorDialog(
+                  "Access to location data denied "));
+              print(e);
             });
-          }).catchError((e) {
-            Get.back();
-            Get.dialog(CustomDialogs().errorDialog(
-                "Access to location data denied "));
-            print(e);
-          });
-
-        }
-
+          }
+          // else{
+          //   Get.back();
+          //   Get.dialog(CustomDialogs().errorDialog(
+          //       "Please enable your location service from device settings"));
+          // }
+       // }
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
@@ -641,15 +696,21 @@ class AddEventController extends GetxController {
                 dateFormat.format(DateTime.now()),
                 journeyEndLat,
                 journeyEndLong,
-                this.nextVisitDate == "Next Visit Date" ? null : this
-                    .nextVisitDate,
+                this.nextVisitDate == "Next Visit Date"
+                    ? null
+                    : this.nextVisitDate,
                 this.visitOutcomes,
                 this.visitRemarks,
                 this.visitSubType,
-                this.visitSiteId);
+                this.visitSiteId,
+                this.dspAvailableQty,
+                this.isDspAvailable);
             // mwpVisitModelUpdate.nextVisitDate = this.nextVisitDate;
             repository
-                .updateVisitPlan(accessKey, userSecurityKey, url,
+                .updateVisitPlan(
+                accessKey,
+                userSecurityKey,
+                url,
                 new UpdateVisitResponseModel(
                     mwpVisitModel: mwpVisitModelUpdate))
                 .then((data) {
@@ -689,11 +750,13 @@ class AddEventController extends GetxController {
             "",
             0.0,
             0.0,
-            this.nextVisitDate=="Next Visit Date"?null:this.nextVisitDate,
+            this.nextVisitDate == "Next Visit Date" ? null : this.nextVisitDate,
             this.visitOutcomes,
             this.visitRemarks,
             this.visitSubType,
-            this.visitSiteId);
+            this.visitSiteId,
+            this.dspAvailableQty,
+            this.isDspAvailable);
       }
     });
   }
@@ -743,14 +806,14 @@ class AddEventController extends GetxController {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
 
-          Get.dialog( CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          Get.dialog(
+              CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           print('${saveVisitResponse.respMsg}');
           //SitesDetailWidget();
         }
       });
     });
   }
-
 
   showNoInternetSnack() {
     Get.snackbar(

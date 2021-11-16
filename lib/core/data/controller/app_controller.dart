@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/controller
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -27,7 +28,7 @@ class AppController extends GetxController {
   final MWPPlanController _mwpPlanController = Get.find();
   final CalendarEventController _calendarEventController = Get.find();
   final AddEventController _addEventController = Get.find();
-
+  final UpdateServiceRequestController _requestUpdateController = Get.find();
   //final EventTypeController _eventTypeController = Get.find();
   // final UpdateServiceRequestController _updateServiceRequestController = Get.find();
 
@@ -93,8 +94,7 @@ class AppController extends GetxController {
       this.accessKeyResponse = data;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
-        String userSecurityKey =
-            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+        String userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
         // print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
@@ -107,7 +107,7 @@ class AppController extends GetxController {
             Get.back();
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
-                _siteController.getSitesData(this.accessKeyResponse.accessKey);
+                _siteController.getSitesData(this.accessKeyResponse.accessKey,"");
                 break;
               case RequestIds.SEARCH_SITES:
                 _siteController.searchSites(this.accessKeyResponse.accessKey);
@@ -172,6 +172,10 @@ class AppController extends GetxController {
               //   _addEventController
               //       .updateMeet(this.accessKeyResponse.accessKey);
               //   break;
+              case RequestIds.GET_REQUEST_DETAILS_FOR_UPDATE:
+                _requestUpdateController.getRequestUpdateDetailsData(this.accessKeyResponse.accessKey);
+                break;
+
             }
           }
         }

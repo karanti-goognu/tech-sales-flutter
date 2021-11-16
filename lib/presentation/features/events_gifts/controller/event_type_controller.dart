@@ -48,7 +48,6 @@ class EventTypeController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('EMP: $empID');
       addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, empID);
     });
     return addEventResponse;

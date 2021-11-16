@@ -129,26 +129,29 @@ class CalendarEventController extends GetxController {
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
           if (this.calendarPlanResponse.listOfEventDates.length > 0) {
-            var temp=EventList<Event>();
+            var temp = EventList<Event>();
             for (int i = 0;
-                i < this.calendarPlanResponse.listOfEventDates.length;
-                i++) {
+            i < this.calendarPlanResponse.listOfEventDates.length;
+            i++) {
               String date = this.calendarPlanResponse.listOfEventDates[i];
               DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
-              var key=DateTime(tempDate.year, tempDate.month, tempDate.day);
-              testMap[key]=[
+              var key = DateTime(tempDate.year, tempDate.month, tempDate.day);
+              testMap[key] = [
                 new Event(
-                date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
-                title: 'Event 5',
-              )];
+                  date: new DateTime(
+                      tempDate.year, tempDate.month, tempDate.day),
+                  title: 'Event 5',
+                )
+              ];
               temp.add(
                   new DateTime(tempDate.year, tempDate.month, tempDate.day),
                   new Event(
-                    date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
+                    date: new DateTime(
+                        tempDate.year, tempDate.month, tempDate.day),
                     // date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
                     title: 'Event 5',
                     icon: _eventIcon,
-                   /* dot: Container(
+                    /* dot: Container(
                       margin: EdgeInsets.symmetric(horizontal: 1.0),
                       color: Colors.red,
                       height: 5.0,
@@ -156,7 +159,7 @@ class CalendarEventController extends GetxController {
                     ),*/
                   ));
             }
-            markedDateMap=temp;
+            markedDateMap = temp;
           }
 
           if (calendarPlanResponse.respCode == "MWP2013") {
@@ -167,7 +170,8 @@ class CalendarEventController extends GetxController {
             /*Get.dialog(
                 CustomDialogs().errorDialog(calendarPlanResponse.respMsg));*/
           }
-        }
+       // }
+      }
       });
     });
   }
@@ -189,7 +193,7 @@ class CalendarEventController extends GetxController {
           debugPrint('MWP Data Response is null');
         } else {
           debugPrint('MWP Data Response is not null');
-          print("DATA: ${json.encode(data)}");
+          debugPrint("VISIT DATA: ${json.encode(data)}");
           this.calendarDataByDay = data;
           this.listOfEvents =
               this.calendarDataByDay.listOfEventDetails;
@@ -203,6 +207,7 @@ class CalendarEventController extends GetxController {
             Get.dialog(CustomDialogs().errorDialog(calendarDataByDay.respMsg));
           }
         }
+        //}
       });
     });
   }

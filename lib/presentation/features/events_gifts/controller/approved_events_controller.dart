@@ -11,6 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/approvedEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -85,36 +86,16 @@ class EventsFilterController extends GetxController {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
 
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
          _startEventResponse = await repository.startEvent(accessKey, userSecurityKey, startEventModel);
-        //     .then((value) {
-        //   //Get.back();
-        //   if (value.respCode == 'DM2043') {
-        //     Get.back();
-        //     Get.defaultDialog(
-        //         title: "Message",
-        //         middleText: value.respMsg.toString(),
-        //         confirm: MaterialButton(
-        //           onPressed: () => Get.back(),
-        //           child: Text('OK'),
-        //         ),
-        //         barrierDismissible: false);
-        //   } else {
-        //     Get.back();
-        //     Get.dialog(
-        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-        //         barrierDismissible: false);
-        //   }
-        // });
-     // });
     });
-      Get.back();
+      //Get.back();
       return _startEventResponse;
   }
 
@@ -125,10 +106,10 @@ class EventsFilterController extends GetxController {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     var accessKey = await repository.getAccessKey();
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -137,7 +118,7 @@ class EventsFilterController extends GetxController {
       _dealerInfModel =
       await repository.getDealerInfList(accessKey, userSecurityKey, empID, eventId);
     });
-    Get.back();
+   // Get.back();
     return _dealerInfModel;
   }
 
@@ -146,52 +127,26 @@ class EventsFilterController extends GetxController {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     //repository.getAccessKey().then((data) async {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         _updateDealerInfResponse = await repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel);
-        //     .then((value) {
-        //   Get.back();
-        //   if (value.respCode == 'DM1002') {
-        //     Get.back();
-        //     Get.defaultDialog(
-        //         title: "Message",
-        //         middleText: value.respMsg.toString(),
-        //         confirm: MaterialButton(
-        //           onPressed: () => Get.back(),
-        //           child: Text('OK'),
-        //         ),
-        //         barrierDismissible: false);
-        //   } else {
-        //     Get.back();
-        //     Get.dialog(
-        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-        //         barrierDismissible: false);
-        //   }
-        // });
-     // });
     });
-    Get.back();
+    //Get.back();
     return _updateDealerInfResponse;
   }
 
-  // Future<UpdateDealerInfResponse> updateDealerInfRequest(String accessKey,
-  //     String userSecurityKey, UpdateDealerInfModel updateDealerInfModel) {
-  //   return repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel)
-  //       .whenComplete(() => responseForDialog = 'Test');
-  // }
 
-
-  Future<InfDetailModel> getInfData(String contact) async {
-    InfDetailModel _infDetailModel;
+  Future<InfluencerDetailModel> getInfData(String contact) async {
+    InfluencerDetailModel _infDetailModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
@@ -200,7 +155,7 @@ class EventsFilterController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       _infDetailModel = await repository.getInfData(accessKey, userSecurityKey, contact);
     });
-    Get.back();
+    //Get.back();
     return _infDetailModel;
   }
 
@@ -209,45 +164,47 @@ class EventsFilterController extends GetxController {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveNewInfluencerResponse = await repository.saveNewInfluencer(
             accessKey, userSecurityKey, saveNewInfluencerModel);
-        //     .then((value) {
-        //   //Get.back();
-        //   if (value.respCode == 'DM1002') {
-        //     Get.back();
-        //     Get.dialog(
-        //         CustomDialogs().errorDialog(value.respMsg.toString()),
-        //         barrierDismissible: false);
-        //    // Get.back();
-        //    //  Get.defaultDialog(
-        //    //      title: "Message",
-        //    //      middleText: value.respMsg.toString(),
-        //    //      confirm: MaterialButton(
-        //    //        onPressed: () => Get.back(),
-        //    //        child: Text('OK'),
-        //    //      ),
-        //    //      barrierDismissible: false);
-        //   } else {
-        //     //Get.back();
-        //     Get.dialog(
-        //         CustomDialogs().messageDialogMWP(value.respMsg.toString()),
-        //         barrierDismissible: false);
-        //   }
-        // });
-        // });
+
 
       });
-      Get.back();
+      //Get.back();
       return saveNewInfluencerResponse;
    // });
   }
+
+
+
+
+
+
+
+
+  //////////test
+  // Future<InfDetailModel> getInfData1(String contact) async {
+  //   InfDetailModel _infDetailModel;
+  //   //In case you want to show the progress indicator, uncomment the below code and line 43 also.
+  //   //It is working fine without the progress indicator
+  //   //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+  //   String userSecurityKey = "";
+  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  //   String accessKey = await repository.getAccessKey();
+  //
+  //   await _prefs.then((SharedPreferences prefs) async {
+  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+  //     _infDetailModel = await repository.getInfData1(accessKey, userSecurityKey, contact);
+  //   });
+  //   //Get.back();
+  //   return _infDetailModel;
+  // }
 }
 
 

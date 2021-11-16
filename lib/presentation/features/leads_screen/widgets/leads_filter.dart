@@ -177,9 +177,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedLeadPotentialValue =
                           StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
-                      Navigator.pop(context);
+                      _leadsFilterController.offset = 0;
+                      _leadsFilterController.leadsListResponse.leadsEntity = null;
                       _leadsFilterController
                           .getAccessKey(RequestIds.GET_LEADS_LIST);
+                      Navigator.pop(context);
                     });
                   },
                   child: Text(
@@ -192,6 +194,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                   onPressed: () {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied=true;
+                    _leadsFilterController.offset = 0;
+                   // _leadsFilterController.leadsListResponse = [];
+                    _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },
@@ -290,6 +295,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                         child: GestureDetector(
                           onTap: () {
                             _selectDate(context, "from", DateTime(2015, 8));
+                            _leadsFilterController.assignToDate = "";
                           },
                           child: Icon(
                             Icons.date_range_rounded,
@@ -385,7 +391,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                 }
                 _leadsFilterController.selectedLeadStage = value;
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
+                _leadsFilterController
+                    .getAccessKey(RequestIds.GET_LEADS_LIST);
+                ///filter issue
+               // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -434,6 +445,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadStatus = value;
                 _leadsFilterController.selectedLeadStatusValue =
                     leadStatusValue;
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
@@ -478,6 +491,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadPotential = value;
                 _leadsFilterController.selectedLeadPotentialValue =
                     leadPotentialValue;
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
@@ -493,17 +508,19 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
+    (type == "to")? selectedDate = fromDate: selectedDate = DateTime.now();
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101)
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         if (type == "to") {
-          _leadsFilterController.assignToDate = formattedDate;
+            _leadsFilterController.assignToDate = formattedDate;
         } else {
           _leadsFilterController.assignFromDate = formattedDate;
         }

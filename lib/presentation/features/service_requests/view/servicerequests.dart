@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/sitedetails.dart';
@@ -31,13 +31,16 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   ServiceRequestComplaintListModel serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
-  UpdateServiceRequestController _updateServiceRequestController = Get.find();
   int totalFilters;
-  var data;
+
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
-      data = await eventController.getSrListData(value.accessKey, 0);
+      await eventController.getSrListData(value.accessKey, 0).then((data){
+        setState(() {
+          serviceRequestComplaintListModel = data;
+        });
+      });
     });
     // Get.back();
   }
@@ -49,35 +52,39 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       eventController.offset += 10;
       // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
-        data = await eventController.getSrListData(
-            value.accessKey, eventController.offset);
-      });
-      setState(() {
-        serviceRequestComplaintListModel = data;
+        await eventController.getSrListData(value.accessKey, eventController.offset).then((data) {
+          setState(() {
+            serviceRequestComplaintListModel = data;
+          });
+        });
       });
     }
   }
 
+  void disposeController(BuildContext context){
+//or what you wnat to dispose/clear
+    eventController.offset = 0;
+    eventController?.dispose();
+
+  }
+
   @override
   void initState() {
-    getSRListData().whenComplete(() {
-      setState(() {
-        serviceRequestComplaintListModel = data;
-      });
-    });
+    super.initState();
+    eventController.srListData.srComplaintListModal = null;
+    getSRListData();
     //  print("scroll controller init");
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
     //  print("scroll listener added");
 
-    super.initState();
+
   }
 
   @override
   void dispose() {
-    eventController.dispose();
     eventController.offset = 0;
-    print(eventController.offset);
+    eventController.dispose();
     super.dispose();
   }
 
@@ -86,7 +93,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     SizeConfig().init(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
@@ -119,7 +125,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           // totalFilters = value.isEmpty ? value[3] : 0;
                           totalFilters = value[3];
                         });
-                        print("------+$totalFilters");
                         eventController.getAccessKey().then((accessKeyModel) {
                           eventController
                               .getSrListDataWithFilters(accessKeyModel.accessKey,
@@ -187,7 +192,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       floatingActionButton:
       SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
       bottomNavigationBar: BottomNavigator(),
-      body: data == null
+      body: serviceRequestComplaintListModel == null
           ? Center(
         child: CircularProgressIndicator(),
       )
@@ -243,15 +248,13 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        // _updateServiceRequestController.siteId = serviceRequestComplaintListModel
-                        //     .srComplaintListModal[index]
-                        //     .srComplaintId;
                         Get.to(
                           RequestUpdation(
                               id: serviceRequestComplaintListModel
                                   .srComplaintListModal[index]
                                   .srComplaintId),
                           transition: Transition.rightToLeft,
+                          binding: SRBinding(),
                         );
                       },
                       child: Card(
@@ -279,19 +282,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             mainAxisAlignment:
                             MainAxisAlignment.start,
                             children: [
-//                              Flexible(
-//                                flex: 1,
-//                                child: Container(
-//                                  color: serviceRequestComplaintListModel
-//                                      .srComplaintListModal[
-//                                  index]
-//                                      .request !=
-//                                      'SERVICE REQUEST'
-//                                      ? HexColor('#9E3A0D')
-//                                      : HexColor('#F9A61A'),
-//                                  height: 175,
-//                                ),
-//                              ),
                               Expanded(
                                 flex: 50,
                                 child: Column(
@@ -322,7 +312,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  serviceRequestComplaintListModel.respMsg,
+                  serviceRequestComplaintListModel.respMsg ?? "",
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -341,11 +331,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            child: Text(
-              serviceRequestComplaintListModel.totalCount != null
-                  ? "Total Count : ${serviceRequestComplaintListModel.totalCount}"
-                  : "Total Count : 0",
-              style: TextStyle(
+       //     child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
+      child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
+
+        style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
                 // color: HexColor("#FFFFFF99"),

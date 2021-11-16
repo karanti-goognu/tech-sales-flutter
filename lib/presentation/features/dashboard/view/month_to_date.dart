@@ -44,7 +44,9 @@ class MonthToDateState extends State<MonthToDate> {
 //    var pngBytes = await _capturePng();
     var pngBytes = await  screenshotController.capture(pixelRatio: 5);
     print(pngBytes);
-    final directory = (await getExternalStorageDirectory()).path;
+    //final directory = (await getExternalStorageDirectory()).path;
+    final directory = (await getApplicationDocumentsDirectory()).path;
+
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);

@@ -82,8 +82,8 @@ class DetailEventController extends GetxController {
   ) async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
-    Future.delayed(Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator())));
+    // Future.delayed(Duration.zero,
+    //     () => Get.dialog(Center(child: CircularProgressIndicator())));
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -97,7 +97,7 @@ class DetailEventController extends GetxController {
       egDetailEventDaa = await repository.getdetailEvents(
           accessKey, userSecurityKey, empID, eventId);
     });
-    Get.back();
+   // Get.back();
     return egDetailEventDaa;
   }
 
@@ -150,10 +150,6 @@ class DetailEventController extends GetxController {
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
     repository.getAccessKey().then((data) async {
       await _prefs.then((SharedPreferences prefs) async {
         empID = prefs.getString(StringConstants.employeeId);
@@ -163,7 +159,7 @@ class DetailEventController extends GetxController {
             .then((value) {
           //Get.back();
           if (value.respMsg == 'DM1002') {
-            Get.back();
+           // Get.back();
             Get.defaultDialog(
                 title: "Message",
                 middleText: value.respMsg.toString(),
@@ -173,7 +169,7 @@ class DetailEventController extends GetxController {
                 ),
                 barrierDismissible: false);
           } else {
-            Get.back();
+          //  Get.back();
             Get.dialog(
                 CustomDialogs().messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);

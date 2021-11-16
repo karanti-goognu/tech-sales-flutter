@@ -163,7 +163,8 @@ class TopRowForMTD extends StatelessWidget {
                           GaugeAnnotation(
                               widget: Container(
                                   child: Text(
-                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString())).isNaN ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString()))*100).round()}%",
+                                      "${(int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString())).isNaN || ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString())).isInfinite)
+                                          ? 0 : ((int.parse(_dashboardController.convertedVolume.toString()) / int.parse(_dashboardController.convTargetVolume.toString()))*100).round()}%",
                                       style: TextStyle(
 //                                           fontSize: 25,
                                           fontWeight: FontWeight.bold))),

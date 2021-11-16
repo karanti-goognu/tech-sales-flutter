@@ -14,6 +14,7 @@ class ViewLeadDataResponse {
   List<CounterListModel> counterListModel;
   LeadsEntity leadsEntity;
   List<DealerList> dealerList;
+  List<SiteFloorsEntity> siteFloorsEntity;
 
   ViewLeadDataResponse(
       {this.respCode,
@@ -31,6 +32,7 @@ class ViewLeadDataResponse {
         this.counterListModel,
       this.leadsEntity,
       this.dealerList,
+      this.siteFloorsEntity
         });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
@@ -108,10 +110,18 @@ class ViewLeadDataResponse {
     leadsEntity = json['leadsEntity'] != null
         ? new LeadsEntity.fromJson(json['leadsEntity'])
         : null;
+
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>();
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
+      });
+    }
+
+    if (json['siteFloorsEntity'] != null) {
+      siteFloorsEntity = new List<SiteFloorsEntity>();
+      json['siteFloorsEntity'].forEach((v) {
+        siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });
     }
   }
@@ -169,6 +179,10 @@ class ViewLeadDataResponse {
     }
     if (this.dealerList != null) {
       data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
+    }
+
+    if (this.siteFloorsEntity != null) {
+      data['siteFloorsEntity'] = this.siteFloorsEntity.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -350,11 +364,9 @@ class InfluencerEntity {
       this.isPrimary});
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
-    print("Sumit Dhawan");
-    print(json['isPrimary']);
     id = json['id'];
     inflName = json['inflName'];
-    inflContact = json['inflContact'];
+    inflContact = json['inflContactNumber'];
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
     ilpIntrested = json['ilpIntrested'];
@@ -366,7 +378,7 @@ class InfluencerEntity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['inflName'] = this.inflName;
-    data['inflContact'] = this.inflContact;
+    data['inflContactNumber'] = this.inflContact;
     data['inflTypeId'] = this.inflTypeId;
     data['inflCatId'] = this.inflCatId;
     data['ilpIntrested'] = this.ilpIntrested;
@@ -506,8 +518,12 @@ class LeadsEntity {
   int nextStageConstruction;
   String siteDealerId;
 
-
   String subdealerId;
+
+  String leadSource;
+  String leadSourceUser;
+  String leadSourcePlatform;
+  String isIhbCommercial;
 
 
 
@@ -546,7 +562,11 @@ class LeadsEntity {
       this.nextDateCconstruction,
       this.nextStageConstruction,
       this.siteDealerId,
-      this.subdealerId
+      this.subdealerId,
+        this.leadSource,
+        this.leadSourceUser,
+        this.leadSourcePlatform,
+        this.isIhbCommercial
       });
 
   LeadsEntity.fromJson(Map<String, dynamic> json) {
@@ -584,6 +604,11 @@ class LeadsEntity {
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
     subdealerId = json['subdealerId'];
+    leadSource = json['leadSource'];
+    leadSourceUser = json['leadSourceUser'];
+    leadSourcePlatform = json['leadSourcePlatform'];
+    isIhbCommercial = json['isIhbCommercial'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -622,9 +647,33 @@ class LeadsEntity {
     data['nextStageConstruction'] = this.nextStageConstruction;
     data['siteDealerId'] = this.siteDealerId;
     data['subdealerId'] = this.subdealerId;
+    data['leadSource'] = this.leadSource;
+    data['leadSourceUser'] = this.leadSourceUser;
+    data['leadSourcePlatform'] = this.leadSourcePlatform;
+    data['isIhbCommercial'] = this.isIhbCommercial;
     return data;
   }
 }
+
+class SiteFloorsEntity {
+  int id;
+  String siteFloorTxt;
+
+  SiteFloorsEntity({this.id, this.siteFloorTxt});
+
+  SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteFloorTxt = json['siteFloorTxt'].toString() ?? "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteFloorTxt'] = this.siteFloorTxt;
+    return data;
+  }
+}
+
 
 // class ViewLeadDataResponse {
 //   String respCode;

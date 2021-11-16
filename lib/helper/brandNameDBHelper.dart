@@ -128,10 +128,9 @@ class BrandNameDBHelper extends ChangeNotifier{
 
 class BrandModelforDB {
   // @required
-  final int id;
-  @required
-  final String brandName;
-  final String productName;
+   int id;
+   String brandName;
+   String productName;
 
 
   BrandModelforDB(this.id, this.brandName,this.productName);
@@ -144,10 +143,11 @@ class BrandModelforDB {
     return map;
   }
 
-  BrandModelforDB.fromDb(Map<String, dynamic> map)
-      : id = map['id'],
-        brandName = map['brandName'],
-        productName = map['productName'];
+  BrandModelforDB.fromDb(Map<String, dynamic> map){
+    this.id = map['id'];
+    this.brandName = map['brandName'];
+    this.productName = map['productName'];
+  }
 }
 
 

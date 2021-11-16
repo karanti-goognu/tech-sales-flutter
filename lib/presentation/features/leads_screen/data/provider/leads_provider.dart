@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -36,27 +39,13 @@ class MyApiClientLeads {
 
   MyApiClientLeads({@required this.httpClient});
 
-  Future getAccessKeyNew() async {
-    try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
-      var response = await httpClient.get(UrlConstants.getAccessKey,
-          headers: requestHeaders(version));
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel.accessKey;
-      } else
-        print('error');
-    } catch (_) {
-      print('exception at EG repo ${_.toString()}');
-    }
-  }
+
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
@@ -71,12 +60,32 @@ class MyApiClientLeads {
     }
   }
 
+
+  Future getAccessKeyNew() async {
+    try {
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
+      var response = await httpClient.get(UrlConstants.getAccessKey,
+          headers: requestHeaders(version));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+        return accessKeyModel.accessKey;
+      } else
+        print('error');
+    } catch (_) {
+      print('exception at EG repo ${_.toString()}');
+    }
+  }
+
   getSecretKey(String empId, String mobile) async {
+    version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': StringConstants.appVersion,
+        'app-version': version,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -100,6 +109,7 @@ class MyApiClientLeads {
 
   getFilterData(String accessKey) async {
     try {
+      version = VersionClass.getVersion();
       String userSecurityKey = "empty";
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -130,6 +140,7 @@ class MyApiClientLeads {
   getLeadsData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
@@ -152,6 +163,7 @@ class MyApiClientLeads {
   getSearchData(String accessKey, String securityKey, String url) async {
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
+      version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
@@ -171,15 +183,26 @@ class MyApiClientLeads {
   }
 
   getAddLeadsData(String accessKey, String userSecurityKey) async {
+
     try {
+      version = VersionClass.getVersion();
+      // var response = await httpClient.get(UrlConstants.addLeadsData,
+      //     headers: requestHeadersWithAccessKeyAndSecretKey(
+      //         accessKey, userSecurityKey,version));
       var response = await httpClient.get(UrlConstants.addLeadsData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
+      print("URL: ${UrlConstants.addLeadsData}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
             AddLeadInitialModel.fromJson(data);
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         print(addLeadInitialModel.siteSubTypeEntity[0]);
+        print('Response body is  : ${json.decode(response.body)}');
         return addLeadInitialModel;
       } else
         print('error');
@@ -194,10 +217,7 @@ class MyApiClientLeads {
     phoneNumber,
   ) async {
     try {
-      var bodyEncrypted = {"inflContact": phoneNumber};
-      // print('Request body is  : ${json.encode(bodyEncrypted)}');
-      // print('Request header is  : ${requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecurityKey)}');
-
+      version = VersionClass.getVersion();
       final response = await get(
         Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
         headers:
@@ -207,10 +227,14 @@ class MyApiClientLeads {
      print('Response body is  : ${json.decode(response.body)}');
       // print('Response body is  : ${json.decode(response.body)}');
 
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
+       if (response.statusCode == 200) {
+         var data = json.decode(response.body);
         InfluencerDetail influencerDetailModel =
-            InfluencerDetail.fromJson(data);
+            InfluencerDetail.fromJson(json.decode(response.body));
+        if(data["resp_code"] == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
         return influencerDetailModel;
       } else
         print('error');
@@ -226,7 +250,7 @@ class MyApiClientLeads {
       List<File> imageList,
       BuildContext context) async {
     // print(imageList.length);
-
+    version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(
@@ -257,7 +281,7 @@ class MyApiClientLeads {
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
-print("Event Id: ${saveLeadRequestModel.eventId }");
+      print("Event Id: ${saveLeadRequestModel.eventId }");
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
@@ -283,7 +307,10 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
         'leadIsDuplicate': "N",
         'listLeadImage': saveLeadRequestModel.listLeadImage ?? 'null',
         'listLeadcomments': saveLeadRequestModel.comments ?? 'null',
-        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null'
+        'leadInfluencerEntity': saveLeadRequestModel.influencerList ?? 'null',
+        'leadSourceUser': saveLeadRequestModel.leadSourceUser,
+        'leadSource' : saveLeadRequestModel.leadSource,
+        'leadSourcePlatform': saveLeadRequestModel.leadSourcePlatform
       };
 
       request.fields['uploadImageWithLeadModel'] =
@@ -301,56 +328,66 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
           print("RESPONSE.BODY: ${result.headers}");
           print("RESPONSE.BODY: ${result.statusCode}");
           print("RESPONSE.BODY: ${result.stream}");
+          print("URL: ${(UrlConstants.saveLeadsData)}");
 
           http.Response.fromStream(result).then((response) async {
             print(response.body);
-                var data = json.decode(response.body);
-                SaveLeadResponse saveLeadResponse =
-                    SaveLeadResponse.fromJson(data);
+            var data = json.decode(response.body);
+            SaveLeadResponse saveLeadResponse =
+            SaveLeadResponse.fromJson(data);
 
-                print(response.body);
+            //print("Lead response : ${response.body}");
 
-                if (saveLeadResponse.respCode == "LD2008") {
-                  Get.back();
-                  gv.selectedLeadID = saveLeadResponse.leadId;
-                  gv.fromLead = false;
-                  Get.dialog(CustomDialogs().showExistingLeadDialog(
-                      saveLeadResponse.respMsg,
-                      context,
-                      saveLeadRequestModel,
-                      imageList));
-                } else if (saveLeadResponse.respCode == "LD2007") {
-                  if (gv.fromLead) {
+            if(data["resp_code"] == "DM1005"){
+              Get.dialog(CustomDialogs().appUserInactiveDialog(
+                  data["resp_msg"]), barrierDismissible: false);
+            }else{
+            if (saveLeadResponse.respCode == "LD2008") {
+              Get.back();
+              gv.selectedLeadID = saveLeadResponse.leadId;
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs().showExistingLeadDialog(
+                  saveLeadResponse.respMsg,
+                  context,
+                  saveLeadRequestModel,
+                  imageList));
+            } else if (saveLeadResponse.respCode == "LD2007") {
+              if (gv.fromLead) {
 //                    print('Draft id :: ${gv.draftID}');
-                    db.removeLeadInDraft(gv.draftID);
-                    gv.fromLead = false;
+                db.removeLeadInDraft(gv.draftID);
+                gv.fromLead = false;
+              }
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs()
+                  .showDialogSubmitLead(
+                  "Lead Added Successfully !!!", 2, context));
+              // Get.back();
+              // Get.back();
+              if (saveLeadRequestModel.eventId == null) {
+                Get.back();
+                Get.dialog(CustomDialogs()
+                    .showDialogSubmitLead(
+                    "Lead Added Successfully !!!", 1, context));
+                //Get.toNamed(Routes.HOME_SCREEN);
+              }
 
-                  }
-                  gv.fromLead = false;
-                  Get.back();
-                  Get.back();
-                  if(saveLeadRequestModel.eventId ==null){
-                  Get.back();
-                  Get.toNamed(Routes.HOME_SCREEN);
-                  }
-
-
-
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead("Lead Added Successfully !!!"));
-                } else if (saveLeadResponse.respCode == "LD2012") {
-                  gv.fromLead = false;
-                  Get.dialog(CustomDialogs().showExistingTSODialog(
-                      saveLeadResponse.respMsg,
-                      context,
-                      saveLeadRequestModel,
-                      imageList));
-                } else {
-                  gv.fromLead = false;
-                  Get.back();
-                  Get.dialog(
-                      CustomDialogs().showDialog("Some Error Occured !!! "));
-                }
+              // Get.dialog(CustomDialogs()
+              //     .showDialogSubmitLead("Lead Added Successfully !!!"));
+            } else if (saveLeadResponse.respCode == "LD2012") {
+              gv.fromLead = false;
+              Get.dialog(CustomDialogs().showExistingTSODialog(
+                  saveLeadResponse.respMsg,
+                  context,
+                  saveLeadRequestModel,
+                  imageList));
+            }
+            else {
+              gv.fromLead = false;
+              Get.back();
+              Get.dialog(
+                  CustomDialogs().showDialog("Some Error Occured !!! "));
+            }
+          }
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -364,21 +401,23 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
 
   getLeadData(String accessKey, String userSecurityKey, int leadId, String empID) async {
      try {
-      //  print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey));
-      var bodyEncrypted = {"leadId": leadId};
+      version = VersionClass.getVersion();
        final response = await get(
-        Uri.parse(UrlConstants.getLeadData + "$leadId"+"&referenceID=$empID"),
+        Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
          headers:
          requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
-//      print('Response body is  : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         Get.back();
 
         var data = json.decode(response.body);
+
 //        print(data);
-        ViewLeadDataResponse viewLeadDataResponse =
-            ViewLeadDataResponse.fromJson(data);
+        ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
+        // if(data["resp_code"] == "DM1005"){
+        //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+        //       data["resp_msg"]), barrierDismissible: false);
+        // }
         return viewLeadDataResponse;
       } else
         print('error');
@@ -387,8 +426,39 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
     }
   }
 
+  Future<ViewLeadDataResponse>getLeadDataNew(String accessKey, String userSecurityKey, int leadId, String empID) async {
+    ViewLeadDataResponse viewLeadDataResponse;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+      );
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          viewLeadDataResponse = ViewLeadDataResponse.fromJson(json.decode(response.body));
+          print('URL ${UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"}');
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at INF Repo $e");
+    }
+    return viewLeadDataResponse;
+  }
+
   updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) async {
+      List<File> imageList, BuildContext context, int leadId,int from) async {
+    version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
@@ -424,45 +494,54 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
           json.encode(updateRequestModel);
 
 //print(saveLeadRequestModel.comments[0].commentedBy);
-//      print("Request headers :: " + request.headers.toString());
-//      print("Request Body/Fields :: " + request.fields.toString());
-      // print("Files:: " + request.files.toString());
+      print("URL :: " + UrlConstants.updateLeadsData);
+     print("Request headers :: " + request.headers.toString());
+     print("Request Body/Fields :: " + request.fields.toString());
+      print("Files:: " + request.files.toString());
+
       try {
         request
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-                 print("/////////////////${response.body}");
                 print(response.statusCode);
- //                print(response.statusCode);
 
                 var data = json.decode(response.body);
-//                print(data);
+                print(data);
                 UpdateLeadResponseModel updateLeadResponseModel =
-                    UpdateLeadResponseModel.fromJson(data);
+                UpdateLeadResponseModel.fromJson(data);
 
+                if(data["resp_code"] == "DM1005"){
+                    Get.dialog(CustomDialogs().appUserInactiveDialog(
+                        data["resp_msg"]), barrierDismissible: false);
+                  }
+                else{
                 if (updateLeadResponseModel.respCode == "LD2009") {
-
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
 
 
                   Get.back();
                   Get.back();
                   Get.back();
-//                  Get.toNamed(Routes.HOME_SCREEN);
 //                  Get.offNamed(Routes.LEADS_SCREEN);
-                  Get.dialog(CustomDialogs()
-                      .showDialogSubmitLead(updateLeadResponseModel.respMsg));
+                  Get.dialog(CustomDialogs().showDialogSubmitLead(
+                      updateLeadResponseModel.respMsg, from, context));
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()
                       .showDialog(updateLeadResponseModel.respMsg));
-                } else {
+                }
+                // else if(updateLeadResponseModel.respCode == "DM1005"){
+                //   Get.dialog(CustomDialogs().appUserInactiveDialog(
+                //       updateLeadResponseModel.respMsg), barrierDismissible: false);
+                // }
+                else {
                   Get.back();
                   Get.dialog(
-                      CustomDialogs().showDialog("Some Error Occured !!! "),
+                    CustomDialogs().showDialog("Some Error Occured !!! "),
                   );
                 }
+              }
               });
             })
             .catchError((err) => print('error : ' + err.toString()))
@@ -470,32 +549,60 @@ print("Event Id: ${saveLeadRequestModel.eventId }");
       } catch (_) {
         print('exception ${_.toString()}');
       }
+
     });
   }
 
-
-
-
-
-  //////
-
   Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
-     // https://mobiledevcloud.dalmiabharat.com:443/tech_sales_server/leads/lead-search?searchText=501574&referenceID=EMP0009889
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
-      print('URL:$url');
+      version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        if(leadsListModel.respCode == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              leadsListModel.respMsg), barrierDismissible: false);
+        }
         return leadsListModel;
       } else
         print('error');
     } catch (_) {
       print('exception at Lead repo ${_.toString()}');
     }
+  }
+
+  Future<InfluencerDetailModel> getInfNewData(String accessKey,
+      String userSecretKey, String contact) async {
+    InfluencerDetailModel infDetailModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
+          // print('URL ${UrlConstants.getInfDetails + "$contact"}');
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at EG Repo $e");
+    }
+
+    return infDetailModel;
   }
 
 }

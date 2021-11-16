@@ -6,7 +6,6 @@ import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -60,6 +59,8 @@ class LeadsFilterController extends GetxController {
   get offset => this._offset.value;
 
   set offset(value) => this._offset.value = value;
+
+
 
   final _selectedPosition = 0.obs;
   final _selectedFilterCount = 0.obs;
@@ -163,7 +164,7 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
-        print(data.toJson()['secret-key']);
+            print(data.toJson()['secret-key']);
         Get.back();
         this.secretKeyResponse = data;
         if (data != null) {
@@ -178,6 +179,7 @@ class LeadsFilterController extends GetxController {
   }
 
   getAccessKey(int requestId) {
+
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -196,7 +198,7 @@ class LeadsFilterController extends GetxController {
           prefs.setString(StringConstants.employeeId, '');
           prefs.setString(StringConstants.mobileNumber, '');
         });
-        SystemNavigator.pop();
+        SystemNavigator.pop(); 
       }
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
@@ -238,7 +240,11 @@ class LeadsFilterController extends GetxController {
         this.filterDataResponse = data;
         if (filterDataResponse.respCode == "DM1011") {
           //Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
-        } else {
+        } else if(this.filterDataResponse.respCode == "DM1005"){
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              filterDataResponse.respMsg), barrierDismissible: false);
+        }
+        else {
           Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
         }
       }
@@ -256,7 +262,7 @@ class LeadsFilterController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
+      encryptString(empId, StringConstants.encryptedKey).toString();
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&assignDateTo=${this.assignToDate}";
@@ -313,51 +319,80 @@ class LeadsFilterController extends GetxController {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
-          if (this.leadsListResponse.leadsEntity == null ||
-              this.leadsListResponse.leadsEntity.isEmpty) {
+          if(this.leadsListResponse.leadsEntity == null|| this.leadsListResponse.leadsEntity.isEmpty){
             this.leadsListResponse = data;
-          } else {
-            print("adding");
-            print(json.encode(data));
-            // this._leadsListResponse.value.leadsEntity.addAll(data.leadsEntity);
-            // this.leadsListResponseAddLeads = data.leadsEntity;
-            print(data.leadsEntity.length);
-            // this.leadsListResponse = data;
+            debugPrint(json.encode(data), wrapWidth: 2800);
+          }else{
+           // print("adding");
+            //print(json.encode(data));
+            debugPrint(json.encode(data), wrapWidth: 2800);
+           // print(data.leadsEntity.length);
             LeadsListModel leadListResponseServer = data;
+            //print(json.encode(leadListResponseServer));
+            if(leadListResponseServer.leadsEntity.isNotEmpty){
 
-            print(json.encode(leadListResponseServer));
-            if (leadListResponseServer.leadsEntity.isNotEmpty) {
-//              leadListResponseServer.leadsEntity=[];
-              leadListResponseServer.leadsEntity
-                  .addAll(this.leadsListResponse.leadsEntity);
+              leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text("Loading more .."),
-                backgroundColor: Colors.white,
-              );
-//              Get.snackbar("Note", "Loading more ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xffffffff),duration: Duration(milliseconds: 2000));
-            } else {
-              print("Is Filter Applied: ${this.isFilterApplied}");
-              if (this.isFilterApplied == true) {
+              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
+
+              ///filter issue
+              if(this.isFilterApplied==true){
                 print("Filter will be implemented here");
-                this.leadsListResponse = data;
-              } else {
+               // print('////////////LEADS: ${this.leadsListResponse.leadsEntity.length}');
+                //debugPrint(json.encode(data), wrapWidth: 2800);
+
+                //this.leadsListResponse = [];
+                this.leadsListResponse = leadListResponseServer;
                 Get.rawSnackbar(
                   titleText: Text("Note"),
-                  messageText: Text("No more leads .."),
+                  messageText: Text(
+                      "Loading more .."),
+                  backgroundColor: Colors.white,
+                );
+              }
+              ////
+              Get.rawSnackbar(
+                titleText: Text("Note"),
+                messageText: Text(
+                    "Loading more .."),
+                backgroundColor: Colors.white,
+              );
+            }
+           // else {
+            //  print("Is Filter Applied: ${this.isFilterApplied}");
+            //   if(this.isFilterApplied==true){
+            //     print("Filter will be implemented here");
+            //     //this.offset = 0;
+            //     this.leadsListResponse = data;
+            //     // Get.rawSnackbar(
+            //     //   titleText: Text("Note"),
+            //     //   messageText: Text(
+            //     //       "Loading more .."),
+            //     //   backgroundColor: Colors.white,
+            //     // );
+            //   }
+              else{
+                Get.rawSnackbar(
+                  titleText: Text("Note"),
+                  messageText: Text(
+                      "No more leads .."),
                   backgroundColor: Colors.white,
                 );
               }
 
 //              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
-            }
+         //   }
           }
           //this.fullLeadsList= this.fullLeadsList.arrdd(this.leadsListResponse);
           //  print("Length of full list is ${this.fullLeadsList.length}");
           if (leadsListResponse.respCode == "LD2006") {
             //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
-          } else {
+          }else if(this.leadsListResponse.respCode == "DM1005"){
+            Get.dialog(CustomDialogs().appUserInactiveDialog(
+                leadsListResponse.respMsg), barrierDismissible: false);
+          }
+          else {
+            print(json.encode(data));
             Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }
         }
@@ -379,8 +414,7 @@ class LeadsFilterController extends GetxController {
           encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
-      String url =
-          "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
+      String url = "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
       debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
@@ -391,7 +425,11 @@ class LeadsFilterController extends GetxController {
             //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
             print('success');
             //leadsDetailWidget();
-          } else {
+          } else if(leadsListResponse.respCode == "DM1005"){
+            Get.dialog(CustomDialogs().appUserInactiveDialog(
+                leadsListResponse.respMsg), barrierDismissible: false);
+          }
+          else {
             Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }
         }
@@ -412,6 +450,7 @@ class LeadsFilterController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
+
   //////
 
   Future srSearch(String searchText) async {
@@ -429,4 +468,5 @@ class LeadsFilterController extends GetxController {
         accessKey, userSecurityKey, empID, searchText);
     print(leadsListResponse.respCode);
   }
+
 }

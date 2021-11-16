@@ -3,6 +3,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/TargetVSActualModel.dart';
+import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
@@ -18,8 +19,9 @@ class MyApiClient {
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      version= packageInfo.version;
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // version= packageInfo.version;
+      version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
@@ -38,8 +40,7 @@ class MyApiClient {
   Future<TargetVsActualModel> getTargetVsActualData(String accessKey, String userSecretKey,String empID) async{
     TargetVsActualModel actualModel;
     try{
-      print(accessKey);
-      print(userSecretKey);
+      version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getTargetVsActualData+empID),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version ));
           actualModel = TargetVsActualModel.fromJson(json.decode(response.body));
           // print(response.body);
@@ -49,8 +50,4 @@ class MyApiClient {
     }
     return actualModel;
   }
-
-
-
-
 }

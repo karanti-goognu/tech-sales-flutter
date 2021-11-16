@@ -23,9 +23,9 @@ class MyRepositoryLeads {
     return apiClient.getLeadsData(accessKey, securityKey, url);
   }
 
-   getSearchData(String accessKey, String securityKey, String url) {
-     return apiClient.getSearchData(accessKey, securityKey, url);
-   }
+  getSearchData(String accessKey, String securityKey, String url) {
+    return apiClient.getSearchData(accessKey, securityKey, url);
+  }
 
   Future<LeadsListModel>getSearchDataNew(String accessKey, String userSecurityKey,
       String empID, String searchText) {
@@ -59,9 +59,20 @@ class MyRepositoryLeads {
     return apiClient.getLeadData(accessKey, userSecurityKey, leadId, empId);
   }
 
-  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId) {
-    return apiClient.updateLeadsData(accessKey, userSecurityKey,
-        updateRequestModel, imageList, context, leadId);
+  getLeadDataNew(String accessKey, String userSecurityKey, int leadId, String empId) {
+    return apiClient.getLeadDataNew(accessKey, userSecurityKey, leadId, empId);
   }
+
+  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
+      List<File> imageList, BuildContext context, int leadId, int from) {
+    return apiClient.updateLeadsData(accessKey, userSecurityKey,
+        updateRequestModel, imageList, context, leadId,from);
+  }
+
+  getInflNewDetailsData(String accessKey, String userSecurityKey, phoneNumber) {
+    return apiClient.getInfNewData(
+        accessKey, userSecurityKey, phoneNumber);
+  }
+
+
 }
