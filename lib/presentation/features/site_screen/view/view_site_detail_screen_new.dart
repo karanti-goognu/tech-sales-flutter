@@ -169,7 +169,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
           length: 4,
           child: Scaffold(
 //            resizeToAvoidBottomInset: true,
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               automaticallyImplyLeading: false,
