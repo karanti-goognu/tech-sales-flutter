@@ -119,17 +119,17 @@ PODS:
     - Flutter
   - "location_permissions (3.0.0+1)":
     - Flutter
-  - MoEngage-iOS-SDK (7.0.2):
+  - MoEngage-iOS-SDK (7.0.5):
     - MORichNotification (< 5.1.0, >= 5.0.0)
   - moengage_flutter (3.0.1):
     - Flutter
     - MoEPluginBase (~> 2.0.2)
-  - MoEngageInApp (2.0.2):
-    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.0)
+  - MoEngageInApp (2.0.4):
+    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.5)
   - MoEPluginBase (2.0.2):
     - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.1)
     - MoEngageInApp (< 2.1.0, >= 2.0.0)
-  - MORichNotification (5.0.0)
+  - MORichNotification (5.0.2)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -142,7 +142,7 @@ PODS:
   - "permission_handler (5.1.0+2)":
     - Flutter
   - PromisesObjC (1.2.12)
-  - Protobuf (3.14.0)
+  - Protobuf (3.19.1)
   - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
@@ -285,17 +285,17 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
-  MoEngage-iOS-SDK: 6c417155f8a8bd39f1047aa64a7773c73ca1953b
+  MoEngage-iOS-SDK: 604a6bba6b495eb03dcd25fd7bf858d0611bc272
   moengage_flutter: 3e3d8cfd05a77491c4b8679587aabfdca049433f
-  MoEngageInApp: daf85a52c4a3d5dc663f31c23589a60b513acb64
+  MoEngageInApp: 50f56233c5e97eba9c46125d38bd0d2160977329
   MoEPluginBase: 490c5b1ab57761ff0aa44c09bdd7662a13f8e1ee
-  MORichNotification: abf1f1aaed3a9366dc8e966c55652bff7716b3b8
+  MORichNotification: d4cef22d783e9bba2bc33225176d19a96ac5f1e8
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  Protobuf: 3724efa50cb2846d7ccebc8691c574e85fd74471
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
@@ -308,4 +308,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7c5abbe22c2dd27ce30321dcfd56bd2f25b3cf79
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
