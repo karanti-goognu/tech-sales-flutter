@@ -39,7 +39,6 @@ dependencies:
   geolocator: ^5.3.1
   google_maps_flutter: ^1.2.0
   google_map_location_picker: ^3.3.4
-  firebase_core: ^0.7.0
   jwt_decoder: ^1.0.4
   tuple: ^1.0.3
   encrypt: ^4.1.0
@@ -75,9 +74,16 @@ dependencies:
 
   # below dependencies use for Firebase
   firebase_analytics: ^7.0.1
-  firebase_crashlytics: ^0.4.0+1
-  firebase_messaging: ^7.0.3
-
+  firebase_core:
+  firebase_crashlytics:
+      git:
+        url: git://github.com/FirebaseExtended/flutterfire.git
+        path: packages/firebase_crashlytics/firebase_crashlytics
+        ref: 200b8ca8f1c452e4249fb791e53cc55e786ac768
+  plugin_platform_interface: ^2.0.0
+  #firebase_messaging: ^7.0.3
+  firebase_messaging: ^8.0.0-dev.14
+  firebase_core_platform_interface: ^3.0.1
 
   # below plugins not used null safety
   slider_button: ^0.6.0
@@ -102,9 +108,11 @@ dev_dependencies:
 
 dependency_overrides:
    intl: ^0.17.0
-   firebase_core: ^0.7.0
+   firebase_core:
    geolocator: ^5.3.1
    google_maps_flutter: ^1.2.0
+   plugin_platform_interface: ^2.0.0
+   firebase_core_platform_interface: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
