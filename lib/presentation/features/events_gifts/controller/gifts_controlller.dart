@@ -76,7 +76,7 @@ class GiftController extends GetxController {
   get giftStockModelList1 => _giftStockModelList1;
 
   set giftStockModelList1(value) {
-    _giftStockModelList1.value = value;
+    _giftStockModelList1.assignAll(value);
   }
 
   get giftStockModel => _giftStockModel.value;

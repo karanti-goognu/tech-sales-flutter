@@ -269,6 +269,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                         () =>
                                                     (_addEventController.visitResponseModel.mwpVisitModel.visitEndTime != null) ?
                                                   CheckboxListTile(
+                                                    onChanged: (_){},
                                                     title: Text(
                                                       "DSP Available",
                                                       style: TextStyles

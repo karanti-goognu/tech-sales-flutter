@@ -20,7 +20,6 @@ void main() async {
   });
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
-
 }
 
 class MyApp extends StatefulWidget {

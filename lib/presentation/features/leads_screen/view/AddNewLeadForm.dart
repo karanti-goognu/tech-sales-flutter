@@ -127,7 +127,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isSubmitButtonDisabled = false;
     _isSaveButtonDisabled = false;
@@ -3054,12 +3053,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<SubDealerList> subDealerList;
   List<SalesOfficerList> salesOfficerList;
   List<EventList> eventList;
+  List<LeadSourceList> sourceList;
 
   String _dealerId, _subDealerId, _salesOfficerId, _eventId, _leadSourceUser;
 
   AddLeadsController _addLeadsController = Get.find();
   SaveLeadRequestDraftModel saveLeadRequestModelFromDraft =
-  new SaveLeadRequestDraftModel();
+      new SaveLeadRequestDraftModel();
 
   final List<String> sourceItems = <String>[
     "SELF",
@@ -3106,9 +3106,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               saveLeadRequestModelFromDraft.leadLatitude != null) {
             _currentPosition = new Position(
                 latitude:
-                double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+                    double.parse(saveLeadRequestModelFromDraft.leadLatitude),
                 longitude:
-                double.parse(saveLeadRequestModelFromDraft.leadLongitude));
+                    double.parse(saveLeadRequestModelFromDraft.leadLongitude));
           }
           _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
           _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
@@ -3127,6 +3127,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           leadSource = saveLeadRequestModelFromDraft.leadSource;
           _leadSourceUser = saveLeadRequestModelFromDraft.leadSourceUser;
+          print("{{{{{{{{{");
+          print(leadSource.runtimeType);
+          print(_leadSourceUser);
           displayLeadSourceUserForDraft();
           // print("=======$leadSource");
           //print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
@@ -3136,8 +3139,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           if (saveLeadRequestModelFromDraft.influencerList.length != 0) {
             print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
             for (int i = 0;
-            i < saveLeadRequestModelFromDraft.influencerList.length;
-            i++) {
+                i < saveLeadRequestModelFromDraft.influencerList.length;
+                i++) {
               /*print(23454);
             print(saveLeadRequestModelFromDraft.influencerList[i].toJson());
             print(saveLeadRequestModelFromDraft.influencerList[i].id);*/
@@ -3176,8 +3179,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           if (saveLeadRequestModelFromDraft.listLeadImage.length != null) {
             for (int i = 0;
-            i < saveLeadRequestModelFromDraft.listLeadImage.length;
-            i++) {
+                i < saveLeadRequestModelFromDraft.listLeadImage.length;
+                i++) {
               _imageList.add(new File(
                   saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
               listLeadImage.add(new ListLeadImage(
@@ -3201,62 +3204,63 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       }
     });
     internetChecking().then((result) => {
-      if (result == true)
-        {}
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
-        }
-    });
+          if (result == true)
+            {}
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+              // fetchSiteList()
+            }
+        });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _addLeadsController.getAccessKeyOnly().then((data) async {
-            accessKeyModel = data;
-            print("AccessKey :: " + accessKeyModel.accessKey);
-            await _addLeadsController
-                .getAddLeadsData(accessKeyModel.accessKey)
-                .then((data) {
-              addLeadInitialModel = data;
-              setState(() {
-                //siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
-                influencerTypeEntity =
-                    addLeadInitialModel.influencerTypeEntity;
-                influencerCategoryEntity =
-                    addLeadInitialModel.influencerCategoryEntity;
-                //  print(influencerCategoryEntity[0].inflCatDesc);
-                dealerList = addLeadInitialModel.dealerList;
-                subDealerList = addLeadInitialModel.subDealerList;
-                eventList = addLeadInitialModel.eventList;
-                salesOfficerList = addLeadInitialModel.salesOfficerList;
-              });
-            });
-            if (_listInfluencerDetail.length == 0) {
-              _listInfluencerDetail.add(new InfluencerDetail(
-                  isExpanded: true, isPrimarybool: true));
+          if (result == true)
+            {
+              _addLeadsController.getAccessKeyOnly().then((data) async {
+                accessKeyModel = data;
+                print("AccessKey :: " + accessKeyModel.accessKey);
+                await _addLeadsController
+                    .getAddLeadsData(accessKeyModel.accessKey)
+                    .then((data) {
+                  addLeadInitialModel = data;
+                  setState(() {
+                    //siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
+                    influencerTypeEntity =
+                        addLeadInitialModel.influencerTypeEntity;
+                    influencerCategoryEntity =
+                        addLeadInitialModel.influencerCategoryEntity;
+                    //  print(influencerCategoryEntity[0].inflCatDesc);
+                    dealerList = addLeadInitialModel.dealerList;
+                    subDealerList = addLeadInitialModel.subDealerList;
+                    eventList = addLeadInitialModel.eventList;
+                    salesOfficerList = addLeadInitialModel.salesOfficerList;
+                    sourceList = addLeadInitialModel.leadSourceList;
+                  });
+                });
+                if (_listInfluencerDetail.length == 0) {
+                  _listInfluencerDetail.add(new InfluencerDetail(
+                      isExpanded: true, isPrimarybool: true));
+                }
+                Get.back();
+                myFocusNode.requestFocus();
+              })
             }
-            Get.back();
-            myFocusNode.requestFocus();
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
-        }
-    });
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+              // fetchSiteList()
+            }
+        });
   }
 
   displayLeadSourceUserForDraft() {
@@ -3286,6 +3290,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "OTHER") {
+      _other.text = _leadSourceUser;
+      _isOtherTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
+    } else if (leadSource == "SPOTTER") {
       _other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
@@ -3328,6 +3337,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
+    } else if (leadSource == "SPOTTER") {
+      //_other.text = _leadSourceUser;
+      _isOtherTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
     } else {
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
@@ -3342,10 +3356,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     double _height = ScreenUtil().setSp(15);
 
     final leadSourceDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
+      onChanged: (_) {
         setState(() {
-          leadSource = value;
-
+          leadSource =
+              sourceList.where((element) => element.id == _).toList()[0].name;
           print("DROPDOWN : $leadSource");
           // _dealerId = null;
           // _subDealerId = null;
@@ -3357,24 +3371,51 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           displayLeadSourceUser();
         });
       },
-      selectedItemBuilder: (BuildContext context) {
-        return sourceItems.map<Widget>((String item) {
-          return Text(item);
-        }).toList();
-      },
-      value: (leadSource != null) ? leadSource : selectedItem,
-      items: sourceItems
-          .map((e) => DropdownMenuItem(
-        value: e != null ? e : null,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e)),
-      ))
-          .toList(),
+      items: sourceList == null
+          ? []
+          : sourceList
+              .map((e) => DropdownMenuItem(
+                    child: Text(e.name),
+                    value: e.id,
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
-      //validator: (value) => value == null ? 'Please select member type' : null,
     );
+    // DropdownButtonFormField(
+    //   onChanged: (value) {
+    //     setState(() {
+    //       leadSource = value;
+    //
+    //       print("DROPDOWN : $leadSource");
+    //       // _dealerId = null;
+    //       // _subDealerId = null;
+    //       // _eventId = null;
+    //       // _salesOfficerId = null;
+    //       // sourceMobile.text = null;
+    //       // _other.text = null;
+    //       _leadSourceUser = null;
+    //       displayLeadSourceUser();
+    //     });
+    //   },
+    //   selectedItemBuilder: (BuildContext context) {
+    //     return sourceItems.map<Widget>((String item) {
+    //       return Text(item);
+    //     }).toList();
+    //   },
+    //   value: (leadSource != null) ? leadSource : selectedItem,
+    //   items: sourceItems
+    //       .map((e) => DropdownMenuItem(
+    //             value: e != null ? e : null,
+    //             child: Container(
+    //                 width: MediaQuery.of(context).size.width / 1.5,
+    //                 child: Text(e)),
+    //           ))
+    //       .toList(),
+    //   style: FormFieldStyle.formFieldTextStyle,
+    //   decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
+    //   //validator: (value) => value == null ? 'Please select member type' : null,
+    // );
 
     final dealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
@@ -3385,30 +3426,29 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           _dealerId = value;
         });
       },
-
       selectedItemBuilder: (BuildContext context) {
         return dealerList == null
             ? []
             : dealerList.map<Widget>((item) {
-          return Container(
-              width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.dealerName));
-        }).toList();
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.dealerName));
+              }).toList();
       },
       value: _dealerId,
       items: dealerList == null
           ? []
           : dealerList
-          .map((e) => DropdownMenuItem(
-        value: e.dealerId != null ? e.dealerId : null,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.dealerName)),
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    value: e.dealerId != null ? e.dealerId : null,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Text(e.dealerName)),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Select Dealer"),
+          FormFieldStyle.buildInputDecoration(labelText: "Select Dealer"),
       validator: (value) => value == null ? 'Please select dealer' : null,
     );
 
@@ -3422,25 +3462,25 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         return subDealerList == null
             ? []
             : subDealerList.map<Widget>((item) {
-          return Container(
-              width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.dealerName));
-        }).toList();
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.dealerName));
+              }).toList();
       },
       value: _subDealerId,
       items: subDealerList == null
           ? []
           : subDealerList
-          .map((e) => DropdownMenuItem(
-        value: e.dealerId != null ? e.dealerId : null,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.dealerName)),
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    value: e.dealerId != null ? e.dealerId : null,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Text(e.dealerName)),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Select Subdealer"),
+          FormFieldStyle.buildInputDecoration(labelText: "Select Subdealer"),
       validator: (value) => value == null ? 'Please select subdealer' : null,
     );
 
@@ -3453,26 +3493,26 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return eventList == null
             ? []
-            :eventList.map<Widget>((item) {
-          return Container(
-              width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.eventId));
-        }).toList();
+            : eventList.map<Widget>((item) {
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.eventId));
+              }).toList();
       },
       value: _eventId,
       items: eventList == null
           ? []
           : eventList
-          .map((e) => DropdownMenuItem(
-        value: e.eventId != null ? e.eventId : null,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.eventId)),
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    value: e.eventId != null ? e.eventId : null,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Text(e.eventId)),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Select Event"),
+          FormFieldStyle.buildInputDecoration(labelText: "Select Event"),
       validator: (value) => value == null ? 'Please select event' : null,
     );
 
@@ -3480,29 +3520,28 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (value) {
         setState(() {
           _salesOfficerId = value;
-
         });
       },
       selectedItemBuilder: (BuildContext context) {
         return (salesOfficerList == null)
             ? []
-            :salesOfficerList.map<Widget>((item) {
-          return Container(
-              width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.salesOfficerName));
-        }).toList();
+            : salesOfficerList.map<Widget>((item) {
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.salesOfficerName));
+              }).toList();
       },
       value: _salesOfficerId,
       items: (salesOfficerList == null)
           ? []
           : salesOfficerList
-          .map((e) => DropdownMenuItem(
-        value: e.salesOfficerId,
-        child: Container(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(e.salesOfficerName)),
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    value: e.salesOfficerId,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Text(e.salesOfficerName)),
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Select Sales Officer"),
@@ -3785,14 +3824,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 (leadSource == "DEALER")
                                     ? dealerDropDwn
                                     : (leadSource == "SUB-DEALER")
-                                    ? subDealerDropDwn
-                                    : (leadSource == "SALES OFFICER")
-                                    ? salesOfficerDropDwn
-                                    : (leadSource == "EVENT")
-                                    ? eventDropDwn
-                                    : SizedBox(
-                                  height: 0,
-                                ),
+                                        ? subDealerDropDwn
+                                        : (leadSource == "SALES OFFICER")
+                                            ? salesOfficerDropDwn
+                                            : (leadSource == "EVENT")
+                                                ? eventDropDwn
+                                                : SizedBox(
+                                                    height: 0,
+                                                  ),
                                 SizedBox(height: _height),
                               ],
                             )),
@@ -3865,19 +3904,19 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 List<String> loc = result[0];
                                 print("ADD: ${result[0]}");
                                 _siteAddress.text =
-                                "${loc[7]}, ${loc[6]}, ${loc[4]}";
+                                    "${loc[7]}, ${loc[6]}, ${loc[4]}";
                                 _district.text = "${loc[2]}";
                                 _state.text = "${loc[1]}";
                                 _pincode.text = "${loc[5]}";
                                 _taluk.text = "${loc[3]}";
                                 _currentAddress =
-                                "${loc[3]}, ${loc[5]}, ${loc[1]}";
+                                    "${loc[3]}, ${loc[5]}, ${loc[1]}";
                               },
                             ),
                             Text(
                               "Or",
                               style:
-                              TextStyle(fontFamily: "Muli", fontSize: 17),
+                                  TextStyle(fontFamily: "Muli", fontSize: 17),
                             ),
                             FlatButton(
                               shape: RoundedRectangleBorder(
@@ -4024,76 +4063,79 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                         controller.imageList != null
                             ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: controller.imageList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        return showDialog(
-                                            context: context,
-                                            builder:
-                                                (BuildContext context) {
-                                              return AlertDialog(
-                                                content: new Container(
-                                                  // width: 500,
-                                                  // height: 500,
-                                                  child: Image.file(
-                                                      controller
-                                                          .imageList[
-                                                      index]),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Picture ${(index + 1)}. ",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15),
-                                              ),
-                                              Text(
-                                                "Image_${(index + 1)}.jpg",
-                                                style: TextStyle(
-                                                    color: HexColor(
-                                                        "#007CBF"),
-                                                    fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: HexColor("#FFCD00"),
-                                            ),
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: controller.imageList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return GestureDetector(
                                             onTap: () {
-                                              setState(() {
-                                                UploadImageBottomSheet.image = null;
-                                                controller. updateImageAfterDelete(index);
-
-                                                // controller.imageList
-                                                //     .removeAt(index);
-                                              });
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      content: new Container(
+                                                        // width: 500,
+                                                        // height: 500,
+                                                        child: Image.file(
+                                                            controller
+                                                                    .imageList[
+                                                                index]),
+                                                      ),
+                                                    );
+                                                  });
                                             },
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Picture ${(index + 1)}. ",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                    Text(
+                                                      "Image_${(index + 1)}.jpg",
+                                                      style: TextStyle(
+                                                          color: HexColor(
+                                                              "#007CBF"),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                GestureDetector(
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: HexColor("#FFCD00"),
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      UploadImageBottomSheet
+                                                          .image = null;
+                                                      controller
+                                                          .updateImageAfterDelete(
+                                                              index);
+
+                                                      // controller.imageList
+                                                      //     .removeAt(index);
+                                                    });
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              )
                             : Container(),
 
                         //SizedBox(height: 16),
@@ -4224,7 +4266,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,
                                     decoration:
-                                    FormFieldStyle.buildInputDecoration(
+                                        FormFieldStyle.buildInputDecoration(
                                       labelText: "Bags",
                                     )),
                               ),
@@ -4257,7 +4299,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   },
                                   style: FormFieldStyle.formFieldTextStyle,
                                   decoration:
-                                  FormFieldStyle.buildInputDecoration(
+                                      FormFieldStyle.buildInputDecoration(
                                     labelText: "MT",
                                   ),
                                   keyboardType: TextInputType.numberWithOptions(
@@ -4323,110 +4365,110 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                         _commentsList != null && _commentsList.length != 0
                             ? viewMoreActive
-                            ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  physics:
-                                  NeverScrollableScrollPhysics(),
-                                  reverse: true,
-                                  shrinkWrap: true,
-                                  itemCount: _commentsList.length,
-                                  itemBuilder: (BuildContext context,
-                                      int index) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            Text(
-                                              _commentsList[index]
-                                                  .creatorName,
-                                              style: TextStyles
-                                                  .muliBold25,
-                                            ),
-                                            Text(
-                                              _commentsList[index]
-                                                  .commentText,
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(
-                                                      0.5),
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              _commentsList[index]
-                                                  .commentedAt
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(
-                                                      0.5),
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
-                            : Column(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  _commentsList[
-                                  _commentsList.length - 1]
-                                      .creatorName,
-                                  style: TextStyles.muliBold25,
-                                ),
-                                Text(
-                                  _commentsList[
-                                  _commentsList.length - 1]
-                                      .commentText,
-                                  style: TextStyle(
-                                      color: Colors.black
-                                          .withOpacity(0.5),
-                                      fontSize: 25),
-                                ),
-                                Text(
-                                  _commentsList[
-                                  _commentsList.length - 1]
-                                      .commentedAt
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black
-                                          .withOpacity(0.5),
-                                      fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        )
+                                ? Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            reverse: true,
+                                            shrinkWrap: true,
+                                            itemCount: _commentsList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .creatorName,
+                                                        style: TextStyles
+                                                            .muliBold25,
+                                                      ),
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .commentText,
+                                                        style: TextStyle(
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            fontSize: 25),
+                                                      ),
+                                                      Text(
+                                                        _commentsList[index]
+                                                            .commentedAt
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            fontSize: 15),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  )
+                                                ],
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .creatorName,
+                                            style: TextStyles.muliBold25,
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .commentText,
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 25),
+                                          ),
+                                          Text(
+                                            _commentsList[
+                                                    _commentsList.length - 1]
+                                                .commentedAt
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  )
                             : Container(),
                         // Padding(
                         //   padding:
@@ -4463,17 +4505,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   right: 5, bottom: 8, top: 5),
                               child: !viewMoreActive
                                   ? Text(
-                                "VIEW MORE COMMENT (" +
-                                    _commentsList.length.toString() +
-                                    ")",
-                                style: TextStyles.muliBoldOrange17,
-                              )
+                                      "VIEW MORE COMMENT (" +
+                                          _commentsList.length.toString() +
+                                          ")",
+                                      style: TextStyles.muliBoldOrange17,
+                                    )
                                   : Text(
-                                "VIEW LESS COMMENT (" +
-                                    _commentsList.length.toString() +
-                                    ")",
-                                style: TextStyles.muliBoldOrange17,
-                              ),
+                                      "VIEW LESS COMMENT (" +
+                                          _commentsList.length.toString() +
+                                          ")",
+                                      style: TextStyles.muliBoldOrange17,
+                                    ),
                             ),
                             onPressed: () async {
                               setState(() {
@@ -4519,218 +4561,217 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
-                                      SharedPreferences.getInstance();
+                                          SharedPreferences.getInstance();
                                       _prefs.then(
-                                              (SharedPreferences prefs) async {
-                                            empId = prefs.getString(
+                                          (SharedPreferences prefs) async {
+                                        empId = prefs.getString(
                                                 StringConstants.employeeId) ??
-                                                "empty";
-                                            mobileNumber = prefs.getString(
+                                            "empty";
+                                        mobileNumber = prefs.getString(
                                                 StringConstants.mobileNumber) ??
-                                                "empty";
-                                            name = prefs.getString(
+                                            "empty";
+                                        name = prefs.getString(
                                                 StringConstants.employeeName) ??
-                                                "empty";
+                                            "empty";
 
-                                            if (_comments.text != null &&
-                                                _comments.text != '') {
-                                              await _commentsListNew.add(
-                                                new CommentsDetail(
-                                                    createdBy: empId,
-                                                    commentText: _comments.text,
-                                                    // commentedAt: DateTime.now(),
-                                                    creatorName: name),
-                                              );
-                                            }
+                                        if (_comments.text != null &&
+                                            _comments.text != '') {
+                                          await _commentsListNew.add(
+                                            new CommentsDetail(
+                                                createdBy: empId,
+                                                commentText: _comments.text,
+                                                // commentedAt: DateTime.now(),
+                                                creatorName: name),
+                                          );
+                                        }
 
-                                            if (_listInfluencerDetail.length != 0) {
-                                              if (_listInfluencerDetail[
-                                              _listInfluencerDetail
-                                                  .length -
-                                                  1]
-                                                  .inflName ==
-                                                  null ||
-                                                  _listInfluencerDetail[
-                                                  _listInfluencerDetail
-                                                      .length -
-                                                      1]
+                                        if (_listInfluencerDetail.length != 0) {
+                                          if (_listInfluencerDetail[
+                                                          _listInfluencerDetail
+                                                                  .length -
+                                                              1]
                                                       .inflName ==
-                                                      "null" ||
-                                                  _listInfluencerDetail[
-                                                  _listInfluencerDetail
-                                                      .length -
-                                                      1]
-                                                      .inflName
-                                                      .text
-                                                      .isNullOrBlank) {
-                                                print("here1234");
-                                                _listInfluencerDetail.removeAt(
-                                                    _listInfluencerDetail.length -
-                                                        1);
-                                              }
-                                            }
+                                                  null ||
+                                              _listInfluencerDetail[
+                                                          _listInfluencerDetail
+                                                                  .length -
+                                                              1]
+                                                      .inflName ==
+                                                  "null" ||
+                                              _listInfluencerDetail[
+                                                      _listInfluencerDetail
+                                                              .length -
+                                                          1]
+                                                  .inflName
+                                                  .text
+                                                  .isNullOrBlank) {
+                                            print("here1234");
+                                            _listInfluencerDetail.removeAt(
+                                                _listInfluencerDetail.length -
+                                                    1);
+                                          }
+                                        }
 
-                                            List<InfluencerDetailDraft>
+                                        List<InfluencerDetailDraft>
                                             influencerDetailDraft = new List();
-                                            for (int i = 0;
+                                        for (int i = 0;
                                             i < _listInfluencerDetail.length;
                                             i++) {
-                                              influencerDetailDraft.add(new InfluencerDetailDraft(
-                                                  id: _listInfluencerDetail[i]
-                                                      .id
-                                                      .text,
-                                                  inflName: _listInfluencerDetail[i]
-                                                      .inflName
-                                                      .text,
-                                                  inflContact: _listInfluencerDetail[i]
-                                                      .inflContact
-                                                      .text,
-                                                  inflTypeId:
+                                          influencerDetailDraft.add(new InfluencerDetailDraft(
+                                              id: _listInfluencerDetail[i]
+                                                  .id
+                                                  .text,
+                                              inflName: _listInfluencerDetail[i]
+                                                  .inflName
+                                                  .text,
+                                              inflContact: _listInfluencerDetail[i]
+                                                  .inflContact
+                                                  .text,
+                                              inflTypeId:
                                                   _listInfluencerDetail[i]
                                                       .inflTypeId
                                                       .text,
-                                                  inflTypeValue:
+                                              inflTypeValue:
                                                   _listInfluencerDetail[i]
                                                       .inflTypeValue
                                                       .text,
-                                                  inflCatId: _listInfluencerDetail[i]
-                                                      .inflCatId
-                                                      .text,
-                                                  inflCatValue:
+                                              inflCatId: _listInfluencerDetail[i]
+                                                  .inflCatId
+                                                  .text,
+                                              inflCatValue:
                                                   _listInfluencerDetail[i]
                                                       .inflCatValue
                                                       .text,
-                                                  ilpIntrested:
+                                              ilpIntrested:
                                                   _listInfluencerDetail[i]
                                                       .ilpIntrested
                                                       .text,
-                                                  isExpanded:
+                                              isExpanded:
                                                   _listInfluencerDetail[i]
                                                       .isExpanded,
-                                                  isPrimarybool:
+                                              isPrimarybool:
                                                   _listInfluencerDetail[i]
                                                       .isPrimarybool,
-                                                  isPrimary:
+                                              isPrimary:
                                                   _listInfluencerDetail[i]
                                                       .isPrimary));
-                                            }
+                                        }
 
-                                            List<ListLeadImageDraft>
+                                        List<ListLeadImageDraft>
                                             listLeadImageDraft = new List();
 
-                                            for (int i = 0;
+                                        for (int i = 0;
                                             i < controller.imageList.length;
                                             i++) {
-                                              listLeadImageDraft.add(
-                                                  new ListLeadImageDraft(
-                                                      photoPath: controller
-                                                          .imageList[i].path));
-                                            }
+                                          listLeadImageDraft.add(
+                                              new ListLeadImageDraft(
+                                                  photoPath: controller
+                                                      .imageList[i].path));
+                                        }
 
-                                            final DateFormat formatter =
+                                        final DateFormat formatter =
                                             DateFormat("dd-MM-yyyy");
 
-                                            String leadSourceUser;
-                                            if(leadSource == "SELF"){
-                                              leadSourceUser = empId;
-                                            }else if (leadSource == "DEALER") {
-                                              leadSourceUser = _dealerId;
-                                            } else if (leadSource == "SUB-DEALER") {
-                                              leadSourceUser = _subDealerId;
-                                            } else if (leadSource ==
-                                                "SALES OFFICER") {
-                                              leadSourceUser = _salesOfficerId;
-                                            } else if (leadSource == "EVENT") {
-                                              leadSourceUser = _eventId;
-                                            } else if (leadSource == "INFLUENCER") {
-                                              leadSourceUser = sourceMobile.text;
-                                            } else if (leadSource == "OTHER") {
-                                              leadSourceUser = _other.text;
-                                            } else {
-                                              leadSource = "SELF";
-                                              leadSourceUser = empId;
-                                            }
+                                        String leadSourceUser;
+                                        if (leadSource == "SELF") {
+                                          leadSourceUser = empId;
+                                        } else if (leadSource == "DEALER") {
+                                          leadSourceUser = _dealerId;
+                                        } else if (leadSource == "SUB-DEALER") {
+                                          leadSourceUser = _subDealerId;
+                                        } else if (leadSource ==
+                                            "SALES OFFICER") {
+                                          leadSourceUser = _salesOfficerId;
+                                        } else if (leadSource == "EVENT") {
+                                          leadSourceUser = _eventId;
+                                        } else if (leadSource == "INFLUENCER") {
+                                          leadSourceUser = sourceMobile.text;
+                                        } else if (leadSource == "OTHER") {
+                                          leadSourceUser = _other.text;
+                                        } else if (leadSource == "SPOTTER") {
+                                          leadSourceUser = _other.text;
+                                        } else {
+                                          leadSource = "SELF";
+                                          leadSourceUser = empId;
+                                        }
 
-                                            SaveLeadRequestDraftModel
+                                        SaveLeadRequestDraftModel
                                             saveLeadRequestDraftModel =
                                             new SaveLeadRequestDraftModel(
-                                              siteSubTypeId: "2",
-                                              contactName: _contactName,
-                                              contactNumber: _contactNumber,
-                                              geotagType: geoTagType,
-                                              leadLatitude: _currentPosition
-                                                  .latitude
-                                                  .toString(),
-                                              leadLongitude: _currentPosition
-                                                  .longitude
-                                                  .toString(),
-                                              leadAddress: _siteAddress.text,
-                                              leadPincode: _pincode.text,
-                                              leadStateName: _state.text,
-                                              leadDistrictName:
-                                              _district.text,
-                                              leadTalukName: _taluk.text,
-                                              leadSalesPotentialMt:
+                                          siteSubTypeId: "2",
+                                          contactName: _contactName,
+                                          contactNumber: _contactNumber,
+                                          geotagType: geoTagType,
+                                          leadLatitude: _currentPosition
+                                              .latitude
+                                              .toString(),
+                                          leadLongitude: _currentPosition
+                                              .longitude
+                                              .toString(),
+                                          leadAddress: _siteAddress.text,
+                                          leadPincode: _pincode.text,
+                                          leadStateName: _state.text,
+                                          leadDistrictName: _district.text,
+                                          leadTalukName: _taluk.text,
+                                          leadSalesPotentialMt:
                                               _totalMT.text ?? "0",
-                                              leadBags: _totalBags.text,
-                                              leadReraNumber: _rera.text,
-                                              isStatus: "false",
-                                              // listLeadImage: new List(),
-                                              //  influencerList: new List(),
-                                              // comments: new List(),
-                                              listLeadImage:
-                                              listLeadImageDraft,
-                                              influencerList:
-                                              influencerDetailDraft,
-                                              comments: _commentsListNew,
-                                              assignDate: formatter
-                                                  .format(DateTime.now()),
-                                              leadSource: leadSource,
-                                              leadSourceUser: leadSourceUser,
-                                              leadSourcePlatform: "TSO",
-                                              isIhbCommercial:null,
-                                            );
+                                          leadBags: _totalBags.text,
+                                          leadReraNumber: _rera.text,
+                                          isStatus: "false",
+                                          // listLeadImage: new List(),
+                                          //  influencerList: new List(),
+                                          // comments: new List(),
+                                          listLeadImage: listLeadImageDraft,
+                                          influencerList: influencerDetailDraft,
+                                          comments: _commentsListNew,
+                                          assignDate:
+                                              formatter.format(DateTime.now()),
+                                          leadSource: leadSource,
+                                          leadSourceUser: leadSourceUser,
+                                          leadSourcePlatform: "TSO",
+                                          isIhbCommercial: null,
+                                        );
 
 //
 //                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
 
-                                            print(
-                                                saveLeadRequestDraftModel.toJson());
-                                            print(gv.fromLead);
-                                            if (!gv.fromLead) {
-                                              DraftLeadModelforDB
+                                        print(
+                                            saveLeadRequestDraftModel.toJson());
+                                        print(gv.fromLead);
+                                        if (!gv.fromLead) {
+                                          DraftLeadModelforDB
                                               draftLeadModelforDB =
                                               new DraftLeadModelforDB(
                                                   null,
                                                   json.encode(
                                                       saveLeadRequestDraftModel));
-                                              print(draftLeadModelforDB.leadModel);
-                                              await db.addLeadInDraft(
-                                                  draftLeadModelforDB);
-                                            } else {
-                                              print(json.encode(
-                                                  saveLeadRequestDraftModel));
-                                              DraftLeadModelforDB
+                                          print(draftLeadModelforDB.leadModel);
+                                          await db.addLeadInDraft(
+                                              draftLeadModelforDB);
+                                        } else {
+                                          print(json.encode(
+                                              saveLeadRequestDraftModel));
+                                          DraftLeadModelforDB
                                               draftLeadModelforDB =
                                               new DraftLeadModelforDB(
                                                   gv.draftID,
                                                   json.encode(
                                                       saveLeadRequestDraftModel));
 
-                                              await db.updateLeadInDraft(
-                                                  draftLeadModelforDB);
-                                            }
+                                          await db.updateLeadInDraft(
+                                              draftLeadModelforDB);
+                                        }
 
-                                            gv.fromLead = false;
-                                            gv.saveLeadRequestModel =
+                                        gv.fromLead = false;
+                                        gv.saveLeadRequestModel =
                                             new SaveLeadRequestDraftModel();
-                                            Navigator.pushReplacement(
-                                                context,
-                                                new CupertinoPageRoute(
-                                                    builder:
-                                                        (BuildContext context) =>
+                                        Navigator.pushReplacement(
+                                            context,
+                                            new CupertinoPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
                                                         DraftLeadListScreen()));
-                                          });
+                                      });
 
                                       //  _comments.clear();
                                     });
@@ -4757,15 +4798,15 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   _isSubmitButtonDisabled = true;
                                   _isSaveButtonDisabled = false;
                                   if (_contactNumber != null &&
-                                      _contactNumber.length == 10 &&
-                                      _contactNumber != '' &&
-                                      _currentPosition.latitude != null &&
-                                      _currentPosition.latitude != '' &&
-                                      _pincode.text != null &&
-                                      _pincode.text != ''
-                                  //&&
-                                  // _listInfluencerDetail.length != 0
-                                  ) {
+                                          _contactNumber.length == 10 &&
+                                          _contactNumber != '' &&
+                                          _currentPosition.latitude != null &&
+                                          _currentPosition.latitude != '' &&
+                                          _pincode.text != null &&
+                                          _pincode.text != ''
+                                      //&&
+                                      // _listInfluencerDetail.length != 0
+                                      ) {
                                     // print(_comments.text);
                                     print("here");
                                     setState(() {
@@ -4773,81 +4814,84 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
-                                      SharedPreferences.getInstance();
+                                          SharedPreferences.getInstance();
                                       _prefs.then(
-                                              (SharedPreferences prefs) async {
-                                            empId = prefs.getString(
+                                          (SharedPreferences prefs) async {
+                                        empId = prefs.getString(
                                                 StringConstants.employeeId) ??
-                                                "empty";
-                                            mobileNumber = prefs.getString(
+                                            "empty";
+                                        mobileNumber = prefs.getString(
                                                 StringConstants.mobileNumber) ??
-                                                "empty";
-                                            name = prefs.getString(
+                                            "empty";
+                                        name = prefs.getString(
                                                 StringConstants.employeeName) ??
-                                                "empty";
-                                            //   print("DHAWAM " + _comments.text);
-                                            if (_comments.text == "" ||
-                                                _comments.text == "null" ||
-                                                _comments.text == null) {
-                                              _comments.text = "Added New Lead";
-                                            }
-                                            await _commentsListNew.add(
-                                              new CommentsDetail(
-                                                  createdBy: empId,
-                                                  commentText: _comments.text,
-                                                  // commentedAt: DateTime.now(),
-                                                  creatorName: name),
-                                            );
-                                            // print("DHAWAM " + _commentsListNew[0].commentText);
+                                            "empty";
+                                        //   print("DHAWAM " + _comments.text);
+                                        if (_comments.text == "" ||
+                                            _comments.text == "null" ||
+                                            _comments.text == null) {
+                                          _comments.text = "Added New Lead";
+                                        }
+                                        await _commentsListNew.add(
+                                          new CommentsDetail(
+                                              createdBy: empId,
+                                              commentText: _comments.text,
+                                              // commentedAt: DateTime.now(),
+                                              creatorName: name),
+                                        );
+                                        // print("DHAWAM " + _commentsListNew[0].commentText);
 
-                                            if (_listInfluencerDetail.length != 0 &&
-                                                (_listInfluencerDetail[
-                                                _listInfluencerDetail
-                                                    .length -
-                                                    1]
-                                                    .inflName ==
-                                                    null ||
-                                                    _listInfluencerDetail[
-                                                    _listInfluencerDetail
-                                                        .length -
-                                                        1]
+                                        if (_listInfluencerDetail.length != 0 &&
+                                            (_listInfluencerDetail[
+                                                            _listInfluencerDetail
+                                                                    .length -
+                                                                1]
                                                         .inflName ==
-                                                        "null" ||
-                                                    _listInfluencerDetail[
-                                                    _listInfluencerDetail
-                                                        .length -
-                                                        1]
-                                                        .inflName
-                                                        .text
-                                                        .isNullOrBlank)) {
-                                              print("here1234");
-                                              _listInfluencerDetail.removeAt(
-                                                  _listInfluencerDetail.length - 1);
-                                            }
-                                            String leadSourceUser;
-                                            if(leadSource == "SELF" || leadSource == null){
-                                              leadSource = "SELF";
-                                              leadSourceUser = empId;
-                                            }else if (leadSource == "DEALER") {
-                                              leadSourceUser = _dealerId;
-                                            } else if (leadSource == "SUB-DEALER") {
-                                              leadSourceUser = _subDealerId;
-                                            } else if (leadSource ==
-                                                "SALES OFFICER") {
-                                              leadSourceUser = _salesOfficerId;
-                                            } else if (leadSource == "EVENT") {
-                                              leadSourceUser = _eventId;
-                                            } else if (leadSource == "INFLUENCER") {
-                                              leadSourceUser = sourceMobile.text;
-                                            } else if (leadSource == "OTHER") {
-                                              leadSourceUser = _other.text;
-                                            } else {
-                                              leadSource = "SELF";
-                                              leadSourceUser = empId;
-                                            }
-                                            //  print(22112);
-                                            // print(_listInfluencerDetail[1].toJson());
-                                            SaveLeadRequestModel
+                                                    null ||
+                                                _listInfluencerDetail[
+                                                            _listInfluencerDetail
+                                                                    .length -
+                                                                1]
+                                                        .inflName ==
+                                                    "null" ||
+                                                _listInfluencerDetail[
+                                                        _listInfluencerDetail
+                                                                .length -
+                                                            1]
+                                                    .inflName
+                                                    .text
+                                                    .isNullOrBlank)) {
+                                          print("here1234");
+                                          _listInfluencerDetail.removeAt(
+                                              _listInfluencerDetail.length - 1);
+                                        }
+                                        String leadSourceUser;
+                                        if (leadSource == "SELF" ||
+                                            leadSource == null) {
+                                          leadSource = "SELF";
+                                          leadSourceUser = empId;
+                                        } else if (leadSource == "DEALER") {
+                                          leadSourceUser = _dealerId;
+                                        } else if (leadSource == "SUB-DEALER") {
+                                          leadSourceUser = _subDealerId;
+                                        } else if (leadSource ==
+                                            "SALES OFFICER") {
+                                          leadSourceUser = _salesOfficerId;
+                                        } else if (leadSource == "EVENT") {
+                                          leadSourceUser = _eventId;
+                                        } else if (leadSource == "INFLUENCER") {
+                                          leadSourceUser = sourceMobile.text;
+                                        } else if (leadSource == "OTHER") {
+                                          leadSourceUser = _other.text;
+                                        } else if (leadSource == "SPOTTER") {
+                                          leadSourceUser = _other.text;
+                                        } else {
+                                          leadSource = "SELF";
+                                          leadSourceUser = empId;
+                                        }
+                                        //  print(22112);
+                                        // print(_listInfluencerDetail[1].toJson());
+                                        SaveLeadRequestModel
                                             saveLeadRequestModel =
                                             new SaveLeadRequestModel(
                                                 eventId: widget.eventId,
@@ -4856,48 +4900,48 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 contactNumber: _contactNumber,
                                                 geotagType: geoTagType,
                                                 leadLatitude:
-                                                (_currentPosition != null)
-                                                    ? _currentPosition
-                                                    .latitude
-                                                    .toString()
-                                                    : "0",
+                                                    (_currentPosition != null)
+                                                        ? _currentPosition
+                                                            .latitude
+                                                            .toString()
+                                                        : "0",
                                                 leadLongitude:
-                                                (_currentPosition != null)
-                                                    ? _currentPosition
-                                                    .longitude
-                                                    .toString()
-                                                    : "0",
+                                                    (_currentPosition != null)
+                                                        ? _currentPosition
+                                                            .longitude
+                                                            .toString()
+                                                        : "0",
                                                 leadAddress: _siteAddress.text,
                                                 leadPincode: _pincode.text,
                                                 leadStateName: _state.text,
                                                 leadDistrictName:
-                                                _district.text,
+                                                    _district.text,
                                                 leadTalukName: _taluk.text,
                                                 leadSalesPotentialMt:
-                                                _totalMT.text,
+                                                    _totalMT.text,
                                                 leadReraNumber: _rera.text,
                                                 isStatus: "false",
                                                 listLeadImage: listLeadImage,
                                                 influencerList:
-                                                _listInfluencerDetail,
+                                                    _listInfluencerDetail,
                                                 comments: _commentsListNew,
                                                 leadSource: leadSource,
                                                 leadSourceUser: leadSourceUser,
                                                 leadSourcePlatform: "TSO",
-                                                isIhbCommercial:null);
+                                                isIhbCommercial: null);
 
-                                            if (!gv.fromLead) {
-                                              gv.draftID = 0;
-                                            }
+                                        if (!gv.fromLead) {
+                                          gv.draftID = 0;
+                                        }
 
-                                            internetChecking().then((result) => {
+                                        internetChecking().then((result) => {
                                               if (result == true)
                                                 {
                                                   _addLeadsController
                                                       .getAccessKeyAndSaveLead(
-                                                      saveLeadRequestModel,
-                                                      controller.imageList,
-                                                      context),
+                                                          saveLeadRequestModel,
+                                                          controller.imageList,
+                                                          context),
                                                   _commentsListNew = new List()
                                                 }
                                               else
@@ -4907,13 +4951,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       "Make sure that your wifi or mobile data is turned on.",
                                                       colorText: Colors.white,
                                                       backgroundColor:
-                                                      Colors.red,
+                                                          Colors.red,
                                                       snackPosition:
-                                                      SnackPosition.BOTTOM),
+                                                          SnackPosition.BOTTOM),
                                                   // fetchSiteList()
                                                 }
                                             });
-                                          });
+                                      });
 
                                       //  _comments.clear();
                                     });
@@ -5024,206 +5068,205 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //     ],
           //   );
           // } else {
-            return Column(
-              children: [
-                // FittedBox(
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                      // (index == 0)
-                      //     ?
-                      // Text(
-                      //   "Influencer Details",
-                      //   style: TextStyle(
-                      //       fontWeight: FontWeight.bold, fontSize: 18),
-                      // ),
-                      //     : Text(
-                      //   "Influencer Details ${(index + 1)} ",
-                      //   style: TextStyle(
-                      //       fontWeight: FontWeight.bold, fontSize: 18),
-                      // ),
-                      // _listInfluencerDetail[index].isExpanded
-                      //     ? FlatButton.icon(
-                      //   color: Colors.transparent,
-                      //   icon: Icon(
-                      //     Icons.remove,
-                      //     color: ColorConstants.btnOrange,
-                      //     size: 18,
-                      //   ),
-                      //   label: Text(
-                      //     "COLLAPSE",
-                      //     style: TextStyles.muliBoldOrange17,
-                      //   ),
-                      //   onPressed: () {
-                      //     setState(() {
-                      //       _listInfluencerDetail[index].isExpanded =
-                      //       !_listInfluencerDetail[index].isExpanded;
-                      //     });
-                      //   },
-                      // )
-                      //     : FlatButton.icon(
-                      //   color: Colors.transparent,
-                      //   icon: Icon(
-                      //     Icons.add,
-                      //     color: ColorConstants.btnOrange,
-                      //     size: 18,
-                      //   ),
-                      //   label: Text(
-                      //     "EXPAND",
-                      //     style: TextStyles.muliBoldOrange17,
-                      //   ),
-                      //   onPressed: () {
-                      //     setState(() {
-                      //       _listInfluencerDetail[index].isExpanded =
-                      //       !_listInfluencerDetail[index].isExpanded;
-                      //     });
-                      //   },
-                      // ),
-                 //    ],
-                 //  ),
-                 // ),
-               // SizedBox(height: 10),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       "Secondary",
-                //       style: TextStyle(
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 18,
-                //           // color: HexColor("#000000DE"),
-                //           fontFamily: "Muli"),
-                //     ),
-                //     Switch(
-                //       onChanged: (value) {
-                //         setState(() {
-                //           if (value) {
-                //             for (int i = 0;
-                //             i < _listInfluencerDetail.length;
-                //             i++) {
-                //               if (i == index) {
-                //                 _listInfluencerDetail[i].isPrimarybool = value;
-                //               } else {
-                //                 _listInfluencerDetail[i].isPrimarybool = !value;
-                //               }
-                //             }
-                //           } else {
-                //             Get.dialog(CustomDialogs().errorDialog(
-                //                 "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                //           }
-                //         });
-                //       },
-                //       value: _listInfluencerDetail[index].isPrimarybool,
-                //       activeColor: HexColor("#009688"),
-                //       activeTrackColor: HexColor("#009688").withOpacity(0.5),
-                //       inactiveThumbColor: HexColor("#F1F1F1"),
-                //       inactiveTrackColor: Colors.black26,
-                //     ),
-                //     Text(
-                //       "Primary",
-                //       style: TextStyle(
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 18,
-                //           color: _listInfluencerDetail[index].isPrimarybool
-                //               ? HexColor("#009688")
-                //               : Colors.black,
-                //           fontFamily: "Muli"),
-                //     ),
-                //   ],
-                // ),
-                TextFormField(
-                  controller: _listInfluencerDetail[index].inflContact,
-                  maxLength: 10,
-                  onChanged: (value) async {
-                    bool match = false;
-                    if (value.length < 10) {
-                      if (_listInfluencerDetail[index].inflName != null) {
-                        _listInfluencerDetail[index].inflName.clear();
-                        _listInfluencerDetail[index].inflTypeValue.clear();
-                        _listInfluencerDetail[index].inflCatValue.clear();
-                      }
-                    } else if (value.length == 10) {
-                      var bodyEncrypted = {
-                        //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                        "inflContact": value
-                      };
+          return Column(
+            children: [
+              // FittedBox(
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              // (index == 0)
+              //     ?
+              // Text(
+              //   "Influencer Details",
+              //   style: TextStyle(
+              //       fontWeight: FontWeight.bold, fontSize: 18),
+              // ),
+              //     : Text(
+              //   "Influencer Details ${(index + 1)} ",
+              //   style: TextStyle(
+              //       fontWeight: FontWeight.bold, fontSize: 18),
+              // ),
+              // _listInfluencerDetail[index].isExpanded
+              //     ? FlatButton.icon(
+              //   color: Colors.transparent,
+              //   icon: Icon(
+              //     Icons.remove,
+              //     color: ColorConstants.btnOrange,
+              //     size: 18,
+              //   ),
+              //   label: Text(
+              //     "COLLAPSE",
+              //     style: TextStyles.muliBoldOrange17,
+              //   ),
+              //   onPressed: () {
+              //     setState(() {
+              //       _listInfluencerDetail[index].isExpanded =
+              //       !_listInfluencerDetail[index].isExpanded;
+              //     });
+              //   },
+              // )
+              //     : FlatButton.icon(
+              //   color: Colors.transparent,
+              //   icon: Icon(
+              //     Icons.add,
+              //     color: ColorConstants.btnOrange,
+              //     size: 18,
+              //   ),
+              //   label: Text(
+              //     "EXPAND",
+              //     style: TextStyles.muliBoldOrange17,
+              //   ),
+              //   onPressed: () {
+              //     setState(() {
+              //       _listInfluencerDetail[index].isExpanded =
+              //       !_listInfluencerDetail[index].isExpanded;
+              //     });
+              //   },
+              // ),
+              //    ],
+              //  ),
+              // ),
+              // SizedBox(height: 10),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       "Secondary",
+              //       style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 18,
+              //           // color: HexColor("#000000DE"),
+              //           fontFamily: "Muli"),
+              //     ),
+              //     Switch(
+              //       onChanged: (value) {
+              //         setState(() {
+              //           if (value) {
+              //             for (int i = 0;
+              //             i < _listInfluencerDetail.length;
+              //             i++) {
+              //               if (i == index) {
+              //                 _listInfluencerDetail[i].isPrimarybool = value;
+              //               } else {
+              //                 _listInfluencerDetail[i].isPrimarybool = !value;
+              //               }
+              //             }
+              //           } else {
+              //             Get.dialog(CustomDialogs().errorDialog(
+              //                 "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+              //           }
+              //         });
+              //       },
+              //       value: _listInfluencerDetail[index].isPrimarybool,
+              //       activeColor: HexColor("#009688"),
+              //       activeTrackColor: HexColor("#009688").withOpacity(0.5),
+              //       inactiveThumbColor: HexColor("#F1F1F1"),
+              //       inactiveTrackColor: Colors.black26,
+              //     ),
+              //     Text(
+              //       "Primary",
+              //       style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 18,
+              //           color: _listInfluencerDetail[index].isPrimarybool
+              //               ? HexColor("#009688")
+              //               : Colors.black,
+              //           fontFamily: "Muli"),
+              //     ),
+              //   ],
+              // ),
+              TextFormField(
+                controller: _listInfluencerDetail[index].inflContact,
+                maxLength: 10,
+                onChanged: (value) async {
+                  bool match = false;
+                  if (value.length < 10) {
+                    if (_listInfluencerDetail[index].inflName != null) {
+                      _listInfluencerDetail[index].inflName.clear();
+                      _listInfluencerDetail[index].inflTypeValue.clear();
+                      _listInfluencerDetail[index].inflCatValue.clear();
+                    }
+                  } else if (value.length == 10) {
+                    var bodyEncrypted = {
+                      //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
+                      "inflContact": value
+                    };
 
-                      if (_listInfluencerDetail.length != 0) {
-                        for (int i = 0;
-                        i < _listInfluencerDetail.length - 1;
-                        i++) {
-                          if (value ==
-                              _listInfluencerDetail[i].inflContact.text) {
-                            match = true;
-                            break;
-                          }
+                    if (_listInfluencerDetail.length != 0) {
+                      for (int i = 0;
+                          i < _listInfluencerDetail.length - 1;
+                          i++) {
+                        if (value ==
+                            _listInfluencerDetail[i].inflContact.text) {
+                          match = true;
+                          break;
                         }
                       }
-
-                      if (match) {
-                        Get.dialog(CustomDialogs().errorDialog(
-                            "Already added influencer : " + value));
-                      } else {
-                        apiCallForGetInf(value, index, context);
-                      }
-                    }
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter Influencer Number ';
-                    }
-                    if (!Validations.isValidPhoneNumber(value)) {
-                      return "Enter valid Contact number";
                     }
 
-                    return null;
-                  },
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Mobile Number",
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _listInfluencerDetail[index].inflName,
-                  readOnly: true,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Name",
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _listInfluencerDetail[index].inflTypeValue,
-                  readOnly: true,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.text,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z. ]")),
-                  ],
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Type",
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _listInfluencerDetail[index].inflCatValue,
-                  readOnly: true,
-                  style: FormFieldStyle.formFieldTextStyle,
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Category",
-                  ),
-                ),
-              ],
-            );
-         // }
+                    if (match) {
+                      Get.dialog(CustomDialogs()
+                          .errorDialog("Already added influencer : " + value));
+                    } else {
+                      apiCallForGetInf(value, index, context);
+                    }
+                  }
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter Influencer Number ';
+                  }
+                  if (!Validations.isValidPhoneNumber(value)) {
+                    return "Enter valid Contact number";
+                  }
 
+                  return null;
+                },
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.phone,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: "Mobile Number",
+                ),
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _listInfluencerDetail[index].inflName,
+                readOnly: true,
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.text,
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: "Name",
+                ),
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _listInfluencerDetail[index].inflTypeValue,
+                readOnly: true,
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp("[a-zA-Z. ]")),
+                ],
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: "Type",
+                ),
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _listInfluencerDetail[index].inflCatValue,
+                readOnly: true,
+                style: FormFieldStyle.formFieldTextStyle,
+                keyboardType: TextInputType.text,
+                decoration: FormFieldStyle.buildInputDecoration(
+                  labelText: "Category",
+                ),
+              ),
+            ],
+          );
+          // }
         });
   }
 
@@ -5254,22 +5297,22 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           if (inflDetail.inflName != "null") {
             setState(() {
               _listInfluencerDetail[index].inflContact =
-              new TextEditingController();
+                  new TextEditingController();
               _listInfluencerDetail[index].inflName =
-              new TextEditingController();
+                  new TextEditingController();
               FocusScope.of(context).unfocus();
               //  print(inflDetail.inflName.text);
               _listInfluencerDetail[index].inflTypeId =
-              new TextEditingController();
+                  new TextEditingController();
               _listInfluencerDetail[index].inflCatId =
-              new TextEditingController();
+                  new TextEditingController();
               _listInfluencerDetail[index].inflTypeValue =
-              new TextEditingController();
+                  new TextEditingController();
               _listInfluencerDetail[index].inflCatValue =
-              new TextEditingController();
+                  new TextEditingController();
               _listInfluencerDetail[index].id = new TextEditingController();
               _listInfluencerDetail[index].ilpIntrested =
-              new TextEditingController();
+                  new TextEditingController();
 
               print(inflDetail.inflName);
               print("inflTypeValue : ${inflDetail.influencerTypeText}");
@@ -5277,15 +5320,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
               _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
-              _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText;
-              _listInfluencerDetail[index].id.text = inflDetail.inflId.toString();
+              _listInfluencerDetail[index].inflTypeValue.text =
+                  inflDetail.influencerTypeText;
+              _listInfluencerDetail[index].id.text =
+                  inflDetail.inflId.toString();
               _listInfluencerDetail[index].ilpIntrested.text =
                   inflDetail.ilpRegFlag;
               // _listInfluencerDetail[
               //             index]
               //         .createdOn =
               //     inflDetail.createdOn;
-
 
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
@@ -5294,20 +5338,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
               //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
-
                 // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
                 // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
-                  _listInfluencerDetail[index].inflTypeId.text = inflDetail.inflTypeId.toString();
-                  _listInfluencerDetail[index].inflTypeValue.text = inflDetail.influencerTypeText.toString();
+                  _listInfluencerDetail[index].inflTypeId.text =
+                      inflDetail.inflTypeId.toString();
+                  _listInfluencerDetail[index].inflTypeValue.text =
+                      inflDetail.influencerTypeText.toString();
                   break;
                 } else {
                   _listInfluencerDetail[index].inflTypeId.clear();
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }
               }
-             // print(_listInfluencerDetail[index].inflName);
+              // print(_listInfluencerDetail[index].inflName);
               // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
               for (int i = 0; i < influencerCategoryEntity.length; i++) {
@@ -5318,7 +5363,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                   _listInfluencerDetail[index].inflCatValue.text =
                       influencerCategoryEntity[
-                      influencerCategoryEntity[i].inflCatId - 1]
+                              influencerCategoryEntity[i].inflCatId - 1]
                           .inflCatDesc;
                   break;
                 } else {
@@ -5426,11 +5471,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _taluk.text = place.locality;
         //txt.text = place.postalCode;
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
         print(
             "........ selected ${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, "
-                "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
-                "${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
+            "${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print("ex.....   $e");

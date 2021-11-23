@@ -6,6 +6,7 @@ class AddLeadInitialModel {
   List<SubDealerList> subDealerList;
   List<SalesOfficerList> salesOfficerList;
   List<EventList> eventList;
+  List<LeadSourceList> leadSourceList;
 
   AddLeadInitialModel(
       {this.siteSubTypeEntity,
@@ -14,7 +15,7 @@ class AddLeadInitialModel {
         this.dealerList,
         this.subDealerList,
         this.salesOfficerList,
-        this.eventList
+        this.eventList, this.leadSourceList
       });
 
   AddLeadInitialModel.fromJson(Map<String, dynamic> json) {
@@ -60,6 +61,12 @@ class AddLeadInitialModel {
         eventList.add(new EventList.fromJson(v));
       });
     }
+    if (json['leadSourceList'] != null) {
+      leadSourceList = new List<LeadSourceList>();
+      json['leadSourceList'].forEach((v) {
+        leadSourceList.add(new LeadSourceList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -89,6 +96,10 @@ class AddLeadInitialModel {
     }
     if (this.eventList != null) {
       data['eventList'] = this.eventList.map((v) => v.toJson()).toList();
+    }
+    if (this.leadSourceList != null) {
+      data['leadSourceList'] =
+          this.leadSourceList.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -223,6 +234,25 @@ class EventList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['eventId'] = this.eventId;
+    return data;
+  }
+}
+
+class LeadSourceList {
+  int id;
+  String name;
+
+  LeadSourceList({this.id, this.name});
+
+  LeadSourceList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }
