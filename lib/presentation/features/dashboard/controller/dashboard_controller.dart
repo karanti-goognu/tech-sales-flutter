@@ -200,7 +200,7 @@ class DashboardController extends GetxController {
       print('Controller empID after month details: ${this.empId}');
       isProcessComplete = true;
       repository.getMonthViewDetails(empId, yearMonth,this.accessKeyResponse.accessKey,userSecurityKey ).then((_) {
-        print(_.generatedCount);
+        print(_);
 
         DashboardMonthlyViewModel data = _;
         this.convTargetCount = data.convTargetCount;

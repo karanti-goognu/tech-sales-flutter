@@ -336,7 +336,7 @@ class MyApiClientLeads {
             SaveLeadResponse saveLeadResponse =
             SaveLeadResponse.fromJson(data);
 
-            //print("Lead response : ${response.body}");
+            print("Lead response : ${saveLeadResponse.respMsg}");
 
             if(data["resp_code"] == "DM1005"){
               Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -360,14 +360,14 @@ class MyApiClientLeads {
               gv.fromLead = false;
               Get.dialog(CustomDialogs()
                   .showDialogSubmitLead(
-                  "Lead Added Successfully !!!", 2, context));
+                  saveLeadResponse.respMsg, 2, context));
               // Get.back();
               // Get.back();
               if (saveLeadRequestModel.eventId == null) {
                 Get.back();
                 Get.dialog(CustomDialogs()
                     .showDialogSubmitLead(
-                    "Lead Added Successfully !!!", 1, context));
+                    saveLeadResponse.respMsg, 1, context));
                 //Get.toNamed(Routes.HOME_SCREEN);
               }
 
@@ -385,7 +385,7 @@ class MyApiClientLeads {
               gv.fromLead = false;
               Get.back();
               Get.dialog(
-                  CustomDialogs().showDialog("Some Error Occured !!! "));
+                  CustomDialogs().showDialog(saveLeadResponse.respMsg));
             }
           }
               });

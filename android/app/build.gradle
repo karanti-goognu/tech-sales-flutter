@@ -41,7 +41,11 @@ android {
     signingConfigs {
         release {
             //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
-            storeFile file('/home/shailesh/Desktop/Dalmia Tso Project/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
+
+//            C:\Projects\Flutter\tech-sales-flutter\keystore\android
+            storeFile file('/Projects/Flutter/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
+            //storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
+//            storeFile file('/home/shailesh/Desktop/Dalmia Tso Project/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
             storePassword 'dalmiadigitaltso'
             keyAlias 'key'
             keyPassword 'dalmiadigitaltso'
@@ -76,7 +80,7 @@ android {
                 storePassword keystoreProperties['storePassword']
             }
         }
-//
+
 
         buildTypes {
 
