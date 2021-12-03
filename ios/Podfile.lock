@@ -118,17 +118,20 @@ PODS:
     - Flutter
   - "location_permissions (3.0.0+1)":
     - Flutter
-  - MoEngage-iOS-SDK (7.1.2):
-    - MORichNotification (< 5.3.0, >= 5.2.0)
-  - moengage_flutter (4.1.0):
+  - MoEngage-iOS-SDK (7.0.5):
+    - MORichNotification (< 5.1.0, >= 5.0.0)
+  - moengage_flutter (3.0.1):
     - Flutter
-    - MoEPluginBase (~> 2.1.0)
-  - MoEngageInApp (2.1.0):
-    - MoEngage-iOS-SDK (< 7.2.0, >= 7.1.0)
-  - MoEPluginBase (2.1.0):
-    - MoEngage-iOS-SDK (< 7.2.0, >= 7.1.0)
-    - MoEngageInApp (< 2.2.0, >= 2.1.0)
-  - MORichNotification (5.2.0)
+    - MoEPluginBase (~> 2.0.2)
+  - moengage_inbox (2.0.1):
+    - Flutter
+    - MoEPluginBase (~> 2.0.2)
+  - MoEngageInApp (2.0.4):
+    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.5)
+  - MoEPluginBase (2.0.2):
+    - MoEngage-iOS-SDK (< 7.1.0, >= 7.0.1)
+    - MoEngageInApp (< 2.1.0, >= 2.0.0)
+  - MORichNotification (5.0.2)
   - nanopb (2.30906.0):
     - nanopb/decode (= 2.30906.0)
     - nanopb/encode (= 2.30906.0)
@@ -173,6 +176,8 @@ DEPENDENCIES:
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - moengage_flutter (from `.symlinks/plugins/moengage_flutter/ios`)
+  - moengage_inbox (from `.symlinks/plugins/moengage_inbox/ios`)
+  - MORichNotification (~> 5.0.0)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -233,6 +238,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/location_permissions/ios"
   moengage_flutter:
     :path: ".symlinks/plugins/moengage_flutter/ios"
+  moengage_inbox:
+    :path: ".symlinks/plugins/moengage_inbox/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
@@ -281,11 +288,12 @@ SPEC CHECKSUMS:
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
-  MoEngage-iOS-SDK: 7fb1978324f395fe105d4c9ccbdb455b843fea99
-  moengage_flutter: 1a19eb15e29ef6ca22aa56ad5b57bc6d6c999ce0
-  MoEngageInApp: 0713efdeb1123bac134db942f5588745c8c78c0c
-  MoEPluginBase: e6bbb816b6292d4f248b5a4d6ecd9e6b593668d6
-  MORichNotification: e97f0d7462ee6c46796852e81b92c72706fe4105
+  MoEngage-iOS-SDK: 604a6bba6b495eb03dcd25fd7bf858d0611bc272
+  moengage_flutter: 3e3d8cfd05a77491c4b8679587aabfdca049433f
+  moengage_inbox: a08fa1a56d0f405a82e762815e8cab585f909fd3
+  MoEngageInApp: 50f56233c5e97eba9c46125d38bd0d2160977329
+  MoEPluginBase: 490c5b1ab57761ff0aa44c09bdd7662a13f8e1ee
+  MORichNotification: d4cef22d783e9bba2bc33225176d19a96ac5f1e8
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
@@ -301,6 +309,6 @@ SPEC CHECKSUMS:
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: bfc7955c418d0db797614075aabbc58a39ab5107
 
-PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
+PODFILE CHECKSUM: 2178f154a6a74064f83271d4839823da82b2fae0
 
 COCOAPODS: 1.11.2

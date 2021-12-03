@@ -21,7 +21,7 @@ version: 5.0.0+11
 
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -56,7 +56,7 @@ dependencies:
   flutter_svg: ^0.19.3
   flutter_calendar_carousel: 1.5.3
   chewie: ^0.12.2
-  moengage_flutter: ^4.0.2
+  moengage_flutter: ^3.0.0
   syncfusion_flutter_charts: ^18.4.49
   syncfusion_flutter_datagrid: ^18.4.49-beta
   screenshot: ^0.3.0
@@ -89,7 +89,7 @@ dependencies:
   slider_button: ^0.6.0
   data_connection_checker: ^0.3.4
 
-
+  moengage_inbox: ^2.0.0
   # below plugins not used in app
   # autocomplete_textfield: ^1.7.3
   # dartz: ^0.10.0   
