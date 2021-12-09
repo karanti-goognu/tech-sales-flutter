@@ -110,6 +110,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<DealerForDb> dealerEntityForDb = new List();
   DealerForDb _dealerEntityForDb;
   List<CounterListModel> subDealerList = new List();
+  List<CounterListModel> dealerList = new List();
 
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
@@ -118,7 +119,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   List<ProductListModel> productDynamicList = new List();
 
-  String availableKittyPoint;
+  String availableKittyPoint = "0";
 
   /// get _getProductList
   List<Widget> _getProductList() {
@@ -260,6 +261,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ),
                 ),
                 SizedBox(height: 12),
+
+
+
+/*
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
@@ -375,22 +380,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               ),
                       )
                     : Container(),
-                (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                            "dalmia")
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text(
-                          "Mandatory",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      )
-                    : Container(),
-                (_siteBrandFromLocalDB != null &&
+                    (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
                     ? SizedBox(height: 15)
@@ -442,9 +432,132 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 labelText: "Sub-Dealer"),
                           )
                         : Container(),
-                subDealerList.isEmpty
+
+
+                dealerList.isEmpty
                     ? Container()
-                    : (_siteBrandFromLocalDB != null &&
+                    :
+                */
+
+///Changes for Instead of two drop downs for dealer and subdealer only one dropdown as counter
+                (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        "dalmia")
+                    ? GestureDetector(
+                  onTap: () {},
+                  child: (index == 0)
+                      ? (productDynamicList[index]
+                      .dealerName
+                      .text
+                      .isEmpty)
+                      ? DropdownButtonFormField<DealerForDb>(
+                    value: _dealerEntityForDb,
+                    items: dealerEntityForDb
+                        .map((label) => DropdownMenuItem(
+                      child: SizedBox(
+                        width: MediaQuery.of(context)
+                            .size
+                            .width -
+                            100,
+                        child: Text(
+                            '${label.dealerName} (${label.id})',
+                            style: TextStyle(
+                                fontSize: 14)),
+                      ),
+                      value: label,
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _dealerEntityForDb = value;
+                        visitDataDealer = value.id;
+                        _dealerName.text = value.dealerName;
+                        UpdatedValues.setDealerEntityForDb(_dealerEntityForDb);
+                        for(int i=0; i<counterListModel.length;i++) {
+                          if( counterListModel[i].shipToParty == value.id){
+                            availableKittyPoint = counterListModel[i].availableKittyPoint;
+                          }
+                        }
+                      });
+                    },
+                    style: FormFieldStyle.formFieldTextStyle,
+                    decoration:
+                    FormFieldStyle.buildInputDecoration(
+                        labelText: "Counter"),
+                    validator: (value) => value == null
+                        ? 'Please select Counter'
+                        : null,
+                  )
+                      : DropdownButtonFormField<DealerForDb>(
+                    value: _dealerEntityForDb,
+                    items: [_dealerEntityForDb]
+                        .map((label) => DropdownMenuItem(
+                      child: SizedBox(
+                        width: MediaQuery.of(context)
+                            .size
+                            .width -
+                            100,
+                        child: Text(
+                            '${label.dealerName} (${label.id})',
+                            style: TextStyle(
+                                fontSize: 14)),
+                      ),
+                      value: label,
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _dealerEntityForDb = value;
+                        visitDataDealer = value.id;
+                        _dealerName.text = value.dealerName;
+
+                        for(int i=0; i<counterListModel.length;i++) {
+                          if( counterListModel[i].shipToParty == value.id){
+                            availableKittyPoint = counterListModel[i].availableKittyPoint;
+                          }
+                        }
+                      });
+                    },
+                    style: FormFieldStyle.formFieldTextStyle,
+                    decoration:
+                    FormFieldStyle.buildInputDecoration(
+                        labelText: "Counter"),
+                    validator: (value) => value == null
+                        ? 'Please select counter'
+                        : null,
+                  )
+                      : TextFormField(
+                    controller: _dealerName,
+                    readOnly: true,
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.inputBoxHintColor,
+                        fontFamily: "Muli"),
+                    keyboardType: TextInputType.number,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Dealer"),
+                  ),
+                )
+                    : Container(),
+
+
+                (_siteBrandFromLocalDB != null &&
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      )
+                    : Container(),
+
+                    (_siteBrandFromLocalDB != null &&
                             _siteBrandFromLocalDB.brandName.toLowerCase() ==
                                 "dalmia")
                         ? Padding(
@@ -463,7 +576,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                       fontFamily: "Muli"),
                                 ),
                                 Text(
-                                  "${availableKittyPoint1()}",
+                                  availableKittyPoint,
+                                 // "${availableKittyPoint1()}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
@@ -474,6 +588,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             ),
                           )
                         : Container(),
+
+
+
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
@@ -832,9 +949,15 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           widget.viewSiteDataResponse.siteBrandEntity[i].brandName, widget.viewSiteDataResponse.siteBrandEntity[i].productName));
     }
 
+    // for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
+    //   int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].soldToParty,
+    //       widget.viewSiteDataResponse.counterListModel[i].soldToPartyName));
+    // }
+
+////Added shipToParty to dealers
     for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
-      int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].soldToParty,
-          widget.viewSiteDataResponse.counterListModel[i].soldToPartyName));
+      int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].shipToParty,
+          widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
     }
 
     // print("list Size");fetchAllDistinctDealers
@@ -930,11 +1053,11 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           subDealerList = UpdatedValues.getSubDealerList();
         }
 
-        if (UpdatedValues.getSelectedSubDealer() != null &&
-            _siteBrandFromLocalDB != null) {
-          selectedSubDealer = UpdatedValues.getSelectedSubDealer();
-          visitDataSubDealer = selectedSubDealer.shipToParty;
-        }
+        // if (UpdatedValues.getSelectedSubDealer() != null &&
+        //     _siteBrandFromLocalDB != null) {
+        //   selectedSubDealer = UpdatedValues.getSelectedSubDealer();
+        //   visitDataSubDealer = selectedSubDealer.shipToParty;
+        // }
 
         if (UpdatedValues.getSiteProgressStageStatus() != null) {
           _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
@@ -1672,13 +1795,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     return totalSumBagsSupplied;
   }
 
-  String availableKittyPoint1() {
-    String availableKittyPoint = "";
-    if (selectedSubDealer != null) {
-      availableKittyPoint = selectedSubDealer.availableKittyPoint;
-    }
-    return availableKittyPoint;
-  }
+  // String availableKittyPoint1() {
+  //   String availableKittyPoint = "0";
+  //  // if (selectedSubDealer != null) {
+  //   if(visitDataDealer !=null){
+  //     availableKittyPoint = selectedSubDealer.availableKittyPoint;
+  //   }
+  //   return availableKittyPoint;
+  //}
 
   Widget addNextStageContainer() {
     return Container(
@@ -2253,8 +2377,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               supplyDate: productDynamicList[i].supplyDate.text,
               supplyQty: productDynamicList[i].supplyQty.text,
               createdBy: UpdatedValues.getEmpCode(),
-              soldToParty: visitDataDealer,
-              shipToParty: visitDataSubDealer,
+              // soldToParty: visitDataDealer,
+              // shipToParty: visitDataSubDealer,
+              soldToParty: "",
+              shipToParty: visitDataDealer,
               receiptNumber: "",
               isAuthorised: "N",
               authorisedBy: "",
