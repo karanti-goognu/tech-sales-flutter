@@ -256,7 +256,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                         }),
                       ],
                       decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Site Build Up Area ")),
+                          labelText: "Site Built Up Area (sqft)")),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Container(
                     alignment: Alignment.centerRight,

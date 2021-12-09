@@ -512,7 +512,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select Birth date' : null,
+      validator: (value) => (checkedValue == true && value.isEmpty) ? 'Please select Birth date' : null,
       controller: _dateController,
       readOnly: true,
       onTap: () {
@@ -522,7 +522,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Birth Date*",
+        labelText: (checkedValue == true)?"Birth Date*" : "Birth Date",
         suffixIcon: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
           child: Icon(

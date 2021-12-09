@@ -48,6 +48,7 @@ class MyApiClient {
       var response = await http.get(Uri.parse(UrlConstants.AppTutorialList),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
       //print(response.body);
+      print(UrlConstants.AppTutorialList);
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
