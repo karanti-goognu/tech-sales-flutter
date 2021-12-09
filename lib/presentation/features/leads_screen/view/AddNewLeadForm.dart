@@ -3356,10 +3356,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     double _height = ScreenUtil().setSp(15);
 
     final leadSourceDropDwn = DropdownButtonFormField(
+      value: (leadSource != null) ? leadSource : selectedItem,
       onChanged: (_) {
         setState(() {
-          leadSource =
-              sourceList.where((element) => element.id == _).toList()[0].name;
+          leadSource = _;
           print("DROPDOWN : $leadSource");
           // _dealerId = null;
           // _subDealerId = null;
@@ -3376,12 +3376,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           : sourceList
               .map((e) => DropdownMenuItem(
                     child: Text(e.name),
-                    value: e.id,
+                    value: e.name,
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
+      selectedItemBuilder: (BuildContext context) {
+        return sourceList == null
+            ? []
+            : sourceList.map<Widget>((item) {
+              print(item.name);
+                return Text(item.name);
+              }).toList();
+      },
     );
+
     // DropdownButtonFormField(
     //   onChanged: (value) {
     //     setState(() {
@@ -4890,7 +4899,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadSourceUser = empId;
                                         }
                                         //  print(22112);
-                                        // print(_listInfluencerDetail[1].toJson());
+                                        // print(_listIC:\Projects\Flutter\tech-sales-flutter\android\app\Users\neosoft\Documents\Development\jks\dalmiadigitaltso.jksnfluencerDetail[1].toJson());
                                         SaveLeadRequestModel
                                             saveLeadRequestModel =
                                             new SaveLeadRequestModel(

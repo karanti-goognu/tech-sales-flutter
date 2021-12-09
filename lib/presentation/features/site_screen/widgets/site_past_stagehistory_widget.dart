@@ -291,7 +291,7 @@ class _SitePastStageHistoryWidgetState
                                     keyboardType: TextInputType.text,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
-                                      labelText: "Stage Potential",
+                                      labelText: "Stage Potential (Bags)",
                                     ),
                                   ),
                                   SizedBox(height: 16),

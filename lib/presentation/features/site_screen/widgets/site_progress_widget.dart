@@ -1192,7 +1192,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   }),
                 ],
                 decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Stage Potential",
+                  labelText: "Stage Potential (Bags)",
                 ),
               ),
 
@@ -1344,7 +1344,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2001),
-                        lastDate: DateTime.now(),
+                        lastDate: DateTime.now().add(Duration(days: 14)),
                       );
 
                       setState(() {
