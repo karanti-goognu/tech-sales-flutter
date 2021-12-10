@@ -102,45 +102,53 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
       UpdatedValues.setEmpName(name);
     });
 
-    await _siteController.getAccessKeyOnly().then((data) async {
-      accessKeyModel = data;
-      // print("AccessKey :: " + accessKeyModel.accessKey);
-      await _siteController
-          .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
-          .then((data) async {
-        // print("here");
-        viewSiteDataResponse = data;
-        setState(() {
-          siteScore = viewSiteDataResponse.sitesModal.siteScore;
-          siteStageEntity = viewSiteDataResponse.siteStageEntity;
+    await _siteController.getAccessKeyOnly().then(
+      (data) async {
+        accessKeyModel = data;
+        // print("AccessKey :: " + accessKeyModel.accessKey);
+        await _siteController
+            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
+            .then(
+          (data) async {
+            // print("here");
+            viewSiteDataResponse = data;
+            setState(
+              () {
+                siteScore = viewSiteDataResponse.sitesModal.siteScore;
+                siteStageEntity = viewSiteDataResponse.siteStageEntity;
 
-          for (int i = 0; i < siteStageEntity.length; i++) {
-            if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
-                siteStageEntity[i].id.toString()) {
-              labelText = siteStageEntity[i].siteStageDesc;
-              labelId = siteStageEntity[i].id;
-              UpdatedValues.setSiteStageId(labelId);
-            }
-          }
+                for (int i = 0; i < siteStageEntity.length; i++) {
+                  if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
+                      siteStageEntity[i].id.toString()) {
+                    labelText = siteStageEntity[i].siteStageDesc;
+                    labelId = siteStageEntity[i].id;
+                    UpdatedValues.setSiteStageId(labelId);
+                  }
+                }
 
-          if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
-            for (int i = 0;
-                i < viewSiteDataResponse.siteOpportunityStatusEntity.length;
-                i++) {
-              if (viewSiteDataResponse.sitesModal.siteOppertunityId
-                      .toString() ==
-                  viewSiteDataResponse.siteOpportunityStatusEntity[i].id
-                      .toString()) {
-                _siteOpportunitStatusEnityVisit =
-                    viewSiteDataResponse.siteOpportunityStatusEntity[i];
-              }
-            }
-          } else {
-            _siteOpportunitStatusEnityVisit = null;
-          }
-        });
-      });
-    });
+                if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+                  for (int i = 0;
+                      i <
+                          viewSiteDataResponse
+                              .siteOpportunityStatusEntity.length;
+                      i++) {
+                    if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                            .toString() ==
+                        viewSiteDataResponse.siteOpportunityStatusEntity[i].id
+                            .toString()) {
+                      _siteOpportunitStatusEnityVisit =
+                          viewSiteDataResponse.siteOpportunityStatusEntity[i];
+                    }
+                  }
+                } else {
+                  _siteOpportunitStatusEnityVisit = null;
+                }
+              },
+            );
+          },
+        );
+      },
+    );
 
     return viewSiteDataResponse;
   }
