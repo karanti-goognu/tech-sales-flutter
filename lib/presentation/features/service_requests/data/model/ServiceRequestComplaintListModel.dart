@@ -54,6 +54,7 @@ class SrComplaintListModal {
   String creatorContact;
   String siteContact;
   String summarySrOfSite;
+  String requesterName;
 
   SrComplaintListModal(
       {this.siteId,
@@ -69,7 +70,8 @@ class SrComplaintListModal {
         this.escalationLevel,
         this.creatorContact,
         this.siteContact,
-        this.summarySrOfSite});
+        this.summarySrOfSite,
+        this.requesterName});
 
   SrComplaintListModal.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -86,6 +88,7 @@ class SrComplaintListModal {
     creatorContact = json['creatorContact'];
     siteContact = json['siteContact'];
     summarySrOfSite = json['summarySrOfSite'];
+    requesterName = json['requesterName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +107,7 @@ class SrComplaintListModal {
     data['creatorContact'] = this.creatorContact;
     data['siteContact'] = this.siteContact;
     data['summarySrOfSite'] = this.summarySrOfSite;
+    data['requesterName'] = this.requesterName;
     return data;
   }
 }

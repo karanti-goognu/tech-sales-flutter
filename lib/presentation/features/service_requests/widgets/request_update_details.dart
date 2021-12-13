@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -18,6 +19,7 @@ class RequestUpdateDetails extends StatefulWidget {
 
 class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
   UpdateServiceRequestController updateServiceRequestController=Get.find();
+  bool isSlabVisible = false;
 
   setValues() {
     setState(() {
@@ -59,6 +61,12 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           updateServiceRequestController.formwarkRemovalDate.text = widget.complaintViewModel.formwarkRemovalDate;
         }
       }
+
+      for(int i=0 ; i<widget.complaintViewModel.srcSubtypeMappingModal.length ; i++){
+        if((updateServiceRequestController.requestType.text=='SERVICE REQUEST') && widget.complaintViewModel.srcSubtypeMappingModal[i].requestTypeText == "SLAB SUPERVISION"){
+          isSlabVisible = true;
+        }
+      }
     });
   }
 
@@ -72,6 +80,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
   Widget build(BuildContext context) {
     return Form(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
             controller: updateServiceRequestController.complaintID,
@@ -139,108 +148,114 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
           ),
           SizedBox(height: 16),
-          TextFormField(
-            readOnly: true,
-            controller: updateServiceRequestController.requestSubType,
-            style: FormFieldStyle.formFieldTextStyle,
-            decoration: FormFieldStyle.buildInputDecoration(
-                labelText: "Request Sub-type*"),
-          ),
-          SizedBox(height: 16),
-          (updateServiceRequestController.requestType.text=='SERVICE REQUEST') && (updateServiceRequestController.requestSubType.text=="SLAB SUPERVISION")?
-          Column(children: [
-            TextFormField(
-              controller: updateServiceRequestController.coverBlockProvidedNo,
-              style: FormFieldStyle.formFieldTextStyle,
-              keyboardType: TextInputType.number,
-              maxLength: 3,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  try {
-                    final text = newValue.text;
-                    if (text.isNotEmpty) double.parse(text);
-                    return newValue;
-                  } catch (e) {}
-                  return oldValue;
-                }),
-              ],
-              decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "No. of Cover Blocks",),
 
-            ),
-            SizedBox(height: 1),
-            TextFormField(
-              controller: updateServiceRequestController.formwarkRemovalDate,
-              readOnly: true,
-              onChanged: (data) {
-                // setState(() {
-                //   _contactName.text = data;
-                // });
-              },
-              style: TextStyle(
-                  fontSize: 18,
-                  color: ColorConstants.inputBoxHintColor,
-                  fontFamily: "Muli"),
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
-                      width: 1.0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: Colors.black26, width: 1.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: Colors.red, width: 1.0),
-                ),
-                labelText: "Form Work Removal Date",
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.date_range_rounded,
-                    size: 22,
-                    color: ColorConstants.clearAllTextColor,
-                  ),
-                  onPressed: () async {
-                    print("here");
-                    final DateTime picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime.now(),
-                    );
-                    setState(() {
-                      final DateFormat formatter =
-                      DateFormat("yyyy-MM-dd");
-                      if (picked != null) {
-                        final String formattedDate =
-                        formatter.format(picked);
-                        updateServiceRequestController.formwarkRemovalDate.text = formattedDate;
-                      }
-                    });
-                  },
-                ),
-                filled: false,
-                focusColor: Colors.black,
-                isDense: false,
-                labelStyle: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0),
-                fillColor: ColorConstants.backgroundColor,
-              ),
-            ),
-            SizedBox(height: 18),
-          ],) :Container(),
+          // TextFormField(
+          //   readOnly: true,
+          //   controller: updateServiceRequestController.requestSubType,
+          //   style: FormFieldStyle.formFieldTextStyle,
+          //   decoration: FormFieldStyle.buildInputDecoration(
+          //       labelText: "Request Sub-type*"),
+          // ),
+          //SizedBox(height: 16),
+          displayChipForRequestSubType("Request Sub-type*", widget.complaintViewModel.srcSubtypeMappingModal),
+          SizedBox(height: 16),
+          Visibility(
+            visible: isSlabVisible, child:slab()),
+
+          // (updateServiceRequestController.requestType.text=='SERVICE REQUEST') && (updateServiceRequestController.requestSubType.text=="SLAB SUPERVISION")?
+          // Column(children: [
+          //   TextFormField(
+          //     controller: updateServiceRequestController.coverBlockProvidedNo,
+          //     style: FormFieldStyle.formFieldTextStyle,
+          //     keyboardType: TextInputType.number,
+          //     maxLength: 3,
+          //     inputFormatters: [
+          //       FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+          //       TextInputFormatter.withFunction((oldValue, newValue) {
+          //         try {
+          //           final text = newValue.text;
+          //           if (text.isNotEmpty) double.parse(text);
+          //           return newValue;
+          //         } catch (e) {}
+          //         return oldValue;
+          //       }),
+          //     ],
+          //     decoration: FormFieldStyle.buildInputDecoration(
+          //         labelText: "No. of Cover Blocks",),
+          //
+          //   ),
+          //   SizedBox(height: 1),
+          //   TextFormField(
+          //     controller: updateServiceRequestController.formwarkRemovalDate,
+          //     readOnly: true,
+          //     onChanged: (data) {
+          //       // setState(() {
+          //       //   _contactName.text = data;
+          //       // });
+          //     },
+          //     style: TextStyle(
+          //         fontSize: 18,
+          //         color: ColorConstants.inputBoxHintColor,
+          //         fontFamily: "Muli"),
+          //     keyboardType: TextInputType.text,
+          //     decoration: InputDecoration(
+          //       focusedBorder: OutlineInputBorder(
+          //         borderSide: BorderSide(
+          //             color: ColorConstants.backgroundColorBlue,
+          //             //color: HexColor("#0000001F"),
+          //             width: 1.0),
+          //       ),
+          //       disabledBorder: OutlineInputBorder(
+          //         borderSide:
+          //         BorderSide(color: Colors.black26, width: 1.0),
+          //       ),
+          //       enabledBorder: OutlineInputBorder(
+          //         borderSide:
+          //         BorderSide(color: Colors.black26, width: 1.0),
+          //       ),
+          //       errorBorder: OutlineInputBorder(
+          //         borderSide:
+          //         BorderSide(color: Colors.red, width: 1.0),
+          //       ),
+          //       labelText: "Form Work Removal Date",
+          //       suffixIcon: IconButton(
+          //         icon: Icon(
+          //           Icons.date_range_rounded,
+          //           size: 22,
+          //           color: ColorConstants.clearAllTextColor,
+          //         ),
+          //         onPressed: () async {
+          //           print("here");
+          //           final DateTime picked = await showDatePicker(
+          //             context: context,
+          //             initialDate: DateTime.now(),
+          //             firstDate: DateTime(2001),
+          //             lastDate: DateTime.now(),
+          //           );
+          //           setState(() {
+          //             final DateFormat formatter =
+          //             DateFormat("yyyy-MM-dd");
+          //             if (picked != null) {
+          //               final String formattedDate =
+          //               formatter.format(picked);
+          //               updateServiceRequestController.formwarkRemovalDate.text = formattedDate;
+          //             }
+          //           });
+          //         },
+          //       ),
+          //       filled: false,
+          //       focusColor: Colors.black,
+          //       isDense: false,
+          //       labelStyle: TextStyle(
+          //           fontFamily: "Muli",
+          //           color: ColorConstants.inputBoxHintColorDark,
+          //           fontWeight: FontWeight.normal,
+          //           fontSize: 16.0),
+          //       fillColor: ColorConstants.backgroundColor,
+          //     ),
+          //   ),
+          //   SizedBox(height: 18),
+          // ],) :Container(),
 
 
           TextFormField(
@@ -326,5 +341,165 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
         ],
       ),
     );
+  }
+
+  Widget slab(){
+    return Column(children: [
+      TextFormField(
+        controller: updateServiceRequestController.coverBlockProvidedNo,
+        style: FormFieldStyle.formFieldTextStyle,
+        keyboardType: TextInputType.number,
+        maxLength: 3,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+          TextInputFormatter.withFunction((oldValue, newValue) {
+            try {
+              final text = newValue.text;
+              if (text.isNotEmpty) double.parse(text);
+              return newValue;
+            } catch (e) {}
+            return oldValue;
+          }),
+        ],
+        decoration: FormFieldStyle.buildInputDecoration(
+          labelText: "No. of Cover Blocks",),
+
+      ),
+      SizedBox(height: 1),
+      TextFormField(
+        controller: updateServiceRequestController.formwarkRemovalDate,
+        readOnly: true,
+        onChanged: (data) {
+          // setState(() {
+          //   _contactName.text = data;
+          // });
+        },
+        style: TextStyle(
+            fontSize: 18,
+            color: ColorConstants.inputBoxHintColor,
+            fontFamily: "Muli"),
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: ColorConstants.backgroundColorBlue,
+                //color: HexColor("#0000001F"),
+                width: 1.0),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderSide:
+            BorderSide(color: Colors.black26, width: 1.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide:
+            BorderSide(color: Colors.black26, width: 1.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide:
+            BorderSide(color: Colors.red, width: 1.0),
+          ),
+          labelText: "Form Work Removal Date",
+          suffixIcon: IconButton(
+            icon: Icon(
+              Icons.date_range_rounded,
+              size: 22,
+              color: ColorConstants.clearAllTextColor,
+            ),
+            onPressed: () async {
+              print("here");
+              final DateTime picked = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2001),
+                lastDate: DateTime.now(),
+              );
+              setState(() {
+                final DateFormat formatter =
+                DateFormat("yyyy-MM-dd");
+                if (picked != null) {
+                  final String formattedDate =
+                  formatter.format(picked);
+                  updateServiceRequestController.formwarkRemovalDate.text = formattedDate;
+                }
+              });
+            },
+          ),
+          filled: false,
+          focusColor: Colors.black,
+          isDense: false,
+          labelStyle: TextStyle(
+              fontFamily: "Muli",
+              color: ColorConstants.inputBoxHintColorDark,
+              fontWeight: FontWeight.normal,
+              fontSize: 16.0),
+          fillColor: ColorConstants.backgroundColor,
+        ),
+      ),
+      SizedBox(height: 18),
+    ],);
+    //:Container();
+  }
+
+  Widget displayChipForRequestSubType(String title, List<SrcSubtypeMappingModal> list) {
+    return Padding(
+        padding: EdgeInsets.only(
+          left: (10),
+          right: (10),
+          top: (0),
+          bottom: (10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyles.formfieldLabelTextDark,
+            ),
+            SizedBox(
+              height:(10),
+            ),
+            Container(
+              height: (30),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: (list == null)?[]:list
+                    .map((e) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Chip(
+                    label: Text(
+                      e.requestTypeText,
+                      // e.serviceRequestTypeText,
+                      style: TextStyle(
+                          fontFamily: "Muli",
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14.0),
+                    ),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      side: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ))
+                    .toList(),
+              ),
+            ),
+            // Padding(
+            //   padding: EdgeInsets.only(top: (20)),
+            //   child: Divider(
+            //     height: 1,
+            //     color: ColorConstants.lightBlackBorderColor,
+            //   ),
+            // )
+          ],
+        ));
   }
 }

@@ -558,27 +558,30 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
-                        child:Container()
-                    ),
+                    // Expanded(
+                    //     child:Container()
+                    // ),
                     Icon(
                       Icons.call,
                       color: HexColor("#8DC63F"),
                     ),
-                    GestureDetector(
-                      child: Text(
-                        "${serviceRequestComplaintListModel.srComplaintListModal[index].siteContact}",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontFamily: "Muli",
-                          fontWeight: FontWeight.bold,
+                    Flexible(
+                      child: GestureDetector(
+                        child: Text("${serviceRequestComplaintListModel.srComplaintListModal[index].requesterName}",
+                        overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        onTap: () {
+                          launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].siteContact}');
+                        },
                       ),
-                      onTap: () {
-                        launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].siteContact}');
-                      },
                     ),
                   ],
                 ),

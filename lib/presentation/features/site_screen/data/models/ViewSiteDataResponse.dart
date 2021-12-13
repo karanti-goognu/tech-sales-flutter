@@ -28,6 +28,8 @@ class ViewSiteDataResponse {
   List<SiteInfluencerEntity> siteInfluencerEntity;
   List<CounterListModel> counterListModel;
   List<SiteStagePotentialEntity> siteStagePotentialEntity;
+  int supplyDate;
+  int constructionDays;
 
 
 
@@ -58,11 +60,15 @@ class ViewSiteDataResponse {
       this.siteOpportunityStatusEntity,
       this.siteInfluencerEntity,
       this.counterListModel,
-      this.siteStagePotentialEntity});
+      this.siteStagePotentialEntity,
+      this.supplyDate,
+      this.constructionDays});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    supplyDate = json['supplyDate'];
+    constructionDays = json['constructionDays'];
     sitesModal = json['sitesModal'] != null
         ? new SitesModal.fromJson(json['sitesModal'])
         : null;
@@ -188,6 +194,8 @@ class ViewSiteDataResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
+    data['supplyDate'] = this.supplyDate;
+    data['constructionDays'] = this.constructionDays;
     if (this.sitesModal != null) {
       data['sitesModal'] = this.sitesModal.toJson();
     }

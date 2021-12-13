@@ -3299,7 +3299,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
-    } else {
+    } else if (leadSource == "TECH VAN") {
+      _other.text = _leadSourceUser;
+      _isOtherTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
+    }else {
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
@@ -3338,6 +3343,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
     } else if (leadSource == "SPOTTER") {
+      //_other.text = _leadSourceUser;
+      _isOtherTextfieldVisible = true;
+      _isDropdownVisible = false;
+      _isInfTextfieldVisible = false;
+    }else if (leadSource == "TECH VAN") {
       //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
@@ -4699,6 +4709,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadSourceUser = _other.text;
                                         } else if (leadSource == "SPOTTER") {
                                           leadSourceUser = _other.text;
+                                        } else if (leadSource == "TECH VAN") {
+                                          leadSourceUser = _other.text;
                                         } else {
                                           leadSource = "SELF";
                                           leadSourceUser = empId;
@@ -4893,6 +4905,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         } else if (leadSource == "OTHER") {
                                           leadSourceUser = _other.text;
                                         } else if (leadSource == "SPOTTER") {
+                                          leadSourceUser = _other.text;
+                                        } else if (leadSource == "TECH VAN") {
                                           leadSourceUser = _other.text;
                                         } else {
                                           leadSource = "SELF";

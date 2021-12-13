@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/upd
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -733,7 +734,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 final DateTime picked = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2001),
+                                  //firstDate: DateTime(2001),
+                                  firstDate: DateTime.now().subtract(Duration(days: widget.viewSiteDataResponse.supplyDate)),
                                   lastDate: DateTime.now(),
                                 );
 
@@ -940,7 +942,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       ),
     );
   }
-
 
   setSiteProgressData() async {
     await db.clearTable();
@@ -1467,7 +1468,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2001),
-                        lastDate: DateTime.now().add(Duration(days: 14)),
+                        lastDate: DateTime.now().add(Duration(days: widget.viewSiteDataResponse.constructionDays)),
                       );
 
                       setState(() {
