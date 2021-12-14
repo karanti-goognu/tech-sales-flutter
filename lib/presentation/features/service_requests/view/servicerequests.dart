@@ -563,9 +563,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                     // Expanded(
                     //     child:Container()
                     // ),
-                    Icon(
-                      Icons.call,
-                      color: HexColor("#8DC63F"),
+                    GestureDetector(
+                      child: Icon(
+                        Icons.call,
+                        color: HexColor("#8DC63F"),
+                      ),
+                      onTap: () {
+                        launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].creatorContact}');
+                      },
                     ),
                     Flexible(
                       child: GestureDetector(
@@ -579,7 +584,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           ),
                         ),
                         onTap: () {
-                          launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].siteContact}');
+                          launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].creatorContact}');
                         },
                       ),
                     ),
