@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -46,6 +47,7 @@ class SiteController extends GetxController {
   final _secretKeyResponse = SecretKeyModel().obs;
   final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
   final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
+  final _siteDistResponse = SiteDistrictListModel().obs;
 
   get pendingSupplyListResponse => _pendingSupplyListResponse.value;
 
@@ -58,6 +60,9 @@ class SiteController extends GetxController {
   set pendingSupplyDetailsResponse(value) {
     _pendingSupplyDetailsResponse.value = value;
   }
+
+  get siteDistResponse => _siteDistResponse.value;
+  set siteDistResponse(value) => _siteDistResponse.value = value;
 
   var _sitesListOffline = List<SitesEntity>().obs;
 
@@ -86,6 +91,8 @@ class SiteController extends GetxController {
 
   final _selectedSiteInfluencerCat = StringConstants.empty.obs;
   final _selectedSiteInfluencerCatValue = StringConstants.empty.obs;
+
+  final _selectedSiteDistrict = StringConstants.empty.obs;
 
   final _infName = StringConstants.empty.obs;
 
@@ -123,6 +130,8 @@ class SiteController extends GetxController {
 
   get selectedSiteInfluencerCatValue =>
       this._selectedSiteInfluencerCatValue.value;
+
+  get selectedSiteDistrict => this._selectedSiteDistrict.value;
 
   get infname => this._infName.value;
 
@@ -169,6 +178,8 @@ class SiteController extends GetxController {
 
   set selectedSiteInfluencerCatValue(value) =>
       this._selectedSiteInfluencerCatValue.value = value;
+
+  set selectedSiteDistrict(value) => this._selectedSiteDistrict.value = value;
 
   set sitesListResponse(value) => this._sitesListResponse.value = value;
 
@@ -316,13 +327,19 @@ class SiteController extends GetxController {
       if (this.selectedSiteInfluencerCatValue != StringConstants.empty) {
         siteStage = "&siteInflCat=${this.selectedSiteInfluencerCatValue}";
       }
+
+      String siteDistrict = "";
+      if (this.selectedSiteDistrict != StringConstants.empty) {
+        siteDistrict = "&siteDistrict%20=${this.selectedSiteDistrict}";
+      }
+
       String influencerID = "";
       if (influencer_id != StringConstants.empty) {
         influencerID = "&influencerID=${influencer_id}";
       }
       //debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${this.offset}');
-      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
@@ -418,6 +435,17 @@ class SiteController extends GetxController {
         }
       });
     });
+  }
+
+  Future<SiteDistrictListModel> getSiteDistList() async {
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKeyNew();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey);
+    });
+    return siteDistResponse;
   }
 
   getAccessKeyOnly() {

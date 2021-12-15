@@ -3,18 +3,24 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteFilterWidget extends StatefulWidget {
+  SiteDistrictListModel siteDistrictListModel;
+
+  SiteFilterWidget({this.siteDistrictListModel});
   @override
   _SiteFilterWidgetState createState() => _SiteFilterWidgetState();
 }
@@ -24,9 +30,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
   List<SitesEntity> siteList = new List();
+
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
-
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +144,12 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   },
                   child: returnSelectedWidget("Influencer Cat.", 4),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    _siteController.selectedPosition = 5;
+                  },
+                  child: returnSelectedWidget("District", 5),
+                ),
               ],
             ),
           ),
@@ -173,23 +185,27 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _siteController.isFilterApplied=false;
+                    _siteController.isFilterApplied = false;
                     //Navigator.pop(context);
                     _siteController.selectedSiteStage = StringConstants.empty;
-                    _siteController.selectedSiteStageValue = StringConstants.empty;
+                    _siteController.selectedSiteStageValue =
+                        StringConstants.empty;
                     _siteController.selectedSiteStatus = StringConstants.empty;
-                    _siteController.selectedSiteStatusValue = StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCat = StringConstants.empty;
-                    _siteController.selectedSiteInfluencerCatValue = StringConstants.empty;
+                    _siteController.selectedSiteStatusValue =
+                        StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCat =
+                        StringConstants.empty;
+                    _siteController.selectedSiteInfluencerCatValue =
+                        StringConstants.empty;
                     _siteController.assignToDate = StringConstants.empty;
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedSitePincode = StringConstants.empty;
+                    _siteController.selectedSiteDistrict = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
                     _siteController.offset = 0;
                     _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-                   // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
+                    // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
                   },
                   child: Text(
                     "Clear All",
@@ -199,15 +215,15 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 Spacer(),
                 RaisedButton(
                   onPressed: () {
-                   // setState(() {
-                    Navigator.pop(context,siteList);
-                    _siteController.isFilterApplied=true;
+                    // setState(() {
+                    Navigator.pop(context, siteList);
+                    _siteController.isFilterApplied = true;
                     _siteController.offset = 0;
                     _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-                   // _siteController.offset = 0;
+                    // _siteController.offset = 0;
                     //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-                   // });
+                    // });
                   },
                   color: ColorConstants.buttonNormalColor,
                   child: Text(
@@ -268,7 +284,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                     ? returnLeadStatusBody()
                     : (_siteController.selectedPosition == 3)
                         ? returnPincodeBody()
-                        : returnSiteInfluencerBody(),
+                        : (_siteController.selectedPosition == 4)
+                            ? returnSiteInfluencerBody()
+                            : returnDistrictBody(),
       ),
     );
   }
@@ -392,20 +410,19 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               value: stageValue,
               groupValue: _siteController.selectedSiteStage as String,
               onChanged: (String value) {
-                if (_siteController.selectedSiteStage == StringConstants.empty) {
-
+                if (_siteController.selectedSiteStage ==
+                    StringConstants.empty) {
                   _siteController.selectedFilterCount =
                       _siteController.selectedFilterCount + 1;
                 }
-                  _siteController.selectedSiteStage = value;
-                 _siteController.selectedSiteStageValue = leadStageValue;
-                fetchFilterData("","",leadStageValue,"","","");
-               // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
+                _siteController.selectedSiteStage = value;
+                _siteController.selectedSiteStageValue = leadStageValue;
+                fetchFilterData("", "", leadStageValue, "", "", "");
+                // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
                 _siteController.offset = 0;
                 _siteController.sitesListResponse.sitesEntity = null;
-                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -446,13 +463,12 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   _siteController.selectedFilterCount =
                       _siteController.selectedFilterCount + 1;
                 }
-                 _siteController.selectedSiteStatus = value;
+                _siteController.selectedSiteStatus = value;
                 _siteController.selectedSiteStatusValue = leadStatusValue;
                 _siteController.offset = 0;
                 _siteController.sitesListResponse.sitesEntity = null;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
+                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
@@ -477,7 +493,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
               //       <--- BoxDecoration here
               child: TextFormField(
                 onChanged: (_) {
-                   _siteController.selectedSitePincode = _;
+                  _siteController.selectedSitePincode = _;
                 },
                 style: TextStyle(
                     fontSize: 18,
@@ -559,11 +575,45 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 _siteController.offset = 0;
                 _siteController.sitesListResponse.sitesEntity = null;
                 _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-               // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
+                // _siteController.getAccessKey(RequestIds.GET_SITES_LIST);
               },
             ),
           )),
+    );
+  }
+
+  Widget returnDistrictBody() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
+        child: DropdownButtonFormField(
+          onChanged: (value) {
+           // setState(() {
+           //  if (_siteController.selectedSiteInfluencerCat ==
+           //      StringConstants.empty) {
+           //    _siteController.selectedFilterCount =
+           //        _siteController.selectedFilterCount + 1;
+           //  }
+              _siteController.selectedSiteDistrict = value;
+              // _siteController.offset = 0;
+              // _siteController.sitesListResponse.sitesEntity = null;
+              // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+         //   });
+          },
+          items: (widget.siteDistrictListModel == null ||
+              widget.siteDistrictListModel.districtList == null)
+              ? []
+                  : widget.siteDistrictListModel.districtList
+              .map((e) => DropdownMenuItem(
+                    value: e.name,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        child: Text(e.name)),
+                  ))
+              .toList(),
+          style: FormFieldStyle.formFieldTextStyle,
+         // decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
+          //validator: (value) => value == null ? 'Please select member type' : null,
+        ),
     );
   }
 
@@ -593,49 +643,86 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
       });
   }
 
-  List<SitesEntity> fetchFilterData(String  assignDateFromReq,String assignDateToReq,String siteStageReq,String siteStatusReq,String sitePincodeReq,String siteInflCatReq){
+  List<SitesEntity> fetchFilterData(
+      String assignDateFromReq,
+      String assignDateToReq,
+      String siteStageReq,
+      String siteStatusReq,
+      String sitePincodeReq,
+      String siteInflCatReq,
+     // String siteDistrictReq
+      ) {
     String appendQuery = "";
-    String whereArgs="";
+    String whereArgs = "";
     final db = SiteListDBHelper();
-    if (assignDateFromReq != null && assignDateFromReq!="") {
-      appendQuery==""?appendQuery="siteCreationDate>=?": appendQuery = appendQuery + "and siteCreationDate>=?";
-      whereArgs==""?whereArgs="'" + assignDateFromReq + "'":whereArgs=whereArgs+"'" + assignDateFromReq + "'"+",";
+    if (assignDateFromReq != null && assignDateFromReq != "") {
+      appendQuery == ""
+          ? appendQuery = "siteCreationDate>=?"
+          : appendQuery = appendQuery + "and siteCreationDate>=?";
+      whereArgs == ""
+          ? whereArgs = "'" + assignDateFromReq + "'"
+          : whereArgs = whereArgs + "'" + assignDateFromReq + "'" + ",";
     }
 
-    if (assignDateToReq != null && assignDateToReq!="") {
-      appendQuery==""?appendQuery= "siteCreationDate<=?":
-      appendQuery = appendQuery + " and siteCreationDate<=?";
-      whereArgs==""?whereArgs="'" + assignDateToReq + "'":whereArgs=whereArgs+"'" + assignDateToReq + "'"+",";
+    if (assignDateToReq != null && assignDateToReq != "") {
+      appendQuery == ""
+          ? appendQuery = "siteCreationDate<=?"
+          : appendQuery = appendQuery + " and siteCreationDate<=?";
+      whereArgs == ""
+          ? whereArgs = "'" + assignDateToReq + "'"
+          : whereArgs = whereArgs + "'" + assignDateToReq + "'" + ",";
     }
 
-    if (siteStageReq != null  && siteStageReq!="") {
-      appendQuery==""?appendQuery= "siteStageId=?":
-      appendQuery = appendQuery + " and siteStageId=?";
-      whereArgs==""?whereArgs= siteStageReq:whereArgs=whereArgs + siteStageReq+",";
+    if (siteStageReq != null && siteStageReq != "") {
+      appendQuery == ""
+          ? appendQuery = "siteStageId=?"
+          : appendQuery = appendQuery + " and siteStageId=?";
+      whereArgs == ""
+          ? whereArgs = siteStageReq
+          : whereArgs = whereArgs + siteStageReq + ",";
     }
 
-    if (siteStatusReq != null &&  siteStatusReq!="") {
-      appendQuery==""?appendQuery= "siteStatusId=?":
-      appendQuery = appendQuery + " and siteStatusId=?";
-      whereArgs==""?whereArgs=siteStatusReq:whereArgs=whereArgs+ siteStatusReq+",";
+    if (siteStatusReq != null && siteStatusReq != "") {
+      appendQuery == ""
+          ? appendQuery = "siteStatusId=?"
+          : appendQuery = appendQuery + " and siteStatusId=?";
+      whereArgs == ""
+          ? whereArgs = siteStatusReq
+          : whereArgs = whereArgs + siteStatusReq + ",";
     }
 
-    if (sitePincodeReq != null && sitePincodeReq !="") {
-      appendQuery==""?appendQuery= "sitePincode=?":
-      appendQuery = appendQuery + " and sitePincode=?";
-      whereArgs==""?whereArgs="'" + sitePincodeReq + "'":whereArgs=whereArgs+"'" + sitePincodeReq + "'"+",";
+    if (sitePincodeReq != null && sitePincodeReq != "") {
+      appendQuery == ""
+          ? appendQuery = "sitePincode=?"
+          : appendQuery = appendQuery + " and sitePincode=?";
+      whereArgs == ""
+          ? whereArgs = "'" + sitePincodeReq + "'"
+          : whereArgs = whereArgs + "'" + sitePincodeReq + "'" + ",";
     }
+
+    // if (siteDistrictReq != null && siteDistrictReq != "") {
+    //   appendQuery == ""
+    //       ? appendQuery = "siteDistrict=?"
+    //       : appendQuery = appendQuery + " and siteDistrict=?";
+    //   whereArgs == ""
+    //       ? whereArgs = "'" + siteDistrictReq + "'"
+    //       : whereArgs = whereArgs + "'" + siteDistrictReq + "'" + ",";
+    // }
 
     print(whereArgs.runtimeType);
     db.filterSiteEntityList(appendQuery, whereArgs).then((value) {
       _siteController.fetchFliterSiteList1(value);
       setState(() {
         siteList = value;
-        print("Filter-->"+appendQuery+".."+whereArgs+"..."+siteList.length.toString());
+        print("Filter-->" +
+            appendQuery +
+            ".." +
+            whereArgs +
+            "..." +
+            siteList.length.toString());
       });
     });
 
-    return  siteList;
-
+    return siteList;
   }
 }

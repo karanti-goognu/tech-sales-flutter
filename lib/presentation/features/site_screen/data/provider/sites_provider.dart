@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
@@ -482,6 +483,31 @@ print("URL:$url ");
     } catch (_) {
       // print('error in catch ${_.toString()}');
     }
+  }
+
+
+  ///district list for filter
+  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey,) async {
+    SiteDistrictListModel siteDistrictListModel;
+    try {
+      version = VersionClass.getVersion();
+
+      var response = await http.get(Uri.parse(UrlConstants.siteDistList),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs().appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
+        print(response.body);
+      }
+    }
+    catch (e) {
+      print("Exception at Site Repo $e");
+    }
+    return siteDistrictListModel;
   }
 
 

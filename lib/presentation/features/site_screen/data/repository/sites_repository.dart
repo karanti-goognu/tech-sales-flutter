@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
@@ -83,6 +84,11 @@ class MyRepositorySites {
 
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) {
     return apiClient.updatePendingSupplyDetails(accessKey, securityKey, url,jsonData);
+  }
+
+  ////district list for filter
+  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey) async {
+    return apiClient.getSiteDistList(accessKey, userSecretKey);
   }
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}

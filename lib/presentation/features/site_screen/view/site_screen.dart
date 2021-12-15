@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_list.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_list_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
@@ -9,10 +10,12 @@ import 'package:flutter_tech_sales/presentation/features/splash/controller/splas
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class SiteScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class _SiteScreenState extends State<SiteScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   SiteController _siteController = Get.find();
+  SiteDistrictListModel _siteDistrictListModel;
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
   int selectedPosition = 0;
@@ -34,6 +38,7 @@ class _SiteScreenState extends State<SiteScreen> {
   @override
   void initState() {
     super.initState();
+    getDropdownData();
     toolbarHeight = SizeConfig.screenHeight * .18;
     _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
@@ -50,6 +55,7 @@ class _SiteScreenState extends State<SiteScreen> {
     _siteController.assignToDate = StringConstants.empty;
     _siteController.assignFromDate = StringConstants.empty;
     _siteController.selectedSitePincode = StringConstants.empty;
+    _siteController.selectedSiteDistrict = StringConstants.empty;
   }
 
   @override
@@ -65,6 +71,31 @@ class _SiteScreenState extends State<SiteScreen> {
     _siteController.offset = 0;
     _siteController?.dispose();
   }
+
+  getDropdownData() {
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _siteController.getSiteDistList().then((data) {
+            setState(() {
+              if(data != null){
+                _siteDistrictListModel = data;
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +141,7 @@ class _SiteScreenState extends State<SiteScreen> {
                             ? Container()
                             : FlatButton(
                                 onPressed: () {
-                                  _settingModalBottomSheet(context);
+                                    _settingModalBottomSheet(context);
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
@@ -308,6 +339,35 @@ class _SiteScreenState extends State<SiteScreen> {
                                           print("selected");
                                         },
                                       )),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController
+                                    .selectedSiteDistrict ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.selectedSiteDistrict}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape:
+                                  StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+
                               ],
                             ))
                   ],
@@ -373,7 +433,7 @@ class _SiteScreenState extends State<SiteScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return SiteFilterWidget();
+          return SiteFilterWidget(siteDistrictListModel: _siteDistrictListModel);
         }).whenComplete(() {
       setState(() {
         toolbarHeight = _siteController.selectedFilterCount == 0
