@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -36,6 +37,8 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -586,35 +589,36 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
     return Container(
         padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
         child: DropdownButtonFormField(
-          onChanged: (value) {
-           // setState(() {
-           //  if (_siteController.selectedSiteInfluencerCat ==
-           //      StringConstants.empty) {
-           //    _siteController.selectedFilterCount =
-           //        _siteController.selectedFilterCount + 1;
-           //  }
-              _siteController.selectedSiteDistrict = value;
-              // _siteController.offset = 0;
-              // _siteController.sitesListResponse.sitesEntity = null;
-              // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-         //   });
+          onChanged: (_) {
+            //setState(() {
+            if (_siteController.selectedSiteDistrict ==
+                StringConstants.empty) {
+              _siteController.selectedFilterCount =
+                  _siteController.selectedFilterCount + 1;
+              }
+              _siteController.selectedSiteDistrict = _;
+              _siteController.isFilterApplied = true;
+                _siteController.offset = 0;
+                _siteController.sitesListResponse.sitesEntity = null;
+                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+           // });
           },
           items: (widget.siteDistrictListModel == null ||
               widget.siteDistrictListModel.districtList == null)
               ? []
                   : widget.siteDistrictListModel.districtList
-              .map((e) => DropdownMenuItem(
+              .map((e) =>DropdownMenuItem(
                     value: e.name,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 2.5,
                         child: Text(e.name)),
-                  ))
+          ))
               .toList(),
           style: FormFieldStyle.formFieldTextStyle,
-         // decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
+          decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
           //validator: (value) => value == null ? 'Please select member type' : null,
         ),
-    );
+   );
   }
 
   BoxDecoration myBoxDecoration() {
