@@ -367,7 +367,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       },
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'Please enter Site Built-Up Area ';
+                                        return 'Please enter Site Built-Up Area (sqft)';
                                       }
                                       return null;
                                     },
@@ -392,7 +392,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     ],
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
-                                            labelText: "Site Built-up area")),
+                                            labelText: "Site Built-up area (sqft)")),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(

@@ -498,32 +498,44 @@ class _SitePastStageHistoryWidgetState
                   ),
                 ),
                 SizedBox(height: 12),
-                TextFormField(
-                  readOnly: true,
-                  initialValue:GlobalMethods.dealerValue(
-                      counterListModel, siteSupplyHistory.soldToParty),
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Dealer",
-                  ),
-                ),
+                // TextFormField(
+                //   readOnly: true,
+                //   initialValue:GlobalMethods.dealerValue(
+                //       counterListModel, siteSupplyHistory.soldToParty),
+                //   style: TextStyle(
+                //       fontSize: 18,
+                //       color: ColorConstants.inputBoxHintColor,
+                //       fontFamily: "Muli"),
+                //   keyboardType: TextInputType.text,
+                //   decoration: FormFieldStyle.buildInputDecoration(
+                //     labelText: "Dealer",
+                //   ),
+                // ),
                 SizedBox(height: 16),
-                TextFormField(
-                  readOnly: true,
-                  initialValue: GlobalMethods.subDealerValue(
-                      counterListModel, siteSupplyHistory.shipToParty),
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: TextInputType.text,
-                  decoration: FormFieldStyle.buildInputDecoration(
-                    labelText: "Sub-Dealer",
-                  ),
+                // TextFormField(
+                //   readOnly: true,
+                //   initialValue: GlobalMethods.subDealerValue(
+                //       counterListModel, siteSupplyHistory.shipToParty),
+                //   style: TextStyle(
+                //       fontSize: 18,
+                //       color: ColorConstants.inputBoxHintColor,
+                //       fontFamily: "Muli"),
+                //   keyboardType: TextInputType.text,
+                //   decoration: FormFieldStyle.buildInputDecoration(
+                //     labelText: "Sub-Dealer",
+                //   ),
+                  TextFormField(
+                    readOnly: true,
+                    initialValue: GlobalMethods.subDealerValue(
+                        counterListModel, siteSupplyHistory.shipToParty),
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.inputBoxHintColor,
+                        fontFamily: "Muli"),
+                    keyboardType: TextInputType.text,
+                    decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Counter",
+                    ),
                 ),
                 SizedBox(height: 16),
                 TextFormField(

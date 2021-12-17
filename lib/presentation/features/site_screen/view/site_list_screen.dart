@@ -146,7 +146,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     _siteController.assignToDate = StringConstants.empty;
     _siteController.assignFromDate = StringConstants.empty;
     _siteController.selectedSitePincode = StringConstants.empty;
-    _siteController.selectedSiteDistrict = StringConstants.empty;
+    //_siteController.selectedSiteDistrict = StringConstants.empty;
   }
 
   @override

@@ -19,9 +19,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteFilterWidget extends StatefulWidget {
-  SiteDistrictListModel siteDistrictListModel;
+ // SiteDistrictListModel siteDistrictListModel;
 
-  SiteFilterWidget({this.siteDistrictListModel});
+//  SiteFilterWidget({this.siteDistrictListModel});
   @override
   _SiteFilterWidgetState createState() => _SiteFilterWidgetState();
 }
@@ -147,12 +147,12 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   },
                   child: returnSelectedWidget("Influencer Cat.", 4),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _siteController.selectedPosition = 5;
-                  },
-                  child: returnSelectedWidget("District", 5),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     _siteController.selectedPosition = 5;
+                //   },
+                //   child: returnSelectedWidget("District", 5),
+                // ),
               ],
             ),
           ),
@@ -287,9 +287,11 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                     ? returnLeadStatusBody()
                     : (_siteController.selectedPosition == 3)
                         ? returnPincodeBody()
-                        : (_siteController.selectedPosition == 4)
-                            ? returnSiteInfluencerBody()
-                            : returnDistrictBody(),
+                          :returnSiteInfluencerBody()
+
+                        // : (_siteController.selectedPosition == 4)
+                        //     ? returnSiteInfluencerBody()
+                        //     : returnDistrictBody(),
       ),
     );
   }
@@ -584,7 +586,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
           )),
     );
   }
-
+/*
   Widget returnDistrictBody() {
     return Container(
         padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
@@ -620,6 +622,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
         ),
    );
   }
+  */
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(

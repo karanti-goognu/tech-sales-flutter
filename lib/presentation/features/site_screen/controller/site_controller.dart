@@ -330,7 +330,7 @@ class SiteController extends GetxController {
 
       String siteDistrict = "";
       if (this.selectedSiteDistrict != StringConstants.empty) {
-        siteDistrict = "&siteDistrict%20=${this.selectedSiteDistrict}";
+        siteDistrict = "&siteDistrict=${this.selectedSiteDistrict}";
       }
 
       String influencerID = "";
@@ -367,7 +367,6 @@ class SiteController extends GetxController {
               sitesListModel.sitesEntity.addAll(this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
               this.sitesListResponse.sitesEntity.sort((SitesEntity a, SitesEntity b) => b.createdOn.compareTo(a.createdOn));
-
               ///filter issue
               if(this.isFilterApplied==true){
                 this.sitesListResponse = sitesListModel;
