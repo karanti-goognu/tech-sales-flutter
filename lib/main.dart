@@ -5,9 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
+import 'package:flutter_tech_sales/utils/constants/moengage_util.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'utils/constants/app_theme.dart';
+import 'package:moengage_flutter/push_campaign.dart';
+import 'package:moengage_flutter/inapp_campaign.dart';
+import 'package:moengage_inbox/moengage_inbox.dart';
+import 'package:moengage_flutter/push_token.dart';
 
 
 void main() async {
@@ -31,6 +36,66 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+  final MoEngageInbox _moEngageInbox = MoEngageInbox();
+
+  void _onPushClick(PushCampaign message) {
+    print(
+        "Main : _onPushClick(): This is a push click callback from native to flutter. Payload " +
+            message.toString());
+  }
+
+  void _onInAppClick(InAppCampaign message) {
+    print(
+        "Main : _onInAppClick() : This is a inapp click callback from native to flutter. Payload " +
+            message.toString());
+  }
+
+  void _onInAppShown(InAppCampaign message) {
+    print(
+        "Main : _onInAppShown() : This is a callback on inapp shown from native to flutter. Payload " +
+            message.toString());
+  }
+
+  void _onInAppDismiss(InAppCampaign message) {
+    print(
+        "Main : _onInAppDismiss() : This is a callback on inapp dismiss from native to flutter. Payload " +
+            message.toString());
+  }
+
+  void _onInAppCustomAction(InAppCampaign message) {
+    print(
+        "Main : _onInAppCustomAction() : This is a callback on inapp custom action from native to flutter. Payload " +
+            message.toString());
+  }
+
+  void _onInAppSelfHandle(InAppCampaign message) async {
+    print(
+        "Main : _onInAppSelfHandle() : This is a callback on inapp self handle from native to flutter. Payload " +
+            message.toString());
+
+    final SelfHandledActions action =
+    await asyncSelfHandledDialog(context);
+    switch (action) {
+      case SelfHandledActions.Shown:
+        _moengagePlugin.selfHandledShown(message);
+        break;
+      case SelfHandledActions.PrimaryClicked:
+        _moengagePlugin.selfHandledPrimaryClicked(message);
+        break;
+      case SelfHandledActions.Clicked:
+        _moengagePlugin.selfHandledClicked(message);
+        break;
+      case SelfHandledActions.Dismissed:
+        _moengagePlugin.selfHandledDismissed(message);
+        break;
+    }
+  }
+
+  void _onPushTokenGenerated(PushToken pushToken) {
+    print(
+        "Main : _onPushTokenGenerated() : This is callback on push token generated from native to flutter: PushToken: " +
+            pushToken.toString());
+  }
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
@@ -42,7 +107,14 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     initPlatformState();
     _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
+    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    _moengagePlugin.setUpInAppCallbacks(
+        onInAppClick: _onInAppClick,
+        onInAppShown: _onInAppShown,
+        onInAppDismiss: _onInAppDismiss,
+        onInAppCustomAction: _onInAppCustomAction,
+        onInAppSelfHandle: _onInAppSelfHandle);
+    _moengagePlugin.setUpPushTokenCallback(_onPushTokenGenerated);
   }
 
   @override
