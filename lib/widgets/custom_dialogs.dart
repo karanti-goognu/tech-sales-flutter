@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -1452,4 +1453,126 @@ class CustomDialogs {
       ],
     );
   }
+
+
+  Widget showDialogForKittiPoints(KittyBagsListModel _kittyBagsListModel, BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        width: MediaQuery.of(context).size.width*0.75,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+         // child: Column(
+            children: <Widget>[
+              Text(
+                "Kitty Bags",
+                style: GoogleFonts.roboto(
+                    fontSize: 20,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Product",
+                      style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          height: 1.4,
+                          letterSpacing: .25,
+                          fontStyle: FontStyle.normal,
+                          color: ColorConstants.inputBoxHintColorDark),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "Reserved",
+                      style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          height: 1.4,
+                          letterSpacing: .25,
+                          fontStyle: FontStyle.normal,
+                          color: ColorConstants.inputBoxHintColorDark),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "Claimable",
+                      style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          height: 1.4,
+                          letterSpacing: .25,
+                          fontStyle: FontStyle.normal,
+                          color: ColorConstants.inputBoxHintColorDark),
+                    ),
+                  ),
+                ],
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: _kittyBagsListModel.response.kittyPointsList.length,
+                itemBuilder:(context, index) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _kittyBagsListModel.response.kittyPointsList[index].productName,
+                          style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              height: 1.4,
+                              letterSpacing: .25,
+                              fontStyle: FontStyle.normal,
+                              color: ColorConstants.inputBoxHintColorDark),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '${_kittyBagsListModel.response.reservePoolList[index].kittyBags}',
+                          style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              height: 1.4,
+                              letterSpacing: .25,
+                              fontStyle: FontStyle.normal,
+                              color: ColorConstants.inputBoxHintColorDark),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '${_kittyBagsListModel.response.kittyPointsList[index].kittyBags}',
+                          style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              height: 1.4,
+                              letterSpacing: .25,
+                              fontStyle: FontStyle.normal,
+                              color: ColorConstants.inputBoxHintColorDark),
+                        ),
+                      ),
+                    ],
+                  );
+                })
+             ],
+          ),
+      ),
+      //),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+
 }

@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -26,6 +29,8 @@ class SiteProgressWidget extends StatefulWidget {
 
 class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     with SingleTickerProviderStateMixin {
+
+  SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
@@ -121,6 +126,37 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<ProductListModel> productDynamicList = new List();
 
   String availableKittyPoint = "0";
+  String claimableKittyBagsAvailable = "0";
+  String reservedKittyBagsAvailable = "0";
+
+  KittyBagsListModel _kittyBagsListModel;
+
+  getKittyBags(String partyCode) {
+    //String productCode
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _siteController.getSiteKittyBags(partyCode).then((data) {
+            setState(() {
+              if(data != null){
+                _kittyBagsListModel = data;
+                claimableKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                reservedKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
+  }
 
   /// get _getProductList
   List<Widget> _getProductList() {
@@ -474,11 +510,15 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         visitDataDealer = value.id;
                         _dealerName.text = value.dealerName;
                         UpdatedValues.setDealerEntityForDb(_dealerEntityForDb);
-                        for(int i=0; i<counterListModel.length;i++) {
-                          if( counterListModel[i].shipToParty == value.id){
-                            availableKittyPoint = counterListModel[i].availableKittyPoint;
-                          }
-                        }
+                        getKittyBags(value.id);
+                        // Get.dialog(
+                        //     CustomDialogs().showDialogForKittiPoints("", context),
+                        //     barrierDismissible: false);
+                        // for(int i=0; i<counterListModel.length;i++) {
+                        //   if( counterListModel[i].shipToParty == value.id){
+                        //     availableKittyPoint = counterListModel[i].availableKittyPoint;
+                        //   }
+                        // }
                       });
                     },
                     style: FormFieldStyle.formFieldTextStyle,
@@ -511,7 +551,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         _dealerEntityForDb = value;
                         visitDataDealer = value.id;
                         _dealerName.text = value.dealerName;
-
                         for(int i=0; i<counterListModel.length;i++) {
                           if( counterListModel[i].shipToParty == value.id){
                             availableKittyPoint = counterListModel[i].availableKittyPoint;
@@ -557,7 +596,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         ),
                       )
                     : Container(),
-
+/*
                     (_siteBrandFromLocalDB != null &&
                             _siteBrandFromLocalDB.brandName.toLowerCase() ==
                                 "dalmia")
@@ -589,7 +628,81 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             ),
                           )
                         : Container(),
+*/
 
+                (_siteBrandFromLocalDB != null &&
+                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        "dalmia" && visitDataDealer != null)
+                    ? Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 20, left: 5, right: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Reserved Kitty Bags Available",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: HexColor("#168A08"),
+                                fontFamily: "Muli"),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Get.dialog(
+                                  CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
+                                  barrierDismissible: false);
+                            },
+                            child: Text(
+                              reservedKittyBagsAvailable,
+                              // "${availableKittyPoint1()}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: HexColor("#168A08"),
+                                  fontFamily: "Muli"),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Claimable Kitty Bags Available",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                color: HexColor("#168A08"),
+                                fontFamily: "Muli"),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Get.dialog(
+                                  CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
+                                  barrierDismissible: false);
+                            },
+                            child: Text(
+                              claimableKittyBagsAvailable,
+                              // "${availableKittyPoint1()}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: HexColor("#168A08"),
+                                  fontFamily: "Muli"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+                    : Container(),
 
 
                 (_siteBrandFromLocalDB != null &&

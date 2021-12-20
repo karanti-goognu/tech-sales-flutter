@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -508,6 +509,30 @@ print("URL:$url ");
       print("Exception at Site Repo $e");
     }
     return siteDistrictListModel;
+  }
+
+  Future<KittyBagsListModel> getKittyBagsList(String accessKey, String partyCode, String userSecretKey,) async {
+    KittyBagsListModel kittyBagsListModel;
+    try {
+      version = VersionClass.getVersion();
+      String url = UrlConstants.siteKittyPoints + "$partyCode";
+      print(url);
+      var response = await http.get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs().appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        kittyBagsListModel = KittyBagsListModel.fromJson(json.decode(response.body));
+        print(response.body);
+      }
+    }
+    catch (e) {
+      print("Exception at Site Repo $e");
+    }
+    return kittyBagsListModel;
   }
 
 

@@ -38,7 +38,7 @@ class _SiteScreenState extends State<SiteScreen> {
   @override
   void initState() {
     super.initState();
-    //getDropdownData();
+    getDropdownData();
     toolbarHeight = SizeConfig.screenHeight * .18;
     _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
@@ -55,7 +55,7 @@ class _SiteScreenState extends State<SiteScreen> {
     _siteController.assignToDate = StringConstants.empty;
     _siteController.assignFromDate = StringConstants.empty;
     _siteController.selectedSitePincode = StringConstants.empty;
-    //_siteController.selectedSiteDistrict = StringConstants.empty;
+    _siteController.selectedSiteDistrict = StringConstants.empty;
   }
 
   @override
@@ -71,7 +71,7 @@ class _SiteScreenState extends State<SiteScreen> {
     _siteController.offset = 0;
     _siteController?.dispose();
   }
-/*
+
   getDropdownData() {
     internetChecking().then((result) => {
       if (result == true)
@@ -95,7 +95,7 @@ class _SiteScreenState extends State<SiteScreen> {
         }
     });
   }
-*/
+
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +339,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                           print("selected");
                                         },
                                       )),
-                                /*
+
                                 SizedBox(
                                   width: 8,
                                 ),
@@ -368,7 +368,7 @@ class _SiteScreenState extends State<SiteScreen> {
                                     print("selected");
                                   },
                                 )),
-                                */
+
 
                               ],
                             ))
@@ -435,8 +435,8 @@ class _SiteScreenState extends State<SiteScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return SiteFilterWidget();
-         // return SiteFilterWidget(siteDistrictListModel: _siteDistrictListModel);
+         // return SiteFilterWidget();
+          return SiteFilterWidget(siteDistrictListModel: _siteDistrictListModel);
         }).whenComplete(() {
       setState(() {
         toolbarHeight = _siteController.selectedFilterCount == 0

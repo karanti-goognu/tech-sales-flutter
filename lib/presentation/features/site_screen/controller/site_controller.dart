@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -48,6 +49,7 @@ class SiteController extends GetxController {
   final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
   final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
   final _siteDistResponse = SiteDistrictListModel().obs;
+  final _kittyBagsListModel = KittyBagsListModel().obs;
 
   get pendingSupplyListResponse => _pendingSupplyListResponse.value;
 
@@ -63,6 +65,10 @@ class SiteController extends GetxController {
 
   get siteDistResponse => _siteDistResponse.value;
   set siteDistResponse(value) => _siteDistResponse.value = value;
+
+
+  get kittyBagsListModel => _kittyBagsListModel.value;
+  set kittyBagsListModel(value) => _kittyBagsListModel.value = value;
 
   var _sitesListOffline = List<SitesEntity>().obs;
 
@@ -682,6 +688,18 @@ class SiteController extends GetxController {
         }
       });
     });
+  }
+
+  ///siteKittyBags
+  Future<KittyBagsListModel> getSiteKittyBags(String partyCode) async {
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKeyNew();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      kittyBagsListModel = await repository.getKittyBagsList(accessKey, partyCode, userSecurityKey);
+    });
+    return kittyBagsListModel;
   }
 
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
@@ -89,6 +90,11 @@ class MyRepositorySites {
   ////district list for filter
   Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey) async {
     return apiClient.getSiteDistList(accessKey, userSecretKey);
+  }
+
+
+  Future<KittyBagsListModel> getKittyBagsList(String accessKey, String partyCode, String userSecretKey) async {
+    return apiClient.getKittyBagsList(accessKey, partyCode, userSecretKey);
   }
 
 //getSiteData(String accessKey, String userSecurityKey, int leadId) {}
