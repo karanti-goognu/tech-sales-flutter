@@ -5,6 +5,7 @@ class EndEventModel {
   MwpEndEventModel mwpEndEventModel;
   String respCode;
   String respMsg;
+  bool showUpdateButton;
 
   EndEventModel(
       {this.eventCcommentsList,
@@ -12,7 +13,8 @@ class EndEventModel {
         this.eventInfluencerModelsList,
         this.mwpEndEventModel,
         this.respCode,
-        this.respMsg});
+        this.respMsg,
+        this.showUpdateButton});
 
   EndEventModel.fromJson(Map<String, dynamic> json) {
     if (json['eventCcommentsList'] != null) {
@@ -39,6 +41,7 @@ class EndEventModel {
         : null;
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    showUpdateButton = json['showUpdateButton'];
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +65,7 @@ class EndEventModel {
     }
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
+    data['showUpdateButton'] = this.showUpdateButton;
     return data;
   }
 }

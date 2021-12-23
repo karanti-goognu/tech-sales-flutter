@@ -2097,7 +2097,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadSourceUser': _leadSourceUser.text,
         'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
         'nosFloors':_floorId,
-        'totalFloorSqftArea':int.parse(_noOfBagSupplied),
+        'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
         'isIhbCommercial': _isIhbCommercial
       };
 

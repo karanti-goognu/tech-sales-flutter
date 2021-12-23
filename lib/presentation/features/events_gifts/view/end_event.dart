@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_dlr_inf.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -27,19 +28,24 @@ class _EndEventState extends State<EndEvent> {
   List<EventCcommentsList> eventCcommentsList;
   List<EventDealersModelList> eventDealersModelList;
   List<EventInfluencerModelsList> eventInfluencerModelsList;
+  bool isVisible = false;
 
 
   getDetailEventsData() async {
 
     await _eventController.getEndEventDetail(widget.eventId.toString()).then((data) {
       setState(() {
+        isVisible = data.showUpdateButton;
         mwpEndEventModel = data.mwpEndEventModel;
         eventCcommentsList = data.eventCcommentsList;
         eventDealersModelList = data.eventDealersModelList;
         eventInfluencerModelsList = data.eventInfluencerModelsList;
+
       });
     });
   }
+
+
 
 
   @override
@@ -114,10 +120,55 @@ class _EndEventState extends State<EndEvent> {
                   top: ScreenUtil().setSp(20),
                   bottom: ScreenUtil().setSp(20),
                 ),
-                child: Text(
-                  '${mwpEndEventModel.eventDate} | ${mwpEndEventModel.eventTime}',
-                  style: TextStyles.mulliBoldBlue,
+                child: Row(
+                  children: [
+                    Text(
+                      '${mwpEndEventModel.eventDate} | ${mwpEndEventModel.eventTime}',
+                      style: TextStyles.mulliBoldBlue,
+                    ),
+          ////Changes for update event after end
+
+                    Visibility(
+                      visible: isVisible,
+                      //visible: true,
+                      child: FlatButton(
+                          onPressed: () async {
+                            Map results =
+                            await Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return UpdateDlrInf(
+                                  mwpEndEventModel.eventId
+                                );
+                              },
+                            ));
+
+                            if (results != null && results.containsKey('reload')) {
+                              getDetailEventsData();
+                            }
+                            // Get.to(
+                            //     () => UpdateDlrInf(
+                            //           detailEventModel.mwpEventModel.eventId,
+                            //         ),
+                            //     binding: EGBinding());
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit,
+                                  color: ColorConstants.clearAllTextColor,
+                                  size: ScreenUtil().setSp(20)),
+                              SizedBox(
+                                width: ScreenUtil().setSp(5),
+                              ),
+                              Text('UPDATE DLR & INF.', style: TextStyles.robotoBtn14),
+                            ],
+                          )),
+                    )
+                  ],
                 ),
+
+
+
+
               ),
               displayInfo('Event Type', mwpEndEventModel.eventTypeText),
               displayInfo('Dalmia Influencers', mwpEndEventModel.dalmiaInflCount),
