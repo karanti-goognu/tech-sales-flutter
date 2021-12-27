@@ -26,7 +26,7 @@ public class MainApplication extends FlutterApplication {
 //                .enablePushKitTokenRegistration();
 
 
-        MoEngage.Builder moEngage1 = new MoEngage.Builder(this, "6XHHUKUOKFE6Q5MLTT8UH5RW")
+        MoEngage.Builder moEngage1 = new MoEngage.Builder(this, "BUXZWEVMQCDYOX748PC4WB7J")
                 .configureNotificationMetaData(new NotificationConfig(R.drawable.ic_notification, R.mipmap.ic_launcher, -1, null, true,false, true))
                 .configureLogs(new LogConfig(LogLevel.VERBOSE, true))
                 .configureFcm(new FcmConfig(true))
