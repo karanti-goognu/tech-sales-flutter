@@ -30,6 +30,13 @@
             {
               "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "969429555297-4nlc7o0n8lolfd7anc9a0r2h5kj0u0eo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dalmia.techsales"
+              }
             }
           ]
         }
@@ -67,6 +74,13 @@
             {
               "client_id": "969429555297-tbj5212iegoq8ci14cf6ss8rvvm47404.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "969429555297-4nlc7o0n8lolfd7anc9a0r2h5kj0u0eo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dalmia.techsales"
+              }
             }
           ]
         }
