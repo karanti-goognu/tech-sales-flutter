@@ -17,6 +17,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:moengage_flutter/app_status.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -80,12 +81,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-//    print("homescreen.dart :::::: initState()");
+   print("homescreen.dart :::::: initState()");
     super.initState();
     initPlatformState();
     _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+   // _moengagePlugin.setAppStatus(MoEAppStatus.update);
+
+   _moengagePlugin.enableSDKLogs();
+   // _moengagePlugin.setUpPushCallbacks(_onPushClick);
+   // _moengagePlugin.setUniqueId("1");
+   // _moengagePlugin.setUserName("test");
+   // _moengagePlugin.setPhoneNumber("9315121614");
+   // _moengagePlugin.setEmail("test@test.com");
+   // _moengagePlugin.setBirthDate("xx-xx-xxxx");
+
+   _moengagePlugin.setUpPushCallbacks(_onPushClick);
 
     // if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
     //   print('Check In');
