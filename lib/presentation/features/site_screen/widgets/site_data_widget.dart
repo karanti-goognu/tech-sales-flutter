@@ -1643,27 +1643,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   keyboardType: TextInputType.text,
                                   decoration:
                                       FormFieldStyle.buildInputDecoration(
-                                    labelText: "Dealer",
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _subDealerName,
-                                  readOnly: true,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Sub_dealer Name ';
-                                    }
-                                    return null;
-                                  },
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: ColorConstants.inputBoxHintColor,
-                                      fontFamily: "Muli"),
-                                  keyboardType: TextInputType.text,
-                                  decoration:
-                                      FormFieldStyle.buildInputDecoration(
-                                    labelText: "Sub-Dealer",
+                                    labelText: "Counter",
                                   ),
                                 ),
 

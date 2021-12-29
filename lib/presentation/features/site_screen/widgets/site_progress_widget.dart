@@ -661,8 +661,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               // "${availableKittyPoint1()}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: HexColor("#168A08"),
+                                  // fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
                                   fontFamily: "Muli"),
                             ),
                           ),
@@ -692,8 +693,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               // "${availableKittyPoint1()}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: HexColor("#168A08"),
+                                  // fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
                                   fontFamily: "Muli"),
                             ),
                           ),

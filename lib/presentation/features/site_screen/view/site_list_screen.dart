@@ -244,8 +244,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
       child: simmerWidget(),
     )
         : (_siteController.sitesListResponse.sitesEntity.length == 0)
-        ? Container(
-      child: simmerWidget(),
+        ? Container(child:
+      Center(
+        child: Text("No Sites records available!!"),
+      ),
     )
         : ListView.builder(
         controller: _scrollController,
@@ -607,6 +609,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
 
   Widget simmerWidget(){
+    print("Simmer");
     return ListView.builder(
         itemCount: 2,
         itemBuilder: (context, index) {
