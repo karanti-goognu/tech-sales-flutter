@@ -135,26 +135,46 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
       listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
 
-      if (listLeadImagePhoto != null) {
+
+
+      /*if (listLeadImagePhoto != null) {
         for (int i = 0; i < listLeadImagePhoto.length; i++) {
-         /* File file = new File(UrlConstants.baseUrlforImages +
-              "/" + listLeadImagePhoto[i].photoName);*/
+          *//* File file = new File(UrlConstants.baseUrlforImages +
+              "/" + listLeadImagePhoto[i].photoName);*//*
           String imageUrl=UrlConstants.baseUrlforImages +
               "/" + listLeadImagePhoto[i].photoName;
 
           _addLeadsController.getFileFromUrl(imageUrl).then((imageFile){
+            print("file   .....$imageFile");
             _imgDetails.add(new ImageDetails("Network", imageFile));
+
+            _addLeadsController.imageList.add(imageFile);
 
           });
 
         }
-      }
+      }*/
 
+      /*.......................*/
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
-        File file = new File(UrlConstants.baseUrlforImages +
+       /* File file = new File(UrlConstants.baseUrlforImages +
             "/" +
-            listLeadImagePhoto[i].photoName);
-        _addLeadsController.updateImageList(file);
+            listLeadImagePhoto[i].photoName);*/
+
+        String imageUrl=UrlConstants.baseUrlforImages +
+            "/" + listLeadImagePhoto[i].photoName;
+
+        _addLeadsController.getFileFromUrl(imageUrl).then((imageFile){
+          print("file   .....$imageFile");
+          _imgDetails.add(new ImageDetails("Network", imageFile));
+
+
+        //  _addLeadsController.imageList.add(imageFile);
+          _addLeadsController.updateImageList(imageFile);
+
+        });
+
+
 
         //_imageList.add(file);
       }
@@ -283,6 +303,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       }
 
       List<updateRequest.ListLeadImage> imageList = new List();
+
       for (int i = 0; i < listLeadImage.length; i++) {
         imageList.add(new updateRequest.ListLeadImage(
           leadId: widget.leadId,
@@ -290,6 +311,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           createdBy: empId,
         ));
       }
+
+
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
             null ||
@@ -936,7 +959,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
+          print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
+
           nextStageModalBottomSheet(context, _addLeadsController.imageList);
+
           //nextStageModalBottomSheet(context);
         },
       ),
@@ -1102,10 +1128,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                   new Container(
                                                                 // width: 500,
                                                                 // height: 500,
-                                                                child: Image.network(
-                                                                    controller
-                                                                            .imageList[
-                                                                        index].path),
+                                                                child: Image.file(
+                                                                    controller.imageList[index]),
                                                               ),
                                                             );
                                                           });
@@ -1868,8 +1892,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   bool isEditable = false;
   DateTime nextStageConstructionPickedDate;
 
-  List<File> _imageList = new List();
+  /*List<File> _imageList = new List();*/
   List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
+
   List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
   List<CommentsDetail> _commentsList = new List();
   List<LeadcommentsEnitiy> _commentsListEntity = new List();
@@ -2264,19 +2289,32 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         ));
                                       }
 
-                                      List<updateRequest.ListLeadImage>
-                                          imageList = new List();
-                                      for (int i = 0;
+                                      List<updateRequest.ListLeadImage> selectedImageListDetails = new List();
+                                      print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
+
+                                      _addLeadsController.selectedImageNameList.forEach((leadModel) {
+                                        selectedImageListDetails.add(
+                                            new updateRequest.ListLeadImage(
+                                              leadId: widget.leadId,
+                                              photoName: leadModel.photoName,
+                                              createdBy: empId,
+                                            ));
+
+                                      });
+
+
+                                     /* for (int i = 0;
                                           i < listLeadImage.length;
                                           i++) {
-                                        imageList.add(
+                                        selectedImageListDetails.add(
                                             new updateRequest.ListLeadImage(
                                           leadId: widget.leadId,
                                           photoName: listLeadImage[i].photoName,
                                           createdBy: empId,
                                         ));
-                                      }
-                                      print("Image List: $imageList");
+                                      }*/
+
+                                      print("Image List: $selectedImageListDetails");
                                       if (_listInfluencerDetail.length != 0) {
                                         if (_listInfluencerDetail[
                                                         _listInfluencerDetail
@@ -2373,7 +2411,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         'siteDealerId': viewLeadDataResponse
                                             .leadsEntity.siteDealerId,
                                         'listLeadcomments': commentsList,
-                                        'listLeadImage': imageList,
+                                        'listLeadImage': selectedImageListDetails,
                                         'leadInfluencerEntity': listInfluencer,
                                         'leadSource':_leadSource.text,
                                         'leadSourceUser': _leadSourceUser.text,
@@ -2391,8 +2429,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
-                                          //_imageList,
+                                        //  _imageList,
                                           _imageListFromController,
+
                                           context,
                                           viewLeadDataResponse
                                               .leadsEntity.leadId,

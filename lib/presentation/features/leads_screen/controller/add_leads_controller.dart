@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repos
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,13 +20,16 @@ import 'package:http/http.dart' as http;
 class AddLeadsController extends GetxController {
 
   List<File> imageList = List<File>();
+  List<ListLeadImage> selectedImageNameList = new List<ListLeadImage>();
 
   updateImageList(File value) {
     if(value!=null) {
       imageList.add(value);
       print(imageList.length);
       print(imageList);
-      print("Update Image Add Lead controller:::::::::::::::");
+      String imageName=value.path.split("/").last;
+      selectedImageNameList.add(ListLeadImage(photoName: imageName));
+      print("Update Image Add Lead controller:::::::::::::: $value:");
       update();
     }
   }
@@ -35,6 +37,7 @@ class AddLeadsController extends GetxController {
   updateImageAfterDelete(int index) {
     if(index!=null && index>=0) {
       imageList.removeAt(index);
+      selectedImageNameList.removeAt(index);
       print(imageList.length);
       print("After Delete Add Lead controller:::::::::::::::");
       update();
@@ -247,6 +250,7 @@ class AddLeadsController extends GetxController {
     File file = File(tempPath + (rng.nextInt(100)).toString() + '.png');
     http.Response response = await http.get(imageUrl);
     file.writeAsBytes(response.bodyBytes);
+
     return file;
   }
 }
