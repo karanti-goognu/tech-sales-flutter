@@ -319,7 +319,7 @@ class MyApiClientLeads {
 //print(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
       print("Request Body/Fields :: " + request.fields.toString());
-//      print("Files:: " + request.files.toString());
+     print("Files:: " + request.files.toString());
       try {
         request
             .send()
@@ -463,7 +463,7 @@ class MyApiClientLeads {
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-
+print(UrlConstants.updateLeadsData);
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -471,7 +471,7 @@ class MyApiClientLeads {
       // get file length
 
       var length = await file.length(); //imageFile is your image file
-
+print("Length: $length");
       // multipart that takes file
       var multipartFileSign =
           new http.MultipartFile('file', stream, length, filename: fileName);
@@ -556,6 +556,7 @@ class MyApiClientLeads {
   Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
+      print(url);
       version = VersionClass.getVersion();
       var response = await httpClient.get(url,
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));

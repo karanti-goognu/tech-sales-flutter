@@ -264,10 +264,10 @@ print("URL:$url ");
           json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      // print("Request headers :: " + request.headers.toString());
-      // print("Request Body/Fields :: " +
-      //     request.fields['siteInfluencerEntity'].toString());
-      // print("Files:: " + request.files.toString());
+      print("Request headers :: " + request.headers.toString());
+      print("Request Body/Fields :: " +
+          request.fields['siteInfluencerEntity'].toString());
+      print("Files:: " + request.files.toString());
       try {
         request
             .send()
@@ -342,6 +342,7 @@ print("URL:$url ");
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
       print("Request headers :: " + request.headers.toString());
+      print("###${request.fields}");
       print("Request Body/Fields :: " +
           request.fields['siteInfluencerEntity'].toString());
       print("Files:: " + request.files.toString());

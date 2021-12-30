@@ -24,7 +24,8 @@ class AddLeadsController extends GetxController {
     if(value!=null) {
       imageList.add(value);
       print(imageList.length);
-      print(":::::::::::::::");
+      print(imageList);
+      print("Update Image Add Lead controller:::::::::::::::");
       update();
     }
   }
@@ -33,7 +34,7 @@ class AddLeadsController extends GetxController {
     if(index!=null && index>=0) {
       imageList.removeAt(index);
       print(imageList.length);
-      print(":::::::::::::::");
+      print("After Delete Add Lead controller:::::::::::::::");
       update();
     }
   }
@@ -89,7 +90,6 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('User Security Key :: $userSecurityKey');
       addLeadInitialModel =
           await repository.getAddLeadsData(accessKey, userSecurityKey);
     });
@@ -104,7 +104,6 @@ class AddLeadsController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
 
       influencerDetail = await repository.getInflDetailsData(
           accessKey, userSecurityKey, this.phoneNumber);
@@ -147,7 +146,7 @@ class AddLeadsController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
+      // print('User Security Key :: $userSecurityKey');
 
       await repository.saveLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, saveLeadRequestModel, imageList, context);
@@ -164,7 +163,7 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
+      // print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
       viewLeadDataResponse = await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
      });
     print(viewLeadDataResponse);
@@ -182,7 +181,7 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
+      // print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
       viewLeadDataResponse = await repository.getLeadDataNew(accessKey, userSecurityKey, leadId, empID);
     });
     print(viewLeadDataResponse);
@@ -211,7 +210,7 @@ class AddLeadsController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
+      // print('User Security Key :: $userSecurityKey');
 
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateRequestModel, imageList, context, leadId,from);

@@ -121,6 +121,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedPosition = 3;
                     },
                     child: returnSelectedWidget("Lead Potential", 3)),
+                // GestureDetector(
+                //     onTap: () {
+                //       _leadsFilterController.selectedPosition = 4;
+                //     },
+                //     child: returnSelectedWidget("Delivery Points", 4)),
               ],
             ),
           ),
@@ -156,7 +161,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _leadsFilterController.isFilterApplied=false;
+                    _leadsFilterController.isFilterApplied = false;
 
                     //Navigator.pop(context);
                     setState(() {
@@ -178,7 +183,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                           StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
                       _leadsFilterController.offset = 0;
-                      _leadsFilterController.leadsListResponse.leadsEntity = null;
+                      _leadsFilterController.leadsListResponse.leadsEntity =
+                          null;
                       _leadsFilterController
                           .getAccessKey(RequestIds.GET_LEADS_LIST);
                       Navigator.pop(context);
@@ -193,9 +199,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                 RaisedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    _leadsFilterController.isFilterApplied=true;
+                    _leadsFilterController.isFilterApplied = true;
                     _leadsFilterController.offset = 0;
-                   // _leadsFilterController.leadsListResponse = [];
+                    // _leadsFilterController.leadsListResponse = [];
                     _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
@@ -232,13 +238,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                   : Container(),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16,8.0,8,8),
+                  padding: const EdgeInsets.fromLTRB(16, 8.0, 8, 8),
                   child: Text(
                     text,
                     style: (_leadsFilterController.selectedPosition == position)
                         ? TextStyles.mulliBold14
-                        : TextStyle(color: Colors.black
-                    ),
+                        : TextStyle(color: Colors.black),
                   ),
                 ),
               ),
@@ -258,7 +263,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ? returnLeadStageBody()
                 : (_leadsFilterController.selectedPosition == 2)
                     ? returnLeadStatusBody()
-                    : returnLeadPotentialBody(),
+                    :
+        // (_leadsFilterController.selectedPosition == 3) ?
+        returnLeadPotentialBody()
+                        // : returnDeliveryPointsBody(),
       ),
     );
   }
@@ -393,10 +401,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
-                _leadsFilterController
-                    .getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+
                 ///filter issue
-               // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -471,6 +479,56 @@ class _FilterWidgetState extends State<FilterWidget> {
             }));
   }
 
+
+  /// Delivery Points Filter Option
+  List deliveryPointsOptions = ["Yes","No","All"];
+  Widget returnDeliveryPointsBody(){
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: _splashController.splashDataModel.leadStageEntity.length,
+            itemExtent: 50,
+            itemBuilder: (context, index) {
+              return deliveryPointListTile(
+                  deliveryPointsOptions[index],
+                  _splashController.splashDataModel.leadStageEntity[index].id
+                      .toString());
+            }));
+  }
+  Widget deliveryPointListTile(String option, String leadStageValue) {
+    return Container(
+      height: 40,
+      child: ListTile(
+          title: Text(option),
+          leading: Obx(
+                () => Radio(
+              value: option,
+              groupValue: _leadsFilterController.selectedLeadStage as String,
+              onChanged: (String value) {
+                if (_leadsFilterController.selectedLeadStage ==
+                    StringConstants.empty) {
+                  _leadsFilterController.selectedFilterCount =
+                      _leadsFilterController.selectedFilterCount + 1;
+                }
+                _leadsFilterController.selectedLeadStage = value;
+                _leadsFilterController.selectedLeadStageValue = leadStageValue;
+                _leadsFilterController.offset = 0;
+                _leadsFilterController.leadsListResponse.leadsEntity = null;
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+
+                ///filter issue
+                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+              },
+            ),
+          )),
+    );
+  }
+
+
   Widget leadPotentialListTile(
       String potentialValue, String leadPotentialValue) {
     return Container(
@@ -508,19 +566,18 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
-    (type == "to")? selectedDate = fromDate: selectedDate = DateTime.now();
+    (type == "to") ? selectedDate = fromDate : selectedDate = DateTime.now();
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,
-        lastDate: DateTime(2101)
-    );
+        lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         if (type == "to") {
-            _leadsFilterController.assignToDate = formattedDate;
+          _leadsFilterController.assignToDate = formattedDate;
         } else {
           _leadsFilterController.assignFromDate = formattedDate;
         }

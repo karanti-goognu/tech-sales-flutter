@@ -50,85 +50,7 @@ class ViewLeadScreen extends StatefulWidget {
 
 class _ViewLeadScreenState extends State<ViewLeadScreen>
     implements ChangeLeadToSiteDialogListener {
-  final _addLeadFormKey = GlobalKey<FormState>();
-  final _formKeyForViewLeadScreen = GlobalKey();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
-  int initialImagelistLength;
-  LeadStatusEntity _selectedValue;
-  NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  DealerList _SelectedDealer;
-  LeadStatusEntity _selectedValuedummy;
-  int initialInfluencerListLength;
-  String labelText;
-  int labelId;
-
-  ///TextEditingControllers
-  var _contactName = TextEditingController();
-  var _contactNumber = TextEditingController();
-  var txt = TextEditingController();
-  var _nextDateofConstruction = TextEditingController();
-  var _siteAddress = TextEditingController();
-  var _pincode = TextEditingController();
-  var _state = TextEditingController();
-  var _district = TextEditingController();
-  var _taluk = TextEditingController();
-  var _comments = TextEditingController();
-  var _rera = TextEditingController();
-  var geoTagType = TextEditingController();
-  var _totalBags = TextEditingController();
-  var _totalMT = TextEditingController();
-  final myController = TextEditingController();
-  var _originalLeadID = TextEditingController();
-  var _leadSource = TextEditingController();
-  var _leadSourceUser = TextEditingController();
-
-  var leadCreatedBy;
-  bool isEditable = false;
-  DateTime nextStageConstructionPickedDate;
-
-  List<File> _imageList = new List();
-  List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
-  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
-  List<CommentsDetail> _commentsList = new List();
-  List<LeadcommentsEnitiy> _commentsListEntity = new List();
-  List<CommentsDetail> _commentsListNew = new List();
-  List<LeadStageEntity> leadStageEntity = new List();
-  LeadStageEntity leadStageVal = new LeadStageEntity();
-  List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
-  List<NextStageConstructionEntity> nextStageConstructionEntity = new List();
-  /*Work on dealer and subdelear*/
-  List<CounterListModel> counterListModel = new List();
-  List<CounterListModel> subDealerList = new List();
-  CounterListModel selectedSubDealer = CounterListModel();
-  List<DealerForDb> dealerEntityForDb = new List();
-
-  List<DealerList> dealerList = new List();
-  List<ImageDetails> _imgDetails = new List();
-  String leadDataDealer;
-  String leadDataSubDealer;
-
-  FocusNode myFocusNode;
-  bool viewMoreActive = false;
-
-  List<String> _items = new List(); // to store comments
-
-  List<Item> _data = generateItems(1);
-  List<InfluencerDetail> _listInfluencerDetail = new List();
-  List<InfluencerEntity> _listInfluencerEntity = new List();
-  List<LeadInfluencerEntity> _listLeadInfluencerEntity = new List();
-  Position _currentPosition;
-  String _currentAddress;
-  List<LeadStatusEntity> leadStatusEntity = new List();
-  ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
-
-  List<InfluencerTypeEntity> influencerTypeEntity;
-
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<SiteFloorsEntity> _siteFloorsEntity ;
-  AddLeadsController _addLeadsController = Get.find();
-  final db = BrandNameDBHelper();
-  BuildContext _context;
 
   @override
   void initState() {
@@ -155,7 +77,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     setData();
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else
@@ -169,6 +90,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         });
   }
 
+
+  List<LeadInfluencerEntity> influencerListForConvertToSite = List.empty(growable: true);
   setData() {
     if (viewLeadDataResponse != null) {
       checkStatus();
@@ -203,7 +126,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       dealerList = viewLeadDataResponse.dealerList;
 
       _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
-      print("Dealer List Length :: " + dealerList.length.toString());
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
       influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
@@ -245,6 +167,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
             if (_listInfluencerEntity[i].id ==
                 _listLeadInfluencerEntity[j].inflId) {
+              influencerListForConvertToSite.add(_listLeadInfluencerEntity[j]);
               _listInfluencerEntity[i].isPrimary =
                   _listLeadInfluencerEntity[j].isPrimary;
               originalId = _listLeadInfluencerEntity[j].id;
@@ -252,7 +175,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             }
           }
 
-          print(_listLeadInfluencerEntity[i].toJson());
           InfluencerDetail inflDetail = new InfluencerDetail(
             originalId: originalId,
             isPrimary: _listInfluencerEntity[i].isPrimary,
@@ -318,49 +240,133 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-  checkStatus() {
-    leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
-    LeadStatusEntity list;
-   // print(viewLeadDataResponse.leadsEntity.leadStatusId);
 
-    for (int i = 0; i < leadStatusEntity.length; i++) {
-      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
-          leadStatusEntity[i].id.toString()) {
-        labelText = leadStatusEntity[i].leadStatusDesc;
-        labelId = leadStatusEntity[i].id;
-        if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
-          showDialog(
-            context: _formKeyForViewLeadScreen.currentState.context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return WillPopScope(
-                onWillPop: () async => false,
-                child: AlertDialog(
-                  content: new Text(
-                    "Status of this lead is $labelText . You cannot edit or update it.",
-                  ),
-                  actions: <Widget>[
-                    // usually buttons at the bottom of the dialog
-                    new FlatButton(
-                      child: new Text("Close"),
-                      onPressed: () {
-                        Get.back();
-                        Get.back();
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        }
-        list = new LeadStatusEntity(
-            id: leadStatusEntity[i].id,
-            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
+  updateStatusForNextStage(BuildContext context, int statusId,
+      {String dealerId, String subDealerId,int floorId,
+        String noOfBagSupplied, String isIhbCommercial}) {
+    String empId;
+    String mobileNumber;
+    String name;
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
+      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-        print(labelText);
+      if (_comments.text == "") {
+        _comments.text = "Stage Changed";
       }
-    }
+
+      List<CommentsDetail> commentsDetails = [
+        new CommentsDetail(
+            createdBy: empId,
+            commentText: _comments.text,
+            // commentedAt: DateTime.now(),
+            creatorName: name)
+      ];
+
+      List<updateRequest.ListLeadcomments> commentsList = new List();
+
+      for (int i = 0; i < commentsDetails.length; i++) {
+        commentsList.add(new updateRequest.ListLeadcomments(
+          leadId: widget.leadId,
+          commentText: commentsDetails[i].commentText,
+          creatorName: name,
+          createdBy: empId,
+        ));
+      }
+
+      List<updateRequest.ListLeadImage> imageList = new List();
+      for (int i = 0; i < listLeadImage.length; i++) {
+        imageList.add(new updateRequest.ListLeadImage(
+          leadId: widget.leadId,
+          photoName: listLeadImage[i].photoName,
+          createdBy: empId,
+        ));
+      }
+      if (_listInfluencerDetail.length != 0) {
+        if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
+            null ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                .inflName
+                .text ==
+                "null" ||
+            _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                .inflName
+                .text
+                .isNullOrBlank) {
+          _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
+        }
+      }
+      List<updateRequest.LeadInfluencerEntity> listInfluencer = new List();
+
+
+      for (int i = 0; i < _listInfluencerDetail.length; i++) {
+        listInfluencer.add(new updateRequest.LeadInfluencerEntity(
+            id: _listInfluencerDetail[i].originalId,
+            leadId: widget.leadId,
+            isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
+            createdBy: empId,
+            inflId: int.parse(_listInfluencerDetail[i].id.text),
+            isDelete: "N"));
+      }
+
+
+
+      if (_SelectedDealer == null) {
+        _SelectedDealer = new DealerList();
+      }
+      print(influencerListForConvertToSite);
+      var updateRequestModel = {
+        'eventId': viewLeadDataResponse.leadsEntity.eventId,
+        'leadId': viewLeadDataResponse.leadsEntity.leadId,
+        'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
+        'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
+        'leadStatusId': statusId,
+        'leadStage': viewLeadDataResponse.leadsEntity.leadStageId,
+        'contactName': viewLeadDataResponse.leadsEntity.contactName,
+        'contactNumber': viewLeadDataResponse.leadsEntity.contactNumber,
+        'geotagType': viewLeadDataResponse.leadsEntity.geotagType,
+        'leadLatitude': viewLeadDataResponse.leadsEntity.leadLatitude,
+        'leadLongitude': viewLeadDataResponse.leadsEntity.leadLongitude,
+        'leadAddress': viewLeadDataResponse.leadsEntity.leadAddress,
+        'leadPincode': viewLeadDataResponse.leadsEntity.leadPincode,
+        'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
+        'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
+        'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
+        'leadSalesPotentialMt': viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+        'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
+        'isStatus': "false",
+        'updatedBy': empId,
+        'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
+        'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
+        'nextDateCconstruction': _nextDateofConstruction.text,
+        'nextStageConstruction':
+        _selectedNextStageConstructionEntity.nextStageConsId,
+        /*_selectedNextStageConstructionEntity.nextStageConsId*/
+        'siteDealerId': dealerId,
+        "subdealerId": subDealerId, //need to pass selected value
+        'listLeadcomments': commentsList,
+        'listLeadImage': viewLeadDataResponse.leadphotosEntity,
+        'leadInfluencerEntity': influencerListForConvertToSite,
+        // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
+        'leadSource':_leadSource.text,
+        'leadSourceUser': _leadSourceUser.text,
+        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
+        'nosFloors':_floorId,
+        'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
+        'isIhbCommercial': _isIhbCommercial
+      };
+
+      print("Update Data-->"+"$updateRequestModel");
+      var body = jsonEncode(updateRequestModel);
+      print("Update Data1-->"+body);
+
+      _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
+          context, viewLeadDataResponse.leadsEntity.leadId, 3);
+
+      Get.back();
+    });
   }
 
   @override
@@ -423,7 +429,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           onChanged: (value) {
             setState(() {
               _selectedValuedummy = value;
-              print(_selectedValuedummy.id);
               if ((viewLeadDataResponse.leadsEntity.leadStageId == 2 ||
                   viewLeadDataResponse.leadsEntity.leadStageId == 3)) {
                 if (_selectedValuedummy.id == 2) {
@@ -459,7 +464,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     name = prefs.getString(StringConstants.employeeName) ??
                         "empty";
 
-                    print(_comments.text);
                     if (_comments.text == "") {
                       _comments.text = "Stage Changed";
                     }
@@ -505,15 +509,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                               .inflName
                               .text
                               .isNullOrBlank)) {
-                        print("here1234");
                         _listInfluencerDetail
                             .removeAt(_listInfluencerDetail.length - 1);
                       }
                     }
                     List<updateRequest.LeadInfluencerEntity> listInfluencer =
                         new List();
-
-                    print(_listInfluencerDetail.length);
 
                     for (int i = 0; i < _listInfluencerDetail.length; i++) {
                       print(_listInfluencerDetail[i].toJson());
@@ -622,7 +623,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             result = await GetCurrentLocation.getCurrentLocation();
             _currentPosition = result[1];
             List<String> loc = result[0];
-            print("ADD: ${result[0]}");
             _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
             _district.text = "${loc[2]}";
             _state.text = "${loc[1]}";
@@ -655,8 +655,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             var data = [];
             data = await Navigator.push(
                 context, MaterialPageRoute(builder: (context) => CustomMap()));
-            print(data);
-            print(data.runtimeType);
             setState(() {
               geoTagType.text = "M";
             });
@@ -1090,15 +1088,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             //             .file),
                                                             //   ),
                                                             // );
+                                                            print(controller
+                                                                .imageList[
+                                                            index].toString());
                                                             return AlertDialog(
                                                               content:
                                                                   new Container(
                                                                 // width: 500,
                                                                 // height: 500,
-                                                                child: Image.file(
+                                                                child: Image.network(
                                                                     controller
                                                                             .imageList[
-                                                                        index]),
+                                                                        index].path),
                                                               ),
                                                             );
                                                           });
@@ -1819,7 +1820,135 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ],
       ),
     );
+
+
   }
+
+
+  final _addLeadFormKey = GlobalKey<FormState>();
+  final _formKeyForViewLeadScreen = GlobalKey();
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  int initialImagelistLength;
+  LeadStatusEntity _selectedValue;
+  NextStageConstructionEntity _selectedNextStageConstructionEntity;
+  DealerList _SelectedDealer;
+  LeadStatusEntity _selectedValuedummy;
+  int initialInfluencerListLength;
+  String labelText;
+  int labelId;
+
+  ///TextEditingControllers
+  var _contactName = TextEditingController();
+  var _contactNumber = TextEditingController();
+  var txt = TextEditingController();
+  var _nextDateofConstruction = TextEditingController();
+  var _siteAddress = TextEditingController();
+  var _pincode = TextEditingController();
+  var _state = TextEditingController();
+  var _district = TextEditingController();
+  var _taluk = TextEditingController();
+  var _comments = TextEditingController();
+  var _rera = TextEditingController();
+  var geoTagType = TextEditingController();
+  var _totalBags = TextEditingController();
+  var _totalMT = TextEditingController();
+  final myController = TextEditingController();
+  var _originalLeadID = TextEditingController();
+  var _leadSource = TextEditingController();
+  var _leadSourceUser = TextEditingController();
+
+  var leadCreatedBy;
+  bool isEditable = false;
+  DateTime nextStageConstructionPickedDate;
+
+  List<File> _imageList = new List();
+  List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
+  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
+  List<CommentsDetail> _commentsList = new List();
+  List<LeadcommentsEnitiy> _commentsListEntity = new List();
+  List<CommentsDetail> _commentsListNew = new List();
+  List<LeadStageEntity> leadStageEntity = new List();
+  LeadStageEntity leadStageVal = new LeadStageEntity();
+  List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
+  List<NextStageConstructionEntity> nextStageConstructionEntity = new List();
+  /*Work on dealer and subdelear*/
+  List<CounterListModel> counterListModel = new List();
+  List<CounterListModel> subDealerList = new List();
+  CounterListModel selectedSubDealer = CounterListModel();
+  List<DealerForDb> dealerEntityForDb = new List();
+
+  List<DealerList> dealerList = new List();
+  List<ImageDetails> _imgDetails = new List();
+  String leadDataDealer;
+  String leadDataSubDealer;
+
+  FocusNode myFocusNode;
+  bool viewMoreActive = false;
+
+  List<String> _items = new List(); // to store comments
+
+  List<Item> _data = generateItems(1);
+  List<InfluencerDetail> _listInfluencerDetail = new List();
+  List<InfluencerEntity> _listInfluencerEntity = new List();
+  List<LeadInfluencerEntity> _listLeadInfluencerEntity = new List();
+  Position _currentPosition;
+  String _currentAddress;
+  List<LeadStatusEntity> leadStatusEntity = new List();
+  ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
+
+  List<InfluencerTypeEntity> influencerTypeEntity;
+
+  List<InfluencerCategoryEntity> influencerCategoryEntity;
+  List<SiteFloorsEntity> _siteFloorsEntity ;
+  AddLeadsController _addLeadsController = Get.find();
+  final db = BrandNameDBHelper();
+  BuildContext _context;
+
+  checkStatus() {
+    leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
+    LeadStatusEntity list;
+    // print(viewLeadDataResponse.leadsEntity.leadStatusId);
+
+    for (int i = 0; i < leadStatusEntity.length; i++) {
+      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
+          leadStatusEntity[i].id.toString()) {
+        labelText = leadStatusEntity[i].leadStatusDesc;
+        labelId = leadStatusEntity[i].id;
+        if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
+          showDialog(
+            context: _formKeyForViewLeadScreen.currentState.context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  content: new Text(
+                    "Status of this lead is $labelText . You cannot edit or update it.",
+                  ),
+                  actions: <Widget>[
+                    // usually buttons at the bottom of the dialog
+                    new FlatButton(
+                      child: new Text("Close"),
+                      onPressed: () {
+                        Get.back();
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        list = new LeadStatusEntity(
+            id: leadStatusEntity[i].id,
+            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
+
+      }
+    }
+  }
+
 
   apiCallForInfContact(int index, String value, BuildContext context) async {
     String empId;
@@ -1830,14 +1959,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
-      print(_comments.text);
     });
     AddLeadsController _addLeadsController = Get.find();
     _addLeadsController.phoneNumber = value;
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
           .getInfNewData(accessKeyModel.accessKey)
           .then((data) {
@@ -1852,7 +1979,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               _listInfluencerDetail[index].inflName =
                   new TextEditingController();
               FocusScope.of(context).unfocus();
-              //  print(inflDetail.inflName.text);
               _listInfluencerDetail[index].inflTypeId =
                   new TextEditingController();
               _listInfluencerDetail[index].inflCatId =
@@ -1865,7 +1991,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               _listInfluencerDetail[index].ilpIntrested =
                   new TextEditingController();
 
-              print(inflDetail.inflName);
 
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
@@ -1879,7 +2004,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
               _listInfluencerDetail[index].createdBy = empId;
-              print(_listInfluencerDetail[index].inflName);
 
               for (int i = 0; i < influencerTypeEntity.length; i++) {
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
@@ -1904,7 +2028,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }
               }
-              print(_listInfluencerDetail[index].inflName);
 
               for (int i = 0; i < influencerCategoryEntity.length; i++) {
                 if (influencerCategoryEntity[i].inflCatId.toString() ==
@@ -1980,137 +2103,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-  updateStatusForNextStage(BuildContext context, int statusId,
-      {String dealerId, String subDealerId,int floorId,
-      String noOfBagSupplied, String isIhbCommercial}) {
-    String empId;
-    String mobileNumber;
-    String name;
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) async {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
-      print(_comments.text);
-      if (_comments.text == "") {
-        _comments.text = "Stage Changed";
-      }
-
-      List<CommentsDetail> commentsDetails = [
-        new CommentsDetail(
-            createdBy: empId,
-            commentText: _comments.text,
-            // commentedAt: DateTime.now(),
-            creatorName: name)
-      ];
-
-      List<updateRequest.ListLeadcomments> commentsList = new List();
-
-      for (int i = 0; i < commentsDetails.length; i++) {
-        commentsList.add(new updateRequest.ListLeadcomments(
-          leadId: widget.leadId,
-          commentText: commentsDetails[i].commentText,
-          creatorName: name,
-          createdBy: empId,
-        ));
-      }
-
-      List<updateRequest.ListLeadImage> imageList = new List();
-      for (int i = 0; i < listLeadImage.length; i++) {
-        imageList.add(new updateRequest.ListLeadImage(
-          leadId: widget.leadId,
-          photoName: listLeadImage[i].photoName,
-          createdBy: empId,
-        ));
-      }
-      if (_listInfluencerDetail.length != 0) {
-        if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
-                null ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                    .inflName
-                    .text ==
-                "null" ||
-            _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                .inflName
-                .text
-                .isNullOrBlank) {
-          print("here1234");
-          _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
-        }
-      }
-      List<updateRequest.LeadInfluencerEntity> listInfluencer = new List();
-
-      print(_listInfluencerDetail.length);
-
-      for (int i = 0; i < _listInfluencerDetail.length; i++) {
-        print(_listInfluencerDetail[i].toJson());
-        listInfluencer.add(new updateRequest.LeadInfluencerEntity(
-            id: _listInfluencerDetail[i].originalId,
-            leadId: widget.leadId,
-            isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
-            createdBy: empId,
-            inflId: int.parse(_listInfluencerDetail[i].id.text),
-            isDelete: "N"));
-      }
-
-      for (int i = 0; i < listInfluencer.length; i++) {
-        print(listInfluencer[i].toJson());
-      }
-
-      if (_SelectedDealer == null) {
-        _SelectedDealer = new DealerList();
-      }
-      var updateRequestModel = {
-        'eventId': viewLeadDataResponse.leadsEntity.eventId,
-        'leadId': viewLeadDataResponse.leadsEntity.leadId,
-        'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
-        'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
-        'leadStatusId': statusId,
-        'leadStage': viewLeadDataResponse.leadsEntity.leadStageId,
-        'contactName': viewLeadDataResponse.leadsEntity.contactName,
-        'contactNumber': viewLeadDataResponse.leadsEntity.contactNumber,
-        'geotagType': viewLeadDataResponse.leadsEntity.geotagType,
-        'leadLatitude': viewLeadDataResponse.leadsEntity.leadLatitude,
-        'leadLongitude': viewLeadDataResponse.leadsEntity.leadLongitude,
-        'leadAddress': viewLeadDataResponse.leadsEntity.leadAddress,
-        'leadPincode': viewLeadDataResponse.leadsEntity.leadPincode,
-        'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
-        'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
-        'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
-        'leadSalesPotentialMt': viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
-        'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
-        'isStatus': "false",
-        'updatedBy': empId,
-        'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
-        'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
-        'nextDateCconstruction': _nextDateofConstruction.text,
-        'nextStageConstruction':
-            _selectedNextStageConstructionEntity.nextStageConsId,
-        /*_selectedNextStageConstructionEntity.nextStageConsId*/
-        'siteDealerId': dealerId,
-        "subdealerId": subDealerId, //need to pass selected value
-        'listLeadcomments': commentsList,
-        'listLeadImage': viewLeadDataResponse.leadphotosEntity,
-        'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
-        'leadSource':_leadSource.text,
-        'leadSourceUser': _leadSourceUser.text,
-        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
-        'nosFloors':_floorId,
-        'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
-        'isIhbCommercial': _isIhbCommercial
-      };
-
-      print("Update Data-->"+"$updateRequestModel");
-      var body = jsonEncode(updateRequestModel);
-      print("Update Data1-->"+body);
-
-      _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
-          context, viewLeadDataResponse.leadsEntity.leadId, 3);
-
-      Get.back();
-    });
-  }
 
   _getAddressFromLatLng() async {
     try {
@@ -2129,8 +2122,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
 
-        print(
-            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+        // print("${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
       });
     } catch (e) {
       print(e);
@@ -2139,9 +2131,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   void nextStageModalBottomSheet(context, List<File> _imageListFromController) {
     //void nextStageModalBottomSheet(context) {
-    print(leadStageEntity.length);
-
-    print(leadStageVal.leadStageDesc);
+// print(_imageListFromController);
     showModalBottomSheet(
         backgroundColor: ColorConstants.lightGeyColor,
         context: context,
@@ -2197,10 +2187,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 ),
                               ),
                               onPressed: () async {
+                                print("Step 1");
                                 if (leadStageVal.id !=
                                     leadStageEntity[index].id) {
-                                  // print(leadStageVal.id);
-                                  // print(leadStageEntity[index].id);
+                                  print("Step 2");
 
                                   if (!(leadStageEntity[index].id == 2 ||
                                       (leadStageEntity[index].id == 3 &&
@@ -2219,6 +2209,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           "Please Fill Geo tag Details "));
                                     }
                                   } else {
+                                    print("Step 3");
+
                                     String empId;
                                     String mobileNumber;
                                     String name;
@@ -2236,7 +2228,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               StringConstants.employeeName) ??
                                           "empty";
 
-                                      print(_comments.text);
                                       if (_comments.text == "") {
                                         _comments.text = "Stage Changed";
                                       }
@@ -2248,6 +2239,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             // commentedAt: DateTime.now(),
                                             creatorName: name)
                                       ];
+                                      print("Step 4");
+
 
                                       List<updateRequest.ListLeadcomments>
                                           commentsList = new List();
@@ -2277,6 +2270,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           createdBy: empId,
                                         ));
                                       }
+                                      print("Image List: $imageList");
                                       if (_listInfluencerDetail.length != 0) {
                                         if (_listInfluencerDetail[
                                                         _listInfluencerDetail
@@ -2298,7 +2292,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 .inflName
                                                 .text
                                                 .isNullOrBlank) {
-                                          print("here1234");
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }
@@ -2328,10 +2321,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     .text),
                                             isDelete: "N"));
                                       }
+                                      print("Step 5");
 
-                                      for (int i = 0;
-                                          i < listInfluencer.length;
-                                          i++) {}
 
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
@@ -2382,6 +2373,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         'leadSourceUser': _leadSourceUser.text,
                                         'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
                                       };
+
+                                      print("Step 6");
+
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -2646,7 +2640,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       color: ColorConstants.clearAllTextColor,
                     ),
                     onPressed: () async {
-                      print("here");
                       final DateTime picked = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -2804,8 +2797,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _noOfBagSupplied = noOfBagsSupplied;
     _isIhbCommercial = isIhbCommercial;
 
-    print(
-        "_selectedNextStageConstructionEntity    ${nextStageConstructionPickedDate}");
 
     updateStatusForNextStage(context, statusId,
         dealerId: selectedDealerId, subDealerId: selectedDealerSubId,floorId:selectedFloorId,

@@ -2083,7 +2083,6 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
                           ),
                           onPressed: () async {
                             if (_listInfluencerDetail.length == 0) {
-                              print("yoyo");
                               InfluencerDetail inf0 =
                                   new InfluencerDetail(isExpanded: true);
                               setState(() {
