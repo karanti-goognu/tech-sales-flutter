@@ -137,10 +137,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
       if (listLeadImagePhoto != null) {
         for (int i = 0; i < listLeadImagePhoto.length; i++) {
-          File file = new File(UrlConstants.baseUrlforImages +
-              "/" +
-              listLeadImagePhoto[i].photoName);
-          _imgDetails.add(new ImageDetails("Network", file));
+         /* File file = new File(UrlConstants.baseUrlforImages +
+              "/" + listLeadImagePhoto[i].photoName);*/
+          String imageUrl=UrlConstants.baseUrlforImages +
+              "/" + listLeadImagePhoto[i].photoName;
+
+          _addLeadsController.getFileFromUrl(imageUrl).then((imageFile){
+            _imgDetails.add(new ImageDetails("Network", imageFile));
+
+          });
+
         }
       }
 

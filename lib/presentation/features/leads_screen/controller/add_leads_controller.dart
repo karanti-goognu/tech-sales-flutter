@@ -15,7 +15,9 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:math';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 class AddLeadsController extends GetxController {
 
   List<File> imageList = List<File>();
@@ -233,5 +235,18 @@ class AddLeadsController extends GetxController {
       _influencerModel = _infDetailModel.influencerModel;
     });
     return _infDetailModel;
+  }
+
+
+
+  /// convert image url to file
+  Future<File> getFileFromUrl(String imageUrl) async {
+    var rng = new Random();
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    File file = File(tempPath + (rng.nextInt(100)).toString() + '.png');
+    http.Response response = await http.get(imageUrl);
+    file.writeAsBytes(response.bodyBytes);
+    return file;
   }
 }
