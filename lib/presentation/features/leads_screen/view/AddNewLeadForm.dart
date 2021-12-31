@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bott
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -3183,6 +3184,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 i++) {
               _imageList.add(new File(
                   saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
+
               listLeadImage.add(new ListLeadImage(
                   photoName: basename(saveLeadRequestModelFromDraft
                       .listLeadImage[i].photoPath)));
@@ -4069,9 +4071,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                             onPressed: () async {
                               if (controller.imageList.length < 5) {
+                                /*when user create a new lead that time user selected the image by camera or gallery  only*/
                                 controller.updateImageList(
                                     await UploadImageBottomSheet.showPicker(
-                                        context));
+                                        context),
+                                    userSelectedImageStatus
+                                );
                               } else {
                                 Get.dialog(CustomDialogs().errorDialog(
                                     "You can add only upto 5 photos"));

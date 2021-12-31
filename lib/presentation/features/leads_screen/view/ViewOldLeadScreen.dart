@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -2755,7 +2756,8 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
       if (image != null) {
         // print(basename(image.path));
 
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
+        listLeadImage.add(new ListLeadImage(photoName: basename(image.path),
+            imageFilePath:image, imageStatus: userSelectedImageStatus ));
         _imageList.add(image);
       }
     });
@@ -2769,7 +2771,8 @@ class _ViewOldLeadScreeState extends State<ViewOldLeadScree> {
       // print(image.path);
 
       if (image != null) {
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
+        listLeadImage.add(new ListLeadImage(photoName: basename(image.path),
+            imageFilePath:image, imageStatus: userSelectedImageStatus ));
         _imageList.add(image);
       }
       // _imageList.insert(0,image);
