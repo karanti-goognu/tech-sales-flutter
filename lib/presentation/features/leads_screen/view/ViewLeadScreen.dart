@@ -20,6 +20,7 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_data_widget.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
+import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
@@ -170,7 +171,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
 
         //  _addLeadsController.imageList.add(imageFile);
-          _addLeadsController.updateImageList(imageFile);
+          _addLeadsController.updateImageList(imageFile, serverImageStatus);
 
         });
 
@@ -814,7 +815,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         onPressed: () async {
           if (_addLeadsController.imageList.length < 5) {
             _addLeadsController.updateImageList(
-                await UploadImageBottomSheet.showPicker(context));
+                await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
           } else {
             Get.dialog(
                 CustomDialogs().errorDialog("You can add only upto 5 photos"));
@@ -959,9 +960,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
+         // print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
 
-          nextStageModalBottomSheet(context, _addLeadsController.imageList);
+          nextStageModalBottomSheet(context/*, _addLeadsController.imageList*/);
 
           //nextStageModalBottomSheet(context);
         },
@@ -2160,7 +2161,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-  void nextStageModalBottomSheet(context, List<File> _imageListFromController) {
+  void nextStageModalBottomSheet(context/*, List<File> _imageListFromController*/) {
     //void nextStageModalBottomSheet(context) {
 // print(_imageListFromController);
     showModalBottomSheet(
@@ -2290,15 +2291,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       }
 
                                       List<updateRequest.ListLeadImage> selectedImageListDetails = new List();
+                                      List<File> userSelectedImageFile=new List();
                                       print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
                                       _addLeadsController.selectedImageNameList.forEach((leadModel) {
-                                        selectedImageListDetails.add(
-                                            new updateRequest.ListLeadImage(
-                                              leadId: widget.leadId,
-                                              photoName: leadModel.photoName,
-                                              createdBy: empId,
-                                            ));
+                                        if(leadModel.imageStatus==userSelectedImageStatus){
+                                          selectedImageListDetails.add(
+                                              new updateRequest.ListLeadImage(
+                                                leadId: widget.leadId,
+                                                photoName: leadModel.photoName,
+                                                createdBy: empId,
+                                              ));
+
+                                          userSelectedImageFile.add(leadModel.imageFilePath);
+                                        }
+
 
                                       });
 
@@ -2430,8 +2437,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
                                         //  _imageList,
-                                          _imageListFromController,
-
+                                        //  _imageListFromController,
+                                          userSelectedImageFile,
                                           context,
                                           viewLeadDataResponse
                                               .leadsEntity.leadId,

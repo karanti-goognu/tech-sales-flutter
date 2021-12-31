@@ -22,13 +22,14 @@ class AddLeadsController extends GetxController {
   List<File> imageList = List<File>();
   List<ListLeadImage> selectedImageNameList = new List<ListLeadImage>();
 
-  updateImageList(File value) {
+  updateImageList(File value, int imageStatus) {
     if(value!=null) {
       imageList.add(value);
       print(imageList.length);
       print(imageList);
       String imageName=value.path.split("/").last;
-      selectedImageNameList.add(ListLeadImage(photoName: imageName));
+      selectedImageNameList.add(ListLeadImage(photoName: imageName,imageFilePath: value,
+          imageStatus: imageStatus));
       print("Update Image Add Lead controller:::::::::::::: $value:");
       update();
     }
@@ -216,7 +217,7 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       // print('User Security Key :: $userSecurityKey');
-
+      if(this.accessKeyResponse!=null)
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateRequestModel, imageList, context, leadId,from);
     });
@@ -250,7 +251,6 @@ class AddLeadsController extends GetxController {
     File file = File(tempPath + (rng.nextInt(100)).toString() + '.png');
     http.Response response = await http.get(imageUrl);
     file.writeAsBytes(response.bodyBytes);
-
     return file;
   }
 }

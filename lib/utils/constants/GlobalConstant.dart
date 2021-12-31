@@ -17,3 +17,6 @@ List<DealerList> dealerList = new List();
 SaveLeadRequestDraftModel saveLeadRequestModel = new SaveLeadRequestDraftModel();
 SaveLeadRequestModel saveLeadRequestModelNew = new SaveLeadRequestModel();
 List<File> imageList = new List();
+
+int serverImageStatus=0;
+int userSelectedImageStatus=1;

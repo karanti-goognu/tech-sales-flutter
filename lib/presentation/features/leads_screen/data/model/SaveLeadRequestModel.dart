@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:http/http.dart';
@@ -158,8 +159,11 @@ class SaveLeadRequestModel {
 
 class ListLeadImage {
   String photoName;
+  File imageFilePath;
+  int imageStatus; // image status use for identify current image selected by user or comes from server.
 
-  ListLeadImage({this.photoName});
+
+  ListLeadImage({this.photoName, this.imageFilePath, this.imageStatus});
 
   ListLeadImage.fromJson(Map<String, dynamic> json) {
     photoName = json['photoName'];
