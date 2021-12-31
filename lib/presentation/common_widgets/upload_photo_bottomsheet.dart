@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();
@@ -18,15 +20,35 @@ class UploadImageBottomSheet{
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Photo Library'),
                       onTap: () async{
-                       await imgFromGallery();
-                        Navigator.of(context).pop();
+                       try{
+                           await imgFromGallery();
+                           Navigator.of(context).pop();
+                       }
+                       catch(e){
+                         print(e);
+                         Get.snackbar(
+                             "Permission Denied.", "Make sure that you have enabled photos permission.",
+                             colorText: Colors.white,
+                             backgroundColor: Colors.red,
+                             snackPosition: SnackPosition.BOTTOM);
+                       }
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () async{
-                     await imgFromCamera();
-                      Navigator.of(context).pop();
+                     try{
+                       await imgFromCamera();
+                       Navigator.of(context).pop();
+                     }
+                     catch(e){
+                       print(e);
+                       // var request = await Permission.camera.request();
+                       Get.snackbar(
+                           "Permission Denied.", "Make sure that you have enabled camera permission.",
+                           colorText: Colors.white,
+                           backgroundColor: Colors.red,
+                           snackPosition: SnackPosition.BOTTOM);                 }
                     },
                   ),
                 ],
@@ -53,8 +75,11 @@ class UploadImageBottomSheet{
   static imgFromGallery() async {
     File img = await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
+    print(img);
     if (img != null)
       image= img;
+    // else image = File("");
     // imageList.add(image);
   }
+
 }

@@ -170,7 +170,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
 
         //  _addLeadsController.imageList.add(imageFile);
-          _addLeadsController.updateImageList(imageFile);
+        //   _addLeadsController.updateImageList(imageFile);
 
         });
 
