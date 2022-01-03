@@ -76,6 +76,9 @@ class LeadsFilterController extends GetxController {
 
   final _selectedLeadPotential = StringConstants.empty.obs;
   final _selectedLeadPotentialValue = StringConstants.empty.obs;
+  final _selectedDeliveryPointsValue = StringConstants.empty.obs;
+
+  get selectedDeliveryPointsValue => _selectedDeliveryPointsValue.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
 
@@ -128,6 +131,8 @@ class LeadsFilterController extends GetxController {
   set selectedPosition(value) => this._selectedPosition.value = value;
 
   set selectedLeadStage(value) => this._selectedLeadStage.value = value;
+
+  set selectedDeliveryPointsValue(value) => _selectedDeliveryPointsValue.value = value;
 
   set selectedLeadStageValue(value) =>
       this._selectedLeadStageValue.value = value;
@@ -281,13 +286,8 @@ class LeadsFilterController extends GetxController {
       if (this.selectedLeadStageValue != StringConstants.empty) {
         leadStage = "&leadStage=${this.selectedLeadStageValue}";
       }
-
-      //	leadPotentialFrom (optional)
-      //
-      // 	leadPotentialTo (optional)
       String leadPotentialFrom = "";
       String leadPotentialTo = "";
-      print('${this.selectedLeadPotentialValue}');
       if (this.selectedLeadPotentialValue != StringConstants.empty) {
         switch (selectedLeadPotentialValue) {
           case "0":
@@ -307,9 +307,23 @@ class LeadsFilterController extends GetxController {
             break;
         }
       }
+      String deliveryPoints = "";
+      if (this.selectedDeliveryPointsValue != StringConstants.empty) {
+        print("Inside controller ${this.selectedDeliveryPointsValue}");
+        switch (this.selectedDeliveryPointsValue) {
+          case "Yes":
+            deliveryPoints="&deliveryPoint=Y";
+            break;
+          case "No":
+            deliveryPoints="&deliveryPoint=N";
+            break;
+          default:
+            deliveryPoints = "";
+            break;
+        }
+      }
       //debugPrint('request without encryption: $body');
-      String url =
-          "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');
