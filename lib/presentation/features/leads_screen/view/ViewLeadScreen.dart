@@ -971,7 +971,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     );
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       key: _formKeyForViewLeadScreen,
       backgroundColor: Colors.white,
       floatingActionButton: BackFloatingButton(),

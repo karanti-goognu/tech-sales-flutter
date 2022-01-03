@@ -81,7 +81,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return Scaffold(
 //            resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       // appBar: AppBar(
       //   elevation: 0,

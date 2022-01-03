@@ -51,7 +51,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.backgroundColor,
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       body: _buildAddEventInterface(context),
       floatingActionButton: Container(
         height: 68.0,
