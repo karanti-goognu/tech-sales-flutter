@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/splash/controller/splas
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -153,6 +152,11 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   },
                   child: returnSelectedWidget("District", 5),
                 ),
+                GestureDetector(
+                    onTap: () {
+                      _siteController.selectedPosition = 6;
+                    },
+                    child: returnSelectedWidget("Delivery Points", 6)),
               ],
             ),
           ),
@@ -204,6 +208,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                     _siteController.assignFromDate = StringConstants.empty;
                     _siteController.selectedSitePincode = StringConstants.empty;
                     _siteController.selectedSiteDistrict = StringConstants.empty;
+                    _siteController.selectedDeliveryPointsValue = StringConstants.empty;
                     _siteController.selectedFilterCount = 0;
                     _siteController.offset = 0;
                     _siteController.sitesListResponse.sitesEntity = null;
@@ -291,7 +296,9 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
                         : (_siteController.selectedPosition == 4)
                             ? returnSiteInfluencerBody()
-                            : returnDistrictBody(),
+                            : (_siteController.selectedPosition == 5)
+                                ? returnDistrictBody()
+                                : returnDeliveryPointsBody(),
       ),
     );
   }
@@ -589,40 +596,82 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
   Widget returnDistrictBody() {
     return Container(
-        padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
-        child: DropdownButtonFormField(
-          onChanged: (_) {
-            //setState(() {
-            if (_siteController.selectedSiteDistrict ==
-                StringConstants.empty) {
-              _siteController.selectedFilterCount =
-                  _siteController.selectedFilterCount + 1;
-              }
-              _siteController.selectedSiteDistrict = _;
-              _siteController.isFilterApplied = true;
-                _siteController.offset = 0;
-                _siteController.sitesListResponse.sitesEntity = null;
-                _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-           // });
-          },
-          items: (widget.siteDistrictListModel == null ||
-              widget.siteDistrictListModel.districtList == null)
-              ? []
-                  : widget.siteDistrictListModel.districtList
-              .map((e) =>DropdownMenuItem(
-                    value: e.name,
-                    child: Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        child: Text(e.name)),
-          ))
-              .toList(),
-          style: FormFieldStyle.formFieldTextStyle,
-          decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
-          //validator: (value) => value == null ? 'Please select member type' : null,
-        ),
-   );
+      padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
+      child: DropdownButtonFormField(
+        onChanged: (_) {
+          //setState(() {
+          if (_siteController.selectedSiteDistrict == StringConstants.empty) {
+            _siteController.selectedFilterCount =
+                _siteController.selectedFilterCount + 1;
+          }
+          _siteController.selectedSiteDistrict = _;
+          _siteController.isFilterApplied = true;
+          _siteController.offset = 0;
+          _siteController.sitesListResponse.sitesEntity = null;
+          _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+          // });
+        },
+        items: (widget.siteDistrictListModel == null ||
+                widget.siteDistrictListModel.districtList == null)
+            ? []
+            : widget.siteDistrictListModel.districtList
+                .map((e) => DropdownMenuItem(
+                      value: e.name,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 2.5,
+                          child: Text(e.name)),
+                    ))
+                .toList(),
+        style: FormFieldStyle.formFieldTextStyle,
+        decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
+        //validator: (value) => value == null ? 'Please select member type' : null,
+      ),
+    );
   }
 
+  /// Delivery Points Filter Option
+  List deliveryPointsOptions = ["Yes", "No", "All"];
+  Widget returnDeliveryPointsBody() {
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: deliveryPointsOptions.length,
+            itemExtent: 50,
+            itemBuilder: (context, index) {
+              return deliveryPointListTile(deliveryPointsOptions[index]);
+            }));
+  }
+
+  Widget deliveryPointListTile(String option) {
+    return Container(
+      height: 40,
+      child: ListTile(
+          title: Text(option),
+          leading: Obx(
+            () => Radio(
+                value: option,
+                groupValue:
+                    _siteController.selectedDeliveryPointsValue as String,
+                onChanged: (String value) {
+                  print("Inside Filter $value");
+                  if (_siteController.selectedDeliveryPointsValue ==
+                      StringConstants.empty) {
+                    _siteController.selectedFilterCount =
+                        _siteController.selectedFilterCount + 1;
+                  }
+                  _siteController.selectedDeliveryPointsValue = value;
+                  _siteController.isFilterApplied=true;
+                  _siteController.offset = 0;
+                  _siteController.sitesListResponse.sitesEntity = null;
+                  _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+                }),
+          )),
+    );
+  }
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
@@ -651,14 +700,14 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   }
 
   List<SitesEntity> fetchFilterData(
-      String assignDateFromReq,
-      String assignDateToReq,
-      String siteStageReq,
-      String siteStatusReq,
-      String sitePincodeReq,
-      String siteInflCatReq,
-     // String siteDistrictReq
-      ) {
+    String assignDateFromReq,
+    String assignDateToReq,
+    String siteStageReq,
+    String siteStatusReq,
+    String sitePincodeReq,
+    String siteInflCatReq,
+    // String siteDistrictReq
+  ) {
     String appendQuery = "";
     String whereArgs = "";
     final db = SiteListDBHelper();

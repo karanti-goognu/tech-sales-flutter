@@ -369,6 +369,35 @@ class _SiteScreenState extends State<SiteScreen> {
                                   },
                                 )),
 
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Obx(() => (_siteController
+                                    .selectedDeliveryPointsValue ==
+                                    StringConstants.empty)
+                                    ? Container()
+                                    : FilterChip(
+                                  label: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                          "${_siteController.selectedDeliveryPointsValue}")
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  shape:
+                                  StadiumBorder(side: BorderSide()),
+                                  onSelected: (bool value) {
+                                    print("selected");
+                                  },
+                                )),
+
 
                               ],
                             ))

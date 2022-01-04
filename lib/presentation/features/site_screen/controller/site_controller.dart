@@ -102,6 +102,12 @@ class SiteController extends GetxController {
 
   final _infName = StringConstants.empty.obs;
 
+  final _selectedDeliveryPointsValue = StringConstants.empty.obs;
+
+  get selectedDeliveryPointsValue => _selectedDeliveryPointsValue.value;
+
+  set selectedDeliveryPointsValue(value) => _selectedDeliveryPointsValue.value = value;
+
   get selectedFilterCount => this._selectedFilterCount.value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
@@ -338,6 +344,21 @@ class SiteController extends GetxController {
       if (this.selectedSiteDistrict != StringConstants.empty) {
         siteDistrict = "&siteDistrict=${this.selectedSiteDistrict}";
       }
+      String deliveryPoints = "";
+      if (this.selectedDeliveryPointsValue != StringConstants.empty) {
+        deliveryPoints = "&deliveryPoints=${this.selectedDeliveryPointsValue}";
+        switch (this.selectedDeliveryPointsValue) {
+          case "Yes":
+            deliveryPoints="&deliveryPoint=Y";
+            break;
+          case "No":
+            deliveryPoints="&deliveryPoint=N";
+            break;
+          default:
+            deliveryPoints = "";
+            break;
+        }
+      }
 
       String influencerID = "";
       if (influencer_id != StringConstants.empty) {
@@ -345,7 +366,7 @@ class SiteController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${this.offset}');
-      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
@@ -353,6 +374,7 @@ class SiteController extends GetxController {
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
+
             // Get.back();
         if (data == null) {
           debugPrint('Sites Data Response is null');
@@ -377,6 +399,7 @@ class SiteController extends GetxController {
               if(this.isFilterApplied==true){
                 this.sitesListResponse = sitesListModel;
               }
+
               ////
               Get.rawSnackbar(
                 titleText: Text("Note"),
