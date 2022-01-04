@@ -170,156 +170,152 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
         length: 4,
         child: Scaffold(
 //            resizeToAvoidBottomInset: true,
-          resizeToAvoidBottomPadding: false,
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            toolbarHeight: 180,
-            titleSpacing: 0,
-            title: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 200,
-                  right: 0,
-                  child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/Container.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, bottom: 10, left: 10),
-                          child: Text(
-                            "Trade site details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 25,
-                                color: HexColor("#006838"),
-                                fontFamily: "Muli"),
-                          ),
-                        ),
-                        selectedTabIndex == 3 || selectedTabIndex == 4
-                            ? Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 20.0, bottom: 10),
-                                    child: Icon(
-                                      Icons.edit_outlined,
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 20.0, bottom: 10, right: 15),
-                                    child: Text(
-                                      "Edit",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 18,
-                                          color: Colors.amber,
-                                          fontFamily: "Muli"),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Container()
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                "ID: " + widget.siteId.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontFamily: "Muli",
-                                ),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              toolbarHeight: 180,
+              titleSpacing: 0,
+              title: Stack(
+                children: [
+                  Positioned(
+                      top: 0,
+                      left: 200,
+                      right: 0,
+                      child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/Container.png',
+                                fit: BoxFit.fill,
                               ),
-                              siteScore != 0.0
-                                  ? Text(
-                                      "Site Score: " + siteScore.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: HexColor("#002A64"),
-                                        fontFamily: "Muli",
-                                      ),
-                                    )
-                                  : Container(),
                             ],
+                          ))),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20.0, bottom: 10, left: 10),
+                            child: Text(
+                              "Trade site details",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 25,
+                                  color: HexColor("#006838"),
+                                  fontFamily: "Muli"),
+                            ),
                           ),
-                          SizedBox(width: 100),
-                          Expanded(
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.only(left: 1.0, right: 1.0),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.white,
-                                  //border: Border.all()
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey[500],
-                                        offset: Offset(5.0, 5.0),
-                                        blurRadius: 10.0,
-                                        spreadRadius: 4.0)
-                                  ]),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton(
-                                  // elevation: 100,
-                                  value: _siteStage,
-                                  items: siteStageEntity
-                                      .map(
-                                        (label) => DropdownMenuItem(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 7.0),
-                                            child: Text(
-                                              label.siteStageDesc,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: ColorConstants
-                                                      .inputBoxHintColor,
-                                                  fontFamily: "Muli"),
-                                            ),
-                                          ),
-                                          value: label,
+                          selectedTabIndex == 3 || selectedTabIndex == 4
+                              ? Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, bottom: 10),
+                                      child: Icon(
+                                        Icons.edit_outlined,
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, bottom: 10, right: 15),
+                                      child: Text(
+                                        "Edit",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 18,
+                                            color: Colors.amber,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Container()
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(
+                                  "ID: " + widget.siteId.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontFamily: "Muli",
+                                  ),
+                                ),
+                                siteScore != 0.0
+                                    ? Text(
+                                        "Site Score: " + siteScore.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: HexColor("#002A64"),
+                                          fontFamily: "Muli",
                                         ),
                                       )
-                                      .toList(),
-                                  //  elevation: 0,
-                                  iconSize: 30,
-                                  hint: Padding(
-                                    padding: const EdgeInsets.only(left: 6.0),
-                                    child: (labelText != null)
-                                        ? Text(labelText)
-                                        : Text(""),
-                                  ),
+                                    : Container(),
+                              ],
+                            ),
+                            SizedBox(width: 100),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 1.0, right: 1.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                    //border: Border.all()
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey[500],
+                                          offset: Offset(5.0, 5.0),
+                                          blurRadius: 10.0,
+                                          spreadRadius: 4.0)
+                                    ]),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    // elevation: 100,
+                                    value: _siteStage,
+                                    items: siteStageEntity
+                                        .map((label) => DropdownMenuItem(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7.0),
+                                                child: Text(
+                                                  label.siteStageDesc,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: ColorConstants
+                                                          .inputBoxHintColor,
+                                                      fontFamily: "Muli"),
+                                                ),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    //  elevation: 0,
+                                    iconSize: 30,
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(left: 6.0),
+                                      child: (labelText != null)
+                                          ? Text(labelText)
+                                          : Text(""),
+                                    ),
 
                                   // hint: Text('Rating'),
                                   onChanged: (value) {

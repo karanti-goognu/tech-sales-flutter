@@ -128,6 +128,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _isSubmitButtonDisabled = false;
     _isSaveButtonDisabled = false;
@@ -3128,9 +3129,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           leadSource = saveLeadRequestModelFromDraft.leadSource;
           _leadSourceUser = saveLeadRequestModelFromDraft.leadSourceUser;
-          print("{{{{{{{{{");
-          print(leadSource.runtimeType);
-          print(_leadSourceUser);
           displayLeadSourceUserForDraft();
           // print("=======$leadSource");
           //print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
@@ -3242,7 +3240,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     subDealerList = addLeadInitialModel.subDealerList;
                     eventList = addLeadInitialModel.eventList;
                     salesOfficerList = addLeadInitialModel.salesOfficerList;
-                    sourceList = addLeadInitialModel.leadSourceList;
                   });
                 });
                 if (_listInfluencerDetail.length == 0) {
@@ -3383,14 +3380,20 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           displayLeadSourceUser();
         });
       },
-      items: sourceList == null
-          ? []
-          : sourceList
-              .map((e) => DropdownMenuItem(
-                    child: Text(e.name),
-                    value: e.name,
-                  ))
-              .toList(),
+     /* selectedItemBuilder: (BuildContext context) {
+        return sourceItems.map<Widget>((String item) {
+          return Text(item);
+        }).toList();
+      },*/
+     // value: (leadSource != null) ? leadSource : selectedItem,
+      items: sourceItems
+          .map((e) => DropdownMenuItem(
+                value: e != null ? e : null,
+                child: Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(e)),
+              ))
+          .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
       selectedItemBuilder: (BuildContext context) {
@@ -3541,16 +3544,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (value) {
         setState(() {
           _salesOfficerId = value;
+
         });
       },
       selectedItemBuilder: (BuildContext context) {
         return (salesOfficerList == null)
             ? []
-            : salesOfficerList.map<Widget>((item) {
-                return Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(item.salesOfficerName));
-              }).toList();
+            :salesOfficerList.map<Widget>((item) {
+          return Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Text(item.salesOfficerName));
+        }).toList();
       },
       value: _salesOfficerId,
       items: (salesOfficerList == null)
@@ -3800,7 +3804,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       backgroundColor: Colors.white,
       floatingActionButton: BackFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      resizeToAvoidBottomPadding: false,
+     // resizeToAvoidBottomPadding: false,
       bottomNavigationBar: BottomNavigator(),
       body: SingleChildScrollView(
         child: Stack(
@@ -5359,6 +5363,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               //         .createdOn =
               //     inflDetail.createdOn;
 
+
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
               _listInfluencerDetail[index].createdBy = empId;
@@ -5366,6 +5371,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
               //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
+
                 // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
                 // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
