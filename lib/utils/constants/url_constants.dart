@@ -6,9 +6,9 @@ final client = Client();
 abstract class UrlConstants {
 
  //PROD
- static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
- static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
- static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+ // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
  //Base Url
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
@@ -20,9 +20,9 @@ abstract class UrlConstants {
  // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
- // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
+ static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+ static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+ static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
  //End points
