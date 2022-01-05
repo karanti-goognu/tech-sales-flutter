@@ -15,14 +15,18 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   runZonedGuarded(
-    () {
+        () {
       /** Kp Changes*/
       final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-      _moengagePlugin.initialise();
+      _moengagePlugin.setUpPushCallbacks((pushCampaign) {
+
+      });
       _moengagePlugin.enableSDKLogs();
+      _moengagePlugin.initialise();
+      _moengagePlugin.registerForPushNotification();
       runApp(MyApp());
     },
-    (error, stackTrace) {
+        (error, stackTrace) {
       print('runZonedGuarded: Caught error in my root zone.');
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },

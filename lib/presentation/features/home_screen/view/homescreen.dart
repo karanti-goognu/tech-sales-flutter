@@ -152,10 +152,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void setMoengageData(SharedPreferences prefs) {
     print("Moengage Initialize");
     final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-    _moengagePlugin.initialise();
-    _moengagePlugin.setAppStatus(MoEAppStatus.update);
+    //_moengagePlugin.initialise();
+    //_moengagePlugin.setAppStatus(MoEAppStatus.update);
     _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    //_moengagePlugin.setUpPushCallbacks(_onPushClick);
     _moengagePlugin.setUniqueId(
         prefs.getString(StringConstants.employeeId) ?? ""); //employeeId id
     _moengagePlugin.setUserName(

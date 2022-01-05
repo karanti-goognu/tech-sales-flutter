@@ -11,6 +11,11 @@ import MoEngage
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+      
+  FirebaseApp.configure()
+  GMSServices.provideAPIKey("AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E")
+  GeneratedPluginRegistrant.register(with: self)
+      
     var sdkConfig : MOSDKConfig
     let yourAppID = "BUXZWEVMQCDYOX748PC4WB7J"
     if let config = MoEngage.sharedInstance().getDefaultSDKConfiguration() {
@@ -24,19 +29,16 @@ import MoEngage
     // Set Correct Data Center here
     sdkConfig.moeDataCenter = DATA_CENTER_01
     sdkConfig.appGroupID = "group.com.dalmia.techsale.MoEngage"
-    //sdkConfig.appGroupID = "group.com.alphadevs.MoEngage.NotificationServices"
+//    sdkConfig.appGroupID = "group.com.dalmia.techsale.MoEngage.NotificationServices"
     sdkConfig.optOutIDFATracking = false
     sdkConfig.optOutIDFVTracking = false
     sdkConfig.optOutDataTracking = false
     sdkConfig.optOutPushNotification = true
     sdkConfig.optOutInAppCampaign = true
-
+    MoEngage.enableSDKLogs(true)
+      
    MOFlutterInitializer.sharedInstance.initializeWithSDKConfig(sdkConfig, andLaunchOptions: launchOptions)
-      
-  FirebaseApp.configure()
-  GMSServices.provideAPIKey("AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E")
-      
-  GeneratedPluginRegistrant.register(with: self)
+    
   return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
