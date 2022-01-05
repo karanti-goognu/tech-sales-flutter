@@ -13,6 +13,7 @@ import MoEngage
   ) -> Bool {
       
   FirebaseApp.configure()
+  UNUserNotificationCenter.current().delegate = self
   GMSServices.provideAPIKey("AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E")
   GeneratedPluginRegistrant.register(with: self)
       
@@ -33,12 +34,20 @@ import MoEngage
     sdkConfig.optOutIDFATracking = false
     sdkConfig.optOutIDFVTracking = false
     sdkConfig.optOutDataTracking = false
-    sdkConfig.optOutPushNotification = true
-    sdkConfig.optOutInAppCampaign = true
+    sdkConfig.optOutPushNotification = false
+    sdkConfig.optOutInAppCampaign = false
     MoEngage.enableSDKLogs(true)
       
    MOFlutterInitializer.sharedInstance.initializeWithSDKConfig(sdkConfig, andLaunchOptions: launchOptions)
     
   return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+    override func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            //This is to only to display Alert and enable notification sound
+        completionHandler([.sound,.alert])
+    }
+            
 }
+
+

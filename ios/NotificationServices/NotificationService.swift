@@ -17,7 +17,7 @@ class NotificationService: UNNotificationServiceExtension {
         MORichNotification.setAppGroupID("group.com.dalmia.techsale.MoEngage")
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        
+        print(bestAttemptContent);
         MORichNotification.handle(request, withContentHandler: contentHandler)
         
 //        if let bestAttemptContent = bestAttemptContent {

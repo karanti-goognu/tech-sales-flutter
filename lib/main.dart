@@ -8,22 +8,26 @@ import 'package:flutter_tech_sales/presentation/features/splash/view/splash_scre
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
+import 'package:moengage_flutter/push_campaign.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+  /* _moengagePlugin.setUpPushCallbacks((pushCampaign) {
+
+      });*/
+  _moengagePlugin.setUpPushCallbacks(_onPushClick);
+  _moengagePlugin.enableSDKLogs();
+  _moengagePlugin.initialise();
+  _moengagePlugin.registerForPushNotification();
+
   runZonedGuarded(
         () {
       /** Kp Changes*/
-      final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-      _moengagePlugin.setUpPushCallbacks((pushCampaign) {
 
-      });
-      _moengagePlugin.enableSDKLogs();
-      _moengagePlugin.initialise();
-      _moengagePlugin.registerForPushNotification();
       runApp(MyApp());
     },
         (error, stackTrace) {
@@ -33,6 +37,11 @@ void main() async {
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
+}
+
+void _onPushClick(PushCampaign message) {
+  print("This is a push click callback from native to flutter. Payload " +
+      message.toString());
 }
 
 class MyApp extends StatefulWidget {
