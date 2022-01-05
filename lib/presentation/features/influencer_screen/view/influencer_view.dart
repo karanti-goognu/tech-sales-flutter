@@ -387,16 +387,16 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .baseline,
+                                                    // crossAxisAlignment:
+                                                    //     CrossAxisAlignment
+                                                    //         .baseline,
                                                     children: [
                                                       //Expanded(
                                                       // flex: 1,
                                                       // child:
 
                                                       Text(
-                                                          "${_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}" ,
+                                                          "${(_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null || _influencerListModel.response.ilpInfluencerEntity[index].baseCity == "") ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}" ,
                                                           style: TextStyles
                                                               .formfieldLabelText),
                                                       // ),

@@ -3240,6 +3240,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     subDealerList = addLeadInitialModel.subDealerList;
                     eventList = addLeadInitialModel.eventList;
                     salesOfficerList = addLeadInitialModel.salesOfficerList;
+                    sourceList = addLeadInitialModel.leadSourceList;
                   });
                 });
                 if (_listInfluencerDetail.length == 0) {
@@ -3380,19 +3381,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           displayLeadSourceUser();
         });
       },
-     /* selectedItemBuilder: (BuildContext context) {
-        return sourceItems.map<Widget>((String item) {
-          return Text(item);
-        }).toList();
-      },*/
-     // value: (leadSource != null) ? leadSource : selectedItem,
-      items: sourceItems
+      items: sourceList == null
+          ? []
+          : sourceList
           .map((e) => DropdownMenuItem(
-                value: e != null ? e : null,
-                child: Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(e)),
-              ))
+        child: Text(e.name),
+        value: e.name,
+      ))
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
@@ -3400,46 +3395,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         return sourceList == null
             ? []
             : sourceList.map<Widget>((item) {
-              print(item.name);
-                return Text(item.name);
-              }).toList();
+          print(item.name);
+          return Text(item.name);
+        }).toList();
       },
     );
 
-    // DropdownButtonFormField(
-    //   onChanged: (value) {
-    //     setState(() {
-    //       leadSource = value;
-    //
-    //       print("DROPDOWN : $leadSource");
-    //       // _dealerId = null;
-    //       // _subDealerId = null;
-    //       // _eventId = null;
-    //       // _salesOfficerId = null;
-    //       // sourceMobile.text = null;
-    //       // _other.text = null;
-    //       _leadSourceUser = null;
-    //       displayLeadSourceUser();
-    //     });
-    //   },
-    //   selectedItemBuilder: (BuildContext context) {
-    //     return sourceItems.map<Widget>((String item) {
-    //       return Text(item);
-    //     }).toList();
-    //   },
-    //   value: (leadSource != null) ? leadSource : selectedItem,
-    //   items: sourceItems
-    //       .map((e) => DropdownMenuItem(
-    //             value: e != null ? e : null,
-    //             child: Container(
-    //                 width: MediaQuery.of(context).size.width / 1.5,
-    //                 child: Text(e)),
-    //           ))
-    //       .toList(),
-    //   style: FormFieldStyle.formFieldTextStyle,
-    //   decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
-    //   //validator: (value) => value == null ? 'Please select member type' : null,
-    // );
+
+
 
     final dealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {

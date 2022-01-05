@@ -181,6 +181,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                           StringConstants.empty;
                       _leadsFilterController.selectedLeadPotentialValue =
                           StringConstants.empty;
+                      _leadsFilterController.selectedDeliveryPointsValue = StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
                       _leadsFilterController.offset = 0;
                       _leadsFilterController.leadsListResponse.leadsEntity =
