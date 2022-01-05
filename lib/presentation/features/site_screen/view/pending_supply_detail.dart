@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -42,7 +43,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   AddEventController _addEventController =  Get.find();
   String siteCreationDate, visitRemarks, infName = "";
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-
+  KittyBagsListModel _kittyBagsListModel;
+  String claimableKittyBagsAvailable = "0";
+  String reservedKittyBagsAvailable = "0";
   SiteController _siteController = Get.find();
 
   getPendingSupplyData() async {
@@ -56,6 +59,35 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     _siteController.counterId=StringConstants.empty;
     super.dispose();
   }
+
+  getKittyBags(String partyCode) {
+    print("Called now");
+    //String productCode
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _siteController.getSiteKittyBags(partyCode).then((data) {
+            setState(() {
+              if(data != null){
+                _kittyBagsListModel = data;
+                claimableKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                reservedKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
+  }
+
 
   @override
   void initState() {
@@ -357,6 +389,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         onChanged: (val) {
                                           _siteController.counterId =
                                               val.dealerId;
+                                          getKittyBags(val.dealerId);
                                         }),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 15),
@@ -372,6 +405,79 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ],
                                 ),
+
+                          _siteController.counterId.toString().isEmpty?Container():
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10.0, bottom: 20, left: 5, right: 10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Reserved Kitty Bags Available",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          color: HexColor("#168A08"),
+                                          fontFamily: "Muli"),
+                                    ),
+                                    GestureDetector(
+                                      onTap: (){
+                                        Get.dialog(
+                                            CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
+                                            barrierDismissible: false);
+                                      },
+                                      child: Text(
+                                        reservedKittyBagsAvailable,
+                                        // "${availableKittyPoint1()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            // fontSize: 16,
+                                            decoration: TextDecoration.underline,
+                                            color: Colors.blue,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Claimable Kitty Bags Available",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          color: HexColor("#168A08"),
+                                          fontFamily: "Muli"),
+                                    ),
+                                    GestureDetector(
+                                      onTap: (){
+                                        Get.dialog(
+                                            CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
+                                            barrierDismissible: false);
+                                      },
+                                      child: Text(
+                                        claimableKittyBagsAvailable,
+                                        // "${availableKittyPoint1()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            // fontSize: 16,
+                                            decoration: TextDecoration.underline,
+                                            color: Colors.blue,
+                                            fontFamily: "Muli"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
 
                           /// Test Over
                           SizedBox(height: 16),

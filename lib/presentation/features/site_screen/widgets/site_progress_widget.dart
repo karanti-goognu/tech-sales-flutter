@@ -132,6 +132,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   KittyBagsListModel _kittyBagsListModel;
 
   getKittyBags(String partyCode) {
+    print("Called now");
     //String productCode
     internetChecking().then((result) => {
       if (result == true)
