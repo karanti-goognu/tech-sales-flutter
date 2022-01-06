@@ -319,8 +319,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 ),
                                 DropdownButtonFormField<
                                     ConstructionStageEntity>(
-                                  //
-                                  value: _selectedConstructionType,
+
+                                  value: _selectedConstructionType ,
                                   items: constructionStageEntity
                                       .map((label) => DropdownMenuItem(
                                             child: Text(

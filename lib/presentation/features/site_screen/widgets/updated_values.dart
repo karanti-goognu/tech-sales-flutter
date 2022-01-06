@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,9 +9,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 
-
-class UpdatedValues{
-
+class UpdatedValues {
   static int siteId;
   static String siteSegment;
   static String assignedTo;
@@ -51,6 +48,7 @@ class UpdatedValues{
   static SiteCompetitionStatusEntity siteCompetitionId;
   static SiteOpportunityStatusEntity siteOppertunityId;
   static ConstructionStageEntity siteConstructionId;
+
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
   static List<SiteNextStageEntity> siteNextStageEntity;
   static List<SitephotosEntity> sitePhotosEntity;
@@ -62,7 +60,7 @@ class UpdatedValues{
   static String subdealerId;
   static TextEditingController kitchenCount;
   static TextEditingController bathroomCount;
-  static List<SiteSupplyHistorys> siteSupplyHistory ;
+  static List<SiteSupplyHistorys> siteSupplyHistory;
 
   static ConstructionStageEntity siteProgressConstructionId;
   static SiteFloorsEntity siteProgressnoOfFloors;
@@ -103,99 +101,111 @@ class UpdatedValues{
   static String dateOfConstructionNextStage;
   static List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage;
 
-
   UpdatedValues();
 
-
-  static  SiteFloorsEntity getSiteFloorsEntityNextStage() {
+  static SiteFloorsEntity getSiteFloorsEntityNextStage() {
     return siteFloorsEntityNextStage;
   }
 
-  static  void setSiteFloorsEntityNextStage(SiteFloorsEntity siteFloorsEntityNextStage) {
+  static void setSiteFloorsEntityNextStage(
+      SiteFloorsEntity siteFloorsEntityNextStage) {
     UpdatedValues.siteFloorsEntityNextStage = siteFloorsEntityNextStage;
   }
 
-  static  String getStagePotentialVisitNextStage() {
+  static String getStagePotentialVisitNextStage() {
     return stagePotentialVisitNextStage;
   }
 
-  static  void setStagePotentialVisitNextStage(String stagePotentialVisitNextStage) {
+  static void setStagePotentialVisitNextStage(
+      String stagePotentialVisitNextStage) {
     UpdatedValues.stagePotentialVisitNextStage = stagePotentialVisitNextStage;
   }
 
-  static  BrandModelforDB getSiteBrandFromLocalDBNextStage() {
+  static BrandModelforDB getSiteBrandFromLocalDBNextStage() {
     return siteBrandFromLocalDBNextStage;
   }
 
-  static  void setSiteBrandFromLocalDBNextStage(BrandModelforDB siteBrandFromLocalDBNextStage) {
+  static void setSiteBrandFromLocalDBNextStage(
+      BrandModelforDB siteBrandFromLocalDBNextStage) {
     UpdatedValues.siteBrandFromLocalDBNextStage = siteBrandFromLocalDBNextStage;
   }
 
-  static  BrandModelforDB getSiteProductFromLocalDBNextStage() {
+  static BrandModelforDB getSiteProductFromLocalDBNextStage() {
     return siteProductFromLocalDBNextStage;
   }
 
-  static  void setSiteProductFromLocalDBNextStage(BrandModelforDB siteProductFromLocalDBNextStage) {
-    UpdatedValues.siteProductFromLocalDBNextStage = siteProductFromLocalDBNextStage;
+  static void setSiteProductFromLocalDBNextStage(
+      BrandModelforDB siteProductFromLocalDBNextStage) {
+    UpdatedValues.siteProductFromLocalDBNextStage =
+        siteProductFromLocalDBNextStage;
   }
 
-  static  String getBrandPriceVisitNextStage() {
+  static String getBrandPriceVisitNextStage() {
     return brandPriceVisitNextStage;
   }
 
-  static  void setBrandPriceVisitNextStage(String brandPriceVisitNextStage) {
+  static void setBrandPriceVisitNextStage(String brandPriceVisitNextStage) {
     UpdatedValues.brandPriceVisitNextStage = brandPriceVisitNextStage;
   }
 
-  static  String getDateOfBagSuppliedNextStage() {
+  static String getDateOfBagSuppliedNextStage() {
     return dateOfBagSuppliedNextStage;
   }
 
-  static  void setDateOfBagSuppliedNextStage(String dateOfBagSuppliedNextStage) {
+  static void setDateOfBagSuppliedNextStage(String dateOfBagSuppliedNextStage) {
     UpdatedValues.dateOfBagSuppliedNextStage = dateOfBagSuppliedNextStage;
   }
 
-  static  String getSiteCurrentTotalBagsNextStage() {
+  static String getSiteCurrentTotalBagsNextStage() {
     return siteCurrentTotalBagsNextStage;
   }
 
-  static  void setSiteCurrentTotalBagsNextStage(String siteCurrentTotalBagsNextStage) {
+  static void setSiteCurrentTotalBagsNextStage(
+      String siteCurrentTotalBagsNextStage) {
     UpdatedValues.siteCurrentTotalBagsNextStage = siteCurrentTotalBagsNextStage;
   }
 
-  static  String getStageStatusNextStage() {
+  static String getStageStatusNextStage() {
     return stageStatusNextStage;
   }
 
-  static  void setStageStatusNextStage(String stageStatusNextStage) {
+  static void setStageStatusNextStage(String stageStatusNextStage) {
     UpdatedValues.stageStatusNextStage = stageStatusNextStage;
   }
 
-  static  String getDateOfConstructionNextStage() {
+  static String getDateOfConstructionNextStage() {
     return dateOfConstructionNextStage;
   }
 
-  static  void setDateOfConstructionNextStage(String dateOfConstructionNextStage) {
+  static void setDateOfConstructionNextStage(
+      String dateOfConstructionNextStage) {
     UpdatedValues.dateOfConstructionNextStage = dateOfConstructionNextStage;
   }
 
-  static  void setSiteProductEntityFromLocalDBNextStage(List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage) {
-    UpdatedValues.siteProductEntityfromLoaclDBNextStage = siteProductEntityfromLoaclDBNextStage;
+  static void setSiteProductEntityFromLocalDBNextStage(
+      List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage) {
+    UpdatedValues.siteProductEntityfromLoaclDBNextStage =
+        siteProductEntityfromLoaclDBNextStage;
   }
-  static  List<BrandModelforDB> getSiteProductEntityFromLocalDBNextStage() {
+
+  static List<BrandModelforDB> getSiteProductEntityFromLocalDBNextStage() {
     return siteProductEntityfromLoaclDBNextStage;
   }
 
-
-  static  List<SiteNextStageEntity> getSiteNextStageEntity() {
+  static List<SiteNextStageEntity> getSiteNextStageEntity() {
     List<SiteNextStageEntity> siteNextStageEntity = new List();
-    if ( constructionTypeVisitNextStage!= null && siteBrandFromLocalDBNextStage!=null) {
+    if (constructionTypeVisitNextStage != null &&
+        siteBrandFromLocalDBNextStage != null) {
       siteNextStageEntity.add(new SiteNextStageEntity(
         siteId: siteId,
         constructionStageId: constructionTypeVisitNextStage.id ?? 1,
         stagePotential: getStagePotentialVisitNextStage(),
-        brandId: siteBrandFromLocalDBNextStage!=null?siteBrandFromLocalDBNextStage.id:null,
-        floorId: siteFloorsEntityNextStage!=null?siteFloorsEntityNextStage.id.toString():null,
+        brandId: siteBrandFromLocalDBNextStage != null
+            ? siteBrandFromLocalDBNextStage.id
+            : null,
+        floorId: siteFloorsEntityNextStage != null
+            ? siteFloorsEntityNextStage.id.toString()
+            : null,
         brandPrice: getBrandPriceVisitNextStage(),
         stageStatus: getStageStatusNextStage(),
         constructionStartDt: getDateOfConstructionNextStage(),
@@ -207,359 +217,361 @@ class UpdatedValues{
     return siteNextStageEntity;
   }
 
-  static  void setSiteNextStageEntity(List<SiteNextStageEntity> siteNextStageEntity) {
+  static void setSiteNextStageEntity(
+      List<SiteNextStageEntity> siteNextStageEntity) {
     UpdatedValues.siteNextStageEntity = siteNextStageEntity;
   }
 
-  static  CounterListModel getSelectedSubDealer() {
+  static CounterListModel getSelectedSubDealer() {
     return selectedSubDealer;
   }
 
-  static  void setSelectedSubDealer(CounterListModel siteSelectedDB) {
+  static void setSelectedSubDealer(CounterListModel siteSelectedDB) {
     UpdatedValues.selectedSubDealer = siteSelectedDB;
   }
 
-  static  List<CounterListModel> getSubDealerList() {
+  static List<CounterListModel> getSubDealerList() {
     return subDealerList;
   }
 
-  static  void setSubDealerList(List<CounterListModel> subDealerList) {
+  static void setSubDealerList(List<CounterListModel> subDealerList) {
     UpdatedValues.subDealerList = subDealerList;
   }
 
-  static  BrandModelforDB getSiteSelectedDB() {
+  static BrandModelforDB getSiteSelectedDB() {
     return siteSelectedDB;
   }
 
-  static  void setSiteSelectedDB(BrandModelforDB siteSelectedDB) {
+  static void setSiteSelectedDB(BrandModelforDB siteSelectedDB) {
     UpdatedValues.siteSelectedDB = siteSelectedDB;
   }
 
-  static  DealerForDb getDealerEntityForDb() {
+  static DealerForDb getDealerEntityForDb() {
     return dealerEntityForDb;
   }
 
-  static  void setDealerEntityForDb(DealerForDb dealerEntityForDb) {
+  static void setDealerEntityForDb(DealerForDb dealerEntityForDb) {
     UpdatedValues.dealerEntityForDb = dealerEntityForDb;
   }
 
-
-  static  String getTotalSitePotentialAutoCalc() {
+  static String getTotalSitePotentialAutoCalc() {
     return totalSitePotentialAutoCalc;
   }
 
-  static  void setTotalSitePotentialAutoCalc(String totalSitePotentialAutoCalc) {
+  static void setTotalSitePotentialAutoCalc(String totalSitePotentialAutoCalc) {
     UpdatedValues.totalSitePotentialAutoCalc = totalSitePotentialAutoCalc;
   }
 
-  static  void setProductDynamicList(List<ProductListModel> productDynamicList) {
+  static void setProductDynamicList(List<ProductListModel> productDynamicList) {
     UpdatedValues.productDynamicList = productDynamicList;
   }
-  static  List<ProductListModel> getProductDynamicList() {
+
+  static List<ProductListModel> getProductDynamicList() {
     return productDynamicList;
   }
 
-  static  void setProductEntityFromLocalDb(List<BrandModelforDB> siteProductEntityfromLoaclDB) {
+  static void setProductEntityFromLocalDb(
+      List<BrandModelforDB> siteProductEntityfromLoaclDB) {
     UpdatedValues.siteProductEntityfromLoaclDB = siteProductEntityfromLoaclDB;
   }
-  static  List<BrandModelforDB> getProductEntityFromLocalDb() {
+
+  static List<BrandModelforDB> getProductEntityFromLocalDb() {
     return siteProductEntityfromLoaclDB;
   }
 
-
-  static  bool getFromDropDown() {
+  static bool getFromDropDown() {
     return fromDropDown;
   }
 
-  static  void setFromDropDown(bool fromDropDown) {
+  static void setFromDropDown(bool fromDropDown) {
     UpdatedValues.fromDropDown = fromDropDown;
   }
 
-  static  bool getAddNextButtonDisable() {
+  static bool getAddNextButtonDisable() {
     return addNextButtonDisable;
   }
 
-  static  void setAddNextButtonDisable(bool addNextButtonDisable) {
+  static void setAddNextButtonDisable(bool addNextButtonDisable) {
     UpdatedValues.addNextButtonDisable = addNextButtonDisable;
   }
 
-  static  String getEmpName() {
+  static String getEmpName() {
     return empName;
   }
 
-  static  void setEmpName(String empName) {
+  static void setEmpName(String empName) {
     UpdatedValues.empName = empName;
   }
 
-  static  String getEmpCode() {
+  static String getEmpCode() {
     return empCode;
   }
 
-  static  void setEmpCode(String empCode) {
+  static void setEmpCode(String empCode) {
     UpdatedValues.empCode = empCode;
   }
 
-  static  int getSiteId() {
+  static int getSiteId() {
     return siteId;
   }
 
-  static  void setSiteId(int siteId) {
+  static void setSiteId(int siteId) {
     UpdatedValues.siteId = siteId;
   }
 
-  static  List<File> getImageList() {
+  static List<File> getImageList() {
     return imageList;
   }
 
-  static  void setImageList(List<File> imageList) {
+  static void setImageList(List<File> imageList) {
     UpdatedValues.imageList = imageList;
   }
 
-  static  String getSiteSegment() {
+  static String getSiteSegment() {
     return siteSegment;
   }
 
-  static  void setSiteSegment(String siteSegment) {
+  static void setSiteSegment(String siteSegment) {
     UpdatedValues.siteSegment = siteSegment;
   }
 
-  static  String getAssignedTo() {
+  static String getAssignedTo() {
     return assignedTo;
   }
 
-  static  void setAssignedTo(String assignedTo) {
+  static void setAssignedTo(String assignedTo) {
     UpdatedValues.assignedTo = assignedTo;
   }
 
-  static  String getSiteStatusId() {
+  static String getSiteStatusId() {
     return siteStatusId;
   }
 
-  static  void setSiteStatusId(String siteStatusId) {
+  static void setSiteStatusId(String siteStatusId) {
     UpdatedValues.siteStatusId = siteStatusId;
   }
 
-  static  int getSiteStageId() {
+  static int getSiteStageId() {
     return siteStageId;
   }
 
-  static  void setSiteStageId(int siteStageId) {
+  static void setSiteStageId(int siteStageId) {
     UpdatedValues.siteStageId = siteStageId;
   }
 
-  static  String getContactName() {
+  static String getContactName() {
     return contactName;
   }
 
-  static  void setContactName(String contactName) {
+  static void setContactName(String contactName) {
     UpdatedValues.contactName = contactName;
   }
 
-  static  String getContactNumber() {
+  static String getContactNumber() {
     return contactNumber;
   }
 
-  static  void setContactNumber(String contactNumber) {
+  static void setContactNumber(String contactNumber) {
     UpdatedValues.contactNumber = contactNumber;
   }
 
-  static  String getSiteGeotag() {
+  static String getSiteGeotag() {
     return siteGeotag;
   }
 
-  static  void setSiteGeotag(String siteGeotag) {
+  static void setSiteGeotag(String siteGeotag) {
     UpdatedValues.siteGeotag = siteGeotag;
   }
 
-  static  double getSiteGeotagLat() {
+  static double getSiteGeotagLat() {
     return siteGeotagLat;
   }
 
-  static  void setSiteGeotagLat(double siteGeotagLat) {
+  static void setSiteGeotagLat(double siteGeotagLat) {
     UpdatedValues.siteGeotagLat = siteGeotagLat;
   }
 
-  static  double getSiteGeotagLong() {
+  static double getSiteGeotagLong() {
     return siteGeotagLong;
   }
 
-  static  void setSiteGeotagLong(double siteGeotagLong) {
+  static void setSiteGeotagLong(double siteGeotagLong) {
     UpdatedValues.siteGeotagLong = siteGeotagLong;
   }
 
-  static  String getPlotNumber() {
+  static String getPlotNumber() {
     return plotNumber;
   }
 
-  static  void setPlotNumber(String plotNumber) {
+  static void setPlotNumber(String plotNumber) {
     UpdatedValues.plotNumber = plotNumber;
   }
 
-  static  String getSiteAddress() {
+  static String getSiteAddress() {
     return siteAddress;
   }
 
-  static  void setSiteAddress(String siteAddress) {
+  static void setSiteAddress(String siteAddress) {
     UpdatedValues.siteAddress = siteAddress;
   }
 
-  static  String getSitePincode() {
+  static String getSitePincode() {
     return sitePincode;
   }
 
-  static  void setSitePincode(String sitePincode) {
+  static void setSitePincode(String sitePincode) {
     UpdatedValues.sitePincode = sitePincode;
   }
 
-  static  String getSiteState() {
+  static String getSiteState() {
     return siteState;
   }
 
-  static  void setSiteState(String siteState) {
+  static void setSiteState(String siteState) {
     UpdatedValues.siteState = siteState;
   }
 
-  static  String getSiteDistrict() {
+  static String getSiteDistrict() {
     return siteDistrict;
   }
 
-  static  void setSiteDistrict(String siteDistrict) {
+  static void setSiteDistrict(String siteDistrict) {
     UpdatedValues.siteDistrict = siteDistrict;
   }
 
-  static  String getSiteTaluk() {
+  static String getSiteTaluk() {
     return siteTaluk;
   }
 
-  static  void setSiteTaluk(String siteTaluk) {
+  static void setSiteTaluk(String siteTaluk) {
     UpdatedValues.siteTaluk = siteTaluk;
   }
 
-  static  String getSitePotentialMt() {
+  static String getSitePotentialMt() {
     return sitePotentialMt;
   }
 
-  static  void setSitePotentialMt(String sitePotentialMt) {
+  static void setSitePotentialMt(String sitePotentialMt) {
     UpdatedValues.sitePotentialMt = sitePotentialMt;
   }
 
-  static  String getSiteTotalPotential() {
+  static String getSiteTotalPotential() {
     return siteTotalBags;
   }
 
-  static  void setSiteTotalPotential(String siteTotalBags) {
+  static void setSiteTotalPotential(String siteTotalBags) {
     UpdatedValues.siteTotalBags = siteTotalBags;
   }
 
-  static  String getReraNumber() {
+  static String getReraNumber() {
     return reraNumber;
   }
 
-  static  void setReraNumber(String reraNumber) {
+  static void setReraNumber(String reraNumber) {
     UpdatedValues.reraNumber = reraNumber;
   }
 
-  static  String getSiteCreationDate() {
+  static String getSiteCreationDate() {
     return siteCreationDate;
   }
 
-  static  void setSiteCreationDate(String siteCreationDate) {
+  static void setSiteCreationDate(String siteCreationDate) {
     UpdatedValues.siteCreationDate = siteCreationDate;
   }
 
-  static  String getDealerId() {
+  static String getDealerId() {
     return dealerId;
   }
 
-  static  void setDealerId(String dealerId) {
+  static void setDealerId(String dealerId) {
     UpdatedValues.dealerId = dealerId;
   }
 
-  static  String getSiteBuiltArea() {
+  static String getSiteBuiltArea() {
     return siteBuiltArea;
   }
 
-  static  void setSiteBuiltArea(String siteBuiltArea) {
+  static void setSiteBuiltArea(String siteBuiltArea) {
     UpdatedValues.siteBuiltArea = siteBuiltArea;
   }
 
-  static  SiteFloorsEntity getNoOfFloors() {
+  static SiteFloorsEntity getNoOfFloors() {
     return noOfFloors;
   }
 
-  static  void setNoOfFloors(SiteFloorsEntity noOfFloors) {
+  static void setNoOfFloors(SiteFloorsEntity noOfFloors) {
     UpdatedValues.noOfFloors = noOfFloors;
   }
 
-  static  String getProductDemo() {
+  static String getProductDemo() {
     return productDemo;
   }
 
-  static  void setProductDemo(String productDemo) {
+  static void setProductDemo(String productDemo) {
     UpdatedValues.productDemo = productDemo;
   }
 
-  static  String getProductOralBriefing() {
+  static String getProductOralBriefing() {
     return productOralBriefing;
   }
 
-  static  void setProductOralBriefing(String productOralBriefing) {
+  static void setProductOralBriefing(String productOralBriefing) {
     UpdatedValues.productOralBriefing = productOralBriefing;
   }
 
-  static  String getSoCode() {
+  static String getSoCode() {
     return soCode;
   }
 
-  static  void setSoCode(String soCode) {
+  static void setSoCode(String soCode) {
     UpdatedValues.soCode = soCode;
   }
 
-  static  String getInactiveReasonText() {
+  static String getInactiveReasonText() {
     return inactiveReasonText;
   }
 
-  static  void setInactiveReasonText(String inactiveReasonText) {
+  static void setInactiveReasonText(String inactiveReasonText) {
     UpdatedValues.inactiveReasonText = inactiveReasonText;
   }
 
-  static  String getNextVisitDate() {
+  static String getNextVisitDate() {
     return nextVisitDate;
   }
 
-  static  void setNextVisitDate(String nextVisitDate) {
+  static void setNextVisitDate(String nextVisitDate) {
     UpdatedValues.nextVisitDate = nextVisitDate;
   }
 
-  static  String getClosureReasonText() {
+  static String getClosureReasonText() {
     return closureReasonText;
   }
 
-  static  void setClosureReasonText(String closureReasonText) {
+  static void setClosureReasonText(String closureReasonText) {
     UpdatedValues.closureReasonText = closureReasonText;
   }
 
-  static  String getCreatedBy() {
+  static String getCreatedBy() {
     return createdBy;
   }
 
-  static  void setCreatedBy(String createdBy) {
+  static void setCreatedBy(String createdBy) {
     UpdatedValues.createdBy = createdBy;
   }
 
-  static  String getTotalBalancePotential() {
+  static String getTotalBalancePotential() {
     return totalBalancePotential;
   }
 
-  static  void setTotalBalancePotential(String totalBalancePotential) {
+  static void setTotalBalancePotential(String totalBalancePotential) {
     UpdatedValues.totalBalancePotential = totalBalancePotential;
   }
 
-  static  List<SiteCommentsEntity> getSiteCommentsEntity() {
+  static List<SiteCommentsEntity> getSiteCommentsEntity() {
     if (siteCommentsEntity == null ||
         siteCommentsEntity == "null" ||
         siteCommentsEntity == "") {
-        siteCommentsEntity = "Site updated";
+      siteCommentsEntity = "Site updated";
     }
     // print('${widget.siteId}=============');
 
@@ -567,24 +579,24 @@ class UpdatedValues{
     newSiteCommentsEntity.add(new SiteCommentsEntity(
         siteId: siteId,
         siteCommentText: siteCommentsEntity,
-        creatorName:getEmpName(),
+        creatorName: getEmpName(),
         createdBy: getEmpCode()));
     return newSiteCommentsEntity;
   }
 
-  static  void setSiteCommentsEntity(String siteCommentsEntity) {
+  static void setSiteCommentsEntity(String siteCommentsEntity) {
     UpdatedValues.siteCommentsEntity = siteCommentsEntity;
   }
 
-  static  List<SiteStageHistory> getSiteStageHistory() {
+  static List<SiteStageHistory> getSiteStageHistory() {
     return siteStageHistory;
   }
 
-  static  void setSiteStageHistory(List<SiteStageHistory> siteStageHistory) {
+  static void setSiteStageHistory(List<SiteStageHistory> siteStageHistory) {
     UpdatedValues.siteStageHistory = siteStageHistory;
   }
 
-  static List<SiteStageHistory>  getSiteStageHistory1() {
+  static List<SiteStageHistory> getSiteStageHistory1() {
     List<SiteStageHistory> siteStageHistory = new List();
     if (siteProgressConstructionId != null) {
       siteStageHistory.add(new SiteStageHistory(
@@ -599,56 +611,58 @@ class UpdatedValues{
           siteSupplyHistorys: siteSupplyHistory));
     }
     UpdatedValues.siteStageHistory = siteStageHistory;
-    return siteStageHistory ;
+    return siteStageHistory;
   }
 
-
-  static  List<SiteSupplyHistorys> getSiteSupplyHistory() {
+  static List<SiteSupplyHistorys> getSiteSupplyHistory() {
     return siteSupplyHistory;
   }
 
-  static  void updateSiteSupplyHistory(List<SiteSupplyHistorys> siteSupplyHistorys) {
+  static void updateSiteSupplyHistory(
+      List<SiteSupplyHistorys> siteSupplyHistorys) {
     UpdatedValues.siteSupplyHistory = siteSupplyHistorys;
   }
 
-
-  static  SiteProbabilityWinningEntity getSiteProbabilityWinningId() {
+  static SiteProbabilityWinningEntity getSiteProbabilityWinningId() {
     return siteProbabilityWinningId;
   }
 
-  static  void setSiteProbabilityWinningId(SiteProbabilityWinningEntity siteProbabilityWinningId) {
+  static void setSiteProbabilityWinningId(
+      SiteProbabilityWinningEntity siteProbabilityWinningId) {
     UpdatedValues.siteProbabilityWinningId = siteProbabilityWinningId;
   }
 
-  static  SiteCompetitionStatusEntity getSiteCompetitionId() {
+  static SiteCompetitionStatusEntity getSiteCompetitionId() {
     return siteCompetitionId;
   }
 
-  static  void setSiteCompetitionId(SiteCompetitionStatusEntity siteCompetitionId) {
+  static void setSiteCompetitionId(
+      SiteCompetitionStatusEntity siteCompetitionId) {
     UpdatedValues.siteCompetitionId = siteCompetitionId;
   }
 
-  static  SiteOpportunityStatusEntity getSiteOppertunityId() {
+  static SiteOpportunityStatusEntity getSiteOppertunityId() {
     return siteOppertunityId;
   }
 
-  static  void setSiteOppertunityId(SiteOpportunityStatusEntity siteOppertunityId) {
+  static void setSiteOppertunityId(
+      SiteOpportunityStatusEntity siteOppertunityId) {
     UpdatedValues.siteOppertunityId = siteOppertunityId;
   }
 
-  static  ConstructionStageEntity getSiteConstructionId() {
-    return siteConstructionId ?? ConstructionStageEntity();
+  static ConstructionStageEntity getSiteConstructionId() {
+    return siteConstructionId;
   }
 
-  static  void setSiteConstructionId(ConstructionStageEntity siteConstructionId) {
+  static void setSiteConstructionId(
+      ConstructionStageEntity siteConstructionId) {
     UpdatedValues.siteConstructionId = siteConstructionId;
   }
 
-
-  static  List<SitephotosEntity> getSitePhotosEntity() {
+  static List<SitephotosEntity> getSitePhotosEntity() {
     List<SitephotosEntity> newSitePhotoEntity = new List();
     // sitephotosEntity.clear();
-    if(imageList.length>0) {
+    if (imageList.length > 0) {
       for (int i = 0; i < imageList.length; i++) {
         newSitePhotoEntity.add(SitephotosEntity(
             photoName: path.basename(imageList[i].path),
@@ -659,22 +673,23 @@ class UpdatedValues{
     return newSitePhotoEntity;
   }
 
-  static  void setSitePhotosEntity(List<SitephotosEntity> sitePhotosEntity) {
+  static void setSitePhotosEntity(List<SitephotosEntity> sitePhotosEntity) {
     UpdatedValues.sitePhotosEntity = sitePhotosEntity;
   }
 
-  static  List<SiteInfluencerEntity> getSiteInfluencerEntity() {
-    if(listInfluencerDetail!=null) {
+  static List<SiteInfluencerEntity> getSiteInfluencerEntity() {
+    if (listInfluencerDetail != null) {
       if (listInfluencerDetail.length != 0) {
         if (listInfluencerDetail[
-        listInfluencerDetail.length - 1]
-            .inflName ==
-            null ||
+                        listInfluencerDetail.length - 1]
+                    .inflName ==
+                null ||
             listInfluencerDetail[listInfluencerDetail.length - 1].inflName ==
                 null ||
             listInfluencerDetail[listInfluencerDetail.length - 1]
                 .inflName
-                .text.isEmpty) {
+                .text
+                .isEmpty) {
           listInfluencerDetail.removeAt(listInfluencerDetail.length - 1);
         }
       }
@@ -689,140 +704,180 @@ class UpdatedValues{
             createdBy: empCode));
       }
       return newInfluencerEntity;
-    }else{
+    } else {
       return siteInfluencerEntity;
     }
   }
 
-  static  void setSiteInfluencerEntity(List<SiteInfluencerEntity> siteInfluencerEntity) {
+  static void setSiteInfluencerEntity(
+      List<SiteInfluencerEntity> siteInfluencerEntity) {
     UpdatedValues.siteInfluencerEntity = siteInfluencerEntity;
   }
-  static  List<InfluencerDetail> getSiteInfluencerDetails() {
+
+  static List<InfluencerDetail> getSiteInfluencerDetails() {
     return listInfluencerDetail;
   }
 
-  static  void setSiteInfluencerDetails(List<InfluencerDetail> listInfluencerDetail) {
+  static void setSiteInfluencerDetails(
+      List<InfluencerDetail> listInfluencerDetail) {
     UpdatedValues.listInfluencerDetail = listInfluencerDetail;
   }
 
-  static  String getDealerConfirmedChangedBy() {
+  static String getDealerConfirmedChangedBy() {
     return dealerConfirmedChangedBy;
   }
 
-  static  void setDealerConfirmedChangedBy(String dealerConfirmedChangedBy) {
+  static void setDealerConfirmedChangedBy(String dealerConfirmedChangedBy) {
     UpdatedValues.dealerConfirmedChangedBy = dealerConfirmedChangedBy;
   }
 
-
-  static  String getDealerConfirmedChangedOn() {
+  static String getDealerConfirmedChangedOn() {
     return dealerConfirmedChangedOn;
   }
 
-  static  void setDealerConfirmedChangedOn(String dealerConfirmedChangedOn) {
+  static void setDealerConfirmedChangedOn(String dealerConfirmedChangedOn) {
     UpdatedValues.dealerConfirmedChangedOn = dealerConfirmedChangedOn;
   }
 
-  static  String getIsDealerConfirmedChangedBySo() {
+  static String getIsDealerConfirmedChangedBySo() {
     return isDealerConfirmedChangedBySo;
   }
 
-  static  void setIsDealerConfirmedChangedBySo(String isDealerConfirmedChangedBySo) {
+  static void setIsDealerConfirmedChangedBySo(
+      String isDealerConfirmedChangedBySo) {
     UpdatedValues.isDealerConfirmedChangedBySo = isDealerConfirmedChangedBySo;
   }
 
-  static  String getSubdealerId() {
+  static String getSubdealerId() {
     return subdealerId;
   }
 
-  static  void setSubdealerId(String subdealerId) {
+  static void setSubdealerId(String subdealerId) {
     UpdatedValues.subdealerId = subdealerId;
   }
 
-  static  TextEditingController getKitchenCount() {
+  static TextEditingController getKitchenCount() {
     return kitchenCount;
   }
 
-  static  void setKitchenCount(TextEditingController kitchenCount) {
+  static void setKitchenCount(TextEditingController kitchenCount) {
     UpdatedValues.kitchenCount = kitchenCount;
   }
 
-  static  TextEditingController getBathroomCount() {
+  static TextEditingController getBathroomCount() {
     return bathroomCount;
   }
 
-  static  void setBathroomCount(TextEditingController bathroomCount) {
+  static void setBathroomCount(TextEditingController bathroomCount) {
     UpdatedValues.bathroomCount = bathroomCount;
   }
 
-  static  ConstructionStageEntity getSiteProgressConstructionId() {
+  static ConstructionStageEntity getSiteProgressConstructionId() {
     return siteProgressConstructionId;
   }
 
-  static  void setSiteProgressConstructionId(ConstructionStageEntity siteProgressConstructionId) {
+  static void setSiteProgressConstructionId(
+      ConstructionStageEntity siteProgressConstructionId) {
     UpdatedValues.siteProgressConstructionId = siteProgressConstructionId;
   }
 
-  static  ConstructionStageEntity getConstructionTypeVisitNextStage() {
+  static ConstructionStageEntity getConstructionTypeVisitNextStage() {
     return constructionTypeVisitNextStage;
   }
 
-  static  void setConstructionTypeVisitNextStage(ConstructionStageEntity constructionTypeVisitNextStage) {
-    UpdatedValues.constructionTypeVisitNextStage = constructionTypeVisitNextStage;
+  static void setConstructionTypeVisitNextStage(
+      ConstructionStageEntity constructionTypeVisitNextStage) {
+    UpdatedValues.constructionTypeVisitNextStage =
+        constructionTypeVisitNextStage;
   }
 
-  static  SiteFloorsEntity getSiteProgressNoOfFloors() {
+  static SiteFloorsEntity getSiteProgressNoOfFloors() {
     return siteProgressnoOfFloors;
   }
 
-  static  void setSiteProgressNoOfFloors(SiteFloorsEntity siteProgressnoOfFloors) {
+  static void setSiteProgressNoOfFloors(
+      SiteFloorsEntity siteProgressnoOfFloors) {
     UpdatedValues.siteProgressnoOfFloors = siteProgressnoOfFloors;
   }
 
-  static  String getSiteProgressStagePotential() {
+  static String getSiteProgressStagePotential() {
     return siteProgressStagePotential;
   }
 
-  static  void setSiteProgressStagePotential(String siteProgressStagePotential) {
+  static void setSiteProgressStagePotential(String siteProgressStagePotential) {
     UpdatedValues.siteProgressStagePotential = siteProgressStagePotential;
   }
 
-  static  String getSiteProgressStagePotentialAuto() {
+  static String getSiteProgressStagePotentialAuto() {
     return siteProgressStagePotentialAuto;
   }
 
-  static  void setSiteProgressStagePotentialAuto(String siteProgressStagePotentialAuto) {
-    UpdatedValues.siteProgressStagePotentialAuto = siteProgressStagePotentialAuto;
+  static void setSiteProgressStagePotentialAuto(
+      String siteProgressStagePotentialAuto) {
+    UpdatedValues.siteProgressStagePotentialAuto =
+        siteProgressStagePotentialAuto;
   }
 
-  static  String getSiteProgressStageStatus() {
+  static String getSiteProgressStageStatus() {
     return siteProgressStageStatus;
   }
 
-  static  void setSiteProgressStageStatus(String siteProgressStageStatus) {
+  static void setSiteProgressStageStatus(String siteProgressStageStatus) {
     UpdatedValues.siteProgressStageStatus = siteProgressStageStatus;
   }
 
-  static  String getSiteProgressDateOfConstruction() {
+  static String getSiteProgressDateOfConstruction() {
     return siteProgressDateOfConstruction;
   }
 
-  static  void setSiteProgressDateOfConstruction(String siteProgressDateOfConstruction) {
-    UpdatedValues.siteProgressDateOfConstruction = siteProgressDateOfConstruction;
+  static void setSiteProgressDateOfConstruction(
+      String siteProgressDateOfConstruction) {
+    UpdatedValues.siteProgressDateOfConstruction =
+        siteProgressDateOfConstruction;
   }
 
-  static void setSiteProgressData(ConstructionStageEntity siteProgressConstructionId,SiteFloorsEntity siteProgressnoOfFloors,String siteProgressStagePotential,String siteProgressStageStatus,String siteProgressDateOfConstruction){
+  static void setSiteProgressData(
+      ConstructionStageEntity siteProgressConstructionId,
+      SiteFloorsEntity siteProgressnoOfFloors,
+      String siteProgressStagePotential,
+      String siteProgressStageStatus,
+      String siteProgressDateOfConstruction) {
     UpdatedValues.siteProgressConstructionId = siteProgressConstructionId;
     UpdatedValues.siteProgressnoOfFloors = siteProgressnoOfFloors;
     UpdatedValues.siteProgressStagePotential = siteProgressStagePotential;
     UpdatedValues.siteProgressStageStatus = siteProgressStageStatus;
-    UpdatedValues.siteProgressDateOfConstruction = siteProgressDateOfConstruction;
+    UpdatedValues.siteProgressDateOfConstruction =
+        siteProgressDateOfConstruction;
   }
 
-
-  static  void setSiteData(int siteId,
-      String productDemo,String productOralBriefing,String sitePotentialMt,SiteProbabilityWinningEntity siteProbabilityWinningId,SiteCompetitionStatusEntity siteCompetitionId,SiteOpportunityStatusEntity siteOppertunityId,
-      String contactName,String contactNumber,String plotNumber,String siteAddress,String sitePincode,String siteState,
-      String siteDistrict,String siteTaluk,String reraNumber,String dealerId,String subdealerId,String soCode,String assignedTo,String siteStatusId,String totalSitePotentialAutoCalc,String siteGeotag,double siteGeotagLat,double siteGeotagLong,String siteCreationDate,String siteSegment) {
+  static void setSiteData(
+      int siteId,
+      String productDemo,
+      String productOralBriefing,
+      String sitePotentialMt,
+      SiteProbabilityWinningEntity siteProbabilityWinningId,
+      SiteCompetitionStatusEntity siteCompetitionId,
+      SiteOpportunityStatusEntity siteOppertunityId,
+      String contactName,
+      String contactNumber,
+      String plotNumber,
+      String siteAddress,
+      String sitePincode,
+      String siteState,
+      String siteDistrict,
+      String siteTaluk,
+      String reraNumber,
+      String dealerId,
+      String subdealerId,
+      String soCode,
+      String assignedTo,
+      String siteStatusId,
+      String totalSitePotentialAutoCalc,
+      String siteGeotag,
+      double siteGeotagLat,
+      double siteGeotagLong,
+      String siteCreationDate,
+      String siteSegment) {
     UpdatedValues.siteId = siteId;
     UpdatedValues.productDemo = productDemo;
     UpdatedValues.productOralBriefing = productOralBriefing;
@@ -852,54 +907,68 @@ class UpdatedValues{
     UpdatedValues.siteSegment = siteSegment;
   }
 
-  Future<void> UpdateRequest(BuildContext context ) async {
-    var responseBody ={
-      "siteId":UpdatedValues.getSiteId(),
-      "siteSegment":UpdatedValues.getSiteSegment(),
-      "assignedTo":UpdatedValues.getAssignedTo(),
-      "siteStatusId":UpdatedValues.getSiteStatusId(),
-      "siteStageId":UpdatedValues.getSiteStageId(),
-      "contactName":UpdatedValues.getContactName(),
-      "contactNumber":UpdatedValues.getContactNumber(),
-      "siteGeotag":UpdatedValues.siteGeotag,
-      "siteGeotagLat":UpdatedValues.siteGeotagLat,
-      "siteGeotagLong":UpdatedValues.siteGeotagLong,
-      "siteAddress":UpdatedValues.siteAddress,
-      "sitePincode":UpdatedValues.sitePincode,
-      "siteState":UpdatedValues.siteState,
-      "siteDistrict":UpdatedValues.siteDistrict,
-      "siteTaluk":UpdatedValues.siteTaluk,
-      "sitePotentialMt":UpdatedValues.sitePotentialMt,
-      "totalSitePotentialAutoCalc":totalSitePotentialAutoCalc!=null && totalSitePotentialAutoCalc.isNotEmpty?totalSitePotentialAutoCalc:"",
-      "reraNumber":UpdatedValues.reraNumber,
-      "siteCreationDate":UpdatedValues.siteCreationDate,
-      "dealerId":UpdatedValues.dealerId,
-      "siteBuiltArea":UpdatedValues.siteBuiltArea,
-      'noOfFloors':UpdatedValues.getNoOfFloors()!=null?UpdatedValues.getNoOfFloors().id:null,
-      "productDemo":UpdatedValues.getProductDemo(),
-      "productOralBriefing":UpdatedValues.getProductOralBriefing(),
-      'soCode':UpdatedValues.soCode,
-      "plotNumber":UpdatedValues.plotNumber,
-      "inactiveReasonText":UpdatedValues.inactiveReasonText,
-      "nextVisitDate":UpdatedValues.nextVisitDate,
-      "closureReasonText":UpdatedValues.closureReasonText,
-      "createdBy":UpdatedValues.createdBy,
+  Future<void> UpdateRequest(BuildContext context) async {
+    var responseBody = {
+      "siteId": UpdatedValues.getSiteId(),
+      "siteSegment": UpdatedValues.getSiteSegment(),
+      "assignedTo": UpdatedValues.getAssignedTo(),
+      "siteStatusId": UpdatedValues.getSiteStatusId(),
+      "siteStageId": UpdatedValues.getSiteStageId(),
+      "contactName": UpdatedValues.getContactName(),
+      "contactNumber": UpdatedValues.getContactNumber(),
+      "siteGeotag": UpdatedValues.siteGeotag,
+      "siteGeotagLat": UpdatedValues.siteGeotagLat,
+      "siteGeotagLong": UpdatedValues.siteGeotagLong,
+      "siteAddress": UpdatedValues.siteAddress,
+      "sitePincode": UpdatedValues.sitePincode,
+      "siteState": UpdatedValues.siteState,
+      "siteDistrict": UpdatedValues.siteDistrict,
+      "siteTaluk": UpdatedValues.siteTaluk,
+      "sitePotentialMt": UpdatedValues.sitePotentialMt,
+      "totalSitePotentialAutoCalc": totalSitePotentialAutoCalc != null &&
+              totalSitePotentialAutoCalc.isNotEmpty
+          ? totalSitePotentialAutoCalc
+          : "",
+      "reraNumber": UpdatedValues.reraNumber,
+      "siteCreationDate": UpdatedValues.siteCreationDate,
+      "dealerId": UpdatedValues.dealerId,
+      "siteBuiltArea": UpdatedValues.siteBuiltArea,
+      'noOfFloors': UpdatedValues.getNoOfFloors() != null
+          ? UpdatedValues.getNoOfFloors().id
+          : null,
+      "productDemo": UpdatedValues.getProductDemo(),
+      "productOralBriefing": UpdatedValues.getProductOralBriefing(),
+      'soCode': UpdatedValues.soCode,
+      "plotNumber": UpdatedValues.plotNumber,
+      "inactiveReasonText": UpdatedValues.inactiveReasonText,
+      "nextVisitDate": UpdatedValues.nextVisitDate,
+      "closureReasonText": UpdatedValues.closureReasonText,
+      "createdBy": UpdatedValues.createdBy,
       "totalBalancePotential": UpdatedValues.totalBalancePotential,
-      "siteCommentsEntity":UpdatedValues.getSiteCommentsEntity(),
-      "siteStageHistorys":UpdatedValues.getSiteStageHistory1(),
-      "siteNextStageEntity":UpdatedValues.getSiteNextStageEntity(),
-      "sitePhotosEntity":UpdatedValues.getSitePhotosEntity(),
-      "siteInfluencerEntity":UpdatedValues.getSiteInfluencerEntity(),
-      "siteConstructionId":UpdatedValues.getSiteConstructionId().id,
-      "siteCompetitionId":UpdatedValues.getSiteCompetitionId().id,
-      "siteOppertunityId":UpdatedValues.getSiteOppertunityId().id,
-      "siteProbabilityWinningId": UpdatedValues.getSiteProbabilityWinningId().id,
-      "dealerConfirmedChangedBy":"",
+      "siteCommentsEntity": UpdatedValues.getSiteCommentsEntity(),
+      "siteStageHistorys": UpdatedValues.getSiteStageHistory1(),
+      "siteNextStageEntity": UpdatedValues.getSiteNextStageEntity(),
+      "sitePhotosEntity": UpdatedValues.getSitePhotosEntity(),
+      "siteInfluencerEntity": UpdatedValues.getSiteInfluencerEntity(),
+      "siteConstructionId": UpdatedValues.getSiteConstructionId() != null
+          ? UpdatedValues.getSiteConstructionId().id
+          : 0,
+      "siteCompetitionId": UpdatedValues.getSiteCompetitionId().id,
+      "siteOppertunityId": UpdatedValues.getSiteOppertunityId().id,
+      "siteProbabilityWinningId":
+          UpdatedValues.getSiteProbabilityWinningId().id,
+      "dealerConfirmedChangedBy": "",
       "dealerConfirmedChangedOn": "",
-      "isDealerConfirmedChangedBySo":getIsDealerConfirmedChangedBySo(),
+      "isDealerConfirmedChangedBySo": getIsDealerConfirmedChangedBySo(),
       "subdealerId": UpdatedValues.subdealerId,
-      "kitchenCount": (UpdatedValues.getKitchenCount().text!=null && UpdatedValues.getKitchenCount().text.isNotEmpty)?int.parse(UpdatedValues.getKitchenCount().text):null,
-      "bathroomCount": (UpdatedValues.getBathroomCount().text!=null && UpdatedValues.getBathroomCount().text.isNotEmpty)?int.parse(UpdatedValues.getBathroomCount().text):null,
+      "kitchenCount": (UpdatedValues.getKitchenCount().text != null &&
+              UpdatedValues.getKitchenCount().text.isNotEmpty)
+          ? int.parse(UpdatedValues.getKitchenCount().text)
+          : null,
+      "bathroomCount": (UpdatedValues.getBathroomCount().text != null &&
+              UpdatedValues.getBathroomCount().text.isNotEmpty)
+          ? int.parse(UpdatedValues.getBathroomCount().text)
+          : null,
     };
 
     if (UpdatedValues.getFromDropDown() == true) {
@@ -909,7 +978,7 @@ class UpdatedValues{
         Get.dialog(CustomDialogs()
             .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
       } else {
-        isNoOfBagsSuppliedEntered(responseBody,context);
+        isNoOfBagsSuppliedEntered(responseBody, context);
         UpdatedValues.setFromDropDown(false);
       }
     } else if (UpdatedValues.siteBuiltArea == "" ||
@@ -918,33 +987,34 @@ class UpdatedValues{
       Get.dialog(CustomDialogs()
           .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
     } else if (UpdatedValues.getAddNextButtonDisable() &&
-        (UpdatedValues.getConstructionTypeVisitNextStage() == null
-            || UpdatedValues.getSiteBrandFromLocalDBNextStage() == null
-            || UpdatedValues.getSiteFloorsEntityNextStage() == null
-            || UpdatedValues.getStagePotentialVisitNextStage() == null
-            || UpdatedValues.getStagePotentialVisitNextStage() == ""
-            || UpdatedValues.getBrandPriceVisitNextStage() == null
-            || UpdatedValues.getBrandPriceVisitNextStage() == ""
-            || UpdatedValues.getDateOfBagSuppliedNextStage() == null
-            || UpdatedValues.getSiteCurrentTotalBagsNextStage() == null
-            || UpdatedValues.getSiteCurrentTotalBagsNextStage() == ""
-        )) {
+        (UpdatedValues.getConstructionTypeVisitNextStage() == null ||
+            UpdatedValues.getSiteBrandFromLocalDBNextStage() == null ||
+            UpdatedValues.getSiteFloorsEntityNextStage() == null ||
+            UpdatedValues.getStagePotentialVisitNextStage() == null ||
+            UpdatedValues.getStagePotentialVisitNextStage() == "" ||
+            UpdatedValues.getBrandPriceVisitNextStage() == null ||
+            UpdatedValues.getBrandPriceVisitNextStage() == "" ||
+            UpdatedValues.getDateOfBagSuppliedNextStage() == null ||
+            UpdatedValues.getSiteCurrentTotalBagsNextStage() == null ||
+            UpdatedValues.getSiteCurrentTotalBagsNextStage() == "")) {
       Get.dialog(CustomDialogs().showMessage(
           "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
     } else {
-      isNoOfBagsSuppliedEntered(responseBody,context);
+      isNoOfBagsSuppliedEntered(responseBody, context);
     }
   }
 
-  void isNoOfBagsSuppliedEntered(var responseBody,BuildContext context) {
+  void isNoOfBagsSuppliedEntered(var responseBody, BuildContext context) {
     SiteController _siteController = Get.find();
-    if(getSiteStageId()==1) {
-      double balancePT = getTotalBalancePotential() != null ||
-          getTotalBalancePotential() == "" ? double.parse(
-          getTotalBalancePotential()) : 0.0;
-      double stagePT = getSiteTotalPotential() != null ||
-          getSiteTotalPotential() == "" ? double.parse(
-          getSiteTotalPotential()) : 0.0;
+    if (getSiteStageId() == 1) {
+      double balancePT =
+          getTotalBalancePotential() != null || getTotalBalancePotential() == ""
+              ? double.parse(getTotalBalancePotential())
+              : 0.0;
+      double stagePT =
+          getSiteTotalPotential() != null || getSiteTotalPotential() == ""
+              ? double.parse(getSiteTotalPotential())
+              : 0.0;
       if (productDynamicList.length > 0) {
         int index = productDynamicList.length - 1;
 
@@ -952,92 +1022,81 @@ class UpdatedValues{
             (productDynamicList[index].supplyDate.text.isEmpty ||
                 productDynamicList[index].brandPrice.text.isEmpty ||
                 productDynamicList[index].brandId == -1)) {
-          Get.dialog(CustomDialogs().showMessage(
-              "You have to click on Add Product to proceed !"));
+          Get.dialog(CustomDialogs()
+              .showMessage("You have to click on Add Product to proceed !"));
           return;
         } else {
           if ((getSitePotentialMt() != null || getSitePotentialMt() != "") &&
               double.parse(getSitePotentialMt()) < 0.0) {
-            Get.dialog(CustomDialogs().showMessage(
-                "Site Total Potential can't be negative!"));
+            Get.dialog(CustomDialogs()
+                .showMessage("Site Total Potential can't be negative!"));
             return;
           } else {
             if ((getTotalBalancePotential() != null ||
-                getTotalBalancePotential() != "") &&
+                    getTotalBalancePotential() != "") &&
                 double.parse(getTotalBalancePotential()) < 0.0) {
-              Get.dialog(CustomDialogs().showMessage(
-                  "Total Balance Potential can't be negative!"));
+              Get.dialog(CustomDialogs()
+                  .showMessage("Total Balance Potential can't be negative!"));
               return;
             } else if (balancePT > stagePT) {
               Get.dialog(CustomDialogs().showMessage(
                   "Total  Balance Potential can't be greater than Total Site Potential"));
               return;
-            }else if (UpdatedValues
-                .getNoOfFloors()==null && UpdatedValues
-                .getSiteProgressNoOfFloors()!=null){
+            } else if (UpdatedValues.getNoOfFloors() == null &&
+                UpdatedValues.getSiteProgressNoOfFloors() != null) {
               Get.dialog(CustomDialogs().showMessage(
                   "Site Progress floor can't be greater than Site Floor"));
               return;
-            } else if (UpdatedValues
-                .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
-                .getSiteProgressNoOfFloors()
-                .id > UpdatedValues
-                .getNoOfFloors()
-                .id)){
+            } else if (UpdatedValues.getSiteProgressNoOfFloors() != null &&
+                (UpdatedValues.getSiteProgressNoOfFloors().id >
+                    UpdatedValues.getNoOfFloors().id)) {
               Get.dialog(CustomDialogs().showMessage(
                   "Site Progress floor can't be greater than Site Floor"));
               return;
             } else {
-              _siteController.updateLeadData(
-                  responseBody, getImageList(), context,
-                  UpdatedValues.getSiteId());
+              _siteController.updateLeadData(responseBody, getImageList(),
+                  context, UpdatedValues.getSiteId());
             }
           }
         }
       } else {
-        if ((getSiteTotalPotential() != null || getSiteTotalPotential() != "") &&
+        if ((getSiteTotalPotential() != null ||
+                getSiteTotalPotential() != "") &&
             double.parse(getSitePotentialMt()) < 0.0) {
-          Get.dialog(CustomDialogs().showMessage(
-              "Site Total Potential can't be negative!"));
+          Get.dialog(CustomDialogs()
+              .showMessage("Site Total Potential can't be negative!"));
           return;
         } else {
           if ((getTotalBalancePotential() != null ||
-              getTotalBalancePotential() != "") &&
+                  getTotalBalancePotential() != "") &&
               double.parse(getTotalBalancePotential()) < 0.0) {
-            Get.dialog(CustomDialogs().showMessage(
-                "Total Balance Potential can't be negative!"));
+            Get.dialog(CustomDialogs()
+                .showMessage("Total Balance Potential can't be negative!"));
             return;
           } else if (balancePT > stagePT) {
             Get.dialog(CustomDialogs().showMessage(
                 "Total  Balance Potential can't be greater than Total Site Potential"));
             return;
-          } else if (UpdatedValues
-              .getNoOfFloors()==null && UpdatedValues
-              .getSiteProgressNoOfFloors()!=null){
+          } else if (UpdatedValues.getNoOfFloors() == null &&
+              UpdatedValues.getSiteProgressNoOfFloors() != null) {
             Get.dialog(CustomDialogs().showMessage(
                 "Site Progress floor can't be greater than Site Floor"));
             return;
-          }else if (UpdatedValues
-              .getSiteProgressNoOfFloors()!=null &&(UpdatedValues
-              .getSiteProgressNoOfFloors()
-              .id > UpdatedValues
-              .getNoOfFloors()
-              .id)){
+          } else if (UpdatedValues.getSiteProgressNoOfFloors() != null &&
+              (UpdatedValues.getSiteProgressNoOfFloors().id >
+                  UpdatedValues.getNoOfFloors().id)) {
             Get.dialog(CustomDialogs().showMessage(
                 "Site Progress floor can't be greater than Site Floor"));
-          return;
-        } else {
-            _siteController.updateLeadData(
-                responseBody, getImageList(), context,
-                UpdatedValues.getSiteId());
+            return;
+          } else {
+            _siteController.updateLeadData(responseBody, getImageList(),
+                context, UpdatedValues.getSiteId());
           }
         }
       }
-    }else{
+    } else {
       _siteController.updateLeadData(
-          responseBody, getImageList(), context,
-          UpdatedValues.getSiteId());
+          responseBody, getImageList(), context, UpdatedValues.getSiteId());
     }
   }
-
 }
