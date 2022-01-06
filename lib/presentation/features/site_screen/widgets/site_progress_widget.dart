@@ -256,7 +256,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             items: [_siteBrandFromLocalDB]
                                 .map((label) => DropdownMenuItem(
                                       child: Text(
-                                        label.brandName,
+                                          label!=null? label.brandName ?? "" :"",
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: ColorConstants
