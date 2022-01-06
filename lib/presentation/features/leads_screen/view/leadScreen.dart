@@ -205,11 +205,14 @@ class _LeadScreenState extends State<LeadScreen> {
                                         StringConstants.empty;
                                     _leadsFilterController.selectedLeadPotentialValue =
                                         StringConstants.empty;
+                                    _leadsFilterController.selectedDeliveryPointsValue=
+                                        StringConstants.empty;
                                     _leadsFilterController.selectedFilterCount = 0;
                                     _leadsFilterController.offset = 0;
                                     _leadsFilterController.leadsListResponse.leadsEntity = null;
                                     _leadsFilterController
                                         .getAccessKey(RequestIds.GET_LEADS_LIST);
+
                                   });
                                 },
                           ),
@@ -333,6 +336,31 @@ class _LeadScreenState extends State<LeadScreen> {
                         SizedBox(
                           width: 8,
                         ),
+                        Obx(() =>
+                        (_leadsFilterController.selectedDeliveryPointsValue ==
+                            StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                          label: Row(
+                            children: [
+                              Icon(
+                                Icons.check,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                  "${_leadsFilterController.selectedDeliveryPointsValue}")
+                            ],
+                          ),
+                          backgroundColor: Colors.transparent,
+                          shape: StadiumBorder(side: BorderSide()),
+                          onSelected: (bool value) {
+                            print("selected");
+                          },
+                        )),
+
                       ],
                     ))
               ],

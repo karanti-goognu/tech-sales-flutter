@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -38,6 +39,7 @@ class SiteController extends GetxController {
     super.onClose();
   }
 
+
   final MyRepositorySites repository;
 
   SiteController({@required this.repository}) : assert(repository != null);
@@ -50,6 +52,11 @@ class SiteController extends GetxController {
   final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
   final _siteDistResponse = SiteDistrictListModel().obs;
   final _kittyBagsListModel = KittyBagsListModel().obs;
+  final _counterId = StringConstants.empty.obs;
+
+  get counterId => _counterId.value;
+
+  set counterId(value) => _counterId.value = value;
 
   get pendingSupplyListResponse => _pendingSupplyListResponse.value;
 
@@ -101,6 +108,12 @@ class SiteController extends GetxController {
   final _selectedSiteDistrict = StringConstants.empty.obs;
 
   final _infName = StringConstants.empty.obs;
+
+  final _selectedDeliveryPointsValue = StringConstants.empty.obs;
+
+  get selectedDeliveryPointsValue => _selectedDeliveryPointsValue.value;
+
+  set selectedDeliveryPointsValue(value) => _selectedDeliveryPointsValue.value = value;
 
   get selectedFilterCount => this._selectedFilterCount.value;
 
@@ -338,6 +351,21 @@ class SiteController extends GetxController {
       if (this.selectedSiteDistrict != StringConstants.empty) {
         siteDistrict = "&siteDistrict=${this.selectedSiteDistrict}";
       }
+      String deliveryPoints = "";
+      if (this.selectedDeliveryPointsValue != StringConstants.empty) {
+        deliveryPoints = "&deliveryPoints=${this.selectedDeliveryPointsValue}";
+        switch (this.selectedDeliveryPointsValue) {
+          case "Yes":
+            deliveryPoints="&deliveryPoint=Y";
+            break;
+          case "No":
+            deliveryPoints="&deliveryPoint=N";
+            break;
+          default:
+            deliveryPoints = "";
+            break;
+        }
+      }
 
       String influencerID = "";
       if (influencer_id != StringConstants.empty) {
@@ -345,7 +373,7 @@ class SiteController extends GetxController {
       }
       //debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${this.offset}');
-      String url = "${UrlConstants.getSitesList}$empId$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
        debugPrint('Url is : $url');
@@ -353,6 +381,7 @@ class SiteController extends GetxController {
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
+
             // Get.back();
         if (data == null) {
           debugPrint('Sites Data Response is null');
@@ -377,6 +406,7 @@ class SiteController extends GetxController {
               if(this.isFilterApplied==true){
                 this.sitesListResponse = sitesListModel;
               }
+
               ////
               Get.rawSnackbar(
                 titleText: Text("Note"),

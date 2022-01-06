@@ -121,11 +121,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedPosition = 3;
                     },
                     child: returnSelectedWidget("Lead Potential", 3)),
-                // GestureDetector(
-                //     onTap: () {
-                //       _leadsFilterController.selectedPosition = 4;
-                //     },
-                //     child: returnSelectedWidget("Delivery Points", 4)),
+                GestureDetector(
+                    onTap: () {
+                      _leadsFilterController.selectedPosition = 4;
+                    },
+                    child: returnSelectedWidget("Delivery Points", 4)),
               ],
             ),
           ),
@@ -264,9 +264,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                 : (_leadsFilterController.selectedPosition == 2)
                     ? returnLeadStatusBody()
                     :
-        // (_leadsFilterController.selectedPosition == 3) ?
+        (_leadsFilterController.selectedPosition == 3) ?
         returnLeadPotentialBody()
-                        // : returnDeliveryPointsBody(),
+                        : returnDeliveryPointsBody(),
       ),
     );
   }
@@ -490,16 +490,14 @@ class _FilterWidgetState extends State<FilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: _splashController.splashDataModel.leadStageEntity.length,
+            itemCount: deliveryPointsOptions.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
               return deliveryPointListTile(
-                  deliveryPointsOptions[index],
-                  _splashController.splashDataModel.leadStageEntity[index].id
-                      .toString());
+                  deliveryPointsOptions[index]);
             }));
   }
-  Widget deliveryPointListTile(String option, String leadStageValue) {
+  Widget deliveryPointListTile(String option) {
     return Container(
       height: 40,
       child: ListTile(
@@ -507,22 +505,18 @@ class _FilterWidgetState extends State<FilterWidget> {
           leading: Obx(
                 () => Radio(
               value: option,
-              groupValue: _leadsFilterController.selectedLeadStage as String,
+              groupValue: _leadsFilterController.selectedDeliveryPointsValue as String,
               onChanged: (String value) {
-                if (_leadsFilterController.selectedLeadStage ==
+                if (_leadsFilterController.selectedDeliveryPointsValue ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
                       _leadsFilterController.selectedFilterCount + 1;
                 }
-                _leadsFilterController.selectedLeadStage = value;
-                _leadsFilterController.selectedLeadStageValue = leadStageValue;
+                _leadsFilterController.selectedDeliveryPointsValue = value;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-
-                ///filter issue
-                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
-              },
+              }
             ),
           )),
     );

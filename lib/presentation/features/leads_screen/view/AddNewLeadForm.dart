@@ -3925,17 +3925,20 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 List result;
                                 result = await GetCurrentLocation
                                     .getCurrentLocation();
-                                _currentPosition = result[1];
-                                List<String> loc = result[0];
-                                print("ADD: ${result[0]}");
-                                _siteAddress.text =
-                                    "${loc[7]}, ${loc[6]}, ${loc[4]}";
-                                _district.text = "${loc[2]}";
-                                _state.text = "${loc[1]}";
-                                _pincode.text = "${loc[5]}";
-                                _taluk.text = "${loc[3]}";
-                                _currentAddress =
-                                    "${loc[3]}, ${loc[5]}, ${loc[1]}";
+
+                               if(result!=null){
+                                 _currentPosition = result[1];
+                                 List<String> loc = result[0];
+                                 print("ADD: ${result[0]}");
+                                 _siteAddress.text =
+                                 "${loc[7]}, ${loc[6]}, ${loc[4]}";
+                                 _district.text = "${loc[2]}";
+                                 _state.text = "${loc[1]}";
+                                 _pincode.text = "${loc[5]}";
+                                 _taluk.text = "${loc[3]}";
+                                 _currentAddress =
+                                 "${loc[3]}, ${loc[5]}, ${loc[1]}";
+                               }
                               },
                             ),
                             Text(

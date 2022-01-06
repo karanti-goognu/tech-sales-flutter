@@ -65,6 +65,7 @@ class PendingSuppliesDetailsModel {
   var brandPrice = new TextEditingController();
   var supplyQty = new TextEditingController();
   var supplyDate = new TextEditingController();
+  TextEditingController counter = new TextEditingController();
   String soldToParty;
   String soldToPartyName;
   String shipToParty;
@@ -96,7 +97,8 @@ class PendingSuppliesDetailsModel {
         this.shipToPartyName,
         this.isAuthorised,
         this.supplyCreatedOn,
-      this.influencerName});
+      this.influencerName,
+      this.counter});
 
   PendingSuppliesDetailsModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -109,6 +111,7 @@ class PendingSuppliesDetailsModel {
     stageConstructionId = json['stageConstructionId'];
     stageConstructionDesc.text = json['stageConstructionDesc'];
     sitePotentialMt.text = json['sitePotentialMt'];
+    counter.text = json['shipToPartyName'];
     brandId = json['brandId'];
     brandName.text = json['brandName'];
     productName.text = json['productName'];
@@ -142,6 +145,7 @@ class PendingSuppliesDetailsModel {
     data['brandPrice'] = this.brandPrice.text;
     data['supplyQty'] = this.supplyQty.text;
     data['supplyDate'] = this.supplyDate.text;
+    data['shipToPartyName'] = this.counter.text;
     data['soldToParty'] = this.soldToParty;
     data['soldToPartyName'] = this.soldToPartyName;
     data['shipToParty'] = this.shipToParty;

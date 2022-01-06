@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
-import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/ValidateOtpModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -42,18 +41,23 @@ class HomeController extends GetxController {
   final _dspSlabsConverted = '0'.obs;
 
   get sitesConverted => this._sitesConverted.value;
+
   set sitesConverted(value) => this._sitesConverted.value = value;
 
   get volumeConverted => this._volumeConverted.value;
+
   set volumeConverted(value) => this._volumeConverted.value = value;
 
   get newInfl => this._newInfl.value;
+
   set newInfl(value) => this._newInfl.value = value;
 
   get dspSlabsConverted => this._dspSlabsConverted.value;
+
   set dspSlabsConverted(value) => this._dspSlabsConverted.value = value;
 
   get disableSlider => this._disableSlider.value;
+
   set disableSlider(value) => this._disableSlider.value = value;
 
   get accessKeyResponse => this._accessKeyResponse.value;
@@ -107,18 +111,19 @@ class HomeController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-
-      this.accessKeyResponse = data;
-      switch (requestId) {
-        case RequestIds.CHECK_IN:
-          getCheckInDetails(this.accessKeyResponse.accessKey);
-          break;
-        case RequestIds.CHECK_OUT:
-          getCheckOutDetails(this.accessKeyResponse.accessKey);
-          break;
-        case RequestIds.HOME_DASHBOARD:
-          getDashboardDetails(this.accessKeyResponse.accessKey);
-          break;
+      if (data != null) {
+        this.accessKeyResponse = data;
+        switch (requestId) {
+          case RequestIds.CHECK_IN:
+            getCheckInDetails(this.accessKeyResponse.accessKey);
+            break;
+          case RequestIds.CHECK_OUT:
+            getCheckOutDetails(this.accessKeyResponse.accessKey);
+            break;
+          case RequestIds.HOME_DASHBOARD:
+            getDashboardDetails(this.accessKeyResponse.accessKey);
+            break;
+        }
       }
     });
   }
@@ -127,13 +132,15 @@ class HomeController extends GetxController {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      await  _prefs.then((SharedPreferences prefs) async {
-       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+    await _prefs.then((SharedPreferences prefs) async {
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 //      print('$empId $userSecurityKey');
-     await repository.getHomeDashboardDetails(accessKey,userSecurityKey, empId).then((_) {
-       Get.back();
+      await repository
+          .getHomeDashboardDetails(accessKey, userSecurityKey, empId)
+          .then((_) {
+        Get.back();
         DashboardModel data = _;
         this.sitesConverted = data.dashBoardViewModal.sitesConverted;
         this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
@@ -196,11 +203,11 @@ class HomeController extends GetxController {
                 this.checkInResponse.journeyEntity.journeyDate;
             _splashController.splashDataModel.journeyDetails.journeyStartTime =
                 this.checkInResponse.journeyEntity.journeyStartTime;
-            prefs.setString(StringConstants.JOURNEY_DATE, this.checkInResponse.journeyEntity.journeyDate);
+            prefs.setString(StringConstants.JOURNEY_DATE,
+                this.checkInResponse.journeyEntity.journeyDate);
 //            print("${this.checkInResponse}");
 //            print('Enable the button');
             this.disableSlider = false;
-
           }
           Get.back();
         });
@@ -211,7 +218,6 @@ class HomeController extends GetxController {
   }
 
   getCheckOutDetails(String accessKey) {
-
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -234,19 +240,13 @@ class HomeController extends GetxController {
             _splashController.splashDataModel.journeyDetails.journeyStartLong;
         journeyEndLat = position.latitude.toString();
         journeyEndLong = position.longitude.toString();
-        //debugPrint('request without encryption: $body');
+           //debugPrint('request without encryption: $body');
         String url = "${UrlConstants.getCheckInDetails}";
 //        debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${date.day}";
-
-        String journeyDate =
-            _splashController.splashDataModel.journeyDetails.journeyDate;
-        String journeyStartTime =
-            _splashController.splashDataModel.journeyDetails.journeyStartTime;
-
-//        print('Date is ${date.toString()} Formatted Date :: $formattedDate Latitude $journeyStartLat Longitude $journeyStartLong');
-
+        String journeyDate = _splashController.splashDataModel.journeyDetails.journeyDate;
+        String journeyStartTime = _splashController.splashDataModel.journeyDetails.journeyStartTime;
         repository
             .getCheckInDetails(
                 url,
@@ -266,13 +266,13 @@ class HomeController extends GetxController {
           } else {
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
-            prefs.setString(StringConstants.JOURNEY_END_DATE,this.checkInResponse.journeyEntity.journeyEndTime);
-
+            prefs.setString(StringConstants.JOURNEY_END_DATE,
+                this.checkInResponse.journeyEntity.journeyEndTime);
 
 //            print("${this.checkInResponse}");
           }
         });
-         Get.back();
+        Get.back();
       }).catchError((e) {
         print(e);
       });
@@ -286,23 +286,21 @@ class HomeController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  openHomeScreen(){
+  openHomeScreen() {
     Get.toNamed(Routes.HOME_SCREEN);
   }
 
 /*call refresh data api for get master data if splash model have no data*/
- Future<bool> checkSplashMasterData() async {
-   Future.delayed(
-       Duration.zero,
-           () => Get.dialog(Center(child: CircularProgressIndicator()),
-           barrierDismissible: false));
-  await repository.getAccessKey().then((data) async {
-   await  _splashController.getRefreshData(this.accessKeyResponse.accessKey,RequestIds.GET_MASTER_DATA_FOR_HOME);
-   });
-
-   return true;
- }
-
-
-
+  Future<bool> checkSplashMasterData() async {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
+    await repository.getAccessKey().then((data) async {
+      if (this.accessKeyResponse != null)
+        await _splashController.getRefreshData(this.accessKeyResponse.accessKey,
+            RequestIds.GET_MASTER_DATA_FOR_HOME);
+    });
+    return true;
+  }
 }

@@ -637,7 +637,7 @@ class UpdatedValues{
   }
 
   static  ConstructionStageEntity getSiteConstructionId() {
-    return siteConstructionId;
+    return siteConstructionId ?? ConstructionStageEntity();
   }
 
   static  void setSiteConstructionId(ConstructionStageEntity siteConstructionId) {
