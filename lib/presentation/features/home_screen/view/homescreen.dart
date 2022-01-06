@@ -271,9 +271,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 0.0, right: 3),
                           child: GestureDetector(
                             onTap: () {
-                              // Get.toNamed(Routes.NOTIFICATION);
-                              Get.dialog(CustomDialogs()
-                                  .errorDialog("Coming Soon !!"));
+                               Get.toNamed(Routes.NOTIFICATION);
+                              // Get.dialog(CustomDialogs()
+                              //     .errorDialog("Coming Soon !!"));
                             },
                             child: Container(
                               height: (SizeConfig.screenHeight * .12) * .43,

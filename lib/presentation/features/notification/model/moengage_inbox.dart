@@ -123,7 +123,7 @@ class MoEngageInbox {
   }
 
   Future<List<InboxMessage>> fetchAllInboxMessages() async {
-    List<InboxMessage> inboxList = new List.empty();
+    List<InboxMessage> inboxList = new List.empty(growable: true);
     this.fetchAllMessages().then((value) => {
       if(value.messages.length>0){
         inboxList.addAll(value.messages)
@@ -133,7 +133,6 @@ class MoEngageInbox {
     });
 
     return inboxList;
-
   }
 
 

@@ -148,7 +148,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       future: _moEngageInbox.fetchAllInboxMessages(),
       builder: (BuildContext context, AsyncSnapshot<List<InboxMessage>> snapshot) {
         if (snapshot.hasData) {
-          if(snapshot.data.length>0){
+          if(snapshot.data.length > 0){
           return ListView.builder(
               itemCount: snapshot.data.length,
               padding: const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 10,top: 8),
