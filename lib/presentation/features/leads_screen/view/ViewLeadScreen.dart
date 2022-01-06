@@ -2296,16 +2296,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
                                       _addLeadsController.selectedImageNameList.forEach((leadModel) {
-                                        if(leadModel.imageStatus==userSelectedImageStatus){
-                                          selectedImageListDetails.add(
-                                              new updateRequest.ListLeadImage(
-                                                leadId: widget.leadId,
-                                                photoName: leadModel.photoName,
-                                                createdBy: empId,
-                                              ));
+                                        if(leadModel.imageStatus==userSelectedImageStatus)
+                                        selectedImageListDetails.add(
+                                            new updateRequest.ListLeadImage(
+                                              leadId: widget.leadId,
+                                              photoName: leadModel.photoName,
+                                              createdBy: empId,
+                                            ));
 
-                                          userSelectedImageFile.add(leadModel.imageFilePath);
-                                        }
+                                        userSelectedImageFile.add(leadModel.imageFilePath);
 
 
                                       });

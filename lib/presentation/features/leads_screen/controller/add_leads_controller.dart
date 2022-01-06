@@ -245,6 +245,7 @@ class AddLeadsController extends GetxController {
 
   /// convert image url to file
   Future<File> getFileFromUrl(String imageUrl) async {
+    print("getFileFromUrl   $imageUrl");
     var rng = new Random();
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;

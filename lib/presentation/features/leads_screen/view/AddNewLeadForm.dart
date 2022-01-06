@@ -4688,8 +4688,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       .isPrimary));
                                         }
 
-                                        List<ListLeadImageDraft>
-                                            listLeadImageDraft = new List();
+                                        List<ListLeadImageDraft> listLeadImageDraft = new List();
 
                                         for (int i = 0;
                                             i < controller.imageList.length;
@@ -4924,8 +4923,37 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadSource = "SELF";
                                           leadSourceUser = empId;
                                         }
-                                        //  print(22112);
+                                        //  print("Update Image Add Lead controller:::::::::::::: save    ${imageList.length}  ");
                                         // print(_listIC:\Projects\Flutter\tech-sales-flutter\android\app\Users\neosoft\Documents\Development\jks\dalmiadigitaltso.jksnfluencerDetail[1].toJson());
+
+
+                                        List<ListLeadImage> selectedImageListDetails = new List();
+                                        List<File> userSelectedImageFile=new List();
+                                        print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
+
+                                        _addLeadsController.selectedImageNameList.forEach((leadModel) {
+                                          if(leadModel.imageStatus==userSelectedImageStatus){
+                                            selectedImageListDetails.add(
+                                                new ListLeadImage(
+                                                  photoName: leadModel.photoName,
+                                                ));
+
+                                            userSelectedImageFile.add(leadModel.imageFilePath);
+                                          }
+
+
+                                        });
+
+                                       /* List<ListLeadImage> listLeadImageDraft = new List();
+
+                                        for (int i = 0;
+                                        i < controller.imageList.length;
+                                        i++) {
+                                          listLeadImageDraft.add(
+                                              new ListLeadImage(
+                                                  photoName: controller
+                                                      .imageList[i].path));
+                                        }*/
                                         SaveLeadRequestModel
                                             saveLeadRequestModel =
                                             new SaveLeadRequestModel(
@@ -4956,7 +4984,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     _totalMT.text,
                                                 leadReraNumber: _rera.text,
                                                 isStatus: "false",
-                                                listLeadImage: listLeadImage,
+                                                listLeadImage: selectedImageListDetails,
+
+                                                //listLeadImage: listLeadImage,
                                                 influencerList:
                                                     _listInfluencerDetail,
                                                 comments: _commentsListNew,
@@ -4975,7 +5005,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   _addLeadsController
                                                       .getAccessKeyAndSaveLead(
                                                           saveLeadRequestModel,
-                                                          controller.imageList,
+                                                      userSelectedImageFile,
+                                                          /*controller.imageList,*/
                                                           context),
                                                   _commentsListNew = new List()
                                                 }
