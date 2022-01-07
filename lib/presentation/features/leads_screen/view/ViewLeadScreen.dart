@@ -75,6 +75,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 setState(() {
                   if (data != null) {
                     viewLeadDataResponse = data;
+                    print(viewLeadDataResponse.nextStageConstructionEntity);
                     setData();
                   }
                 });
@@ -119,6 +120,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
         }
       }
+
       leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
       gv.leadRejectReasonEntity = leadRejectReasonEntity;
       nextStageConstructionEntity =

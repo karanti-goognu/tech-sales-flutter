@@ -25,14 +25,15 @@ class PendingSupplyDetailsEntity {
   String respMsg;
   PendingSuppliesDetailsModel pendingSuppliesDetailsModel;
 
-  PendingSupplyDetailsEntity({this.respCode, this.respMsg, this.pendingSuppliesDetailsModel});
+  PendingSupplyDetailsEntity(
+      {this.respCode, this.respMsg, this.pendingSuppliesDetailsModel});
 
   PendingSupplyDetailsEntity.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     pendingSuppliesDetailsModel = json['pendingSuppliesDetailsModel'] != null
         ? new PendingSuppliesDetailsModel.fromJson(
-        json['pendingSuppliesDetailsModel'])
+            json['pendingSuppliesDetailsModel'])
         : null;
   }
 
@@ -73,32 +74,34 @@ class PendingSuppliesDetailsModel {
   String isAuthorised;
   String supplyCreatedOn;
   String influencerName;
+  List<ConstStage> constStage;
 
   PendingSuppliesDetailsModel(
       {this.siteId,
-        this.assignedTo,
-        this.siteSupplyHistoryId,
-        this.siteStageHistoryId,
-        this.referenceId,
-        this.floorId,
-        this.floorText,
-        this.stageConstructionId,
-        this.stageConstructionDesc,
-        this.sitePotentialMt,
-        this.brandId,
-        this.brandName,
-        this.productName,
-        this.brandPrice,
-        this.supplyQty,
-        this.supplyDate,
-        this.soldToParty,
-        this.soldToPartyName,
-        this.shipToParty,
-        this.shipToPartyName,
-        this.isAuthorised,
-        this.supplyCreatedOn,
+      this.assignedTo,
+      this.siteSupplyHistoryId,
+      this.siteStageHistoryId,
+      this.referenceId,
+      this.floorId,
+      this.floorText,
+      this.stageConstructionId,
+      this.stageConstructionDesc,
+      this.sitePotentialMt,
+      this.brandId,
+      this.brandName,
+      this.productName,
+      this.brandPrice,
+      this.supplyQty,
+      this.supplyDate,
+      this.soldToParty,
+      this.soldToPartyName,
+      this.shipToParty,
+      this.shipToPartyName,
+      this.isAuthorised,
+      this.supplyCreatedOn,
       this.influencerName,
-      this.counter});
+      this.counter,
+      this.constStage});
 
   PendingSuppliesDetailsModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -125,6 +128,12 @@ class PendingSuppliesDetailsModel {
     isAuthorised = json['isAuthorised'];
     supplyCreatedOn = json['supplyCreatedOn'];
     influencerName = json['influencerName'];
+    if (json['constStage'] != null) {
+      constStage = new List<ConstStage>();
+      json['constStage'].forEach((v) {
+        constStage.add(new ConstStage.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -153,6 +162,28 @@ class PendingSuppliesDetailsModel {
     data['isAuthorised'] = this.isAuthorised;
     data['supplyCreatedOn'] = this.supplyCreatedOn;
     data['influencerName'] = this.influencerName;
+    if (this.constStage != null) {
+      data['constStage'] = this.constStage.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ConstStage {
+  int id;
+  String constructionStageText;
+
+  ConstStage({this.id, this.constructionStageText});
+
+  ConstStage.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    constructionStageText = json['constructionStageText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['constructionStageText'] = this.constructionStageText;
     return data;
   }
 }
