@@ -75,6 +75,8 @@ class PendingSuppliesDetailsModel {
   String supplyCreatedOn;
   String influencerName;
   List<ConstStage> constStage;
+  List<SiteFloorlist> siteFloorlist;
+
 
   PendingSuppliesDetailsModel(
       {this.siteId,
@@ -101,7 +103,8 @@ class PendingSuppliesDetailsModel {
       this.supplyCreatedOn,
       this.influencerName,
       this.counter,
-      this.constStage});
+      this.constStage,
+        this.siteFloorlist});
 
   PendingSuppliesDetailsModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -132,6 +135,12 @@ class PendingSuppliesDetailsModel {
       constStage = new List<ConstStage>();
       json['constStage'].forEach((v) {
         constStage.add(new ConstStage.fromJson(v));
+      });
+    }
+    if (json['siteFloorlist'] != null) {
+      siteFloorlist = new List<SiteFloorlist>();
+      json['siteFloorlist'].forEach((v) {
+        siteFloorlist.add(new SiteFloorlist.fromJson(v));
       });
     }
   }
@@ -165,6 +174,10 @@ class PendingSuppliesDetailsModel {
     if (this.constStage != null) {
       data['constStage'] = this.constStage.map((v) => v.toJson()).toList();
     }
+    if (this.siteFloorlist != null) {
+      data['siteFloorlist'] =
+          this.siteFloorlist.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -184,6 +197,26 @@ class ConstStage {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['constructionStageText'] = this.constructionStageText;
+    return data;
+  }
+}
+
+
+class SiteFloorlist {
+  int id;
+  String siteFloorTxt;
+
+  SiteFloorlist({this.id, this.siteFloorTxt});
+
+  SiteFloorlist.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    siteFloorTxt = json['siteFloorTxt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['siteFloorTxt'] = this.siteFloorTxt;
     return data;
   }
 }

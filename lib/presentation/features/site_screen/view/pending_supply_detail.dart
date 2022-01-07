@@ -10,7 +10,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_even
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -40,6 +39,7 @@ class PendingSupplyDetailScreen extends StatefulWidget {
 class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     with SingleTickerProviderStateMixin {
   String geoTagType;
+  SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
   List<DealerForDb> dealerEntityForDb = new List();
   AppController _appController = Get.find();
@@ -49,14 +49,18 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   KittyBagsListModel _kittyBagsListModel;
   String claimableKittyBagsAvailable = "0";
   String reservedKittyBagsAvailable = "0";
-  SiteController _siteController = Get.find();
   ConstStage _selectedConstructionType;
+  SiteFloorlist _selectedFloorType;
 
   getPendingSupplyData() async {
-    await _siteController
-        .pendingSupplyDetails(widget.supplyHistoryId, widget.siteId)
-        .then((PendingSupplyDetailsEntity data) async { });
-    _selectedConstructionType= _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.constStage[0];
+    var data = await _siteController.pendingSupplyDetails(
+        widget.supplyHistoryId, widget.siteId);
+    // .then((PendingSupplyDetailsEntity data) async { });
+    print(data);
+    // _selectedConstructionType= _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.constStage[0];
+    print(_selectedConstructionType);
+    print(_selectedFloorType);
+    // _selectedFloorType= _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.siteFloorlist[0];
   }
 
   @override
@@ -102,8 +106,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     internetChecking().then((result) => {
           if (result == true)
             {
+              getPendingSupplyData(),
               _appController.getAccessKey(RequestIds.GET_DEALERS_LIST),
-              getPendingSupplyData()
             }
           else
             {
@@ -123,37 +127,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return Scaffold(
-//            resizeToAvoidBottomInset: true,
         resizeToAvoidBottomPadding: true,
         backgroundColor: Colors.white,
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   automaticallyImplyLeading: false,
-        //   backgroundColor: Colors.white,
-        //   toolbarHeight: 60,
-        //   titleSpacing: 0,
-        // title: Padding(
-        //   padding: const EdgeInsets.only(top: 20.0, bottom: 10, left: 15),
-        //   child:
-        //   Obx(() => (_siteController != null || _siteController.pendingSupplyDetailsResponse != null || _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel != null)?
-        //   Text(_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.influencerName,
-        //     //"Influencer Name ",
-        //     style: TextStyle(
-        //         fontWeight: FontWeight.normal,
-        //         fontSize: 20,
-        //         color: HexColor("#006838"),
-        //         fontFamily: "Muli"),
-        //   ):Text("",
-        //     //"Influencer Name ",
-        //     style: TextStyle(
-        //         fontWeight: FontWeight.normal,
-        //         fontSize: 20,
-        //         color: HexColor("#006838"),
-        //         fontFamily: "Muli"),
-        // ),
-        // ),
-        // ),
-        // ),
         floatingActionButton: BackFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigatorWithoutDraftsAndSearch(),
@@ -202,7 +177,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   .pendingSuppliesDetailsModel
                                                   .influencerName ??
                                               "",
-                                          //"Influencer Name ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 20,
@@ -222,57 +196,72 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 16),
-                                  Obx(() =>
-                                  _siteController
-                                      .pendingSupplyDetailsResponse
-                                      .pendingSuppliesDetailsModel
-                                      .shipToPartyName ==
-                                      null?
-                                  TextFormField(
-                                    controller: _siteController
-                                        .pendingSupplyDetailsResponse
-                                        .pendingSuppliesDetailsModel
-                                        .floorText,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter Floor ';
-                                      }
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants
-                                            .inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    readOnly: false,
-                                    decoration:
-                                    FormFieldStyle.buildInputDecoration(
-                                      labelText: "Floor",
-                                    ),
-                                  )
-
-                                      :TextFormField(
-                                        controller: _siteController
-                                            .pendingSupplyDetailsResponse
-                                            .pendingSuppliesDetailsModel
-                                            .floorText,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return 'Please enter Floor ';
-                                          }
-                                          return null;
-                                        },
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: ColorConstants
-                                                .inputBoxHintColor,
-                                            fontFamily: "Muli"),
-                                        readOnly: true,
-                                        decoration:
-                                            FormFieldStyle.buildInputDecoration(
-                                          labelText: "Floor",
-                                        ),
-                                      )),
+                                  Obx(() => _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .shipToPartyName ==
+                                          null
+                                      ? DropdownButtonFormField<SiteFloorlist>(
+                                          value: _selectedFloorType,
+                                          items: _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .siteFloorlist
+                                              .map<
+                                                      DropdownMenuItem<
+                                                          SiteFloorlist>>(
+                                                  (SiteFloorlist label) =>
+                                                      DropdownMenuItem<
+                                                          SiteFloorlist>(
+                                                        child: Text(
+                                                          label.siteFloorTxt,
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              color: ColorConstants
+                                                                  .inputBoxHintColor,
+                                                              fontFamily:
+                                                                  "Muli"),
+                                                        ),
+                                                        value: label,
+                                                      ))
+                                              .toList(),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _siteController.floorId =
+                                                  value.id;
+                                              _selectedFloorType = value;
+                                              print(_siteController.floorId);
+                                              print(_selectedFloorType.id);
+                                              // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
+                                            });
+                                            print(value.id);
+                                          },
+                                          decoration: FormFieldStyle
+                                              .buildInputDecoration(
+                                                  labelText: "Floor"),
+                                        )
+                                      : TextFormField(
+                                          controller: _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .floorText,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter Floor ';
+                                            }
+                                            return null;
+                                          },
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                          readOnly: true,
+                                          decoration: FormFieldStyle
+                                              .buildInputDecoration(
+                                            labelText: "Floor",
+                                          ),
+                                        )),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
@@ -286,62 +275,72 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 16),
-                                  Obx(() =>
-                                  _siteController
-                                      .pendingSupplyDetailsResponse
-                                      .pendingSuppliesDetailsModel
-                                      .shipToPartyName ==
-                                      null?DropdownButtonFormField<
-                                          ConstStage>(
-                                        value: _selectedConstructionType,
-                                        items: _siteController
-                                            .pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.constStage
-                                            .map <DropdownMenuItem<ConstStage>> (( ConstStage label) => DropdownMenuItem<ConstStage>(
-                                          child: Text(
-                                            label.constructionStageText,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
+                                  Obx(() => _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .shipToPartyName ==
+                                          null
+                                      ? DropdownButtonFormField<ConstStage>(
+                                          value: _selectedConstructionType,
+                                          items: _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .constStage
+                                              .map<
+                                                      DropdownMenuItem<
+                                                          ConstStage>>(
+                                                  (ConstStage label) =>
+                                                      DropdownMenuItem<
+                                                          ConstStage>(
+                                                        child: Text(
+                                                          label
+                                                              .constructionStageText,
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              color: ColorConstants
+                                                                  .inputBoxHintColor,
+                                                              fontFamily:
+                                                                  "Muli"),
+                                                        ),
+                                                        value: label,
+                                                      ))
+                                              .toList(),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedConstructionType = value;
+                                              // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
+                                            });
+                                            print(value.id);
+                                            print(_selectedConstructionType
+                                                .constructionStageText);
+                                          },
+                                          decoration: FormFieldStyle
+                                              .buildInputDecoration(
+                                                  labelText:
+                                                      "Stage of Construction"),
+                                        )
+                                      : TextFormField(
+                                          controller: _siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .stageConstructionDesc,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter Floor ';
+                                            }
+                                            return null;
+                                          },
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
+                                          readOnly: true,
+                                          decoration: FormFieldStyle
+                                              .buildInputDecoration(
+                                            labelText: "Stage of Construction",
                                           ),
-                                          value: label,
-                                        ))
-                                            .toList(),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedConstructionType = value;
-                                            // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
-                                          });
-                                          print(value.id);
-                                          print(_selectedConstructionType.constructionStageText);
-                                        },
-                                        decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Stage of Construction"),
-                                      ):
-                                      TextFormField(
-                                        controller: _siteController
-                                            .pendingSupplyDetailsResponse
-                                            .pendingSuppliesDetailsModel
-                                            .stageConstructionDesc,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return 'Please enter Floor ';
-                                          }
-                                          return null;
-                                        },
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: ColorConstants
-                                                .inputBoxHintColor,
-                                            fontFamily: "Muli"),
-                                        readOnly: true,
-                                        decoration:
-                                            FormFieldStyle.buildInputDecoration(
-                                          labelText: "Stage of Construction",
-                                        ),
-                                      )),
+                                        )),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
@@ -880,6 +879,34 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
+                                              .shipToPartyName ==
+                                              null) {
+                                            if (_selectedFloorType == null) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                  "Please select Floor !"));
+                                              return;
+                                            }
+                                            if (_selectedConstructionType ==
+                                                null) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                  "Please select a Construction Stage !"));
+                                              return;
+                                            }
+
+                                            if (_siteController.counterId
+                                                .toString()
+                                                .isEmpty) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                  "Please select a Counter !"));
+                                              return;
+                                            }
+                                          }
+                                          else if (_siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
                                               .brandPrice
                                               .text
                                               .isEmpty) {
@@ -921,28 +948,16 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
-                                            "floor": _siteController
-                                                .pendingSupplyDetailsResponse
-                                                .pendingSuppliesDetailsModel
-                                                .floorText,
-                                            "brandPrice": _siteController
-                                                .pendingSupplyDetailsResponse
-                                                .pendingSuppliesDetailsModel
-                                                .brandPrice
-                                                .text,
+                                            "floor": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.floorText,
+                                            "floorId": _selectedFloorType == null ? null : _siteController.floorId,
+                                            "brandPrice": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.brandPrice.text,
                                             "referenceId": empId,
                                             "siteId": widget.siteId,
-                                            "supplyHistoryId":
-                                                widget.supplyHistoryId,
-                                            "supplyQty": _siteController
-                                                .pendingSupplyDetailsResponse
-                                                .pendingSuppliesDetailsModel
-                                                .supplyQty
-                                                .text,
-                                                "consStageText":_selectedConstructionType.constructionStageText,
-                                                "consStageId":_selectedConstructionType.id,
-                                            "counterId":
-                                                _siteController.counterId
+                                            "supplyHistoryId": widget.supplyHistoryId,
+                                            "supplyQty": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyQty.text,
+                                            "consStageText": _selectedConstructionType == null ? "" : _selectedConstructionType.constructionStageText,
+                                            "consStageId": _selectedConstructionType == null ? null : _selectedConstructionType.id,
+                                            "counterId": _siteController.counterId
                                           };
                                           _siteController
                                               .updatePendingSupplyDetails(
@@ -970,18 +985,34 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         onPressed: () async {
                                           String empId = await getEmpId();
                                           if (_siteController
-                                                      .pendingSupplyDetailsResponse
-                                                      .pendingSuppliesDetailsModel
-                                                      .shipToPartyName ==
-                                                  null &&
-                                              _siteController.counterId
-                                                  .toString()
-                                                  .isEmpty) {
-                                            Get.dialog(CustomDialogs()
-                                                .showMessage(
-                                                    "Please select a Counter !"));
-                                            return;
-                                          } else if (_siteController
+                                                  .pendingSupplyDetailsResponse
+                                                  .pendingSuppliesDetailsModel
+                                                  .shipToPartyName ==
+                                              null) {
+                                            if (_selectedFloorType == null) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                      "Please select Floor !"));
+                                              return;
+                                            }
+                                            if (_selectedConstructionType ==
+                                                null) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                      "Please select a Construction Stage !"));
+                                              return;
+                                            }
+
+                                            if (_siteController.counterId
+                                                .toString()
+                                                .isEmpty) {
+                                              Get.dialog(CustomDialogs()
+                                                  .showMessage(
+                                                      "Please select a Counter !"));
+                                              return;
+                                            }
+                                          }
+                                          else if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .brandPrice
@@ -1027,7 +1058,12 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "floor": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
-                                                .floorText.text,
+                                                .floorText
+                                                .text,
+                                            "floorId":
+                                                _selectedFloorType == null
+                                                    ? null
+                                                    : _siteController.floorId,
                                             "brandPrice": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
@@ -1042,15 +1078,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .pendingSuppliesDetailsModel
                                                 .supplyQty
                                                 .text,
-                                                "consStageText":_selectedConstructionType.constructionStageText,
-                                                "consStageId":_selectedConstructionType.id,
-                                            "counterId":
-                                                _siteController.counterId
+                                            "consStageText": _selectedConstructionType == null ? "" : _selectedConstructionType.constructionStageText,
+                                            "consStageId": _selectedConstructionType == null ? null : _selectedConstructionType.id,
+                                            "counterId": _siteController.counterId
                                           };
                                           print(jsonEncode(jsonData));
-                                          // _siteController
-                                          //     .updatePendingSupplyDetails(
-                                          //         jsonData);
+                                          _siteController
+                                              .updatePendingSupplyDetails(
+                                                  jsonData);
                                         },
                                       )
                                     ],
