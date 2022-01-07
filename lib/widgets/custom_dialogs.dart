@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -282,6 +286,12 @@ class CustomDialogs {
             Get.back();
             //Get.back();
             Get.toNamed(Routes.EVENTS_GIFTS);
+            //Get.toNamed(Routes.ALL_EVENTS);
+            // Navigator.push(
+            //     context, new CupertinoPageRoute(
+            //     builder: (BuildContext context) =>
+            //         Events(tabIndex: 1,))
+            // );
           },
         ),
       ],
@@ -1067,6 +1077,9 @@ class CustomDialogs {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+      Get.dialog(Center(
+        child: CircularProgressIndicator(),
+      ));
       geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
@@ -1573,6 +1586,9 @@ class CustomDialogs {
       ],
     );
   }
+
+
+
 
 
 }

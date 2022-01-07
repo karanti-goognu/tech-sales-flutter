@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
@@ -143,7 +144,7 @@ class AppPages {
     GetPage(
       name: Routes.INFLUENCER_LIST,
       page: () => InfluencerView(),
-      binding: InfBinding(),
+      bindings: [InfBinding(), SiteBinding()],
     ),
     GetPage(
       name: Routes.ADD_INFLUENCER,
@@ -176,11 +177,7 @@ class AppPages {
       page: () => FormAddEvent(),
       binding: EGBinding(),
     ),
-    // GetPage(
-    //   name: Routes.DETAIL_EVENT,
-    //   page: () => DetailViewEvent(),
-    //   binding: EGBinding(),
-    // ),
+
     // GetPage(
     //   name: Routes.CANCEL_EVENT,
     //   page: () => CancelEvent(),

@@ -28,7 +28,7 @@ class SaveEventController extends GetxController {
   }
 
   getAccessKeyAndSaveRequest(
-      SaveEventFormModel saveEventFormModel, ) {
+      SaveEventFormModel saveEventFormModel) {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();

@@ -41,6 +41,7 @@ abstract class Routes {
   static const UPDATE_EVENT = '/update_event';
   //static const UPDATE_DLR_INF = '/update_dlr_inf';
   static const GIFTS_VIEW= '/gifts_view';
+  static const ALL_EVENTS = 'all_events';
 
 
   ///Influencer

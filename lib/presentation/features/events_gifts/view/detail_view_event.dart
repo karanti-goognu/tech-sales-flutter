@@ -517,6 +517,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
+      Get.dialog(Center(
+        child: CircularProgressIndicator(),
+      ));
       geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
@@ -555,7 +558,12 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               .then((data) {
             _startEventResponse = data;
             print('DD: $_startEventResponse');
-            if(_startEventResponse.respCode == "DM2044") {
+            if(_startEventResponse.respCode == "DM1002") {
+              Get.dialog(
+                  redirectToStartEventPg(data.respMsg, data.eventID),
+                  barrierDismissible: false);
+
+            }else if(_startEventResponse.respCode == "DM2044") {
               Get.dialog(
                   redirectToEventDetailPg(data.respMsg, data.eventID),
                   barrierDismissible: false);
@@ -614,13 +622,61 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
+            Navigator.push(
+                context, new CupertinoPageRoute(
+                builder: (BuildContext context) =>
+                    DetailViewEvent(eventId))
+            ).then((_) => {getDetailEventsData()});
+           // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget redirectToStartEventPg(String message, int eventId) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Navigator.push(
+                context, new CupertinoPageRoute(
+                builder: (BuildContext context) =>
+                    DetailViewEvent(eventId))
+            ).then((_) => {getDetailEventsData()});
+            // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
           },
         ),
       ],
     );
   }
 }
+
+
 
 
 //{"respCode":"DM2043","respMsg":"The event MINI CONTRACTOR MEET is scheduled for 18-05-2021 , you can not start now.","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}
