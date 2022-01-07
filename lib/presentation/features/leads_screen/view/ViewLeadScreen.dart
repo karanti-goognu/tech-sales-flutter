@@ -17,7 +17,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
     as updateRequest;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_data_widget.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
@@ -57,6 +56,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   void initState() {
     super.initState();
     UploadImageBottomSheet.image = null;
+
     myFocusNode = FocusNode();
     getData();
   }
@@ -155,6 +155,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
         }
       }*/
+
+
 
       /*.......................*/
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
@@ -814,6 +816,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
+          print("_addLeadsController.imageList.length  ${_addLeadsController.imageList.length}");
           if (_addLeadsController.imageList.length < 5) {
             _addLeadsController.updateImageList(
                 await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
