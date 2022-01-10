@@ -19,8 +19,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 class AddLeadsController extends GetxController {
 
-  List<File> imageList = List<File>();
-  List<ListLeadImage> selectedImageNameList = new List<ListLeadImage>();
+  List<File> imageList ;
+  List<ListLeadImage> selectedImageNameList;
+  @override
+  void onInit() {
+    super.onInit();
+    imageList = [];
+    selectedImageNameList = [];
+  }
 
   updateImageList(File value, int imageStatus) {
     if(value!=null) {
@@ -46,11 +52,7 @@ class AddLeadsController extends GetxController {
   }
 
 
-  @override
-  void onInit() {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    super.onInit();
-  }
+
 
   @override
   void onClose(){
