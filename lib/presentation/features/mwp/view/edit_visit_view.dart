@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -34,20 +36,16 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   //TextEditingController _remarks = new TextEditingController();
 
-  VisitResponseModel visitResponseModel;
+  //VisitResponseModel visitResponseModel;
 
   String siteIdText = "Site Id";
 
   // getDetailEventsData() async {
-  //   _appController.getAccessKey(RequestIds.VIEW_VISIT);
+  //  // _appController.getAccessKey(RequestIds.VIEW_VISIT);
   //   await _addEventController.viewVisitData(this._appController.accessKeyResponse.accessKey).then((value) => {
   //     setState(() {
-  //       visitResponseModel = value;
-  //       mwpVisitModel = value.mwpVisitModel;
-  //       visitResponseModel.mwpVisitModel != null?
-  //       visitResponseModel.mwpVisitModel.remark == 'null'
-  //           ? _remarks = new TextEditingController(text: '')
-  //           : _remarks = new TextEditingController(text:visitResponseModel.mwpVisitModel.remark):_remarks = new TextEditingController(text: '');
+  //      // _addEventController.visitResponseModel = value;
+  //       //visitResponseModel = value;
   //     })
   //   });
   // }
@@ -1023,4 +1021,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         print(this._addEventController.nextVisitDate);
       });
   }
+
+
+
 }

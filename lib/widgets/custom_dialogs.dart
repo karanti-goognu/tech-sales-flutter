@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
@@ -17,7 +18,10 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -132,6 +136,7 @@ class CustomDialogs {
             ),
             onPressed: () {
               Get.back();
+              //Get.toNamed(Routes.VISIT_VIEW_SCREEN);
               Get.offNamed(Routes.HOME_SCREEN);
             },
           ),
@@ -329,6 +334,11 @@ class CustomDialogs {
             Get.back();
             //Get.back();
             Get.toNamed(Routes.SITES_SCREEN);
+            // Navigator.push(
+            //     context,
+            //     new CupertinoPageRoute(
+            //         builder: (BuildContext context) =>
+            //             ViewSiteScreenNew(siteId: siteId,tabIndex: 0,)));
           },
         ),
       ],
@@ -1587,8 +1597,88 @@ class CustomDialogs {
     );
   }
 
+  Widget redirectToSamePg(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            //Get.back();
+            AddEventController _addEventController = Get.find();
+            AppController _appController = Get.find();
+            _addEventController.viewVisitData(_appController.accessKeyResponse.accessKey);
+           // Get.back();
+            // Navigator.push(
+            //     context, new CupertinoPageRoute(
+            //     builder: (BuildContext context) =>
+            //         EditEventVisit())
+            // );
+            // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
+          },
+        ),
+      ],
+    );
+  }
 
+  Widget redirectToViewEventPg(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            Get.back();
+            Get.toNamed(Routes.VISIT_VIEW_SCREEN);
 
-
+          },
+        ),
+      ],
+    );
+  }
 
 }
