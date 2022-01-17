@@ -829,13 +829,15 @@ class _LeadScreenState extends State<LeadScreen> {
                                                           () => Text(
                                                             (_splashController
                                                                 .splashDataModel
+                                                                .leadStatusEntity!=null?_splashController
+                                                                .splashDataModel
                                                                 .leadStatusEntity[(_leadsFilterController
                                                                         .leadsListResponse
                                                                         .leadsEntity[
                                                                             index]
                                                                         .leadStatusId) -
                                                                     1]
-                                                                .leadStatusDesc),
+                                                                .leadStatusDesc ?? "" :""),
                                                             style: TextStyle(
                                                                 color: HexColor(
                                                                     "#39B54A"),

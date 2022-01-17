@@ -443,6 +443,7 @@ print("URL:$url ");
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
         PendingSupplyDataResponse pendingSupplyDataResponse = pendingSupplyData.response;
+        print(pendingSupplyDataResponse);
         return pendingSupplyDataResponse;
       }else
         print('error');
@@ -472,6 +473,7 @@ print("URL:$url ");
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
     try {
       version = VersionClass.getVersion();
+      print(url);
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),

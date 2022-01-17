@@ -203,21 +203,24 @@ class DashboardController extends GetxController {
         print(_);
 
         DashboardMonthlyViewModel data = _;
-        this.convTargetCount = data.convTargetCount;
-        this.convTargetVolume = data.convTargetVolume;
-        this.convertedCount = data.convertedCount;
-        this.convertedVolume = data.convertedVolume;
-        this.dspRemaingTargetCount = data.dspRemaingTargetCount;
-        this.dspSlabConvertedCount = data.dspSlabConvertedCount;
-        this.dspSlabConvertedVolume = data.dspSlabConvertedVolume;
-        this.dspTargetCount = data.dspTargetCount;
-        this.dspTotalOpperCount = data.dspTotalOpperCount;
-        this.dspTotalOpperVolume = data.dspTotalOpperVolume;
-        this.generatedCount = data.generatedCount;
-        this.generatedVolume = data.generatedVolume;
-        this.mwpPlanApproveStatus = data.mwpPlanApproveStatus;
-        this.remainingTargetCount = data.remainingTargetCount;
-        this.remainingTargetVolume = data.remainingTargetVolume;
+
+        if(data!=null){
+          this.convTargetCount = data.convTargetCount;
+          this.convTargetVolume = data.convTargetVolume;
+          this.convertedCount = data.convertedCount;
+          this.convertedVolume = data.convertedVolume;
+          this.dspRemaingTargetCount = data.dspRemaingTargetCount;
+          this.dspSlabConvertedCount = data.dspSlabConvertedCount;
+          this.dspSlabConvertedVolume = data.dspSlabConvertedVolume;
+          this.dspTargetCount = data.dspTargetCount;
+          this.dspTotalOpperCount = data.dspTotalOpperCount;
+          this.dspTotalOpperVolume = data.dspTotalOpperVolume;
+          this.generatedCount = data.generatedCount;
+          this.generatedVolume = data.generatedVolume;
+          this.mwpPlanApproveStatus = data.mwpPlanApproveStatus;
+          this.remainingTargetCount = data.remainingTargetCount;
+          this.remainingTargetVolume = data.remainingTargetVolume;
+        }
         Get.back();
       });
     }).catchError((e) => print(e));

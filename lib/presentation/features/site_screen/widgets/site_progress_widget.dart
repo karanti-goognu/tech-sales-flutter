@@ -132,6 +132,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   KittyBagsListModel _kittyBagsListModel;
 
   getKittyBags(String partyCode) {
+    print("Called now");
     //String productCode
     internetChecking().then((result) => {
       if (result == true)
@@ -255,7 +256,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             items: [_siteBrandFromLocalDB]
                                 .map((label) => DropdownMenuItem(
                                       child: Text(
-                                        label.brandName,
+                                          label!=null? label.brandName ?? "" :"",
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: ColorConstants

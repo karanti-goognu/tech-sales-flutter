@@ -17,7 +17,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
     as updateRequest;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_data_widget.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
@@ -57,6 +56,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   void initState() {
     super.initState();
     UploadImageBottomSheet.image = null;
+
     myFocusNode = FocusNode();
     getData();
   }
@@ -95,6 +95,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<LeadInfluencerEntity> influencerListForConvertToSite = List.empty(growable: true);
   setData() {
     if (viewLeadDataResponse != null) {
+      _addLeadsController.imageList.clear();
       checkStatus();
       _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
       _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
@@ -156,7 +157,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         }
       }*/
 
+
+
       /*.......................*/
+
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
        /* File file = new File(UrlConstants.baseUrlforImages +
             "/" +
@@ -293,7 +297,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             creatorName: name)
       ];
 
-      List<updateRequest.ListLeadcomments> commentsList = new List();
+      List<updateRequest.ListLeadcomments> commentsList = [];
 
       for (int i = 0; i < commentsDetails.length; i++) {
         commentsList.add(new updateRequest.ListLeadcomments(
@@ -304,7 +308,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ));
       }
 
-      List<updateRequest.ListLeadImage> imageList = new List();
+      List<updateRequest.ListLeadImage> imageList = [];
 
       for (int i = 0; i < listLeadImage.length; i++) {
         imageList.add(new updateRequest.ListLeadImage(
@@ -329,7 +333,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
         }
       }
-      List<updateRequest.LeadInfluencerEntity> listInfluencer = new List();
+      List<updateRequest.LeadInfluencerEntity> listInfluencer = [];
 
 
       for (int i = 0; i < _listInfluencerDetail.length; i++) {
@@ -393,7 +397,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       var body = jsonEncode(updateRequestModel);
       print("Update Data1-->"+body);
 
-      _addLeadsController.updateLeadData(updateRequestModel, new List<File>(),
+      _addLeadsController.updateLeadData(updateRequestModel, [],
           context, viewLeadDataResponse.leadsEntity.leadId, 3);
 
       Get.back();
@@ -507,7 +511,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     ];
 
                     List<updateRequest.ListLeadcomments> commentsList =
-                        new List();
+                        [];
 
                     for (int i = 0; i < commentsDetails.length; i++) {
                       commentsList.add(new updateRequest.ListLeadcomments(
@@ -518,7 +522,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       ));
                     }
 
-                    List<updateRequest.ListLeadImage> imageList = new List();
+                    List<updateRequest.ListLeadImage> imageList = [];
                     for (int i = 0; i < listLeadImage.length; i++) {
                       imageList.add(new updateRequest.ListLeadImage(
                         leadId: widget.leadId,
@@ -545,7 +549,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       }
                     }
                     List<updateRequest.LeadInfluencerEntity> listInfluencer =
-                        new List();
+                        [];
 
                     for (int i = 0; i < _listInfluencerDetail.length; i++) {
                       print(_listInfluencerDetail[i].toJson());
@@ -814,6 +818,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
+          print("_addLeadsController.imageList.length  ${_addLeadsController.imageList.length}");
           if (_addLeadsController.imageList.length < 5) {
             _addLeadsController.updateImageList(
                 await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
@@ -1894,40 +1899,40 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   bool isEditable = false;
   DateTime nextStageConstructionPickedDate;
 
-  /*List<File> _imageList = new List();*/
+  /*List<File> _imageList = [];*/
   List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
 
   List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
-  List<CommentsDetail> _commentsList = new List();
-  List<LeadcommentsEnitiy> _commentsListEntity = new List();
-  List<CommentsDetail> _commentsListNew = new List();
-  List<LeadStageEntity> leadStageEntity = new List();
+  List<CommentsDetail> _commentsList = [];
+  List<LeadcommentsEnitiy> _commentsListEntity = [];
+  List<CommentsDetail> _commentsListNew = [];
+  List<LeadStageEntity> leadStageEntity = [];
   LeadStageEntity leadStageVal = new LeadStageEntity();
-  List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
-  List<NextStageConstructionEntity> nextStageConstructionEntity = new List();
+  List<LeadRejectReasonEntity> leadRejectReasonEntity = [];
+  List<NextStageConstructionEntity> nextStageConstructionEntity = [];
   /*Work on dealer and subdelear*/
-  List<CounterListModel> counterListModel = new List();
-  List<CounterListModel> subDealerList = new List();
+  List<CounterListModel> counterListModel = [];
+  List<CounterListModel> subDealerList = [];
   CounterListModel selectedSubDealer = CounterListModel();
-  List<DealerForDb> dealerEntityForDb = new List();
+  List<DealerForDb> dealerEntityForDb = [];
 
-  List<DealerList> dealerList = new List();
-  List<ImageDetails> _imgDetails = new List();
+  List<DealerList> dealerList = [];
+  List<ImageDetails> _imgDetails = [];
   String leadDataDealer;
   String leadDataSubDealer;
 
   FocusNode myFocusNode;
   bool viewMoreActive = false;
 
-  List<String> _items = new List(); // to store comments
+  List<String> _items = []; // to store comments
 
   List<Item> _data = generateItems(1);
-  List<InfluencerDetail> _listInfluencerDetail = new List();
-  List<InfluencerEntity> _listInfluencerEntity = new List();
-  List<LeadInfluencerEntity> _listLeadInfluencerEntity = new List();
+  List<InfluencerDetail> _listInfluencerDetail = [];
+  List<InfluencerEntity> _listInfluencerEntity = [];
+  List<LeadInfluencerEntity> _listLeadInfluencerEntity = [];
   Position _currentPosition;
   String _currentAddress;
-  List<LeadStatusEntity> leadStatusEntity = new List();
+  List<LeadStatusEntity> leadStatusEntity = [];
   ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
 
   List<InfluencerTypeEntity> influencerTypeEntity;
@@ -2276,7 +2281,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
 
                                       List<updateRequest.ListLeadcomments>
-                                          commentsList = new List();
+                                          commentsList = [];
 
                                       for (int i = 0;
                                           i < commentsDetails.length;
@@ -2291,21 +2296,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         ));
                                       }
 
-                                      List<updateRequest.ListLeadImage> selectedImageListDetails = new List();
-                                      List<File> userSelectedImageFile=new List();
+                                      List<updateRequest.ListLeadImage> selectedImageListDetails = [];
+                                      List<File> userSelectedImageFile=[];
                                       print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
                                       _addLeadsController.selectedImageNameList.forEach((leadModel) {
-                                        if(leadModel.imageStatus==userSelectedImageStatus){
-                                          selectedImageListDetails.add(
-                                              new updateRequest.ListLeadImage(
-                                                leadId: widget.leadId,
-                                                photoName: leadModel.photoName,
-                                                createdBy: empId,
-                                              ));
+                                        if(leadModel.imageStatus==userSelectedImageStatus)
+                                        selectedImageListDetails.add(
+                                            new updateRequest.ListLeadImage(
+                                              leadId: widget.leadId,
+                                              photoName: leadModel.photoName,
+                                              createdBy: empId,
+                                            ));
 
-                                          userSelectedImageFile.add(leadModel.imageFilePath);
-                                        }
+                                        userSelectedImageFile.add(leadModel.imageFilePath);
 
 
                                       });
@@ -2349,7 +2353,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         }
                                       }
                                       List<updateRequest.LeadInfluencerEntity>
-                                          listInfluencer = new List();
+                                          listInfluencer = [];
 
 //                                      print(_listInfluencerDetail.length);
 
@@ -2562,11 +2566,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       viewLeadDataResponse.leadsEntity.nextStageConstruction,
                   'siteDealerId': viewLeadDataResponse.leadsEntity.siteDealerId,
                   // 'listLeadcomments':
-                  //     new List(),
+                  //     [],
                   // 'listLeadImage':
-                  //     new List(),
+                  //     [],
                   // 'leadInfluencerEntity':
-                  //   new List()
+                  //   []
 
                   'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                   'listLeadImage': viewLeadDataResponse.leadphotosEntity,
@@ -2579,7 +2583,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                 _addLeadsController.updateLeadData(
                     updateRequestModel,
-                    new List<File>(),
+                    [],
                     context,
                     viewLeadDataResponse.leadsEntity.leadId,
                     2);

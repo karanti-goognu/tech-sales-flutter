@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -38,6 +39,7 @@ class SiteController extends GetxController {
     super.onClose();
   }
 
+
   final MyRepositorySites repository;
 
   SiteController({@required this.repository}) : assert(repository != null);
@@ -50,6 +52,11 @@ class SiteController extends GetxController {
   final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
   final _siteDistResponse = SiteDistrictListModel().obs;
   final _kittyBagsListModel = KittyBagsListModel().obs;
+  final _counterId = StringConstants.empty.obs;
+
+  get counterId => _counterId.value;
+
+  set counterId(value) => _counterId.value = value;
 
   get pendingSupplyListResponse => _pendingSupplyListResponse.value;
 
