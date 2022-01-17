@@ -53,6 +53,13 @@ class SiteController extends GetxController {
   final _siteDistResponse = SiteDistrictListModel().obs;
   final _kittyBagsListModel = KittyBagsListModel().obs;
   final _counterId = StringConstants.empty.obs;
+  final _floorId= 0.obs;
+
+  get floorId => _floorId.value;
+
+  set floorId(value) {
+    _floorId.value = value;
+  }
 
   get counterId => _counterId.value;
 
@@ -644,6 +651,7 @@ class SiteController extends GetxController {
           debugPrint('Supply Data Response is null');
         } else {
           this.pendingSupplyListResponse = data;
+          print("#### ${jsonEncode(data)}");
           if (pendingSupplyListResponse.respCode == "DM1002") {
             debugPrint('Supply Data Response is not null');
           }
@@ -665,18 +673,20 @@ class SiteController extends GetxController {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
       print("URL: ${url}");
-      repository.getPendingSupplyDetails(accessKey, userSecurityKey, url).then((data) {
+      var data = await repository.getPendingSupplyDetails(accessKey, userSecurityKey, url);
+      print(data);
         Get.back();
         if (data == null) {
           debugPrint('Supply Detail Response is null');
         } else {
           this.pendingSupplyDetailsResponse = data;
+          print(this.pendingSupplyDetailsResponse);
           if (pendingSupplyDetailsResponse.respCode == "DM1002") {
             debugPrint('Supply Detail Response is not null');
           }
@@ -685,7 +695,6 @@ class SiteController extends GetxController {
           // }
         }
 
-      });
     });
     return pendingSupplyDetailsResponse;
   }
