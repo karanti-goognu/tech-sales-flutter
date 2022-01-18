@@ -107,6 +107,7 @@ android {
         implementation("com.moengage:rich-notification:2.2.00")
         implementation("com.moengage:inbox-core:1.0.00")
         implementation("com.moengage:addon-inbox:6.0.1")
+        implementation 'com.google.gms:google-services:4.1.0'
         implementation("com.google.firebase:firebase-analytics:20.0.2")
     }
 }
