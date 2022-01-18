@@ -125,6 +125,7 @@ class MoEngageInbox {
   Future<List<InboxMessage>> fetchAllInboxMessages() async {
     List<InboxMessage> inboxList = new List.empty(growable: true);
     this.fetchAllMessages().then((value) => {
+     // print("Count:${value.messages.length}"),
       if(value.messages.length>0){
         inboxList.addAll(value.messages)
       }else{
