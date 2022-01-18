@@ -204,8 +204,7 @@ class LoginController extends GetxController {
           print("incorrect otp");
           print(this.attempts);
           if(this.attempts>2){
-            Get.dialog(
-                AlertDialog(
+            Get.dialog(AlertDialog(
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[

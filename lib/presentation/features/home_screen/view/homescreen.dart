@@ -17,6 +17,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
+import 'package:moengage_flutter/app_status.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,11 +31,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
 
   // DashboardController _dashboardController =Get.find();
-
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -47,12 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
     new MenuDetailsModel("Events & Gifts", "assets/images/calendar.png")
   ];
 
-  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   String employeeName = "empty";
 
   // notification section start here
   // MoEngageInbox _moEngageInbox;
   int unReadMessageCount = 0;
+
   //
   // Future<int> unReadMessageCoun() async {
   //   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
@@ -65,27 +66,27 @@ class _HomeScreenState extends State<HomeScreen> {
     return result;
   }
 
-
-
-
   Future<void> initPlatformState() async {
     if (!mounted) return;
     //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
 
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
-
   @override
   void initState() {
-//    print("homescreen.dart :::::: initState()");
+    print("homescreen.dart :::::: initState()");
     super.initState();
     initPlatformState();
-    _moengagePlugin.initialise();
-    _moengagePlugin.enableSDKLogs();
-    _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    /** Kp Changes*/
+    //_moengagePlugin.initialise();
+    // _moengagePlugin.setAppStatus(MoEAppStatus.update);
+    //_moengagePlugin.enableSDKLogs();
+    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
+    // _moengagePlugin.setUniqueId("1");
+    // _moengagePlugin.setUserName("test");
+    // _moengagePlugin.setPhoneNumber("9315121614");
+    // _moengagePlugin.setEmail("test@test.com");
+    // _moengagePlugin.setBirthDate("xx-xx-xxxx");
+    //_moengagePlugin.setUpPushCallbacks(_onPushClick);
 
     // if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
     //   print('Check In');
@@ -103,34 +104,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      _homeController.checkInStatus = StringConstants.journeyEnded;
-      var journeyDate= prefs.getString(StringConstants.JOURNEY_DATE);
-      var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
-      if (journeyDate == null) {
+    _prefs.then(
+      (SharedPreferences prefs) {
+        _homeController.checkInStatus = StringConstants.journeyEnded;
+        var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
+        var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
+        if (journeyDate == null) {
 //        print('Check In');
-        _homeController.checkInStatus = StringConstants.checkIn;
-      } else {
-        if (journeyEndDate ==
-            null) {
-//          print('Check Out');
-          _homeController.checkInStatus = StringConstants.checkOut;
+          _homeController.checkInStatus = StringConstants.checkIn;
         } else {
+          if (journeyEndDate == null) {
+//          print('Check Out');
+            _homeController.checkInStatus = StringConstants.checkOut;
+          } else {
 //          print('Journey Ended');
-          _homeController.checkInStatus = StringConstants.journeyEnded;
+            _homeController.checkInStatus = StringConstants.journeyEnded;
+          }
         }
-      }
 
+        _homeController.employeeName =
+            prefs.getString(StringConstants.employeeName);
 
-      _homeController.employeeName = prefs.getString(StringConstants.employeeName);
+        // MoEngage implementation done here ....
+        // _moengagePlugin
+        //     .setUniqueId(prefs.getString(StringConstants.employeeId));
+        // _moengagePlugin
+        //     .setFirstName(prefs.getString(StringConstants.employeeName));
+        // _moengagePlugin
+        //     .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
-      // MoEngage implementation done here ....
-      _moengagePlugin.setUniqueId(prefs.getString(StringConstants.employeeId));
-      _moengagePlugin
-          .setFirstName(prefs.getString(StringConstants.employeeName));
-      _moengagePlugin
-          .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
-    });
+        setMoengageData(prefs);
+      },
+    );
 
     //   notification section starts here
     // _moEngageInbox = MoEngageInbox();
@@ -141,7 +146,29 @@ class _HomeScreenState extends State<HomeScreen> {
     //     }),
     //   })
     // });
+  }
 
+  /** Kp Changes*/
+  void setMoengageData(SharedPreferences prefs) {
+    print("Moengage Initialize");
+    final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+    //_moengagePlugin.initialise();
+    //_moengagePlugin.setAppStatus(MoEAppStatus.update);
+    _moengagePlugin.enableSDKLogs();
+    //_moengagePlugin.setUpPushCallbacks(_onPushClick);
+    _moengagePlugin.setUniqueId(
+        prefs.getString(StringConstants.employeeId) ?? ""); //employeeId id
+    _moengagePlugin.setUserName(
+        prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
+    _moengagePlugin.setPhoneNumber(
+        prefs.getString(StringConstants.mobileNumber) ?? ""); //contact number
+    _moengagePlugin.setEmail("test@test.com"); //email
+    _moengagePlugin.setBirthDate("xx-xx-xxxx"); //dob
+  }
+
+  void _onPushClick(PushCampaign message) {
+    print("This is a push click callback from native to flutter. Payload " +
+        message.toString());
   }
 
   @override
@@ -169,49 +196,54 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: ColorConstants.appBarColor,
 
             //toolbarHeight: 100,
-            toolbarHeight: SizeConfig.screenHeight*.12,
+            toolbarHeight: SizeConfig.screenHeight * .12,
             title: Image.asset(
               "assets/images/Logo(Bluebg).png",
-              height: (SizeConfig.screenHeight*.12)*.45,
+              height: (SizeConfig.screenHeight * .12) * .45,
             ),
             automaticallyImplyLeading: false,
             actions: [
               Padding(
-                padding:   EdgeInsets.only(right: SizeConfig.screenWidth*.1,top: (SizeConfig.screenHeight*.12)*.2),
+                padding: EdgeInsets.only(
+                    right: SizeConfig.screenWidth * .1,
+                    top: (SizeConfig.screenHeight * .12) * .2),
                 child: Column(
-
                   children: [
                     GestureDetector(
                       onTap: () {
-                        internetChecking().then((result) => {
-                          if (result == true)
-                            {
-                            Get.toNamed(Routes.ADD_CALENDER_SCREEN),
-                            }else{
-                            Get.snackbar(
-                                "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                                colorText: Colors.white,
-                                backgroundColor: Colors.red,
-                                snackPosition: SnackPosition.BOTTOM),
-                            // fetchSiteList()
-                          }
-                        });
+                        internetChecking().then(
+                          (result) => {
+                            if (result == true)
+                              {
+                                Get.toNamed(Routes.ADD_CALENDER_SCREEN),
+                              }
+                            else
+                              {
+                                Get.snackbar("No internet connection.",
+                                    "Make sure that your wifi or mobile data is turned on.",
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.red,
+                                    snackPosition: SnackPosition.BOTTOM),
+                                // fetchSiteList()
+                              }
+                          },
+                        );
                       },
                       child: Container(
-                        height: (SizeConfig.screenHeight*.12)*.43,
-                        width: (SizeConfig.screenHeight*.12)*.43,
+                        height: (SizeConfig.screenHeight * .12) * .43,
+                        width: (SizeConfig.screenHeight * .12) * .43,
                         padding: EdgeInsets.all(4),
                         // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                         decoration: new BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.0),
                           borderRadius:
-                          new BorderRadius.all(Radius.circular(70)),
+                              new BorderRadius.all(Radius.circular(70)),
                         ),
                         child: Icon(
                           Icons.calendar_today_sharp,
                           color: HexColor("#FFCD00"),
-                          size: (SizeConfig.screenHeight*.12)*.2,
+                          size: (SizeConfig.screenHeight * .12) * .2,
                         ),
                       ),
                     ),
@@ -220,13 +252,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       "My Calendar",
-                      style: TextStyle(color: Colors.white, fontSize: SizeConfig.safeBlockHorizontal*3),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: SizeConfig.safeBlockHorizontal * 3),
                     )
                   ],
                 ),
               ),
               Padding(
-                padding:   EdgeInsets.only(right: SizeConfig.screenWidth*.1,top: (SizeConfig.screenHeight*.12)*.2),
+                padding: EdgeInsets.only(
+                    right: SizeConfig.screenWidth * .1,
+                    top: (SizeConfig.screenHeight * .12) * .2),
                 child: Column(
                   children: [
                     Stack(
@@ -235,25 +271,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 0.0, right: 3),
                           child: GestureDetector(
                             onTap: () {
-                              // Get.toNamed(Routes.NOTIFICATION);
-                              Get.dialog(CustomDialogs()
-                                  .errorDialog("Coming Soon !!"));
+                               Get.toNamed(Routes.NOTIFICATION);
+                              // Get.dialog(CustomDialogs()
+                              //     .errorDialog("Coming Soon !!"));
                             },
                             child: Container(
-                              height: (SizeConfig.screenHeight*.12)*.43,
-                              width: (SizeConfig.screenHeight*.12)*.43,
+                              height: (SizeConfig.screenHeight * .12) * .43,
+                              width: (SizeConfig.screenHeight * .12) * .43,
                               // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                                 border:
-                                Border.all(color: Colors.black, width: 0.0),
+                                    Border.all(color: Colors.black, width: 0.0),
                                 borderRadius:
-                                new BorderRadius.all(Radius.circular(70)),
+                                    new BorderRadius.all(Radius.circular(70)),
                               ),
                               child: Icon(
                                 Icons.notifications_none_outlined,
                                 color: HexColor("#FFCD00"),
-                                size: (SizeConfig.screenHeight*.12)*.3,
+                                size: (SizeConfig.screenHeight * .12) * .3,
                               ),
                             ),
                           ),
@@ -266,10 +302,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 17,
                             decoration: new BoxDecoration(
                               color: Colors.redAccent,
-                              border:
-                              Border.all(color: Colors.redAccent, width: 0.0),
+                              border: Border.all(
+                                  color: Colors.redAccent, width: 0.0),
                               borderRadius:
-                              new BorderRadius.all(Radius.circular(70)),
+                                  new BorderRadius.all(Radius.circular(70)),
                             ),
                             child: Text(
                               (unReadMessageCount >= 0
@@ -278,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize:  SizeConfig.safeBlockHorizontal*3,
+                                  fontSize: SizeConfig.safeBlockHorizontal * 3,
                                   fontWeight: FontWeight.normal),
                             ),
                           ),
@@ -290,7 +326,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       "Notifications",
-                      style: TextStyle(color: Colors.white, fontSize: SizeConfig.safeBlockHorizontal*3),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: SizeConfig.safeBlockHorizontal * 3),
                     )
                   ],
                 ),
@@ -341,17 +379,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-
                   Obx(() {
                     if (_homeController.disableSlider != true) {
                       return (_homeController.checkInStatus ==
-                          StringConstants.checkIn)
+                              StringConstants.checkIn)
                           ? checkInSliderButton()
                           : (_homeController.checkInStatus ==
-                          StringConstants.checkOut)
-                          ? checkOutSliderButton()
-                          : journeyEnded();
+                                  StringConstants.checkOut)
+                              ? checkOutSliderButton()
+                              : journeyEnded();
                     } else {
                       return disabledSliderButton();
                     }
@@ -362,13 +398,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Card(
                     clipBehavior: Clip.antiAlias,
                     borderOnForeground: true,
-
                     elevation: 20,
                     margin: EdgeInsets.symmetric(horizontal: 12.0),
                     color: Colors.white,
                     child: Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -401,8 +436,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Container(
-                          //  height: 130,
-                           // width: MediaQuery.of(context).size.width - 24,
+                            //  height: 130,
+                            // width: MediaQuery.of(context).size.width - 24,
                             child: GridView.count(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
@@ -426,30 +461,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child:
-
-                                          Obx(()=>Text(
-                                            _homeController.sitesConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.sitesConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
                                                   width: 1.6),
                                               shape: BoxShape.circle),
                                         ),
-                                        Flexible(child: Text('Sites converted',
+                                        Flexible(
+                                            child: Text(
+                                          'Sites converted',
                                           style: TextStyle(
-                                              fontSize: SizeConfig.safeBlockHorizontal*3.5,
-
-
+                                              fontSize: SizeConfig
+                                                      .safeBlockHorizontal *
+                                                  3.5,
                                               fontFamily: "Muli"),
                                           maxLines: 2,
-
-                                        )
-
-                                        )
+                                        ))
                                       ],
                                     ),
                                   ),
@@ -463,12 +497,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child:
-                                          Obx(()=>Text(
-                                          _homeController.volumeConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.volumeConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -476,13 +511,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('Volume Generated (MT)',
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
-
-                                                  fontFamily: "Muli"),
-                                            )
-                                        )
+                                            child: Text(
+                                          'Volume Generated (MT)',
+                                          style: TextStyle(
+                                              fontSize: SizeConfig
+                                                      .safeBlockHorizontal *
+                                                  3.5,
+                                              fontFamily: "Muli"),
+                                        ))
                                       ],
                                     ),
                                   ),
@@ -496,12 +532,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child:
-                                          Obx(()=> Text(
-                                            _homeController.newInfl,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.newInfl,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -509,12 +546,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('New Influencers',
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
-
-                                                  fontFamily: "Muli"),
-                                            ))
+                                            child: Text(
+                                          'New Influencers',
+                                          style: TextStyle(
+                                              fontSize: SizeConfig
+                                                      .safeBlockHorizontal *
+                                                  3.5,
+                                              fontFamily: "Muli"),
+                                        ))
                                       ],
                                     ),
                                   ),
@@ -528,12 +567,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Container(
                                           margin: EdgeInsets.only(right: 4),
                                           padding: const EdgeInsets.all(6.0),
-                                          child:
-                                          Obx(()=>Text(
-                                            _homeController.dspSlabsConverted,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),),
+                                          child: Obx(
+                                            () => Text(
+                                              _homeController.dspSlabsConverted,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: HexColor('39B54A'),
@@ -541,12 +581,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                               shape: BoxShape.circle),
                                         ),
                                         Flexible(
-                                            child: Text('DSP Slabs Converted',
-                                              style: TextStyle(
-                                                  fontSize: SizeConfig.safeBlockHorizontal*3.5,
-
-                                                  fontFamily: "Muli"),
-                                            ))
+                                            child: Text(
+                                          'DSP Slabs Converted',
+                                          style: TextStyle(
+                                              fontSize: SizeConfig
+                                                      .safeBlockHorizontal *
+                                                  3.5,
+                                              fontFamily: "Muli"),
+                                        ))
                                       ],
                                     ),
                                   ),
@@ -560,33 +602,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left:8.0, right: 8.0, top: 8.0, bottom: 20),
-                        child: userMenuWidget(),
-                      ))
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, top: 8.0, bottom: 20),
+                    child: userMenuWidget(),
+                  ))
                 ],
               ),
-
               Positioned(
                 right: -10,
                 top: 30,
-                child:
-                UrlConstants.baseUrl.contains('mobileqacloud')?
-                Chip(
-                  backgroundColor: ColorConstants.appBarColor,
-                  label: Text('QA     ', style: TextStyle(color: Colors.white),),
-                ):
-                UrlConstants.baseUrl.contains('mobiledevcloud')?
-                Chip(
-                  backgroundColor: ColorConstants.appBarColor,
-                  label: Text('Dev     ', style: TextStyle(color: Colors.white),),
-                ):Container(),
+                child: UrlConstants.baseUrl.contains('mobileqacloud')
+                    ? Chip(
+                        backgroundColor: ColorConstants.appBarColor,
+                        label: Text(
+                          'QA     ',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : UrlConstants.baseUrl.contains('mobiledevcloud')
+                        ? Chip(
+                            backgroundColor: ColorConstants.appBarColor,
+                            label: Text(
+                              'Dev     ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : Container(),
               ),
             ],
           ),
           floatingActionButton:
-          SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+              SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator()),
     );
   }
@@ -603,11 +651,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-            Icons.play_disabled,
-            color: Colors.white,
-            size: 40.0,
-            //  semanticLabel: 'Text to announce in accessibility modes',
-          )),
+        Icons.play_disabled,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -619,34 +667,33 @@ class _HomeScreenState extends State<HomeScreen> {
       baseColor: Colors.white,
       vibrationFlag: true,
 
-      dismissible: false, action: null,
+      dismissible: false,
+      action: null,
     );
   }
 
   Widget checkInSliderButton() {
     return SliderButton(
-
       action: () async {
         if (await Permission.location.request().isGranted) {
           internetChecking().then((result) => {
-            if (result == true)
-              {
-              _homeController.getAccessKey(RequestIds.CHECK_IN)
-              }
-            else
-              {
-                Get.snackbar(
-                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                    colorText: Colors.white,
-                    backgroundColor: Colors.red,
-                    snackPosition: SnackPosition.BOTTOM),
-                // fetchSiteList()
-              }
-          });
+                if (result == true)
+                  {_homeController.getAccessKey(RequestIds.CHECK_IN)}
+                else
+                  {
+                    Get.snackbar("No internet connection.",
+                        "Make sure that your wifi or mobile data is turned on.",
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                        snackPosition: SnackPosition.BOTTOM),
+                    // fetchSiteList()
+                  }
+              });
         } else {
           print('permission denied');
         }
       },
+
       ///Put label over here
       label: Text(
         "Swipe to start your day ",
@@ -657,11 +704,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-            Icons.play_circle_filled_outlined,
-            color: Colors.white,
-            size: 40.0,
-            //  semanticLabel: 'Text to announce in accessibility modes',
-          )),
+        Icons.play_circle_filled_outlined,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -682,20 +729,18 @@ class _HomeScreenState extends State<HomeScreen> {
         if (await Permission.location.request().isGranted) {
           // Either the permission was already granted before or the user just granted it.
           internetChecking().then((result) => {
-            if (result == true)
-              {
-              _homeController.getAccessKey(RequestIds.CHECK_OUT)
-              }
-            else
-              {
-                Get.snackbar(
-                    "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                    colorText: Colors.white,
-                    backgroundColor: Colors.red,
-                    snackPosition: SnackPosition.BOTTOM),
-                // fetchSiteList()
-              }
-          });
+                if (result == true)
+                  {_homeController.getAccessKey(RequestIds.CHECK_OUT)}
+                else
+                  {
+                    Get.snackbar("No internet connection.",
+                        "Make sure that your wifi or mobile data is turned on.",
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                        snackPosition: SnackPosition.BOTTOM),
+                    // fetchSiteList()
+                  }
+              });
         } else {
           print('permission not granted');
         }
@@ -713,11 +758,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       icon: Center(
           child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-            size: 40.0,
-            //  semanticLabel: 'Text to announce in accessibility modes',
-          )),
+        Icons.arrow_forward_outlined,
+        color: Colors.white,
+        size: 40.0,
+        //  semanticLabel: 'Text to announce in accessibility modes',
+      )),
 
       ///Change All the color and size from here.
       alignLabel: Alignment.center,
@@ -758,152 +803,169 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-
               switch (index) {
                 case 0:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.LEADS_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.LEADS_SCREEN),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
                 case 1:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.SITES_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.SITES_SCREEN),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
                 case 2:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.DASHBOARD),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.DASHBOARD),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
                 case 3:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.ADD_MWP_SCREEN),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.ADD_MWP_SCREEN),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
                 case 4:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                      Get.toNamed(Routes.SERVICE_REQUESTS),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.SERVICE_REQUESTS),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
                 case 5:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.INFLUENCER_LIST),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.INFLUENCER_LIST),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                          }
+                      });
                   break;
                 case 6:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.VIDEO_TUTORIAL),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.VIDEO_TUTORIAL),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                          }
+                      });
                   break;
                 case 7:
                   internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        Get.toNamed(Routes.EVENTS_GIFTS),
-                      }else{
-                      Get.snackbar(
-                          "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                          colorText: Colors.white,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM),
-                      // fetchSiteList()
-                    }
-                  });
+                        if (result == true)
+                          {
+                            Get.toNamed(Routes.EVENTS_GIFTS),
+                          }
+                        else
+                          {
+                            Get.snackbar("No internet connection.",
+                                "Make sure that your wifi or mobile data is turned on.",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                snackPosition: SnackPosition.BOTTOM),
+                            // fetchSiteList()
+                          }
+                      });
                   break;
               }
 
-
               internetChecking().then((result) => {
-                if (result == true){
-                  if(_splashController.splashDataModel.employeeDetails!=null){
-                    _navigateToSelectedScreen(index),
-                  }
-                    else{
-                      _homeController.checkSplashMasterData().then((value){
-                        _navigateToSelectedScreen(index);
-                      })
-                  }
-
-                  }else{
-                  Get.snackbar(
-                      "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM),
-                }
-              });
-
-
-
-
+                    if (result == true)
+                      {
+                        if (_splashController.splashDataModel.employeeDetails !=
+                            null)
+                          {
+                            _navigateToSelectedScreen(index),
+                          }
+                        else
+                          {
+                            _homeController
+                                .checkSplashMasterData()
+                                .then((value) {
+                              _navigateToSelectedScreen(index);
+                            })
+                          }
+                      }
+                    else
+                      {
+                        Get.snackbar("No internet connection.",
+                            "Make sure that your wifi or mobile data is turned on.",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                      }
+                  });
             },
             child: Card(
               clipBehavior: Clip.antiAlias,
@@ -922,8 +984,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Image.asset(
                         list[index].imgURL,
-                        width: SizeConfig.screenWidth*.08,
-                        height:  SizeConfig.screenWidth*.08,
+                        width: SizeConfig.screenWidth * .08,
+                        height: SizeConfig.screenWidth * .08,
                       ),
                     ),
                     SizedBox(
@@ -934,7 +996,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         list[index].value,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                            fontSize: SizeConfig.safeBlockHorizontal*3.8,
+                            fontSize: SizeConfig.safeBlockHorizontal * 3.8,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold),
                       ),
@@ -947,36 +1009,35 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-
   /*Navigate to the selected screen*/
-   _navigateToSelectedScreen(int selectedIndex){
-     switch (selectedIndex) {
-       case 0:
-         Get.toNamed(Routes.LEADS_SCREEN);
-         break;
-       case 1:
-         Get.toNamed(Routes.SITES_SCREEN);
-         break;
-       case 2:
-         Get.toNamed(Routes.DASHBOARD);
-         break;
-       case 3:
-         Get.toNamed(Routes.ADD_MWP_SCREEN);
-         break;
-       case 4:
-         Get.toNamed(Routes.SERVICE_REQUESTS);
-         break;
-       case 5:
-         Get.toNamed(Routes.INFLUENCER_LIST);
-         break;
-       case 6:
-         Get.toNamed(Routes.VIDEO_TUTORIAL);
-         break;
-       case 7:
-         Get.toNamed(Routes.EVENTS_GIFTS);
-         break;
-     }
-   }
+  _navigateToSelectedScreen(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        Get.toNamed(Routes.LEADS_SCREEN);
+        break;
+      case 1:
+        Get.toNamed(Routes.SITES_SCREEN);
+        break;
+      case 2:
+        Get.toNamed(Routes.DASHBOARD);
+        break;
+      case 3:
+        Get.toNamed(Routes.ADD_MWP_SCREEN);
+        break;
+      case 4:
+        Get.toNamed(Routes.SERVICE_REQUESTS);
+        break;
+      case 5:
+        Get.toNamed(Routes.INFLUENCER_LIST);
+        break;
+      case 6:
+        Get.toNamed(Routes.VIDEO_TUTORIAL);
+        break;
+      case 7:
+        Get.toNamed(Routes.EVENTS_GIFTS);
+        break;
+    }
+  }
 }
 
 class MenuDetailsModel {

@@ -21,6 +21,6 @@ public class CustomPushListener extends PluginPushCallback {
 
   @Override public void onNotificationReceived(Context context, Bundle payload) {
     super.onNotificationReceived(context, payload);
-   // Logger.v(TAG + " onNotificationReceived() : ");
+    //Logger.v(TAG + " onHandleRedirection() : ");
   }
 }

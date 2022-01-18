@@ -2,7 +2,7 @@
 //  NotificationService.swift
 //  NotificationServices
 //
-//  Created by Neosoft on 09/06/21.
+//  Created by Apple on 05/01/22.
 //
 
 import UserNotifications
@@ -14,18 +14,18 @@ class NotificationService: UNNotificationServiceExtension {
     var bestAttemptContent: UNMutableNotificationContent?
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        MORichNotification.setAppGroupID("group.com.alphadevs.MoEngage.NotificationServices")
+        MORichNotification.setAppGroupID("group.com.dalmia.techsale.MoEngage")
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        print(bestAttemptContent);
+        MORichNotification.handle(request, withContentHandler: contentHandler)
         
-        if let bestAttemptContent = bestAttemptContent {
-            // Modify the notification content here...
-            bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
-            
-            
-            contentHandler(bestAttemptContent)
-            MORichNotification.handle(request, withContentHandler: contentHandler)
-        }
+//        if let bestAttemptContent = bestAttemptContent {
+//            // Modify the notification content here...
+//            bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
+//
+//            contentHandler(bestAttemptContent)
+//        }
     }
     
     override func serviceExtensionTimeWillExpire() {
