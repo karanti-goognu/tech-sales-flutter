@@ -1137,8 +1137,8 @@ class SiteInfluencerEntity {
   String isDelete;
   String createdBy;
   int createdOn;
-  Null updatedBy;
-  Null updatedOn;
+  String updatedBy;
+  String updatedOn;
   String isPrimary;
 
 
