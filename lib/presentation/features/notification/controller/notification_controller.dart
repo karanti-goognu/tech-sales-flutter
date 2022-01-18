@@ -15,29 +15,29 @@ import 'package:moengage_inbox/inbox_message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //class NotificationController extends GetxController {
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
-  //
-  // final MyRepositoryApp repository;
-  //
-  // NotificationController({@required this.repository}) : assert(repository != null);
-  //
-  // final _counterNotification = 0.obs;
-  //
-  // get counterNotification => _counterNotification.value;
-  //
-  // set counterNotification(value) => _counterNotification.value = value;
-  //
-  // readMessageCount() async {
-  //   MoEngageInbox _moEngageInbox = MoEngageInbox();
-  //   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-  //   this.counterNotification = unReadMessageCount;
-  //   print("Count-->"+unReadMessageCount.toString());
-  //   return unReadMessageCount;
-  //
-  // }
+// @override
+// void onInit() {
+//   super.onInit();
+// }
+//
+// final MyRepositoryApp repository;
+//
+// NotificationController({@required this.repository}) : assert(repository != null);
+//
+// final _counterNotification = 0.obs;
+//
+// get counterNotification => _counterNotification.value;
+//
+// set counterNotification(value) => _counterNotification.value = value;
+//
+// readMessageCount() async {
+//   MoEngageInbox _moEngageInbox = MoEngageInbox();
+//   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+//   this.counterNotification = unReadMessageCount;
+//   print("Count-->"+unReadMessageCount.toString());
+//   return unReadMessageCount;
+//
+// }
 //}
 
 class NotificationController extends GetxController{

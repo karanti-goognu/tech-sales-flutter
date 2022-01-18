@@ -7,10 +7,10 @@ class SitesListModel {
 
   SitesListModel(
       {this.sitesEntity,
-      this.respCode,
-      this.respMsg,
-      this.totalSitePotential,
-      this.totalSiteCount});
+        this.respCode,
+        this.respMsg,
+        this.totalSitePotential,
+        this.totalSiteCount});
 
   SitesListModel.fromJson(Map<String, dynamic> json) {
     if (json['sitesEntity'] != null) {
@@ -77,40 +77,40 @@ class SitesEntity {
 
   SitesEntity(
       {this.siteId,
-      this.leadId,
-      this.siteSegment,
-      this.assignedTo,
-      this.siteStatusId,
-      this.siteStageId,
-      this.contactName,
-      this.contactNumber,
-      this.siteOppertunityId,
-      this.siteCreationDate,
-      this.siteGeotag,
-      this.siteGeotagLat,
-      this.siteGeotagLong,
-      this.sitePincode,
-      this.siteState,
-      this.siteDistrict,
-      this.siteTaluk,
-      this.siteScore,
-      this.siteProbabilityWinningId,
-      this.sitePotentialMt,
-      this.reraNumber,
-      this.dealerId,
-      this.siteBuiltArea,
-      this.noOfFloors,
-      this.productDemo,
-      this.productOralBriefing,
-      this.soCode,
-      this.plotNumber,
-      this.inactiveReasonText,
-      this.nextVisitDate,
-      this.closureReasonText,
-      this.createdBy,
-      this.createdOn,
-      this.updatedBy,
-      this.updatedOn});
+        this.leadId,
+        this.siteSegment,
+        this.assignedTo,
+        this.siteStatusId,
+        this.siteStageId,
+        this.contactName,
+        this.contactNumber,
+        this.siteOppertunityId,
+        this.siteCreationDate,
+        this.siteGeotag,
+        this.siteGeotagLat,
+        this.siteGeotagLong,
+        this.sitePincode,
+        this.siteState,
+        this.siteDistrict,
+        this.siteTaluk,
+        this.siteScore,
+        this.siteProbabilityWinningId,
+        this.sitePotentialMt,
+        this.reraNumber,
+        this.dealerId,
+        this.siteBuiltArea,
+        this.noOfFloors,
+        this.productDemo,
+        this.productOralBriefing,
+        this.soCode,
+        this.plotNumber,
+        this.inactiveReasonText,
+        this.nextVisitDate,
+        this.closureReasonText,
+        this.createdBy,
+        this.createdOn,
+        this.updatedBy,
+        this.updatedOn});
 
   SitesEntity.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -151,41 +151,41 @@ class SitesEntity {
   }
 
   Map<String, dynamic> toJson() {final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['siteId'] = this.siteId;
-    data['leadId'] = this.leadId;
-    data['siteSegment'] = this.siteSegment;
-    data['assignedTo'] = this.assignedTo;
-    data['siteStatusId'] = this.siteStatusId;
-    data['siteStageId'] = this.siteStageId;
-    data['contactName'] = this.contactName;
-    data['contactNumber'] = this.contactNumber;
-    data['siteOppertunityId'] = this.siteOppertunityId;
-    data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
-    data['siteCreationDate'] = this.siteCreationDate;
-    data['siteGeotag'] = this.siteGeotag;
-    data['siteGeotagLat'] = this.siteGeotagLat;
-    data['siteGeotagLong'] = this.siteGeotagLong;
-    data['sitePincode'] = this.sitePincode;
-    data['siteState'] = this.siteState;
-    data['siteDistrict'] = this.siteDistrict;
-    data['siteTaluk'] = this.siteTaluk;
-    data['siteScore'] = this.siteScore;
-    data['sitePotentialMt'] = this.sitePotentialMt;
-    data['reraNumber'] = this.reraNumber;
-    data['dealerId'] = this.dealerId;
-    data['siteBuiltArea'] = this.siteBuiltArea;
-    data['noOfFloors'] = this.noOfFloors;
-    data['productDemo'] = this.productDemo;
-    data['productOralBriefing'] = this.productOralBriefing;
-    data['soCode'] = this.soCode;
-    data['plotNumber'] = this.plotNumber;
-    data['inactiveReasonText'] = this.inactiveReasonText;
-    data['nextVisitDate'] = this.nextVisitDate;
-    data['closureReasonText'] = this.closureReasonText;
-    data['createdBy'] = this.createdBy;
-    data['createdOn'] = this.createdOn;
-    data['updatedBy'] = this.updatedBy;
-    data['updatedOn'] = this.updatedOn;
-    return data;
+  data['siteId'] = this.siteId;
+  data['leadId'] = this.leadId;
+  data['siteSegment'] = this.siteSegment;
+  data['assignedTo'] = this.assignedTo;
+  data['siteStatusId'] = this.siteStatusId;
+  data['siteStageId'] = this.siteStageId;
+  data['contactName'] = this.contactName;
+  data['contactNumber'] = this.contactNumber;
+  data['siteOppertunityId'] = this.siteOppertunityId;
+  data['siteProbabilityWinningId'] = this.siteProbabilityWinningId;
+  data['siteCreationDate'] = this.siteCreationDate;
+  data['siteGeotag'] = this.siteGeotag;
+  data['siteGeotagLat'] = this.siteGeotagLat;
+  data['siteGeotagLong'] = this.siteGeotagLong;
+  data['sitePincode'] = this.sitePincode;
+  data['siteState'] = this.siteState;
+  data['siteDistrict'] = this.siteDistrict;
+  data['siteTaluk'] = this.siteTaluk;
+  data['siteScore'] = this.siteScore;
+  data['sitePotentialMt'] = this.sitePotentialMt;
+  data['reraNumber'] = this.reraNumber;
+  data['dealerId'] = this.dealerId;
+  data['siteBuiltArea'] = this.siteBuiltArea;
+  data['noOfFloors'] = this.noOfFloors;
+  data['productDemo'] = this.productDemo;
+  data['productOralBriefing'] = this.productOralBriefing;
+  data['soCode'] = this.soCode;
+  data['plotNumber'] = this.plotNumber;
+  data['inactiveReasonText'] = this.inactiveReasonText;
+  data['nextVisitDate'] = this.nextVisitDate;
+  data['closureReasonText'] = this.closureReasonText;
+  data['createdBy'] = this.createdBy;
+  data['createdOn'] = this.createdOn;
+  data['updatedBy'] = this.updatedBy;
+  data['updatedOn'] = this.updatedOn;
+  return data;
   }
 }
