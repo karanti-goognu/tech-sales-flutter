@@ -41,8 +41,10 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
 
   Timer _timer;
-  int _start = 180;
-  int _startInitial = 180;
+ // int _start = 180;
+  int _start = 360;
+  //int _startInitial = 180;
+  int _startInitial = 360;
   bool retryOtp = false;
 
   bool _isButtonDisabled;

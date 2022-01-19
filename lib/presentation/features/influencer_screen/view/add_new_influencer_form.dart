@@ -68,6 +68,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   bool _isSecondVisible = false;
   bool checkedValue = false;
   bool _qualificationVisible = false;
+  bool _enrollVisible = false;
 
   String _selectedEnrollValue = "N";
   int _memberType;
@@ -194,9 +195,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final email = TextFormField(
       controller: _emailController,
       validator: (value) {
-        // if (value.isEmpty) {
-        //   return 'Please enter email ';
-        // }
         if (value.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
@@ -307,25 +305,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    // final enrollDropDwn = DropdownButtonFormField(
-    //   onChanged: (value) {
-    //     setState(() {
-    //       _selectedEnrollValue = value;
-    //     });
-    //   },
-    //   items: ['Yes', 'No']
-    //       .map((e) => DropdownMenuItem(
-    //             value: e,
-    //             child: Text(e),
-    //           ))
-    //       .toList(),
-    //   style: FormFieldStyle.formFieldTextStyle,
-    //   decoration: FormFieldStyle.buildInputDecoration(
-    //       labelText: "Enroll for Dalmia Masters *"),
-    //   validator: (value) =>
-    //       value == null ? 'Please select Dalmia Master' : null,
-    // );
-
     final enrollmentCheckbox = Container(
         padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
         decoration: BoxDecoration(
@@ -386,6 +365,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       onChanged: (value) {
         setState(() {
           _memberType = value;
+          if(_influencerTypeModel.response.influencerTypeList[value - 1].infRegFlag == "Y"){
+                _enrollVisible = true;
+              }else{
+                _enrollVisible = false;
+              }
+
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
               //_memberType == 'Structural Consultant'
               ) {
@@ -815,10 +800,16 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               SizedBox(height: _height),
                               email,
                               SizedBox(height: _height),
-                              enrollmentCheckbox,
+                              memberDropDwn,
                               SizedBox(height: _height),
+                              Visibility(
+                                  visible: _enrollVisible,
+                                  child: enrollmentCheckbox),
+                              //SizedBox(height: _height),
+                             // enrollmentCheckbox,
+                              //SizedBox(height: _height),
                               // enrollDropDwn,
-                              // SizedBox(height: _height),
+                              SizedBox(height: _height),
                               district,
                               SizedBox(height: _height),
                               baseCity,
@@ -827,8 +818,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               SizedBox(height: _height),
                               pincode,
                               SizedBox(height: _height),
-                              memberDropDwn,
-                              SizedBox(height: _height),
+                              //memberDropDwn,
+                              //SizedBox(height: _height),
                               engineersFields(),
                               SizedBox(height: _height),
                               birthDate,

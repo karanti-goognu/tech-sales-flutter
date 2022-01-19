@@ -222,7 +222,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             _influencerTypeEntitiesList = influencerTypeEntitiesList[i];
           }
         }
-      } else {}
+      }
+      else {}
 
       influencerSourceList =
           _influencerDetailDataModel.response.influencerSourceList;
@@ -402,25 +403,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       ),
     );
 
-    // final enrollDropDwn = DropdownButtonFormField(
-    //   onChanged: (value) {
-    //     setState(() {
-    //       //_selectedEnrollValue = value;
-    //     });
-    //   },
-    //   items: ['Yes', 'No']
-    //       .map((e) => DropdownMenuItem(
-    //     value: e,
-    //     child: Text(e),
-    //   ))
-    //       .toList(),
-    //   style: FormFieldStyle.formFieldTextStyle,
-    //   decoration: FormFieldStyle.buildInputDecoration(
-    //       labelText: "Enroll for Dalmia Masters *"),
-    //   validator: (value) =>
-    //   value == null ? 'Please select Dalmia Master' : null,
-    // );
-
     final enrollmentCheckbox = Container(
         padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
         decoration: BoxDecoration(
@@ -431,22 +413,22 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         ),
         child: CheckboxListTile(
           title: Text(
-            "Enroll for Dalmia Masters *",
+            "Enroll for Dalmia Masters",
             style: TextStyles.formfieldLabelText,
           ),
           activeColor: Colors.black,
           dense: true,
           value: checkedValue,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValue = newValue;
-              if (checkedValue == true) {
-                _selectedEnrollValue = "Y";
-              } else {
-                _selectedEnrollValue = "N";
-              }
-            });
-          },
+          // onChanged: (newValue) {
+          //   setState(() {
+          //     checkedValue = newValue;
+          //     if (checkedValue == true) {
+          //       _selectedEnrollValue = "Y";
+          //     } else {
+          //       _selectedEnrollValue = "N";
+          //     }
+          //   });
+         // },
           controlAffinity:
               ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
@@ -474,20 +456,20 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final memberDropDwn = DropdownButtonFormField<InfluencerTypeEntitiesList>(
       value: _influencerTypeEntitiesList,
-      onChanged: (value) {
-        setState(() {
-          _influencerTypeEntitiesList = value;
-          _memberType = _influencerTypeEntitiesList.inflTypeId;
-          print(_memberType.toString());
-          if (_memberType == 2 || _memberType == 3 || _memberType == 4
-              //_memberType == 'Structural Consultant'
-              ) {
-            _qualificationVisible = true;
-          } else {
-            _qualificationVisible = false;
-          }
-        });
-      },
+      // onChanged: (value) {
+      //   setState(() {
+      //     _influencerTypeEntitiesList = value;
+      //     _memberType = _influencerTypeEntitiesList.inflTypeId;
+      //     print(_memberType.toString());
+      //     if (_memberType == 2 || _memberType == 3 || _memberType == 4
+      //         //_memberType == 'Structural Consultant'
+      //         ) {
+      //       _qualificationVisible = true;
+      //     } else {
+      //       _qualificationVisible = false;
+      //     }
+      //   });
+      // },
       items: (_influencerDetailDataModel == null ||
               _influencerTypeEntitiesList == null)
           ? []
@@ -496,13 +478,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     value: e,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeDesc)),
+                        child: Text(e.inflTypeDesc, style: TextStyle(color: Colors.black),)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
-      validator: (value) => value == null ? 'Please select member type' : null,
+     // validator: (value) => value == null ? 'Please select member type' : null,
     );
 
     final qualification = TextFormField(
@@ -946,6 +928,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               email,
                               SizedBox(height: _height),
+                              memberDropDwn,
+                              SizedBox(height: _height),
                               //enrollDropDwn,
                               enrollmentCheckbox,
                               SizedBox(height: _height),
@@ -957,8 +941,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               pincode,
                               SizedBox(height: _height),
-                              memberDropDwn,
-                              SizedBox(height: _height),
+                              // memberDropDwn,
+                              // SizedBox(height: _height),
                               engineersFields(),
                               SizedBox(height: _height),
                               birthDate,

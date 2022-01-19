@@ -331,7 +331,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            Get.back();
+            //Get.back();
             //Get.back();
             Get.toNamed(Routes.SITES_SCREEN);
             // Navigator.push(

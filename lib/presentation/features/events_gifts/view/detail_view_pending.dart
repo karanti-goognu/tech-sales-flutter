@@ -354,7 +354,7 @@ class _DetailPendingState extends State<DetailPending> {
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
-              labelText: 'Add Dealer(s)',
+              labelText: 'Add Counter(s)',
               suffixIcon: Padding(
                 padding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
@@ -938,54 +938,65 @@ class _DetailPendingState extends State<DetailPending> {
             });
           });
         });
-        print('DEALERS: $dealersList');
-        MwpeventFormRequest _mwpeventFormRequest =
-        MwpeventFormRequest.fromJson({
-          'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
-          'eventComment': _commentController.text,
-          'eventDate': dateString,
-          'eventId': widget.eventId,
-          'eventLocation': _locationController.text,
-          'eventLocationLat': locatinLat,
-          'eventLocationLong': locationLong,
-          'eventStatusId': eventStatusId,
-          'eventTime': timeString,
-          'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
-          'expectedLeadsCount':
-          int.tryParse('${_expectedLeadsController.text}') ?? 0,
-          'giftDistributionCount':
-          int.tryParse('${_giftsDistributionController.text}') ?? 0,
-          'nondalmiaInflCount':
-          int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
-          'referenceId': empId,
-          'venue': _selectedVenue,
-          'venueAddress': _venueAddController.text,
-        });
 
-        SaveEventFormModel _save =
-        SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
-        SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
-            mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealersModelList: _save.eventDealersModelList);
+        if (dealersList == null || dealersList == [] ||
+            dealersList.length == 0) {
+          Get.snackbar("", "Select Counter",
+              colorText: Colors.black,
+              backgroundColor: Colors.white,
+              snackPosition: SnackPosition.BOTTOM);
+        }
+        else {
+          print('DEALERS: $dealersList');
+          MwpeventFormRequest _mwpeventFormRequest =
+          MwpeventFormRequest.fromJson({
+            'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ??
+                0,
+            'eventComment': _commentController.text,
+            'eventDate': dateString,
+            'eventId': widget.eventId,
+            'eventLocation': _locationController.text,
+            'eventLocationLat': locatinLat,
+            'eventLocationLong': locationLong,
+            'eventStatusId': eventStatusId,
+            'eventTime': timeString,
+            'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
+            'expectedLeadsCount':
+            int.tryParse('${_expectedLeadsController.text}') ?? 0,
+            'giftDistributionCount':
+            int.tryParse('${_giftsDistributionController.text}') ?? 0,
+            'nondalmiaInflCount':
+            int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
+            'referenceId': empId,
+            'venue': _selectedVenue,
+            'venueAddress': _venueAddController.text,
+          });
 
-        print('PARAMS: ${json.encode(_saveEventFormModel)}');
+          SaveEventFormModel _save =
+          SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
+          SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
+              mwpeventFormRequest: _mwpeventFormRequest,
+              eventDealersModelList: _save.eventDealersModelList);
 
-        internetChecking().then((result) => {
-          if (result == true)
-                {
-                  saveEventController
-                      .getAccessKeyAndSaveRequest(_saveEventFormModel)
+          print('PARAMS: ${json.encode(_saveEventFormModel)}');
 
-                }
-              else
-                {
-                  Get.snackbar("No internet connection.",
-                      "Make sure that your wifi or mobile data is turned on.",
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM),
-                }
-            });
+          internetChecking().then((result) =>
+          {
+            if (result == true)
+              {
+                saveEventController
+                    .getAccessKeyAndSaveRequest(_saveEventFormModel)
+              }
+            else
+              {
+                Get.snackbar("No internet connection.",
+                    "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+              }
+          });
+        }
       }
     }
   }

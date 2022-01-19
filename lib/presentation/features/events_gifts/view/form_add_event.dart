@@ -300,10 +300,16 @@ class _FormAddEventState extends State<FormAddEvent> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
+        // validator: (value){
+        //   if (value.isEmpty) {
+        //     return "Please select Counter";
+        //   }
+        //   return null;
+        // },
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
-              labelText: 'Add Dealer(s)',
+              labelText: 'Add Counter(s)',
               suffixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
@@ -782,58 +788,67 @@ class _FormAddEventState extends State<FormAddEvent> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        String empId = await getEmpId();
+          String empId = await getEmpId();
 
-        timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-        print(timeString);
-        List dealersList = List();
-        selectedDealersModels.forEach((e) {
-          setState(() {
-            dealersList.add({
-              'eventDealerId': null,
-              'eventId': null,
-              'dealerId': e.dealerId,
-              'dealerName': e.dealerName,
-              'eventStage': 'PLAN',
-              'isActive': 'Y',
-              'createdBy': empId,
+          timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+          print(timeString);
+          List dealersList = List();
+          selectedDealersModels.forEach((e) {
+            setState(() {
+              dealersList.add({
+                'eventDealerId': null,
+                'eventId': null,
+                'dealerId': e.dealerId,
+                'dealerName': e.dealerName,
+                'eventStage': 'PLAN',
+                'isActive': 'Y',
+                'createdBy': empId,
+              });
             });
           });
-        });
 
 
-        print('DEALERS: $dealersList');
-        MwpeventFormRequest _mwpeventFormRequest =
+          print('DEALERS: $dealersList');
+          if (dealersList == null || dealersList == [] || dealersList.length == 0) {
+            Get.snackbar("", "Select Counter",
+                colorText: Colors.black,
+                backgroundColor: Colors.white,
+                snackPosition: SnackPosition.BOTTOM);
+          }
+          else {
+            MwpeventFormRequest _mwpeventFormRequest =
             MwpeventFormRequest.fromJson({
-          'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ?? 0,
-          'eventComment': _commentController.text,
-          'eventDate': dateString,
-          'eventId': null,
-          'eventLocation': _locationController.text,
-          'eventLocationLat': locatinLat,
-          'eventLocationLong': locationLong,
-          'eventStatusId': eventStatusId,
-          'eventTime': timeString,
-          'eventTypeId': _eventTypeId,
-          'expectedLeadsCount':
+              'dalmiaInflCount': int.tryParse(
+                  '${_dalmiaInflController.text}') ?? 0,
+              'eventComment': _commentController.text,
+              'eventDate': dateString,
+              'eventId': null,
+              'eventLocation': _locationController.text,
+              'eventLocationLat': locatinLat,
+              'eventLocationLong': locationLong,
+              'eventStatusId': eventStatusId,
+              'eventTime': timeString,
+              'eventTypeId': _eventTypeId,
+              'expectedLeadsCount':
               int.tryParse('${_expectedLeadsController.text}') ?? 0,
-          'giftDistributionCount':
+              'giftDistributionCount':
               int.tryParse('${_giftsDistributionController.text}') ?? 0,
-          'nondalmiaInflCount':
+              'nondalmiaInflCount':
               int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
-          'referenceId': empId,
-          'venue': _selectedVenue,
-          'venueAddress': _venueAddController.text,
-        });
+              'referenceId': empId,
+              'venue': _selectedVenue,
+              'venueAddress': _venueAddController.text,
+            });
 
-        SaveEventFormModel _save =
+            SaveEventFormModel _save =
             SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
-        SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
-            mwpeventFormRequest: _mwpeventFormRequest,
-            eventDealersModelList: _save.eventDealersModelList);
-        print("Request: ${json.encode(_saveEventFormModel)}");
+            SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
+                mwpeventFormRequest: _mwpeventFormRequest,
+                eventDealersModelList: _save.eventDealersModelList);
+            print("Request: ${json.encode(_saveEventFormModel)}");
 
-        internetChecking().then((result) => {
+            internetChecking().then((result) =>
+            {
               if (result == true)
                 {
                   saveEventController
@@ -848,7 +863,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                       snackPosition: SnackPosition.BOTTOM),
                 }
             });
-      }
+          }
+        }
     }
   }
 }
