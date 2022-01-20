@@ -311,15 +311,18 @@ class AddEventController extends GetxController {
           } else if (saveVisitResponse.respCode == "DM2144") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+          } else if (saveVisitResponse.respCode == "") {
+            Get.dialog(
+                CustomDialogs().messageDialogMWPInf(saveVisitResponse.respMsg, false));
           }
 
           else {
             print('Success');
 
-            // Get.dialog(
-            //     CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
             Get.dialog(
-                CustomDialogs().redirectToViewEventPg(saveVisitResponse.respMsg));
+                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+            // Get.dialog(
+            //     CustomDialogs().redirectToViewEventPg(saveVisitResponse.respMsg));
 
           }
         }

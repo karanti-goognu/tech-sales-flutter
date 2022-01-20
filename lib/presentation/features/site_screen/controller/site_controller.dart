@@ -618,15 +618,15 @@ class SiteController extends GetxController {
   // }
 
   Future<SiteVisitResponseModel>getAccessKeyAndSaveSiteRequest(SiteVisitRequestModel siteVisitRequestModel) async{
-    SiteVisitResponseModel _siteVisitResponseModel;
+    SiteVisitResponseModel siteVisitResponseModel;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKeyNew();
     _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      _siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
+      siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
     });
-    return _siteVisitResponseModel;
+    return siteVisitResponseModel;
   }
 
 

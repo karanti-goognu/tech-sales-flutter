@@ -694,6 +694,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
+                print('data: ${data}');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -782,6 +783,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
+                print('data: ${data}');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -871,6 +873,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
+                print('data: ${data}');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;

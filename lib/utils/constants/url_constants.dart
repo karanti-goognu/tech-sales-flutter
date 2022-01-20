@@ -15,14 +15,14 @@ abstract class UrlConstants {
 
  // QA
  //
- static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
- static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
- static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+ // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
- // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
+ static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+ static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+ static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
  //End points
@@ -52,7 +52,9 @@ abstract class UrlConstants {
  static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';
  static const String getCalendarEventDataByDay = '$baseUrl/mwp/visit-view?';
  static const String getTargetVsActualData = '$baseUrl/mwp/targetVsActual?referenceID=';
- static const String saveVisit = '$baseUrl/mwp/save-visit';
+ //static const String saveVisit = '$baseUrl/mwp/save-visit';
+
+ static const String saveVisit = '$baseUrl/mwp/v2/save-visit';
  static const String updateVisit = '$baseUrl/mwp/v2/update-visit';
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
  static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
