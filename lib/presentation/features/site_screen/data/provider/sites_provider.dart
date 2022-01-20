@@ -410,8 +410,31 @@ print("URL:$url ");
   }
 
 
+  // Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+  //   SiteVisitResponseModel siteVisitResponseModel;
+  //   try{
+  //     version = VersionClass.getVersion();
+  //     var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
+  //       headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+  //       body: json.encode(siteVisitRequestModel),
+  //     );
+  //     print("URL ${UrlConstants.saveUpdateSiteVisit}");
+  //     print('Request : ${response.request}');
+  //     print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
+  //
+  //     var data = json.decode(response.body);
+  //       siteVisitResponseModel =
+  //           SiteVisitResponseModel.fromJson(json.decode(response.body));
+  //   }
+  //   catch(e){
+  //     print("Exception at EG Repo $e");
+  //   }
+  //   return siteVisitResponseModel;
+  // }
+
   Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
     SiteVisitResponseModel siteVisitResponseModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
@@ -419,16 +442,21 @@ print("URL:$url ");
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
-        siteVisitResponseModel =
-            SiteVisitResponseModel.fromJson(json.decode(response.body));
-
-        // print('URL : ${response.request}');
-        // print('RESP: ${data}');
-
-      //print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          siteVisitResponseModel = SiteVisitResponseModel.fromJson(json.decode(response.body));
+        }} else {
+        print('error');
+      }
     }
     catch(e){
-      print("Exception at EG Repo $e");
+      print("Exception at site Repo $e");
     }
     return siteVisitResponseModel;
   }

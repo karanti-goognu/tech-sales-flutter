@@ -588,34 +588,45 @@ class SiteController extends GetxController {
 
 
 
-  getAccessKeyAndSaveSiteRequest(
-      SiteVisitRequestModel siteVisitRequestModel, ) {
+  // getAccessKeyAndSaveSiteRequest (
+  //     SiteVisitRequestModel siteVisitRequestModel){
+  //   String userSecurityKey = "";
+  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  //   Future.delayed(
+  //       Duration.zero,
+  //           () => Get.dialog(Center(child: CircularProgressIndicator()),
+  //           barrierDismissible: false));
+  //
+  //   _prefs.then((SharedPreferences prefs) async {
+  //     String accessKey = await repository.getAccessKeyNew();
+  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+  //     await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
+  //         .then((value) {
+  //       Get.back();
+  //       if (value.respCode == 'MWP2028') {
+  //         Get.dialog(
+  //             CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
+  //             barrierDismissible: false);
+  //       } else {
+  //         Get.back();
+  //         Get.dialog(
+  //             CustomDialogs().errorDialog(value.respMsg.toString()),
+  //             barrierDismissible: false);
+  //       }
+  //     });
+  //   });
+  // }
+
+  Future<SiteVisitResponseModel>getAccessKeyAndSaveSiteRequest(SiteVisitRequestModel siteVisitRequestModel) async{
+    SiteVisitResponseModel _siteVisitResponseModel;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-
+    String accessKey = await repository.getAccessKeyNew();
     _prefs.then((SharedPreferences prefs) async {
-      String accessKey = await repository.getAccessKeyNew();
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
-          .then((value) {
-        Get.back();
-        if (value.respCode == 'MWP2028') {
-          Get.dialog(
-              CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
-              barrierDismissible: false);
-        } else {
-          Get.back();
-          Get.dialog(
-              CustomDialogs().errorDialog(value.respMsg.toString()),
-              barrierDismissible: false);
-        }
-      });
+      _siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
     });
+    return _siteVisitResponseModel;
   }
 
 

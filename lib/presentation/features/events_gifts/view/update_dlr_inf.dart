@@ -1173,48 +1173,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     }
   }
 
-  // addNewInfluencerBtnPressed() async {
-  //   if (_newFormKey.currentState.validate()) {
-  //     SaveNewInfluencerModel _save = SaveNewInfluencerModel(
-  //       ilpIntrested: '',
-  //       influencerCategoryId: _infCatId,
-  //       influencerName: _newInfNameController.text,
-  //       influencerTypeId: _infTypeId,
-  //       mobileNumber: _newContactController.text,
-  //       ilpRegFlag: _selectedEnrollValue
-  //     );
-  //
-  //     internetChecking().then((result) => {
-  //           if (result == true)
-  //             {
-  //               _eventsFilterController
-  //                   .getAccessKeyAndSaveNewInfluencer(_save)
-  //                   .then((data) {
-  //                 setState(() {
-  //                   _saveNewInfluencerResponse = data;
-  //                   print('DD: $_saveNewInfluencerResponse');
-  //                   if (data.respCode == "DM1002")
-  //                     Get.dialog(
-  //                         successDialog(_saveNewInfluencerResponse.respMsg));
-  //                   else if (data.respMsg == "IN2008") {
-  //                     Get.dialog(
-  //                         successDialog(_saveNewInfluencerResponse.respMsg));
-  //                   }
-  //                 });
-  //               })
-  //             }
-  //           else
-  //             {
-  //               Get.snackbar("No internet connection.",
-  //                   "Make sure that your wifi or mobile data is turned on.",
-  //                   colorText: Colors.white,
-  //                   backgroundColor: Colors.red,
-  //                   snackPosition: SnackPosition.BOTTOM),
-  //             }
-  //         });
-  //   }
-  // }
-
   Widget successDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(

@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -46,6 +51,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
+  TextEditingController _siteTypeController1 = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -61,6 +67,14 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   setData() {
+    if (widget.mwpVisitModel == null) {
+      (widget.selectedOpportunitStatusEnity == null)
+          ? widget.siteOpportunityStatusEntity.map((e) {
+              _siteTypeController1.text = e.opportunityStatus;
+            })
+          : _siteTypeController1.text =
+              widget.selectedOpportunitStatusEnity.opportunityStatus;
+    }
     if (widget.mwpVisitModel != null) {
       if (widget.mwpVisitModel.nextVisitDate != null) {
         var date = DateTime.fromMillisecondsSinceEpoch(
@@ -84,55 +98,64 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
-    final visitType = (widget.selectedOpportunitStatusEnity == null)
-        ? DropdownButtonFormField(
-            items: widget.siteOpportunityStatusEntity
-                .map((label) => DropdownMenuItem(
-                      child: Text(
-                        label.opportunityStatus,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      value: label.opportunityStatus,
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                visitSubType = value;
-                print(visitSubType);
-              });
-            },
-            decoration: FormFieldStyle.buildInputDecoration(
-              labelText: "Opportunity Status",
-            ),
-            validator: (value) =>
-                value == null ? 'Please select Opportunity status' : null,
-          )
-        : DropdownButtonFormField<SiteOpportunityStatusEntity>(
-            value: widget.selectedOpportunitStatusEnity,
-            items: [widget.selectedOpportunitStatusEnity]
-                .map((label) => DropdownMenuItem(
-                      child: Text(
-                        label == null ? "" : label.opportunityStatus,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      value: label,
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                widget.selectedOpportunitStatusEnity = value;
-              });
-            },
-            decoration: FormFieldStyle.buildInputDecoration(
-              labelText: "Opportunity Status",
-            ),
-          );
+    // final visitType = (widget.selectedOpportunitStatusEnity == null)
+    //     ? DropdownButtonFormField(
+    //         items: widget.siteOpportunityStatusEntity
+    //             .map((label) => DropdownMenuItem(
+    //                   child: Text(
+    //                     label.opportunityStatus,
+    //                     style: TextStyle(
+    //                         fontSize: 16,
+    //                         color: ColorConstants.inputBoxHintColor,
+    //                         fontFamily: "Muli"),
+    //                   ),
+    //                   value: label.opportunityStatus,
+    //                 ))
+    //             .toList(),
+    //         // onChanged: (value) {
+    //         //   setState(() {
+    //         //     visitSubType = value;
+    //         //     print(visitSubType);
+    //         //   });
+    //         // },
+    //         decoration: FormFieldStyle.buildInputDecoration(
+    //           labelText: "Opportunity Status",
+    //         ),
+    //         // validator: (value) =>
+    //         //     value == null ? 'Please select Opportunity status' : null,
+    //       )
+    //     : DropdownButtonFormField<SiteOpportunityStatusEntity>(
+    //         value: widget.selectedOpportunitStatusEnity,
+    //         items: [widget.selectedOpportunitStatusEnity]
+    //             .map((label) => DropdownMenuItem(
+    //                   child: Text(
+    //                     label == null ? "" : label.opportunityStatus,
+    //                     style: TextStyle(
+    //                         fontSize: 16,
+    //                         color: ColorConstants.inputBoxHintColor,
+    //                         fontFamily: "Muli"),
+    //                   ),
+    //                   value: label,
+    //                 ))
+    //             .toList(),
+    //         // onChanged: (value) {
+    //         //   setState(() {
+    //         //     widget.selectedOpportunitStatusEnity = value;
+    //         //   });
+    //         // },
+    //         decoration: FormFieldStyle.buildInputDecoration(
+    //           labelText: "Opportunity Status",
+    //         ),
+    //       );
+
+    final visitType = TextFormField(
+      controller: _siteTypeController1,
+      style: FormFieldStyle.formFieldTextStyle,
+      //keyboardType: TextInputType.number,
+      readOnly: true,
+      enableInteractiveSelection: false,
+      decoration: FormFieldStyle.buildInputDecoration(),
+    );
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -628,6 +651,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     }
   }
 
+  SiteVisitResponseModel _siteVisitResponseModel;
   btnCreatePressed(int id) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
@@ -669,6 +693,21 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+                  .then((data) {
+                if (data != null) {
+                  setState(() {
+                    _siteVisitResponseModel = data;
+                    print('DD: ${json.encode(_siteVisitResponseModel)}');
+                    if (data.respCode == "MWP2028")
+                      Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
+                    else {
+                      Get.dialog(
+                          CustomDialogs().errorDialog(data.respMsg.toString()),
+                          barrierDismissible: false);
+                    }
+                  });
+                }
+              })
             }
           else
             {
@@ -742,6 +781,21 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+                  .then((data) {
+                if (data != null) {
+                  setState(() {
+                    _siteVisitResponseModel = data;
+                    print('DD: ${json.encode(_siteVisitResponseModel)}');
+                    if (data.respCode == "MWP2028")
+                      Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
+                    else {
+                      Get.dialog(
+                          CustomDialogs().errorDialog(data.respMsg.toString()),
+                          barrierDismissible: false);
+                    }
+                  });
+                }
+              })
             }
           else
             {
@@ -816,6 +870,22 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+                  .then((data) {
+                if (data != null) {
+                  setState(() {
+                    _siteVisitResponseModel = data;
+                    print('DD: ${json.encode(_siteVisitResponseModel)}');
+
+                    if (data.respCode == "MWP2028")
+                      Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
+                    else {
+                      Get.dialog(
+                          CustomDialogs().errorDialog(data.respMsg.toString()),
+                          barrierDismissible: false);
+                    }
+                  });
+                }
+              })
             }
           else
             {
@@ -887,5 +957,100 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         final String formattedDate = formatter.format(picked);
         selectedDateStringNext = formattedDate;
       });
+  }
+
+  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+  getSiteData() async {
+    AccessKeyModel accessKeyModel = new AccessKeyModel();
+    await _siteController.getAccessKeyOnly().then(
+      (data) async {
+        accessKeyModel = data;
+        // print("AccessKey :: " + accessKeyModel.accessKey);
+        await _siteController
+            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
+            .then(
+          (data) async {
+            // print("here");
+            viewSiteDataResponse = data;
+            setState(() {
+              widget.mwpVisitModel = viewSiteDataResponse.mwpVisitModel;
+              widget.siteDate =
+                  viewSiteDataResponse.sitesModal.siteCreationDate;
+              widget.visitSubTypeId =
+                  viewSiteDataResponse.sitesModal.siteOppertunityId;
+
+              widget.siteOpportunityStatusEntity =
+                  viewSiteDataResponse.siteOpportunityStatusEntity;
+              widget.visitRemarks =
+                  viewSiteDataResponse.sitesModal.siteClosureReasonText;
+
+              if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+                for (int i = 0;
+                    i < viewSiteDataResponse.siteOpportunityStatusEntity.length;
+                    i++) {
+                  if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                          .toString() ==
+                      viewSiteDataResponse.siteOpportunityStatusEntity[i].id
+                          .toString()) {
+                    widget.selectedOpportunitStatusEnity =
+                        viewSiteDataResponse.siteOpportunityStatusEntity[i];
+                  }
+                }
+              } else {
+                widget.selectedOpportunitStatusEnity = null;
+              }
+            });
+          },
+        );
+      },
+    );
+
+    //return viewSiteDataResponse;
+  }
+
+  Widget showDialogSubmitSite(String message) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(
+              message,
+              style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  height: 1.4,
+                  letterSpacing: .25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.inputBoxHintColorDark),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            'OK',
+            style: GoogleFonts.roboto(
+                fontSize: 20,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            setState(() {
+              getSiteData();
+            });
+
+            //Get.back();
+            //Get.toNamed(Routes.SITES_SCREEN);
+            // Navigator.push(
+            //     context,
+            //     new CupertinoPageRoute(
+            //         builder: (BuildContext context) =>
+            //             ViewSiteScreenNew(siteId: widget.siteId,tabIndex: 0,)));
+          },
+        ),
+      ],
+    );
   }
 }
