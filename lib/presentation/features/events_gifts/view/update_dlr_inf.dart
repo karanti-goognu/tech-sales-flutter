@@ -184,7 +184,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
-              labelText: 'Add Dealer(s)',
+              labelText: 'Add Counter(s)',
               suffixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),

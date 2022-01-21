@@ -445,6 +445,7 @@ print("URL:$url ");
       if (response.statusCode == 200) {
         Get.back();
         print("======$data");
+        print("======${UrlConstants.saveUpdateSiteVisit}");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -520,12 +521,12 @@ print("URL:$url ");
 
 
   ///district list for filter
-  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey,) async {
+  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey, String empID) async {
     SiteDistrictListModel siteDistrictListModel;
     try {
       version = VersionClass.getVersion();
 
-      var response = await http.get(Uri.parse(UrlConstants.siteDistList),
+      var response = await http.get(Uri.parse(UrlConstants.siteDistList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);

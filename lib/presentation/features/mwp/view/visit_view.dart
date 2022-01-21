@@ -31,7 +31,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
-  var _contactController = TextEditingController();
+  //var _contactController = TextEditingController();
   var _nameController = TextEditingController();
   var _typeController = TextEditingController();
   var _categoryController = TextEditingController();
@@ -39,7 +39,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   var _siteCountController = TextEditingController();
   var _mPotentialController = TextEditingController();
   var _mLiftingController = TextEditingController();
-  bool _isVisibleContact = false;
+  //bool _isVisibleContact = false;
 
   @override
   void initState() {
@@ -163,15 +163,18 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                                 _addEventController.siteIdText = "Site ID";
                                 break;
                               case "LEADS":
-                                _isVisibleContact = false;
+                                _addEventController.isVisibleContact = false;
+                               // _isVisibleContact = false;
                                 _addEventController.siteIdText = "Lead ID";
                                 break;
                               case "CONVERSION OPPORTUNITY":
-                                _isVisibleContact = false;
+                                //_isVisibleContact = false;
+                                _addEventController.isVisibleContact = false;
                                 _addEventController.siteIdText = "Site ID";
                                 break;
                               case "COUNTER":
-                                _isVisibleContact = false;
+                                //_isVisibleContact = false;
+                                _addEventController.isVisibleContact = false;
                                 _addEventController.siteIdText = "Counter Code";
                                 break;
                               case "CONTRACTOR":
@@ -220,7 +223,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           _addEventController.visitSiteId = val.dealerId;
                         })
                     : TextFormField(
-                        controller: _contactController,
+                        //controller: _contactController,
+                        controller: _addEventController.contactController,
                         validator: (value) {
                           if (value.isEmpty) {
                             return "${_addEventController.siteIdText} can't be empty";
@@ -257,11 +261,11 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             "${_addEventController.siteIdText}", false),
                       ),
                 SizedBox(height: 16),
-    // Obx(
-    // () =>
+    Obx(
+    () =>
                 Visibility(
-                  visible: _isVisibleContact,
-                  child: Column(
+                  visible: _addEventController.isVisibleContact,
+                   child: Column(
                     children: [
                       name,
                       SizedBox(height: 16),
@@ -280,7 +284,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     ],
                   ),
                 ),
-                    //),
+                ),
                 Obx(
                   () => TextFormField(
                     decoration: FormFieldStyle.buildInputDecoration(
@@ -368,7 +372,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                               {
                                 _appController
                                     .getAccessKey(RequestIds.SAVE_VISIT),
-                                _addEventController.isLoading = true
+                                _addEventController.isLoading = true,
+                                _addEventController.isVisibleContact = false
                               }
                             else
                               {
@@ -406,7 +411,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       _siteCountController.text = "";
       _mPotentialController.text = "";
       _mLiftingController.text = "";
-      _isVisibleContact = false;
+      //_isVisibleContact = false;
+      _addEventController.isVisibleContact = false;
     }
     else if (value.length == 10) {
       _infController.getInfData(value).then((data) {
@@ -414,7 +420,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
           if (data != null) {
             if (data.respCode == "NUM404") {
               _addEventController.visitSiteId = "";
-              _contactController.text = "";
+              _addEventController.contactController.text = "";
               Get.dialog(CustomDialogs().showDialogInfNotPresent("register this influencer to proceed"),
                   barrierDismissible: false);
 
@@ -427,7 +433,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
               _siteCountController.text = '${data.influencerModel.sitesCount}';
               _mPotentialController.text = '${data.influencerModel.monthlyPotential}';
               _mLiftingController.text = '${data.influencerModel.monthlyLifting}';
-              _isVisibleContact = true;
+              _addEventController.isVisibleContact = true;
+              //_isVisibleContact = true;
             }
           }
         });

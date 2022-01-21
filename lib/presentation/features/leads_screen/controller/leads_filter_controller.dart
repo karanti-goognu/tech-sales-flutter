@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -45,10 +46,15 @@ class LeadsFilterController extends GetxController {
   final _secretKeyResponse = SecretKeyModel().obs;
   final _filterDataResponse = LeadsFilterModel().obs;
   final _leadsListResponse = LeadsListModel().obs;
+  final _leadDistResponse = SiteDistrictListModel().obs;
 
   final _phoneNumber = "8860080067".obs;
   final _offset = 0.obs;
   final _isFilterApplied = false.obs;
+
+  get leadDistResponse => _leadDistResponse.value;
+  set leadDistResponse(value) => _leadDistResponse.value = value;
+
 
   get isFilterApplied => _isFilterApplied;
 
@@ -77,6 +83,8 @@ class LeadsFilterController extends GetxController {
   final _selectedLeadPotential = StringConstants.empty.obs;
   final _selectedLeadPotentialValue = StringConstants.empty.obs;
   final _selectedDeliveryPointsValue = StringConstants.empty.obs;
+
+  final _selectedLeadDistrict = StringConstants.empty.obs;
 
   get selectedDeliveryPointsValue => _selectedDeliveryPointsValue.value;
 
@@ -112,6 +120,8 @@ class LeadsFilterController extends GetxController {
 
   get selectedLeadPotentialValue => this._selectedLeadPotentialValue.value;
 
+  get selectedLeadDistrict => this._selectedLeadDistrict.value;
+
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
@@ -144,6 +154,8 @@ class LeadsFilterController extends GetxController {
 
   set selectedLeadPotentialValue(value) =>
       this._selectedLeadPotentialValue.value = value;
+
+  set selectedLeadDistrict(value) => this._selectedLeadDistrict.value = value;
 
   set selectedLeadPotential(value) => this._selectedLeadPotential.value = value;
 
@@ -322,6 +334,12 @@ class LeadsFilterController extends GetxController {
             break;
         }
       }
+
+      String leadDistrict = "";
+      if (this.selectedLeadDistrict != StringConstants.empty) {
+        leadDistrict = "&leadDistrict=${this.selectedLeadDistrict}";
+      }
+
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints&limit=10&offset=${this.offset}";
 
@@ -481,6 +499,20 @@ class LeadsFilterController extends GetxController {
     leadsListResponse = await repository.getSearchDataNew(
         accessKey, userSecurityKey, empID, searchText);
     print(leadsListResponse.respCode);
+  }
+
+
+  Future<SiteDistrictListModel> getLeadDistList() async {
+    String userSecurityKey = "";
+    String empID = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKeyNew();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      leadDistResponse = await repository.getLeadDistList(accessKey, userSecurityKey, empID);
+    });
+    return leadDistResponse;
   }
 
 }

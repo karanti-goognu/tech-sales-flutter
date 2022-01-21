@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -67,14 +67,14 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   setData() {
-    if (widget.mwpVisitModel == null) {
-      (widget.selectedOpportunitStatusEnity == null)
-          ? widget.siteOpportunityStatusEntity.map((e) {
-              _siteTypeController1.text = e.opportunityStatus;
-            })
-          : _siteTypeController1.text =
-              widget.selectedOpportunitStatusEnity.opportunityStatus;
-    }
+    // if (widget.mwpVisitModel == null) {
+    //   (widget.selectedOpportunitStatusEnity == null)
+    //       ? widget.siteOpportunityStatusEntity.map((e) {
+    //           _siteTypeController1.text = e.opportunityStatus;
+    //         })
+    //       : _siteTypeController1.text =
+    //           widget.selectedOpportunitStatusEnity.opportunityStatus;
+    // }
     if (widget.mwpVisitModel != null) {
       if (widget.mwpVisitModel.nextVisitDate != null) {
         var date = DateTime.fromMillisecondsSinceEpoch(
@@ -98,64 +98,64 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
 
-    // final visitType = (widget.selectedOpportunitStatusEnity == null)
-    //     ? DropdownButtonFormField(
-    //         items: widget.siteOpportunityStatusEntity
-    //             .map((label) => DropdownMenuItem(
-    //                   child: Text(
-    //                     label.opportunityStatus,
-    //                     style: TextStyle(
-    //                         fontSize: 16,
-    //                         color: ColorConstants.inputBoxHintColor,
-    //                         fontFamily: "Muli"),
-    //                   ),
-    //                   value: label.opportunityStatus,
-    //                 ))
-    //             .toList(),
-    //         // onChanged: (value) {
-    //         //   setState(() {
-    //         //     visitSubType = value;
-    //         //     print(visitSubType);
-    //         //   });
-    //         // },
-    //         decoration: FormFieldStyle.buildInputDecoration(
-    //           labelText: "Opportunity Status",
-    //         ),
-    //         // validator: (value) =>
-    //         //     value == null ? 'Please select Opportunity status' : null,
-    //       )
-    //     : DropdownButtonFormField<SiteOpportunityStatusEntity>(
-    //         value: widget.selectedOpportunitStatusEnity,
-    //         items: [widget.selectedOpportunitStatusEnity]
-    //             .map((label) => DropdownMenuItem(
-    //                   child: Text(
-    //                     label == null ? "" : label.opportunityStatus,
-    //                     style: TextStyle(
-    //                         fontSize: 16,
-    //                         color: ColorConstants.inputBoxHintColor,
-    //                         fontFamily: "Muli"),
-    //                   ),
-    //                   value: label,
-    //                 ))
-    //             .toList(),
-    //         // onChanged: (value) {
-    //         //   setState(() {
-    //         //     widget.selectedOpportunitStatusEnity = value;
-    //         //   });
-    //         // },
-    //         decoration: FormFieldStyle.buildInputDecoration(
-    //           labelText: "Opportunity Status",
-    //         ),
-    //       );
+    final visitType = (widget.selectedOpportunitStatusEnity == null)
+        ? DropdownButtonFormField(
+            items: widget.siteOpportunityStatusEntity
+                .map((label) => DropdownMenuItem(
+                      child: Text(
+                        label.opportunityStatus,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                      ),
+                      value: label.opportunityStatus,
+                    ))
+                .toList(),
+            // onChanged: (value) {
+            //   setState(() {
+            //     visitSubType = value;
+            //     print(visitSubType);
+            //   });
+            // },
+            decoration: FormFieldStyle.buildInputDecoration(
+              labelText: "Opportunity Status",
+            ),
+            // validator: (value) =>
+            //     value == null ? 'Please select Opportunity status' : null,
+          )
+        : DropdownButtonFormField<SiteOpportunityStatusEntity>(
+            value: widget.selectedOpportunitStatusEnity,
+            items: [widget.selectedOpportunitStatusEnity]
+                .map((label) => DropdownMenuItem(
+                      child: Text(
+                        label == null ? "" : label.opportunityStatus,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                      ),
+                      value: label,
+                    ))
+                .toList(),
+            // onChanged: (value) {
+            //   setState(() {
+            //     widget.selectedOpportunitStatusEnity = value;
+            //   });
+            // },
+            decoration: FormFieldStyle.buildInputDecoration(
+              labelText: "Opportunity Status",
+            ),
+          );
 
-    final visitType = TextFormField(
-      controller: _siteTypeController1,
-      style: FormFieldStyle.formFieldTextStyle,
-      //keyboardType: TextInputType.number,
-      readOnly: true,
-      enableInteractiveSelection: false,
-      decoration: FormFieldStyle.buildInputDecoration(),
-    );
+    // final visitType = TextFormField(
+    //   controller: _siteTypeController1,
+    //   style: FormFieldStyle.formFieldTextStyle,
+    //   //keyboardType: TextInputType.number,
+    //   readOnly: true,
+    //   enableInteractiveSelection: false,
+    //   decoration: FormFieldStyle.buildInputDecoration(),
+    // );
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -1002,6 +1002,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               } else {
                 widget.selectedOpportunitStatusEnity = null;
               }
+              setData();
             });
           },
         );

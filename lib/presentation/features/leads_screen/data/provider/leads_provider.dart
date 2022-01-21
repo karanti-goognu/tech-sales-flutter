@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
@@ -604,6 +605,30 @@ print("Length: $length");
     }
 
     return infDetailModel;
+  }
+
+
+  Future<SiteDistrictListModel> getLeadDistList(String accessKey, String userSecretKey, String empID) async {
+    SiteDistrictListModel siteDistrictListModel;
+    try {
+      version = VersionClass.getVersion();
+
+      var response = await http.get(Uri.parse(UrlConstants.leadDistList + empID),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs().appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
+        print(response.body);
+      }
+    }
+    catch (e) {
+      print("Exception at Lead Repo $e");
+    }
+    return siteDistrictListModel;
   }
 
 }

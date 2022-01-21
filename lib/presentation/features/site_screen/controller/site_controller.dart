@@ -481,11 +481,13 @@ class SiteController extends GetxController {
 
   Future<SiteDistrictListModel> getSiteDistList() async {
     String userSecurityKey = "";
+    String empID = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKeyNew();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId) ?? "empty";
+      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey, empID);
     });
     return siteDistResponse;
   }
@@ -622,7 +624,7 @@ class SiteController extends GetxController {
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKeyNew();
-    _prefs.then((SharedPreferences prefs) async {
+    await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
     });
