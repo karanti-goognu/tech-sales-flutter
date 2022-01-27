@@ -78,6 +78,7 @@ class SplashScreenPageState extends State<SplashScreen> {
 
   @override
   void initState() {
+    print("Calling");
     // TODO: implement initState
     super.initState();
 

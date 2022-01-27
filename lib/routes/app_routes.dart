@@ -24,13 +24,11 @@ abstract class Routes {
   static const SERVICE_REQUEST_CREATION = '/create_service_request';
   static const SERVICE_REQUEST_UPDATESCREEN = '/update_service_request';
   static const VIDEO_TUTORIAL = '/video_tutorial';
-
+  static const VIDEO_PLAYER = '/video_player';
   static const NOTIFICATION = '/notification';
   static const DASHBOARD = '/dashboard';
   static const DASHBOARD_SITE_LIST = '/dashboard_site_list';
   static const DASHBOARD_VOLUME_CONVERTED= '/dashboard_volume_converted';
-
-
   ///Gifts & Events
   static const EVENTS_GIFTS = '/events';
   static const ADD_EVENTS = '/form_add_event';
@@ -42,8 +40,6 @@ abstract class Routes {
   //static const UPDATE_DLR_INF = '/update_dlr_inf';
   static const GIFTS_VIEW= '/gifts_view';
   static const ALL_EVENTS = 'all_events';
-
-
   ///Influencer
   static const ADD_INFLUENCER = '/add_new_influencer_form';
   static const INFLUENCER_LIST = '/influencer_view';

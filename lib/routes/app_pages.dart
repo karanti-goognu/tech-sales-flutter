@@ -16,7 +16,6 @@ import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
@@ -47,6 +46,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/view/s
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoRequests.dart';
+import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
 import 'package:get/get.dart';
 
 part './app_routes.dart';
@@ -141,6 +141,10 @@ class AppPages {
       name: Routes.VIDEO_TUTORIAL,
       page: () => VideoRequests(),
       binding: TutorialBinding(),
+    ),
+    GetPage(
+      name: Routes.VIDEO_PLAYER,
+      page: () => Video(),
     ),
     GetPage(
       name: Routes.INFLUENCER_LIST,

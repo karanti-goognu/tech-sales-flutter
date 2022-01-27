@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
-
 import 'package:flutter/services.dart';
 import 'package:moengage_inbox/inbox_data.dart';
 import 'package:moengage_inbox/inbox_message.dart';
 import 'package:moengage_inbox/payload_transformer.dart';
-
 import 'constants.dart';
 
 class MoEAndroidInbox {
@@ -16,6 +14,7 @@ class MoEAndroidInbox {
   }
 
   Future<int> getUnClickedCount() {
+    print("getUnClickedCount");
     return _channel.invokeMethod(METHOD_NAME_UN_CLICKED_COUNT);
   }
 

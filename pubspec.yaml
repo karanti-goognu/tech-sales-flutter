@@ -56,7 +56,6 @@ dependencies:
   flutter_svg: ^0.19.3
   flutter_calendar_carousel: 1.5.3
   chewie: ^0.12.2
-  moengage_flutter: ^4.0.2
   syncfusion_flutter_charts: ^18.4.49
   syncfusion_flutter_datagrid: ^18.4.49-beta
   screenshot: ^0.3.0
@@ -89,6 +88,7 @@ dependencies:
   slider_button: ^0.6.0
   data_connection_checker: ^0.3.4
   moengage_inbox: ^3.1.0
+  moengage_flutter: ^4.0.2
 
 
   # below plugins not used in app

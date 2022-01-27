@@ -1001,7 +1001,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   return WillPopScope(
                     onWillPop: () async => false,
                     child: AlertDialog(
-//                    title: new Text("Waheguru"),
+//                    title: new Text("Lead Status"),
                       content: new Text(
                         "Status of this lead is $labelText . You cannot edit or update it.",
                       ),
