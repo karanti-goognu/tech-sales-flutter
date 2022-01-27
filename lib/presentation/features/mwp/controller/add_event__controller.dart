@@ -314,12 +314,14 @@ class AddEventController extends GetxController {
           } else if (saveVisitResponse.respCode == "DM2144") {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
-          } else if (saveVisitResponse.respCode == "MWP2021") {
-            Get.dialog(CustomDialogs().messageDialogMWPInf(
-                saveVisitResponse.respMsg,
-                contactController,
-                isVisibleContact));
-          } else if (saveVisitResponse.respCode == "INF2004") {
+          }
+          // else if (saveVisitResponse.respCode == "MWP2021") {
+          //   Get.dialog(CustomDialogs().messageDialogMWPInf(
+          //       saveVisitResponse.respMsg,
+          //       contactController,
+          //       isVisibleContact));
+          // }
+          else if (saveVisitResponse.respCode == "INF2004") {
             Get.dialog(CustomDialogs().messageDialogMWPInf(
                 saveVisitResponse.respMsg,
                 contactController,

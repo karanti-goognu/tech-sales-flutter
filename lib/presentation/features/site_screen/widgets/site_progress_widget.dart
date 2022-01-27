@@ -22,14 +22,14 @@ class SiteProgressWidget extends StatefulWidget {
   TabController tabController;
   int tabIndex;
 
-  SiteProgressWidget({this.viewSiteDataResponse,this.tabController,this.tabIndex});
+  SiteProgressWidget(
+      {this.viewSiteDataResponse, this.tabController, this.tabIndex});
 
   _SiteDataViewWidgetState createState() => _SiteDataViewWidgetState();
 }
 
 class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     with SingleTickerProviderStateMixin {
-
   SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
   FocusNode myFocusNode;
@@ -118,6 +118,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<CounterListModel> subDealerList = new List();
   List<CounterListModel> dealerList = new List();
 
+  String _selectedRadioValue = 'Yes';
+
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
 
@@ -134,28 +136,30 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   getKittyBags(String partyCode) {
     //String productCode
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _siteController.getSiteKittyBags(partyCode).then((data) {
-            setState(() {
-              if(data != null){
-                _kittyBagsListModel = data;
-                claimableKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
-                reservedKittyBagsAvailable = '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
-              }
-            });
-            print('RESPONSE, ${data}');
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _siteController.getSiteKittyBags(partyCode).then((data) {
+                setState(() {
+                  if (data != null) {
+                    _kittyBagsListModel = data;
+                    claimableKittyBagsAvailable =
+                        '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                    reservedKittyBagsAvailable =
+                        '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+                  }
+                });
+                print('RESPONSE, ${data}');
+              })
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   /// get _getProductList
@@ -237,6 +241,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                         .toLowerCase() ==
                                     "dalmia") {
                                   _stageStatus.text = "WON";
+                                  _selectedRadioValue = 'Yes';
                                 } else {
                                   _stageStatus.text = "LOST";
                                   visitDataDealer = "";
@@ -255,7 +260,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             items: [_siteBrandFromLocalDB]
                                 .map((label) => DropdownMenuItem(
                                       child: Text(
-                                          label!=null? label.brandName ?? "" :"",
+                                        label != null
+                                            ? label.brandName ?? ""
+                                            : "",
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: ColorConstants
@@ -298,8 +305,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ),
                 ),
                 SizedBox(height: 12),
-
-
 
 /*
                 (_siteBrandFromLocalDB != null &&
@@ -476,110 +481,115 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     :
                 */
 
-///Changes for Instead of two drop downs for dealer and subdealer only one dropdown as counter
+                ///Changes for Instead of two drop downs for dealer and subdealer only one dropdown as counter
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                        "dalmia")
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
                     ? GestureDetector(
-                  onTap: () {},
-                  child: (index == 0)
-                      ? (productDynamicList[index]
-                      .dealerName
-                      .text
-                      .isEmpty)
-                      ? DropdownButtonFormField<DealerForDb>(
-                    value: _dealerEntityForDb,
-                    items: dealerEntityForDb
-                        .map((label) => DropdownMenuItem(
-                      child: SizedBox(
-                        width: MediaQuery.of(context)
-                            .size
-                            .width -
-                            100,
-                        child: Text(
-                            '${label.dealerName} (${label.id})',
-                            style: TextStyle(
-                                fontSize: 14)),
-                      ),
-                      value: label,
-                    ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _dealerEntityForDb = value;
-                        visitDataDealer = value.id;
-                        _dealerName.text = value.dealerName;
-                        UpdatedValues.setDealerEntityForDb(_dealerEntityForDb);
-                        getKittyBags(value.id);
-                        // Get.dialog(
-                        //     CustomDialogs().showDialogForKittiPoints("", context),
-                        //     barrierDismissible: false);
-                        // for(int i=0; i<counterListModel.length;i++) {
-                        //   if( counterListModel[i].shipToParty == value.id){
-                        //     availableKittyPoint = counterListModel[i].availableKittyPoint;
-                        //   }
-                        // }
-                      });
-                    },
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration:
-                    FormFieldStyle.buildInputDecoration(
-                        labelText: "Counter"),
-                    validator: (value) => value == null
-                        ? 'Please select Counter'
-                        : null,
-                  )
-                      : DropdownButtonFormField<DealerForDb>(
-                    value: _dealerEntityForDb,
-                    items: [_dealerEntityForDb]
-                        .map((label) => DropdownMenuItem(
-                      child: SizedBox(
-                        width: MediaQuery.of(context)
-                            .size
-                            .width -
-                            100,
-                        child: Text(
-                            '${label.dealerName} (${label.id})',
-                            style: TextStyle(
-                                fontSize: 14)),
-                      ),
-                      value: label,
-                    ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _dealerEntityForDb = value;
-                        visitDataDealer = value.id;
-                        _dealerName.text = value.dealerName;
-                        for(int i=0; i<counterListModel.length;i++) {
-                          if( counterListModel[i].shipToParty == value.id){
-                            availableKittyPoint = counterListModel[i].availableKittyPoint;
-                          }
-                        }
-                      });
-                    },
-                    style: FormFieldStyle.formFieldTextStyle,
-                    decoration:
-                    FormFieldStyle.buildInputDecoration(
-                        labelText: "Counter"),
-                    validator: (value) => value == null
-                        ? 'Please select counter'
-                        : null,
-                  )
-                      : TextFormField(
-                    controller: _dealerName,
-                    readOnly: true,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.inputBoxHintColor,
-                        fontFamily: "Muli"),
-                    keyboardType: TextInputType.number,
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Dealer"),
-                  ),
-                )
+                        onTap: () {},
+                        child: (index == 0)
+                            ? (productDynamicList[index]
+                                    .dealerName
+                                    .text
+                                    .isEmpty)
+                                ? DropdownButtonFormField<DealerForDb>(
+                                    value: _dealerEntityForDb,
+                                    items: dealerEntityForDb
+                                        .map((label) => DropdownMenuItem(
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    100,
+                                                child: Text(
+                                                    '${label.dealerName} (${label.id})',
+                                                    style: TextStyle(
+                                                        fontSize: 14)),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _dealerEntityForDb = value;
+                                        visitDataDealer = value.id;
+                                        _dealerName.text = value.dealerName;
+                                        UpdatedValues.setDealerEntityForDb(
+                                            _dealerEntityForDb);
+                                        getKittyBags(value.id);
+                                        // Get.dialog(
+                                        //     CustomDialogs().showDialogForKittiPoints("", context),
+                                        //     barrierDismissible: false);
+                                        // for(int i=0; i<counterListModel.length;i++) {
+                                        //   if( counterListModel[i].shipToParty == value.id){
+                                        //     availableKittyPoint = counterListModel[i].availableKittyPoint;
+                                        //   }
+                                        // }
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                            labelText: "Counter"),
+                                    validator: (value) => value == null
+                                        ? 'Please select Counter'
+                                        : null,
+                                  )
+                                : DropdownButtonFormField<DealerForDb>(
+                                    value: _dealerEntityForDb,
+                                    items: [_dealerEntityForDb]
+                                        .map((label) => DropdownMenuItem(
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    100,
+                                                child: Text(
+                                                    '${label.dealerName} (${label.id})',
+                                                    style: TextStyle(
+                                                        fontSize: 14)),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _dealerEntityForDb = value;
+                                        visitDataDealer = value.id;
+                                        _dealerName.text = value.dealerName;
+                                        for (int i = 0;
+                                            i < counterListModel.length;
+                                            i++) {
+                                          if (counterListModel[i].shipToParty ==
+                                              value.id) {
+                                            availableKittyPoint =
+                                                counterListModel[i]
+                                                    .availableKittyPoint;
+                                          }
+                                        }
+                                      });
+                                    },
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                            labelText: "Counter"),
+                                    validator: (value) => value == null
+                                        ? 'Please select counter'
+                                        : null,
+                                  )
+                            : TextFormField(
+                                controller: _dealerName,
+                                readOnly: true,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ColorConstants.inputBoxHintColor,
+                                    fontFamily: "Muli"),
+                                keyboardType: TextInputType.number,
+                                decoration: FormFieldStyle.buildInputDecoration(
+                                    labelText: "Counter"),
+                              ),
+                      )
                     : Container(),
-
 
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
@@ -595,6 +605,78 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           ),
                         ),
                       )
+                    : Container(),
+
+                (_siteBrandFromLocalDB != null &&
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia")
+                    ? Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, top: 10, right: 10),
+                            child: Text(
+                              "Award Loyalty Point",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  fontFamily: "Muli"),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'Yes',
+                                      groupValue: _selectedRadioValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          // if (_siteBrandFromLocalDB != null &&
+                                          //       _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                                          //           "dalmia") {
+                                            _selectedRadioValue = value;
+                                          // }else{
+                                          //   _selectedRadioValue = 'No';
+                                          // }
+                                        });
+                                      },
+                                    ),
+                                    Text("Yes",style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),)
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'No',
+                                      groupValue: _selectedRadioValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedRadioValue = value;
+                                        });
+                                      },
+                                    ),
+                                    Text("No",style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),)
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ))
                     : Container(),
 /*
                     (_siteBrandFromLocalDB != null &&
@@ -631,81 +713,84 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 */
 
                 (_siteBrandFromLocalDB != null &&
-                    _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                        "dalmia" && visitDataDealer != null)
+                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                            "dalmia" &&
+                        visitDataDealer != null)
                     ? Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 20, left: 5, right: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Reserved Kitty Bags Available",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: HexColor("#168A08"),
-                                fontFamily: "Muli"),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Get.dialog(
-                                  CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
-                                  barrierDismissible: false);
-                            },
-                            child: Text(
-                              reservedKittyBagsAvailable,
-                              // "${availableKittyPoint1()}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // fontSize: 16,
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.blue,
-                                  fontFamily: "Muli"),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5, right: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Reserved Kitty Bags Available",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: HexColor("#168A08"),
+                                      fontFamily: "Muli"),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.dialog(
+                                        CustomDialogs()
+                                            .showDialogForKittiPoints(
+                                                _kittyBagsListModel, context),
+                                        barrierDismissible: false);
+                                  },
+                                  child: Text(
+                                    reservedKittyBagsAvailable,
+                                    // "${availableKittyPoint1()}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        // fontSize: 16,
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.blue,
+                                        fontFamily: "Muli"),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Claimable Kitty Bags Available",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: HexColor("#168A08"),
-                                fontFamily: "Muli"),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Get.dialog(
-                                  CustomDialogs().showDialogForKittiPoints(_kittyBagsListModel, context),
-                                  barrierDismissible: false);
-                            },
-                            child: Text(
-                              claimableKittyBagsAvailable,
-                              // "${availableKittyPoint1()}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // fontSize: 16,
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.blue,
-                                  fontFamily: "Muli"),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Claimable Kitty Bags Available",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: HexColor("#168A08"),
+                                      fontFamily: "Muli"),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.dialog(
+                                        CustomDialogs()
+                                            .showDialogForKittiPoints(
+                                                _kittyBagsListModel, context),
+                                        barrierDismissible: false);
+                                  },
+                                  child: Text(
+                                    claimableKittyBagsAvailable,
+                                    // "${availableKittyPoint1()}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        // fontSize: 16,
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.blue,
+                                        fontFamily: "Muli"),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+                          ],
+                        ),
+                      )
                     : Container(),
-
 
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
@@ -850,7 +935,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   context: context,
                                   initialDate: DateTime.now(),
                                   //firstDate: DateTime(2001),
-                                  firstDate: DateTime.now().subtract(Duration(days: widget.viewSiteDataResponse.supplyDate)),
+                                  firstDate: DateTime.now().subtract(Duration(
+                                      days: widget
+                                          .viewSiteDataResponse.supplyDate)),
                                   lastDate: DateTime.now(),
                                 );
 
@@ -1060,9 +1147,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   setSiteProgressData() async {
     await db.clearTable();
-    for (int i = 0; i < widget.viewSiteDataResponse.siteBrandEntity.length; i++) {
-      await db.addBrandName(new BrandModelforDB(widget.viewSiteDataResponse.siteBrandEntity[i].id,
-          widget.viewSiteDataResponse.siteBrandEntity[i].brandName, widget.viewSiteDataResponse.siteBrandEntity[i].productName));
+    for (int i = 0;
+        i < widget.viewSiteDataResponse.siteBrandEntity.length;
+        i++) {
+      await db.addBrandName(new BrandModelforDB(
+          widget.viewSiteDataResponse.siteBrandEntity[i].id,
+          widget.viewSiteDataResponse.siteBrandEntity[i].brandName,
+          widget.viewSiteDataResponse.siteBrandEntity[i].productName));
     }
 
     // for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
@@ -1071,13 +1162,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     // }
 
 ////Added shipToParty to dealers
-    for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
-      int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].shipToParty,
+    for (int i = 0;
+        i < widget.viewSiteDataResponse.counterListModel.length;
+        i++) {
+      int id = await db.addDealer(DealerForDb(
+          widget.viewSiteDataResponse.counterListModel[i].shipToParty,
           widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
     }
 
     // print("list Size");fetchAllDistinctDealers
-    List<BrandModelforDB> siteBrandEntityfromLoaclDB1 = await db.fetchAllDistinctBrand();
+    List<BrandModelforDB> siteBrandEntityfromLoaclDB1 =
+        await db.fetchAllDistinctBrand();
     List<DealerForDb> dealerEntityForDb1 = await db.fetchAllDistinctDealers();
 
     if (this.mounted) {
@@ -1111,21 +1206,16 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               UpdatedValues.getSiteProgressConstructionId();
         }
 
-
         if (UpdatedValues.getConstructionTypeVisitNextStage() != null) {
           _selectedConstructionTypeVisitNextStage = null;
           _selectedConstructionTypeVisitNextStage =
               UpdatedValues.getConstructionTypeVisitNextStage();
         }
 
-
         if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
           _selectedSiteVisitFloor = null;
-          _selectedSiteVisitFloor = siteFloorsEntity.firstWhere(
-                  (item) =>
-              item.id == UpdatedValues
-                  .getSiteProgressNoOfFloors()
-                  .id);
+          _selectedSiteVisitFloor = siteFloorsEntity.firstWhere((item) =>
+              item.id == UpdatedValues.getSiteProgressNoOfFloors().id);
         }
 
         if (UpdatedValues.getSiteProgressStagePotential() != null) {
@@ -1142,11 +1232,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               UpdatedValues.getSiteProgressDateOfConstruction();
         }
 
-
         if (UpdatedValues.getAddNextButtonDisable() != null) {
           addNextButtonDisable = UpdatedValues.getAddNextButtonDisable();
         }
-
 
         if (UpdatedValues.getDealerEntityForDb() != null &&
             _siteBrandFromLocalDB != null) {
@@ -1162,7 +1250,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           siteProductEntityfromLoaclDB =
               UpdatedValues.getProductEntityFromLocalDb();
         }
-
 
         if (UpdatedValues.getSubDealerList() != null &&
             _siteBrandFromLocalDB != null) {
@@ -1189,7 +1276,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           updateSiteSupplyHistory();
         }
 
-
         if (UpdatedValues.getSiteBrandFromLocalDBNextStage() != null) {
           _siteBrandFromLocalDBNextStage = null;
           _siteBrandFromLocalDBNextStage =
@@ -1198,26 +1284,26 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       });
     }
 
-   //  await db.clearTable();
-   //  for (int i = 0; i < siteBrandEntity.length; i++) {
-   //    await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
-   //        siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
-   //  }
-   //
-   //  for (int i = 0; i < counterListModel.length; i++) {
-   //    int id = await db.addDealer(DealerForDb(counterListModel[i].soldToParty,
-   //        counterListModel[i].soldToPartyName));
-   //  }
-   //
-   //  // print("list Size");fetchAllDistinctDealers
-   // var siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
-   // var dealerEntityForDb = await db.fetchAllDistinctDealers();
-   //  setBrandData(siteBrandEntityfromLoaclDB,dealerEntityForDb);
+    //  await db.clearTable();
+    //  for (int i = 0; i < siteBrandEntity.length; i++) {
+    //    await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
+    //        siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
+    //  }
+    //
+    //  for (int i = 0; i < counterListModel.length; i++) {
+    //    int id = await db.addDealer(DealerForDb(counterListModel[i].soldToParty,
+    //        counterListModel[i].soldToPartyName));
+    //  }
+    //
+    //  // print("list Size");fetchAllDistinctDealers
+    // var siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
+    // var dealerEntityForDb = await db.fetchAllDistinctDealers();
+    //  setBrandData(siteBrandEntityfromLoaclDB,dealerEntityForDb);
 
     // UpdatedValues.setSiteProgressData(null,null,_stagePotentialVisit.text,_stageStatus.text,_dateofConstruction.text);
   }
 
-  void setBrandData(var siteBrandEntityfromLoaclDB1,var dealerList){
+  void setBrandData(var siteBrandEntityfromLoaclDB1, var dealerList) {
     setState(() {
       siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
       dealerEntityForDb = dealerList;
@@ -1364,24 +1450,26 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         viewSiteDataResponse.siteStagePotentialEntity.length >
                             0) {
                       double siteTotalSitePotential = viewSiteDataResponse
-                          .sitesModal.siteTotalSitePotential !=
-                          null
-                          ? double.parse(
-                          viewSiteDataResponse
-                          .sitesModal.siteTotalSitePotential)
+                                  .sitesModal.siteTotalSitePotential !=
+                              null
+                          ? double.parse(viewSiteDataResponse
+                              .sitesModal.siteTotalSitePotential)
                           : 0;
                       _stagePotentialVisit.clear();
                       if ((siteTotalSitePotential != null ||
-                          !siteTotalSitePotential.isBlank) &&
-                          (_selectedConstructionTypeVisit!=null &&(_selectedConstructionTypeVisit.id != null ||
-                              !_selectedConstructionTypeVisit.id.isBlank)) &&
-                          (_selectedSiteVisitFloor!=null && (_selectedSiteVisitFloor.id != null || !_selectedSiteVisitFloor.id.isBlank))
-                      ) {
+                              !siteTotalSitePotential.isBlank) &&
+                          (_selectedConstructionTypeVisit != null &&
+                              (_selectedConstructionTypeVisit.id != null ||
+                                  !_selectedConstructionTypeVisit
+                                      .id.isBlank)) &&
+                          (_selectedSiteVisitFloor != null &&
+                              (_selectedSiteVisitFloor.id != null ||
+                                  !_selectedSiteVisitFloor.id.isBlank))) {
                         _stagePotentialVisit.text = calculateStagePotential(
-                            siteTotalSitePotential,
-                            viewSiteDataResponse.siteStagePotentialEntity,
-                            _selectedConstructionTypeVisit.id,
-                            _selectedSiteVisitFloor.id)
+                                siteTotalSitePotential,
+                                viewSiteDataResponse.siteStagePotentialEntity,
+                                _selectedConstructionTypeVisit.id,
+                                _selectedSiteVisitFloor.id)
                             .toString();
                       }
                     }
@@ -1583,7 +1671,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2001),
-                        lastDate: DateTime.now().add(Duration(days: widget.viewSiteDataResponse.constructionDays)),
+                        lastDate: DateTime.now().add(Duration(
+                            days:
+                                widget.viewSiteDataResponse.constructionDays)),
                       );
 
                       setState(() {
@@ -2119,7 +2209,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   _siteBrandFromLocalDBNextStage);
               UpdatedValues.setSiteProductEntityFromLocalDBNextStage(
                   siteProductEntityfromLoaclDBNextStage);
-              print("BrandId-->"+value.brandName.toString());
+              print("BrandId-->" + value.brandName.toString());
               // _productSoldVisit.text = _siteBrand.productName;
               if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
                   "dalmia") {
@@ -2301,7 +2391,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             final String formattedDate =
                                 formatter.format(picked);
                             _dateOfBagSuppliedNextStage.text = formattedDate;
-                            UpdatedValues.setDateOfBagSuppliedNextStage(_dateOfBagSuppliedNextStage.text);
+                            UpdatedValues.setDateOfBagSuppliedNextStage(
+                                _dateOfBagSuppliedNextStage.text);
                           }
                         });
                       },
@@ -2439,7 +2530,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   if (picked != null) {
                     final String formattedDate = formatter.format(picked);
                     _dateofConstructionNextStage.text = formattedDate;
-                    UpdatedValues.setDateOfConstructionNextStage(_dateofConstructionNextStage.text);
+                    UpdatedValues.setDateOfConstructionNextStage(
+                        _dateofConstructionNextStage.text);
                   }
                 });
               },
@@ -2456,22 +2548,22 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       int selectedConstructionStageId,
       int selectedFloorId) {
     String stagePt = "";
-    if((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank) &&
-        (selectedConstructionStageId != null || !selectedConstructionStageId.isBlank) &&
-        (selectedFloorId != null || !selectedFloorId.isBlank)
-    ) {
+    if ((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank) &&
+        (selectedConstructionStageId != null ||
+            !selectedConstructionStageId.isBlank) &&
+        (selectedFloorId != null || !selectedFloorId.isBlank)) {
       SiteStagePotentialEntity siteStagePotentialEntity1 =
-      siteStagePotentialEntity.firstWhere(
+          siteStagePotentialEntity.firstWhere(
               (item) =>
-          (item.constructionStageId == selectedConstructionStageId &&
-              item.nosFloors == selectedFloorId),
-          orElse: () => null);
+                  (item.constructionStageId == selectedConstructionStageId &&
+                      item.nosFloors == selectedFloorId),
+              orElse: () => null);
 
       if (siteStagePotentialEntity1 != null) {
         double potentialPercentage =
             siteStagePotentialEntity1.potentialPercentage;
         stagePt = ((((siteTotalSitePotential * 20) * potentialPercentage) / 100)
-            .round())
+                .round())
             .toString();
         UpdatedValues.setSiteProgressStagePotential(stagePt);
         UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
