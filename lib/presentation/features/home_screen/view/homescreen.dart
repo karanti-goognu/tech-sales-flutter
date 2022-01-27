@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<int> unReadMessageCoun() async {
     print("unReadMessageCoun called ${_moEngageInbox.getUnClickedCount().then((value) => print(value))}");
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    print("waheguru ji $unReadMessageCount");
+    print("unread message count $unReadMessageCount");
     return unReadMessageCount;
   }
 
@@ -139,12 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _moEngageInbox = MoEngageInbox();
     unReadMessageCoun().then((value) => print("value:::::::::::::$value"));
     WidgetsBinding.instance.addPostFrameCallback((_) => {
-      print("You"),
           unReadMessageCoun().then((value) => {
-            print("Yo $value"),
+            print(":::-- $value"),
                 setState(() {
                   unReadMessageCount = value;
-                  print("waheguru unReadMessageCount $unReadMessageCount");
+                  print("unReadMessageCount $unReadMessageCount");
                 }),
               })
         });
