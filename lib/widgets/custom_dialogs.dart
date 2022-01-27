@@ -145,6 +145,51 @@ class CustomDialogs {
     );
   }
 
+  Widget messageDialogMWPInf(String message, TextEditingController contact, bool visible) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                message,
+                style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    height: 1.4,
+                    letterSpacing: .25,
+                    fontStyle: FontStyle.normal,
+                    color: ColorConstants.inputBoxHintColorDark),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              visible = false;
+              contact.text = "";
+
+              //Navigator.of(context).pop({'reload': true});
+              //Get.toNamed(Routes.VISIT_VIEW_SCREEN);
+              //Get.offNamed(Routes.HOME_SCREEN);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
   Widget messageDialogMWPCreate(String message) {
     return WillPopScope(
       onWillPop: () async => false,
@@ -331,7 +376,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            Get.back();
+            //Get.back();
             //Get.back();
             Get.toNamed(Routes.SITES_SCREEN);
             // Navigator.push(

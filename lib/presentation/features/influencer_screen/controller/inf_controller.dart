@@ -220,5 +220,4 @@ class InfController extends GetxController {
     });
     return influencerResponseModel;
   }
-
 }

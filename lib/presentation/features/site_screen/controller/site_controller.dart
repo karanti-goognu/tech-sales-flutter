@@ -481,11 +481,13 @@ class SiteController extends GetxController {
 
   Future<SiteDistrictListModel> getSiteDistList() async {
     String userSecurityKey = "";
+    String empID = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKeyNew();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId) ?? "empty";
+      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey, empID);
     });
     return siteDistResponse;
   }
@@ -588,34 +590,45 @@ class SiteController extends GetxController {
 
 
 
-  getAccessKeyAndSaveSiteRequest(
-      SiteVisitRequestModel siteVisitRequestModel, ) {
+  // getAccessKeyAndSaveSiteRequest (
+  //     SiteVisitRequestModel siteVisitRequestModel){
+  //   String userSecurityKey = "";
+  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  //   Future.delayed(
+  //       Duration.zero,
+  //           () => Get.dialog(Center(child: CircularProgressIndicator()),
+  //           barrierDismissible: false));
+  //
+  //   _prefs.then((SharedPreferences prefs) async {
+  //     String accessKey = await repository.getAccessKeyNew();
+  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+  //     await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
+  //         .then((value) {
+  //       Get.back();
+  //       if (value.respCode == 'MWP2028') {
+  //         Get.dialog(
+  //             CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
+  //             barrierDismissible: false);
+  //       } else {
+  //         Get.back();
+  //         Get.dialog(
+  //             CustomDialogs().errorDialog(value.respMsg.toString()),
+  //             barrierDismissible: false);
+  //       }
+  //     });
+  //   });
+  // }
+
+  Future<SiteVisitResponseModel>getAccessKeyAndSaveSiteRequest(SiteVisitRequestModel siteVisitRequestModel) async{
+    SiteVisitResponseModel siteVisitResponseModel;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-
-    _prefs.then((SharedPreferences prefs) async {
-      String accessKey = await repository.getAccessKeyNew();
+    String accessKey = await repository.getAccessKeyNew();
+    await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
-          .then((value) {
-        Get.back();
-        if (value.respCode == 'MWP2028') {
-          Get.dialog(
-              CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
-              barrierDismissible: false);
-        } else {
-          Get.back();
-          Get.dialog(
-              CustomDialogs().errorDialog(value.respMsg.toString()),
-              barrierDismissible: false);
-        }
-      });
+      siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
     });
+    return siteVisitResponseModel;
   }
 
 

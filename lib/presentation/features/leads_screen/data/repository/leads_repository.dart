@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provider/leads_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositoryLeads {
@@ -72,6 +73,10 @@ class MyRepositoryLeads {
   getInflNewDetailsData(String accessKey, String userSecurityKey, phoneNumber) {
     return apiClient.getInfNewData(
         accessKey, userSecurityKey, phoneNumber);
+  }
+
+  Future<SiteDistrictListModel> getLeadDistList(String accessKey, String userSecretKey, String empID) async {
+    return apiClient.getLeadDistList(accessKey, userSecretKey, empID);
   }
 
 

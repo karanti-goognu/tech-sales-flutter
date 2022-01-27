@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -43,12 +44,14 @@ class _LeadScreenState extends State<LeadScreen> {
 
   var bottomSheetController;
   ScrollController _scrollController;
+  SiteDistrictListModel _siteDistrictListModel;
 
   @override
   void initState() {
     print("Leads initstate called");
 
     super.initState();
+
     /* try {
       if (_loginController.validateOtpResponse.leadStatusEntity != null) {
         if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
@@ -61,6 +64,7 @@ class _LeadScreenState extends State<LeadScreen> {
     }*/
     _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
+    getDropdownDistData();
     internetChecking().then((result) {
       if (result)
         _leadsFilterController.offset = 0;
@@ -69,6 +73,7 @@ class _LeadScreenState extends State<LeadScreen> {
 
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
+
   }
 
   _scrollListener() {
@@ -79,6 +84,7 @@ class _LeadScreenState extends State<LeadScreen> {
       print(_leadsFilterController.offset);
       _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
     }
+
   }
 
   // @override
@@ -95,6 +101,31 @@ class _LeadScreenState extends State<LeadScreen> {
     _leadsFilterController?.dispose();
 
    // print(_leadsFilterController.offset);
+  }
+
+
+  getDropdownDistData() {
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _leadsFilterController.getLeadDistList().then((data) {
+            setState(() {
+              if(data != null){
+                _siteDistrictListModel = data;
+              }
+            });
+            print('RESPONSE, ${data}');
+          })
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+        }
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -206,6 +237,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                     _leadsFilterController.selectedLeadPotentialValue =
                                         StringConstants.empty;
                                     _leadsFilterController.selectedDeliveryPointsValue=
+                                        StringConstants.empty;
+                                    _leadsFilterController.selectedLeadDistrict =
                                         StringConstants.empty;
                                     _leadsFilterController.selectedFilterCount = 0;
                                     _leadsFilterController.offset = 0;
@@ -360,6 +393,36 @@ class _LeadScreenState extends State<LeadScreen> {
                             print("selected");
                           },
                         )),
+
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Obx(() => (_leadsFilterController.selectedLeadDistrict ==
+                            StringConstants.empty)
+                            ? Container()
+                            : FilterChip(
+                          label: Row(
+                            children: [
+                              Icon(
+                                Icons.check,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                  "${_leadsFilterController.selectedLeadDistrict}")
+                            ],
+                          ),
+                          backgroundColor: Colors.transparent,
+                          shape: StadiumBorder(side: BorderSide()),
+                          onSelected: (bool value) {
+                            print("selected");
+                          },
+                        )),
+                        SizedBox(
+                          width: 8,
+                        ),
 
                       ],
                     ))
@@ -1028,7 +1091,7 @@ class _LeadScreenState extends State<LeadScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return FilterWidget();
+          return FilterWidget(siteDistrictListModel: _siteDistrictListModel);
         });
   }
 

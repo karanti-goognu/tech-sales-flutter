@@ -88,8 +88,8 @@ class MyRepositorySites {
   }
 
   ////district list for filter
-  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey) async {
-    return apiClient.getSiteDistList(accessKey, userSecretKey);
+  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey, String empID) async {
+    return apiClient.getSiteDistList(accessKey, userSecretKey, empID);
   }
 
 

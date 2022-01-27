@@ -57,6 +57,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   bool checkedValue = false;
   bool checkedEnrollValue = false;
   String dateOfJoining;
+  bool _enrollVisible = false;
 
   TextEditingController _infTypeController = TextEditingController();
   TextEditingController _infNameController = TextEditingController();
@@ -183,7 +184,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
-              labelText: 'Add Dealer(s)',
+              labelText: 'Add Counter(s)',
               suffixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
@@ -547,6 +548,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     (_influencerDetailModel != null)
         ? _newContactController.text = _influencerDetailModel.mobileNumber
         : "";
+    _enrollVisible = false;
 
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
@@ -599,63 +601,40 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration:
                         FormFieldStyle.buildInputDecoration(labelText: "Name*"),
                   )),
-              Container(
-                margin: EdgeInsets.only(right: 16, left: 16, bottom: 12),
-                  padding:  EdgeInsets.only(
-                      left: 3.0, right: 3, top: 5, bottom: 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.all(Radius.circular(
-                            5.0) //                 <--- border radius here
-                        ),
-                  ),
-                  child: CheckboxListTile(
-                    title: Text(
-                      "Enroll for Dalmia Masters *",
-                      style: TextStyles.formfieldLabelText,
-                    ),
-                    activeColor: Colors.black,
-                    dense: true,
-                    value: checkedValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        checkedValue = newValue;
-                        if (checkedValue == true) {
-                          _selectedEnrollValue = "Y";
-                        } else {
-                          _selectedEnrollValue = "N";
-                        }
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity
-                        .leading, //  <-- leading Checkbox
-                  )),
+
               Padding(
                   padding:
-                      const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                  const EdgeInsets.only(right: 16, left: 16, bottom: 12),
                   child: DropdownButtonFormField(
                     onChanged: (value) {
+
                       setState(() {
                         _infTypeId = value;
+                        if(_influencerDetailModel.influencerTypeEntitiesList[value - 1].infRegFlag == "Y"){
+                          _enrollVisible = true;
+                        }else{
+                          _enrollVisible = false;
+                        }
+
                       });
                     },
                     items: (_influencerDetailModel == null)?[]:
                     (_influencerDetailModel != null &&
                         _influencerDetailModel.influencerTypeEntitiesList != null)
                         ? _influencerDetailModel.influencerTypeEntitiesList
-                            .map((e) => DropdownMenuItem(
-                                  value: e.inflTypeId,
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.5,
-                                    //250,
-                                    child: Text(
-                                      '${e.inflTypeDesc}',
-                                      maxLines: null,
-                                    ),
-                                  ),
-                                ))
-                            .toList()
+                        .map((e) => DropdownMenuItem(
+                      value: e.inflTypeId,
+                      child: Container(
+                        width:
+                        MediaQuery.of(context).size.width / 1.5,
+                        //250,
+                        child: Text(
+                          '${e.inflTypeDesc}',
+                          maxLines: null,
+                        ),
+                      ),
+                    ))
+                        .toList()
                         : [],
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
@@ -664,6 +643,84 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         ? 'Please select the Influencer Type'
                         : null,
                   )),
+
+              Visibility(
+                visible: _enrollVisible,
+                child: Container(
+                  margin: EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                    padding:  EdgeInsets.only(
+                        left: 3.0, right: 3, top: 5, bottom: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(
+                              5.0) //                 <--- border radius here
+                          ),
+                    ),
+                    child: CheckboxListTile(
+                      title: Text(
+                        "Enroll for Dalmia Masters *",
+                        style: TextStyles.formfieldLabelText,
+                      ),
+                      activeColor: Colors.black,
+                      dense: true,
+                      value: checkedValue,
+                      onChanged: (newValue) {
+                        setState(() {
+                          checkedValue = newValue;
+                          if (checkedValue == true) {
+                            _selectedEnrollValue = "Y";
+                          } else {
+                            _selectedEnrollValue = "N";
+                          }
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity
+                          .leading, //  <-- leading Checkbox
+                    )),
+              ),
+              // Padding(
+              //     padding:
+              //         const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+              //     child: DropdownButtonFormField(
+              //       onChanged: (value) {
+              //
+              //         setState(() {
+              //           _infTypeId = value;
+              //           print("infRegFlag: ${_influencerDetailModel.influencerTypeEntitiesList[_infTypeId].infRegFlag}");
+              //
+              //           if(_influencerDetailModel.influencerTypeEntitiesList[_infTypeId].infRegFlag == "Y"){
+              //             _enrollVisible = true;
+              //           }else{
+              //             _enrollVisible = false;
+              //           }
+              //
+              //         });
+              //       },
+              //       items: (_influencerDetailModel == null)?[]:
+              //       (_influencerDetailModel != null &&
+              //           _influencerDetailModel.influencerTypeEntitiesList != null)
+              //           ? _influencerDetailModel.influencerTypeEntitiesList
+              //               .map((e) => DropdownMenuItem(
+              //                     value: e.inflTypeId,
+              //                     child: Container(
+              //                       width:
+              //                           MediaQuery.of(context).size.width / 1.5,
+              //                       //250,
+              //                       child: Text(
+              //                         '${e.inflTypeDesc}',
+              //                         maxLines: null,
+              //                       ),
+              //                     ),
+              //                   ))
+              //               .toList()
+              //           : [],
+              //       style: FormFieldStyle.formFieldTextStyle,
+              //       decoration: FormFieldStyle.buildInputDecoration(
+              //           labelText: "Influencer Type*"),
+              //       validator: (value) => value == null
+              //           ? 'Please select the Influencer Type'
+              //           : null,
+              //     )),
               SizedBox(height: 12),
               Container(
                 //height: 50,
@@ -1115,48 +1172,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       });
     }
   }
-
-  // addNewInfluencerBtnPressed() async {
-  //   if (_newFormKey.currentState.validate()) {
-  //     SaveNewInfluencerModel _save = SaveNewInfluencerModel(
-  //       ilpIntrested: '',
-  //       influencerCategoryId: _infCatId,
-  //       influencerName: _newInfNameController.text,
-  //       influencerTypeId: _infTypeId,
-  //       mobileNumber: _newContactController.text,
-  //       ilpRegFlag: _selectedEnrollValue
-  //     );
-  //
-  //     internetChecking().then((result) => {
-  //           if (result == true)
-  //             {
-  //               _eventsFilterController
-  //                   .getAccessKeyAndSaveNewInfluencer(_save)
-  //                   .then((data) {
-  //                 setState(() {
-  //                   _saveNewInfluencerResponse = data;
-  //                   print('DD: $_saveNewInfluencerResponse');
-  //                   if (data.respCode == "DM1002")
-  //                     Get.dialog(
-  //                         successDialog(_saveNewInfluencerResponse.respMsg));
-  //                   else if (data.respMsg == "IN2008") {
-  //                     Get.dialog(
-  //                         successDialog(_saveNewInfluencerResponse.respMsg));
-  //                   }
-  //                 });
-  //               })
-  //             }
-  //           else
-  //             {
-  //               Get.snackbar("No internet connection.",
-  //                   "Make sure that your wifi or mobile data is turned on.",
-  //                   colorText: Colors.white,
-  //                   backgroundColor: Colors.red,
-  //                   snackPosition: SnackPosition.BOTTOM),
-  //             }
-  //         });
-  //   }
-  // }
 
   Widget successDialog(String message) {
     return AlertDialog(

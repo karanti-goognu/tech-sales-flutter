@@ -51,6 +51,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   String reservedKittyBagsAvailable = "0";
   ConstStage _selectedConstructionType;
   SiteFloorlist _selectedFloorType;
+  bool isExpanded = true;
+  String _selectedRadioValue = 'Yes';
+
 
   getPendingSupplyData() async {
     var data = await _siteController.pendingSupplyDetails(
@@ -126,6 +129,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     SizeConfig().init(context);
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
@@ -166,35 +170,182 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Obx(
-                                    () => Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 50.0, bottom: 20, left: 0),
-                                      child: Center(
-                                        child: Text(
-                                          _siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .influencerName ??
-                                              "",
+                                  // Obx(
+                                  //   () => Padding(
+                                  //     padding: const EdgeInsets.only(
+                                  //         top: 50.0, bottom: 20, left: 0),
+                                  //     child: Center(
+                                  //       child: Text(
+                                  //         _siteController
+                                  //                 .pendingSupplyDetailsResponse
+                                  //                 .pendingSuppliesDetailsModel
+                                  //                 .influencerName ??
+                                  //             "",
+                                  //         style: TextStyle(
+                                  //             fontWeight: FontWeight.normal,
+                                  //             fontSize: 20,
+                                  //             color: HexColor("#006838"),
+                                  //             fontFamily: "Muli"),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 50.0, bottom: 10, left: 0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "SITE INFO : " + widget.siteId.toString(),
                                           style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20,
-                                              color: HexColor("#006838"),
-                                              fontFamily: "Muli"),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: HexColor("#006838"),
+                                            fontFamily: "Muli",
+                                          ),
                                         ),
-                                      ),
+                                        (isExpanded)?
+                                        Column(
+                                          children: [
+                                            FlatButton.icon(
+                                              color: Colors.transparent,
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 15),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                      isExpanded = !isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
+
+                                          ],
+                                        ):FlatButton.icon(
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: HexColor("#F9A61A"),
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "COLLAPSE",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 15),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              isExpanded = !isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    "Site ID: " + widget.siteId.toString(),
-                                    style: TextStyle(
+                                  //SizedBox(height: 16),
+                                  Visibility(
+                                      visible: !isExpanded,
+                                      child: Container(
+                                        width:  MediaQuery. of(context). size. width,
+                                        color: Colors.grey[100],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+
+                                              Text("Owner Number : "),
+                                              Text("Influencer Name : "),
+                                              Text("Influencer Number : "),
+                                              Text("Request Initiated By : "),
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                  //SizedBox(height: 16),
+                                  Text("Owner Name : ",style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
-                                      fontFamily: "Muli",
-                                    ),
-                                  ),
+                                      // color: HexColor("#000000DE"),
+                                      fontFamily: "Muli"),),
+                                  Container(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, top: 10, right: 10),
+                                            child: Text(
+                                              "Award Loyalty Point",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  fontFamily: "Muli"),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      value: 'Yes',
+                                                      groupValue: _selectedRadioValue,
+                                                      onChanged: (value) {
+                                                        setState(() {
+
+                                                          _selectedRadioValue = value;
+
+                                                        });
+                                                      },
+                                                    ),
+                                                    Text("Yes",style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 18,
+                                                        // color: HexColor("#000000DE"),
+                                                        fontFamily: "Muli"),)
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      value: 'No',
+                                                      groupValue: _selectedRadioValue,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _selectedRadioValue = value;
+                                                        });
+                                                      },
+                                                    ),
+                                                    Text("No",style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 18,
+                                                        // color: HexColor("#000000DE"),
+                                                        fontFamily: "Muli"),)
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )),
                                   SizedBox(height: 16),
                                   Obx(() => _siteController
                                               .pendingSupplyDetailsResponse

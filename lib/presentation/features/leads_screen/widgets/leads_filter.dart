@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FilterWidget extends StatefulWidget {
+  SiteDistrictListModel siteDistrictListModel;
+
+  FilterWidget({this.siteDistrictListModel});
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
 }
@@ -23,6 +29,8 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     _leadsFilterController.getSecretKey(10);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
@@ -126,6 +134,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedPosition = 4;
                     },
                     child: returnSelectedWidget("Delivery Points", 4)),
+                GestureDetector(
+                    onTap: () {
+                      _leadsFilterController.selectedPosition = 5;
+                    },
+                    child: returnSelectedWidget("District", 5)),
               ],
             ),
           ),
@@ -182,6 +195,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.selectedLeadPotentialValue =
                           StringConstants.empty;
                       _leadsFilterController.selectedDeliveryPointsValue = StringConstants.empty;
+                      _leadsFilterController.selectedLeadDistrict = StringConstants.empty;
                       _leadsFilterController.selectedFilterCount = 0;
                       _leadsFilterController.offset = 0;
                       _leadsFilterController.leadsListResponse.leadsEntity =
@@ -264,10 +278,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ? returnLeadStageBody()
                 : (_leadsFilterController.selectedPosition == 2)
                     ? returnLeadStatusBody()
-                    :
-        (_leadsFilterController.selectedPosition == 3) ?
-        returnLeadPotentialBody()
-                        : returnDeliveryPointsBody(),
+                    : (_leadsFilterController.selectedPosition == 3)
+                      ? returnLeadPotentialBody()
+                       :(_leadsFilterController.selectedPosition == 4)?
+                         returnDeliveryPointsBody()
+                          :returnDistrictBody(),
       ),
     );
   }
@@ -550,6 +565,41 @@ class _FilterWidgetState extends State<FilterWidget> {
               },
             ),
           )),
+    );
+  }
+
+  Widget returnDistrictBody() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
+      child: DropdownButtonFormField(
+        onChanged: (_) {
+          //setState(() {
+          if (_leadsFilterController.selectedLeadDistrict == StringConstants.empty) {
+            _leadsFilterController.selectedFilterCount =
+                _leadsFilterController.selectedFilterCount + 1;
+          }
+          _leadsFilterController.selectedLeadDistrict = _;
+          _leadsFilterController.isFilterApplied = true;
+          _leadsFilterController.offset = 0;
+          _leadsFilterController.leadsListResponse.leadsEntity = null;
+          _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+          // });
+        },
+        items: (widget.siteDistrictListModel == null ||
+            widget.siteDistrictListModel.districtList == null)
+            ? []
+            : widget.siteDistrictListModel.districtList
+            .map((e) => DropdownMenuItem(
+          value: e.name,
+          child: Container(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: Text(e.name)),
+        ))
+            .toList(),
+        style: FormFieldStyle.formFieldTextStyle,
+        decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
+        //validator: (value) => value == null ? 'Please select member type' : null,
+      ),
     );
   }
 
