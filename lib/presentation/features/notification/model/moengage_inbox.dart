@@ -115,6 +115,7 @@ class MoEngageInbox {
   }
 
   Future<InboxData> fetchAllMessages() async {
+    print("fetchAllMessages called");
     if (Platform.isAndroid) {
       return _androidInbox.fetchAllMessages();
     } else if (Platform.isIOS) {
@@ -123,9 +124,11 @@ class MoEngageInbox {
   }
 
   Future<List<InboxMessage>> fetchAllInboxMessages() async {
+    print("moengage_inbox : fetchAllInboxMessages");
     List<InboxMessage> inboxList = new List.empty(growable: true);
+    print("inboxList $inboxList");
     this.fetchAllMessages().then((value) => {
-     // print("Count:${value.messages.length}"),
+     print("Count:${value.messages.length}"),
       if(value.messages.length>0){
         inboxList.addAll(value.messages)
       }else{
@@ -141,6 +144,7 @@ class MoEngageInbox {
     int count = 0;
     if (Platform.isAndroid) {
       count = await _androidInbox.getUnClickedCount();
+      print("count");
     } else if (Platform.isIOS) {
       count = await _iOSInbox.getUnClickedCount();
     }

@@ -26,7 +26,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
+    print("#1");
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+    print("#2");
     return unReadMessageCount;
   }
 
@@ -39,6 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
+    print("Test");
     _moEngageInbox = MoEngageInbox();
     WidgetsBinding.instance.addPostFrameCallback((_) => {
       unReadMessageCoun().then((value) => {

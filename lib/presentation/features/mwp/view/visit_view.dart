@@ -231,9 +231,12 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           }
                           if (_addEventController.siteIdText ==
                               "Influencer Contact") {
-                            if (!Validations.isValidPhoneNumber(value)) {
+                            if (value.isEmpty) {
                               return "Enter valid Contact number";
                             }
+                            // if (!Validations.isValidPhoneNumber(value)) {
+                            //   return "Enter valid Contact number";
+                            // }
                           }
                           return null;
                         },

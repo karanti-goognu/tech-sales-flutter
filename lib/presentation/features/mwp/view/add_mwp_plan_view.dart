@@ -47,13 +47,13 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   Widget build(BuildContext context) {
 
     List<String> mwpNames = [
-      "Retention Volume",
+      "Retention Volume (MT)",
       "New ILP members",
-      "DSP Slabs Conv. Nos.",
-      "DSP Conversion Vol",
-      "New Site Conv. (Vol MT)",
-      "Site Conv. (No. of sites)",
-      "Site Visits (Total)",
+      "DSP Slabs Conv. (Nos.)",
+      "DSP Conversion Vol (MT)",
+      "Conversion Vol (MT)",
+      "Site Conversion (Nos.)",
+      "Site Visit (Total)",
       "Site Visits (Unique)",
 /*
       "Influencer Visits",
@@ -67,7 +67,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "Technocrat visit",
       "Tech Van Demo",
       "Tech Van Service",
-       "Slab services",
+       "Site Service - Slab Supervision",
        "Technocrat meet",
       "Block Level meet",
       "Head Mason meet",

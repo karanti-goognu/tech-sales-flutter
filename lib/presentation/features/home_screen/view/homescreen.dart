@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -17,7 +15,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:moengage_flutter/app_status.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,14 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String employeeName = "empty";
 
   // notification section start here
-  // MoEngageInbox _moEngageInbox;
+  MoEngageInbox _moEngageInbox;
   int unReadMessageCount = 0;
 
-  //
-  // Future<int> unReadMessageCoun() async {
-  //   int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-  //   return unReadMessageCount;
-  // }
+  Future<int> unReadMessageCoun() async {
+    print("unReadMessageCoun called ${_moEngageInbox.getUnClickedCount().then((value) => print(value))}");
+    int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
+    print("unread message count $unReadMessageCount");
+    return unReadMessageCount;
+  }
 
   Future<bool> internetChecking() async {
     // do something here
@@ -66,16 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return result;
   }
 
-  Future<void> initPlatformState() async {
-    if (!mounted) return;
-    //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-  }
+  // Future<void> initPlatformState() async {
+  //   if (!mounted) return;
+  //   //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  // }
 
   @override
   void initState() {
     print("homescreen.dart :::::: initState()");
     super.initState();
-    initPlatformState();
+    // initPlatformState();
     /** Kp Changes*/
     //_moengagePlugin.initialise();
     // _moengagePlugin.setAppStatus(MoEAppStatus.update);
@@ -136,16 +134,19 @@ class _HomeScreenState extends State<HomeScreen> {
         setMoengageData(prefs);
       },
     );
-
+    print("notification section starts here");
     //   notification section starts here
-    // _moEngageInbox = MoEngageInbox();
-    // WidgetsBinding.instance.addPostFrameCallback((_) => {
-    //   unReadMessageCoun().then((value) => {
-    //     setState(() {
-    //       unReadMessageCount = value;
-    //     }),
-    //   })
-    // });
+    _moEngageInbox = MoEngageInbox();
+    unReadMessageCoun().then((value) => print("value:::::::::::::$value"));
+    WidgetsBinding.instance.addPostFrameCallback((_) => {
+          unReadMessageCoun().then((value) => {
+            print(":::-- $value"),
+                setState(() {
+                  unReadMessageCount = value;
+                  print("unReadMessageCount $unReadMessageCount");
+                }),
+              })
+        });
   }
 
   /** Kp Changes*/
@@ -184,18 +185,13 @@ class _HomeScreenState extends State<HomeScreen> {
     SizeConfig().init(context);
     return WillPopScope(
       onWillPop: () async {
-        // You can do some work here.
-        // Returning true allows the pop to happen, returning false prevents it.
         Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
         return true;
       },
       child: Scaffold(
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
-            // titleSpacing: 50,
             backgroundColor: ColorConstants.appBarColor,
-
-            //toolbarHeight: 100,
             toolbarHeight: SizeConfig.screenHeight * .12,
             title: Image.asset(
               "assets/images/Logo(Bluebg).png",
@@ -271,14 +267,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 0.0, right: 3),
                           child: GestureDetector(
                             onTap: () {
-                               Get.toNamed(Routes.NOTIFICATION);
-                              // Get.dialog(CustomDialogs()
-                              //     .errorDialog("Coming Soon !!"));
+                              Get.toNamed(Routes.NOTIFICATION);
                             },
                             child: Container(
                               height: (SizeConfig.screenHeight * .12) * .43,
                               width: (SizeConfig.screenHeight * .12) * .43,
-                              // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                                 border:
@@ -561,7 +554,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Container(
-                                    // color: Colors.red,
                                     child: Row(
                                       children: [
                                         Container(
@@ -585,8 +577,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           'DSP Slabs Converted',
                                           style: TextStyle(
                                               fontSize: SizeConfig
-                                                      .safeBlockHorizontal *
-                                                  3.5,
+                                                      .safeBlockHorizontal * 3.5,
                                               fontFamily: "Muli"),
                                         ))
                                       ],

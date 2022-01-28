@@ -6,9 +6,6 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class Video extends StatefulWidget {
-  final videoData;
-
-  Video({this.videoData});
 
   @override
   _VideoState createState() => _VideoState();
@@ -16,8 +13,14 @@ class Video extends StatefulWidget {
 
 class _VideoState extends State<Video> {
   VideoPlayerController videoPlayerController;
+  String videoUrl="", videoDes="";
+
 
   initState() {
+    var data = Get.arguments;
+    print(data);
+    videoUrl= data[0];
+    videoDes= data[1];
     internetChecking().then((result) => {
           if (result == true)
             {}
@@ -30,7 +33,7 @@ class _VideoState extends State<Video> {
                   snackPosition: SnackPosition.BOTTOM),
             }
         });
-    videoPlayerController = VideoPlayerController.network(widget.videoData.url);
+    videoPlayerController = VideoPlayerController.network(videoUrl);
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       aspectRatio: 16 / 9,
@@ -55,7 +58,7 @@ class _VideoState extends State<Video> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: Text(widget.videoData.description),
+          title: Text(videoDes),
           backgroundColor: ColorConstants.backgroundColorBlue),
       body: Container(
         child: Chewie(
