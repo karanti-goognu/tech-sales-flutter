@@ -15,6 +15,7 @@ import 'package:moengage_flutter/inapp_campaign.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
 import 'package:moengage_flutter/push_token.dart';
+import 'package:moengage_inbox/moengage_inbox.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
