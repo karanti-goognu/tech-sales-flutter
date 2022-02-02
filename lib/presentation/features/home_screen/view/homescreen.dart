@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -17,6 +16,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
+import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slider_button/slider_button.dart';
@@ -52,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
-    print("unReadMessageCoun called ${_moEngageInbox.getUnClickedCount().then((value) => print(value))}");
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
     print("unread message count $unReadMessageCount");
     return unReadMessageCount;
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print("homescreen.dart :::::: initState()");
+    print("home screen.dart :::::: initState()");
     super.initState();
     // initPlatformState();
     /** Kp Changes*/
@@ -99,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //     _homeController.checkInStatus = StringConstants.journeyEnded;
     //   }
     // }
-
+print("Waheguru ji");
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then(
@@ -137,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
     print("notification section starts here");
     //   notification section starts here
     _moEngageInbox = MoEngageInbox();
-    unReadMessageCoun().then((value) => print("value:::::::::::::$value"));
     WidgetsBinding.instance.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
             print(":::-- $value"),
@@ -159,8 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //_moengagePlugin.setUpPushCallbacks(_onPushClick);
     _moengagePlugin.setUniqueId(
         prefs.getString(StringConstants.employeeId) ?? ""); //employeeId id
-    _moengagePlugin.setUserName(
-        prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
+    _moengagePlugin.setUserName(prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
     _moengagePlugin.setPhoneNumber(
         prefs.getString(StringConstants.mobileNumber) ?? ""); //contact number
     _moengagePlugin.setEmail("test@test.com"); //email

@@ -1674,6 +1674,8 @@ class CustomDialogs {
             //Get.back();
             AddEventController _addEventController = Get.find();
             AppController _appController = Get.find();
+            print("2 Waheguru");
+
             _addEventController.viewVisitData(_appController.accessKeyResponse.accessKey);
            // Get.back();
             // Navigator.push(

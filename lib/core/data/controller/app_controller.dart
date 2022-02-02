@@ -148,6 +148,7 @@ class AppController extends GetxController {
                     .saveMeet(this.accessKeyResponse.accessKey);
                 break;
               case RequestIds.VIEW_VISIT:
+                print("1 Waheguru");
                 _addEventController
                     .viewVisitData(this.accessKeyResponse.accessKey);
                 break;
