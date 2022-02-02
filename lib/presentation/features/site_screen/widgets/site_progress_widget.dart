@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,7 @@ class SiteProgressWidget extends StatefulWidget {
 class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     with SingleTickerProviderStateMixin {
   SiteController _siteController = Get.find();
+  final _updateFormKey = GlobalKey<FormState>();
   final db = BrandNameDBHelper();
   FocusNode myFocusNode;
   bool isSwitchedsiteProductDemo = false;
@@ -293,17 +295,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Brand In Use"),
                       ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Mandatory",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+                MandatoryWidget().txtMandatory(),
                 SizedBox(height: 12),
 
 /*
@@ -594,17 +586,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text(
-                          "Mandatory",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            color: ColorConstants.inputBoxHintColorDark,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      )
+                    ? MandatoryWidget().txtMandatory()
                     : Container(),
 
                 (_siteBrandFromLocalDB != null &&
@@ -823,17 +805,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Product Sold")),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, bottom: 10),
-                  child: Text(
-                    "Mandatory",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+                MandatoryWidget().txtMandatory(),
                 TextFormField(
                   controller: productDynamicList[index].brandPrice,
                   validator: (value) {
@@ -862,17 +834,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   decoration: FormFieldStyle.buildInputDecoration(
                       labelText: "Brand Price"),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Mandatory",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+                MandatoryWidget().txtMandatory(),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
@@ -999,17 +961,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Mandatory",
-                    style: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+                MandatoryWidget().txtMandatory(),
                 Center(
                   child: RaisedButton(
                     elevation: 5,
@@ -1328,6 +1280,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     return ListView(children: [
       Container(
           child: Form(
+            key: _updateFormKey,
               child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -1975,9 +1928,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     ),
                   ),
                   onPressed: () async {
-                    UpdatedValues updateRequest = new UpdatedValues();
-                    updateRequest.UpdateRequest(context);
-                  },
+                    if (_updateFormKey.currentState.validate()) {
+                      UpdatedValues updateRequest = new UpdatedValues();
+                      updateRequest.UpdateRequest(context);
+                    }
+
+                  }
                 ),
               ),
               SizedBox(height: 40),

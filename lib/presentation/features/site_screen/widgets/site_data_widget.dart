@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -317,6 +318,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
     return siteDataView();
   }
 
@@ -369,17 +371,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(height: 16),
                           TextFormField(
                               controller: siteBuiltupArea,
@@ -414,17 +406,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               ],
                               decoration: FormFieldStyle.buildInputDecoration(
                                   labelText: "Site Built-up area (sqft)")),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(height: 16),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 20, left: 5),
@@ -969,17 +952,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Probability of winning",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(
                             height: 20,
                           ),
@@ -1030,17 +1014,19 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Competition Status",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          //txtMandatory(),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(
                             height: 20,
                           ),
@@ -1117,17 +1103,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Owner Name"),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _contactNumber,
@@ -1161,17 +1148,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Contact Number",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          MandatoryWidget().txtMandatory(),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 10.0, bottom: 20, left: 5),
@@ -1319,9 +1307,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               if (value.isEmpty) {
                                 return 'Please enter Pincode ';
                               }
-                              if (value.length <= 6) {
-                                return 'Pincode is incorrect';
-                              }
+                              // if (value.length <= 6) {
+                              //   return 'Pincode is incorrect';
+                              // }
 
                               return null;
                             },
@@ -1341,17 +1329,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Pincode",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          MandatoryWidget().txtMandatory(),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _state,
@@ -1374,17 +1363,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "State",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _district,
@@ -1407,17 +1397,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "District",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          MandatoryWidget().txtMandatory(),
                           SizedBox(height: 16),
 
                           TextFormField(
@@ -1441,17 +1432,18 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Taluk",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              "Mandatory",
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                color: ColorConstants.inputBoxHintColorDark,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15),
+                          //   child: Text(
+                          //     "Mandatory",
+                          //     style: TextStyle(
+                          //       fontFamily: "Muli",
+                          //       color: ColorConstants.inputBoxHintColorDark,
+                          //       fontWeight: FontWeight.normal,
+                          //     ),
+                          //   ),
+                          // ),
+                          MandatoryWidget().txtMandatory(),
 
                           SizedBox(height: 16),
                           Container(
@@ -1577,13 +1569,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                           TextFormField(
                             controller: _rera,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter RERA';
-                              }
-
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value.isEmpty) {
+                            //     return 'Please enter RERA';
+                            //   }
+                            //
+                            //   return null;
+                            // },
                             onChanged: (String data) {
                               UpdatedValues.setReraNumber(data);
                             },
@@ -1602,12 +1594,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _dealerName,
                             readOnly: true,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter dealer Name ';
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value.isEmpty) {
+                            //     return 'Please enter dealer Name ';
+                            //   }
+                            //   return null;
+                            // },
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
@@ -1622,12 +1614,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                           TextFormField(
                             controller: _so,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter SO ';
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value.isEmpty) {
+                            //     return 'Please enter SO ';
+                            //   }
+                            //   return null;
+                            // },
                             onChanged: (String data) {
                               UpdatedValues.setSoCode(data);
                             },
