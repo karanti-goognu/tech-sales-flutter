@@ -32,6 +32,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -829,18 +830,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Taluk"),
     );
 
-    final txtMandatory = Padding(
-      padding: const EdgeInsets.only(left: 15),
-      child: Text(
-        "Mandatory",
-        style: TextStyle(
-          fontFamily: "Muli",
-          color: ColorConstants.inputBoxHintColorDark,
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    );
-
     return Scaffold(
 //      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -1087,17 +1076,18 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         siteAddress,
                         SizedBox(height: _height),
                         pincode,
-                        txtMandatory,
+                        MandatoryWidget().txtMandatory(),
+                        //txtMandatory,
                         SizedBox(height: _height),
                         state,
-                        txtMandatory,
+                        MandatoryWidget().txtMandatory(),
                         SizedBox(height: _height),
                         district,
-                        txtMandatory,
+                        MandatoryWidget().txtMandatory(),
                         SizedBox(height: _height),
 
                         taluk,
-                        txtMandatory,
+                        MandatoryWidget().txtMandatory(),
                         SizedBox(height: _height),
                         Container(
                           width: MediaQuery.of(context).size.width,

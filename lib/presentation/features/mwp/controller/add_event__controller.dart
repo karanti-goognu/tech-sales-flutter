@@ -68,6 +68,8 @@ class AddEventController extends GetxController {
   final _visitSiteId = StringConstants.empty.obs;
   final _visitDateTime = "Visit Date".obs;
 
+
+
   //test
   final _visitViewDateTime = "Visit Date".obs;
 
@@ -269,7 +271,14 @@ class AddEventController extends GetxController {
   TextEditingController bagsController = new TextEditingController();
   TextEditingController mtController = new TextEditingController();
   TextEditingController contactController = TextEditingController();
-  bool isVisibleContact = false;
+
+  final _isVisibleContact = false.obs;
+
+  get isVisibleContact => this._isVisibleContact.value;
+
+  set isVisibleContact(value) => this._isVisibleContact.value = value;
+
+ // bool isVisibleContact = false;
 
   saveVisit(String accessKey) {
     Future.delayed(Duration.zero,
@@ -322,10 +331,13 @@ class AddEventController extends GetxController {
           //       isVisibleContact));
           // }
           else if (saveVisitResponse.respCode == "INF2004") {
+            this.isVisibleContact = false;
+            contactController.text = "";
             Get.dialog(CustomDialogs().messageDialogMWPInf(
                 saveVisitResponse.respMsg,
-                contactController,
-                isVisibleContact));
+                // contactController,
+                // isVisibleContact
+            ));
           } else {
             print('Success');
 

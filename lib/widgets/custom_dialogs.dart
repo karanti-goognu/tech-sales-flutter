@@ -145,7 +145,7 @@ class CustomDialogs {
     );
   }
 
-  Widget messageDialogMWPInf(String message, TextEditingController contact, bool visible) {
+  Widget messageDialogMWPInf(String message) {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -176,8 +176,8 @@ class CustomDialogs {
             ),
             onPressed: () {
               Get.back();
-              visible = false;
-              contact.text = "";
+              // visible = false;
+              // contact.text = "";
 
               //Navigator.of(context).pop({'reload': true});
               //Get.toNamed(Routes.VISIT_VIEW_SCREEN);
