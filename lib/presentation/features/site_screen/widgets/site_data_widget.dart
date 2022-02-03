@@ -68,11 +68,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   String geoTagType;
-  List<SiteFloorsEntity> siteFloorsEntity = new List();
-  List<ConstructionStageEntity> constructionStageEntity = new List();
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
+  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List.empty(growable: true);
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List.empty(growable: true);
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List.empty(growable: true);
 
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();

@@ -1,7 +1,5 @@
 import 'dart:core';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';

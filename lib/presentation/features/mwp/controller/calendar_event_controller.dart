@@ -13,7 +13,6 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarEventController extends GetxController {

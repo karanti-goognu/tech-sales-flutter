@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
-import 'package:meta/meta.dart';
 
 class MyRepositorySites {
   final MyApiClientSites apiClient;

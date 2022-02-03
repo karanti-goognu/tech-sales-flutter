@@ -18,7 +18,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SiteController extends GetxController {
@@ -84,9 +83,9 @@ class SiteController extends GetxController {
   get kittyBagsListModel => _kittyBagsListModel.value;
   set kittyBagsListModel(value) => _kittyBagsListModel.value = value;
 
-  var _sitesListOffline = List<SitesEntity>().obs;
+  var _sitesListOffline = List<SitesEntity>.empty(growable: true).obs;
 
-  List<SitesEntity> _siteList = new List();
+  List<SitesEntity> _siteList = new List.empty(growable: true);
 
 
   final _phoneNumber = "8860080067".obs;

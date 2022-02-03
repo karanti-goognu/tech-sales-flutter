@@ -6,7 +6,6 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/contr
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
-import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';

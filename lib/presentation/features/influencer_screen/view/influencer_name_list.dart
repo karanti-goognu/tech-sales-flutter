@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';

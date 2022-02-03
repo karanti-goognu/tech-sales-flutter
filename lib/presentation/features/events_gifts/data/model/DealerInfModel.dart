@@ -16,7 +16,7 @@ class DealerInfModel {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['event-dealers-model-list'] != null) {
-      eventDealersModelList = new List<EventDealersModelList>();
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['event-dealers-model-list'].forEach((v) {
         eventDealersModelList.add(new EventDealersModelList.fromJson(v));
       });

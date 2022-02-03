@@ -120,7 +120,7 @@ class SplashController extends GetxController {
   }
 
   getRefreshData(String accessKey, int reqId) async {
-    List<VersionUpdateModel> versionUpdateModel = new List();
+    List<VersionUpdateModel> versionUpdateModel = new List.empty(growable: true);
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -201,8 +201,10 @@ class SplashController extends GetxController {
           }
          else {
            print("In else");
-            var journeyDate = splashDataModel.journeyDetails.journeyDate;
-            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+           print(splashDataModel.journeyDetails.journeyDate);
+           print(splashDataModel.journeyDetails.journeyEndTime);
+            var journeyDate = splashDataModel.journeyDetails.journeyDate??"";
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime??"";
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)

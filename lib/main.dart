@@ -4,18 +4,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/routes/notification_routes.dart';
 import 'package:flutter_tech_sales/utils/constants/moengage_util.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/inapp_campaign.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/push_campaign.dart';
 import 'package:moengage_flutter/push_token.dart';
-import 'package:moengage_inbox/moengage_inbox.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
@@ -72,7 +69,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-  final MoEngageInbox _moEngageInbox = MoEngageInbox();
 
   @override
   void initState() {

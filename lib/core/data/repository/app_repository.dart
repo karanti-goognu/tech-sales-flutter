@@ -4,7 +4,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetReques
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitRequest.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositoryApp {

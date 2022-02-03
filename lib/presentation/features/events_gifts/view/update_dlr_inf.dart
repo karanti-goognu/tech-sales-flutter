@@ -1,17 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
-import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
@@ -975,7 +970,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_formKey.currentState.validate()) {
       _eventsFilterController.getInfData(contact).then((data) {
         _influencerDetailModel = data;
-        print("0000${_influencerDetailModel}");
+        print("0000$_influencerDetailModel");
         setState(() {
           if (data != null) {
             if (_influencerDetailModel.respCode == "NUM404") {
@@ -993,7 +988,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             }
           }
        });
-        print('RESPONSE, ${data}');
+        print('RESPONSE, $data');
       });
 
       // await _eventsFilterController.getInfData1(contact).then((data) {

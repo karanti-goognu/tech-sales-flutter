@@ -19,13 +19,13 @@ class GiftController extends GetxController {
   GiftController({@required this.repository}) : assert(repository != null);
 
   final _giftStockModel = GetGiftStockModel().obs;
-  final _giftStockModelList= List<GiftStockModelList>().obs;
-  final _giftStockModelList1= List<GiftStockModelList>().obs;
-  final _giftTypeModelList= List<GiftTypeModelList>().obs;
+  final _giftStockModelList= List<GiftStockModelList>.empty(growable: true).obs;
+  final _giftStockModelList1= List<GiftStockModelList>.empty(growable: true).obs;
+  final _giftTypeModelList= List<GiftTypeModelList>.empty(growable: true).obs;
   final _selectedDropdown =0.obs;
   final _itemFromBottomSheetTapped = false.obs;
   final _logsModel = LogsModel().obs;
-  final _dataForViewLog = List<GiftStockList>().obs;
+  final _dataForViewLog = List<GiftStockList>.empty(growable: true).obs;
   final _monthYear = ''.obs;
 
 

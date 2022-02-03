@@ -1,13 +1,10 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -694,7 +691,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
+                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -783,7 +780,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -873,7 +869,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
+                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;

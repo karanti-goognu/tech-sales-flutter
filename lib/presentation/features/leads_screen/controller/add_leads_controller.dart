@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
@@ -12,7 +10,6 @@ import 'package:flutter_tech_sales/presentation/features/login/data/model/Access
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';

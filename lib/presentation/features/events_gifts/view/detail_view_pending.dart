@@ -111,7 +111,7 @@ class _DetailPendingState extends State<DetailPending> {
       venueLbl = detailEventModel.mwpEventModel.venue;
       _eventTypeController.text =
           detailEventModel.mwpEventModel.eventTypeText ?? '';
-      _totalParticipantsController.text = '${_total}';
+      _totalParticipantsController.text = '$_total';
       _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
       _date = detailEventModel.mwpEventModel.eventDate;
       displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
