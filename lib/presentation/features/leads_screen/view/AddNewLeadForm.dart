@@ -35,7 +35,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
+// import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -54,7 +54,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
-  LocationResult _pickedLocation;
+  // LocationResult _pickedLocation;
   bool isSwitchedPrimary = false;
   var txt = TextEditingController();
   SiteSubTypeEntity _selectedValue;

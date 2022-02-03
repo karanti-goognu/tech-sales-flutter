@@ -1765,7 +1765,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   }
 
   _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
+    ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
@@ -1774,15 +1775,16 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         // print(basename(image.path));
 
         // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-        _imgDetails.add(new ImageDetails("asset", image));
+        _imageList.add(File(image.path));
+        _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
       }
     });
   }
 
   _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
+    ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
@@ -1790,9 +1792,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
       if (image != null) {
         // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
+        _imageList.add(File(image.path));
 
-        _imgDetails.add(new ImageDetails("asset", image));
+        _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
       }
       // _imageList.insert(0,image);

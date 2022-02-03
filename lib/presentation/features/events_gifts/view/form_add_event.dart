@@ -27,7 +27,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
+// import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -47,7 +47,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   final _addEventFormKey = GlobalKey<FormState>();
 
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  LocationResult _pickedLocation;
+  // LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay _time;

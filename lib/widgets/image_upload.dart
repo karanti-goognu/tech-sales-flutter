@@ -36,7 +36,8 @@ class ImageUpload extends StatelessWidget {
 }
 
 _imgFromCamera() async {
-  File image = await ImagePicker.pickImage(
+  ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
       source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       print(1);
@@ -52,7 +53,8 @@ _imgFromCamera() async {
 }
 
 _imgFromGallery() async {
-  File image = await ImagePicker.pickImage(
+  ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
       source: ImageSource.gallery, imageQuality: 50);
 print(image.path);
   // setState(() {

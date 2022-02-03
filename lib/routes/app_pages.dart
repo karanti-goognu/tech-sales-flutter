@@ -83,10 +83,10 @@ class AppPages {
         name: Routes.ADD_LEADS_SCREEN,
         page: () => AddNewLeadForm(),
         binding: AddLeadsBinding()),
-    GetPage(
-        name: Routes.VIEW_OLD_LEAD_SCREEN,
-        page: () => ViewOldLeadScree(),
-        binding: ViewOldLeadsBinding()),
+    // GetPage(
+    //     name: Routes.VIEW_OLD_LEAD_SCREEN,
+    //     page: () => ViewOldLeadScree(),
+    //     binding: ViewOldLeadsBinding()),
     GetPage(
         name: Routes.SITES_SCREEN,
         page: () => SiteScreen(),
