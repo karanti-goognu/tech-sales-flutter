@@ -282,49 +282,49 @@ class DashboardController extends GetxController {
   set empId(value) => this._empId.value = value;
   set employeeName(value) => this._employeeName.value = value;
 
-  get convTargetCount => _convTargetCount;
+  get convTargetCount => _convTargetCount.value;
 
   set convTargetCount(value) {
     _convTargetCount.value = value;
   }
 
-  get dspRemaingTargetCount => _dspRemaingTargetCount;
+  get dspRemaingTargetCount => _dspRemaingTargetCount.value;
 
   set dspRemaingTargetCount(value) {
     _dspRemaingTargetCount.value = value;
   }
 
-  get dspSlabConvertedCount => _dspSlabConvertedCount;
+  get dspSlabConvertedCount => _dspSlabConvertedCount.value;
 
   set dspSlabConvertedCount(value) {
     _dspSlabConvertedCount.value = value;
   }
 
-  get dspSlabConvertedVolume => _dspSlabConvertedVolume;
+  get dspSlabConvertedVolume => _dspSlabConvertedVolume.value;
 
   set dspSlabConvertedVolume(value) {
     _dspSlabConvertedVolume.value = value;
   }
 
-  get dspTotalOpperVolume => _dspTotalOpperVolume;
+  get dspTotalOpperVolume => _dspTotalOpperVolume.value;
 
   set dspTotalOpperVolume(value) {
     _dspTotalOpperVolume.value = value;
   }
 
-  get dspTargetCount => _dspTargetCount;
+  get dspTargetCount => _dspTargetCount.value;
 
   set dspTargetCount(value) {
     _dspTargetCount.value = value;
   }
 
-  get dspTotalOpperCount => _dspTotalOpperCount;
+  get dspTotalOpperCount => _dspTotalOpperCount.value;
 
   set dspTotalOpperCount(value) {
     _dspTotalOpperCount.value = value;
   }
 
-  get generatedCount => _generatedCount;
+  get generatedCount => _generatedCount.value;
 
   set generatedCount(value) {
     _generatedCount.value = value;
@@ -342,7 +342,7 @@ class DashboardController extends GetxController {
     _mwpPlanApproveStatus.value = value;
   }
 
-  get remainingTargetCount => _remainingTargetCount;
+  get remainingTargetCount => _remainingTargetCount.value;
 
   set remainingTargetCount(value) {
     _remainingTargetCount.value = value;
@@ -360,7 +360,7 @@ class DashboardController extends GetxController {
     _convTargetVolume.value = value;
   }
 
-  get convertedCount => _convertedCount;
+  get convertedCount => _convertedCount.value;
 
   set convertedCount(value) {
     _convertedCount.value = value;

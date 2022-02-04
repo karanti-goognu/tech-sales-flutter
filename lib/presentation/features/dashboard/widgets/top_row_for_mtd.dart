@@ -77,7 +77,6 @@ class TopRowForMTD extends StatelessWidget {
                         ChartDataForMTD(
                             'Generated-${_dashboardController.generatedCount}',
                             _dashboardController.generatedCount.toDouble(),
-//                            (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
                             Color(0xff00ADEE)),
                         ChartDataForMTD(
                             'Conv. Target-${_dashboardController.convTargetCount}',
