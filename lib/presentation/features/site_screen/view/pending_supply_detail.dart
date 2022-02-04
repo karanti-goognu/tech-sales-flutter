@@ -86,7 +86,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                         '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else

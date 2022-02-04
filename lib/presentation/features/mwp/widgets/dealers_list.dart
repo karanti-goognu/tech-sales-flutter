@@ -14,7 +14,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
 
-  final _searchList = List<DealerModel>();
+  final _searchList = List<DealerModel>.empty(growable: true);
 
   @override
   void initState() {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -96,7 +95,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
     ];*/
 
-    List<AddMwpModel> mwpPlanList = new List();
+    List<AddMwpModel> mwpPlanList = new List.empty(growable: true);
     for (int i = 0; i < mwpNames.length; i++) {
       mwpPlanList.add(
           new AddMwpModel(mwpNames[i], 10, 10, new TextEditingController()));

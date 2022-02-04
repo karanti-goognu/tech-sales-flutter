@@ -471,8 +471,6 @@ class _SiteScreenState extends State<SiteScreen> {
     });
   }
 
-  Widget SiteFilter() {}
-
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
         border: Border.all(color: ColorConstants.dateBorderColor),
