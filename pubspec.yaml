@@ -82,13 +82,12 @@ dependencies:
   package_info: ^2.0.2
   firebase_core:
   firebase_crashlytics: ^2.4.5
-  firebase_analytics: ^9.0.5
+  #firebase_analytics: ^9.0.5
+  firebase_analytics: ^9.1.0
   plugin_platform_interface: ^2.1.2
   #firebase_messaging: ^7.0.3
   firebase_messaging:
-  #  firebase_messaging: ^8.0.0-dev.14
   firebase_core_platform_interface:
-  #  firebase_core_platform_interface: ^3.0.1
 
   # below plugins not used null safety
   slider_button: ^2.0.0
@@ -107,31 +106,10 @@ dev_dependencies:
 
 
 dependency_overrides:
-  #   intl: ^0.17.0
-  #   firebase_core:
   geolocator: ^5.3.1
   http: ^0.12.2
   flutter_screenutil: ^0.7.0
-  firebase_analytics: ^7.0.1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#  image_picker: ^0.6.7+22
-#   google_maps_flutter: ^1.2.0
-#   plugin_platform_interface: ^2.0.0
-#   firebase_core_platform_interface: ^3.0.1
 
 flutter:
 

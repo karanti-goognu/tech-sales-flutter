@@ -192,6 +192,7 @@ class HomeController extends GetxController {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
+
             this.checkInResponse = data;
             checkInStatus = StringConstants.checkOut;
             _splashController.splashDataModel.journeyDetails.journeyStartLat =

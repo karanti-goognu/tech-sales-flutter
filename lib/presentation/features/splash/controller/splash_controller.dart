@@ -196,8 +196,14 @@ class SplashController extends GetxController {
             }
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // if(journeyDate != null) {
+            //   prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            // }
+            // if(journeyEndTime != null) {
+            //   prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // }
           }
          else {
            print("In else");
@@ -207,6 +213,21 @@ class SplashController extends GetxController {
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime??"";
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+
+           // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+           // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            if(journeyDate != null) {
+              prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+              print("journeyDate: $journeyDate");
+            }else{
+              prefs.setString(StringConstants.JOURNEY_DATE, "NA");
+              var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
+              print("journeyDate2: $journeyDate");
+            }
+           print("journeyDate1: $journeyDate");
+            if(journeyEndTime != null) {
+              prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            }
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
               openNextPage();
           }

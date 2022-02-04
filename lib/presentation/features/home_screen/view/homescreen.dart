@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _homeController.checkInStatus = StringConstants.journeyEnded;
         var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
         var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
-        if (journeyDate == null) {
+        if (journeyDate == null || journeyDate == "NA") {
 //        print('Check In');
           _homeController.checkInStatus = StringConstants.checkIn;
         } else {

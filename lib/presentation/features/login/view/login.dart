@@ -24,6 +24,7 @@ class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<bool> internetChecking() async {
     // do something here
@@ -213,9 +214,10 @@ class LoginScreenPageState extends State<LoginScreen> {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
                       if (_formKey.currentState.validate()) {
-                        FirebaseAnalytics().logEvent(
-                            name: FirebaseEventsConstants.loginButtonClick,
-                            parameters: null);
+                        //_sendAnalyticsEvent();
+                        // FirebaseAnalytics().logEvent(
+                        //     name: FirebaseEventsConstants.loginButtonClick,
+                        //     parameters: null);
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -233,6 +235,14 @@ class LoginScreenPageState extends State<LoginScreen> {
           ],
         ));
   }
+
+  // Future<void> _sendAnalyticsEvent() async {
+  //   await analytics.logEvent(
+  //       name: FirebaseEventsConstants.loginButtonClick,
+  //       parameters : null
+  //   );
+  // }
+
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
