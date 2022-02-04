@@ -117,7 +117,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   ),
                 ),
 
-                FlatButton(
+                TextButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
                         print(value);
@@ -137,11 +137,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           });
                         });
                       }),
-                  // filterBottomSheet,
-                  shape: RoundedRectangleBorder(
+                  style: TextButton.styleFrom(shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),
-                  color: Colors.transparent,
+                      side: BorderSide(color: Colors.white)),),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Row(

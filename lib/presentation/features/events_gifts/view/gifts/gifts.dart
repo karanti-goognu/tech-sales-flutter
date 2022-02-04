@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:intl/intl.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class GiftsView extends StatefulWidget {
   @override
@@ -92,15 +93,7 @@ class _GiftsViewState extends State<GiftsView> {
             scale: 0.6,
             child: FlatButton(
               onPressed: () {
-                // if(_giftController.selectedDropdown ==0){
-                //   _giftController.selectedDropdown = 1;
-                // }
                 Get.to(() => ViewLogs());
-                // if(_giftController.selectedDropdown==0){
-                //   Get.dialog(CustomDialogs().showMessage("To view log please Select Other Gift Type"));
-                // }else {
-                //   Get.to(() => ViewLogs());
-                // }
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28.0),
@@ -280,7 +273,6 @@ class _GiftsViewState extends State<GiftsView> {
           onPressed: () => _giftController.selectedDropdown == 0
               ?
           _settingModalBottomSheet(context,setstates)
-          // Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
               : _giftInHandQtyNew.text.isEmpty?
           Get.dialog(CustomDialogs().showMessage("Please enter value"))
           :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),

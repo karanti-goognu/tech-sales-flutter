@@ -248,9 +248,9 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                 .leadsEntity.nextStageConstruction,
                             'siteDealerId':
                                 viewLeadDataResponse.leadsEntity.siteDealerId,
-                            'listLeadcomments': new List(),
-                            'listLeadImage': new List(),
-                            'leadInfluencerEntity': new List()
+                            'listLeadcomments': new List.empty(growable: true),
+                            'listLeadImage': new List.empty(growable: true),
+                            'leadInfluencerEntity': new List.empty(growable: true)
                             // 'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                             // 'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                             // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
@@ -258,7 +258,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
 
                           _addLeadsController.updateLeadData(
                               updateRequestModel,
-                              new List<File>(),
+                              new List<File>.empty(growable: true),
                               context,
                               viewLeadDataResponse.leadsEntity.leadId,1);
 

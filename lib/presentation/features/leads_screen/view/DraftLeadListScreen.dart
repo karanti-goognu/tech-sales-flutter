@@ -16,8 +16,8 @@ class DraftLeadListScreen extends StatefulWidget {
 
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
-  List<SaveLeadRequestDraftModel> draftList = new List();
-  List<int> draftIdList = new List();
+  List<SaveLeadRequestDraftModel> draftList = new List.empty(growable: true);
+  List<int> draftIdList = new List.empty(growable: true);
 
   @override
   void initState() {

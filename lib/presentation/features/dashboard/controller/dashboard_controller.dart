@@ -162,9 +162,6 @@ class DashboardController extends GetxController {
   shareReport(
       File image, String userSecurityKey, String accessKey, String empID) {
     print(' path$image.path');
-    print('accesskey $accessKey');
-    print('secretkey $userSecurityKey');
-    print(empID);
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
         .then((value) {

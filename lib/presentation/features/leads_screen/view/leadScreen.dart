@@ -167,14 +167,13 @@ class _LeadScreenState extends State<LeadScreen> {
                     ),
                     Row(
                       children: [
-                        FlatButton(
+                        TextButton(
                           onPressed: () {
                             _settingModalBottomSheet(context);
                           },
-                          shape: RoundedRectangleBorder(
+                          style: TextButton.styleFrom(shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.white)),
-                          color: Colors.transparent,
+                              side: BorderSide(color: Colors.white)),),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 5),
                             child: Row(

@@ -178,12 +178,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(color: Colors.black26),
-                  ),
-                  color: Colors.transparent,
+              child: TextButton(
+                  style: TextButton.styleFrom(shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.white)),),
                   child: Padding(
                     padding:
                         const EdgeInsets.only(right: 5, bottom: 10, top: 10),
