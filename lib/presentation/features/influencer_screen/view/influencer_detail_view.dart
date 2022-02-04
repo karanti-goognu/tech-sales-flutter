@@ -40,13 +40,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   InfluencerTypeEntitiesList _influencerTypeEntitiesList;
 
   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
-      new List();
+      new List.empty(growable: true);
   InfluencerCategoryEntitiesList _influencerCategoryEntitiesList;
 
-  List<InfluencerSourceList> influencerSourceList = new List();
+  List<InfluencerSourceList> influencerSourceList = new List.empty(growable: true);
   InfluencerSourceList _influencerSourceList;
 
-  List<SiteBrandList> siteBrandList = new List();
+  List<SiteBrandList> siteBrandList = new List.empty(growable: true);
   SiteBrandList _siteBrandList;
 
 
@@ -112,7 +112,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
     });
-    print("*****${empID}");
+    print("*****$empID");
     return empID;
   }
 
@@ -129,7 +129,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     setData();
                   }
                 });
-                print('RESPONSE, ${data}');
+                print('RESPONSE, $data');
               })
             }
           else
@@ -758,7 +758,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           : Container();
     }
 
-    ;
 
     final firmName = TextFormField(
       controller: _firmNameController,

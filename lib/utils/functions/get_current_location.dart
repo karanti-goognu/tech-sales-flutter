@@ -18,7 +18,7 @@ class GetCurrentLocation{
       Position position= await geoLocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
      _currentPosition = position;
      loc= await getAddressFromLatLng();
-     print("loc"+"${loc}");
+     print("loc"+"$loc");
      Get.back();
     }
     return [loc,_currentPosition];

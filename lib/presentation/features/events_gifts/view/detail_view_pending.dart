@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
@@ -56,7 +54,7 @@ class _DetailPendingState extends State<DetailPending> {
       venueLbl;
   int dealerId;
 
-  ///textfield controllers
+  ///text field controllers
   TextEditingController _totalParticipantsController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _dalmiaInflController = TextEditingController();
@@ -69,7 +67,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   ///DropDown Values
   String _selectedVenue;
-  double locatinLat;
+  double locationLat;
   double locationLong;
   bool isVisible = false;
   bool saveBtnVisible = false;
@@ -111,7 +109,7 @@ class _DetailPendingState extends State<DetailPending> {
       venueLbl = detailEventModel.mwpEventModel.venue;
       _eventTypeController.text =
           detailEventModel.mwpEventModel.eventTypeText ?? '';
-      _totalParticipantsController.text = '${_total}';
+      _totalParticipantsController.text = '$_total';
       _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
       _date = detailEventModel.mwpEventModel.eventDate;
       displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
@@ -131,7 +129,7 @@ class _DetailPendingState extends State<DetailPending> {
           detailEventModel.mwpEventModel.eventComment ?? '';
       timeString = detailEventModel.mwpEventModel.eventTime;
       dateString = detailEventModel.mwpEventModel.eventDate;
-      locatinLat =
+      locationLat =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLat}');
       locationLong =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
@@ -479,7 +477,7 @@ class _DetailPendingState extends State<DetailPending> {
             ),
           ),
           onPressed: () {
-            btnPresssed(7);
+            btnPressed(7);
           },
         ),),
         RaisedButton(
@@ -495,7 +493,7 @@ class _DetailPendingState extends State<DetailPending> {
                 fontSize: ScreenUtil().setSp(15)),
           ),
           onPressed: () {
-            btnPresssed(1);
+            btnPressed(1);
            },
         ),
       ],
@@ -522,7 +520,7 @@ class _DetailPendingState extends State<DetailPending> {
           await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
-            locatinLat = placeDetails.lat;
+            locationLat = placeDetails.lat;
             locationLong = placeDetails.lng;
           });
         }
@@ -679,12 +677,11 @@ class _DetailPendingState extends State<DetailPending> {
 
   Future _startTime() async {
     String t = detailEventModel.mwpEventModel.eventTime;
-    TimeOfDay eventtime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
-    print('TT:$eventtime');
+    TimeOfDay eventTime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
     (_time == null)
         ? _time = await showTimePicker(
            context: context,
-            initialTime: eventtime,
+            initialTime: eventTime,
             //TimeOfDay(hour: 10, minute: 10),
             builder: (BuildContext context, Widget child) {
               return MediaQuery(
@@ -792,7 +789,7 @@ class _DetailPendingState extends State<DetailPending> {
 
                     onChanged: (newValue) {
                       setState(() {
-                        print('NEWVALUE : $newValue');
+                        print('NEW VALUE : $newValue');
                         if (newValue == true) {
                           selectedDealer.add(dealers[index].dealerName);
                           selectedDealersModels.add(dealers[index]);
@@ -908,8 +905,7 @@ class _DetailPendingState extends State<DetailPending> {
         });
   }
 
-  btnPresssed(int eventStatusId) async {
-    print('bbb');
+  btnPressed(int eventStatusId) async {
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
       if (timeString == null || displayTime == null) {
@@ -924,7 +920,7 @@ class _DetailPendingState extends State<DetailPending> {
             snackPosition: SnackPosition.BOTTOM);
       } else {
         String empId = await getEmpId();
-        List dealersList = List();
+        List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {
             dealersList.add({
@@ -948,7 +944,7 @@ class _DetailPendingState extends State<DetailPending> {
         }
         else {
           print('DEALERS: $dealersList');
-          MwpeventFormRequest _mwpeventFormRequest =
+          MwpeventFormRequest _mwpEventFormRequest =
           MwpeventFormRequest.fromJson({
             'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ??
                 0,
@@ -956,7 +952,7 @@ class _DetailPendingState extends State<DetailPending> {
             'eventDate': dateString,
             'eventId': widget.eventId,
             'eventLocation': _locationController.text,
-            'eventLocationLat': locatinLat,
+            'eventLocationLat': locationLat,
             'eventLocationLong': locationLong,
             'eventStatusId': eventStatusId,
             'eventTime': timeString,
@@ -975,7 +971,7 @@ class _DetailPendingState extends State<DetailPending> {
           SaveEventFormModel _save =
           SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
           SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
-              mwpeventFormRequest: _mwpeventFormRequest,
+              mwpeventFormRequest: _mwpEventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
           print('PARAMS: ${json.encode(_saveEventFormModel)}');

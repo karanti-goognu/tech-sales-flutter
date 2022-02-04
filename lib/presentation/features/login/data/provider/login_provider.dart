@@ -12,10 +12,7 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'dart:io';
-
-import 'package:package_info/package_info.dart';
 
 class MyApiClient {
   final http.Client httpClient;

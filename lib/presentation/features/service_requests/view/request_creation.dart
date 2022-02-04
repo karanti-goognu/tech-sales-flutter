@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -622,8 +621,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                                   "Request Sub-type and Severity cannot be empty");
                                         else {
                                           String empId = await getEmpId();
-                                          List imageDetails = List();
-                                          List subTypeDetails = List();
+                                          List imageDetails = List.empty(growable: true);
+                                          List subTypeDetails = List.empty(growable: true);
                                           selectedRequestSubtypeObjectList
                                               .forEach((element) {
                                             setState(() {

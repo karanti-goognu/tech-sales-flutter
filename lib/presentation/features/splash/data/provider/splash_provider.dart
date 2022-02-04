@@ -93,7 +93,6 @@ class MyApiClientSplash {
         print(splashDataModel.employeeDetails);
         //print('Access key Object is :: $accessKeyModel');
         return splashDataModel;
-        print(2);
       } else {
         print('Error in else');
       }

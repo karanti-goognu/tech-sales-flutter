@@ -24,7 +24,6 @@ import 'package:flutter_tech_sales/presentation/features/splash/controller/splas
 import 'package:flutter_tech_sales/presentation/features/splash/data/provider/splash_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/repository/splash_repository.dart';
 import 'package:get/get.dart';
-import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreenBinding implements Bindings {

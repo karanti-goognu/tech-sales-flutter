@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
@@ -15,19 +12,13 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequ
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddEventController extends GetxController {
@@ -46,8 +37,8 @@ class AddEventController extends GetxController {
   final _dealerListResponse = DealerListResponse().obs;
   final _meetResponseModelView = MeetResponseModelView().obs;
   final _visitResponseModel = VisitResponseModel().obs;
-  final _dealerList = List<DealerModel>().obs;
-  final _dealerListSelected = List<DealerModelSelected>().obs;
+  final _dealerList = List<DealerModel>.empty(growable: true).obs;
+  final _dealerListSelected = List<DealerModelSelected>.empty(growable: true).obs;
   final _selectedView = "Visit".obs;
   final _visitOutcomes = ''.obs;
   final _selectedEventTypeMeet = "MASON MEET".obs;
@@ -837,7 +828,7 @@ class AddEventController extends GetxController {
   }
 
   updateMeet(String accessKey) {
-    List<MwpMeetDealersUpdate> list = new List();
+    List<MwpMeetDealersUpdate> list = new List.empty(growable: true);
     for (int i = 0; i < this.dealerListSelected.length; i++) {
       list.add(new MwpMeetDealersUpdate(
           id: 10,

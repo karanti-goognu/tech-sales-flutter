@@ -470,7 +470,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               ],
             )
           : Container();
-    };
+    }
 
     final firmName = TextFormField(
       controller: _firmNameController,

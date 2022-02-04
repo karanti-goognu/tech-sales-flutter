@@ -51,7 +51,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   String _requestNature;
   TextEditingController _dateOfPurchase = TextEditingController();
   TextEditingController _nextVisitDate = TextEditingController();
-  List<File> _imageList = List<File>();
+  List<File> _imageList = List<File>.empty(growable: true);
   String _selectedTypeOfComplain;
 
   var _balanceQuantity = new TextEditingController();
@@ -957,7 +957,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       backgroundColor: Colors.red);
                 } else {
                   String empId = await getEmpId();
-                  List imageDetails = List();
+                  List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {
                       print(element);

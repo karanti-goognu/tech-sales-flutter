@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +39,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   String geoTagType;
   SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
-  List<DealerForDb> dealerEntityForDb = new List();
+  List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
   String siteCreationDate, visitRemarks, infName = "";

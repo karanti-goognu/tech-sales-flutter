@@ -228,7 +228,7 @@ class _CancelEventtState extends State<CancelEvent> {
     if (_cancelEventFormKey.currentState.validate()) {
       _cancelEventFormKey.currentState.save();
       String empId = await getEmpId();
-      List dealersList = List();
+      List dealersList = List.empty(growable: true);
       selectedDealersModels.forEach((e) {
         setState(() {
           dealersList.add({

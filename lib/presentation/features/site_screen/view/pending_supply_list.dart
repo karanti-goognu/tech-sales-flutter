@@ -7,7 +7,6 @@ import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_detail.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -59,7 +58,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         pendingSupplyDataResponse = data;
         _pendingSuppliesModel = pendingSupplyDataResponse != null
             ? pendingSupplyDataResponse.pendingSuppliesModel
-            : new List();
+            : new List.empty(growable: true);
       });
     });
   }
