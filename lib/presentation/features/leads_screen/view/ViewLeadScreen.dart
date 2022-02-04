@@ -1902,9 +1902,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   DateTime nextStageConstructionPickedDate;
 
   /*List<File> _imageList = [];*/
-  List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
+  List<ListLeadImage> listLeadImage = new List<ListLeadImage>.empty(growable: true);
 
-  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
+  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>.empty(growable: true);
   List<CommentsDetail> _commentsList = [];
   List<LeadcommentsEnitiy> _commentsListEntity = [];
   List<CommentsDetail> _commentsListNew = [];

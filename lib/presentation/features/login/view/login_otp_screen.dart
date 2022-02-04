@@ -305,11 +305,11 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
         content: new Text(
             'Your login progress will be Lost.Do you still want to continue ?'),
         actions: <Widget>[
-          new FlatButton(
+          new TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('No'),
           ),
-          new FlatButton(
+          new TextButton(
             onPressed: () => Get.toNamed(Routes.LOGIN),
             child: new Text('Yes'),
           ),

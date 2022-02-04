@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
@@ -114,7 +113,6 @@ class _LeadScreenState extends State<LeadScreen> {
                 _siteDistrictListModel = data;
               }
             });
-            print('RESPONSE, ${data}');
           })
         }
       else

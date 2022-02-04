@@ -64,7 +64,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                     print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else
@@ -126,7 +125,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                           onChanged: (value) {
                             setState(() {
                               _selectedValue = value;
-                              print("_selectedValue${_selectedValue}");
                               if(_selectedValue == 0){
                                 _infController.inflTypeId = "";
                               }else {

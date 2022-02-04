@@ -85,7 +85,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _dealerInfModel = data;
       });
-      print('RESPONSE, ${data}');
       setData();
     });
   }
@@ -542,7 +541,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addNewInfluencerBottomSheetWidget() {
     (_influencerDetailModel != null)
         ? _newContactController.text = _influencerDetailModel.mobileNumber
-        : "";
+        : _newContactController.text="";
     _enrollVisible = false;
 
     return StatefulBuilder(builder: (context, StateSetter setState) {

@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_e
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class ApprovedEvents extends StatefulWidget {
   @override

@@ -26,12 +26,12 @@ class SiteInfluencerWidget extends StatefulWidget {
 
 class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   int initialInfluencerLength = 0;
-  List<SiteInfluencerEntity> siteInfluencerEntity = new List();
-  List<InfluencerTypeEntity> influencerTypeEntity = new List();
-  List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
-  List<SiteStageEntity> siteStageEntity = new List();
-  List<InfluencerEntity> influencerEntity = new List();
-  List<InfluencerDetail> _listInfluencerDetail = new List();
+  List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
+  List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
+  List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
+  List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
+  List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
+  List<InfluencerDetail> _listInfluencerDetail = new List.empty(growable: true);
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
 
   setInfluencerData() {

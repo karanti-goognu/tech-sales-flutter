@@ -97,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //     _homeController.checkInStatus = StringConstants.journeyEnded;
     //   }
     // }
-print("Waheguru ji");
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then(

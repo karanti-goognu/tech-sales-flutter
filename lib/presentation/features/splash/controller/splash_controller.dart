@@ -203,8 +203,8 @@ class SplashController extends GetxController {
            print("In else");
            print(splashDataModel.journeyDetails.journeyDate);
            print(splashDataModel.journeyDetails.journeyEndTime);
-            var journeyDate = splashDataModel.journeyDetails.journeyDate;
-            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
+            var journeyDate = splashDataModel.journeyDetails.journeyDate??"";
+            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime??"";
             prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)

@@ -27,7 +27,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
-  List<SitesEntity> siteList = new List();
+  List<SitesEntity> siteList = new List.empty(growable: true);
 
   DateTime selectedDate = DateTime.now();
   String selectedDateString;

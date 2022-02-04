@@ -690,9 +690,7 @@ class SiteController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-      print("URL: ${url}");
       var data = await repository.getPendingSupplyDetails(accessKey, userSecurityKey, url);
-      print(data);
         Get.back();
         if (data == null) {
           debugPrint('Supply Detail Response is null');

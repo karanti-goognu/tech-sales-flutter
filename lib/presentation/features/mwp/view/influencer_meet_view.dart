@@ -38,7 +38,7 @@ class AddEventInfluencerMeetScreenPageState
     _addEventController.isLoading = true;
     _addEventController.visitDateTime = "Visit Date";
     _addEventController.selectedEventTypeMeet = "MASON MEET";
-    _addEventController.dealerListSelected = List<DealerModelSelected>();
+    _addEventController.dealerListSelected = List<DealerModelSelected>.empty(growable: true);
 
     super.initState();
   }

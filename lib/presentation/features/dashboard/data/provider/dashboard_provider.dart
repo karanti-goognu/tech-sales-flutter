@@ -14,7 +14,6 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
 
 class MyApiClientDashboard {
   final http.Client httpClient;

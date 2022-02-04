@@ -10,7 +10,6 @@ import 'package:meta/meta.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:package_info/package_info.dart';
 
 
 
@@ -22,7 +21,7 @@ class MyApiClient {
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       //version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,

@@ -671,7 +671,7 @@ class _DetailPendingState extends State<DetailPending> {
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-      dateString = '${d}';
+      dateString = '$d';
     });
   }
 

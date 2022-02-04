@@ -51,7 +51,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                           setState(() {
                           controller.clear();
                           onSearchTextChanged('');
-                          _infController.infListResponse.response.ilpInfluencerEntity == null;
+                          // _infController.infListResponse.response.ilpInfluencerEntity == null;
                           });
                         },
                       ),
@@ -450,7 +450,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
 
   @override
   void dispose() {
-    _infController.infListResponse.response.ilpInfluencerEntity == null;
+    // _infController.infListResponse.response.ilpInfluencerEntity == null;
     super.dispose();
   }
 

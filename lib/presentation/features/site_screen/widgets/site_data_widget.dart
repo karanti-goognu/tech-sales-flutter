@@ -38,13 +38,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
   SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
-  List<ImageDetails> _imgDetails = new List();
-  List<File> _imageList = new List();
+  List<ImageDetails> _imgDetails = new List.empty(growable: true);
+  List<File> _imageList = new List.empty(growable: true);
   var siteBuiltupArea = new TextEditingController();
   var _siteProductDemo = new TextEditingController();
   var _siteProductOralBriefing = new TextEditingController();
 
-  //var _commentsRejectionController = new TextEditingController();
   var _siteTotalBags = new TextEditingController();
   var _siteTotalPt = new TextEditingController();
   var _siteTotalBalanceBags = new TextEditingController();

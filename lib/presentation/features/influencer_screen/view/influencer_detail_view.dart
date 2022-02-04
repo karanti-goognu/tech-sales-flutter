@@ -153,7 +153,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     _stateDistrictListModel = data;
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else
@@ -915,7 +914,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                                     style: TextStyles.welcomeMsgTextStyle20,
                                   ),
                                   Text(
-                                    "${memberShipId}",
+                                    "$memberShipId",
                                     style: TextStyles.welcomeMsgTextStyle20,
                                   ),
                                 ],
