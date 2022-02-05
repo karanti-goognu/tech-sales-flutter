@@ -91,14 +91,15 @@ class _GiftsViewState extends State<GiftsView> {
         actions: [
           Transform.scale(
             scale: 0.6,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 Get.to(() => ViewLogs());
               },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28.0),
-                  side: BorderSide(color: Colors.white)),
-              color: Colors.transparent,
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28.0),
+                    side: BorderSide(color: Colors.white)),
+              ),
               child: Text(
                 'VIEW LOGS',
                 style: TextStyle(color: Colors.white, fontSize: 15),

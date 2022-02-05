@@ -68,10 +68,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   Position _currentPosition = new Position();
   String geoTagType;
   List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List.empty(growable: true);
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List.empty(growable: true);
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntity =
+      new List.empty(growable: true);
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity =
+      new List.empty(growable: true);
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity =
+      new List.empty(growable: true);
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+      new List.empty(growable: true);
 
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
@@ -1176,11 +1180,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              FlatButton.icon(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
+                              TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                      side: BorderSide(color: Colors.black26)),
+                                  backgroundColor: Colors.transparent,
+                                ),
                                 icon: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Icon(
@@ -1221,11 +1227,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     // letterSpacing: 2,
                                     fontSize: 17),
                               ),
-                              FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      side: BorderSide(color: Colors.black26)),
-                                  color: Colors.transparent,
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        side:
+                                            BorderSide(color: Colors.black26)),
+                                    backgroundColor: Colors.transparent,
+                                  ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         right: 5, bottom: 8, top: 5),
@@ -1447,12 +1456,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(height: 16),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                side: BorderSide(color: Colors.black26),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26),
+                                ),
+                                backgroundColor: Colors.transparent,
                               ),
-                              color: Colors.transparent,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 5, bottom: 10, top: 10),
@@ -1765,8 +1776,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromCamera() async {
     ImagePicker _picker = ImagePicker();
-    XFile image = await _picker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
+    XFile image =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       //print(image.path);
@@ -1783,8 +1794,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromGallery() async {
     ImagePicker _picker = ImagePicker();
-    XFile image = await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+    XFile image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       // print(image.path);

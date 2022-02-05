@@ -423,7 +423,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           onPressed: () {
                             setState(() {
                               getInfluencerData(_contactController.text);
-                              });
+                            });
                           })),
                 ),
               ),
@@ -438,7 +438,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration:
                         FormFieldStyle.buildInputDecoration(hintText: 'Name'),
                   )),
-          /*
+              /*
           Container(
             margin: EdgeInsets.only(right: 16, left: 16, bottom: 8),
               padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
@@ -496,17 +496,17 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 //print("Add");
                         if (_isButtonDisabled == true) {
                           setState(() {
-
                             selectedInfModels.add(EventInfluencerModelList(
                                 eventId: widget.eventId,
                                 eventInflId: 0,
-                                inflContact:
-                                _influencerDetailModel.influencerModel.inflContact,
-                                inflTypeId:
-                                _influencerDetailModel.influencerModel.inflTypeId,
-                                inflId: _influencerDetailModel.influencerModel.inflId,
-                                inflName:
-                                _influencerDetailModel.influencerModel.inflName,
+                                inflContact: _influencerDetailModel
+                                    .influencerModel.inflContact,
+                                inflTypeId: _influencerDetailModel
+                                    .influencerModel.inflTypeId,
+                                inflId: _influencerDetailModel
+                                    .influencerModel.inflId,
+                                inflName: _influencerDetailModel
+                                    .influencerModel.inflName,
                                 isActive: "Y"));
 
                             Get.back();
@@ -515,8 +515,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                             _infTypeController.text = '';
                             checkedEnrollValue = false;
                           });
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -541,7 +540,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addNewInfluencerBottomSheetWidget() {
     (_influencerDetailModel != null)
         ? _newContactController.text = _influencerDetailModel.mobileNumber
-        : _newContactController.text="";
+        : _newContactController.text = "";
     _enrollVisible = false;
 
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -598,38 +597,43 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
               Padding(
                   padding:
-                  const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                      const EdgeInsets.only(right: 16, left: 16, bottom: 12),
                   child: DropdownButtonFormField(
                     onChanged: (value) {
-
                       setState(() {
                         _infTypeId = value;
-                        if(_influencerDetailModel.influencerTypeEntitiesList[value - 1].infRegFlag == "Y"){
+                        if (_influencerDetailModel
+                                .influencerTypeEntitiesList[value - 1]
+                                .infRegFlag ==
+                            "Y") {
                           _enrollVisible = true;
-                        }else{
+                        } else {
                           _enrollVisible = false;
                         }
-
                       });
                     },
-                    items: (_influencerDetailModel == null)?[]:
-                    (_influencerDetailModel != null &&
-                        _influencerDetailModel.influencerTypeEntitiesList != null)
-                        ? _influencerDetailModel.influencerTypeEntitiesList
-                        .map((e) => DropdownMenuItem(
-                      value: e.inflTypeId,
-                      child: Container(
-                        width:
-                        MediaQuery.of(context).size.width / 1.5,
-                        //250,
-                        child: Text(
-                          '${e.inflTypeDesc}',
-                          maxLines: null,
-                        ),
-                      ),
-                    ))
-                        .toList()
-                        : [],
+                    items: (_influencerDetailModel == null)
+                        ? []
+                        : (_influencerDetailModel != null &&
+                                _influencerDetailModel
+                                        .influencerTypeEntitiesList !=
+                                    null)
+                            ? _influencerDetailModel.influencerTypeEntitiesList
+                                .map((e) => DropdownMenuItem(
+                                      value: e.inflTypeId,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.5,
+                                        //250,
+                                        child: Text(
+                                          '${e.inflTypeDesc}',
+                                          maxLines: null,
+                                        ),
+                                      ),
+                                    ))
+                                .toList()
+                            : [],
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Influencer Type*"),
@@ -641,9 +645,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               Visibility(
                 visible: _enrollVisible,
                 child: Container(
-                  margin: EdgeInsets.only(right: 16, left: 16, bottom: 12),
-                    padding:  EdgeInsets.only(
-                        left: 3.0, right: 3, top: 5, bottom: 5),
+                    margin: EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                    padding:
+                        EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.all(Radius.circular(
@@ -740,21 +744,23 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               _infCatId = value;
                             });
                           },
-                          items: (_influencerDetailModel == null)?[]:
-                          (_influencerDetailModel != null &&
-                              _influencerDetailModel
-                                          .influencerCategoryEntitiesList !=
-                                      null)
-                              ? _influencerDetailModel.influencerCategoryEntitiesList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.inflCatId,
-                                        child: Text(
-                                          e.inflCatDesc,
-                                          maxLines: null,
-                                        ),
-                                      ))
-                                  .toList()
-                              : [],
+                          items: (_influencerDetailModel == null)
+                              ? []
+                              : (_influencerDetailModel != null &&
+                                      _influencerDetailModel
+                                              .influencerCategoryEntitiesList !=
+                                          null)
+                                  ? _influencerDetailModel
+                                      .influencerCategoryEntitiesList
+                                      .map((e) => DropdownMenuItem(
+                                            value: e.inflCatId,
+                                            child: Text(
+                                              e.inflCatDesc,
+                                              maxLines: null,
+                                            ),
+                                          ))
+                                      .toList()
+                                  : [],
                           style: FormFieldStyle.formFieldTextStyle,
                           decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Influencer Category* "),
@@ -766,10 +772,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(1.0),
-                                side: BorderSide(color: Colors.black)),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(1.0),
+                                  side: BorderSide(color: Colors.black)),
+                            ),
                             onPressed: () {
                               addNewInfluencerBtnPressed();
                             },
@@ -975,18 +983,19 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             if (_influencerDetailModel.respCode == "NUM404") {
               getBottomSheetInf();
             } else if (_influencerDetailModel.respCode == "DM1002") {
-              _infNameController.text = _influencerDetailModel.influencerModel.inflName;
+              _infNameController.text =
+                  _influencerDetailModel.influencerModel.inflName;
               _infTypeController.text =
                   '${_influencerDetailModel.influencerModel.influencerTypeText}';
-              if(_influencerDetailModel.influencerModel.ilpRegFlag == "Y"){
+              if (_influencerDetailModel.influencerModel.ilpRegFlag == "Y") {
                 checkedEnrollValue = true;
-              }else{
+              } else {
                 checkedEnrollValue = false;
               }
               _isButtonDisabled = true;
             }
           }
-       });
+        });
         print('RESPONSE, $data');
       });
 
@@ -1100,8 +1109,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_newFormKey.currentState.validate()) {
       String empId = await getEmpId();
       InfluencerRequestModel _influencerRequestModel =
-      InfluencerRequestModel.fromJson({
-        "membershipId":null,
+          InfluencerRequestModel.fromJson({
+        "membershipId": null,
         "baseCity": "",
         "createBy": empId,
         "dealership": "N",
@@ -1133,37 +1142,37 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         "taluka": ""
       });
 
-
       print('PARAMS: ${json.encode(_influencerRequestModel)}');
 
       internetChecking().then((result) => {
-                if (result == true)
-                  {
-                    _infController
-                               .getAccessKeyAndSaveNewInfluencer(_influencerRequestModel, false)
-                        .then((data) {
-                      setState(() {
-                        _influencerResponseModel = data;
-                        print('DD: ${json.encode(_influencerResponseModel)}');
-                        if (data.response.respCode == "INF2001")
-                          Get.dialog(
-                              successDialog(_influencerResponseModel.response.respMsg));
-                        else if (data.response.respMsg == "IN2008") {
-                          Get.dialog(
-                              successDialog(_influencerResponseModel.response.respMsg));
-                        }
-                      });
-                    })
-                  }
-        else
-          {
-            Get.snackbar("No internet connection.",
-                "Make sure that your wifi or mobile data is turned on.",
-                colorText: Colors.white,
-                backgroundColor: Colors.red,
-                snackPosition: SnackPosition.BOTTOM),
-          }
-      });
+            if (result == true)
+              {
+                _infController
+                    .getAccessKeyAndSaveNewInfluencer(
+                        _influencerRequestModel, false)
+                    .then((data) {
+                  setState(() {
+                    _influencerResponseModel = data;
+                    print('DD: ${json.encode(_influencerResponseModel)}');
+                    if (data.response.respCode == "INF2001")
+                      Get.dialog(successDialog(
+                          _influencerResponseModel.response.respMsg));
+                    else if (data.response.respMsg == "IN2008") {
+                      Get.dialog(successDialog(
+                          _influencerResponseModel.response.respMsg));
+                    }
+                  });
+                })
+              }
+            else
+              {
+                Get.snackbar("No internet connection.",
+                    "Make sure that your wifi or mobile data is turned on.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM),
+              }
+          });
     }
   }
 
@@ -1198,8 +1207,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             setState(() {
               selectedInfModels.add(EventInfluencerModelList(
                   eventId: widget.eventId,
-                  inflContact: _influencerResponseModel.response.influencerContact,
-                  inflTypeId: int.tryParse(_influencerResponseModel.response.inFlTypeId),
+                  inflContact:
+                      _influencerResponseModel.response.influencerContact,
+                  inflTypeId: int.tryParse(
+                      _influencerResponseModel.response.inFlTypeId),
                   inflId: _influencerResponseModel.response.membershipId,
                   inflName: _influencerResponseModel.response.influencerName,
                   eventInflId: 0));

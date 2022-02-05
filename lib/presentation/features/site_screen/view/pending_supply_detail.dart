@@ -205,8 +205,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         (isExpanded)?
                                         Column(
                                           children: [
-                                            FlatButton.icon(
-                                              color: Colors.transparent,
+                                            TextButton.icon(
                                               icon: Icon(
                                                 Icons.add,
                                                 color: HexColor("#F9A61A"),
@@ -229,8 +228,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             ),
 
                                           ],
-                                        ):FlatButton.icon(
-                                          color: Colors.transparent,
+                                        ):TextButton.icon(
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),

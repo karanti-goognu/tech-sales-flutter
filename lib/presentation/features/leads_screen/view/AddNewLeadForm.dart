@@ -78,7 +78,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
   List<File> _imageList = [];
-  List<ListLeadImage> listLeadImage = new List<ListLeadImage>.empty(growable: true);
+  List<ListLeadImage> listLeadImage =
+      new List<ListLeadImage>.empty(growable: true);
   List<CommentsDetail> _commentsList = [];
   List<CommentsDetail> _commentsListNew = [];
   bool viewMoreActive = false;
@@ -154,14 +155,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     _isSaveButtonDisabled = false;
     _addLeadsController = Get.find();
     myFocusNode = FocusNode();
-    _addLeadsController.selectedImageNameList=[];
-    _addLeadsController.imageList=[];
+    _addLeadsController.selectedImageNameList = [];
+    _addLeadsController.imageList = [];
     getInitialData();
   }
 
   @override
   void dispose() {
-  print("dispose  call $_addLeadsController.imageList");
+    print("dispose  call $_addLeadsController.imageList");
     _addLeadsController.imageList.clear();
     super.dispose();
     _formKeyForNewLeadForm.currentState != null
@@ -380,7 +381,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
-    }else {
+    } else {
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
@@ -423,7 +424,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
-    }else if (leadSource == "TECH VAN") {
+    } else if (leadSource == "TECH VAN") {
       //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
@@ -460,25 +461,22 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       items: sourceList == null
           ? []
           : sourceList
-          .map((e) => DropdownMenuItem(
-        child: Text(e.name),
-        value: e.name,
-      ))
-          .toList(),
+              .map((e) => DropdownMenuItem(
+                    child: Text(e.name),
+                    value: e.name,
+                  ))
+              .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source"),
       selectedItemBuilder: (BuildContext context) {
         return sourceList == null
             ? []
             : sourceList.map<Widget>((item) {
-          print(item.name);
-          return Text(item.name);
-        }).toList();
+                print(item.name);
+                return Text(item.name);
+              }).toList();
       },
     );
-
-
-
 
     final dealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
@@ -583,17 +581,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (value) {
         setState(() {
           _salesOfficerId = value;
-
         });
       },
       selectedItemBuilder: (BuildContext context) {
         return (salesOfficerList == null)
             ? []
-            :salesOfficerList.map<Widget>((item) {
-          return Container(
-              width: MediaQuery.of(context).size.width / 1.5,
-              child: Text(item.salesOfficerName));
-        }).toList();
+            : salesOfficerList.map<Widget>((item) {
+                return Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(item.salesOfficerName));
+              }).toList();
       },
       value: _salesOfficerId,
       items: (salesOfficerList == null)
@@ -831,7 +828,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       backgroundColor: Colors.white,
       floatingActionButton: BackFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-     // resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       bottomNavigationBar: BottomNavigator(),
       body: SingleChildScrollView(
         child: Stack(
@@ -921,11 +918,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            FlatButton.icon(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
+                            TextButton.icon(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                backgroundColor: Colors.transparent,
+                              ),
                               icon: Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Icon(
@@ -953,19 +952,19 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 result = await GetCurrentLocation
                                     .getCurrentLocation();
 
-                               if(result!=null){
-                                 _currentPosition = result[1];
-                                 List<String> loc = result[0];
-                                 print("ADD: ${result[0]}");
-                                 _siteAddress.text =
-                                 "${loc[7]}, ${loc[6]}, ${loc[4]}";
-                                 _district.text = "${loc[2]}";
-                                 _state.text = "${loc[1]}";
-                                 _pincode.text = "${loc[5]}";
-                                 _taluk.text = "${loc[3]}";
-                                 _currentAddress =
-                                 "${loc[3]}, ${loc[5]}, ${loc[1]}";
-                               }
+                                if (result != null) {
+                                  _currentPosition = result[1];
+                                  List<String> loc = result[0];
+                                  print("ADD: ${result[0]}");
+                                  _siteAddress.text =
+                                      "${loc[7]}, ${loc[6]}, ${loc[4]}";
+                                  _district.text = "${loc[2]}";
+                                  _state.text = "${loc[1]}";
+                                  _pincode.text = "${loc[5]}";
+                                  _taluk.text = "${loc[3]}";
+                                  _currentAddress =
+                                      "${loc[3]}, ${loc[5]}, ${loc[1]}";
+                                }
                               },
                             ),
                             Text(
@@ -973,11 +972,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               style:
                                   TextStyle(fontFamily: "Muli", fontSize: 17),
                             ),
-                            FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                backgroundColor: Colors.transparent,
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 5, bottom: 8, top: 5),
@@ -1087,11 +1088,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         SizedBox(height: _height),
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                side: BorderSide(color: Colors.black26)),
-                            color: Colors.transparent,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26)),
+                              backgroundColor: Colors.transparent,
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   right: 5, bottom: 10, top: 10),
@@ -1105,14 +1108,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               ),
                             ),
                             onPressed: () async {
-                              print("controller.imageList.length    ${controller.imageList.length}");
+                              print(
+                                  "controller.imageList.length    ${controller.imageList.length}");
                               if (controller.imageList.length < 5) {
                                 /*when user create a new lead that time user selected the image by camera or gallery  only*/
                                 controller.updateImageList(
                                     await UploadImageBottomSheet.showPicker(
                                         context),
-                                    userSelectedImageStatus
-                                );
+                                    userSelectedImageStatus);
                               } else {
                                 Get.dialog(CustomDialogs().errorDialog(
                                     "You can add only upto 5 photos"));
@@ -1224,7 +1227,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         SizedBox(height: 16),
 
                         // Center(
-                        //   child: FlatButton(
+                        //   child: TextButton(
                         //     shape: RoundedRectangleBorder(
                         //         borderRadius: BorderRadius.circular(0),
                         //         side: BorderSide(color: Colors.black26)),
@@ -1554,11 +1557,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         //   ),
                         // ),
                         Center(
-                          child: FlatButton(
+                          child: TextButton(
                             // shape: RoundedRectangleBorder(
                             //     borderRadius: BorderRadius.circular(0),
                             //     side: BorderSide(color: Colors.black26)),
-                            color: Colors.transparent,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   right: 5, bottom: 8, top: 5),
@@ -1588,11 +1590,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                backgroundColor: Colors.transparent,
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 5, bottom: 8, top: 5),
@@ -1716,7 +1720,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       .isPrimary));
                                         }
 
-                                        List<ListLeadImageDraft> listLeadImageDraft = [];
+                                        List<ListLeadImageDraft>
+                                            listLeadImageDraft = [];
 
                                         for (int i = 0;
                                             i < controller.imageList.length;
@@ -1954,24 +1959,26 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         //  print("Update Image Add Lead controller:::::::::::::: save    ${imageList.length}  ");
                                         // print(_listIC:\Projects\Flutter\tech-sales-flutter\android\app\Users\neosoft\Documents\Development\jks\dalmiadigitaltso.jksnfluencerDetail[1].toJson());
 
+                                        List<ListLeadImage>
+                                            selectedImageListDetails = [];
+                                        List<File> userSelectedImageFile = [];
+                                        print(
+                                            "addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
-                                        List<ListLeadImage> selectedImageListDetails = [];
-                                        List<File> userSelectedImageFile=[];
-                                        print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
+                                        _addLeadsController
+                                            .selectedImageNameList
+                                            .forEach((leadModel) {
+                                          if (leadModel.imageStatus ==
+                                              userSelectedImageStatus) {
+                                            selectedImageListDetails
+                                                .add(new ListLeadImage(
+                                              photoName: leadModel.photoName,
+                                            ));
 
-                                        _addLeadsController.selectedImageNameList.forEach((leadModel) {
-                                          if(leadModel.imageStatus==userSelectedImageStatus){
-                                            selectedImageListDetails.add(
-                                                new ListLeadImage(
-                                                  photoName: leadModel.photoName,
-                                                ));
-
-                                            userSelectedImageFile.add(leadModel.imageFilePath);
+                                            userSelectedImageFile
+                                                .add(leadModel.imageFilePath);
                                           }
-
-
                                         });
-
 
                                         SaveLeadRequestModel
                                             saveLeadRequestModel =
@@ -2003,7 +2010,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     _totalMT.text,
                                                 leadReraNumber: _rera.text,
                                                 isStatus: "false",
-                                                listLeadImage: selectedImageListDetails,
+                                                listLeadImage:
+                                                    selectedImageListDetails,
 
                                                 //listLeadImage: listLeadImage,
                                                 influencerList:
@@ -2024,7 +2032,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   _addLeadsController
                                                       .getAccessKeyAndSaveLead(
                                                           saveLeadRequestModel,
-                                                      userSelectedImageFile,
+                                                          userSelectedImageFile,
                                                           context),
                                                   _commentsListNew = []
                                                 }
@@ -2111,7 +2119,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //             inactiveTrackColor: Colors.black26,
           //           ),
           //           _listInfluencerDetail[index].isExpanded
-          //               ? FlatButton.icon(
+          //               ? TextButton.icon(
           //             color: Colors.transparent,
           //             icon: Icon(
           //               Icons.remove,
@@ -2129,7 +2137,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           //               });
           //             },
           //           )
-          //               : FlatButton.icon(
+          //               : TextButton.icon(
           //             color: Colors.transparent,
           //             icon: Icon(
           //               Icons.add,
@@ -2171,7 +2179,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               //       fontWeight: FontWeight.bold, fontSize: 18),
               // ),
               // _listInfluencerDetail[index].isExpanded
-              //     ? FlatButton.icon(
+              //     ? TextButton.icon(
               //   color: Colors.transparent,
               //   icon: Icon(
               //     Icons.remove,
@@ -2189,7 +2197,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               //     });
               //   },
               // )
-              //     : FlatButton.icon(
+              //     : TextButton.icon(
               //   color: Colors.transparent,
               //   icon: Icon(
               //     Icons.add,
@@ -2415,7 +2423,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               //         .createdOn =
               //     inflDetail.createdOn;
 
-
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
               _listInfluencerDetail[index].createdBy = empId;
@@ -2423,7 +2430,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
               //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
-
                 // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
                 // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
@@ -2602,7 +2608,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       isSwitchedPrimary = value;
     });
   }
-
 }
 
 class Item {

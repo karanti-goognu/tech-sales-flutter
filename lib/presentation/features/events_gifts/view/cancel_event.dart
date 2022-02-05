@@ -144,7 +144,7 @@ class _CancelEventtState extends State<CancelEvent> {
           Positioned(
               top: ScreenUtil().setSp(30),
               left: ScreenUtil().setSp(8),
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   Get.toNamed(Routes.HOME_SCREEN);
                 },

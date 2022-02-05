@@ -439,7 +439,7 @@
 //                       child: Row(
 //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                         children: [
-//                           FlatButton(
+//                           TextButton(
 //                             shape: RoundedRectangleBorder(
 //                                 borderRadius: BorderRadius.circular(0),
 //                                 side: BorderSide(color: Colors.black26)),
@@ -1007,7 +1007,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       ),
                       actions: <Widget>[
                         // usually buttons at the bottom of the dialog
-                        new FlatButton(
+                        new TextButton(
                           child: new Text("Close"),
                           onPressed: () {
                             Get.back();
@@ -2506,7 +2506,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          FlatButton.icon(
+                          TextButton.icon(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0),
                                 side: BorderSide(color: Colors.black26)),
@@ -2551,7 +2551,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 // letterSpacing: 2,
                                 fontSize: 17),
                           ),
-                          FlatButton(
+                          TextButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0),
                                 side: BorderSide(color: Colors.black26)),
@@ -2762,7 +2762,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       SizedBox(height: 16),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: FlatButton(
+                        child: TextButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
@@ -2955,7 +2955,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             ),
                                             _listInfluencerDetail[index]
                                                     .isExpanded
-                                                ? FlatButton.icon(
+                                                ? TextButton.icon(
                                                     // shape: RoundedRectangleBorder(
                                                     //     borderRadius: BorderRadius.circular(0),
                                                     //     side: BorderSide(color: Colors.black26)),
@@ -2988,7 +2988,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       // _getCurrentLocation();
                                                     },
                                                   )
-                                                : FlatButton.icon(
+                                                : TextButton.icon(
                                                     // shape: RoundedRectangleBorder(
                                                     //     borderRadius: BorderRadius.circular(0),
                                                     //     side: BorderSide(color: Colors.black26)),
@@ -3042,7 +3042,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             ),
                                             _listInfluencerDetail[index]
                                                     .isExpanded
-                                                ? FlatButton.icon(
+                                                ? TextButton.icon(
                                                     // shape: RoundedRectangleBorder(
                                                     //     borderRadius: BorderRadius.circular(0),
                                                     //     side: BorderSide(color: Colors.black26)),
@@ -3075,7 +3075,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       // _getCurrentLocation();
                                                     },
                                                   )
-                                                : FlatButton.icon(
+                                                : TextButton.icon(
                                                     // shape: RoundedRectangleBorder(
                                                     //     borderRadius: BorderRadius.circular(0),
                                                     //     side: BorderSide(color: Colors.black26)),
@@ -3752,7 +3752,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       SizedBox(height: 16),
 
                       Center(
-                        child: FlatButton(
+                        child: TextButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
@@ -4078,7 +4078,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       SizedBox(height: 16),
 
                       // Center(
-                      //   child: FlatButton(
+                      //   child: TextButton(
                       //     shape: RoundedRectangleBorder(
                       //         borderRadius: BorderRadius.circular(0),
                       //         side: BorderSide(color: Colors.black26)),
@@ -4248,7 +4248,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       _commentsList.length == 1
                           ? Container()
                           : Center(
-                              child: FlatButton(
+                              child: TextButton(
                                 // shape: RoundedRectangleBorder(
                                 //     borderRadius: BorderRadius.circular(0),
                                 //     side: BorderSide(color: Colors.black26)),
@@ -4639,7 +4639,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                           return Padding(
                             padding:
                                 const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: FlatButton(
+                            child: TextButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0),
                                   side: BorderSide(color: Colors.black26)),

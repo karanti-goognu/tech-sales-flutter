@@ -1301,9 +1301,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 });
                                                               },
                                                             )
-                                                          : FlatButton.icon(
-                                                              color: Colors
-                                                                  .transparent,
+                                                          : TextButton.icon(
                                                               icon: Icon(
                                                                 Icons.add,
                                                                 color: ColorConstants
@@ -1350,9 +1348,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       _listInfluencerDetail[
                                                                   index]
                                                               .isExpanded
-                                                          ? FlatButton.icon(
-                                                              color: Colors
-                                                                  .transparent,
+                                                          ? TextButton.icon(
+
                                                               icon: Icon(
                                                                 Icons.remove,
                                                                 color: ColorConstants

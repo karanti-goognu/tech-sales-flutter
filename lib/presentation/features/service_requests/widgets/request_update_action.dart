@@ -129,11 +129,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   FormFieldStyle.buildInputDecoration(labelText: "Location"),
             ),
             SizedBox(height: 16),
-            FlatButton.icon(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                  side: BorderSide(color: Colors.black26)),
-              color: Colors.transparent,
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    side: BorderSide(color: Colors.black26)),
+                backgroundColor: Colors.transparent,
+              ),
               icon: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Icon(
@@ -179,9 +181,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextButton(
-                  style: TextButton.styleFrom(shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.white)),
+                  ),
                   child: Padding(
                     padding:
                         const EdgeInsets.only(right: 5, bottom: 10, top: 10),
@@ -203,7 +207,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     // });
                   }),
             ),
-
             controller.imageList != null
                 ? Row(
                     children: [
@@ -253,10 +256,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                         color: HexColor("#FFCD00"),
                                       ),
                                       onTap: () {
-                                        setState(()  {
-                                           controller. updateImageAfterDelete(index);
-                                           UploadImageBottomSheet.image = null;
-                                           // controller.imageList.removeAt(index);
+                                        setState(() {
+                                          controller
+                                              .updateImageAfterDelete(index);
+                                          UploadImageBottomSheet.image = null;
+                                          // controller.imageList.removeAt(index);
                                         });
                                       },
                                     )
@@ -485,15 +489,15 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                       FilteringTextInputFormatter.allow(
                                           RegExp(r"[0-9.]")),
                                       TextInputFormatter.withFunction(
-                                              (oldValue, newValue) {
-                                            try {
-                                              final text = newValue.text;
-                                              if (text.isNotEmpty)
-                                                double.parse(text);
-                                              return newValue;
-                                            } catch (e) {}
-                                            return oldValue;
-                                          }),
+                                          (oldValue, newValue) {
+                                        try {
+                                          final text = newValue.text;
+                                          if (text.isNotEmpty)
+                                            double.parse(text);
+                                          return newValue;
+                                        } catch (e) {}
+                                        return oldValue;
+                                      }),
                                     ],
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
@@ -544,7 +548,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Bill No.",
                         ),
-                          ),
+                      ),
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _weekNo,
@@ -722,7 +726,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-
                               Expanded(
                                 child: Row(
                                   children: [
@@ -972,8 +975,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     "severity": widget.severity,
                     "resoulutionStatus": _resolutionStatus,
                     "updatedBy": empId,
-                    "coverBlockProvidedNo": updateServiceRequestController.coverBlockProvidedNo.text,
-                    "formwarkRemovalDate": updateServiceRequestController.formwarkRemovalDate.text,
+                    "coverBlockProvidedNo": updateServiceRequestController
+                        .coverBlockProvidedNo.text,
+                    "formwarkRemovalDate":
+                        updateServiceRequestController.formwarkRemovalDate.text,
                     "srComplaintAction": [
                       {
                         "srComplaintId": widget.id,
@@ -992,10 +997,9 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         "resolutionStatusId": _resolutionStatus,
                         "comment": _comment.text,
                         "nextVisitDate": _nextVisitDate.text,
-
                         "typeOfComplaint": _selectedTypeOfComplain,
                         "productVariety": getCheckboxItems().toString(),
-                        "balanceQtyinBags":_balanceQuantity.text.isNotEmpty
+                        "balanceQtyinBags": _balanceQuantity.text.isNotEmpty
                             ? int.parse(_balanceQuantity.text)
                             : 0,
                         "billNumber": _billNo.text,

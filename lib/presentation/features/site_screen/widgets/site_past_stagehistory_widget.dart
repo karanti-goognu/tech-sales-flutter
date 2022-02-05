@@ -122,8 +122,7 @@ class _SitePastStageHistoryWidgetState
                                             fontSize: 16),
                                       ),
                                       siteStageHistories[index].isExpanded
-                                          ? FlatButton.icon(
-                                              color: Colors.transparent,
+                                          ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
                                                 color: HexColor("#F9A61A"),
@@ -147,8 +146,7 @@ class _SitePastStageHistoryWidgetState
                                                 // _getCurrentLocation();
                                               },
                                             )
-                                          : FlatButton.icon(
-                                              color: Colors.transparent,
+                                          : TextButton.icon(
                                               icon: Icon(
                                                 Icons.add,
                                                 color: HexColor("#F9A61A"),
@@ -191,8 +189,7 @@ class _SitePastStageHistoryWidgetState
                                             fontSize: 16),
                                       ),
                                       siteStageHistories[index].isExpanded
-                                          ? FlatButton.icon(
-                                              color: Colors.transparent,
+                                          ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
                                                 color: HexColor("#F9A61A"),
@@ -216,8 +213,7 @@ class _SitePastStageHistoryWidgetState
                                                 // _getCurrentLocation();
                                               },
                                             )
-                                          : FlatButton.icon(
-                                              color: Colors.transparent,
+                                          : TextButton.icon(
                                               icon: Icon(
                                                 Icons.add,
                                                 color: HexColor("#F9A61A"),

@@ -418,12 +418,14 @@ class ViewEventVisitScreenPageState extends State<ViewEventVisit> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        FlatButton(
-          shape: RoundedRectangleBorder(
+        TextButton(
+    style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0.0),
               side: BorderSide(color: ColorConstants.inputBoxBorderSideColor)),
-          color: Colors.transparent,
-          highlightColor: ColorConstants.buttonPressedColor,
+         backgroundColor:  Colors.transparent,
+          // highlightColor: ColorConstants.buttonPressedColor,
+    ),
           onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.

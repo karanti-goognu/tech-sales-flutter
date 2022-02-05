@@ -265,7 +265,7 @@
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //               children: [
 //                 ((leadCreatedBy == gv.currentId))
-//                     ? FlatButton(
+//                     ? TextButton(
 //                         onPressed: () {
 //                           Get.back();
 //                           Get.back();
@@ -300,7 +300,7 @@
 //                     children: [
 //                       ((leadCreatedBy == gv.currentId))
 //                           ? Expanded(
-//                               child: FlatButton(
+//                               child: TextButton(
 //                                 onPressed: () {
 //                                   Navigator.pushReplacement(
 //                                       context,
@@ -321,7 +321,7 @@
 //                               ),
 //                             )
 //                           : Expanded(
-//                               child: FlatButton(
+//                               child: TextButton(
 //                                 padding: EdgeInsets.zero,
 //                                 onPressed: () {
 //                                   Get.back();
@@ -348,7 +348,7 @@
 //                               ),
 //                             ),
 //                       Expanded(
-//                         child: FlatButton(
+//                         child: TextButton(
 //                           onPressed: () {
 //                             SaveLeadRequestModel saveLeadRequestModelNew =
 //                                 gv.saveLeadRequestModelNew;
@@ -382,7 +382,7 @@
 //         //     padding: const EdgeInsets.only(right: 20.0, top: 20),
 //         //     child: Column(
 //         //       children: [
-//         //         FlatButton(
+//         //         TextButton(
 //         //           shape: RoundedRectangleBorder(
 //         //               borderRadius: BorderRadius.circular(18.0),
 //         //               side: BorderSide(color: Colors.white)),
@@ -854,7 +854,7 @@
 //                         crossAxisAlignment: CrossAxisAlignment.center,
 //                         mainAxisSize: MainAxisSize.max,
 //                         children: [
-//                           FlatButton.icon(
+//                           TextButton.icon(
 //                             shape: RoundedRectangleBorder(
 //                                 borderRadius: BorderRadius.circular(0),
 //                                 side: BorderSide(color: Colors.black26)),
@@ -895,7 +895,7 @@
 //                                 // letterSpacing: 2,
 //                                 fontSize: 17),
 //                           ),
-//                           FlatButton(
+//                           TextButton(
 //                             shape: RoundedRectangleBorder(
 //                                 borderRadius: BorderRadius.circular(0),
 //                                 side: BorderSide(color: Colors.black26)),
@@ -1278,7 +1278,7 @@
 //                       SizedBox(height: 16),
 //                       Container(
 //                         width: MediaQuery.of(context).size.width,
-//                         child: FlatButton(
+//                         child: TextButton(
 //                           shape: RoundedRectangleBorder(
 //                               borderRadius: BorderRadius.circular(0),
 //                               side: BorderSide(color: Colors.black26)),
@@ -1422,7 +1422,7 @@
 //                                             ),
 //                                             _listInfluencerDetail[index]
 //                                                     .isExpanded
-//                                                 ? FlatButton.icon(
+//                                                 ? TextButton.icon(
 //                                                     // shape: RoundedRectangleBorder(
 //                                                     //     borderRadius: BorderRadius.circular(0),
 //                                                     //     side: BorderSide(color: Colors.black26)),
@@ -1455,7 +1455,7 @@
 //                                                       // _getCurrentLocation();
 //                                                     },
 //                                                   )
-//                                                 : FlatButton.icon(
+//                                                 : TextButton.icon(
 //                                                     // shape: RoundedRectangleBorder(
 //                                                     //     borderRadius: BorderRadius.circular(0),
 //                                                     //     side: BorderSide(color: Colors.black26)),
@@ -1509,7 +1509,7 @@
 //                                             ),
 //                                             _listInfluencerDetail[index]
 //                                                     .isExpanded
-//                                                 ? FlatButton.icon(
+//                                                 ? TextButton.icon(
 //                                                     // shape: RoundedRectangleBorder(
 //                                                     //     borderRadius: BorderRadius.circular(0),
 //                                                     //     side: BorderSide(color: Colors.black26)),
@@ -1542,7 +1542,7 @@
 //                                                       // _getCurrentLocation();
 //                                                     },
 //                                                   )
-//                                                 : FlatButton.icon(
+//                                                 : TextButton.icon(
 //                                                     // shape: RoundedRectangleBorder(
 //                                                     //     borderRadius: BorderRadius.circular(0),
 //                                                     //     side: BorderSide(color: Colors.black26)),
@@ -2065,7 +2065,7 @@
 //                       SizedBox(height: 16),
 //
 //                       Center(
-//                         child: FlatButton(
+//                         child: TextButton(
 //                           shape: RoundedRectangleBorder(
 //                               borderRadius: BorderRadius.circular(0),
 //                               side: BorderSide(color: Colors.black26)),
@@ -2385,7 +2385,7 @@
 //                       SizedBox(height: 16),
 //
 //                       // Center(
-//                       //   child: FlatButton(
+//                       //   child: TextButton(
 //                       //     shape: RoundedRectangleBorder(
 //                       //         borderRadius: BorderRadius.circular(0),
 //                       //         side: BorderSide(color: Colors.black26)),
@@ -2562,7 +2562,7 @@
 //                       //   ),
 //                       // ),
 //                       Center(
-//                         child: FlatButton(
+//                         child: TextButton(
 //                           // shape: RoundedRectangleBorder(
 //                           //     borderRadius: BorderRadius.circular(0),
 //                           //     side: BorderSide(color: Colors.black26)),
@@ -2612,7 +2612,7 @@
 //                       // Row(
 //                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                       //   children: [
-//                       //     FlatButton(
+//                       //     TextButton(
 //                       //       shape: RoundedRectangleBorder(
 //                       //           borderRadius: BorderRadius.circular(0),
 //                       //           side: BorderSide(color: Colors.black26)),

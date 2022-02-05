@@ -464,11 +464,12 @@ class _DetailPendingState extends State<DetailPending> {
         Visibility(
           visible: saveBtnVisible,
           child:
-        FlatButton(
+        TextButton(
+          style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
               side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+          backgroundColor: Colors.transparent,),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -555,11 +556,13 @@ class _DetailPendingState extends State<DetailPending> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FlatButton(
-                          shape: RoundedRectangleBorder(
+                        TextButton(
+                    style: TextButton.styleFrom(
+
+                    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: ColorConstants.cancelRed,
+                          backgroundColor: ColorConstants.cancelRed,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 8, top: 5),

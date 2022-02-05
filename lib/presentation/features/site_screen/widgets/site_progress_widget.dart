@@ -1501,11 +1501,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               Center(
                 child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
+                    child: TextButton(
+                    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
                           side: BorderSide(color: Colors.black26)),
-                      color: Colors.transparent,
+                      backgroundColor: Colors.transparent,),
                       child: Padding(
                         padding: const EdgeInsets.only(
                             right: 5, bottom: 10, top: 10),
@@ -1643,11 +1645,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: !addNextButtonDisable
-                      ? FlatButton(
-                          shape: RoundedRectangleBorder(
+                      ? TextButton(
+    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: Colors.transparent,
+                          backgroundColor: Colors.transparent,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 10, top: 10),
@@ -1668,11 +1672,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             });
                           },
                         )
-                      : FlatButton(
-                          shape: RoundedRectangleBorder(
+                      : TextButton(
+    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: Colors.transparent,
+                          backgroundColor: Colors.transparent,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 10, top: 10),
@@ -1866,11 +1872,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   : Container(),
 
               Center(
-                child: FlatButton(
+                child: TextButton(
                   // shape: RoundedRectangleBorder(
                   //     borderRadius: BorderRadius.circular(0),
                   //     side: BorderSide(color: Colors.black26)),
-                  color: Colors.transparent,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
                     child: !viewMoreActive

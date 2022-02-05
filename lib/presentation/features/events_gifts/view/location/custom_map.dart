@@ -114,7 +114,7 @@ class _CustomMapState extends State<CustomMap> {
         Positioned(
             top: 20,
             left: 20,
-            child: FlatButton(
+            child: TextButton(
               child: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,

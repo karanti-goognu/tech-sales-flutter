@@ -125,7 +125,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    // FlatButton(
+                    // TextButton(
                     //   onPressed: () {
                     //     // _settingModalBottomSheet(context);
                     //   },

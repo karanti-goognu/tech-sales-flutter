@@ -135,14 +135,16 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                         _tabNumber == 1
                             ? Container()
-                            : FlatButton(
+                            : TextButton(
                                 onPressed: () {
                                     _settingModalBottomSheet(context);
                                 },
-                                shape: RoundedRectangleBorder(
+                          style: TextButton.styleFrom(
+
+                          shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
                                     side: BorderSide(color: Colors.white)),
-                                color: Colors.transparent,
+                                backgroundColor: Colors.transparent,),
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 5),
                                   child: Row(

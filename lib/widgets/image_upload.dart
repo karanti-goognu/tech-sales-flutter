@@ -10,12 +10,13 @@ class ImageUpload extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      shape: RoundedRectangleBorder(
+    return TextButton(
+        style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
         side: BorderSide(color: Colors.black26),
       ),
-      color: Colors.transparent,
+      backgroundColor: Colors.transparent,),
       child: Padding(
         padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
         child: Text(

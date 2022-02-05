@@ -35,12 +35,14 @@ class _StartEventState extends State<StartEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
-              FlatButton(
+              TextButton(
                 onPressed: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28.0),
-                    side: BorderSide(color: Colors.white)),
-                color: Colors.transparent,
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28.0),
+                      side: BorderSide(color: Colors.white)),
+                  backgroundColor: Colors.transparent,
+                ),
                 child: Text(
                   'ADD LEAD',
                   style: TextStyle(color: Colors.white, fontSize: 15),
@@ -57,19 +59,20 @@ class _StartEventState extends State<StartEvent> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FlatButton(
-                    onPressed: () {
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28.0),
-                        side: BorderSide(color: Colors.white)),
-                    color: Colors.transparent,
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28.0),
+                          side: BorderSide(color: Colors.white)),
+                      backgroundColor: Colors.transparent,
+                    ),
                     child: Text(
                       'END TIME',
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                       onPressed: () {
                         //getBottomSheet();
                         //Get.toNamed(Routes.UPDATE_DLR_INF);
@@ -276,7 +279,8 @@ class _StartEventState extends State<StartEvent> {
             Container(
               // decoration:
               //     BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
-              padding: EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
+              padding:
+                  EdgeInsets.only(top: 16, bottom: 20, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -286,7 +290,6 @@ class _StartEventState extends State<StartEvent> {
                       setState(() {
                         _isVisible = true;
                       });
-
                     },
                     child: Text(
                       'ADD',
@@ -318,8 +321,8 @@ class _StartEventState extends State<StartEvent> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                      padding: const EdgeInsets.only(
+                          right: 16, left: 16, bottom: 12),
                       child: DropdownButtonFormField(
                         onChanged: (value) {
                           setState(() {
@@ -346,14 +349,15 @@ class _StartEventState extends State<StartEvent> {
                       ),
                     ),
                     SizedBox(height: 8),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(1.0),
-                                side: BorderSide(color: Colors.black)),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(1.0),
+                                  side: BorderSide(color: Colors.black)),
+                            ),
                             onPressed: () {},
                             child: Text(
                               'Add as a new influencer'.toUpperCase(),
@@ -362,7 +366,6 @@ class _StartEventState extends State<StartEvent> {
                       ],
                     ),
                     SizedBox(height: 12),
-
                   ],
                 ),
               ),

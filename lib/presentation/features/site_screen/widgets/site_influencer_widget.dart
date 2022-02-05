@@ -188,11 +188,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     inactiveTrackColor: Colors.black26,
                                   ),
                                   _listInfluencerDetail[index].isExpanded
-                                      ? FlatButton.icon(
+                                      ? TextButton.icon(
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(0),
                                           //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),
@@ -216,11 +215,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             // _getCurrentLocation();
                                           },
                                         )
-                                      : FlatButton.icon(
+                                      : TextButton.icon(
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(0),
                                           //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
                                           icon: Icon(
                                             Icons.add,
                                             color: HexColor("#F9A61A"),
@@ -266,11 +264,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             4.8),
                                   ),
                                   _listInfluencerDetail[index].isExpanded
-                                      ? FlatButton.icon(
+                                      ? TextButton.icon(
                                     // shape: RoundedRectangleBorder(
                                     //     borderRadius: BorderRadius.circular(0),
                                     //     side: BorderSide(color: Colors.black26)),
-                                    color: Colors.transparent,
                                     icon: Icon(
                                       Icons.remove,
                                       color: HexColor("#F9A61A"),
@@ -298,11 +295,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       // _getCurrentLocation();
                                     },
                                   )
-                                      : FlatButton.icon(
+                                      : TextButton.icon(
                                     // shape: RoundedRectangleBorder(
                                     //     borderRadius: BorderRadius.circular(0),
                                     //     side: BorderSide(color: Colors.black26)),
-                                    color: Colors.transparent,
                                     icon: Icon(
                                       Icons.add,
                                       color: HexColor("#F9A61A"),
@@ -877,11 +873,13 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
             ),
             SizedBox(height: 16),
             Center(
-              child: FlatButton(
+              child: TextButton(
+                style: TextButton.styleFrom(
+
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                     side: BorderSide(color: Colors.black26)),
-                color: Colors.transparent,
+                backgroundColor: Colors.transparent,),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
                   child: Text(
