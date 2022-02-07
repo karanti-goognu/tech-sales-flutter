@@ -76,7 +76,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  int _initialIndex = 0, visitSubTypeId;
+  int visitSubTypeId;
   String geoTagType;
 
   String siteCreationDate, visitRemarks;

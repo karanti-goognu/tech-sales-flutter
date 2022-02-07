@@ -20,7 +20,6 @@ class DataGridForYTD extends StatefulWidget {
 }
 
 class _DataGridForYTDState extends State<DataGridForYTD> {
-  DashboardController _dashboardController = Get.find();
 
 
   @override

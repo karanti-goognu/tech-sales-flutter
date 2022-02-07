@@ -369,6 +369,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Obx(() {
                     if (_homeController.disableSlider != true) {
+                      print(_homeController.checkInStatus);
+                      print("***");
                       return (_homeController.checkInStatus ==
                               StringConstants.checkIn)
                           ? checkInSliderButton()

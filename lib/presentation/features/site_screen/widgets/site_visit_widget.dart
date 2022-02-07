@@ -48,7 +48,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
-  TextEditingController _siteTypeController1 = TextEditingController();
+  // TextEditingController _siteTypeController1 = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
 

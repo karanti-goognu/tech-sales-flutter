@@ -57,7 +57,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   String _contactName;
   FocusNode myFocusNode;
   String _contactNumber;
-  String _comment;
+  // String _comment;
   String leadSource;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
