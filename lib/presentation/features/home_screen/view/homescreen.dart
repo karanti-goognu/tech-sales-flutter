@@ -654,16 +654,19 @@ class _HomeScreenState extends State<HomeScreen> {
       highlightedColor: Colors.grey,
       baseColor: Colors.white,
       vibrationFlag: true,
-
       dismissible: false,
       action: null,
     );
   }
 
-  Widget checkInSliderButton() {
+  Widget checkInSliderButton()  {
+    print("checkInSliderButton");
+    print("wah");
     return SliderButton(
       action: () async {
+        print("wah");
         if (await Permission.location.request().isGranted) {
+          print("Location ::::");
           internetChecking().then((result) => {
                 if (result == true)
                   {_homeController.getAccessKey(RequestIds.CHECK_IN)}
@@ -684,7 +687,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Swipe to start your day ",
+        "Swipe to start your day",
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -708,10 +711,13 @@ class _HomeScreenState extends State<HomeScreen> {
       baseColor: Colors.white,
       vibrationFlag: true,
       dismissible: false,
+      dismissThresholds: 0.01,
+
     );
   }
 
   Widget checkOutSliderButton() {
+    print("checkOutSliderButton");
     return SliderButton(
       action: () async {
         if (await Permission.location.request().isGranted) {
@@ -762,10 +768,13 @@ class _HomeScreenState extends State<HomeScreen> {
       baseColor: Colors.white,
       vibrationFlag: true,
       dismissible: false,
+      dismissThresholds: 0.01,
+
     );
   }
 
   Widget journeyEnded() {
+    print("journeyEnded");
     return GestureDetector(
       onTap: () {},
       child: Container(

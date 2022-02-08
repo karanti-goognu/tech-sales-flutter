@@ -36,16 +36,12 @@ class MyApiClientApp {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      //version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(UrlConstants.getAccessKey,
           headers: requestHeaders(version));
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -66,11 +62,9 @@ class MyApiClientApp {
 
       var response = await httpClient.get(UrlConstants.getSecretKey,
           headers: requestHeadersEmpIdAndNo);
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return secretKeyModel;
       } else {
       //  print('Error in else');
@@ -85,14 +79,12 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
-      //print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveMWPData,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           // encoding: Encoding.getByName("utf-8")
       );
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         print('Response body is : ${(data)}');
@@ -102,7 +94,6 @@ class MyApiClientApp {
         }else {
           SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
 
-          //print('Access key Object is :: $accessKeyModel');
           return saveMWPResponse;
         }
       } else {
@@ -118,13 +109,11 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
-     // print('body is  :: $body');
       var response = await httpClient.post(UrlConstants.saveVisit,
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -155,7 +144,6 @@ class MyApiClientApp {
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

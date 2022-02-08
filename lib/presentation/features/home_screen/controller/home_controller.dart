@@ -117,6 +117,7 @@ class HomeController extends GetxController {
             getCheckInDetails(this.accessKeyResponse.accessKey);
             break;
           case RequestIds.CHECK_OUT:
+            print("#1");
             getCheckOutDetails(this.accessKeyResponse.accessKey);
             break;
           case RequestIds.HOME_DASHBOARD:
@@ -176,14 +177,8 @@ class HomeController extends GetxController {
 //        print('Disable the button');
         this.disableSlider = true;
         repository
-            .getCheckInDetails(
-                url,
-                accessKey,
-                userSecurityKey,
-                empId,
-                formattedDate,
-                date.toString(),
-                journeyStartLat,
+            .getCheckInDetails(url, accessKey, userSecurityKey, empId,
+            formattedDate, date.toString(), journeyStartLat,
                 journeyStartLong,
                 null,
                 null,
@@ -264,6 +259,7 @@ class HomeController extends GetxController {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
+            print("#2");
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
             prefs.setString(StringConstants.JOURNEY_END_DATE,

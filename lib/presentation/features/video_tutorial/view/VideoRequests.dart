@@ -9,6 +9,8 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:slider_button/slider_button.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoRequests extends StatefulWidget{
@@ -188,7 +190,8 @@ class _VideoRequestsState extends State<VideoRequests> {
               height: 80,
               width: 120,
               color: Colors.grey,
-              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', fit: BoxFit.fill,),
+              //ToDo: add index instead of 0
+              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[0].thumbnailUrl}', fit: BoxFit.fill,),
             ),
             // SizedBox(width: 10,),
             Expanded(

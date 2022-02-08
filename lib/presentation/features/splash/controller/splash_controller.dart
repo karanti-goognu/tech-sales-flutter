@@ -52,7 +52,6 @@ class SplashController extends GetxController {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
         if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
             print('Has expired');
