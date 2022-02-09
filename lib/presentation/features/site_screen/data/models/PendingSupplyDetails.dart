@@ -53,8 +53,8 @@ class PendingSuppliesDetailsModel {
   String siteId;
   String assignedTo;
   String siteSupplyHistoryId;
-  Null siteStageHistoryId;
-  Null referenceId;
+  String siteStageHistoryId;
+  String referenceId;
   String floorId;
   var floorText = new TextEditingController();
   String stageConstructionId;
@@ -76,6 +76,11 @@ class PendingSuppliesDetailsModel {
   String influencerName;
   List<ConstStage> constStage;
   List<SiteFloorlist> siteFloorlist;
+
+  String siteOwnerName;
+  String siteOwnerNumber;
+  String influencerContactNumber;
+  String requestInitiatedBy;
 
 
   PendingSuppliesDetailsModel(
@@ -103,6 +108,12 @@ class PendingSuppliesDetailsModel {
       this.supplyCreatedOn,
       this.influencerName,
       this.counter,
+
+        this.siteOwnerName,
+        this.siteOwnerNumber,
+        this.influencerContactNumber,
+        this.requestInitiatedBy,
+
       this.constStage,
         this.siteFloorlist});
 
@@ -131,6 +142,12 @@ class PendingSuppliesDetailsModel {
     isAuthorised = json['isAuthorised'];
     supplyCreatedOn = json['supplyCreatedOn'];
     influencerName = json['influencerName'];
+
+    siteOwnerName = json['siteOwnerName'];
+    siteOwnerNumber = json['siteOwnerNumber'];
+    influencerContactNumber = json['influencerContactNumber'];
+    requestInitiatedBy = json['requestInitiatedBy'];
+
     if (json['constStage'] != null) {
       constStage = new List<ConstStage>();
       json['constStage'].forEach((v) {
@@ -171,6 +188,12 @@ class PendingSuppliesDetailsModel {
     data['isAuthorised'] = this.isAuthorised;
     data['supplyCreatedOn'] = this.supplyCreatedOn;
     data['influencerName'] = this.influencerName;
+
+    data['siteOwnerName'] = this.siteOwnerName;
+    data['siteOwnerNumber'] = this.siteOwnerNumber;
+    data['influencerContactNumber'] = this.influencerContactNumber;
+    data['requestInitiatedBy'] = this.requestInitiatedBy;
+
     if (this.constStage != null) {
       data['constStage'] = this.constStage.map((v) => v.toJson()).toList();
     }
