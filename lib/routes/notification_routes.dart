@@ -96,7 +96,7 @@ class NotificationRoutes {
         Get.toNamed(Routes.SEARCH_SITES_SCREEN);
         break;
       case StringConstants.ADD_MWP_PLAN_SCREEN:
-        Get.toNamed(Routes.ADD_MWP_PLAN_SCREEN);
+        Get.toNamed(Routes.ADD_MWP_SCREEN);
         break;
       case StringConstants.VISIT_SCREEN:
         Get.toNamed(Routes.VISIT_SCREEN);
