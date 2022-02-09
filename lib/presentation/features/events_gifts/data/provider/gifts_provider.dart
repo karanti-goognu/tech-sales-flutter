@@ -22,7 +22,7 @@ String version;
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -39,7 +39,7 @@ String version;
     try{
       var url=UrlConstants.getGiftStock +empID;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -66,7 +66,7 @@ String version;
       version = VersionClass.getVersion();
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
       print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -92,7 +92,7 @@ String version;
       version = VersionClass.getVersion();
       var url=UrlConstants.addGiftStock ;
       print(empID);
-      var response = await httpClient.post(url,
+      var response = await httpClient.post(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
 
           body: jsonEncode({

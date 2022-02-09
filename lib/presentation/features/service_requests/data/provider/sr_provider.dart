@@ -19,7 +19,6 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSR {
@@ -32,7 +31,7 @@ class MyApiClientSR {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version=packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -232,7 +231,7 @@ class MyApiClientSR {
       });
     }
     catch(e){
-      print("Exception at SR Repo ${e}");
+      print("Exception at SR Repo $e");
       return null;
     }
     return json.decode(response.body);
@@ -274,7 +273,7 @@ class MyApiClientSR {
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       });
       if (userSecurityKey == "empty") {
-        var response = await httpClient.get(UrlConstants.getFilterData,
+        var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
         // print('Response body is : ${json.decode(response.body)}');

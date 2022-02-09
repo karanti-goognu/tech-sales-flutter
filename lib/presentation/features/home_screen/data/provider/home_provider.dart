@@ -23,7 +23,7 @@ class MyApiClientHome {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -65,7 +65,7 @@ class MyApiClientHome {
 //      print('Request Body is ${json.encode(requestBody)}');
 //      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
       version = VersionClass.getVersion();
-      var response = await httpClient.post(UrlConstants.getCheckInDetails,
+      var response = await httpClient.post(Uri.parse(UrlConstants.getCheckInDetails),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
           body: jsonEncode(requestBody));
 
@@ -88,9 +88,8 @@ class MyApiClientHome {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
-      print(url);
      // var response = await httpClient.get(url, headers: requestHeaders(version));
-      var response = await httpClient.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
+      var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
       print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

@@ -9,7 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
+// import 'package:package_info/package_info.dart';
 
 class MyApiClientSplash {
   final http.Client httpClient;
@@ -19,10 +19,11 @@ class MyApiClientSplash {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       //version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      Uri uri = Uri.parse(UrlConstants.getAccessKey);
+      var response = await httpClient.get(uri,
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -50,8 +51,8 @@ class MyApiClientSplash {
 
       print('$requestHeadersEmpIdAndNo');
       print(UrlConstants.getSecretKey);
-
-      var response = await httpClient.get(UrlConstants.getSecretKey,
+      Uri uri = Uri.parse(UrlConstants.getSecretKey);
+      var response = await httpClient.get(uri,
           headers: requestHeadersEmpIdAndNo);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -77,9 +78,9 @@ class MyApiClientSplash {
         'user-security-key': securityKey,
       };
       print(requestHeadersEmpIdAndNo);
+      Uri uri= Uri.parse(url);
 
-      var response =
-          await httpClient.get(url, headers: requestHeadersEmpIdAndNo);
+      var response = await httpClient.get(uri, headers: requestHeadersEmpIdAndNo);
       print('Response body for refresh Api is : ${(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

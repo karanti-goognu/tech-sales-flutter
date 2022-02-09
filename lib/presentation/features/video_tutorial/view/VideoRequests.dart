@@ -9,8 +9,6 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:slider_button/slider_button.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoRequests extends StatefulWidget{

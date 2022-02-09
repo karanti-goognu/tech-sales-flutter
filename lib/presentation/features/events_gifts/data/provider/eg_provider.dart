@@ -37,7 +37,7 @@ class MyApiClientEvent {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -57,7 +57,7 @@ class MyApiClientEvent {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
       print(url);
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -317,7 +317,7 @@ class MyApiClientEvent {
       version = VersionClass.getVersion();
       var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
      // print(url);
-      var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
+      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
       //print(response.body);
       var data = json.decode(response.body);
       print("======$data");

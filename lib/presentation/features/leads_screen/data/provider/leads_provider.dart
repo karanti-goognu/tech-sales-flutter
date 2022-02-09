@@ -42,7 +42,7 @@ class MyApiClientLeads {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -62,7 +62,7 @@ class MyApiClientLeads {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -87,7 +87,7 @@ class MyApiClientLeads {
       };
 
 
-      var response = await httpClient.get(UrlConstants.getSecretKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
 //      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -114,7 +114,7 @@ class MyApiClientLeads {
 //        print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
-        var response = await httpClient.get(UrlConstants.getFilterData,
+        var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey,version));
 //        print('Response body is : ${json.decode(response.body)}');
@@ -185,7 +185,7 @@ class MyApiClientLeads {
       // var response = await httpClient.get(UrlConstants.addLeadsData,
       //     headers: requestHeadersWithAccessKeyAndSecretKey(
       //         accessKey, userSecurityKey,version));
-      var response = await httpClient.get(UrlConstants.addLeadsData,
+      var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       print("URL: ${UrlConstants.addLeadsData}");
@@ -554,7 +554,7 @@ print("Length: $length");
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
       print(url);
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
