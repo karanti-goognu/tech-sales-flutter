@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:pointycastle/export.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:tuple/tuple.dart';
 
 String decryptString(String encryptedString, String encryptionKey) {
+
   var key = base64.decode(encryptionKey);
 
   var encryptedStringArray = encryptedString.split("~");

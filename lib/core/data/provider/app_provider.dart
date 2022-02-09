@@ -26,7 +26,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClientApp {
   final http.Client httpClient;

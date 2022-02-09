@@ -33,7 +33,6 @@ dependencies:
   path: ^1.7.0
   connectivity: ^3.0.6
   scoped_model: ^1.1.0
-#  shared_preferences: ^0.5.12+4
   shared_preferences: ^2.0.12
   jwt_decoder: ^2.0.1
   tuple: ^2.0.0
@@ -75,7 +74,6 @@ dependencies:
   plugin_platform_interface: ^2.1.2
   firebase_messaging:
   firebase_core_platform_interface:
-  # below plugins not used null safety
   slider_button: ^2.0.0
   data_connection_checker: ^0.3.4
   moengage_inbox: ^3.1.0
