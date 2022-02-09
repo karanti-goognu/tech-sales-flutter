@@ -14,7 +14,6 @@ import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
-import 'package:moengage_flutter/push_campaign.dart';
 import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,11 +26,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
 
-  // DashboardController _dashboardController =Get.find();
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -162,14 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _moengagePlugin.setBirthDate("xx-xx-xxxx"); //dob
   }
 
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
-
   @override
   void dispose() {
-    // TODO: implement dispose
     print("homescreen.dart :::::: dispose()");
     super.dispose();
     // _homeController.dispose();

@@ -23,7 +23,6 @@ class _DealersListViewWidgetState extends State<DealersListViewWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(

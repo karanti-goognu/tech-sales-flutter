@@ -190,8 +190,7 @@ class _VideoRequestsState extends State<VideoRequests> {
               height: 80,
               width: 120,
               color: Colors.grey,
-              //ToDo: add index instead of 0
-              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[0].thumbnailUrl}', fit: BoxFit.fill,),
+              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', fit: BoxFit.fill,),
             ),
             // SizedBox(width: 10,),
             Expanded(
