@@ -54,8 +54,14 @@ class _EndEventState extends State<EndEvent> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return WillPopScope(
         onWillPop: () async {
           // You can do some work here.
@@ -112,10 +118,10 @@ class _EndEventState extends State<EndEvent> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                        left: ScreenUtil().setSp(10),
-                        right: ScreenUtil().setSp(10),
-                        top: ScreenUtil().setSp(20),
-                        bottom: ScreenUtil().setSp(20),
+                        left: 10.sp,
+                        right: 10.sp,
+                        top: 20.sp,
+                        bottom: 20.sp,
                       ),
                       child: Row(
                         children: [
@@ -152,9 +158,9 @@ class _EndEventState extends State<EndEvent> {
                                   children: [
                                     Icon(Icons.edit,
                                         color: ColorConstants.clearAllTextColor,
-                                        size: ScreenUtil().setSp(20)),
+                                        size: 20.sp),
                                     SizedBox(
-                                      width: ScreenUtil().setSp(5),
+                                      width: 5.sp,
                                     ),
                                     Text('UPDATE DLR & INF.',
                                         style: TextStyles.robotoBtn14),
@@ -283,10 +289,10 @@ class _EndEventState extends State<EndEvent> {
   Widget displayInfo(String title, var value) {
     return Padding(
       padding: EdgeInsets.only(
-        left: ScreenUtil().setSp(15),
-        right: ScreenUtil().setSp(15),
-        top: ScreenUtil().setSp(5),
-        bottom: ScreenUtil().setSp(5),
+        left: 15.sp,
+        right: 15.sp,
+        top: 5.sp,
+        bottom: 5.sp,
       ),
       child: Column(
         children: [
@@ -309,7 +315,7 @@ class _EndEventState extends State<EndEvent> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+            padding: EdgeInsets.only(top: 20.sp),
             child: Divider(
               height: 1,
               color: ColorConstants.lightBlackBorderColor,
@@ -323,10 +329,10 @@ class _EndEventState extends State<EndEvent> {
   Widget displayChip(String title, List list) {
     return Padding(
         padding: EdgeInsets.only(
-          left: ScreenUtil().setSp(15),
-          right: ScreenUtil().setSp(10),
-          top: ScreenUtil().setSp(0),
-          bottom: ScreenUtil().setSp(10),
+          left: 15.sp,
+          right: 10.sp,
+          top: 0.sp,
+          bottom: 10.sp,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,10 +342,10 @@ class _EndEventState extends State<EndEvent> {
               style: TextStyles.formfieldLabelTextDark,
             ),
             SizedBox(
-              height: ScreenUtil().setSp(10),
+              height: 10.sp,
             ),
             Container(
-              height: ScreenUtil().setSp(30),
+              height: 30.sp,
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -376,7 +382,7 @@ class _EndEventState extends State<EndEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+              padding: EdgeInsets.only(top: 20.sp),
               child: Divider(
                 height: 1,
                 color: ColorConstants.lightBlackBorderColor,
@@ -389,10 +395,10 @@ class _EndEventState extends State<EndEvent> {
   Widget displayChipForDealer(String title, List list) {
     return Padding(
         padding: EdgeInsets.only(
-          left: ScreenUtil().setSp(15),
-          right: ScreenUtil().setSp(10),
-          top: ScreenUtil().setSp(0),
-          bottom: ScreenUtil().setSp(10),
+          left: 15.sp,
+          right: 10.sp,
+          top: 0.sp,
+          bottom: 10.sp,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,10 +408,10 @@ class _EndEventState extends State<EndEvent> {
               style: TextStyles.formfieldLabelTextDark,
             ),
             SizedBox(
-              height: ScreenUtil().setSp(10),
+              height: 10.sp,
             ),
             Container(
-              height: ScreenUtil().setSp(30),
+              height: 30.sp,
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -442,7 +448,7 @@ class _EndEventState extends State<EndEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+              padding: EdgeInsets.only(top: 20.sp),
               child: Divider(
                 height: 1,
                 color: ColorConstants.lightBlackBorderColor,

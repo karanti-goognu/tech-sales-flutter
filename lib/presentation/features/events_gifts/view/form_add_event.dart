@@ -104,8 +104,14 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final eventDropDwn = DropdownButtonFormField(
 
@@ -408,7 +414,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             btnPresssed(1);

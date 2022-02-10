@@ -193,8 +193,14 @@ class _DetailPendingState extends State<DetailPending> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     final eventType = TextFormField(
       controller: _eventTypeController,
       style: FormFieldStyle.formFieldTextStyle,
@@ -491,7 +497,7 @@ class _DetailPendingState extends State<DetailPending> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                fontSize: 15.sp),
           ),
           onPressed: () {
             btnPressed(1);
@@ -552,7 +558,7 @@ class _DetailPendingState extends State<DetailPending> {
                   visible: isVisible,
                   child: Padding(
                     padding:
-                    EdgeInsets.only(left: ScreenUtil().setSp(12)),
+                    EdgeInsets.only(left: 12.sp),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -588,7 +594,7 @@ class _DetailPendingState extends State<DetailPending> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  padding: EdgeInsets.all(12.sp),
                   height: 56,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

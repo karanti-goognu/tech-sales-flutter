@@ -79,8 +79,14 @@ class _InfluencerViewState extends State<InfluencerView> {
 
 
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return WillPopScope(
         onWillPop: () async {
           // disposeController(context);
@@ -422,9 +428,8 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                       left:
-                                                          ScreenUtil().setSp(2),
-                                                      right: ScreenUtil()
-                                                          .setSp(2)),
+                                                          2.sp,
+                                                      right: 2.sp),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -457,7 +462,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                 style: TextStyle(
                                                                     color: HexColor(
                                                                         "#FFFFFFDE"),
-                                                                    fontSize: ScreenUtil().setSp(11),
+                                                                    fontSize: 11.sp,
                                                                     fontFamily:
                                                                         "Muli",
                                                                     fontWeight:
@@ -467,7 +472,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                     ),
                                                               ),
                                                               Icon(Icons.arrow_forward_ios, color: HexColor(
-                                                                  "#FFFFFFDE"),size: ScreenUtil().setSp(11),)
+                                                                  "#FFFFFFDE"),size: 11.sp)
                                                             ],
                                                           ),
                                                         ),
@@ -527,7 +532,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     })
               ],
             ),
-            SizedBox(height: ScreenUtil().setSp(8)),
+            SizedBox(height: 8.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -535,7 +540,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   "Contact No:",
                   style: TextStyles.formfieldLabelText,
                 ),
-                SizedBox(width: ScreenUtil().setSp(0),),
+                SizedBox(width: 0.sp),
                 GestureDetector(
                   child: FittedBox(
                     child: Row(
@@ -569,7 +574,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   style: TextStyles.formfieldLabelText,
               //  )
       ),
-                SizedBox(width: ScreenUtil().setSp(40),),
+                SizedBox(width: 40.sp),
                 Expanded(
                     child: Text(
                   address,
@@ -590,7 +595,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   style: TextStyles.formfieldLabelText,
               //  )
       ),
-                SizedBox(width: ScreenUtil().setSp(40),),
+                SizedBox(width: 40.sp),
                 Expanded(
                     child:
                     Text(email,

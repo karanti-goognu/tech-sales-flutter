@@ -71,9 +71,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     final btnStartEvent = TextButton(
       onPressed: () {
         _getCurrentLocation();
@@ -130,10 +135,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     Icon(
                       Icons.close,
                       color: ColorConstants.clearAllTextColor,
-                      size: ScreenUtil().setSp(20),
+                      size: 20.sp,
                     ),
                     SizedBox(
-                      width: ScreenUtil().setSp(5),
+                      width: 5.sp,
                     ),
                     Text('CANCEL', style: TextStyles.robotoBtn14),
                   ],
@@ -155,9 +160,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   children: [
                     Icon(Icons.edit,
                         color: ColorConstants.clearAllTextColor,
-                        size: ScreenUtil().setSp(20)),
+                        size: 20.sp),
                     SizedBox(
-                      width: ScreenUtil().setSp(5),
+                      width: 5.sp,
                     ),
                     Text('EDIT', style: TextStyles.robotoBtn14),
                   ],
@@ -217,9 +222,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   children: [
                     Icon(Icons.edit,
                         color: ColorConstants.clearAllTextColor,
-                        size: ScreenUtil().setSp(20)),
+                        size: 20.sp),
                     SizedBox(
-                      width: ScreenUtil().setSp(5),
+                      width: 5.sp,
                     ),
                     Text('UPDATE DLR & INF.', style: TextStyles.robotoBtn14),
                   ],
@@ -269,10 +274,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                    left: ScreenUtil().setSp(10),
-                    right: ScreenUtil().setSp(10),
-                    top: ScreenUtil().setSp(20),
-                    bottom: ScreenUtil().setSp(20),
+                    left: 10.sp,
+                    right: 10.sp,
+                    top: 20.sp,
+                    bottom: 20.sp,
                   ),
                   child: Text(
                     '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
@@ -306,10 +311,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     detailEventModel.mwpEventModel.eventLocation ?? ''),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: ScreenUtil().setSp(15),
-                      right: ScreenUtil().setSp(15),
-                      top: ScreenUtil().setSp(5),
-                      bottom: ScreenUtil().setSp(5)),
+                      left: 15.sp,
+                      right: 15.sp,
+                      top: 5.sp,
+                      bottom: 5.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -336,7 +341,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   ),
                 ),
                 SizedBox(
-                  height: ScreenUtil().setSp(40),
+                  height: 40.sp,
                 )
               ],
             )
@@ -351,10 +356,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   Widget displayInfo(String title, String value) {
     return Padding(
       padding: EdgeInsets.only(
-        left: ScreenUtil().setSp(15),
-        right: ScreenUtil().setSp(15),
-        top: ScreenUtil().setSp(5),
-        bottom: ScreenUtil().setSp(5),
+        left: 15.sp,
+        right: 15.sp,
+        top: 5.sp,
+        bottom: 5.sp,
       ),
       child: Column(
         children: [
@@ -380,7 +385,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+            padding: EdgeInsets.only(top: 20.sp),
             child: Divider(
               height: 1,
               color: ColorConstants.lightBlackBorderColor,
@@ -394,10 +399,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   Widget displayChip(String title) {
     return Padding(
         padding: EdgeInsets.only(
-          left: ScreenUtil().setSp(15),
-          right: ScreenUtil().setSp(10),
-          top: ScreenUtil().setSp(0),
-          bottom: ScreenUtil().setSp(10),
+          left: 15.sp,
+          right: 10.sp,
+          top: 0.sp,
+          bottom: 10.sp,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,10 +412,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               style: TextStyles.formfieldLabelTextDark,
             ),
             SizedBox(
-              height: ScreenUtil().setSp(10),
+              height: 10.sp,
             ),
             Container(
-                height: ScreenUtil().setSp(30),
+                height: 30.sp,
                 child: (detailEventModel != null &&
                         detailEventModel.eventDealersModelList != null &&
                         detailEventModel.eventDealersModelList.length > 0)
@@ -447,7 +452,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                       )
                     : Container()),
             Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+              padding: EdgeInsets.only(top: 20.sp),
               child: Divider(
                 height: 1,
                 color: ColorConstants.lightBlackBorderColor,

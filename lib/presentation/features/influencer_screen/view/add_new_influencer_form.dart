@@ -145,9 +145,15 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-    double _height = ScreenUtil().setSp(16);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+    double _height = 16.sp;
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
@@ -571,7 +577,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -734,7 +740,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -765,7 +771,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             ListView(
               children: [
                 Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  padding: EdgeInsets.all(12.sp),
                   height: 56,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -779,16 +785,16 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   // decoration: BoxDecoration(
                   //     border: Border(bottom: BorderSide(width: 0.3))),
                 ),
-                SizedBox(height: ScreenUtil().setSp(8)),
+                SizedBox(height: 8.sp),
                 Divider(
-                  height: ScreenUtil().setSp(1),
+                  height: 1.sp,
                   color: Colors.grey,
                 ),
                 SizedBox(height: _height),
                 Visibility(
                   visible: _isVisible,
                   child: Padding(
-                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      padding: EdgeInsets.all(16.sp),
                       child: Form(
                         key: _addInfluencerFormKey,
                         child: Column(
@@ -842,7 +848,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 Visibility(
                   visible: _isSecondVisible,
                   child: Padding(
-                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      padding: EdgeInsets.all(16.sp),
                       child: Form(
                         key: _addInfluencerFormKeyNext,
                         child: Column(
@@ -862,7 +868,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               giftState,
                               SizedBox(height: _height),
                               Divider(
-                                height: ScreenUtil().setSp(1),
+                                height: 1.sp,
                                 color: Colors.grey,
                               ),
                               SizedBox(height: _height),

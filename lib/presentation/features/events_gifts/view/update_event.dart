@@ -285,7 +285,7 @@ class _UpdateEventState extends State<UpdateEvent> {
                   )),
             ),
             child:Container(
-              height: ScreenUtil().setSp(30),
+              height: 30.sp,
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -294,7 +294,7 @@ class _UpdateEventState extends State<UpdateEvent> {
                     .map((e) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(
-                    deleteIcon: Icon(Icons.close, size: ScreenUtil().setSp(20),),
+                    deleteIcon: Icon(Icons.close, size: 20.sp,),
                     deleteIconColor: Colors.black,
                     onDeleted: (){},
                     label: Text(
@@ -537,7 +537,7 @@ class _UpdateEventState extends State<UpdateEvent> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {},
         ),
@@ -604,7 +604,7 @@ class _UpdateEventState extends State<UpdateEvent> {
                   ListView(
             children: [
               Padding(
-                padding: EdgeInsets.only(left:ScreenUtil().setSp(16), top:ScreenUtil().setSp(16) ),
+                padding: EdgeInsets.only(left:16.sp, top:16.sp ),
                 child: Text(
                   'Update Event Details',
                   style: TextStyles.titleGreenStyle,

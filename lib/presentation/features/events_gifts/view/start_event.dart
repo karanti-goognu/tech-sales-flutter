@@ -54,7 +54,7 @@ class _StartEventState extends State<StartEvent> {
             preferredSize: Size.fromHeight(50),
             child: Container(
               padding: EdgeInsets.only(
-                  left: ScreenUtil().setSp(20), bottom: ScreenUtil().setSp(5)),
+                  left: 20.sp, bottom: 5.sp),
               color: ColorConstants.appBarColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,9 +81,9 @@ class _StartEventState extends State<StartEvent> {
                         children: [
                           Icon(Icons.edit,
                               color: ColorConstants.clearAllTextColor,
-                              size: ScreenUtil().setSp(20)),
+                              size: 20.sp),
                           SizedBox(
-                            width: ScreenUtil().setSp(5),
+                            width: 5.sp,
                           ),
                           Text('UPDATE DLR & INF.',
                               style: TextStyles.robotoBtn14),
@@ -101,10 +101,10 @@ class _StartEventState extends State<StartEvent> {
         children: [
           Padding(
             padding: EdgeInsets.only(
-              left: ScreenUtil().setSp(10),
-              right: ScreenUtil().setSp(10),
-              top: ScreenUtil().setSp(20),
-              bottom: ScreenUtil().setSp(20),
+              left: 10.sp,
+              right: 10.sp,
+              top: 20.sp,
+              bottom: 20.sp,
             ),
             child: Text(
               '24-Mar-2021 | 12 PM',
@@ -379,10 +379,10 @@ class _StartEventState extends State<StartEvent> {
   Widget displayInfo(String title, String value) {
     return Padding(
       padding: EdgeInsets.only(
-        left: ScreenUtil().setSp(15),
-        right: ScreenUtil().setSp(15),
-        top: ScreenUtil().setSp(5),
-        bottom: ScreenUtil().setSp(5),
+        left: 15.sp,
+        right: 15.sp,
+        top: 5.sp,
+        bottom: 5.sp,
       ),
       child: Column(
         children: [
@@ -400,7 +400,7 @@ class _StartEventState extends State<StartEvent> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+            padding: EdgeInsets.only(top: 20.sp),
             child: Divider(
               height: 1,
               color: ColorConstants.lightBlackBorderColor,
@@ -414,10 +414,10 @@ class _StartEventState extends State<StartEvent> {
   Widget displayChip(String title) {
     return Padding(
         padding: EdgeInsets.only(
-          left: ScreenUtil().setSp(15),
-          right: ScreenUtil().setSp(10),
-          top: ScreenUtil().setSp(0),
-          bottom: ScreenUtil().setSp(10),
+          left: 15.sp,
+          right: 10.sp,
+          top: 0.sp,
+          bottom: 10.sp,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,10 +427,10 @@ class _StartEventState extends State<StartEvent> {
               style: TextStyles.formfieldLabelTextDark,
             ),
             SizedBox(
-              height: ScreenUtil().setSp(10),
+              height: 10.sp,
             ),
             Container(
-              height: ScreenUtil().setSp(30),
+              height: 30.sp,
               child: ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -465,7 +465,7 @@ class _StartEventState extends State<StartEvent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
+              padding: EdgeInsets.only(top: 20.sp),
               child: Divider(
                 height: 1,
                 color: ColorConstants.lightBlackBorderColor,

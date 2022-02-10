@@ -288,9 +288,15 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-    double _height = ScreenUtil().setSp(16);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+    double _height = 16.sp;
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
@@ -669,7 +675,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -879,7 +885,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   _influencerDetailDataModel.response.influencerDetails != null)
               ? ListView(children: [
                   Container(
-                    padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                    padding: EdgeInsets.all(12.sp),
                     height: 56,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -895,13 +901,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   ),
                   //   ],
                   // ),
-                  SizedBox(height: ScreenUtil().setSp(8)),
+                  SizedBox(height: 8.sp),
                   Divider(
-                    height: ScreenUtil().setSp(1),
+                    height: 1.sp,
                     color: Colors.grey,
                   ),
                   Padding(
-                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      padding: EdgeInsets.all(16.sp),
                       child: Form(
                         key: _addInfluencerFormKey,
                         child: Column(
@@ -964,7 +970,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               giftState,
                               SizedBox(height: _height),
                               Divider(
-                                height: ScreenUtil().setSp(1),
+                                height: 1.sp,
                                 color: Colors.grey,
                               ),
                               SizedBox(height: _height),

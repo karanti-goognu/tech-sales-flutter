@@ -22,8 +22,14 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return Scaffold(
         floatingActionButton: BackFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -257,10 +263,8 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                 //   child:
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      left:
-                                      ScreenUtil().setSp(2),
-                                      right: ScreenUtil()
-                                          .setSp(2)),
+                                      left: 2.sp,
+                                      right: 2.sp),
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment
@@ -287,7 +291,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                 style: TextStyle(
                                                     color: HexColor(
                                                         "#FFFFFFDE"),
-                                                    fontSize: ScreenUtil().setSp(11),
+                                                    fontSize: 11.sp,
                                                     fontFamily:
                                                     "Muli",
                                                     fontWeight:
@@ -297,7 +301,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                 ),
                                               ),
                                               Icon(Icons.arrow_forward_ios, color: HexColor(
-                                                  "#FFFFFFDE"),size: ScreenUtil().setSp(11),)
+                                                  "#FFFFFFDE"),size: 11.sp,)
                                             ],
                                           ),
                                         ),
@@ -361,7 +365,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                     })
               ],
             ),
-            SizedBox(height: ScreenUtil().setSp(8)),
+            SizedBox(height: 8.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -369,7 +373,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                   "Contact No:",
                   style: TextStyles.formfieldLabelText,
                 ),
-                SizedBox(width: ScreenUtil().setSp(0),),
+                SizedBox(width: 0.sp),
                 GestureDetector(
                   child: FittedBox(
                     child: Row(
@@ -408,7 +412,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                   style: TextStyles.formfieldLabelText,
                   //  )
                 ),
-                SizedBox(width: ScreenUtil().setSp(40),),
+                SizedBox(width: 40.sp,),
                 Expanded(
                     child: Text(
                       address,
@@ -429,7 +433,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                   style: TextStyles.formfieldLabelText,
                   //  )
                 ),
-                SizedBox(width: ScreenUtil().setSp(40),),
+                SizedBox(width: 40.sp),
                 Expanded(
                     child:
                     Text(email,

@@ -127,8 +127,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final influencer = GestureDetector(
       onTap: () => getBottomSheet(),
@@ -227,7 +233,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             updateBtnPressed();
@@ -243,7 +249,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             Get.to(
@@ -267,9 +273,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: ScreenUtil().setSp(16),
-                    top: ScreenUtil().setSp(16),
-                    right: ScreenUtil().setSp(16)),
+                    left: 16.sp,
+                    top: 16.sp,
+                    right: 16.sp),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
