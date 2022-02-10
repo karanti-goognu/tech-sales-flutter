@@ -960,12 +960,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 ),
                 MandatoryWidget().txtMandatory(),
                 Center(
-                  child: RaisedButton(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: HexColor("#1C99D4"),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                     ),
-                    color: HexColor("#1C99D4"),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 1, top: 1),
                       child: Text(
@@ -1114,7 +1116,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     for (int i = 0;
         i < widget.viewSiteDataResponse.counterListModel.length;
         i++) {
-      int id = await db.addDealer(DealerForDb(
+      // int id =
+      await db.addDealer(DealerForDb(
           widget.viewSiteDataResponse.counterListModel[i].shipToParty,
           widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
     }
@@ -1911,12 +1914,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               SizedBox(height: 35),
 
               Center(
-                child: RaisedButton(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  color: HexColor("#1C99D4"),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: HexColor("#1C99D4"),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
                   child: Padding(
                     padding:
                         const EdgeInsets.only(right: 5, bottom: 10, top: 10),
@@ -1932,7 +1937,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   onPressed: () async {
                     if (_updateFormKey.currentState.validate()) {
                       UpdatedValues updateRequest = new UpdatedValues();
-                      updateRequest.UpdateRequest(context);
+                      updateRequest.updateRequest(context);
                     }
 
                   }

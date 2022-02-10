@@ -59,13 +59,13 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
                 currentCode: _code,
               ),
               Spacer(),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Listen for sms code'),
                 onPressed: () async {
                   await SmsAutoFill().listenForCode;
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Set code to 123456'),
                 onPressed: () async {
                   setState(() {
@@ -78,14 +78,14 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
               SizedBox(height: 4.0),
               Text("App Signature : $signature"),
               SizedBox(height: 4.0),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Get app signature'),
                 onPressed: () async {
                   signature = await SmsAutoFill().getAppSignature;
                   setState(() {});
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => CodeAutoFillTestPage()));

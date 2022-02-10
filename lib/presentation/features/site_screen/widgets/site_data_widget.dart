@@ -1670,7 +1670,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   if (_updateFormKey.currentState.validate()) {
                                     UpdatedValues updateRequest =
                                         new UpdatedValues();
-                                    updateRequest.UpdateRequest(context);
+                                    updateRequest.updateRequest(context);
                                   }
                                 }),
                           ),

@@ -502,7 +502,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         UpdatedValues
                                                                             updateRequest =
                                                                             new UpdatedValues();
-                                                                        updateRequest.UpdateRequest(
+                                                                        updateRequest.updateRequest(
                                                                             context);
                                                                         // UpdateRequest();
                                                                       } else {
@@ -841,7 +841,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         UpdatedValues
                                                                             updateRequest =
                                                                             new UpdatedValues();
-                                                                        updateRequest.UpdateRequest(
+                                                                        updateRequest.updateRequest(
                                                                             context);
                                                                         // UpdateRequest();
                                                                       } else {

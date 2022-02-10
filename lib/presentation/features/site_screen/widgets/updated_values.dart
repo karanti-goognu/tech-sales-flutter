@@ -907,7 +907,7 @@ class UpdatedValues {
     UpdatedValues.siteSegment = siteSegment;
   }
 
-  Future<void> UpdateRequest(BuildContext context) async {
+  Future<void> updateRequest(BuildContext context) async {
     var responseBody = {
       "siteId": UpdatedValues.getSiteId(),
       "siteSegment": UpdatedValues.getSiteSegment(),

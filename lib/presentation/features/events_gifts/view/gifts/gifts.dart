@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:intl/intl.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class GiftsView extends StatefulWidget {
   @override
@@ -43,7 +42,7 @@ class _GiftsViewState extends State<GiftsView> {
     for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
       _giftCategoriesList.add(GiftsCategories(
           _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
-      print("printtttt->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
+      print("print ->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
     }
     _giftInHandQtyNew.text=_giftCategoriesList[1].count.toString();
     _giftInHandQty=_giftCategoriesList[1].count.toString();

@@ -942,12 +942,14 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
             ),
             SizedBox(height: 16),
             Center(
-              child: RaisedButton(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                color: HexColor("#1C99D4"),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: HexColor("#1C99D4"),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
                   child: Text(
@@ -962,7 +964,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                 onPressed: () async {
 
                   UpdatedValues updateRequest = new UpdatedValues();
-                  updateRequest.UpdateRequest(context);
+                  updateRequest.updateRequest(context);
                 },
               ),
             ),
