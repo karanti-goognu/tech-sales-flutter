@@ -183,12 +183,14 @@ class _FilterWidgetState extends State<FilterWidget> {
                   ),
                 ),
                 Spacer(),
-                RaisedButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ColorConstants.buttonNormalColor,
+                  ),
                   onPressed: () {
                  //   print(requestGroup);
                     Get.back(result: [resolutionStatus,severityGroup,requestGroup, totalFilters]);
                   },
-                  color: ColorConstants.buttonNormalColor,
                   child: Text(
                     "APPLY",
                     style: TextStyle(color: Colors.white),

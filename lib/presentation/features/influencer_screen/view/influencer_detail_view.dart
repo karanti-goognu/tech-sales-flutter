@@ -386,7 +386,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         // if (value.isEmpty) {
         //   return 'Please enter name';
         // }
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -545,7 +545,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       validator: (value) {
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
