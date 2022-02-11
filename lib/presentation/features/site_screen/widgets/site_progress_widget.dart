@@ -229,6 +229,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               siteProductEntityfromLoaclDB = new List();
                               productDynamicList[index].brandModelForDB = null;
                               _dealerEntityForDb = null;
+                              _selectedRadioValue = null;
                               // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
                                   _siteProductEntityfromLoaclDB = await db
@@ -251,6 +252,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   _stageStatus.text = "LOST";
                                   visitDataDealer = "";
                                   _selectedRadioValue = null;
+
                                 }
                                 UpdatedValues.setSiteProgressStageStatus(
                                     _stageStatus.text);
@@ -991,6 +993,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               .showMessage("Please Select Dealer name !"));
                           return;
                         }
+                      }
+
+                      if (_siteBrandFromLocalDB != null &&
+                          _siteBrandFromLocalDB.brandName.toLowerCase() !=
+                              "dalmia") {
+                           productDynamicList[index].awardLoyaltyPoint = null;
                       }
 
                       if (productDynamicList[index].brandModelForDB == null) {

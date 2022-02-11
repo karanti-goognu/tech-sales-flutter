@@ -1083,13 +1083,21 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               return;
                                             }
 
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
+                                            if (_siteController
+                                                    .pendingSupplyDetailsResponse
+                                                    .pendingSuppliesDetailsModel
+                                                    .requestInitiatedBy ==
+                                                "Influencer") {
+                                              if (_siteController.counterId
+                                                  .toString()
+                                                  .isEmpty) {
+                                                Get.dialog(CustomDialogs()
+                                                    .showMessage(
+                                                        "Please select a Counter !"));
+                                                return;
+                                              }
+                                            } else {
+                                              _siteController.counterId = "";
                                             }
                                           } else if (_siteController
                                               .pendingSupplyDetailsResponse
@@ -1138,7 +1146,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "floor": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
-                                                .floorText.text,
+                                                .floorText
+                                                .text,
                                             "floorId":
                                                 _selectedFloorType == null
                                                     ? null
@@ -1150,14 +1159,19 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .text,
                                             "referenceId": empId,
                                             "siteId": widget.siteId,
-                                            "supplyHistoryId": widget.supplyHistoryId,
+                                            "supplyHistoryId":
+                                                widget.supplyHistoryId,
                                             "supplyQty": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
                                                 .supplyQty
                                                 .text,
                                             "consStageText":
-                                                _selectedConstructionType == null ? "" : _selectedConstructionType.constructionStageText,
+                                                _selectedConstructionType ==
+                                                        null
+                                                    ? ""
+                                                    : _selectedConstructionType
+                                                        .constructionStageText,
                                             "consStageId":
                                                 _selectedConstructionType ==
                                                         null
@@ -1213,14 +1227,21 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                       "Please select a Construction Stage !"));
                                               return;
                                             }
-
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
+                                            if (_siteController
+                                                    .pendingSupplyDetailsResponse
+                                                    .pendingSuppliesDetailsModel
+                                                    .requestInitiatedBy ==
+                                                "Influencer") {
+                                              if (_siteController.counterId
+                                                  .toString()
+                                                  .isEmpty) {
+                                                Get.dialog(CustomDialogs()
+                                                    .showMessage(
+                                                        "Please select a Counter !"));
+                                                return;
+                                              } else {
+                                                _siteController.counterId = "";
+                                              }
                                             }
                                           } else if (_siteController
                                               .pendingSupplyDetailsResponse
@@ -1306,7 +1327,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedRadioValue
                                           };
                                           print(jsonEncode(jsonData));
-                                          _siteController.updatePendingSupplyDetails(jsonData);
+                                          _siteController
+                                              .updatePendingSupplyDetails(
+                                                  jsonData);
                                         },
                                       )
                                     ],
