@@ -656,6 +656,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliderButton(
       action: () async {
         print("wah");
+
         if (await Permission.location.request().isGranted) {
           print("Location ::::");
           internetChecking().then((result) => {

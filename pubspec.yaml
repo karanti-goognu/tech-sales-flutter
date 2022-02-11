@@ -88,7 +88,7 @@ dev_dependencies:
 
 dependency_overrides:
   geolocator: ^5.3.1
-  slider_button: ^0.6.0
+ # slider_button: ^0.6.0
 
 flutter:
   uses-material-design: true
