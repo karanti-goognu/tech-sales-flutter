@@ -92,7 +92,6 @@ dev_dependencies:
 dependency_overrides:
   geolocator: ^5.3.1
   http: ^0.12.2
-  flutter_screenutil: ^0.7.0
   slider_button: ^0.6.0
 
 
