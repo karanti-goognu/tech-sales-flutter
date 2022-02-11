@@ -72,7 +72,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   String _selectedEnrollValue = "N";
   int _memberType;
-  String _district;
   int _influencerCategory;
   int _source;
 
@@ -105,7 +104,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _influencerTypeModel = data;
                   }
                 });
-                print('RESPONSE, ${data}');
+                print('RESPONSE, $data');
               })
             }
           else
@@ -129,7 +128,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _stateDistrictListModel = data;
                   }
                 });
-                print('RESPONSE, ${data}');
+                print('RESPONSE, $data');
               })
             }
           else
@@ -192,7 +191,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 }
               }
             });
-            print('RESPONSE, ${data}');
+            print('RESPONSE, $data');
           });
         }
       },
@@ -295,7 +294,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         // if (value.isEmpty) {
         //   return 'Please enter name';
         // }
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -371,11 +370,13 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       onChanged: (value) {
         setState(() {
           _memberType = value;
-          if(_influencerTypeModel.response.influencerTypeList[value - 1].infRegFlag == "Y"){
-                _enrollVisible = true;
-              }else{
-                _enrollVisible = false;
-              }
+          if (_influencerTypeModel
+                  .response.influencerTypeList[value - 1].infRegFlag ==
+              "Y") {
+            _enrollVisible = true;
+          } else {
+            _enrollVisible = false;
+          }
 
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
               //_memberType == 'Structural Consultant'
@@ -430,12 +431,11 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 DropdownButtonFormField(
                   onChanged: (value) {
                     setState(() {
-                     _preferredBrandId = value;
+                      _preferredBrandId = value;
                     });
                   },
                   items: (_influencerTypeModel == null ||
-                          _influencerTypeModel.response.siteBrandList ==
-                              null)
+                          _influencerTypeModel.response.siteBrandList == null)
                       ? []
                       : _influencerTypeModel.response.siteBrandList
                           .map((e) => DropdownMenuItem(
@@ -443,7 +443,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width / 1.5,
-                                    child: Text(e.brandName+" - "+e.productName)),
+                                    child: Text(
+                                        e.brandName + " - " + e.productName)),
                               ))
                           .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
@@ -463,7 +464,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Marriage Anniversary Date",
                     suffixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 12),
                       child: Icon(
                         Icons.calendar_today,
                         size: 20,
@@ -503,7 +505,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => (checkedValue == true && value.isEmpty) ? 'Please select Birth date' : null,
+      validator: (value) => (checkedValue == true && value.isEmpty)
+          ? 'Please select Birth date'
+          : null,
       controller: _dateController,
       readOnly: true,
       onTap: () {
@@ -513,7 +517,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: (checkedValue == true)?"Birth Date*" : "Birth Date",
+        labelText: (checkedValue == true) ? "Birth Date*" : "Birth Date",
         suffixIcon: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
           child: Icon(
@@ -567,8 +571,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           "1/2",
           style: TextStyles.welcomeMsgTextStyle20,
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "NEXT",
             style:
@@ -586,8 +592,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 _isSecondVisible = true;
               }
             });
-
-            // btnPresssed();
           },
         ),
       ],
@@ -605,7 +609,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       validator: (value) {
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -730,8 +734,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           "2/2",
           style: TextStyles.welcomeMsgTextStyle20,
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "SUBMIT",
             style:
@@ -748,7 +754,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 _addInfluencerFormKeyNext.currentState.save();
                 _isVisible = false;
                 _isSecondVisible = true;
-                btnSubmitPresssed();
+                btnSubmitPressed();
               }
             });
           },
@@ -812,7 +818,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                                   visible: _enrollVisible,
                                   child: enrollmentCheckbox),
                               //SizedBox(height: _height),
-                             // enrollmentCheckbox,
+                              // enrollmentCheckbox,
                               //SizedBox(height: _height),
                               // enrollDropDwn,
                               SizedBox(height: _height),
@@ -924,7 +930,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     });
   }
 
-
   // Future _selectEnrollmentDate() async {
   //   DateTime _picked = await showDatePicker(
   //       context: context,
@@ -1021,7 +1026,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
   }
 
-  btnSubmitPresssed() async {
+  btnSubmitPressed() async {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
@@ -1055,7 +1060,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "stateId": stateId,
       "stateName": stateName,
       "taluka": _talukaController.text,
-
       "designation": _designationController.text,
       "departmentName": _departmentNameController.text,
       "preferredBrandId": _preferredBrandId,

@@ -217,7 +217,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                   ),
                 ),
                 Spacer(),
-                RaisedButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary:ColorConstants.buttonNormalColor,),
                   onPressed: () {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied = true;
@@ -227,7 +229,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },
-                  color: ColorConstants.buttonNormalColor,
+
                   child: Text(
                     "APPLY",
                     style: TextStyle(color: Colors.white),

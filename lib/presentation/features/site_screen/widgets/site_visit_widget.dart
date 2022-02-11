@@ -77,7 +77,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         var date = DateTime.fromMillisecondsSinceEpoch(
             widget.mwpVisitModel.nextVisitDate);
         var formattedDate = DateFormat("yyyy-MM-dd").format(date);
-        selectedDateStringNext = "${formattedDate}";
+        selectedDateStringNext = "$formattedDate";
       } else {
         selectedDateStringNext = "Next visit date";
       }
@@ -164,9 +164,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+          ),
           onPressed: () {
             if (!_isStartButtonDisabled) {
               _isStartButtonDisabled = true;
@@ -192,9 +193,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+          ),
           onPressed: () {
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
@@ -375,14 +377,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                RaisedButton(
-                                  color: ColorConstants.buttonNormalColor,
-                                  highlightColor:
-                                      ColorConstants.buttonPressedColor,
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: ColorConstants.buttonNormalColor,
+                                  ),
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
-
                                       _getCurrentLocation(0);
                                     }
                                   },

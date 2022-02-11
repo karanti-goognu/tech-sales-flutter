@@ -249,7 +249,7 @@ class AddLeadsController extends GetxController {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     File file = File(tempPath + (rng.nextInt(100)).toString() + '.png');
-    http.Response response = await http.get(imageUrl);
+    http.Response response = await http.get(Uri.parse(imageUrl));
     file.writeAsBytes(response.bodyBytes);
     return file;
   }

@@ -367,9 +367,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 SizedBox(
                   height: 16,
                 ),
-                RaisedButton(
-                  color: ColorConstants.buttonNormalColor,
-                  highlightColor: ColorConstants.buttonPressedColor,
+    ElevatedButton(
+    style: ElevatedButton.styleFrom(
+    primary:              ColorConstants.buttonNormalColor,),
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.

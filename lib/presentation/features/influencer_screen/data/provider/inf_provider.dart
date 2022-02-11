@@ -27,7 +27,7 @@ class MyApiClientInf {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -224,7 +224,7 @@ class MyApiClientInf {
       //String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
       String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
       print(url);
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {

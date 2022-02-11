@@ -212,6 +212,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
+
                                   TextFormField(
                                     key: Key(_addEventController.visitSiteId),
                                     initialValue:
@@ -862,9 +863,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,),
           onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.

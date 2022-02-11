@@ -21,7 +21,7 @@ class MyApiClient {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
