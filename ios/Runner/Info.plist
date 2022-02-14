@@ -38,6 +38,8 @@
 	<string>App needs access to capture location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow to access GPS location</string>
+	<key>NSLocationUsageDescription</key>
+    <string>Older devices need location.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App needs access to capture location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
