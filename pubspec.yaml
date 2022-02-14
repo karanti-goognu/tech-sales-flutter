@@ -60,10 +60,7 @@ dependencies:
   intl: ^0.17.0
   geolocator: ^8.0.5
   google_maps_flutter: ^2.0.0
-  #  google_maps_flutter: ^2.1.1
   image_picker:
-  #  image_picker: ^0.6.7+22
-  #  image_picker: ^0.8.4+5
   package_info: ^2.0.2
   firebase_core:
   firebase_crashlytics: ^2.4.5
@@ -71,12 +68,11 @@ dependencies:
   plugin_platform_interface: ^2.1.2
   firebase_messaging:
   firebase_core_platform_interface:
-  slider_button: ^2.0.0
   data_connection_checker: ^0.3.4
   moengage_inbox: ^3.1.0
   moengage_flutter: ^4.0.2
   flutter_screenutil: ^5.1.1
-
+  vibration:
 
   flutter_localizations:
     sdk: flutter
@@ -88,7 +84,6 @@ dev_dependencies:
 
 dependency_overrides:
   geolocator: ^5.3.1
- # slider_button: ^0.6.0
 
 flutter:
   uses-material-design: true
