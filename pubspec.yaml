@@ -71,12 +71,12 @@ dependencies:
   plugin_platform_interface: ^2.1.2
   firebase_messaging:
   firebase_core_platform_interface:
-  slider_button: ^2.0.0
+#  slider_button: ^2.0.0
   data_connection_checker: ^0.3.4
   moengage_inbox: ^3.1.0
   moengage_flutter: ^4.0.2
   flutter_screenutil: ^5.1.1
-
+  vibration:
 
   flutter_localizations:
     sdk: flutter
@@ -89,7 +89,6 @@ dev_dependencies:
 dependency_overrides:
   geolocator: ^5.3.1
   flutter_screenutil: ^0.7.0
-#  slider_button: ^0.6.0
 
 flutter:
   uses-material-design: true

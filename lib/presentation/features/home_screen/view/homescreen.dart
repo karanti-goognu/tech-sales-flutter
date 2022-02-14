@@ -12,12 +12,13 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/slider.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slider_button/slider_button.dart';
+// import 'package:slider_button/slider_button.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
