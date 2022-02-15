@@ -18,6 +18,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1119,8 +1120,7 @@ class CustomDialogs {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String currentDateString = formatter.format(date);
     print("DateFormat--" + currentDateString);
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
@@ -1128,8 +1128,7 @@ class CustomDialogs {
       Get.dialog(Center(
         child: CircularProgressIndicator(),
       ));
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         _eventController
             .submitEndEventDetail(eventId, eventComment, currentDateString,

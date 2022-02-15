@@ -13,7 +13,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -75,7 +74,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _stageStatus = new TextEditingController();
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   int visitSubTypeId;
   String geoTagType;
 

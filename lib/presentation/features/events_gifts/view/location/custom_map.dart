@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
+import 'package:geocoding/geocoding.dart';
+
 
 class CustomMap extends StatefulWidget {
   final List latLong;
@@ -19,16 +22,15 @@ class _CustomMapState extends State<CustomMap> {
   GoogleMapController controller;
   LatLng _markerPosition;
   //= LatLng(28.644800, 77.216721);
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   TextEditingController _locationController = TextEditingController();
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _markerPosition.latitude, _markerPosition.longitude);
       Placemark place = p[0];
-      _locationController.text = place.name +
-          "${place.thoroughfare}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.locality}, ${place.postalCode}";
+      _locationController.text = place.name + "${place.thoroughfare}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
       print(e);
     }
@@ -37,18 +39,17 @@ class _CustomMapState extends State<CustomMap> {
   @override
   void initState() {
     _getCurrentLocation();
-
     super.initState();
   }
 
 
   _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!await GetCurrentLocation.checkLocationPermission()) {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
-      geolocator
+      Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         print(position);

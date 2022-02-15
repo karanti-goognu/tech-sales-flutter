@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/updat
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
@@ -31,7 +32,6 @@ class DetailViewEvent extends StatefulWidget {
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
@@ -522,7 +522,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   // }
 
   _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
@@ -530,10 +530,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       Get.dialog(Center(
         child: CircularProgressIndicator(),
       ));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {

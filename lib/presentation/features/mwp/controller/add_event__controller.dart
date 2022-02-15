@@ -15,6 +15,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitRespo
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -582,7 +583,7 @@ class AddEventController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       print('User Security key is :: $userSecurityKey');
 
-      final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+      // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
       print('=============================');
@@ -647,14 +648,14 @@ class AddEventController extends GetxController {
           }
         });
       } else if (this.visitActionType == "START") {
-        if (!(await Geolocator().isLocationServiceEnabled())) {
+        if (!await GetCurrentLocation.checkLocationPermission()) {
           Get.back();
           Get.dialog(CustomDialogs().errorDialog(
               "Please enable your location service from device settings"));
         } else {
           //if ((await Geolocator().isLocationServiceEnabled())) {
 
-          geolocator
+          Geolocator
               .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
               .then((Position position) {
             print('start');
@@ -733,12 +734,12 @@ class AddEventController extends GetxController {
       } else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
-        if (!(await Geolocator().isLocationServiceEnabled())) {
+        if (!(await GetCurrentLocation.checkLocationPermission())) {
           Get.back();
           Get.dialog(CustomDialogs().errorDialog(
               "Please enable your location service from device settings"));
         } else {
-          geolocator
+          Geolocator
               .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
               .then((Position position) {
             var journeyEndLat = position.latitude;

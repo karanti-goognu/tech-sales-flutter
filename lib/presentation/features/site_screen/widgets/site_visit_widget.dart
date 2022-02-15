@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
@@ -39,7 +40,6 @@ class SiteVisitWidget extends StatefulWidget {
 }
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
@@ -630,7 +630,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocation(int id) async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!await GetCurrentLocation.checkLocationPermission()) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -638,10 +638,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -726,7 +726,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationStart() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -734,10 +734,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -814,7 +814,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationEnd() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -822,10 +822,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {

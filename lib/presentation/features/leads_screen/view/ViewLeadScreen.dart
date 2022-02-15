@@ -31,6 +31,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1868,7 +1869,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   final _addLeadFormKey = GlobalKey<FormState>();
   final _formKeyForViewLeadScreen = GlobalKey();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   int initialImagelistLength;
   LeadStatusEntity _selectedValue;
@@ -2146,7 +2146,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];

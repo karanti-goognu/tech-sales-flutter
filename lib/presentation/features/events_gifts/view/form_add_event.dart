@@ -38,7 +38,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   // LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   var _date = 'Select Date';

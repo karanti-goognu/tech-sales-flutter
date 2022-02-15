@@ -151,7 +151,6 @@ class HomeController extends GetxController {
   }
 
   getCheckInDetails(String accessKey) {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -163,8 +162,7 @@ class HomeController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         journeyStartLat = position.latitude.toString();
         journeyStartLong = position.longitude.toString();
@@ -213,7 +211,6 @@ class HomeController extends GetxController {
   }
 
   getCheckOutDetails(String accessKey) {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -226,8 +223,7 @@ class HomeController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         journeyStartLat =
             _splashController.splashDataModel.journeyDetails.journeyStartLat;

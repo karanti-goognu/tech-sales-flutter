@@ -14,6 +14,7 @@ import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,7 +65,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _taluk = TextEditingController();
   var _totalBathroomCount = TextEditingController();
   var _totalKitchenCount = TextEditingController();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   String geoTagType;
   List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
@@ -1723,7 +1723,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   }
 
   _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().showMessage(
           "Please enable your location service from device settings"));
@@ -1752,7 +1752,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
@@ -1773,7 +1773,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
-            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}");
       });
     } catch (e) {
       print(e);

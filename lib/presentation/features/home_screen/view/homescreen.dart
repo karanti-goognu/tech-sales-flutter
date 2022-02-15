@@ -18,7 +18,6 @@ import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:slider_button/slider_button.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -652,14 +651,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget checkInSliderButton()  {
-    print("checkInSliderButton");
-    print("wah");
     return SliderButton(
       action: () async {
-        print("wah");
-
         if (await Permission.location.request().isGranted) {
-          print("Location ::::");
           internetChecking().then((result) => {
                 if (result == true)
                   {_homeController.getAccessKey(RequestIds.CHECK_IN)}
@@ -705,16 +699,13 @@ class _HomeScreenState extends State<HomeScreen> {
       vibrationFlag: true,
       dismissible: false,
       dismissThresholds: 0.01,
-
     );
   }
 
   Widget checkOutSliderButton() {
-    print("checkOutSliderButton");
     return SliderButton(
       action: () async {
         if (await Permission.location.request().isGranted) {
-          // Either the permission was already granted before or the user just granted it.
           internetChecking().then((result) => {
                 if (result == true)
                   {_homeController.getAccessKey(RequestIds.CHECK_OUT)}
@@ -748,7 +739,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Icons.arrow_forward_outlined,
         color: Colors.white,
         size: 40.0,
-        //  semanticLabel: 'Text to announce in accessibility modes',
       )),
 
       ///Change All the color and size from here.
@@ -762,13 +752,12 @@ class _HomeScreenState extends State<HomeScreen> {
       vibrationFlag: true,
       dismissible: false,
       dismissThresholds: 0.01,
-
     );
   }
 
   Widget journeyEnded() {
-    print("journeyEnded");
-    return GestureDetector(
+    return
+      GestureDetector(
       onTap: () {},
       child: Container(
         height: 70,
@@ -789,7 +778,6 @@ class _HomeScreenState extends State<HomeScreen> {
             childAspectRatio: 2.1,
             crossAxisSpacing: 1,
             mainAxisSpacing: 2),
-        // itemExtent: 125.0,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {

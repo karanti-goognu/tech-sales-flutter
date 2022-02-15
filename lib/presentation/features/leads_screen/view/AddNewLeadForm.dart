@@ -31,6 +31,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +49,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final _dbHelper = DraftLeadDBHelper();
 
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   String _myActivity;
   // LocationResult _pickedLocation;
   bool isSwitchedPrimary = false;
@@ -2554,9 +2554,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   _getAddressFromLatLng() async {
     try {
-      print(
-          "from lat long ${await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude)}");
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
@@ -2573,7 +2571,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         print(
             "........ selected ${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, "
             "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
-            "${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.thoroughfare}, ${place.subThoroughfare}");
       });
     } catch (e) {
       print("ex.....   $e");
