@@ -562,7 +562,7 @@ class _InfluencerViewState extends State<InfluencerView> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              //crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
                 // Expanded(
                    //  child:
@@ -583,7 +583,7 @@ class _InfluencerViewState extends State<InfluencerView> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+             // crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
                 // Expanded(
                 //     child:

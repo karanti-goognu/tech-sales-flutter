@@ -314,6 +314,24 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                                                 ),
                                                           ),
                                                         )),
+                                                    // Padding(
+                                                    //     padding:
+                                                    //     const EdgeInsets
+                                                    //         .all(2.0),
+                                                    //     child: Obx(
+                                                    //           () => Text(
+                                                    //         "${_siteController.sitesListResponse.sitesEntity[index].contactName}" ?? "" ,
+                                                    //         style: TextStyle(
+                                                    //             fontSize: 18,
+                                                    //             fontFamily:
+                                                    //             "Muli",
+                                                    //             fontWeight:
+                                                    //             FontWeight
+                                                    //                 .bold
+                                                    //           //fontWeight: FontWeight.normal
+                                                    //         ),
+                                                    //       ),
+                                                    //     )),
                                                     Padding(
                                                         padding:
                                                             const EdgeInsets

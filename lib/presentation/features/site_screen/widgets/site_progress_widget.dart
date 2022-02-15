@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -120,7 +123,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<CounterListModel> subDealerList = new List();
   List<CounterListModel> dealerList = new List();
 
-  String _selectedRadioValue = 'Yes';
+  String _selectedRadioValue = 'Y';
 
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
@@ -226,6 +229,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               siteProductEntityfromLoaclDB = new List();
                               productDynamicList[index].brandModelForDB = null;
                               _dealerEntityForDb = null;
+                              _selectedRadioValue = null;
                               // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
                                   _siteProductEntityfromLoaclDB = await db
@@ -243,10 +247,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                         .toLowerCase() ==
                                     "dalmia") {
                                   _stageStatus.text = "WON";
-                                  _selectedRadioValue = 'Yes';
+                                  _selectedRadioValue = 'Y';
                                 } else {
                                   _stageStatus.text = "LOST";
                                   visitDataDealer = "";
+                                  _selectedRadioValue = null;
+
                                 }
                                 UpdatedValues.setSiteProgressStageStatus(
                                     _stageStatus.text);
@@ -613,17 +619,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 child: Row(
                                   children: [
                                     Radio(
-                                      value: 'Yes',
+                                      value: 'Y',
                                       groupValue: _selectedRadioValue,
                                       onChanged: (value) {
                                         setState(() {
-                                          // if (_siteBrandFromLocalDB != null &&
-                                          //       _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                                          //           "dalmia") {
                                             _selectedRadioValue = value;
-                                          // }else{
-                                          //   _selectedRadioValue = 'No';
-                                          // }
+                                            productDynamicList[index].awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
@@ -639,11 +640,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 child: Row(
                                   children: [
                                     Radio(
-                                      value: 'No',
+                                      value: 'N',
                                       groupValue: _selectedRadioValue,
                                       onChanged: (value) {
                                         setState(() {
                                           _selectedRadioValue = value;
+                                          productDynamicList[index].awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
@@ -993,6 +995,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         }
                       }
 
+                      if (_siteBrandFromLocalDB != null &&
+                          _siteBrandFromLocalDB.brandName.toLowerCase() !=
+                              "dalmia") {
+                           productDynamicList[index].awardLoyaltyPoint = null;
+                      }
+
                       if (productDynamicList[index].brandModelForDB == null) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));
@@ -1028,7 +1036,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 initialExpanded: false),
                             brandModelForDB:
                                 productDynamicList[index].brandModelForDB,
-                            dealerName: _dealerName);
+                            dealerName: _dealerName,
+                        awardLoyaltyPoint: productDynamicList[index].awardLoyaltyPoint);
+                        print("product13 : ${(productDynamicList[index].awardLoyaltyPoint)}");
                         sumNoOfBagsSupplied();
                         updateSiteSupplyHistory();
                       });
@@ -1529,9 +1539,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           index = productDynamicList.length;
                         }
 
-                        print("index1" + index.toString());
+                        print("index1 " + index.toString());
                         if (index == 0) {
                           setState(() {
+                            _selectedRadioValue = "Y";
                             BrandModelforDB brand;
                             ProductListModel product11 = new ProductListModel(
                                 brandId: -1,
@@ -1541,12 +1552,16 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 isExpanded: new ExpandableController(
                                     initialExpanded: true),
                                 brandModelForDB: brand,
-                                dealerName: new TextEditingController());
+                                dealerName: new TextEditingController(),
+                              awardLoyaltyPoint: "Y",
+                            );
                             productDynamicList.insert(index, product11);
+                            print("product11 : ${productDynamicList[index].awardLoyaltyPoint}");
                           });
                         } else {
                           if (productDynamicList[index - 1].brandId != -1) {
                             setState(() {
+                              _selectedRadioValue = "Y";
                               BrandModelforDB brand;
                               ProductListModel product11 = new ProductListModel(
                                   brandId: -1,
@@ -1556,8 +1571,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   isExpanded: new ExpandableController(
                                       initialExpanded: true),
                                   brandModelForDB: brand,
-                                  dealerName: new TextEditingController());
+                                  dealerName: new TextEditingController(),
+                              awardLoyaltyPoint: "Y");
                               productDynamicList.insert(index, product11);
+                              print("product112 : ${productDynamicList[index].awardLoyaltyPoint}");
                             });
                           } else {
                             Get.dialog(CustomDialogs().errorDialog(
@@ -2548,7 +2565,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               receiptNumber: "",
               isAuthorised: "N",
               authorisedBy: "",
-              authorisedOn: ""));
+              authorisedOn: "",
+              awardLoyaltyPoint: productDynamicList[i].awardLoyaltyPoint));
         }
       }
     }

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
         context: context,
         initialDate: selectedDate,
         firstDate: firstDate!=null?firstDate:DateTime(2020),
-        lastDate: lastDate!=null?lastDate:DateTime(2022),
+        lastDate: lastDate!=null?lastDate:DateTime(2025),
     );
     if (picked != null && picked != selectedDate){
       // print(picked);
