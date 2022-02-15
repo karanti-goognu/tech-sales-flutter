@@ -15,14 +15,14 @@ abstract class UrlConstants {
 
  // QA
  //
- // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+ static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+ static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
- static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
- static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
- static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
+ // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
  //End points
@@ -81,8 +81,7 @@ abstract class UrlConstants {
  static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
  static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
 
- //static const String siteDistList = '$baseUrl/sites/district-list';
- static const String siteDistList = '$baseUrl/sites/district-list?referenceID=';
+ static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
 
 
  static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="

@@ -530,6 +530,8 @@ print("URL:$url ");
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
+      print("URL: ${UrlConstants.siteDistList + empID}");
+      print("Data: $data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);

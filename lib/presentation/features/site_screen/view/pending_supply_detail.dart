@@ -1072,16 +1072,17 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select Floor !"));
+                                                  "Please select Floor !"));
                                               return;
                                             }
                                             if (_selectedConstructionType ==
                                                 null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select a Construction Stage !"));
+                                                  "Please select a Construction Stage !"));
                                               return;
                                             }
+                                          }
 
                                             if (_siteController
                                                     .pendingSupplyDetailsResponse
@@ -1096,10 +1097,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                         "Please select a Counter !"));
                                                 return;
                                               }
-                                            } else {
-                                              _siteController.counterId = "";
                                             }
-                                          } else if (_siteController
+
+                                          if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .brandPrice
@@ -1217,16 +1217,17 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select Floor !"));
+                                                  "Please select Floor !"));
                                               return;
                                             }
                                             if (_selectedConstructionType ==
                                                 null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select a Construction Stage !"));
+                                                  "Please select a Construction Stage !"));
                                               return;
                                             }
+                                          }
                                             if (_siteController
                                                     .pendingSupplyDetailsResponse
                                                     .pendingSuppliesDetailsModel
@@ -1239,11 +1240,10 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .showMessage(
                                                         "Please select a Counter !"));
                                                 return;
-                                              } else {
-                                                _siteController.counterId = "";
                                               }
                                             }
-                                          } else if (_siteController
+
+                                          if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .brandPrice
