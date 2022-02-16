@@ -227,9 +227,9 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .baseline,
+                                    // crossAxisAlignment:
+                                    // CrossAxisAlignment
+                                    //     .baseline,
                                     children: [
                                       //Expanded(
                                       // flex: 1,

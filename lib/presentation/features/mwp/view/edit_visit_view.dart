@@ -36,16 +36,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   String siteIdText = "Site Id";
 
-  // getDetailEventsData() async {
-  //  // _appController.getAccessKey(RequestIds.VIEW_VISIT);
-  //   await _addEventController.viewVisitData(this._appController.accessKeyResponse.accessKey).then((value) => {
-  //     setState(() {
-  //      // _addEventController.visitResponseModel = value;
-  //       //visitResponseModel = value;
-  //     })
-  //   });
-  // }
-
   @override
   void initState() {
     _appController.getAccessKey(RequestIds.VIEW_VISIT);

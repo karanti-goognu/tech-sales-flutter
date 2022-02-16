@@ -1277,13 +1277,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             onChanged: (String data) {
                               UpdatedValues.setPlotNumber(_plotNumber.text);
                             },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter Address ';
-                              }
-
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value.isEmpty) {
+                            //     return 'Please enter Address ';
+                            //   }
+                            //
+                            //   return null;
+                            // },
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
