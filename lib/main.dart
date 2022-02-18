@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/splash/view/splash_scre
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/routes/notification_routes.dart';
 import 'package:flutter_tech_sales/utils/constants/moengage_util.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/inapp_campaign.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
@@ -16,6 +17,7 @@ import 'package:moengage_flutter/push_token.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -26,6 +28,7 @@ void main() async {
   _moengagePlugin.enableSDKLogs();
   _moengagePlugin.initialise();
   _moengagePlugin.registerForPushNotification();
+
 
   runZonedGuarded(
         () {
@@ -70,8 +73,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
 
+
   @override
   void initState() {
+
     super.initState();
     initPlatformState();
     _moengagePlugin.setUpPushCallbacks(_onPushClick);

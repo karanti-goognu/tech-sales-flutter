@@ -1,6 +1,7 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_tech_sales/main.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -67,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     print("home screen.dart :::::: initState()");
+
     super.initState();
     // initPlatformState();
     /** Kp Changes*/
