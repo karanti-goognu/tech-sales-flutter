@@ -212,7 +212,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 _addEventController.siteIdText == "Counter Code"
                     ? DropdownButtonFormField(
                         decoration: FormFieldStyle.buildInputDecoration(
-                            labelText: "Counter"),
+                            labelText: "Counters"),
                         items: _addEventController.dealerList
                             .map<DropdownMenuItem<dynamic>>((val) {
                           return DropdownMenuItem(

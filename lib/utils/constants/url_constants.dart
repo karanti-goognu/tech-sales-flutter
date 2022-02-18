@@ -76,11 +76,11 @@ abstract class UrlConstants {
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
- static const String updateVersion4SiteData = '$baseUrl/sites/v4/site-update';
+ //static const String updateVersion4SiteData = '$baseUrl/sites/v4/site-update';
+ static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
  static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
 
- //static const String siteDistList = '$baseUrl/sites/district-list';
- static const String siteDistList = '$baseUrl/sites/district-list?referenceID=';
+ static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
 
 
  static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="

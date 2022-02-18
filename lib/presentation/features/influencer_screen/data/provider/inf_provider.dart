@@ -99,7 +99,9 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      print("======${UrlConstants.getInfluencerDetail + "$contact"}");
       var data = json.decode(response.body);
+      print("======$data");
       if (response.statusCode == 200) {
         Get.back();
         print("======$data");

@@ -388,6 +388,22 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                     )),
                                                 Padding(
                                                     padding:
+                                                    const EdgeInsets.all(
+                                                        2.0),
+                                                    child: Obx(
+                                                          () => Text(
+                                                        "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].siteOwnerName ?? ""}",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                            FontWeight.bold
+                                                          //fontWeight: FontWeight.normal
+                                                        ),
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                    padding:
                                                         const EdgeInsets.all(
                                                             2.0),
                                                     child: Obx(

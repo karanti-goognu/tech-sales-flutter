@@ -50,8 +50,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   ConstStage _selectedConstructionType;
   SiteFloorlist _selectedFloorType;
   bool isExpanded = true;
-  String _selectedRadioValue = 'Yes';
-
+  String _selectedRadioValue = 'Y';
 
   getPendingSupplyData() async {
     var data = await _siteController.pendingSupplyDetails(
@@ -197,10 +196,12 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     padding: const EdgeInsets.only(
                                         top: 50.0, bottom: 10, left: 0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "SITE INFO : " + widget.siteId.toString(),
+                                          "SITE INFO : " +
+                                              widget.siteId.toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
@@ -255,6 +256,61 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             // _getCurrentLocation();
                                           },
                                         )
+                                        // (isExpanded)
+                                        //     ? Column(
+                                        //         children: [
+                                        //           FlatButton.icon(
+                                        //             color: Colors.transparent,
+                                        //             icon: Icon(
+                                        //               Icons.add,
+                                        //               color:
+                                        //                   HexColor("#F9A61A"),
+                                        //               size: 18,
+                                        //             ),
+                                        //             label: Text(
+                                        //               "EXPAND",
+                                        //               style: TextStyle(
+                                        //                   color: HexColor(
+                                        //                       "#F9A61A"),
+                                        //                   fontWeight:
+                                        //                       FontWeight.bold,
+                                        //                   // letterSpacing: 2,
+                                        //                   fontSize: 15),
+                                        //             ),
+                                        //             onPressed: () {
+                                        //               setState(() {
+                                        //                 isExpanded =
+                                        //                     !isExpanded;
+                                        //               });
+                                        //               // _getCurrentLocation();
+                                        //             },
+                                        //           ),
+                                        //         ],
+                                        //       )
+                                        //     : FlatButton.icon(
+                                        //         color: Colors.transparent,
+                                        //         icon: Icon(
+                                        //           Icons.remove,
+                                        //           color: HexColor("#F9A61A"),
+                                        //           size: 18,
+                                        //         ),
+                                        //         label: Text(
+                                        //           "COLLAPSE",
+                                        //           style: TextStyle(
+                                        //               color:
+                                        //                   HexColor("#F9A61A"),
+                                        //               fontWeight:
+                                        //                   FontWeight.bold,
+                                        //               // letterSpacing: 2,
+                                        //               fontSize: 15),
+                                        //         ),
+                                        //         onPressed: () {
+                                        //           setState(() {
+                                        //             isExpanded = !isExpanded;
+                                        //           });
+                                        //           // _getCurrentLocation();
+                                        //         },
+                                        //       )
                                       ],
                                     ),
                                   ),
@@ -262,91 +318,110 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                   Visibility(
                                       visible: !isExpanded,
                                       child: Container(
-                                        width:  MediaQuery. of(context). size. width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         color: Colors.grey[100],
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-
-                                              Text("Owner Number : "),
-                                              Text("Influencer Name : "),
-                                              Text("Influencer Number : "),
-                                              Text("Request Initiated By : "),
+                                              Text(
+                                                  "Owner Number : ${_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.siteOwnerNumber ?? ""}"),
+                                              Text(
+                                                  "Influencer Name : ${_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.influencerName ?? ""}"),
+                                              Text(
+                                                  "Influencer Number :${_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.influencerContactNumber ?? ""} "),
+                                              Text(
+                                                  "Request Initiated By : ${_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.requestInitiatedBy ?? ""}"),
                                             ],
                                           ),
                                         ),
                                       )),
                                   //SizedBox(height: 16),
-                                  Text("Owner Name : ",style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      // color: HexColor("#000000DE"),
-                                      fontFamily: "Muli"),),
+                                  Text(
+                                    "Owner Name : ${_siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.siteOwnerName ?? ""}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        // color: HexColor("#000000DE"),
+                                        fontFamily: "Muli"),
+                                  ),
                                   Container(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, top: 10, right: 10),
+                                        child: Text(
+                                          "Award Loyalty Point",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              fontFamily: "Muli"),
+                                        ),
+                                      ),
+                                      Row(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, top: 10, right: 10),
-                                            child: Text(
-                                              "Award Loyalty Point",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  fontFamily: "Muli"),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Radio(
+                                                  value: 'Y',
+                                                  groupValue:
+                                                      _selectedRadioValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedRadioValue =
+                                                          value;
+                                                    });
+                                                  },
+                                                ),
+                                                Text(
+                                                  "Yes",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                      // color: HexColor("#000000DE"),
+                                                      fontFamily: "Muli"),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      value: 'Yes',
-                                                      groupValue: _selectedRadioValue,
-                                                      onChanged: (value) {
-                                                        setState(() {
-
-                                                          _selectedRadioValue = value;
-
-                                                        });
-                                                      },
-                                                    ),
-                                                    Text("Yes",style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 18,
-                                                        // color: HexColor("#000000DE"),
-                                                        fontFamily: "Muli"),)
-                                                  ],
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Radio(
+                                                  value: 'N',
+                                                  groupValue:
+                                                      _selectedRadioValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedRadioValue =
+                                                          value;
+                                                    });
+                                                  },
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      value: 'No',
-                                                      groupValue: _selectedRadioValue,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          _selectedRadioValue = value;
-                                                        });
-                                                      },
-                                                    ),
-                                                    Text("No",style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 18,
-                                                        // color: HexColor("#000000DE"),
-                                                        fontFamily: "Muli"),)
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                                Text(
+                                                  "No",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                      // color: HexColor("#000000DE"),
+                                                      fontFamily: "Muli"),
+                                                )
+                                              ],
+                                            ),
+                                          )
                                         ],
-                                      )),
+                                      ),
+                                    ],
+                                  )),
                                   SizedBox(height: 16),
                                   Obx(() => _siteController
                                               .pendingSupplyDetailsResponse
@@ -523,7 +598,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .inputBoxHintColor,
                                             fontFamily: "Muli"),
                                         keyboardType: TextInputType.number,
-                                        readOnly: true,
+                                        //readOnly: true,
                                         decoration:
                                             FormFieldStyle.buildInputDecoration(
                                           labelText: "Stage Potential",
@@ -599,49 +674,60 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   .inputBoxHintColor,
                                               fontFamily: "Muli"),
                                         )
-                                      : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            DropdownButtonFormField(
-                                                decoration: FormFieldStyle
-                                                    .buildInputDecoration(
-                                                        labelText: "Counter"),
-                                                items: _addEventController
-                                                    .dealerList
-                                                    .map<
-                                                        DropdownMenuItem<
-                                                            dynamic>>((val) {
-                                                  return DropdownMenuItem(
-                                                    value: val,
-                                                    child: SizedBox(
-                                                        width: SizeConfig
-                                                                .screenWidth -
-                                                            100,
-                                                        child: Text(
-                                                            '${val.dealerName} (${val.dealerId})')),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (val) {
-                                                  _siteController.counterId =
-                                                      val.dealerId;
-                                                  getKittyBags(val.dealerId);
-                                                }),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15),
-                                              child: Text(
-                                                "Mandatory",
-                                                style: TextStyle(
-                                                  fontFamily: "Muli",
-                                                  color: ColorConstants
-                                                      .inputBoxHintColorDark,
-                                                  fontWeight: FontWeight.normal,
+                                      : _siteController
+                                                  .pendingSupplyDetailsResponse
+                                                  .pendingSuppliesDetailsModel
+                                                  .requestInitiatedBy ==
+                                              "Influencer"
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                DropdownButtonFormField(
+                                                    decoration: FormFieldStyle
+                                                        .buildInputDecoration(
+                                                            labelText:
+                                                                "Counter"),
+                                                    items: _addEventController
+                                                        .dealerList
+                                                        .map<
+                                                            DropdownMenuItem<
+                                                                dynamic>>((val) {
+                                                      return DropdownMenuItem(
+                                                        value: val,
+                                                        child: SizedBox(
+                                                            width: SizeConfig
+                                                                    .screenWidth -
+                                                                100,
+                                                            child: Text(
+                                                                '${val.dealerName} (${val.dealerId})')),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (val) {
+                                                      _siteController
+                                                              .counterId =
+                                                          val.dealerId;
+                                                      getKittyBags(
+                                                          val.dealerId);
+                                                    }),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15),
+                                                  child: Text(
+                                                    "Mandatory",
+                                                    style: TextStyle(
+                                                      fontFamily: "Muli",
+                                                      color: ColorConstants
+                                                          .inputBoxHintColorDark,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                              ],
+                                            )
+                                          : Container(),
                                   _siteController.counterId.toString().isEmpty
                                       ? Container()
                                       : Padding(
@@ -1029,9 +1115,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         onPressed: () async {
                                           String empId = await getEmpId();
                                           if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .shipToPartyName ==
+                                                  .pendingSupplyDetailsResponse
+                                                  .pendingSuppliesDetailsModel
+                                                  .shipToPartyName ==
                                               null) {
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
@@ -1046,17 +1132,24 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   "Please select a Construction Stage !"));
                                               return;
                                             }
-
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                  "Please select a Counter !"));
-                                              return;
-                                            }
                                           }
-                                          else if (_siteController
+
+                                            if (_siteController
+                                                    .pendingSupplyDetailsResponse
+                                                    .pendingSuppliesDetailsModel
+                                                    .requestInitiatedBy ==
+                                                "Influencer") {
+                                              if (_siteController.counterId
+                                                  .toString()
+                                                  .isEmpty) {
+                                                Get.dialog(CustomDialogs()
+                                                    .showMessage(
+                                                        "Please select a Counter !"));
+                                                return;
+                                              }
+                                            }
+
+                                          if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .brandPrice
@@ -1100,17 +1193,47 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
-                                            "floor": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.floorText,
-                                            "floorId": _selectedFloorType == null ? null : _siteController.floorId,
-                                            "brandPrice": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.brandPrice.text,
+                                            "floor": _siteController
+                                                .pendingSupplyDetailsResponse
+                                                .pendingSuppliesDetailsModel
+                                                .floorText
+                                                .text,
+                                            "floorId":
+                                                _selectedFloorType == null
+                                                    ? null
+                                                    : _siteController.floorId,
+                                            "brandPrice": _siteController
+                                                .pendingSupplyDetailsResponse
+                                                .pendingSuppliesDetailsModel
+                                                .brandPrice
+                                                .text,
                                             "referenceId": empId,
                                             "siteId": widget.siteId,
-                                            "supplyHistoryId": widget.supplyHistoryId,
-                                            "supplyQty": _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.supplyQty.text,
-                                            "consStageText": _selectedConstructionType == null ? "" : _selectedConstructionType.constructionStageText,
-                                            "consStageId": _selectedConstructionType == null ? null : _selectedConstructionType.id,
-                                            "counterId": _siteController.counterId
+                                            "supplyHistoryId":
+                                                widget.supplyHistoryId,
+                                            "supplyQty": _siteController
+                                                .pendingSupplyDetailsResponse
+                                                .pendingSuppliesDetailsModel
+                                                .supplyQty
+                                                .text,
+                                            "consStageText":
+                                                _selectedConstructionType ==
+                                                        null
+                                                    ? ""
+                                                    : _selectedConstructionType
+                                                        .constructionStageText,
+                                            "consStageId":
+                                                _selectedConstructionType ==
+                                                        null
+                                                    ? null
+                                                    : _selectedConstructionType
+                                                        .id,
+                                            "counterId":
+                                                _siteController.counterId,
+                                            "awardLoyaltyPoint":
+                                                _selectedRadioValue,
                                           };
+                                          print(jsonEncode(jsonData));
                                           _siteController
                                               .updatePendingSupplyDetails(
                                                   jsonData);
@@ -1144,27 +1267,33 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select Floor !"));
+                                                  "Please select Floor !"));
                                               return;
                                             }
                                             if (_selectedConstructionType ==
                                                 null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
-                                                      "Please select a Construction Stage !"));
-                                              return;
-                                            }
-
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
+                                                  "Please select a Construction Stage !"));
                                               return;
                                             }
                                           }
-                                          else if (_siteController
+                                            if (_siteController
+                                                    .pendingSupplyDetailsResponse
+                                                    .pendingSuppliesDetailsModel
+                                                    .requestInitiatedBy ==
+                                                "Influencer") {
+                                              if (_siteController.counterId
+                                                  .toString()
+                                                  .isEmpty) {
+                                                Get.dialog(CustomDialogs()
+                                                    .showMessage(
+                                                        "Please select a Counter !"));
+                                                return;
+                                              }
+                                            }
+
+                                          if (_siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .brandPrice
@@ -1230,9 +1359,22 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .pendingSuppliesDetailsModel
                                                 .supplyQty
                                                 .text,
-                                            "consStageText": _selectedConstructionType == null ? "" : _selectedConstructionType.constructionStageText,
-                                            "consStageId": _selectedConstructionType == null ? null : _selectedConstructionType.id,
-                                            "counterId": _siteController.counterId
+                                            "consStageText":
+                                                _selectedConstructionType ==
+                                                        null
+                                                    ? ""
+                                                    : _selectedConstructionType
+                                                        .constructionStageText,
+                                            "consStageId":
+                                                _selectedConstructionType ==
+                                                        null
+                                                    ? null
+                                                    : _selectedConstructionType
+                                                        .id,
+                                            "counterId":
+                                                _siteController.counterId,
+                                            "awardLoyaltyPoint":
+                                                _selectedRadioValue
                                           };
                                           print(jsonEncode(jsonData));
                                           _siteController

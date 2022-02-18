@@ -1222,6 +1222,7 @@ class ProductListModel {
   var isExpanded = ExpandableController();
   BrandModelforDB brandModelForDB;
   var dealerName = TextEditingController();
+  String awardLoyaltyPoint = "Y";
 
 
   ProductListModel(
@@ -1231,7 +1232,8 @@ class ProductListModel {
         this.supplyQty,
       this.isExpanded,
       this.brandModelForDB,
-      this.dealerName});
+      this.dealerName,
+      this.awardLoyaltyPoint});
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
     brandId = json['brandId'];
@@ -1241,6 +1243,7 @@ class ProductListModel {
     isExpanded.expanded = json['isExpanded'];
     brandModelForDB = json['brandModelForDB'];
     dealerName = json['dealerName'];
+    awardLoyaltyPoint = json['awardLoyaltyPoint'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1252,6 +1255,7 @@ class ProductListModel {
     data['isExpanded'] = this.isExpanded.expanded;
     data['brandModelForDB'] = this.brandModelForDB;
     data['dealerName'] = this.dealerName;
+    data['awardLoyaltyPoint'] = this.awardLoyaltyPoint;
     return data;
   }
 }
@@ -1345,6 +1349,7 @@ class SiteSupplyHistorys {
   String authorisedOn;
   String createdBy;
   int createdOn;
+  String awardLoyaltyPoint;
 
   SiteSupplyHistorys(
       {this.siteSupplyHistoryId,
@@ -1360,7 +1365,7 @@ class SiteSupplyHistorys {
         this.shipToParty,
         this.soCode,
         this.isAuthorised,
-        this.receiptNumber,this.authorisedBy, this.authorisedOn});
+        this.receiptNumber,this.authorisedBy, this.authorisedOn, this.awardLoyaltyPoint});
 
   SiteSupplyHistorys.fromJson(Map<String, dynamic> json) {
     siteSupplyHistoryId = json['siteSupplyHistoryId'];
@@ -1379,6 +1384,7 @@ class SiteSupplyHistorys {
     receiptNumber = json['receiptNumber'].toString() ?? "";
     authorisedBy = json['authorisedBy'].toString()??"";
     authorisedOn = json['authorisedOn'].toString() ??"";
+    awardLoyaltyPoint = json['awardLoyaltyPoint'].toString() ??"";
   }
 
   Map<String, dynamic> toJson() {
@@ -1399,6 +1405,7 @@ class SiteSupplyHistorys {
     data['receiptNumber'] = this.receiptNumber;
     data['authorisedBy'] = this.authorisedBy;
     data['authorisedOn'] = this.authorisedOn;
+    data['awardLoyaltyPoint'] = this.awardLoyaltyPoint;
     return data;
   }
 }

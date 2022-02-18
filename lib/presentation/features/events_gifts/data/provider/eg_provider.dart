@@ -257,7 +257,8 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-      print("======$data");
+      print("===DATA===$data");
+        print("=URL=====${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}");
       if (data["resp_code"] == "DM1005") {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);

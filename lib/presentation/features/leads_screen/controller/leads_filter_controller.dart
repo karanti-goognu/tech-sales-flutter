@@ -334,13 +334,13 @@ class LeadsFilterController extends GetxController {
         }
       }
 
-      String leadDistrict = "";
+      String districtName = "";
       if (this.selectedLeadDistrict != StringConstants.empty) {
-        leadDistrict = "&leadDistrict=${this.selectedLeadDistrict}";
+        districtName = "&districtName=${this.selectedLeadDistrict}";
       }
 
       //debugPrint('request without encryption: $body');
-      String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints&limit=10&offset=${this.offset}";
+      String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints$districtName&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
       debugPrint('Url is : $encodedUrl');

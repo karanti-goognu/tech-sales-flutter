@@ -71,6 +71,7 @@ class PendingSuppliesModel {
   String dealerName;
   String dealerContact;
   String inflName;
+  String siteOwnerName;
 
   PendingSuppliesModel(
       {this.siteId,
@@ -87,7 +88,8 @@ class PendingSuppliesModel {
         this.approvedQty,
         this.dealerName,
         this.dealerContact,
-        this.inflName});
+        this.inflName,
+      this.siteOwnerName});
 
   PendingSuppliesModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
@@ -105,6 +107,7 @@ class PendingSuppliesModel {
     dealerName = json['dealerName'];
     dealerContact = json['dealerContact'];
     inflName = json['inflName'];
+    siteOwnerName = json['siteOwnerName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -124,6 +127,7 @@ class PendingSuppliesModel {
     data['dealerName'] = this.dealerName;
     data['dealerContact'] = this.dealerContact;
     data['inflName'] = this.inflName;
+    data['siteOwnerName'] = this.siteOwnerName;
     return data;
   }
 }
