@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/bindings/site_binding.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
@@ -111,28 +115,31 @@ class NotificationRoutes {
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
       case StringConstants.SITES_SCREEN:
-        Get.toNamed(Routes.SITES_SCREEN);
+        // Get.toNamed(Routes.SITES_SCREEN);
+        Get.to(()=>ViewSiteScreenNew(siteId: payloadData['id'],tabIndex: 0,));
         break;
 
-        /// Navigation paths to be updated
-      case StringConstants.VIEW_OLD_LEAD_SCREEN:
-        Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
-        break;
       case StringConstants.SERVICE_REQUEST_UPDATESCREEN:
-        Get.toNamed(Routes.SERVICE_REQUEST_UPDATESCREEN);
+        if (payloadData['id'] != null)
+          Get.to(()=>
+            RequestUpdation(
+                id: payloadData["id"] ),
+            transition: Transition.rightToLeft,
+            binding: SRBinding(),
+          );
         break;
-      case StringConstants.ALL_EVENTS:
-        Get.toNamed(Routes.ALL_EVENTS);
-        break;
-      case StringConstants.CANCEL_EVENT:
-        Get.toNamed(Routes.CANCEL_EVENT);
-        break;
-      case StringConstants.UPDATE_EVENT:
-        Get.toNamed(Routes.UPDATE_EVENT);
-        break;
-      case StringConstants.END_EVENT:
-        Get.toNamed(Routes.END_EVENT);
-        break;
+    // case StringConstants.ALL_EVENTS:
+    //   Get.toNamed(Routes.ALL_EVENTS);
+    //   break;
+    // case StringConstants.CANCEL_EVENT:
+    //   Get.toNamed(Routes.CANCEL_EVENT);
+    //   break;
+    // case StringConstants.UPDATE_EVENT:
+    //   Get.toNamed(Routes.UPDATE_EVENT);
+    //   break;
+    // case StringConstants.END_EVENT:
+    //   Get.toNamed(Routes.END_EVENT);
+    //   break;
 
       default:
         Get.toNamed(Routes.HOME_SCREEN);
@@ -140,9 +147,9 @@ class NotificationRoutes {
     }
   }
 
-  // static landingPushNavigation({LandingController landingController, String screenName}) {
-  //   landingController.viewContentWidget(screenName);
-  // }
+// static landingPushNavigation({LandingController landingController, String screenName}) {
+//   landingController.viewContentWidget(screenName);
+// }
 
 }
 

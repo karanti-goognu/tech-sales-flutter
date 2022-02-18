@@ -28,7 +28,11 @@ class ViewSiteScreenNew extends StatefulWidget {
   int siteId;
   final tabIndex;
 
-  ViewSiteScreenNew({this.siteId, this.tabIndex});
+  ViewSiteScreenNew({this.siteId, this.tabIndex}){
+    print(this.siteId);
+    print(this.tabIndex);
+    print("Waheguru waheguru waheguru waheguru");
+  }
 
   @override
   _ViewSiteScreenState createState() => _ViewSiteScreenState();
