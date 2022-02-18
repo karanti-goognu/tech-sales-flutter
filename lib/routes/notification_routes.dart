@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_tech_sales/bindings/site_binding.dart';
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_name_list.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -36,11 +40,6 @@ class NotificationRoutes {
         break;
       case StringConstants.VIDEO_TUTORIAL:
         Get.toNamed(Routes.VIDEO_TUTORIAL);
-        break;
-      case StringConstants.VIDEO_PLAYER:
-        if (payloadData['url'] != null && payloadData['des'] != null)
-          Get.toNamed(Routes.VIDEO_PLAYER,
-              arguments: [payloadData['url'], payloadData['des']]);
         break;
       case StringConstants.EVENTS_GIFTS:
         Get.toNamed(Routes.EVENTS_GIFTS);
@@ -114,11 +113,15 @@ class NotificationRoutes {
       case StringConstants.VISIT_VIEW_SCREEN:
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
+      case StringConstants.VIDEO_PLAYER:
+        if (payloadData['url'] != null && payloadData['des'] != null)
+          Get.toNamed(Routes.VIDEO_PLAYER,
+              arguments: [payloadData['url'], payloadData['des']]);
+        break;
       case StringConstants.SITES_SCREEN:
-        // Get.toNamed(Routes.SITES_SCREEN);
+        if (payloadData['id'] != null)
         Get.to(()=>ViewSiteScreenNew(siteId: payloadData['id'],tabIndex: 0,));
         break;
-
       case StringConstants.SERVICE_REQUEST_UPDATESCREEN:
         if (payloadData['id'] != null)
           Get.to(()=>
@@ -128,18 +131,13 @@ class NotificationRoutes {
             binding: SRBinding(),
           );
         break;
-    // case StringConstants.ALL_EVENTS:
-    //   Get.toNamed(Routes.ALL_EVENTS);
-    //   break;
-    // case StringConstants.CANCEL_EVENT:
-    //   Get.toNamed(Routes.CANCEL_EVENT);
-    //   break;
-    // case StringConstants.UPDATE_EVENT:
-    //   Get.toNamed(Routes.UPDATE_EVENT);
-    //   break;
-    // case StringConstants.END_EVENT:
-    //   Get.toNamed(Routes.END_EVENT);
-    //   break;
+    case StringConstants.VIEW_OLD_LEAD_SCREEN:
+      Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
+          binding: AddLeadsBinding());
+      break;
+      case StringConstants.INFLUENCER_DETAILS:
+      Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),binding: InfBinding());
+      break;
 
       default:
         Get.toNamed(Routes.HOME_SCREEN);
