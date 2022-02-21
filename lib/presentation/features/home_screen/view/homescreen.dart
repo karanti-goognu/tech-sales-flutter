@@ -1,8 +1,9 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -55,7 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    CheckInternet instance = CheckInternet();
+    bool result = await instance.hasConnection();
+    // bool result = await DataConnectionChecker().hasConnection;
     return result;
   }
 

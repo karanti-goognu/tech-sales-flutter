@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -54,7 +54,8 @@ class _SiteListScreenState extends State<SiteListScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    CheckInternet instance = CheckInternet();
+    bool result = await instance.hasConnection();
     return result;
   }
 

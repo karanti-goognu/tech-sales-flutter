@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
@@ -572,7 +571,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-      dateString = '${d}';
+      dateString = '$d';
     });
   }
 

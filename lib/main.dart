@@ -8,7 +8,6 @@ import 'package:flutter_tech_sales/presentation/features/splash/view/splash_scre
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/routes/notification_routes.dart';
 import 'package:flutter_tech_sales/utils/constants/moengage_util.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/inapp_campaign.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';

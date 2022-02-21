@@ -117,10 +117,10 @@ class AppPages {
         name: Routes.MEET_SCREEN,
         page: () => AddEventInfluencerMeet(),
         binding: AppBinding()),
-    GetPage(
-        name: Routes.VIEW_MEET_SCREEN,
-        page: () => ViewEventVisit(),
-        binding: AppBinding()),
+    // GetPage(
+    //     name: Routes.VIEW_MEET_SCREEN,
+    //     page: () => ViewEventVisit(),
+    //     binding: AppBinding()),
     GetPage(
         name: Routes.DEALER_LIST_VIEW,
         page: () => DealersListViewWidget(),
@@ -196,11 +196,11 @@ class AppPages {
     //   page: () => EndEvent(),
     //   //binding: DashboardBinding(),
     // ),
-    GetPage(
-      name: Routes.UPDATE_EVENT,
-      page: () => UpdateEvent(),
-      //binding: DashboardBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.UPDATE_EVENT,
+    //   page: () => UpdateEvent(),
+    //   //binding: DashboardBinding(),
+    // ),
     // GetPage(
     //   name: Routes.UPDATE_DLR_INF,
     //   page: () => UpdateDlrInf(),

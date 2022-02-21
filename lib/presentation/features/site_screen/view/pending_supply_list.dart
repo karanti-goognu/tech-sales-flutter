@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/splash/data/models/Spla
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
@@ -48,7 +48,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    CheckInternet instance = CheckInternet();
+    bool result = await instance.hasConnection();
     return result;
   }
 

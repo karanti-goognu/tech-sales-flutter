@@ -1,10 +1,10 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
@@ -26,7 +26,8 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    CheckInternet instance = CheckInternet();
+    bool result = await instance.hasConnection();
     return result;
   }
 

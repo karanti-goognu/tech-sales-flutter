@@ -66,7 +66,7 @@ class DataBaseProvider extends Model {
 
     filterSiteEntityList(String appendQuery,String whereArgs) async {
 
-    var res = await _db.rawQuery('SELECT * FROM siteList WHERE ${appendQuery}', [whereArgs]);
+    var res = await _db.rawQuery('SELECT * FROM siteList WHERE $appendQuery', [whereArgs]);
     print("sadsad  "+res.toString());
     _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
     notifyListeners();
