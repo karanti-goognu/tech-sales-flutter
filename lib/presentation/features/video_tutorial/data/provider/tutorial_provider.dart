@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -21,15 +19,12 @@ class MyApiClient {
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      //version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -42,12 +37,9 @@ class MyApiClient {
   Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey, String userSecretKey) async{
     TsoAppTutorialListModel tsoAppTutorialListModel;
     try{
-      //+'&offset=30'
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.AppTutorialList),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
-      //print(response.body);
-      print(UrlConstants.AppTutorialList);
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -55,7 +47,6 @@ class MyApiClient {
       }else {
         tsoAppTutorialListModel =
             TsoAppTutorialListModel.fromJson(json.decode(response.body));
-        print(response.body);
       }
     }
     catch(e){

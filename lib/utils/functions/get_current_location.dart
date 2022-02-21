@@ -15,16 +15,13 @@ class GetCurrentLocation{
   }
 
   static Future<List> getCurrentLocation() async {
-    //String loc;
     List<String> loc;
     if (!await checkLocationPermission()) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
+      Get.dialog(CustomDialogs().errorDialog("Please enable your location service from device settings"));
     } else {
       Position position= await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
      _currentPosition = position;
      loc= await getAddressFromLatLng();
-     print("loc"+"$loc");
      Get.back();
     }
     return [loc,_currentPosition];
@@ -43,6 +40,5 @@ class GetCurrentLocation{
   }
 }
 
-//"${place.subAdministrativeArea}", "${place.locality}", "${place.postalCode}"
 
 

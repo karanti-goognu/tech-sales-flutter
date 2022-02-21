@@ -76,7 +76,6 @@ class UploadImageBottomSheet{
     ImagePicker _picker = ImagePicker();
     XFile img = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-    print(img);
     if (img != null)
       image= File(img.path);
     // else image = File("");

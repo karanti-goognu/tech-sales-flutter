@@ -91,7 +91,6 @@ class _FormAddEventState extends State<FormAddEvent> {
           addEventModel = data;
         }
       });
-      print('RESPONSE, ${data}');
     });
   }
 
@@ -444,7 +443,6 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
-        print('SSS: $sessionToken');
         final Suggestion result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
@@ -601,9 +599,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           );
     setState(() {
-      print("jj");
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-      print(timeString);
     });
   }
 
@@ -772,7 +768,6 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   btnPresssed(int eventStatusId) async {
-    print('bbb');
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
 
@@ -790,7 +785,7 @@ class _FormAddEventState extends State<FormAddEvent> {
           String empId = await getEmpId();
 
           timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-          print(timeString);
+
           List dealersList = List();
           selectedDealersModels.forEach((e) {
             setState(() {
@@ -807,7 +802,6 @@ class _FormAddEventState extends State<FormAddEvent> {
           });
 
 
-          print('DEALERS: $dealersList');
           if (dealersList == null || dealersList == [] || dealersList.length == 0) {
             Get.snackbar("", "Select Counter",
                 colorText: Colors.black,
@@ -844,7 +838,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
                 mwpeventFormRequest: _mwpeventFormRequest,
                 eventDealersModelList: _save.eventDealersModelList);
-            print("Request: ${json.encode(_saveEventFormModel)}");
 
             internetChecking().then((result) =>
             {

@@ -3,7 +3,6 @@ import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_name_list.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';

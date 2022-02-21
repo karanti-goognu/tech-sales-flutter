@@ -165,7 +165,6 @@ class _DetailPendingState extends State<DetailPending> {
           //selectedDealersModels = detailEventModel.eventDealersModelList;
         }
       });
-      print('DDDD: $data');
       setVisibility();
       setSaveBtnVisibility();
       setText();
@@ -585,7 +584,6 @@ class _DetailPendingState extends State<DetailPending> {
                               setState(() {
                                 _deleteEventModel = data;
                               });
-                              print("response : ");
                             });
                           },
                         ),
@@ -710,10 +708,8 @@ class _DetailPendingState extends State<DetailPending> {
       },
     );
     setState(() {
-      print("jj");
       displayTime = '${_time.hour}:${_time.minute}';
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-      print(timeString);
     });
   }
 
@@ -798,7 +794,6 @@ class _DetailPendingState extends State<DetailPending> {
 
                     onChanged: (newValue) {
                       setState(() {
-                        print('NEW VALUE : $newValue');
                         if (newValue == true) {
                           selectedDealer.add(dealers[index].dealerName);
                           selectedDealersModels.add(dealers[index]);
@@ -812,9 +807,6 @@ class _DetailPendingState extends State<DetailPending> {
 
                         }
                         checkedValues[index] = newValue;
-                        print("checkedValues $checkedValues");
-                        // print(
-                        //     'SELECTED: ${json.encode(selectedDealersModels)}');
 
                       });
                     },
@@ -952,7 +944,6 @@ class _DetailPendingState extends State<DetailPending> {
               snackPosition: SnackPosition.BOTTOM);
         }
         else {
-          print('DEALERS: $dealersList');
           MwpeventFormRequest _mwpEventFormRequest =
           MwpeventFormRequest.fromJson({
             'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ??
@@ -983,7 +974,6 @@ class _DetailPendingState extends State<DetailPending> {
               mwpeventFormRequest: _mwpEventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
-          print('PARAMS: ${json.encode(_saveEventFormModel)}');
 
           internetChecking().then((result) =>
           {

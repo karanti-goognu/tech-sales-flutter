@@ -38,21 +38,18 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
           approvedEventsModel = data;
         });
         getSortedData();
-        print('DDDD: $data');
       });
   }
 
 
 
   getSortedData() {
-    print('In getSortedData');
     DateTime now = DateTime.now();
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     int day = DateTime.now().day;
 
     if (approvedEventsModel != null && approvedEventsModel.eventListModels != null) {
-      print('Count :: ${approvedEventsModel.eventListModels.length}');
 
       for (int i = 0; i < approvedEventsModel.eventListModels.length; i++) {
         String date = approvedEventsModel.eventListModels[i].eventDate;
@@ -64,16 +61,13 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
        if((year == yearEvent && month == monthEvent && day == dayEvent) ||
            (year == yearEvent && month == monthEvent && dayEvent - day == 1)){
          current.add(approvedEventsModel.eventListModels[i]);
-         print('Current : $current');
 
        }else if((year == yearEvent && (month == monthEvent) && (dayEvent - day > 1)) ||
            (year - yearEvent > 0 && (month - monthEvent > 0 ))){
          upcoming.add(approvedEventsModel.eventListModels[i]);
-         print('Upcoming : $upcoming');
 
        }else if(year == yearEvent && (month == monthEvent || monthEvent - month < 0)){
          past.add(approvedEventsModel.eventListModels[i]);
-         print('Past : $past');
        }
       }
     }
@@ -199,7 +193,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  print('EVENT ID: ${list[index].eventId}');
                   if (list[index].eventStatusText == StringConstants.approved) {
                     Get.to(
                             () => DetailViewEvent(list[index].eventId),
