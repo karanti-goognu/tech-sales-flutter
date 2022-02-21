@@ -56,12 +56,12 @@ class _InfluencerViewState extends State<InfluencerView> {
 
                    _inf = infList + _influencerTypeList ;
 
-                    print("))))))))))))${json.encode(_inf)}");
+                   // print("))))))))))))${json.encode(_inf)}");
 
 
                     total =
                         '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
-                    print("count : ${_influencerListModel.response.totalInfluencerCount}");
+                  //  print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
               })

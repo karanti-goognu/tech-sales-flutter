@@ -82,7 +82,7 @@ class MyApiClientEvent {
       }else {
         addEventModel = AddEventModel.fromJson(json.decode(response.body));
 
-        print(response.body);
+       // print(response.body);
       }
     }
     catch (e) {

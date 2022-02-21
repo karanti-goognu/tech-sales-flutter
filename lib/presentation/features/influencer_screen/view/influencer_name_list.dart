@@ -70,7 +70,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('hello');
       _siteController.offset += 10;
       // _siteController.getAccessKey().then((value) async {
       //   _siteController.getSitesData(value.accessKey,widget.influencerID);
@@ -826,7 +825,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+    //  print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
       print("size is 0");
@@ -839,8 +838,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         .splashDataModel.siteProbabilityWinningEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
+    //  print("size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
       print("size is 0");

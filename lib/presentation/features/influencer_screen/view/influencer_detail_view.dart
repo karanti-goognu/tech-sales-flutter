@@ -112,7 +112,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
     });
-    print("*****$empID");
     return empID;
   }
 
@@ -129,7 +128,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     setData();
                   }
                 });
-                print('RESPONSE, $data');
+              //  print('RESPONSE, $data');
               })
             }
           else

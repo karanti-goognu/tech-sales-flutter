@@ -52,7 +52,7 @@ class _CustomMapState extends State<CustomMap> {
       Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
-        print(position);
+       // print(position);
         setState(() {
           _markerPosition = LatLng(position.latitude, position.longitude);
           _getAddressFromLatLng();
@@ -174,7 +174,7 @@ class _CustomMapState extends State<CustomMap> {
                 child: GestureDetector(
                   onTap: () async {
                     final sessionToken = Uuid().v4();
-                    print('SSS: $sessionToken');
+                   // print('SSS: $sessionToken');
                     final Suggestion result = await showSearch(
                       context: context,
                       delegate: AddressSearch(sessionToken),

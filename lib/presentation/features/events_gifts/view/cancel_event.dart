@@ -58,7 +58,7 @@ class _CancelEventtState extends State<CancelEvent> {
           detailEventModel = data;
           selectedDealersModels = detailEventModel.dealersModels;
         });
-        print('DDDD: $data');
+      //  print('DDDD: $data');
       });
    // });
   }
@@ -228,7 +228,6 @@ class _CancelEventtState extends State<CancelEvent> {
   }
 
   btnPresssed() async {
-    print('bbb');
     if (_cancelEventFormKey.currentState.validate()) {
       _cancelEventFormKey.currentState.save();
       String empId = await getEmpId();
@@ -246,7 +245,7 @@ class _CancelEventtState extends State<CancelEvent> {
           });
         });
       });
-      print('DEALERS: $dealersList');
+    //  print('DEALERS: $dealersList');
       MwpeventFormRequest _mwpeventFormRequest = MwpeventFormRequest.fromJson({
         'dalmiaInflCount': detailEventModel.mwpEventModel.dalmiaInflCount,
         'eventComment': detailEventModel.mwpEventModel.eventComment,
@@ -276,7 +275,7 @@ class _CancelEventtState extends State<CancelEvent> {
           mwpeventFormRequest: _mwpeventFormRequest,
           eventDealersModelList: _save.eventDealersModelList);
 
-      print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
+    //  print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
 
       internetChecking().then((result) => {
             if (result == true)

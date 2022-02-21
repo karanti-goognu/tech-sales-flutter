@@ -65,7 +65,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       referenceID = detailEventModel.mwpEventModel.referenceId;
       isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
       setVisibility();
-      print('DDDD: $data');
+    //  print('DDDD: $data');
     });
   }
 
@@ -567,7 +567,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   .getAccessKeyAndStartEvent(_startEventModel)
                   .then((data) {
                 _startEventResponse = data;
-                print('DD: $_startEventResponse');
+               // print('DD: $_startEventResponse');
                 if (_startEventResponse.respCode == "DM1002") {
                   Get.dialog(redirectToStartEventPg(data.respMsg, data.eventID),
                       barrierDismissible: false);

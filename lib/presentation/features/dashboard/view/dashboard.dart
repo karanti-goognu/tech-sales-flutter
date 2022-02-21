@@ -47,11 +47,11 @@ class _DashboardState extends State<Dashboard> {
     _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
       if(_employeeDropDownData.isEmpty ){
-        print("isProcessComplete    $value");
-        print("_dashboardController.empId    ${_dashboardController.empId}");
+        // print("isProcessComplete    $value");
+        // print("_dashboardController.empId    ${_dashboardController.empId}");
         monthToDateKey.currentState.passEmpId(_dashboardController.empId);
         empID=_dashboardController.empId;
-        print("EMP ID is now $empID");
+       // print("EMP ID is now $empID");
       }
 
     });
@@ -118,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
                                     _dashboardController.getMonthViewDetails(
                                         empID: empID, yearMonth: yearMonth);
                                   }else{
-                                    print("Tab changed");
+                                  //  print("Tab changed");
 //                                    _dashboardController.getYearlyViewDetails(empID);
                                   }
                                 }),

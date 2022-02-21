@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<int> unReadMessageCoun() async {
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    print("unread message count $unReadMessageCount");
+   // print("unread message count $unReadMessageCount");
     return unReadMessageCount;
   }
 
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print("home screen.dart :::::: initState()");
+   // print("home screen.dart :::::: initState()");
 
     super.initState();
     // initPlatformState();
@@ -132,15 +132,15 @@ class _HomeScreenState extends State<HomeScreen> {
         setMoengageData(prefs);
       },
     );
-    print("notification section starts here");
+  //  print("notification section starts here");
     //   notification section starts here
     _moEngageInbox = MoEngageInbox();
     WidgetsBinding.instance.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
-            print(":::-- $value"),
+          //  print(":::-- $value"),
                 setState(() {
                   unReadMessageCount = value;
-                  print("unReadMessageCount $unReadMessageCount");
+               //   print("unReadMessageCount $unReadMessageCount");
                 }),
               })
         });
@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ///** Kp Changes*
   void setMoengageData(SharedPreferences prefs) {
-    print("Moengage Initialize");
+  //  print("Moengage Initialize");
     final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
     //_moengagePlugin.initialise();
     //_moengagePlugin.setAppStatus(MoEAppStatus.update);
@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    print("homescreen.dart :::::: dispose()");
+  //  print("homescreen.dart :::::: dispose()");
     super.dispose();
     // _homeController.dispose();
   }
@@ -364,8 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Obx(() {
                     if (_homeController.disableSlider != true) {
-                      print(_homeController.checkInStatus);
-                      print("***");
+                    //  print(_homeController.checkInStatus);
                       return (_homeController.checkInStatus ==
                               StringConstants.checkIn)
                           ? checkInSliderButton()

@@ -104,7 +104,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _influencerTypeModel = data;
                   }
                 });
-                print('RESPONSE, $data');
+             //   print('RESPONSE, $data');
               })
             }
           else
@@ -128,7 +128,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _stateDistrictListModel = data;
                   }
                 });
-                print('RESPONSE, $data');
+             //   print('RESPONSE, $data');
               })
             }
           else
@@ -191,7 +191,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 }
               }
             });
-            print('RESPONSE, $data');
+        //    print('RESPONSE, $data');
           });
         }
       },
@@ -930,18 +930,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     });
   }
 
-  // Future _selectEnrollmentDate() async {
-  //   DateTime _picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: new DateTime.now(),
-  //       firstDate: new DateTime(1950),
-  //       lastDate: new DateTime.now());
-  //   setState(() {
-  //     _date = new DateFormat('dd-MM-yyyy').format(_picked);
-  //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-  //   });
-  // }
-
   String stateName;
   int stateId, districtId;
 
@@ -1067,39 +1055,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "firmName": _firmNameController.text
     });
 
-    //  InfluencerRequestModel _request = InfluencerRequestModel(
-    //    baseCity: _baseCityController.text,
-    //    createBy: _nameController.text,
-    //    dealership: "N",
-    //   districtId: districtId,
-    //   districtName: _districtController.text,
-    //   email: _emailController.text,
-    //   fatherName: _fatherNameController.text,
-    //   giftAddress: _giftAddressController.text,
-    //   giftAddressDistrict: _giftDistrictController.text,
-    //   giftAddressPincode: _giftPincodeController.text,
-    //   giftAddressState: _giftStateController.text,
-    //   ilpRegFlag: "N",
-    //   inflAddress: "",
-    //   inflCategoryId: _influencerCategory,
-    //   inflContactNumber: _contactNumberController.text,
-    //   inflDob: _date,
-    //   inflEnrollmentSourceId: _source,
-    //   inflJoiningDate: _enrollmentDateController.text,
-    //   inflName: _nameController.text,
-    //   inflQualification: _qualificationController.text,
-    //   inflTypeId: _memberType,
-    //   isActive: "Y",
-    //   loyaltyLinkage : "test",
-    //   monthlyPotentialVolumeMT: int.tryParse(_potentialSiteController.text),
-    //   pinCode: _pincodeController.text,
-    //   siteAssignedCount: int.tryParse(_potentialSiteController.text),
-    //   stateId: stateId,
-    //   stateName: stateName,
-    //   taluka: _talukaController.text
-    // );
-
-    print('PARAMS: ${json.encode(_influencerRequestModel)}');
+  //  print('PARAMS: ${json.encode(_influencerRequestModel)}');
 
     internetChecking().then((result) => {
           if (result == true)

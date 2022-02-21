@@ -27,7 +27,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
   @override
   void initState() {
     _dashboardController.getDashboardMtdGeneratedVolumeSiteList();
-    print("Inside initstate");
+ //   print("Inside initstate");
 //    _siteList = _dashboardController.mtdGeneratedVolumeSiteList;
 //    _sitesEntity = _dashboardController.mtdGeneratedVolumeSiteList.sitesEntity;
     super.initState();
@@ -382,7 +382,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
+    //  print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
       return "${data[0].siteStageDesc}";
     } else {
       print("size is 0");
@@ -396,8 +396,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
             .splashDataModel.siteProbabilityWinningEntity
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
+     // print("size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
       print("size is 0");
@@ -410,7 +409,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+   //   print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
       print("size is 0");

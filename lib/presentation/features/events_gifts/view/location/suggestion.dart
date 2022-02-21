@@ -84,7 +84,7 @@ class PlaceApiProvider {
     if (response.statusCode == 200) {
       Map<String, dynamic> result = json.decode(response.body);
       if (result['status'] == 'OK') {
-        print(result);
+       // print(result);
 
         return result['predictions']
             .map<Suggestion>((p) => Suggestion(p['place_id'], p['description']))

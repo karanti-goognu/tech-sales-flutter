@@ -237,7 +237,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
       setState(() {});
       return;
     }
-    print('Hello'+text);
     for(int i=0;i<_detailEventController.dealerList.length;i++){
       if(_detailEventController.dealerList[i].dealerName.toUpperCase().contains(text)||_detailEventController.dealerList[i].dealerName.toLowerCase().contains(text)||
           _detailEventController.dealerList[i].dealerName.contains(text)){
@@ -245,7 +244,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
         setState(() {
           _searchList.add(_detailEventController.dealerList[i]);
         });
-        print("FilterList-->"+_searchList.length.toString());
+    //    print("FilterList-->"+_searchList.length.toString());
       }
     }
 
@@ -260,12 +259,12 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
     setState(() {
       _detailEventController.dealerList[index].isSelected = val;
       if (val) {
-        print('true');
+      //  print('true');
         _detailEventController.dealerListSelected.add(new DealerModelSelected(
             _detailEventController.dealerList[index].dealerId,
             _detailEventController.dealerList[index].dealerName));
       } else {
-        print('false');
+      //  print('false');
         _detailEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _detailEventController.dealerList[index].dealerId);
       }
