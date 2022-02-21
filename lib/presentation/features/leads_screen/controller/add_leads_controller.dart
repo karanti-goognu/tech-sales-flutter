@@ -28,12 +28,9 @@ class AddLeadsController extends GetxController {
   updateImageList(File value, int imageStatus) {
     if(value!=null) {
       imageList.add(value);
-      print(imageList.length);
-      print(imageList);
       String imageName=value.path.split("/").last;
       selectedImageNameList.add(ListLeadImage(photoName: imageName,imageFilePath: value,
           imageStatus: imageStatus));
-      print("Update Image Add Lead controller:::::::::::::: $value:");
       update();
     }
   }
@@ -42,8 +39,6 @@ class AddLeadsController extends GetxController {
     if(index!=null && index>=0) {
       imageList.removeAt(index);
       selectedImageNameList.removeAt(index);
-      print(imageList.length);
-      print("After Delete Add Lead controller:::::::::::::::");
       update();
     }
   }
@@ -53,7 +48,6 @@ class AddLeadsController extends GetxController {
 
   @override
   void onClose(){
-    print("onClose called");
     imageList.clear();
     super.dispose();
   }
@@ -159,8 +153,6 @@ class AddLeadsController extends GetxController {
   }
 
    getLeadData(String accessKey, int leadId) async {
-
-    print(":::getLeadData()");
      String userSecurityKey = "";
     String empID = "";
     ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
@@ -168,17 +160,13 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      // print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
       viewLeadDataResponse = await repository.getLeadData(accessKey, userSecurityKey, leadId, empID);
      });
-    print(viewLeadDataResponse);
-
     return viewLeadDataResponse;
   }
 
   Future<ViewLeadDataResponse>getLeadDataNew(int leadId) async {
     ViewLeadDataResponse viewLeadDataResponse;
-    print(":::getLeadData()");
     String userSecurityKey = "";
     String empID = "";
     String accessKey = await repository.getAccessKeyNew();
@@ -186,11 +174,8 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      // print('User Security Key :: $userSecurityKey  Employee ID :: $empID');
       viewLeadDataResponse = await repository.getLeadDataNew(accessKey, userSecurityKey, leadId, empID);
     });
-    print(viewLeadDataResponse);
-
     return viewLeadDataResponse;
   }
 
@@ -201,10 +186,7 @@ class AddLeadsController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-      // Get.back();
-
       this.accessKeyResponse = data;
-//print(this.accessKeyResponse.accessKey);
       updateLeadDataInBackend(updateRequestModel, imageList, context, leadId,from);
     });
   }
@@ -215,7 +197,6 @@ class AddLeadsController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      // print('User Security Key :: $userSecurityKey');
       if(this.accessKeyResponse!=null)
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateRequestModel, imageList, context, leadId,from);
@@ -244,7 +225,6 @@ class AddLeadsController extends GetxController {
 
   /// convert image url to file
   Future<File> getFileFromUrl(String imageUrl) async {
-    print("getFileFromUrl   $imageUrl");
     var rng = new Random();
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;

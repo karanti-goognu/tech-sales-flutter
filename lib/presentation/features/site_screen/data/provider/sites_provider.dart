@@ -355,9 +355,6 @@ print("URL:$url ");
             // print(response.body);
 
             var data = json.decode(response.body);
-            //    print(data);
-
-            //      print(response.body)  ;
             if(data["resp_code"] == "DM1005"){
               Get.dialog(CustomDialogs().appUserInactiveDialog(
                   data["resp_msg"]), barrierDismissible: false);
@@ -443,8 +440,6 @@ print("URL:$url ");
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
-        print("======${UrlConstants.saveUpdateSiteVisit}");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -502,12 +497,10 @@ print("URL:$url ");
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
     try {
       version = VersionClass.getVersion();
-      print(url);
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
           body: json.encode(jsonData));
-      // log(""+json.encode(jsonData));
       if(response.statusCode==200) {
         String data = response.body;
         return json.decode(data);
@@ -529,8 +522,6 @@ print("URL:$url ");
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
-      print("URL: ${UrlConstants.siteDistList + empID}");
-      print("Data: $data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -550,7 +541,6 @@ print("URL:$url ");
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.siteKittyPoints + "$partyCode";
-      print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));

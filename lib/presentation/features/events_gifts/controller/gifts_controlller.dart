@@ -51,13 +51,12 @@ class GiftController extends GetxController {
 
   set itemFromBottomSheetTapped(value) {
     _itemFromBottomSheetTapped.value = value;
-    print(_itemFromBottomSheetTapped.value );
   }
 
   get selectedDropdown => _selectedDropdown.value;
 
   set selectedDropdown(value) {
-    print(selectedDropdown);
+
     _selectedDropdown.value = value;
   }
 
@@ -99,7 +98,6 @@ class GiftController extends GetxController {
       giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
       giftStockModelList= giftStockModel.giftStockModelList;
       giftTypeModelList= giftStockModel.giftTypeModelList;
-      print(giftTypeModelList);
     });
     Get.back();
     return giftStockModel;
@@ -114,7 +112,6 @@ class GiftController extends GetxController {
       String empID= prefs.getString(StringConstants.employeeId);
       String securityKey = prefs.getString(StringConstants.userSecurityKey);
       response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
-      print(response.respMsg);
     });
     Get.back();
     Get.rawSnackbar(title: "Message", message: response.respMsg);
@@ -122,7 +119,6 @@ class GiftController extends GetxController {
     return response;
   }
   Future getViewLogsData(String monthYear) async {
-    print(monthYear);
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String accessKey = await repository.getAccessKey();

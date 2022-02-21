@@ -20,32 +20,32 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
 
-  List<leadDetailsModel> list = [
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+  List<LeadDetailsModel> list = [
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new leadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
+    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
         DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
   ];
 
@@ -429,15 +429,12 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
 
   onSearchTextChanged(String text) async {
     if (controller.text.length >= 3) {
-      print('Hello');
       _siteController.siteSearch(text);
-      // _siteController.searchKey = text;
-      // _appController.getAccessKey(RequestIds.SEARCH_SITES);
     }
   }
 }
 
-class leadDetailsModel {
+class LeadDetailsModel {
   String leadID;
   String district;
   int sitePotential;
@@ -446,6 +443,6 @@ class leadDetailsModel {
   String date;
   int ownerNumber;
 
-  leadDetailsModel(this.leadID, this.district, this.sitePotential,
+  LeadDetailsModel(this.leadID, this.district, this.sitePotential,
       this.activeStatus, this.verifiedStatus, this.date, this.ownerNumber);
 }

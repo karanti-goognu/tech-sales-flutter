@@ -1645,7 +1645,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                         if (_comments.text != null &&
                                             _comments.text != '') {
-                                          await _commentsListNew.add(
+                                           _commentsListNew.add(
                                             new CommentsDetail(
                                                 createdBy: empId,
                                                 commentText: _comments.text,

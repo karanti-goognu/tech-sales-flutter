@@ -42,7 +42,6 @@ class _AllEventsState extends State<AllEvents> {
       setState(() {
         allEventsModel = data;
       });
-      print("response : ");
 
       getSortedData();
     });
@@ -51,18 +50,12 @@ class _AllEventsState extends State<AllEvents> {
   getSortedData() {
     if (allEventsModel != null && allEventsModel.eventListModels != null) {
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        print(
-            "All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
         if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.pendingApproval) {
           pending.add(allEventsModel.eventListModels[i]);
-          print('PENDING : $pending');
-
-          print(allEventsModel.eventListModels[i].eventId);
         } else if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.approved) {
           approved.add(allEventsModel.eventListModels[i]);
-          print('APPROVED : $approved');
         } else if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.rejected) {
           rejected.add(allEventsModel.eventListModels[i]);
@@ -77,10 +70,6 @@ class _AllEventsState extends State<AllEvents> {
           notSubmitted.add(allEventsModel.eventListModels[i]);
         }
       }
-      print("Pending : ${pending.map((e) => e.eventId).toList()}");
-      print("approved : ${approved.map((e) => e.eventId).toList()}");
-      print("rejected : ${rejected.map((e) => e.eventId).toList()}");
-      print("completed : ${completed.map((e) => e.eventId).toList()}");
     } else {}
   }
 
@@ -153,7 +142,6 @@ class _AllEventsState extends State<AllEvents> {
 
                           //allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
                         });
-                        print("OPTION:::$option");
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
                       label: Text(allEventsModel
@@ -178,7 +166,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getList(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
@@ -247,7 +234,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
@@ -277,7 +263,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
         allEventsModel.eventListModels != null &&
         allEventsModel.eventListModels.length > 0 &&

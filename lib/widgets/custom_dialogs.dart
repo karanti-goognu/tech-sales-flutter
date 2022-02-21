@@ -1119,7 +1119,6 @@ class CustomDialogs {
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String currentDateString = formatter.format(date);
-    print("DateFormat--" + currentDateString);
     if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
@@ -1136,7 +1135,6 @@ class CustomDialogs {
             .then((value) => {
                   if (value.respCode == "DM1002")
                     {
-                      print('RESPONSE : ${value.respMsg + value.respCode}'),
                       // Get.toNamed(Routes.END_EVENT),
                       Get.dialog(
                           CustomDialogs()
@@ -1156,7 +1154,6 @@ class CustomDialogs {
         Get.back();
         Get.dialog(CustomDialogs().errorDialog(
             "Access to location data denied "));
-        print(e);
       });
     }
   }
@@ -1300,7 +1297,6 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            print("Go To Store");
            // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
             if(platform == "IOS"){
               StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
@@ -1400,7 +1396,6 @@ class CustomDialogs {
           ),
           onPressed: () async{
 
-            print("IN function");
             Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
             prefs.clear();
