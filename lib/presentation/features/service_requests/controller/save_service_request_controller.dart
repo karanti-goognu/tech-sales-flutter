@@ -48,7 +48,7 @@ class SaveServiceRequestController extends GetxController {
         saveServiceRequest(
                 imageList, data.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
-           print(value);
+          // print(value);
           Get.back();
           if (value['resp-code'] == 'SRC2035') {
             Get.defaultDialog(

@@ -77,7 +77,7 @@ class SplashScreenPageState extends State<SplashScreen> {
 
   @override
   void initState() {
-    print("Calling");
+   // print("Calling");
     // TODO: implement initState
     super.initState();
 
@@ -88,11 +88,11 @@ class SplashScreenPageState extends State<SplashScreen> {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
-      print('$isUserLoggedIn');
+     // print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
-        print("on splash_screen.dart");
+      //  print("on splash_screen.dart");
 
 
         internetChecking().then((result){

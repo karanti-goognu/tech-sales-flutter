@@ -18,7 +18,7 @@ class _VideoState extends State<Video> {
 
   initState() {
     var data = Get.arguments;
-    print(data);
+   // print(data);
     videoUrl= data[0];
     videoDes= data[1];
     internetChecking().then((result) => {

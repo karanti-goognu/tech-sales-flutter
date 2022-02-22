@@ -26,20 +26,20 @@ class _RequestUpdationState extends State<RequestUpdation>{
 
 
   Future<ComplaintViewModel> getComplaintViewData() async {
-    print("getComplaintViewData of SR update");
+ //   print("getComplaintViewData of SR update");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 
     var data = await updateServiceRequestController.getAccessKey();
         // .then((data) async {
-      print("Data ${jsonEncode(data)}");
+ //     print("Data ${jsonEncode(data)}");
       accessKeyModel = data;
       updateServiceRequestController.id = widget.id.toString();
       updateServiceRequestController.coverBlockProvidedNo.clear();
       updateServiceRequestController.formwarkRemovalDate.clear();
       updateServiceRequestController.setTabOption(1);
-      print("Here");
+   //   print("Here");
       await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel.accessKey).then((value) => {
-        print("Vaho ${jsonEncode(value)}"),
+   //     print("Vaho ${jsonEncode(value)}"),
       setState(() {
         complaintViewModel = value;
       }),
@@ -50,7 +50,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
 
   @override
   void initState() {
-    print("Init state of SR update");
+ //   print("Init state of SR update");
      _complaintViewModel=getComplaintViewData();
     super.initState();
   }
@@ -81,7 +81,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
       body: FutureBuilder(
           future: _complaintViewModel,
           builder: (context, snapshot) {
-            print(snapshot.data.toString());
+     //       print(snapshot.data.toString());
             if (snapshot.connectionState == ConnectionState.waiting) {
               return  Align(
                   alignment: Alignment.center,
@@ -197,7 +197,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                           GestureDetector(
                                             onTap: () {
                                               controller.setTabOption(1);
-                                              print(controller.option);
+                                          //    print(controller.option);
                                             },
                                             child: Chip(
                                               label: Text('Details'),
