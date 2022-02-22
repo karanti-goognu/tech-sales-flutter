@@ -48,8 +48,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    CheckInternet instance = CheckInternet();
-    bool result = await instance.hasConnection();
+    // CheckInternet instance = CheckInternet();
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 

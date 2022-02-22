@@ -1,4 +1,3 @@
-// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter_tech_sales/network/network_calls.dart';
 import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,9 +36,7 @@ class MySharedPreferences {
 }
 
 Future<bool> internetChecking() async {
-  // do something here
-  CheckInternet instance = CheckInternet();
-  bool result = await instance.hasConnection();
+  bool result = await CheckInternet.hasConnection();
   return result;
 }
 

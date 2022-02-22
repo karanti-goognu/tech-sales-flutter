@@ -54,8 +54,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    CheckInternet instance = CheckInternet();
-    bool result = await instance.hasConnection();
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 

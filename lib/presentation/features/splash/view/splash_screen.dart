@@ -77,7 +77,6 @@ class SplashScreenPageState extends State<SplashScreen> {
 
   @override
   void initState() {
-   // print("Calling");
     // TODO: implement initState
     super.initState();
 
@@ -92,9 +91,6 @@ class SplashScreenPageState extends State<SplashScreen> {
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
-      //  print("on splash_screen.dart");
-
-
         internetChecking().then((result){
           if(result)
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);

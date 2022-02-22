@@ -1,9 +1,11 @@
 import 'dart:io';
 
 class CheckInternet{
-  // CheckInternet._();
+  CheckInternet._();
   static const int DEFAULT_PORT = 53;
   static const Duration DEFAULT_TIMEOUT = const Duration(seconds: 10);
+
+
   static final List<AddressCheckOptions> defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
       InternetAddress('1.1.1.1'),
@@ -21,10 +23,10 @@ class CheckInternet{
       timeout: DEFAULT_TIMEOUT,
     ),
   ]);
-  List<AddressCheckResult> get lastTryResults => _lastTryResults;
-  List<AddressCheckResult> _lastTryResults = <AddressCheckResult>[];
 
-  Future<AddressCheckResult> isHostReachable(
+  static List<AddressCheckResult> _lastTryResults = <AddressCheckResult>[];
+
+  static Future<AddressCheckResult> isHostReachable(
       AddressCheckOptions options,
       ) async {
     Socket sock;
@@ -41,9 +43,10 @@ class CheckInternet{
       return AddressCheckResult(options, false);
     }
   }
-  List<AddressCheckOptions> addresses = defaultAddresses;
 
-  Future<bool>  hasConnection() async {
+  static List<AddressCheckOptions> addresses = defaultAddresses;
+
+  static Future<bool>  hasConnection() async {
     List<Future<AddressCheckResult>> requests = [];
     for (var addressOptions in addresses) {
       requests.add(isHostReachable(addressOptions));
@@ -63,13 +66,7 @@ class AddressCheckResult {
   AddressCheckResult(
       this.options,
       this.isSuccess,
-      ){
-    print(this.options);
-    print(this.isSuccess);
-  }
-
-  @override
-  String toString() => "AddressCheckResult($options, $isSuccess)";
+      );
 }
 
 
@@ -83,7 +80,4 @@ class AddressCheckOptions {
         this.port = CheckInternet.DEFAULT_PORT,
         this.timeout = CheckInternet.DEFAULT_TIMEOUT,
       });
-
-  @override
-  String toString() => "AddressCheckOptions($address, $port, $timeout)";
 }

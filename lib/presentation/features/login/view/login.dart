@@ -26,8 +26,8 @@ class LoginScreenPageState extends State<LoginScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    CheckInternet instance = CheckInternet();
-    bool result = await instance.hasConnection();
+    // CheckInternet instance = CheckInternet();
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 
