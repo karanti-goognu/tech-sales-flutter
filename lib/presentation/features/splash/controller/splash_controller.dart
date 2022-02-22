@@ -54,13 +54,10 @@ class SplashController extends GetxController {
         if (userSecurityKey != "empty") {
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            print('Has expired');
             getSecretKey(requestId);
           } else {
-            print('Not expired');
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
-                print("on splash_controller.dart :::: getAccessKey");
                 getRefreshData(this.accessKeyResponse.accessKey,
                     RequestIds.GET_MASTER_DATA_FOR_SPLASH);
                 break;
@@ -85,19 +82,16 @@ class SplashController extends GetxController {
           prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      print('$empId$mobileNumber');
       String empIdEncrypted =
           encryptString(empId, StringConstants.encryptedKey);
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
-      print('$empIdEncrypted \n$mobileNumberEncrypted');
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
 
-        print("DDD:$data");
         if (data != null) {
           if (this.secretKeyResponse.respCode == "DM1005") {
             Get.dialog(
@@ -132,7 +126,6 @@ class SplashController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
-      debugPrint('Url is : $url');
       await repository
           .getRefreshData(url, accessKey, userSecurityKey)
           .then((data) {
@@ -150,7 +143,6 @@ class SplashController extends GetxController {
                 if (versionUpdateModel[i].oldVersion !=
                     versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
-                  print("in android");
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
                           versionUpdateModel[i].versionUpdateText,
@@ -173,7 +165,6 @@ class SplashController extends GetxController {
                 if (versionUpdateModel[i].oldVersion !=
                     versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
-                  print("in ios");
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
                           versionUpdateModel[i].versionUpdateText,
@@ -210,13 +201,10 @@ class SplashController extends GetxController {
 
             if(journeyDate != null) {
               prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-              print("journeyDate: $journeyDate");
             }else{
               prefs.setString(StringConstants.JOURNEY_DATE, "NA");
               var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
-              print("journeyDate2: $journeyDate");
             }
-           print("journeyDate1: $journeyDate");
             if(journeyEndTime != null) {
               prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
             }
@@ -229,7 +217,6 @@ class SplashController extends GetxController {
   }
 
   openNextPage() {
-    print("on splash_controller.dart openNextPage()");
     Get.offNamed(Routes.HOME_SCREEN);
   }
 
