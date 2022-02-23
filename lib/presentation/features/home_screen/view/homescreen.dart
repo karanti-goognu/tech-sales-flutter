@@ -55,10 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<bool> internetChecking() async {
-    // do something here
-    // CheckInternet instance = CheckInternet();
     bool result = await CheckInternet.hasConnection();
-    // bool result = await DataConnectionChecker().hasConnection;
     return result;
   }
 

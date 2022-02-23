@@ -106,8 +106,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   Future<bool> internetChecking() async {
-    // do something here
-    // CheckInternet instance = CheckInternet();
     bool result = await CheckInternet.hasConnection();
     return result;
   }

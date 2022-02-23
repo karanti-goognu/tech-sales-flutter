@@ -25,8 +25,6 @@ class LoginScreenPageState extends State<LoginScreen> {
   // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<bool> internetChecking() async {
-    // do something here
-    // CheckInternet instance = CheckInternet();
     bool result = await CheckInternet.hasConnection();
     return result;
   }
