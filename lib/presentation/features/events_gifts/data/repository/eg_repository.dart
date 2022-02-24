@@ -27,7 +27,7 @@ class EgRepository {
     return apiClient!.getAccessKey();
   }
 
-  Future<AllEventsModel> eventSearch(String? accessKey, String? userSecurityKey,
+  Future<AllEventsModel?> eventSearch(String? accessKey, String? userSecurityKey,
       String empID, String searchText) {
     return apiClient!.eventSearch(accessKey, userSecurityKey, empID, searchText);
   }

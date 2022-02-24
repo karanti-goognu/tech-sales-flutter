@@ -116,6 +116,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label.opportunityStatus,
                     ))
                 .toList(),
+            onChanged: (_){},
             // onChanged: (value) {
             //   setState(() {
             //     visitSubType = value;
@@ -142,7 +143,9 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label,
                     ))
                 .toList(),
-            // onChanged: (value) {
+      onChanged: (_){},
+
+      // onChanged: (value) {
             //   setState(() {
             //     widget.selectedOpportunitStatusEnity = value;
             //   });

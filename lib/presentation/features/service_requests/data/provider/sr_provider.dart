@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
@@ -16,9 +15,7 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSR {
@@ -26,7 +23,7 @@ class MyApiClientSR {
   String? version;
   MyApiClientSR({required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
+  Future<AccessKeyModel?> getAccessKey() async {
     try {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version=packageInfo.version;

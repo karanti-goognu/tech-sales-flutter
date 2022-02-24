@@ -50,7 +50,7 @@ class MyApiClientEvent {
 
 
 
-  Future<AllEventsModel> eventSearch(String? accessKey, String? userSecurityKey, String empID, String searchText) async {
+  Future<AllEventsModel?> eventSearch(String? accessKey, String? userSecurityKey, String empID, String searchText) async {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
