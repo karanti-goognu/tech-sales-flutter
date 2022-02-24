@@ -45,7 +45,7 @@ class AddressSearch extends SearchDelegate<Suggestion> {
           ? null
           : apiClient.fetchSuggestions(
           query, Localizations.localeOf(context).languageCode),
-      builder: (context, snapshot) => query == ''
+      builder: (context, AsyncSnapshot snapshot) => query == ''
           ? Container(
         padding: EdgeInsets.all(16.0),
         child: Text('Enter your address'),
@@ -60,7 +60,7 @@ class AddressSearch extends SearchDelegate<Suggestion> {
             //  print("latitude ${value.lat}");
             //  print("longitude ${value.lng}");
             });
-            close(context, snapshot.data[index] as Suggestion?);
+            close(context, snapshot.data[index] as Suggestion);
           },
         ),
         itemCount: snapshot.data.length,

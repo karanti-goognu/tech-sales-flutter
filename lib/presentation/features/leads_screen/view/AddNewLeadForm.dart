@@ -1905,7 +1905,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             _comments.text == null) {
                                           _comments.text = "Added New Lead";
                                         }
-                                        await _commentsListNew.add(
+                                         _commentsListNew.add(
                                           new CommentsDetail(
                                               createdBy: empId,
                                               commentText: _comments.text,

@@ -1110,7 +1110,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         int index) {
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      return showDialog(
+                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {

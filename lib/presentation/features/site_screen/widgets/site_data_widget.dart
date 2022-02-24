@@ -1509,7 +1509,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                 .toLowerCase());
                                             return GestureDetector(
                                               onTap: () {
-                                                return showDialog(
+                                                 showDialog(
                                                     context: context,
                                                     builder:
                                                         (BuildContext context) {

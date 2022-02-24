@@ -183,11 +183,11 @@ class _CustomMapState extends State<CustomMap> {
 
                     if (result != null) {
                       final placeDetails = await (PlaceApiProvider(sessionToken)
-                          .getLatLong(result.placeId) as FutureOr<Location> );
+                          .getLatLong(result.placeId) );
                       // setState(() {
                       _locationController.text = result.description!;
-                      double? lat = placeDetails.lat;
-                      double? long = placeDetails.lng;
+                      double? lat = placeDetails?.lat;
+                      double? long = placeDetails?.lng;
                       setState(() {
                         _markerPosition = LatLng(lat!, long!);
                       });

@@ -634,7 +634,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                       .inflName!
                                                       .clear();
                                                 }
-                                                return Get.dialog(
+                                                 Get.dialog(
                                                     CustomDialogs().showDialog(
                                                         "No influencer registered with this number"));
                                               }
