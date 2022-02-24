@@ -16,7 +16,7 @@ class MyApiClient {
 
   MyApiClient({required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
+  Future<AccessKeyModel?> getAccessKey() async {
     try {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;

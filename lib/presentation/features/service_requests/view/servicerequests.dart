@@ -75,7 +75,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     getSRListData();
     //  print("scroll controller init");
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
     //  print("scroll listener added");
 
 

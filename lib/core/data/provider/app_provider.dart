@@ -306,7 +306,7 @@ class MyApiClientApp {
     }
   }
 
-  Future<CalendarPlanModel> getCalendarPlan(String? accessKey, String? userSecurityKey, String url) async {
+  Future<CalendarPlanModel?> getCalendarPlan(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),

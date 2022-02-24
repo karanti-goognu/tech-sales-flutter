@@ -48,7 +48,7 @@ class InfRepository {
     return apiClient!.getInfDetaildata(accessKey, userSecretKey, membershipId);
   }
 
-  Future<InfluencerListModel> infSearch(String? accessKey, String? userSecurityKey,
+  Future<InfluencerListModel?> infSearch(String? accessKey, String? userSecurityKey,
       String? empID, String searchText) {
     return apiClient!.infSearch(accessKey, userSecurityKey, empID, searchText);
   }

@@ -27,7 +27,7 @@ class SaveServiceRequestController extends GetxController {
 
   List<File>? imageList;
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
@@ -46,7 +46,7 @@ class SaveServiceRequestController extends GetxController {
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveServiceRequest(
-                imageList, data.accessKey, userSecurityKey, saveRequestModel)
+                imageList, data?.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
           // print(value);
           Get.back();

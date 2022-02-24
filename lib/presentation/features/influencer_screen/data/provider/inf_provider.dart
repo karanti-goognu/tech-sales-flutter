@@ -218,7 +218,7 @@ class MyApiClientInf {
     return influencerDetailDataModel;
   }
 
-  Future<InfluencerListModel> infSearch(String? accessKey, String? userSecurityKey, String? empID, String searchText) async {
+  Future<InfluencerListModel?> infSearch(String? accessKey, String? userSecurityKey, String? empID, String searchText) async {
     try {
       version = VersionClass.getVersion();
       //String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
@@ -229,7 +229,7 @@ class MyApiClientInf {
    //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        InfluencerListModel infSearchModel = InfluencerListModel.fromJson(data);
+        InfluencerListModel? infSearchModel = InfluencerListModel.fromJson(data);
         return infSearchModel;
       } else
         print('error');

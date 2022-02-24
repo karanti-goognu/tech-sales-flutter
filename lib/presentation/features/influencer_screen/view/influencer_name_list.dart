@@ -64,7 +64,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     });
 
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   _scrollListener() {

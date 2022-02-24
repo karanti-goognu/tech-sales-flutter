@@ -14,7 +14,7 @@ class SrRepository{
   final MyApiClientSR? apiClient;
   SrRepository({this.apiClient});
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel?> getAccessKey(){
     return apiClient!.getAccessKey();
   }
 

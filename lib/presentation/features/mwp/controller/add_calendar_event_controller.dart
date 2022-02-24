@@ -36,7 +36,7 @@ class AddCalendarEventController extends GetxController{
     //print("access" + this.accessKeyResponse.accessKey);
   }
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel?> getAccessKey(){
     return repository.getAccessKey();
   }
 }
