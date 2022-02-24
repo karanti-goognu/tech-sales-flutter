@@ -115,7 +115,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = [];
 
-  Position? _currentPosition = new Position();
+  static late Position _currentPosition;
   String? _currentAddress;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [

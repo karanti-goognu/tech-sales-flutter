@@ -40,7 +40,6 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   // LocationResult _pickedLocation;
-  Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay? _time;
   String? geoTagType, timeString, dateString;

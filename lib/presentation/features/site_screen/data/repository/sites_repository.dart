@@ -61,7 +61,7 @@ class MyRepositorySites {
         accessKey, userSecurityKey, updateDataRequest, list, context, siteId);
   }
 
-  Future<SitesListModel> getSearchDataNew(String? accessKey,
+  Future<SitesListModel?> getSearchDataNew(String? accessKey,
       String? userSecurityKey, String? empID, String searchText) {
     return apiClient.getSearchDataNew(
         accessKey, userSecurityKey, empID, searchText);

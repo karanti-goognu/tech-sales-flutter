@@ -493,8 +493,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                     onPressed:
                                                                         () async {
                                                                       if (closureReasonText.text !=
-                                                                              null &&
-                                                                          closureReasonText.text !=
                                                                               "") {
                                                                         _siteStage =
                                                                             value;
@@ -832,8 +830,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                     onPressed:
                                                                         () async {
                                                                       if (_inactiveReasonText.text !=
-                                                                              null &&
-                                                                          _inactiveReasonText.text !=
                                                                               "") {
                                                                         _siteStage =
                                                                             value;
@@ -934,7 +930,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
           ),
           body: FutureBuilder(
             future: _getSiteData,
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot<ViewSiteDataResponse?> snapshot) {
               // print(snapshot.data.toString());
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // return Align(
@@ -969,17 +965,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                       SitePastStageHistoryWidget(
                           viewSiteDataResponse: snapshot.data),
                       SiteVisitWidget(
-                        mwpVisitModel: snapshot.data.mwpVisitModel,
+                        mwpVisitModel: snapshot.data?.mwpVisitModel,
                         siteId: widget.siteId,
                         visitSubTypeId:
-                            snapshot.data.sitesModal.siteOppertunityId,
+                            snapshot.data?.sitesModal?.siteOppertunityId,
                         siteOpportunityStatusEntity:
-                            snapshot.data.siteOpportunityStatusEntity,
-                        siteDate: snapshot.data.sitesModal.siteCreationDate,
+                            snapshot.data?.siteOpportunityStatusEntity,
+                        siteDate: snapshot.data?.sitesModal?.siteCreationDate,
                         selectedOpportunitStatusEnity:
                             _siteOpportunitStatusEnityVisit,
                         visitRemarks:
-                            snapshot.data.sitesModal.siteClosureReasonText,
+                            snapshot.data?.sitesModal?.siteClosureReasonText,
                       )
                     ],
                   ); // snapshot.data  :- get your object which is pass from your downloadData() function
