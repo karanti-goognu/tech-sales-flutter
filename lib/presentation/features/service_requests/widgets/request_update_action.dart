@@ -38,7 +38,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   UpdateServiceRequestController updateServiceRequestController = Get.find();
   UpdateSRModel? _updateSRModel;
   UpdateServiceRequestController updateRequest = Get.find();
-  Position? _currentPosition = new Position();
+  static late Position _currentPosition;
   final _updateActionFormKey = GlobalKey<FormState>();
   TextEditingController _location = TextEditingController();
   TextEditingController _noOfBags = TextEditingController();

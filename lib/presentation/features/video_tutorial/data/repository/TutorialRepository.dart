@@ -7,7 +7,7 @@ class TutorialRepository{
   final MyApiClient? apiClient;
   TutorialRepository({this.apiClient});
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel?> getAccessKey(){
     return apiClient!.getAccessKey();
   }
 

@@ -37,9 +37,12 @@ class MoEngageInboxX {
     print("fetchAllMessages called");
     if (Platform.isAndroid) {
       return _androidInbox.fetchAllMessages();
-    } else if (Platform.isIOS) {
-      return _iOSInbox.fetchAllMessages();
     }
+    ///This condition has been commented to avoid null safety issue.
+    // else if (Platform.isIOS) {
+      return _iOSInbox.fetchAllMessages();
+    // }
+
   }
 
   Future<List<InboxMessage>> fetchAllInboxMessages() async {

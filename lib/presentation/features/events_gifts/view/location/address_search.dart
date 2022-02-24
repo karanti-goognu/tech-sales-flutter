@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 
-class AddressSearch extends SearchDelegate<Suggestion?> {
+class AddressSearch extends SearchDelegate<Suggestion> {
   AddressSearch(this.sessionToken) {
     apiClient = PlaceApiProvider(sessionToken);
   }

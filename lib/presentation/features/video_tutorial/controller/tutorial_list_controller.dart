@@ -22,7 +22,7 @@ class TutorialListController extends GetxController{
   set tutorialListData(value) =>
       _tutorialListData.value = value;
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel?> getAccessKey(){
     return repository.getAccessKey();
 
   }

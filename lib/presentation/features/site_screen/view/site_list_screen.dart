@@ -131,7 +131,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
             }
         });
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   clearFilterSelection() {

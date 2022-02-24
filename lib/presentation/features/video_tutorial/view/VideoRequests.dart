@@ -26,7 +26,7 @@ class _VideoRequestsState extends State<VideoRequests> {
   var data;
   getAppTutorialListData() async {
     await eventController.getAccessKey().then((value) async {
-      data = await eventController.getAppTutorialListData(value.accessKey);
+      data = await eventController.getAppTutorialListData(value?.accessKey);
     });
   }
 

@@ -32,7 +32,7 @@ class DetailViewEvent extends StatefulWidget {
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
-  Position _currentPosition = new Position();
+  static late Position _currentPosition;
   DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
   EventsFilterController _eventsFilterController = Get.find();

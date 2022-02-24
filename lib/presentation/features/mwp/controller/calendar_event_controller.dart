@@ -31,7 +31,7 @@ class CalendarEventController extends GetxController {
   final _targetVsActual = TargetVsActualModel().obs;
   final _listOfEvents = List<ListOfEventDetails>.empty(growable: true).obs;
 
-  var _markedDateMap = EventList<Event>().obs;
+  var _markedDateMap = EventList<Event>(events: {}).obs;
   final _dateList = List<String>.empty(growable: true).obs;
   final _testMap = Map<DateTime, List<Event>>().obs;
 
@@ -128,7 +128,7 @@ class CalendarEventController extends GetxController {
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
           if (this.calendarPlanResponse.listOfEventDates.length > 0) {
-            var temp = EventList<Event>();
+            var temp = EventList<Event>(events: {});
             for (int i = 0;
             i < this.calendarPlanResponse.listOfEventDates.length;
             i++) {

@@ -383,7 +383,7 @@ class MyApiClientSites {
   }
 
 
-  Future<SitesListModel> getSearchDataNew(String? accessKey,
+  Future<SitesListModel?> getSearchDataNew(String? accessKey,
       String? userSecurityKey, String? empID, String searchText) async {
     try {
       version = VersionClass.getVersion();

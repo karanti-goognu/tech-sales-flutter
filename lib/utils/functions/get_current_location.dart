@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class GetCurrentLocation{
   GetCurrentLocation._();
-  static Position _currentPosition = new Position();
+  static late Position _currentPosition;
   static GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
 
