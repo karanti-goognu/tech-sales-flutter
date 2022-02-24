@@ -103,7 +103,7 @@ class UpdateServiceRequestController extends GetxController {
   bool responseReceived = false;
   // List<File> imageList = List<File>();
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
@@ -121,7 +121,7 @@ class UpdateServiceRequestController extends GetxController {
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         updateServiceRequest(
-                imageList, data.accessKey, userSecurityKey, updateRequestModel)
+                imageList, data?.accessKey, userSecurityKey, updateRequestModel)
             .then((value) {
           Get.back();
           // if(value['resp-code']=='SRC2035'){

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
@@ -182,7 +183,7 @@ class _CustomMapState extends State<CustomMap> {
 
                     if (result != null) {
                       final placeDetails = await (PlaceApiProvider(sessionToken)
-                          .getLatLong(result.placeId) as FutureOr<Location>);
+                          .getLatLong(result.placeId) as FutureOr<Location> );
                       // setState(() {
                       _locationController.text = result.description!;
                       double? lat = placeDetails.lat;

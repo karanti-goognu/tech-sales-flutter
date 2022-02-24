@@ -70,7 +70,7 @@ class _LeadScreenState extends State<LeadScreen> {
     });
 
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   _scrollListener() {

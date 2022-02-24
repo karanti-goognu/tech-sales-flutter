@@ -11,7 +11,7 @@ class MyRepositoryApp{
    return apiClient!.getTargetVsActualData(accessKey, userSecretKey,empID);
  }
 
- Future<AccessKeyModel> getAccessKey(){
+ Future<AccessKeyModel?> getAccessKey(){
    return apiClient!.getAccessKey();
  }
 }
