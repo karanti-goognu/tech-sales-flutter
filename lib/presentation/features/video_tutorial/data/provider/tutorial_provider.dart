@@ -17,7 +17,7 @@ class MyApiClient {
 
   MyApiClient({required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
+  Future<AccessKeyModel?> getAccessKey() async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
