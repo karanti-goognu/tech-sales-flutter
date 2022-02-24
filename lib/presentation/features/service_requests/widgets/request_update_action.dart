@@ -218,7 +218,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  return showDialog(
+                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(

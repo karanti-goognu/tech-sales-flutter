@@ -29,10 +29,10 @@ class _RequestUpdationState extends State<RequestUpdation>{
  //   print("getComplaintViewData of SR update");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 
-    var data = await updateServiceRequestController.getAccessKey();
+    var _ = await updateServiceRequestController.getAccessKey();
         // .then((data) async {
  //     print("Data ${jsonEncode(data)}");
-      accessKeyModel = data;
+      accessKeyModel = _!;
       updateServiceRequestController.id = widget.id.toString();
       updateServiceRequestController.coverBlockProvidedNo.clear();
       updateServiceRequestController.formwarkRemovalDate.clear();
@@ -80,7 +80,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
       bottomNavigationBar: BottomNavigator(),
       body: FutureBuilder(
           future: _complaintViewModel,
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot snapshot) {
      //       print(snapshot.data.toString());
             if (snapshot.connectionState == ConnectionState.waiting) {
               return  Align(
@@ -280,8 +280,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                           )
                                               : RequestUpdateHistory(
                                             srComplaintActionList:
-                                            snapshot.data
-                                                .srComplaintActionList,
+                                            snapshot.data?.srComplaintActionList,
                                             updatedOn: snapshot.data.updatedOn,
                                             requestStatus: snapshot.data..requestText,
                                           ),

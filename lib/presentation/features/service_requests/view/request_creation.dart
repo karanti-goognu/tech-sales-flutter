@@ -48,12 +48,12 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   getDropdownData() async {
-    await srFormDataController.getAccessKey().then((value) async {
+    await srFormDataController.getAccessKey().then((_) async {
       await srFormDataController
-          .getSrComplaintFormData(value.accessKey)
-          .then((data) {
+          .getSrComplaintFormData(_?.accessKey)
+          .then((__) {
         setState(() {
-          srComplaintModel = data;
+          srComplaintModel = __;
         });
       });
     });
@@ -66,7 +66,7 @@ class _RequestCreationState extends State<RequestCreation> {
             barrierDismissible: false));
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getRequestorDetails(value.accessKey, requestorType, siteId)
+          .getRequestorDetails(value?.accessKey, requestorType, siteId)
           .then((data) {
         if (data != null) {
           setState(() {
@@ -508,7 +508,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                           int index) {
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        return showDialog(
+                                                         showDialog(
                                                             context: context,
                                                             builder:
                                                                 (BuildContext

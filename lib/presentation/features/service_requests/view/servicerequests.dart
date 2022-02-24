@@ -35,8 +35,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    await eventController.getAccessKey().then((value) async {
-      await eventController.getSrListData(value.accessKey, 0).then((data){
+    await eventController.getAccessKey().then((_) async {
+      await eventController.getSrListData(_?.accessKey, 0).then((data){
         setState(() {
           serviceRequestComplaintListModel = data;
         });
@@ -51,8 +51,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       // print('offset old value ${eventController.offset}');
       eventController.offset += 10;
       // print('offset new value ${eventController.offset}');
-      await eventController.getAccessKey().then((value) async {
-        await eventController.getSrListData(value.accessKey, eventController.offset).then((data) {
+      await eventController.getAccessKey().then((_) async {
+        await eventController.getSrListData(_?.accessKey, eventController.offset).then((data) {
           setState(() {
             serviceRequestComplaintListModel = data;
           });
@@ -133,7 +133,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         });
                         eventController.getAccessKey().then((accessKeyModel) {
                           eventController
-                              .getSrListDataWithFilters(accessKeyModel.accessKey,
+                              .getSrListDataWithFilters(accessKeyModel?.accessKey,
                               value[0], value[1], value[2])
                               .then((data) {
                             // print(data.toJson());

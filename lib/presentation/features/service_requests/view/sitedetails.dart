@@ -24,9 +24,9 @@ class _SiteDetailsState extends State<SiteDetails> {
   var data;
 
   getData() async {
-    await eventController.getAccessKey().then((value) async {
+    await eventController.getAccessKey().then((_) async {
       data =
-          await eventController.getSiteListData(value.accessKey, widget.siteId);
+          await eventController.getSiteListData(_?.accessKey, widget.siteId);
     });
   }
 
