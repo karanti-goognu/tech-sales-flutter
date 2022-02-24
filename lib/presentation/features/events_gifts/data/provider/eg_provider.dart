@@ -50,7 +50,7 @@ class MyApiClientEvent {
 
 
 
-  Future<AllEventsModel> eventSearch(String? accessKey, String? userSecurityKey, String empID, String searchText) async {
+  Future<AllEventsModel?> eventSearch(String? accessKey, String? userSecurityKey, String empID, String searchText) async {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
@@ -58,7 +58,7 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AllEventsModel eventSearchModel = AllEventsModel.fromJson(data);
+        AllEventsModel? eventSearchModel = AllEventsModel.fromJson(data);
         return eventSearchModel;
       } else
         print('error');
