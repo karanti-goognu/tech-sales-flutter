@@ -28,7 +28,7 @@ class MyApiClient {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
-        return accessKeyModel;
+        return accessKeyModel!;
       } else
         print('error');
     } catch (_) {
