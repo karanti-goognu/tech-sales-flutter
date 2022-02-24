@@ -26,7 +26,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   // String dropdownValue;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
@@ -138,7 +138,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 () => DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: _addEventController.visitSubType,
-                    onChanged: (String newValue) {
+                    onChanged: (String? newValue) {
                       setState(() {
                         _addEventController.visitSubType = newValue;
                       });
@@ -218,12 +218,12 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                           return DropdownMenuItem(
                             value: val,
                             child: SizedBox(
-                                width: SizeConfig.screenWidth - 100,
+                                width: SizeConfig.screenWidth! - 100,
                                 child: Text(
                                     '${val.dealerName} (${val.dealerId})')),
                           );
                         }).toList(),
-                        onChanged: (val) {
+                        onChanged: (dynamic val) {
                           print(val.dealerName);
                           _addEventController.visitSiteId = val.dealerId;
                         })
@@ -231,7 +231,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                         //controller: _contactController,
                         controller: _addEventController.contactController,
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return "${_addEventController.siteIdText} can't be empty";
                           }
                           if (_addEventController.siteIdText ==
@@ -373,7 +373,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       //afterRequestLayout(empId, mobileNumber);
                       internetChecking().then((result) => {
                             if (result == true)
@@ -433,14 +433,14 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   barrierDismissible: false);
 
             } else if (data.respCode == "DM1002") {
-              _addEventController.visitSiteId = data.influencerModel.inflContact;
-              _nameController.text = data.influencerModel.inflName;
-              _typeController.text = data.influencerModel.influencerTypeText;
-              _categoryController.text = data.influencerModel.influencerCategoryText;
-              _ilpController.text = data.influencerModel.ilpMember;
-              _siteCountController.text = '${data.influencerModel.sitesCount}';
-              _mPotentialController.text = '${data.influencerModel.monthlyPotential}';
-              _mLiftingController.text = '${data.influencerModel.monthlyLifting}';
+              _addEventController.visitSiteId = data.influencerModel!.inflContact;
+              _nameController.text = data.influencerModel!.inflName!;
+              _typeController.text = data.influencerModel!.influencerTypeText!;
+              _categoryController.text = data.influencerModel!.influencerCategoryText!;
+              _ilpController.text = data.influencerModel!.ilpMember!;
+              _siteCountController.text = '${data.influencerModel!.sitesCount}';
+              _mPotentialController.text = '${data.influencerModel!.monthlyPotential}';
+              _mLiftingController.text = '${data.influencerModel!.monthlyLifting}';
               _addEventController.isVisibleContact = true;
               //_isVisibleContact = true;
             }
@@ -485,7 +485,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),

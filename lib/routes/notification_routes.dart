@@ -14,7 +14,7 @@ class NotificationRoutes {
   NotificationRoutes._();
 
   static navigateAfterResponse(
-      {@required String screenName, Map<String, dynamic> payloadData}) {
+      {required String? screenName, Map<String, dynamic>? payloadData}) {
     /*need to add firebase */
     print("navigateAfterResponse   $screenName");
     print("payloadData   $payloadData");
@@ -113,16 +113,16 @@ class NotificationRoutes {
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
       case StringConstants.VIDEO_PLAYER:
-        if (payloadData['url'] != null && payloadData['des'] != null)
+        if (payloadData!['url'] != null && payloadData['des'] != null)
           Get.toNamed(Routes.VIDEO_PLAYER,
               arguments: [payloadData['url'], payloadData['des']]);
         break;
       case StringConstants.SITES_SCREEN:
-        if (payloadData['id'] != null)
+        if (payloadData!['id'] != null)
         Get.to(()=>ViewSiteScreenNew(siteId: payloadData['id'],tabIndex: 0,));
         break;
       case StringConstants.SERVICE_REQUEST_UPDATESCREEN:
-        if (payloadData['id'] != null)
+        if (payloadData!['id'] != null)
           Get.to(()=>
             RequestUpdation(
                 id: payloadData["id"] ),
@@ -131,11 +131,11 @@ class NotificationRoutes {
           );
         break;
     case StringConstants.VIEW_OLD_LEAD_SCREEN:
-      Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
+      Get.to(() => ViewLeadScreen(int.parse(payloadData!['id'])),
           binding: AddLeadsBinding());
       break;
       case StringConstants.INFLUENCER_DETAILS:
-      Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),binding: InfBinding());
+      Get.to(() => InfluencerDetailView(int.parse(payloadData!['id'])),binding: InfBinding());
       break;
 
       default:

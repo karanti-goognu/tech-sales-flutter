@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'package:screenshot/screenshot.dart';
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
   MonthToDate({
-    Key key,
+    Key? key,
     this.empID,
     this.yearMonth,
   }) : super(key: key);
@@ -29,9 +30,9 @@ class MonthToDateState extends State<MonthToDate> {
   DashboardController _dashboardController = Get.find();
   ScreenshotController screenshotController = ScreenshotController();
 //   GlobalKey previewContainer = new GlobalKey();
-  File imgFile;
-  String empID, _currentMonth, _previousMonth;
-  String yearMonthForFileName;
+  late File imgFile;
+  String? empID, _currentMonth, _previousMonth;
+  String? yearMonthForFileName;
   Random random = Random();
 
 
@@ -40,7 +41,7 @@ class MonthToDateState extends State<MonthToDate> {
     String empIdForFileName= _dashboardController.empId;
 //    print(_dashboardController.empId);
 //    var pngBytes = await _capturePng();
-    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    var pngBytes = await  (screenshotController.capture(pixelRatio: 5) as FutureOr<dynamic>);
  //   print(pngBytes);
     //final directory = (await getExternalStorageDirectory()).path;
     final directory = (await getApplicationDocumentsDirectory()).path;
@@ -220,7 +221,7 @@ class MonthToDateState extends State<MonthToDate> {
                                 children: [
                                   Text(
                                     'Total Slab Opportunities',
-                                    style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*2.5),
+                                    style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal!*2.5),
                                   ),
                                   Expanded(child: Container())
                                 ],
@@ -358,6 +359,6 @@ class MonthToDateState extends State<MonthToDate> {
 class ChartDataForMTD {
   ChartDataForMTD(this.x, this.y, [this.color]);
   final String x;
-  final double y;
-  final Color color;
+  final double? y;
+  final Color? color;
 }

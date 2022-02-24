@@ -1,6 +1,6 @@
 class SaveVisitResponse {
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
 
   SaveVisitResponse({this.respCode, this.respMsg});
 

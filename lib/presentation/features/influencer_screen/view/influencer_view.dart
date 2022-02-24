@@ -25,12 +25,12 @@ class InfluencerView extends StatefulWidget {
 }
 
 class _InfluencerViewState extends State<InfluencerView> {
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
   InfController _infController = Get.find();
-  InfluencerListModel _influencerListModel;
-  List<InfluencerTypeList> _influencerTypeList;
-  List<InfluencerTypeList> _inf;
-  int _selectedValue;
+  InfluencerListModel? _influencerListModel;
+  List<InfluencerTypeList>? _influencerTypeList;
+  late List<InfluencerTypeList> _inf;
+  int? _selectedValue;
   String total = " ";
 
   @override
@@ -48,19 +48,19 @@ class _InfluencerViewState extends State<InfluencerView> {
                 setState(() {
                   if (data != null) {
                     _influencerListModel = data;
-                    _influencerTypeList = _influencerListModel.response.influencerTypeList;
+                    _influencerTypeList = _influencerListModel!.response!.influencerTypeList;
 
                     List<InfluencerTypeList> infList = [InfluencerTypeList(inflTypeId: 0, inflTypeDesc: 'All', infRegFlag: 'Y')];
 
 
 
-                   _inf = infList + _influencerTypeList ;
+                   _inf = infList + _influencerTypeList! ;
 
                    // print("))))))))))))${json.encode(_inf)}");
 
 
                     total =
-                        '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
+                        '${(_influencerListModel!.response!.totalInfluencerCount == null) ? 0 : _influencerListModel!.response!.totalInfluencerCount}';
                   //  print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
@@ -99,7 +99,7 @@ class _InfluencerViewState extends State<InfluencerView> {
             backgroundColor: ColorConstants.backgroundColorGrey,
             appBar: AppBar(
               backgroundColor: ColorConstants.appBarColor,
-              toolbarHeight: SizeConfig.screenHeight * .14,
+              toolbarHeight: SizeConfig.screenHeight! * .14,
               centerTitle: false,
               title:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -128,7 +128,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                             padding: EdgeInsets.only(left: 8.0),
                             child: Text("All"),
                           ),
-                          onChanged: (value) {
+                          onChanged: (dynamic value) {
                             setState(() {
                               _selectedValue = value;
                               if(_selectedValue == 0){
@@ -154,7 +154,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         .size
                                                         .width /
                                                     3,
-                                                child: Text(e.inflTypeDesc)),
+                                                child: Text(e.inflTypeDesc!)),
                                           ),
                                         ),
                                       ))
@@ -210,19 +210,19 @@ class _InfluencerViewState extends State<InfluencerView> {
               //Text("Influencer controller  is empty!!"),
             ),
           )
-        : (_influencerListModel.response == null)
+        : (_influencerListModel!.response == null)
             ? Container(
                 child: Center(
                   child: Text("Sites list response  is empty!!"),
                 ),
               )
-            : (_influencerListModel.response.ilpInfluencerEntity == null)
+            : (_influencerListModel!.response!.ilpInfluencerEntity == null)
                 ? Container(
                     child: Center(
                       child: Text("Influencer list is empty!!"),
                     ),
                   )
-                : (_influencerListModel.response.ilpInfluencerEntity.length ==
+                : (_influencerListModel!.response!.ilpInfluencerEntity!.length ==
                         0)
                     ? Container(
                         child: Center(
@@ -249,8 +249,8 @@ class _InfluencerViewState extends State<InfluencerView> {
                       )
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: _influencerListModel
-                            .response.ilpInfluencerEntity.length,
+                        itemCount: _influencerListModel!
+                            .response!.ilpInfluencerEntity!.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 80),
                         // itemExtent: 125.0,
@@ -260,7 +260,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                               Navigator.push(
                                   context, new CupertinoPageRoute(
                                   builder: (BuildContext context) =>
-                                      InfluencerDetailView(_influencerListModel.response.ilpInfluencerEntity[index].membershipId))
+                                      InfluencerDetailView(_influencerListModel!.response!.ilpInfluencerEntity![index].membershipId))
                               );
                             },
                             child: Card(
@@ -295,9 +295,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       Expanded(
                                                           flex: 2,
                                                           child: Text(
-                                                              _influencerListModel
-                                                                      .response
-                                                                      .ilpInfluencerEntity[
+                                                              _influencerListModel!
+                                                                      .response!
+                                                                      .ilpInfluencerEntity![
                                                                           index]
                                                                       .joiningDate ??
                                                                   "",
@@ -306,7 +306,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
-                                                            "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+                                                            "Avg.Monthly Vol.:${_influencerListModel!.response!.ilpInfluencerEntity![index].monthlyPotentialVolMt == null ? "" : _influencerListModel!.response!.ilpInfluencerEntity![index].monthlyPotentialVolMt}MT",
                                                             style: TextStyles.formfieldLabelText,
                                                          textAlign: TextAlign.end,
                                                          // overflow: TextOverflow.ellipsis,
@@ -330,7 +330,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         child: Container(
                                                           padding: new EdgeInsets.only(right: 5.0),
                                                           child: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflName == null ? " " : _influencerListModel.response.ilpInfluencerEntity[index].inflName}",
+                                                            "${_influencerListModel!.response!.ilpInfluencerEntity![index].inflName == null ? " " : _influencerListModel!.response!.ilpInfluencerEntity![index].inflName}",
                                                             style: TextStyles
                                                                 .mulliBold18,
                                                             overflow: TextOverflow.ellipsis,
@@ -359,7 +359,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                             .withOpacity(
                                                                                 0.1),
                                                                     label: Text(
-                                                                      "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                                      "${_influencerListModel!.response!.ilpInfluencerEntity![index].inflTypeText == null ? "" : _influencerListModel!.response!.ilpInfluencerEntity![index].inflTypeText}",
                                                                       //softWrap: true,
                                                                       overflow: TextOverflow.ellipsis,
                                                                       style: TextStyle(
@@ -400,7 +400,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       // child:
 
                                                       Text(
-                                                          "${(_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null || _influencerListModel.response.ilpInfluencerEntity[index].baseCity == "") ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}" ,
+                                                          "${(_influencerListModel!.response!.ilpInfluencerEntity![index].baseCity == null || _influencerListModel!.response!.ilpInfluencerEntity![index].baseCity == "") ? "-" : _influencerListModel!.response!.ilpInfluencerEntity![index].baseCity}" ,
                                                           style: TextStyles
                                                               .formfieldLabelText),
                                                       // ),
@@ -415,7 +415,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         backgroundColor:
                                                             HexColor("#39B54A"),
                                                         label: Text(
-                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].membershipId == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].membershipId}",
+                                                            "${_influencerListModel!.response!.ilpInfluencerEntity![index].membershipId == null ? "" : _influencerListModel!.response!.ilpInfluencerEntity![index].membershipId}",
                                                             style: TextStyles
                                                                 .btnWhite),
                                                       ),
@@ -438,7 +438,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       GestureDetector(
                                                           onTap: (){
                                                             Get.to(
-                                                                    () => InfluencerNameList(influencerID:'${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}',influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
+                                                                    () => InfluencerNameList(influencerID:'${_influencerListModel!.response!.ilpInfluencerEntity![index].membershipId}',influencerName:_influencerListModel!.response!.ilpInfluencerEntity![index].inflName),
                                                                 binding: InfBinding());
                                                           },
                                                           child: Chip(
@@ -458,7 +458,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
                                                               Text(
-                                                                "A. SITE - ${_influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount}",
+                                                                "A. SITE - ${_influencerListModel!.response!.ilpInfluencerEntity![index].activeSitesCount == null ? "00" : _influencerListModel!.response!.ilpInfluencerEntity![index].activeSitesCount}",
                                                                 style: TextStyle(
                                                                     color: HexColor(
                                                                         "#FFFFFFDE"),
@@ -481,9 +481,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         onTap: () {
                                                           Get.dialog(showContactDialog(
                                                               'Info',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].email == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].email}',
+                                                              '${_influencerListModel!.response!.ilpInfluencerEntity![index].mobileNumber}',
+                                                              '${_influencerListModel!.response!.ilpInfluencerEntity![index].giftAddress == null ? "-" : _influencerListModel!.response!.ilpInfluencerEntity![index].giftAddress}',
+                                                              '${_influencerListModel!.response!.ilpInfluencerEntity![index].email == null ? "-" : _influencerListModel!.response!.ilpInfluencerEntity![index].email}',
                                                               context));
                                                         },
                                                         child: Text(

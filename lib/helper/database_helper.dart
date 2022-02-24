@@ -5,12 +5,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 
 class DatabaseHelper{
-  static DatabaseHelper _databaseHelper;
+  static late DatabaseHelper _databaseHelper;
    DatabaseHelper._createInstance();
-  static Database _database;
-  static Future close() async => _database.close();
+  static Database? _database;
+  static Future close() async => _database!.close();
 
-  Future<Database> get database async {
+  Future<Database?> get database async {
     if (_database == null) {
       _database = await open();
     }

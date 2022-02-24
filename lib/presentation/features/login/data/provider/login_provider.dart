@@ -17,9 +17,9 @@ import 'dart:io';
 class MyApiClient {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClient({@required this.httpClient});
+  MyApiClient({required this.httpClient});
 
   getAccessKey() async {
     try {
@@ -27,7 +27,7 @@ class MyApiClient {
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -43,7 +43,7 @@ class MyApiClient {
     }
   }
 
-  checkLoginStatus(String empId, String mobileNumber, String accessKey) async {
+  checkLoginStatus(String empId, String mobileNumber, String? accessKey) async {
     try {
       version = VersionClass.getVersion();
       String encryptedEmpId =
@@ -88,7 +88,7 @@ class MyApiClient {
 //      print('Url is : ${UrlConstants.loginCheck}');
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
@@ -108,8 +108,8 @@ class MyApiClient {
     }
   }
 
-  retryOtp(String empId, String mobileNumber, String accessKey,
-      String otpTokenId) async {
+  retryOtp(String empId, String mobileNumber, String? accessKey,
+      String? otpTokenId) async {
     try {
 //      print('Token Id :: $otpTokenId');
       version = VersionClass.getVersion();
@@ -144,7 +144,7 @@ class MyApiClient {
       debugPrint('request without encryption: $body');
       debugPrint('request without encryption: ${json.encode(body)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       //var response = await httpClient.post(UrlConstants.loginCheck);
@@ -162,7 +162,7 @@ class MyApiClient {
     }
   }
 
-  validateOtp(String empId, String mobileNumber, String accessKey,
+  validateOtp(String empId, String mobileNumber, String? accessKey,
       String otpCode) async {
     String encryptedEmpId =
         encryptString(empId, StringConstants.encryptedKey).toString();
@@ -201,7 +201,7 @@ class MyApiClient {
 //      debugPrint('request without encryption: $body');
 //      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.validateOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
 //      print('response is :  ${response.body}');

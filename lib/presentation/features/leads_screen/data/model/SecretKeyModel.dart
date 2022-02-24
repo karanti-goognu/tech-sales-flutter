@@ -1,7 +1,7 @@
 class SecretKeyModel {
-  String respCode;
-  String respMsg;
-  String secretKey;
+  String? respCode;
+  String? respMsg;
+  String? secretKey;
 
   SecretKeyModel({this.respCode, this.respMsg, this.secretKey});
 

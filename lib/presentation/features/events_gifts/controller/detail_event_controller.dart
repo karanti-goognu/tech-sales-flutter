@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
-//import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -30,10 +30,10 @@ class DetailEventController extends GetxController {
 
   final EgRepository repository;
 
-  DetailEventController({@required this.repository})
+  DetailEventController({required this.repository})
       : assert(repository != null);
 
-  final _egDetailEventData = DetailEventModel().obs;
+  final Rx<DetailEventModel?> _egDetailEventData = DetailEventModel().obs;
 
   final _deleteEventResponse = DeleteEventModel().obs;
 
@@ -73,29 +73,29 @@ class DetailEventController extends GetxController {
   // get isLoading => this._isLoading.value;
   // set isLoading(value) => this._isLoading.value = value;
 
-  Future<String> getAccessKey() {
-    return repository.getAccessKey();
+  Future<String?> getAccessKey() {
+    return repository.getAccessKey().then((value) => value as String?);
   }
 
-  Future<DetailEventModel> getDetailEventData(
-    int eventId,
+  Future<DetailEventModel?> getDetailEventData(
+    int? eventId,
   ) async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     // Future.delayed(Duration.zero,
     //     () => Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
-    String empID = "";
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      String accessKey = await repository.getAccessKey();
+      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
       print('EMP: $empID');
       egDetailEventDaa = await repository.getdetailEvents(
-          accessKey, userSecurityKey, empID, eventId);
+          accessKey, userSecurityKey, empID!, eventId);
     });
    // Get.back();
     return egDetailEventDaa;
@@ -108,10 +108,10 @@ class DetailEventController extends GetxController {
             barrierDismissible: false));
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String empId = prefs.getString(StringConstants.employeeId)!;
 
       repository
           .getdetailEvents(accessKey, userSecurityKey, empId, eventId)
@@ -145,20 +145,20 @@ class DetailEventController extends GetxController {
     });
   }
 
-  Future<DeleteEventModel> deleteEvent(int eventId) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future deleteEvent(int? eventId) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     repository.getAccessKey().then((data) async {
       await _prefs.then((SharedPreferences prefs) async {
         empID = prefs.getString(StringConstants.employeeId);
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         repository
-            .deleteEvent(accessKey, userSecurityKey, empID, eventId)
+            .deleteEvent(accessKey, userSecurityKey, empID!, eventId)
             .then((value) {
           //Get.back();
-          if (value.respMsg == 'DM1002') {
+          if (value!.respMsg == 'DM1002') {
            // Get.back();
             Get.defaultDialog(
                 title: "Message",

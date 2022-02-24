@@ -23,8 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSR {
   final http.Client httpClient;
-  String version;
-  MyApiClientSR({@required this.httpClient});
+  String? version;
+  MyApiClientSR({required this.httpClient});
 
   Future<AccessKeyModel> getAccessKey() async {
     try {
@@ -32,7 +32,7 @@ class MyApiClientSR {
       // version=packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -45,12 +45,12 @@ class MyApiClientSR {
     }
   }
 
-  Future<SrComplaintModel> getSrComplaintData(String accessKey, String userSecretKey,String empId) async{
-    SrComplaintModel complaintModel;
+  Future<SrComplaintModel?> getSrComplaintData(String? accessKey, String? userSecretKey,String empId) async{
+    SrComplaintModel? complaintModel;
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
    //   print("URL: ${UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId}");
       //print("Request: ${response.body}")
      var data = json.decode(response.body);
@@ -68,12 +68,12 @@ class MyApiClientSR {
     return complaintModel;
   }
 
-  Future<RequestorDetailsModel> getRequestorDetails(String accessKey, String userSecretKey, String empID, String requesterType,String siteId ) async{
-    RequestorDetailsModel requestorDetailsModel;
+  Future<RequestorDetailsModel?> getRequestorDetails(String? accessKey, String? userSecretKey, String empID, String requesterType,String siteId ) async{
+    RequestorDetailsModel? requestorDetailsModel;
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
-          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version) as Map<String, String>?);
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
       // print("====${UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId}");
       // print("URL: ${json.decode(response.body)}");
@@ -85,13 +85,13 @@ class MyApiClientSR {
   }
 
 
-  Future<ServiceRequestComplaintListModel> getSrListData(String accessKey, String userSecretKey,String empID, int offset) async{
-    ServiceRequestComplaintListModel serviceRequestComplaintListModel;
+  Future<ServiceRequestComplaintListModel?> getSrListData(String? accessKey, String? userSecretKey,String empID, int offset) async{
+    ServiceRequestComplaintListModel? serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
   //    print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -110,8 +110,8 @@ class MyApiClientSR {
     return serviceRequestComplaintListModel;
   }
 
-  Future<ServiceRequestComplaintListModel> getSrListDataWithFilters(String accessKey, String userSecretKey,String empID,String resolutionStatusId,String severity, String typeOfReqId) async{
-    ServiceRequestComplaintListModel serviceRequestComplaintListModel;
+  Future<ServiceRequestComplaintListModel?> getSrListDataWithFilters(String? accessKey, String? userSecretKey,String empID,String resolutionStatusId,String severity, String typeOfReqId) async{
+    ServiceRequestComplaintListModel? serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
       String url =UrlConstants.getComplaintListData+empID;
@@ -127,7 +127,7 @@ class MyApiClientSR {
       }
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
       var data = json.decode(response.body);
       //print("=====$data");
       if(data["resp_code"] == "DM1005"){
@@ -145,14 +145,14 @@ class MyApiClientSR {
     return serviceRequestComplaintListModel;
   }
 
-  Future<ServiceRequestComplaintListModel> getSiteListData(String accessKey, String userSecretKey,String empID, String siteID) async{
-    ServiceRequestComplaintListModel serviceRequestComplaintListModel;
+  Future<ServiceRequestComplaintListModel?> getSiteListData(String? accessKey, String? userSecretKey,String empID, String siteID) async{
+    ServiceRequestComplaintListModel? serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -161,13 +161,13 @@ class MyApiClientSR {
     return serviceRequestComplaintListModel;
   }
 
-  Future<Map> saveServiceRequest(List<File> imageList,String accessKey, String userSecretKey, SaveServiceRequest saveServiceRequest) async{
-    http.Response response;
+  Future<Map?> saveServiceRequest(List<File> imageList,String? accessKey, String? userSecretKey, SaveServiceRequest saveServiceRequest) async{
+    late http.Response response;
     try{
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version) as Map<String, String>);
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
       // print("Headers "+ json.encode(saveServiceRequest));
@@ -196,12 +196,12 @@ class MyApiClientSR {
   return json.decode(response.body);
   }
 
-  Future<Map> updateServiceRequest(List<File> imageList,String accessKey, String userSecretKey, UpdateSRModel updateServiceRequest) async{
-    http.Response response;
+  Future<Map?> updateServiceRequest(List<File> imageList,String? accessKey, String? userSecretKey, UpdateSRModel? updateServiceRequest) async{
+    late http.Response response;
     try{
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version) as Map<String, String>);
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
        //print("Headers"+ request.headers.toString());
@@ -238,14 +238,14 @@ class MyApiClientSR {
   }
 
 
-  Future<ComplaintViewModel> getComplaintViewData(String accessKey, String userSecretKey,String empID, String id) async{
-    ComplaintViewModel complaintViewModel;
+  Future<ComplaintViewModel?> getComplaintViewData(String? accessKey, String? userSecretKey,String empID, String id) async{
+    ComplaintViewModel? complaintViewModel;
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
     //  print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
       var data = json.decode(response.body);
     //  print(data);
       if(data["resp_code"] == "DM1005"){
@@ -275,7 +275,7 @@ class MyApiClientSR {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey, version));
+                accessKey, userSecurityKey, version) as Map<String, String>?);
         // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
@@ -292,14 +292,14 @@ class MyApiClientSR {
     }
   }
 
-  getSiteAreaDetails(String accessKey,  String userSecretKey,String empID, String siteID) async{
+  getSiteAreaDetails(String? accessKey,  String? userSecretKey,String empID, String siteID) async{
     SiteAreaModel siteAreaDetailsModel;
     version = VersionClass.getVersion();
     try {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
       // print(url);
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
     //  print(response.body);
       siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
       return siteAreaDetailsModel;

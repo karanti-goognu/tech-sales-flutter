@@ -16,7 +16,7 @@ abstract class SharedPreferencesKeys {
 }
 
 class MySharedPreferences {
-  Future<List<String>> fetchHomeCountry() async {
+  Future<List<String>?> fetchHomeCountry() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var list = prefs.getStringList(SharedPreferencesKeys.homeCountryDetails);
     if (list != null) {

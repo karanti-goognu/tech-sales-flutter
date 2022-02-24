@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 
-class AddressSearch extends SearchDelegate<Suggestion> {
+class AddressSearch extends SearchDelegate<Suggestion?> {
   AddressSearch(this.sessionToken) {
     apiClient = PlaceApiProvider(sessionToken);
   }
 
   final sessionToken;
-  PlaceApiProvider apiClient;
+  late PlaceApiProvider apiClient;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -54,13 +54,13 @@ class AddressSearch extends SearchDelegate<Suggestion> {
           ? ListView.builder(
         itemBuilder: (context, index) => ListTile(
           title:
-          Text((snapshot.data[index] as Suggestion).description),
+          Text((snapshot.data[index] as Suggestion).description!),
           onTap: () {
             apiClient.getLatLong((snapshot.data[index] as Suggestion).placeId).then((value) {
             //  print("latitude ${value.lat}");
             //  print("longitude ${value.lng}");
             });
-            close(context, snapshot.data[index] as Suggestion);
+            close(context, snapshot.data[index] as Suggestion?);
           },
         ),
         itemCount: snapshot.data.length,

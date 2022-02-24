@@ -23,7 +23,7 @@ class CalendarEventController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  CalendarEventController({@required this.repository})
+  CalendarEventController({required this.repository})
       : assert(repository != null);
 
   final _calendarPlanResponse = CalendarPlanModel().obs;
@@ -106,12 +106,12 @@ class CalendarEventController extends GetxController {
     ),
   );
 
- Future getCalendarEvent(String accessKey) async {
+ Future getCalendarEvent(String? accessKey) async {
     this.isCalenderLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";
@@ -176,11 +176,11 @@ class CalendarEventController extends GetxController {
     });
   }
 
-  getCalendarEventOfDay(String accessKey) async {
+  getCalendarEventOfDay(String? accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventDataByDay +
           "referenceID=$empId&" +
           "&date=${this.selectedDate}";
@@ -212,11 +212,11 @@ class CalendarEventController extends GetxController {
     });
   }
 
-  getTargetVsActualEvent(String accessKey) async {
+  getTargetVsActualEvent(String? accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getTargetVsActualData + "$empId";
       print('$url');
       repository

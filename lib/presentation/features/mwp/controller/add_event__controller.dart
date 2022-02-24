@@ -30,7 +30,7 @@ class AddEventController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  AddEventController({@required this.repository}) : assert(repository != null);
+  AddEventController({required this.repository}) : assert(repository != null);
   final _accessKeyResponse = AccessKeyModel().obs;
   get accessKeyResponse => this._accessKeyResponse.value;
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
@@ -272,7 +272,7 @@ class AddEventController extends GetxController {
 
  // bool isVisibleContact = false;
 
-  saveVisit(String accessKey) {
+  saveVisit(String? accessKey) {
     Future.delayed(Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
@@ -344,8 +344,8 @@ class AddEventController extends GetxController {
     });
   }
 
-  saveMeet(String accessKey) {
-    List<MwpMeetDealers> list = new List();
+  saveMeet(String? accessKey) {
+    List<MwpMeetDealers> list = new List.empty(growable: true);
     for (int i = 0; i < this.dealerListSelected.length; i++) {
       list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
     }
@@ -397,7 +397,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  getDealersList(String accessKey) async {
+  getDealersList(String? accessKey) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -405,8 +405,8 @@ class AddEventController extends GetxController {
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getDealersList + "$empId";
       print('$url');
       repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
@@ -442,12 +442,12 @@ class AddEventController extends GetxController {
     });
   }
 
-  Future<VisitResponseModel> viewVisitData(String accessKey) async {
+  Future<VisitResponseModel> viewVisitData(String? accessKey) async {
     //this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=VISIT&id=${this.visitId}";
       print('$url');
@@ -518,12 +518,12 @@ class AddEventController extends GetxController {
     return visitResponseModel;
   }
 
-  viewMeetData(String accessKey) async {
+  viewMeetData(String? accessKey) async {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=MEET&id=${this.visitId}";
       print('$url');
@@ -567,7 +567,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  updateVisit(String accessKey) {
+  updateVisit(String? accessKey) {
     // this.isLoadingVisitView = true;
     Future.delayed(
         Duration.zero,
@@ -828,7 +828,7 @@ class AddEventController extends GetxController {
     });
   }
 
-  updateMeet(String accessKey) {
+  updateMeet(String? accessKey) {
     List<MwpMeetDealersUpdate> list = new List.empty(growable: true);
     for (int i = 0; i < this.dealerListSelected.length; i++) {
       list.add(new MwpMeetDealersUpdate(

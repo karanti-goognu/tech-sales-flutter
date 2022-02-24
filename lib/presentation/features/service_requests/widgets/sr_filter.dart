@@ -15,7 +15,7 @@ class FilterWidget extends StatefulWidget {
 class _FilterWidgetState extends State<FilterWidget> {
   SplashController _splashController = Get.find();
   SRListController _srListController = Get.find();
-  SplashDataModel splashDataModel;
+  late SplashDataModel splashDataModel;
   int selectedPosition = 0;
   int totalFilters = 0;
 
@@ -25,10 +25,10 @@ class _FilterWidgetState extends State<FilterWidget> {
     setState(() {
       splashDataModel = _splashController.splashDataModel;
     });
-    splashDataModel.srctRequestEntity.forEach((element) {
+    splashDataModel.srctRequestEntity!.forEach((element) {
     //  print(element.toJson());
     });
-    splashDataModel.srComplainResolutionEntity.forEach((element) {
+    splashDataModel.srComplainResolutionEntity!.forEach((element) {
     //  print(element.toJson());
     });
   //  print(splashDataModel.severity);
@@ -254,18 +254,18 @@ class _FilterWidgetState extends State<FilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: splashDataModel.srComplainResolutionEntity.length,
+            itemCount: splashDataModel.srComplainResolutionEntity!.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
               return filterBodyListTile(
                   splashDataModel
-                      .srComplainResolutionEntity[index].resolutionText,
-                  splashDataModel.srComplainResolutionEntity[index].id
+                      .srComplainResolutionEntity![index].resolutionText!,
+                  splashDataModel.srComplainResolutionEntity![index].id
                       .toString());
             }));
   }
 
-  String resolutionStatus='';
+  String? resolutionStatus='';
   Widget filterBodyListTile(String text, String id) {
     return Container(
       height: 40,
@@ -278,7 +278,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           value: id,
           groupValue: resolutionStatus,
           // _srFilterController.selectedLeadStage as String,
-          onChanged: (String value) {
+          onChanged: (String? value) {
             setState(() {
               resolutionStatus = value;
               totalFilters++;
@@ -297,17 +297,17 @@ class _FilterWidgetState extends State<FilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: splashDataModel.severity.length,
+            itemCount: splashDataModel.severity!.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
               return severityListTile(
-                  splashDataModel.severity[index],
+                  splashDataModel.severity![index],
                   _splashController.splashDataModel.leadStatusEntity[index].id
                       .toString());
             }));
   }
 
-  String severityGroup='';
+  String? severityGroup='';
   Widget severityListTile(String severity, String id) {
     return Container(
       height: 40,
@@ -319,7 +319,7 @@ class _FilterWidgetState extends State<FilterWidget> {
         leading: Radio(
           value: severity,
           groupValue: severityGroup,
-          onChanged: (String value) {
+          onChanged: (String? value) {
             setState(() {
               severityGroup = value;
               totalFilters++;
@@ -338,18 +338,18 @@ class _FilterWidgetState extends State<FilterWidget> {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: splashDataModel.srctRequestEntity.length,
+            itemCount: splashDataModel.srctRequestEntity!.length,
             itemExtent: 50,
             itemBuilder: (context, index) {
               return requestTypeListTile(
                   splashDataModel
-                      .srctRequestEntity[index].requestText,
+                      .srctRequestEntity![index].requestText!,
                   splashDataModel
-                      .srctRequestEntity[index].id.toString());
+                      .srctRequestEntity![index].id.toString());
             }));
   }
 
-  String requestGroup='';
+  String? requestGroup='';
   Widget requestTypeListTile(String requestType, String id) {
     return Container(
       height: 40,
@@ -358,7 +358,7 @@ class _FilterWidgetState extends State<FilterWidget> {
         leading: Radio(
           value: id,
           groupValue: requestGroup,
-          onChanged: (String value) {
+          onChanged: (String? value) {
             setState(() {
               requestGroup = value;
               totalFilters++;

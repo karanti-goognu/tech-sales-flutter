@@ -1,5 +1,5 @@
 class InfluencerResponseModel {
-  Response response;
+  Response? response;
 
   InfluencerResponseModel({this.response});
 
@@ -12,19 +12,19 @@ class InfluencerResponseModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.response != null) {
-      data['response'] = this.response.toJson();
+      data['response'] = this.response!.toJson();
     }
     return data;
   }
 }
 
 class Response {
-  String respCode;
-  String respMsg;
-  int membershipId;
-  String influencerContact;
-  String influencerName;
-  String inFlTypeId;
+  String? respCode;
+  String? respMsg;
+  int? membershipId;
+  String? influencerContact;
+  String? influencerName;
+  String? inFlTypeId;
 
   Response(
       {this.respCode,

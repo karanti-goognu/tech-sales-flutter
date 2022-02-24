@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteFilterWidget extends StatefulWidget {
-  SiteDistrictListModel siteDistrictListModel;
+  SiteDistrictListModel? siteDistrictListModel;
 
   SiteFilterWidget({this.siteDistrictListModel});
   @override
@@ -30,7 +30,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   List<SitesEntity> siteList = new List.empty(growable: true);
 
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   @override
   Widget build(BuildContext context) {
@@ -425,7 +425,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
             () => Radio(
               value: stageValue,
               groupValue: _siteController.selectedSiteStage as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_siteController.selectedSiteStage ==
                     StringConstants.empty) {
                   _siteController.selectedFilterCount =
@@ -473,7 +473,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
             () => Radio(
               value: statusValue,
               groupValue: _siteController.selectedSiteStatus as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_siteController.selectedSiteStatus ==
                     StringConstants.empty) {
                   _siteController.selectedFilterCount =
@@ -579,7 +579,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
             () => Radio(
               value: statusValue,
               groupValue: _siteController.selectedSiteInfluencerCat as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_siteController.selectedSiteInfluencerCat ==
                     StringConstants.empty) {
                   _siteController.selectedFilterCount =
@@ -602,7 +602,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
     return Container(
       padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
       child: DropdownButtonFormField(
-        onChanged: (_) {
+        onChanged: (dynamic _) {
           //setState(() {
           if (_siteController.selectedSiteDistrict == StringConstants.empty) {
             _siteController.selectedFilterCount =
@@ -616,14 +616,14 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
           // });
         },
         items: (widget.siteDistrictListModel == null ||
-                widget.siteDistrictListModel.districtList == null)
+                widget.siteDistrictListModel!.districtList == null)
             ? []
-            : widget.siteDistrictListModel.districtList
+            : widget.siteDistrictListModel!.districtList!
                 .map((e) => DropdownMenuItem(
                       value: e.name,
                       child: Container(
                           width: MediaQuery.of(context).size.width / 2.5,
-                          child: Text(e.name)),
+                          child: Text(e.name!)),
                     ))
                 .toList(),
         style: FormFieldStyle.formFieldTextStyle,
@@ -660,7 +660,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                 value: option,
                 groupValue:
                     _siteController.selectedDeliveryPointsValue as String,
-                onChanged: (String value) {
+                onChanged: (String? value) {
                   print("Inside Filter $value");
                   if (_siteController.selectedDeliveryPointsValue ==
                       StringConstants.empty) {
@@ -685,7 +685,7 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,

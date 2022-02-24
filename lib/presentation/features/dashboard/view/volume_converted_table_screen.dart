@@ -28,7 +28,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: SizeConfig.screenHeight*.10,
+        toolbarHeight: SizeConfig.screenHeight!*.10,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +74,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                 Text('Total Count-${ _dashboardController.mtdConvertedVolumeList.volumeEntity.length}'),),
           ),
           Container(
-            height: SizeConfig.screenHeight / 16,
+            height: SizeConfig.screenHeight! / 16,
             color: HexColor('707070'),
             child: Row(
               children: [
@@ -85,7 +85,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                     style: TextStyle(
                         color: HexColor('FFFFFF'),
                         fontSize:
-                        SizeConfig.blockSizeHorizontal * 3),
+                        SizeConfig.blockSizeHorizontal! * 3),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -95,7 +95,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                       style: TextStyle(
                           color: HexColor('FFFFFF'),
                           fontSize:
-                          SizeConfig.blockSizeHorizontal *
+                          SizeConfig.blockSizeHorizontal! *
                               3),
                       textAlign: TextAlign.center),
                 ),
@@ -105,7 +105,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                       style: TextStyle(
                           color: HexColor('FFFFFF'),
                           fontSize:
-                          SizeConfig.blockSizeHorizontal *
+                          SizeConfig.blockSizeHorizontal! *
                               3),
                       textAlign: TextAlign.center),
                 ),
@@ -115,7 +115,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                       style: TextStyle(
                           color: HexColor('FFFFFF'),
                           fontSize:
-                          SizeConfig.blockSizeHorizontal *
+                          SizeConfig.blockSizeHorizontal! *
                               3),
                       textAlign: TextAlign.center),
                 ),
@@ -125,7 +125,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                       style: TextStyle(
                           color: HexColor('FFFFFF'),
                           fontSize:
-                          SizeConfig.blockSizeHorizontal *
+                          SizeConfig.blockSizeHorizontal! *
                               3),
                       textAlign: TextAlign.center),
                 ),
@@ -168,7 +168,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                     "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize:
-                                    SizeConfig.blockSizeHorizontal * 3),
+                                    SizeConfig.blockSizeHorizontal! * 3),
                                   ),
                                 ),
                                 Expanded(
@@ -177,7 +177,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].constructionStageText}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize:
-                                      SizeConfig.blockSizeHorizontal * 3)
+                                      SizeConfig.blockSizeHorizontal! * 3)
                                   ),
                                 ),
                                 Expanded(
@@ -186,7 +186,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].brandName}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize:
-                                      SizeConfig.blockSizeHorizontal * 3)
+                                      SizeConfig.blockSizeHorizontal! * 3)
                                   ),
                                 ),
                                 Expanded(
@@ -195,7 +195,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyQty} bg",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize:
-                                      SizeConfig.blockSizeHorizontal * 3)
+                                      SizeConfig.blockSizeHorizontal! * 3)
                                   ),
                                 ),
                                 Expanded(
@@ -204,7 +204,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                                       "${_dashboardController.mtdConvertedVolumeList.volumeEntity[index].supplyDate}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize:
-                                      SizeConfig.blockSizeHorizontal * 3)
+                                      SizeConfig.blockSizeHorizontal! * 3)
                                   ),
                                 ),
                                 Expanded(

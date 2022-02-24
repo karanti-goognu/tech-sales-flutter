@@ -14,16 +14,16 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 class MyApiClientEvent {
 
   final http.Client httpClient;
-String version;
-  MyApiClientEvent({@required this.httpClient});
+String? version;
+  MyApiClientEvent({required this.httpClient});
 
-  Future<String> getAccessKey() async {
+  Future<String?> getAccessKey() async {
     try {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -35,11 +35,11 @@ String version;
     }
   }
 
-  Future getGiftStockData(String empID,String accessKey, String userSecurityKey)async{
+  Future getGiftStockData(String empID,String? accessKey, String? userSecurityKey)async{
     try{
       var url=UrlConstants.getGiftStock +empID;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
      // print('Response body is : ${json.decode(response.body)}');
      // print('URL is : $url');
 
@@ -63,12 +63,12 @@ String version;
 
   }
 
-  Future getViewLogsData(String accessKey, String userSecurityKey, String empID, String monthYear )async{
+  Future getViewLogsData(String? accessKey, String? userSecurityKey, String empID, String monthYear )async{
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
      // print(url);
-      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -89,13 +89,13 @@ String version;
 
   }
 
-  Future addGiftStockData(String empID, String userSecurityKey, String accessKey, String comment, String giftTypeId, String giftTypeText, String giftInHandQty,String giftInHandQtyNew)async{
+  Future addGiftStockData(String? empID, String? userSecurityKey, String? accessKey, String? comment, String? giftTypeId, String? giftTypeText, String? giftInHandQty,String? giftInHandQtyNew)async{
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.addGiftStock ;
      // print(empID);
       var response = await httpClient.post(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?,
 
           body: jsonEncode({
             "comment": comment,

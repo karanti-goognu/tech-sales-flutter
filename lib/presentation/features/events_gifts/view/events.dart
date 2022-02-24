@@ -16,7 +16,7 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
-  String empID;
+  String? empID;
   int _tabNumber = 0;
 AllEventController _eventController=Get.find();
 

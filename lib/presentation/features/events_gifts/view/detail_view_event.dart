@@ -24,7 +24,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailViewEvent extends StatefulWidget {
-  int eventId;
+  int? eventId;
   DetailViewEvent(this.eventId);
 
   @override
@@ -33,13 +33,13 @@ class DetailViewEvent extends StatefulWidget {
 
 class _DetailViewEventState extends State<DetailViewEvent> {
   Position _currentPosition = new Position();
-  DetailEventModel detailEventModel;
+  DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
   EventsFilterController _eventsFilterController = Get.find();
-  int total;
+  int? total;
   bool isVisible = false;
-  String isEventStarted;
-  String referenceID;
+  String? isEventStarted;
+  String? referenceID;
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   setVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusText ==
+    if (detailEventModel!.mwpEventModel!.eventStatusText ==
             StringConstants.approved &&
         isEventStarted == 'N') {
       isVisible = true;
@@ -62,8 +62,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       setState(() {
         detailEventModel = data;
       });
-      referenceID = detailEventModel.mwpEventModel.referenceId;
-      isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
+      referenceID = detailEventModel!.mwpEventModel!.referenceId;
+      isEventStarted = detailEventModel!.mwpEventModel!.isEventStarted;
       setVisibility();
     //  print('DDDD: $data');
     });
@@ -147,7 +147,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 onPressed: () {
                   Get.to(
                       () => DetailPending(
-                          detailEventModel.mwpEventModel.eventId,
+                          detailEventModel!.mwpEventModel!.eventId,
                           ColorConstants.eventApproved),
                       binding: EGBinding());
                   // Get.to(
@@ -184,7 +184,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               onPressed: () {
                 Get.dialog(
                     CustomDialogs().showCommentDialog("Please Enter Comment",
-                        context, detailEventModel.mwpEventModel.eventId),
+                        context, detailEventModel!.mwpEventModel!.eventId),
                     barrierDismissible: false);
                 // Get.toNamed(Routes.END_EVENT);
               },
@@ -200,11 +200,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ),
             TextButton(
                 onPressed: () async {
-                  Map results =
+                  Map? results =
                       await Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) {
                       return UpdateDlrInf(
-                        detailEventModel.mwpEventModel.eventId,
+                        detailEventModel!.mwpEventModel!.eventId,
                       );
                     },
                   ));
@@ -243,8 +243,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               (detailEventModel != null &&
-                      detailEventModel.mwpEventModel != null)
-                  ? (detailEventModel.mwpEventModel.eventStatusText ==
+                      detailEventModel!.mwpEventModel != null)
+                  ? (detailEventModel!.mwpEventModel!.eventStatusText ==
                               StringConstants.approved &&
                           isEventStarted == "Y")
                       ? btnAddLead
@@ -253,11 +253,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ],
           ),
           bottom: (isEventStarted == "N" &&
-                  detailEventModel.mwpEventModel.eventStatusText ==
+                  detailEventModel!.mwpEventModel!.eventStatusText ==
                       StringConstants.approved)
               ? editRow
               : (isEventStarted == "Y" &&
-                      detailEventModel.mwpEventModel.eventStatusText ==
+                      detailEventModel!.mwpEventModel!.eventStatusText ==
                           StringConstants.approved)
                   ? endRow
                   : PreferredSize(
@@ -268,7 +268,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: (detailEventModel != null && detailEventModel.mwpEventModel != null)
+      body: (detailEventModel != null && detailEventModel!.mwpEventModel != null)
           // && detailEventModel.eventDealersModelList != null)
           ? ListView(
               children: [
@@ -280,35 +280,35 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     bottom: 20.sp,
                   ),
                   child: Text(
-                    '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
+                    '${detailEventModel!.mwpEventModel!.eventDate} | ${detailEventModel!.mwpEventModel!.eventTime}',
                     style: TextStyles.mulliBoldBlue,
                   ),
                 ),
                 displayInfo('Event Type',
-                    detailEventModel.mwpEventModel.eventTypeText ?? ''),
+                    detailEventModel!.mwpEventModel!.eventTypeText ?? ''),
                 displayInfo('Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0'),
+                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount}' ?? '0'),
                 displayInfo(
                     'Non-Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ??
+                    '${detailEventModel!.mwpEventModel!.nonDalmiaInflCount}' ??
                         '0'),
                 displayInfo(
                     'Total Participants',
-                    '${(detailEventModel.mwpEventModel.dalmiaInflCount) + (detailEventModel.mwpEventModel.nonDalmiaInflCount)}' ??
+                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount! + detailEventModel!.mwpEventModel!.nonDalmiaInflCount!}' ??
                         '0'),
                 displayInfo('Venue Address',
-                    detailEventModel.mwpEventModel.venueAddress),
+                    detailEventModel!.mwpEventModel!.venueAddress!),
                 displayChip('Dealer(s) Detail'),
                 displayInfo(
                     'Expected Leads',
-                    '${detailEventModel.mwpEventModel.expectedLeadsCount}' ??
+                    '${detailEventModel!.mwpEventModel!.expectedLeadsCount}' ??
                         '0'),
                 displayInfo(
                     'Gift distribution',
-                    '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
+                    '${detailEventModel!.mwpEventModel!.giftDistributionCount}' ??
                         '0'),
                 displayInfo('Event location',
-                    detailEventModel.mwpEventModel.eventLocation ?? ''),
+                    detailEventModel!.mwpEventModel!.eventLocation ?? ''),
                 Padding(
                   padding: EdgeInsets.only(
                       left: 15.sp,
@@ -333,7 +333,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                               width: 1.0), // Set border width
                         ),
                         child: Text(
-                          detailEventModel.mwpEventModel.eventComment,
+                          detailEventModel!.mwpEventModel!.eventComment!,
                           maxLines: null,
                         ),
                       ),
@@ -417,18 +417,18 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             Container(
                 height: 30.sp,
                 child: (detailEventModel != null &&
-                        detailEventModel.eventDealersModelList != null &&
-                        detailEventModel.eventDealersModelList.length > 0)
+                        detailEventModel!.eventDealersModelList != null &&
+                        detailEventModel!.eventDealersModelList!.length > 0)
                     ? ListView(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        children: detailEventModel.eventDealersModelList
+                        children: detailEventModel!.eventDealersModelList!
                             .map((e) => Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4.0),
                                   child: Chip(
                                     label: Text(
-                                      e.dealerName,
+                                      e.dealerName!,
                                       style: TextStyle(
                                           fontFamily: "Muli",
                                           color: Colors.black,
@@ -551,7 +551,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
   }
 
   startEvent() async {
-    StartEventResponse _startEventResponse;
+    StartEventResponse? _startEventResponse;
     StartEventModel _startEventModel = StartEventModel.fromJson({
       'eventID': widget.eventId,
       'eventStartUserLat': _currentPosition.latitude,
@@ -568,21 +568,21 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   .then((data) {
                 _startEventResponse = data;
                // print('DD: $_startEventResponse');
-                if (_startEventResponse.respCode == "DM1002") {
-                  Get.dialog(redirectToStartEventPg(data.respMsg, data.eventID),
+                if (_startEventResponse!.respCode == "DM1002") {
+                  Get.dialog(redirectToStartEventPg(data!.respMsg!, data.eventID),
                       barrierDismissible: false);
-                } else if (_startEventResponse.respCode == "DM2044") {
+                } else if (_startEventResponse!.respCode == "DM2044") {
                   Get.dialog(
-                      redirectToEventDetailPg(data.respMsg, data.eventID),
+                      redirectToEventDetailPg(data!.respMsg!, data.eventID),
                       barrierDismissible: false);
-                } else if (_startEventResponse.respCode == "DM2043") {
+                } else if (_startEventResponse!.respCode == "DM2043") {
                   Get.dialog(
                       CustomDialogs()
-                          .errorDialogForEvent(data.respMsg.toString()),
+                          .errorDialogForEvent(data!.respMsg.toString()),
                       barrierDismissible: false);
                 } else {
                   Get.dialog(
-                      CustomDialogs().messageDialogMWP(data.respMsg.toString()),
+                      CustomDialogs().messageDialogMWP(data!.respMsg.toString()),
                       barrierDismissible: false);
                 }
               })
@@ -598,7 +598,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         });
   }
 
-  Widget redirectToEventDetailPg(String message, int eventId) {
+  Widget redirectToEventDetailPg(String message, int? eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -640,7 +640,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     );
   }
 
-  Widget redirectToStartEventPg(String message, int eventId) {
+  Widget redirectToStartEventPg(String message, int? eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

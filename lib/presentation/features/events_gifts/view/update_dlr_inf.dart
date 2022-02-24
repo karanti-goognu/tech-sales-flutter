@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateDlrInf extends StatefulWidget {
-  int eventId;
+  int? eventId;
   UpdateDlrInf(this.eventId);
 
   @override
@@ -37,21 +38,21 @@ class UpdateDlrInf extends StatefulWidget {
 }
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
-  DealerInfModel _dealerInfModel;
-  InfDetailModel _infDetailModel;
-  InfluencerDetailModel _influencerDetailModel;
-  InfluencerResponseModel _influencerResponseModel;
+  DealerInfModel? _dealerInfModel;
+  InfDetailModel? _infDetailModel;
+  InfluencerDetailModel? _influencerDetailModel;
+  InfluencerResponseModel? _influencerResponseModel;
   //SaveNewInfluencerResponse _saveNewInfluencerResponse;
   EventsFilterController _eventsFilterController = Get.find();
-  int dealerId, _infTypeId, _infCatId;
+  int? dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false, _isButtonDisabled = false;
   final _formKey = GlobalKey<FormState>();
   final _newFormKey = GlobalKey<FormState>();
-  BuildContext _context;
+  BuildContext? _context;
   String _selectedEnrollValue = "N";
-  bool checkedValue = false;
+  bool? checkedValue = false;
   bool checkedEnrollValue = false;
-  String dateOfJoining;
+  String? dateOfJoining;
   bool _enrollVisible = false;
 
   TextEditingController _infTypeController = TextEditingController();
@@ -72,7 +73,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -90,32 +91,32 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   setData() {
-    if (_dealerInfModel.eventDealersModelList != null &&
-        _dealerInfModel.eventDealersModelList.length != 0) {
-      for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
+    if (_dealerInfModel!.eventDealersModelList != null &&
+        _dealerInfModel!.eventDealersModelList!.length != 0) {
+      for (int i = 0; i < _dealerInfModel!.eventDealersModelList!.length; i++) {
         selectedDealersModels.add(DealersModel(
-            dealerId: _dealerInfModel.eventDealersModelList[i].dealerId,
-            dealerName: _dealerInfModel.eventDealersModelList[i].dealerName));
+            dealerId: _dealerInfModel!.eventDealersModelList![i].dealerId,
+            dealerName: _dealerInfModel!.eventDealersModelList![i].dealerName));
 
-        selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
+        selectedDealer.add(_dealerInfModel!.eventDealersModelList![i].dealerName);
       }
     }
 
-    if (_dealerInfModel.eventInfluencerModelList != null &&
-        _dealerInfModel.eventInfluencerModelList.length != 0) {
+    if (_dealerInfModel!.eventInfluencerModelList != null &&
+        _dealerInfModel!.eventInfluencerModelList!.length != 0) {
       for (int i = 0;
-          i < _dealerInfModel.eventInfluencerModelList.length;
+          i < _dealerInfModel!.eventInfluencerModelList!.length;
           i++) {
         selectedInfModels.add(EventInfluencerModelList(
-            inflId: _dealerInfModel.eventInfluencerModelList[i].inflId,
-            inflName: _dealerInfModel.eventInfluencerModelList[i].inflName,
+            inflId: _dealerInfModel!.eventInfluencerModelList![i].inflId,
+            inflName: _dealerInfModel!.eventInfluencerModelList![i].inflName,
             inflContact:
-                _dealerInfModel.eventInfluencerModelList[i].inflContact,
-            inflTypeId: _dealerInfModel.eventInfluencerModelList[i].inflTypeId,
+                _dealerInfModel!.eventInfluencerModelList![i].inflContact,
+            inflTypeId: _dealerInfModel!.eventInfluencerModelList![i].inflTypeId,
             eventInflId:
-                _dealerInfModel.eventInfluencerModelList[i].eventInflId,
-            eventId: _dealerInfModel.eventInfluencerModelList[i].eventId,
-            isActive: _dealerInfModel.eventInfluencerModelList[i].isActive));
+                _dealerInfModel!.eventInfluencerModelList![i].eventInflId,
+            eventId: _dealerInfModel!.eventInfluencerModelList![i].eventId,
+            isActive: _dealerInfModel!.eventInfluencerModelList![i].isActive));
       }
     }
   }
@@ -139,7 +140,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     final influencer = GestureDetector(
       onTap: () => getBottomSheet(),
       child: FormField(
-        validator: (value) => value,
+        validator: (dynamic value) => value,
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
@@ -162,7 +163,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 children: List<Widget>.generate(selectedInfModels.length,
                     (int index) {
                   return Chip(
-                    label: Text(selectedInfModels[index].inflName),
+                    label: Text(selectedInfModels[index].inflName!),
                     onDeleted: () {
                       setState(() {
                         selectedInfModels.removeAt(index);
@@ -180,7 +181,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
-        validator: (value) => value,
+        validator: (dynamic value) => value,
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
@@ -203,7 +204,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 children: List<Widget>.generate(selectedDealersModels.length,
                     (int index) {
                   return Chip(
-                    label: Text(selectedDealersModels[index].dealerName),
+                    label: Text(selectedDealersModels[index].dealerName!),
                     // onDeleted: () {
                     //   setState(() {
                     //     selectedDealersModels.removeAt(index);
@@ -349,11 +350,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   addInfluencerBottomSheetWidget() {
-    List<EventInfluencerModelList> inf =
-        _dealerInfModel.eventInfluencerModelList;
+    List<EventInfluencerModelList>? inf =
+        _dealerInfModel!.eventInfluencerModelList;
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.6,
+        height: SizeConfig.screenHeight! / 1.6,
         color: Colors.white,
         child: Form(
           key: _formKey,
@@ -396,7 +397,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   //   //Get.back();
                   // },
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return "Contact No. can't be empty";
                     }
                     // if (value.length != 10) {
@@ -505,14 +506,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                             selectedInfModels.add(EventInfluencerModelList(
                                 eventId: widget.eventId,
                                 eventInflId: 0,
-                                inflContact: _influencerDetailModel
-                                    .influencerModel.inflContact,
-                                inflTypeId: _influencerDetailModel
-                                    .influencerModel.inflTypeId,
-                                inflId: _influencerDetailModel
-                                    .influencerModel.inflId,
-                                inflName: _influencerDetailModel
-                                    .influencerModel.inflName,
+                                inflContact: _influencerDetailModel!
+                                    .influencerModel!.inflContact,
+                                inflTypeId: _influencerDetailModel!
+                                    .influencerModel!.inflTypeId,
+                                inflId: _influencerDetailModel!
+                                    .influencerModel!.inflId,
+                                inflName: _influencerDetailModel!
+                                    .influencerModel!.inflName,
                                 isActive: "Y"));
 
                             Get.back();
@@ -545,13 +546,13 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
   addNewInfluencerBottomSheetWidget() {
     (_influencerDetailModel != null)
-        ? _newContactController.text = _influencerDetailModel.mobileNumber
+        ? _newContactController.text = _influencerDetailModel!.mobileNumber!
         : _newContactController.text = "";
     _enrollVisible = false;
 
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.3,
+        height: SizeConfig.screenHeight! / 1.3,
         color: Colors.white,
         child: Form(
           key: _newFormKey,
@@ -589,7 +590,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       const EdgeInsets.only(right: 16, left: 16, bottom: 8),
                   child: TextFormField(
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return "Name can't be empty";
                       }
                       return null;
@@ -605,11 +606,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   padding:
                       const EdgeInsets.only(right: 16, left: 16, bottom: 12),
                   child: DropdownButtonFormField(
-                    onChanged: (value) {
+                    onChanged: (dynamic value) {
                       setState(() {
                         _infTypeId = value;
-                        if (_influencerDetailModel
-                                .influencerTypeEntitiesList[value - 1]
+                        if (_influencerDetailModel!
+                                .influencerTypeEntitiesList![value - 1]
                                 .infRegFlag ==
                             "Y") {
                           _enrollVisible = true;
@@ -621,10 +622,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     items: (_influencerDetailModel == null)
                         ? []
                         : (_influencerDetailModel != null &&
-                                _influencerDetailModel
+                                _influencerDetailModel!
                                         .influencerTypeEntitiesList !=
                                     null)
-                            ? _influencerDetailModel.influencerTypeEntitiesList
+                            ? _influencerDetailModel!.influencerTypeEntitiesList!
                                 .map((e) => DropdownMenuItem(
                                       value: e.inflTypeId,
                                       child: Container(
@@ -643,7 +644,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     style: FormFieldStyle.formFieldTextStyle,
                     decoration: FormFieldStyle.buildInputDecoration(
                         labelText: "Influencer Type*"),
-                    validator: (value) => value == null
+                    validator: (dynamic value) => value == null
                         ? 'Please select the Influencer Type'
                         : null,
                   )),
@@ -745,7 +746,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         padding: const EdgeInsets.only(
                             right: 16, left: 16, bottom: 12),
                         child: DropdownButtonFormField(
-                          onChanged: (value) {
+                          onChanged: (dynamic value) {
                             setState(() {
                               _infCatId = value;
                             });
@@ -753,15 +754,15 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           items: (_influencerDetailModel == null)
                               ? []
                               : (_influencerDetailModel != null &&
-                                      _influencerDetailModel
+                                      _influencerDetailModel!
                                               .influencerCategoryEntitiesList !=
                                           null)
-                                  ? _influencerDetailModel
-                                      .influencerCategoryEntitiesList
+                                  ? _influencerDetailModel!
+                                      .influencerCategoryEntitiesList!
                                       .map((e) => DropdownMenuItem(
                                             value: e.inflCatId,
                                             child: Text(
-                                              e.inflCatDesc,
+                                              e.inflCatDesc!,
                                               maxLines: null,
                                             ),
                                           ))
@@ -770,7 +771,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           style: FormFieldStyle.formFieldTextStyle,
                           decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Influencer Category* "),
-                          validator: (value) => value == null
+                          validator: (dynamic value) => value == null
                               ? 'Please select the Influencer Category'
                               : null,
                         )),
@@ -804,8 +805,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     });
   }
 
-  List<bool> checkedValues;
-  List<String> selectedDealer = [];
+  late List<bool?> checkedValues;
+  List<String?> selectedDealer = [];
   List<DealersModel> selectedDealersModels = [];
 
   TextEditingController _query = TextEditingController();
@@ -817,12 +818,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     //     selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
     //   }
     // }
-    List<DealersModel> dealers = _dealerInfModel.dealersModel;
+    List<DealersModel>? dealers = _dealerInfModel!.dealersModel;
     checkedValues =
-        List.generate(_dealerInfModel.dealersModel.length, (index) => false);
+        List.generate(_dealerInfModel!.dealersModel!.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -847,7 +848,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = _dealerInfModel.dealersModel.where((element) {
+                    dealers = _dealerInfModel!.dealersModel!.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -869,7 +870,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: dealers.length,
+                itemCount: dealers!.length,
                 itemBuilder: (context, index) {
                   return
                       // dealerId == dealers[index].dealerId
@@ -880,13 +881,13 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
+                        Text(dealers![index].dealerName!),
+                        Text('( ${dealers![index].dealerId} )'),
                       ],
                     ),
                     selected:
-                        selectedDealer.contains(dealers[index].dealerName),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                        selectedDealer.contains(dealers![index].dealerName),
+                    value: selectedDealer.contains(dealers![index].dealerName),
 
                     // onChanged: (newValue) {
                     //   setState(() {
@@ -905,16 +906,16 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       setState(() {
                      //   print('NEWVALUE : $newValue');
                         if (newValue == true) {
-                          selectedDealer.add(dealers[index].dealerName);
-                          selectedDealersModels.add(dealers[index]);
+                          selectedDealer.add(dealers![index].dealerName);
+                          selectedDealersModels.add(dealers![index]);
                         }
                         if (newValue == false) {
                           // selectedDealer.remove(dealers[index].dealerName);
                           // selectedDealersModels.remove(dealers[index]);
                           selectedDealersModels.removeWhere((item) =>
-                              item.dealerId == dealers[index].dealerId);
+                              item.dealerId == dealers![index].dealerId);
                           selectedDealer.removeWhere(
-                              (item) => item == dealers[index].dealerName);
+                              (item) => item == dealers![index].dealerName);
                         }
                         checkedValues[index] = newValue;
                     //    print("checkedValues $checkedValues");
@@ -927,7 +928,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId == dealers[index].dealerId
+                  return dealerId == dealers![index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -980,20 +981,20 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   getInfluencerData(String contact) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       _eventsFilterController.getInfData(contact).then((data) {
         _influencerDetailModel = data;
    //     print("0000$_influencerDetailModel");
         setState(() {
           if (data != null) {
-            if (_influencerDetailModel.respCode == "NUM404") {
+            if (_influencerDetailModel!.respCode == "NUM404") {
               getBottomSheetInf();
-            } else if (_influencerDetailModel.respCode == "DM1002") {
+            } else if (_influencerDetailModel!.respCode == "DM1002") {
               _infNameController.text =
-                  _influencerDetailModel.influencerModel.inflName;
+                  _influencerDetailModel!.influencerModel!.inflName!;
               _infTypeController.text =
-                  '${_influencerDetailModel.influencerModel.influencerTypeText}';
-              if (_influencerDetailModel.influencerModel.ilpRegFlag == "Y") {
+                  '${_influencerDetailModel!.influencerModel!.influencerTypeText}';
+              if (_influencerDetailModel!.influencerModel!.ilpRegFlag == "Y") {
                 checkedEnrollValue = true;
               } else {
                 checkedEnrollValue = false;
@@ -1008,9 +1009,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   updateBtnPressed() async {
-    List<EventDealerRequestsList> _dealersList = new List();
-    List<EventInfluencerRequestsList> _infList = new List();
-    String empId = await getEmpId();
+    List<EventDealerRequestsList> _dealersList = new List.empty(growable: true);
+    List<EventInfluencerRequestsList> _infList = new List.empty(growable: true);
+    String? empId = await (getEmpId() as FutureOr<String?>);
     selectedDealersModels.forEach((e) {
       setState(() {
         _dealersList.add(new EventDealerRequestsList(
@@ -1092,8 +1093,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addNewInfluencerBtnPressed() async {
     InfController _infController = Get.find();
 
-    if (_newFormKey.currentState.validate()) {
-      String empId = await getEmpId();
+    if (_newFormKey.currentState!.validate()) {
+      String? empId = await (getEmpId() as FutureOr<String?>);
       InfluencerRequestModel _influencerRequestModel =
           InfluencerRequestModel.fromJson({
         "membershipId": null,
@@ -1140,12 +1141,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   setState(() {
                     _influencerResponseModel = data;
                  //   print('DD: ${json.encode(_influencerResponseModel)}');
-                    if (data.response.respCode == "INF2001")
+                    if (data!.response!.respCode == "INF2001")
                       Get.dialog(successDialog(
-                          _influencerResponseModel.response.respMsg));
-                    else if (data.response.respMsg == "IN2008") {
+                          _influencerResponseModel!.response!.respMsg!));
+                    else if (data.response!.respMsg == "IN2008") {
                       Get.dialog(successDialog(
-                          _influencerResponseModel.response.respMsg));
+                          _influencerResponseModel!.response!.respMsg!));
                     }
                   });
                 })
@@ -1194,11 +1195,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               selectedInfModels.add(EventInfluencerModelList(
                   eventId: widget.eventId,
                   inflContact:
-                      _influencerResponseModel.response.influencerContact,
+                      _influencerResponseModel!.response!.influencerContact,
                   inflTypeId: int.tryParse(
-                      _influencerResponseModel.response.inFlTypeId),
-                  inflId: _influencerResponseModel.response.membershipId,
-                  inflName: _influencerResponseModel.response.influencerName,
+                      _influencerResponseModel!.response!.inFlTypeId!),
+                  inflId: _influencerResponseModel!.response!.membershipId,
+                  inflName: _influencerResponseModel!.response!.influencerName,
                   eventInflId: 0));
             });
 
@@ -1210,7 +1211,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     );
   }
 
-  Widget successDialogAndReload(BuildContext contex, String message) {
+  Widget successDialogAndReload(BuildContext? contex, String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

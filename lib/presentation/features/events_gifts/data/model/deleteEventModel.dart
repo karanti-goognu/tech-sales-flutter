@@ -1,8 +1,8 @@
 class DeleteEventModel {
-  int eventId;
-  String referenceId;
-  String respCode;
-  String respMsg;
+  int? eventId;
+  String? referenceId;
+  String? respCode;
+  String? respMsg;
 
   DeleteEventModel(
       {this.eventId, this.referenceId, this.respCode, this.respMsg});

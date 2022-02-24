@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 class MyRepositorySplash {
   final MyApiClientSplash apiClient;
 
-  MyRepositorySplash({@required this.apiClient}) : assert(apiClient != null);
+  MyRepositorySplash({required this.apiClient}) : assert(apiClient != null);
 
   getAccessKey() {
     return apiClient.getAccessKey();

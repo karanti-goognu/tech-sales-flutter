@@ -48,8 +48,8 @@ void _onPushClick(PushCampaign message) {
   print("This is a push click callback from native to flutter. Payload " +
       message.toString());
   Map<String, dynamic> payload = message.payload;
-  String gcmWebUrl = payload["gcm_webUrl"];
-  String gcmActivityName = payload["gcm_activityName"];
+  String? gcmWebUrl = payload["gcm_webUrl"];
+  String? gcmActivityName = payload["gcm_activityName"];
   print("_onPushClick   gcmWebUrl   $gcmWebUrl");
   if (gcmWebUrl != null) {
     String screenName= gcmWebUrl.split('/').last;
@@ -58,7 +58,7 @@ void _onPushClick(PushCampaign message) {
   }
 }
 
-handleDynamicLink({String navigationScreenName, Map<String, dynamic>  payloadData}) {
+handleDynamicLink({String? navigationScreenName, Map<String, dynamic>?  payloadData}) {
   print("handleDynamicLink    $navigationScreenName");
   NotificationRoutes.navigateAfterResponse(screenName: navigationScreenName, payloadData: payloadData);
 
@@ -144,8 +144,8 @@ void _onInAppSelfHandle(InAppCampaign message) async {
       "Main : _onInAppSelfHandle() : This is a callback on inapp self handle from native to flutter. Payload " +
           message.toString());
 
-  final SelfHandledActions action =
-  await asyncSelfHandledDialog(context);
+  final SelfHandledActions? action =
+  await (asyncSelfHandledDialog(context) as FutureOr<SelfHandledActions?>);
   switch (action) {
     case SelfHandledActions.Shown:
       _moengagePlugin.selfHandledShown(message);

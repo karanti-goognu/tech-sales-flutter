@@ -1,9 +1,9 @@
 class ListOfEventDetails {
-  int id;
-  String eventType;
-  String displayMessage1;
-  String displayMessage2;
-  String meetingType;
+  int? id;
+  String? eventType;
+  String? displayMessage1;
+  String? displayMessage2;
+  String? meetingType;
 
   ListOfEventDetails(
       {this.id, this.eventType, this.displayMessage1, this.displayMessage2});

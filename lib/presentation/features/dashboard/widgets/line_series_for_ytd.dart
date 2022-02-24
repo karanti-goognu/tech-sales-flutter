@@ -7,9 +7,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class LineSeriesForYTD extends StatefulWidget {
   const LineSeriesForYTD({
-    Key key,
-    @required this.chartData,
-    @required this.chartData2,
+    Key? key,
+    required this.chartData,
+    required this.chartData2,
   }) : super(key: key);
 
   final List<ChartDataForYTD> chartData;

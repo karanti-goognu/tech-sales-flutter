@@ -18,7 +18,7 @@ class InfluencerSearch extends StatefulWidget {
 class _InfluencerSearchState extends State<InfluencerSearch> {
   TextEditingController controller = new TextEditingController();
   InfController _infController = Get.find();
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   @override
   Widget build(BuildContext context) {

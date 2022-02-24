@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 class MyRepositoryApp {
   final MyApiClientApp apiClient;
 
-  MyRepositoryApp({@required this.apiClient}) : assert(apiClient != null);
+  MyRepositoryApp({required this.apiClient}) : assert(apiClient != null);
 
   getAccessKey() {
     return apiClient.getAccessKey();
@@ -19,60 +19,60 @@ class MyRepositoryApp {
     return apiClient.getSecretKey(empId, mobileNumber);
   }
 
-  saveMWPPlan(String accessKey, String userSecurityKey, String url,
+  saveMWPPlan(String? accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) {
     return apiClient.saveMWPData(accessKey, userSecurityKey, url, saveMWPModel);
   }
 
-  saveVisitPlan(String accessKey, String userSecurityKey, String url,
+  saveVisitPlan(String? accessKey, String userSecurityKey, String url,
       SaveVisitRequest saveVisitRequest) {
     return apiClient.saveVisitRequest(
         accessKey, userSecurityKey, url, saveVisitRequest);
   }
 
-  saveMeetPlan(String accessKey, String userSecurityKey, String url,
+  saveMeetPlan(String? accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) {
     return apiClient.saveMeetRequest(
         accessKey, userSecurityKey, url, saveMeetRequest);
   }
 
-  updateVisitPlan(String accessKey, String userSecurityKey, String url,
+  updateVisitPlan(String? accessKey, String userSecurityKey, String url,
       UpdateVisitResponseModel updateVisitRequest) {
     return apiClient.updateVisitPlan(
         accessKey, userSecurityKey, url, updateVisitRequest);
   }
 
-  updateMeetPlan(String accessKey, String userSecurityKey, String url,
+  updateMeetPlan(String? accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) {
     return apiClient.updateMeetPlan(
         accessKey, userSecurityKey, url, saveMeetRequest);
   }
 
-  getMWPPlan(String accessKey, String userSecurityKey, String url) {
+  getMWPPlan(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getMWPData(accessKey, userSecurityKey, url);
   }
 
-  getDealerList(String accessKey, String userSecurityKey, String url) {
+  getDealerList(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getDealerList(accessKey, userSecurityKey, url);
   }
 
-  getVisitData(String accessKey, String userSecurityKey, String url) {
+  getVisitData(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getVisitData(accessKey, userSecurityKey, url);
   }
 
-  getMeetData(String accessKey, String userSecurityKey, String url) {
+  getMeetData(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getMeetData(accessKey, userSecurityKey, url);
   }
 
-  getCalenderPlan(String accessKey, String userSecurityKey, String url) {
+  getCalenderPlan(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getCalendarPlan(accessKey, userSecurityKey, url);
   }
 
-  getCalenderPlanByDay(String accessKey, String userSecurityKey, String url) {
+  getCalenderPlanByDay(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getCalenderPlanByDay(accessKey, userSecurityKey, url);
   }
 
-  getTargetVsActualPlan(String accessKey, String userSecurityKey, String url) {
+  getTargetVsActualPlan(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getTargetSsActualPlan(accessKey, userSecurityKey, url);
   }
 }

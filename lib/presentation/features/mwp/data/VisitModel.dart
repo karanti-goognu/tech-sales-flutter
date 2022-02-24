@@ -1,7 +1,7 @@
 class VisitResponseModel {
-  String respCode;
-  String respMsg;
-  MwpVisitModel mwpVisitModel;
+  String? respCode;
+  String? respMsg;
+  MwpVisitModel? mwpVisitModel;
   Null mwpMeetModel;
 
   VisitResponseModel(
@@ -21,7 +21,7 @@ class VisitResponseModel {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
     if (this.mwpVisitModel != null) {
-      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
+      data['mwpVisitModel'] = this.mwpVisitModel!.toJson();
     }
     data['mwpMeetModel'] = this.mwpMeetModel;
     return data;
@@ -29,22 +29,22 @@ class VisitResponseModel {
 }
 
 class MwpVisitModel {
-  int id;
-  String visitSubType;
-  int docId;
-  String visitDate;
-  String visitType;
-  String visitStartTime;
-  String visitStartLat;
-  String visitStartLong;
-  String visitEndTime;
-  String visitEndLat;
-  String visitEndLong;
-  String visitOutcomes;
-  int nextVisitDate;
-  String remark;
-  String dspAvailableQty;
-  String isDspAvailable;
+  int? id;
+  String? visitSubType;
+  int? docId;
+  String? visitDate;
+  String? visitType;
+  String? visitStartTime;
+  String? visitStartLat;
+  String? visitStartLong;
+  String? visitEndTime;
+  String? visitEndLat;
+  String? visitEndLong;
+  String? visitOutcomes;
+  int? nextVisitDate;
+  String? remark;
+  String? dspAvailableQty;
+  String? isDspAvailable;
 
   MwpVisitModel(
       {this.id,

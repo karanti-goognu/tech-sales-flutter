@@ -14,9 +14,9 @@ import 'package:meta/meta.dart';
 class MyApiClientHome {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClientHome({@required this.httpClient});
+  MyApiClientHome({required this.httpClient});
 
   getAccessKey() async {
     try {
@@ -24,7 +24,7 @@ class MyApiClientHome {
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -39,16 +39,16 @@ class MyApiClientHome {
 
   getCheckInDetails(
       String url,
-      String accessKey,
+      String? accessKey,
       String secretKey,
       String referenceId,
-      String journeyDate,
-      String journeyStartTime,
-      String journeyStartLat,
-      String journeyStartLong,
-      String journeyEndTime,
-      String journeyEndLat,
-      String journeyEndLong) async {
+      String? journeyDate,
+      String? journeyStartTime,
+      String? journeyStartLat,
+      String? journeyStartLong,
+      String? journeyEndTime,
+      String? journeyEndLat,
+      String? journeyEndLong) async {
     try {
 
       var requestBody = {
@@ -66,7 +66,7 @@ class MyApiClientHome {
 //      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
       version = VersionClass.getVersion();
       var response = await httpClient.post(Uri.parse(UrlConstants.getCheckInDetails),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version) as Map<String, String>?,
           body: jsonEncode(requestBody));
 
       //print('Response body is : ${json.decode(response.body)}');
@@ -84,12 +84,12 @@ class MyApiClientHome {
     }
   }
 
-  getHomePageDashboardDetails(String accessKey,String secretKey, String empId) async {
+  getHomePageDashboardDetails(String? accessKey,String secretKey, String empId) async {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
      // var response = await httpClient.get(url, headers: requestHeaders(version));
-      var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
+      var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version) as Map<String, String>?);
      // print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

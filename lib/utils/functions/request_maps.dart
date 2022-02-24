@@ -1,8 +1,8 @@
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 
 
-Map<String, String> requestHeaders(String version){
-  Map<String, String> requestHeaders = new Map();
+Map<String, String?> requestHeaders(String? version){
+  Map<String, String?> requestHeaders = new Map();
   requestHeaders= {
     'Content-type': 'application/json',
     'app-name': StringConstants.appName,
@@ -12,8 +12,8 @@ Map<String, String> requestHeaders(String version){
   return requestHeaders;
 }
 
-Map<String, String> requestHeadersWithAccessKey(String accessKey, String version) {
-  Map<String, String> requestHeaders = new Map();
+Map<String, String?> requestHeadersWithAccessKey(String? accessKey, String? version) {
+  Map<String, String?> requestHeaders = new Map();
   requestHeaders = {
     'Content-type': 'application/json',
     'app-name': StringConstants.appName,
@@ -24,8 +24,8 @@ Map<String, String> requestHeadersWithAccessKey(String accessKey, String version
   return requestHeaders;
 }
 
-Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , String userSecurityKey, String version) {
-  Map<String, String> requestHeaders = new Map();
+Map<String, String?> requestHeadersWithAccessKeyAndSecretKey(String? accessKey , String? userSecurityKey, String? version) {
+  Map<String, String?> requestHeaders = new Map();
   requestHeaders = {
     'Content-type': 'application/json',
     'app-name': StringConstants.appName,
@@ -37,9 +37,9 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , S
   return requestHeaders;
 }
 
-Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(String accessKey , String userSecurityKey, String version) {
+Map<String, String?> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(String? accessKey , String? userSecurityKey, String? version) {
 
-  Map<String, String> requestHeaders = new Map();
+  Map<String, String?> requestHeaders = new Map();
   requestHeaders = {
     'app-name': StringConstants.appName,
     'app-version': version,

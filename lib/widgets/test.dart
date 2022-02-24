@@ -79,9 +79,9 @@ import 'package:flutter/material.dart';
 class Message extends StatelessWidget {
   Message({this.msg, this.direction, this.dateTime});
 
-  final String msg;
-  final String direction;
-  final String dateTime;
+  final String? msg;
+  final String? direction;
+  final String? dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class Message extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.all(8.0),
                         child: new Text(
-                          msg,
+                          msg!,
                           style: new TextStyle(
                             fontFamily: 'Gamja Flower',
                             fontSize: 20.0,
@@ -156,7 +156,7 @@ class Message extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         top: 0.0, bottom: 8.0, left: 8.0, right: 8.0),
                     child: new Text(
-                      dateTime,
+                      dateTime!,
                       style: new TextStyle(
                         fontSize: 8.0,
                         color: Color(0xff000000),
@@ -203,7 +203,7 @@ class Message extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     padding: const EdgeInsets.all(8.0),
                     child: new Text(
-                      msg,
+                      msg!,
                       style: new TextStyle(
                         fontFamily: 'Gamja Flower',
                         fontSize: 20.0,
@@ -235,7 +235,7 @@ class Message extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     top: 0.0, bottom: 8.0, left: 8.0, right: 8.0),
                 child: new Text(
-                  dateTime,
+                  dateTime!,
                   style: new TextStyle(
                     fontSize: 8.0,
                     color: Color(0xffffffff),

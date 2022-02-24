@@ -1,22 +1,22 @@
 class SiteVisitRequestModel {
-  int docId;
-  String dspAvailableQty;
-  String eventType;
-  int id;
-  String isDspAvailable;
-  String nextVisitDate;
-  String referenceId;
-  String remark;
-  String visitDate;
-  String visitEndLat;
-  String visitEndLong;
-  String visitEndTime;
-  String visitOutcomes;
-  String visitStartLat;
-  String visitStartLong;
-  String visitStartTime;
-  String visitSubType;
-  String visitType;
+  int? docId;
+  String? dspAvailableQty;
+  String? eventType;
+  int? id;
+  String? isDspAvailable;
+  String? nextVisitDate;
+  String? referenceId;
+  String? remark;
+  String? visitDate;
+  String? visitEndLat;
+  String? visitEndLong;
+  String? visitEndTime;
+  String? visitOutcomes;
+  String? visitStartLat;
+  String? visitStartLong;
+  String? visitStartTime;
+  String? visitSubType;
+  String? visitType;
 
   SiteVisitRequestModel(
       {this.docId,
@@ -85,8 +85,8 @@ class SiteVisitRequestModel {
 
 
 class SiteVisitResponseModel {
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
 
   SiteVisitResponseModel({this.respCode, this.respMsg});
 

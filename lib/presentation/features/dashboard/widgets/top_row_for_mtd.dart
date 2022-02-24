@@ -10,9 +10,9 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class TopRowForMTD extends StatelessWidget {
   const TopRowForMTD({
-    Key key,
-    @required bool currentMothDetailsVolume,
-    @required DashboardController dashboardController,
+    Key? key,
+    required bool currentMothDetailsVolume,
+    required DashboardController dashboardController,
   })  : _currentMothDetailsVolume = currentMothDetailsVolume,
         _dashboardController = dashboardController,
         super(key: key);
@@ -44,13 +44,13 @@ class TopRowForMTD extends StatelessWidget {
                                 ? 0 :
                             ((int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))*100).round()}%\n",
                             style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal*6,
+                              fontSize: SizeConfig.blockSizeHorizontal!*6,
                                 color: HexColor('#002A64'),
                                 fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                 text: "Site conversion efficiency",
-                                style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*2),
+                                style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal!*2),
                               )
                             ]),
                         textAlign: TextAlign.center,
@@ -97,7 +97,7 @@ class TopRowForMTD extends StatelessWidget {
                 bottom: 0,right: 0,
                 child:
                 _dashboardController.mwpPlanApproveStatus.toString()!="APPROVE"?
-                Text("MWP plan not approved", style: TextStyle(color: Colors.red, fontSize: SizeConfig.blockSizeHorizontal*2.5,
+                Text("MWP plan not approved", style: TextStyle(color: Colors.red, fontSize: SizeConfig.blockSizeHorizontal!*2.5,
 
                 ),):Container())
           ],
@@ -198,7 +198,7 @@ class TopRowForMTD extends StatelessWidget {
                                         child: Text(
                                             "Generated-${_dashboardController.generatedVolume} MT",
                                             style: TextStyle(
-                                                fontSize: SizeConfig.blockSizeHorizontal*3.6
+                                                fontSize: SizeConfig.blockSizeHorizontal!*3.6
                                             ),
                                             textAlign: TextAlign.center),
                                       ),
@@ -227,7 +227,7 @@ class TopRowForMTD extends StatelessWidget {
                                       Text(
                                           "Converted-${_dashboardController.convertedVolume} MT",
                                           style: TextStyle(
-                                              fontSize: SizeConfig.blockSizeHorizontal*3.6
+                                              fontSize: SizeConfig.blockSizeHorizontal!*3.6
                                           ),
                                           textAlign: TextAlign.center),
                                       IconButton(

@@ -50,16 +50,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final _dbHelper = DraftLeadDBHelper();
 
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
-  String _myActivity;
+  String? _myActivity;
   // LocationResult _pickedLocation;
   bool isSwitchedPrimary = false;
   var txt = TextEditingController();
   // SiteSubTypeEntity _selectedValue;
-  String _contactName;
-  FocusNode myFocusNode;
-  String _contactNumber;
+  String? _contactName;
+  late FocusNode myFocusNode;
+  String? _contactNumber;
   // String _comment;
-  String leadSource;
+  String? leadSource;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
   var _state = TextEditingController();
@@ -74,7 +74,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   // var _influencerCategory = TextEditingController();
   var _other = TextEditingController();
   var sourceMobile = TextEditingController();
-  String geoTagType;
+  String? geoTagType;
 
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
@@ -84,8 +84,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<CommentsDetail> _commentsList = [];
   List<CommentsDetail> _commentsListNew = [];
   bool viewMoreActive = false;
-  bool _isSubmitButtonDisabled;
-  bool _isSaveButtonDisabled;
+  late bool _isSubmitButtonDisabled;
+  late bool _isSaveButtonDisabled;
   bool _isDropdownVisible = false;
   bool _isInfTextfieldVisible = false;
   bool _isOtherTextfieldVisible = false;
@@ -115,24 +115,24 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = [];
 
-  Position _currentPosition = new Position();
-  String _currentAddress;
+  Position? _currentPosition = new Position();
+  String? _currentAddress;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [
     new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
     new SiteSubTypeEntity(siteSubId: 2, siteSubTypeDesc: "G+1"),
     new SiteSubTypeEntity(siteSubId: 3, siteSubTypeDesc: "Multi-Storey"),
   ];
-  List<InfluencerTypeEntity> influencerTypeEntity;
+  List<InfluencerTypeEntity>? influencerTypeEntity;
 
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<DealerList> dealerList;
-  List<SubDealerList> subDealerList;
-  List<SalesOfficerList> salesOfficerList;
-  List<EventList> eventList;
-  List<LeadSourceList> sourceList;
+  List<InfluencerCategoryEntity>? influencerCategoryEntity;
+  List<DealerList>? dealerList;
+  List<SubDealerList>? subDealerList;
+  List<SalesOfficerList>? salesOfficerList;
+  List<EventList>? eventList;
+  List<LeadSourceList>? sourceList;
 
-  String _dealerId, _subDealerId, _salesOfficerId, _eventId, _leadSourceUser;
+  String? _dealerId, _subDealerId, _salesOfficerId, _eventId, _leadSourceUser;
 
   AddLeadsController _addLeadsController = Get.find();
   SaveLeadRequestDraftModel saveLeadRequestModelFromDraft =
@@ -165,10 +165,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   @override
   void dispose() {
     print("dispose  call $_addLeadsController.imageList");
-    _addLeadsController.imageList.clear();
+    _addLeadsController.imageList!.clear();
     super.dispose();
     _formKeyForNewLeadForm.currentState != null
-        ? _formKeyForNewLeadForm.currentState.dispose()
+        ? _formKeyForNewLeadForm.currentState!.dispose()
         : print("nothing happened");
     //_addLeadsController.dispose();
     // _formKey.currentState.dispose();
@@ -187,18 +187,18 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               saveLeadRequestModelFromDraft.leadLatitude != null) {
             _currentPosition = new Position(
                 latitude:
-                    double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+                    double.parse(saveLeadRequestModelFromDraft.leadLatitude!),
                 longitude:
-                    double.parse(saveLeadRequestModelFromDraft.leadLongitude));
+                    double.parse(saveLeadRequestModelFromDraft.leadLongitude!));
           }
-          _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
-          _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
-          _state.text = saveLeadRequestModelFromDraft.leadStateName;
-          _district.text = saveLeadRequestModelFromDraft.leadDistrictName;
-          _taluk.text = saveLeadRequestModelFromDraft.leadTalukName;
-          _totalMT.text = saveLeadRequestModelFromDraft.leadSalesPotentialMt;
-          _totalBags.text = saveLeadRequestModelFromDraft.leadBags;
-          _rera.text = saveLeadRequestModelFromDraft.leadReraNumber;
+          _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress!;
+          _pincode.text = saveLeadRequestModelFromDraft.leadPincode!;
+          _state.text = saveLeadRequestModelFromDraft.leadStateName!;
+          _district.text = saveLeadRequestModelFromDraft.leadDistrictName!;
+          _taluk.text = saveLeadRequestModelFromDraft.leadTalukName!;
+          _totalMT.text = saveLeadRequestModelFromDraft.leadSalesPotentialMt!;
+          _totalBags.text = saveLeadRequestModelFromDraft.leadBags!;
+          _rera.text = saveLeadRequestModelFromDraft.leadReraNumber!;
           if (_totalMT.text != null &&
               _totalMT.text != "null" &&
               _totalMT.text != "") {
@@ -214,64 +214,64 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
           // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
           //print(saveLeadRequestModelFromDraft.influencerList[0].toJson());
-          if (saveLeadRequestModelFromDraft.influencerList.length != 0) {
-            print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
+          if (saveLeadRequestModelFromDraft.influencerList!.length != 0) {
+            print(saveLeadRequestModelFromDraft.influencerList![0].inflName);
             for (int i = 0;
-                i < saveLeadRequestModelFromDraft.influencerList.length;
+                i < saveLeadRequestModelFromDraft.influencerList!.length;
                 i++) {
               /*print(23454);
             print(saveLeadRequestModelFromDraft.influencerList[i].toJson());
             print(saveLeadRequestModelFromDraft.influencerList[i].id);*/
               _listInfluencerDetail.add(new InfluencerDetail(
                   id: new TextEditingController(
-                      text: saveLeadRequestModelFromDraft.influencerList[i].id),
+                      text: saveLeadRequestModelFromDraft.influencerList![i].id),
                   inflName: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflName),
+                          .influencerList![i].inflName),
                   inflContact: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflContact),
+                          .influencerList![i].inflContact),
                   inflTypeId: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflTypeId),
+                          .influencerList![i].inflTypeId),
                   inflTypeValue: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflTypeValue),
+                          .influencerList![i].inflTypeValue),
                   inflCatId: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflCatId),
+                          .influencerList![i].inflCatId),
                   inflCatValue: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].inflCatValue),
+                          .influencerList![i].inflCatValue),
                   ilpIntrested: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].ilpIntrested),
+                          .influencerList![i].ilpIntrested),
                   isExpanded: saveLeadRequestModelFromDraft
-                      .influencerList[i].isExpanded,
+                      .influencerList![i].isExpanded,
                   isPrimarybool: saveLeadRequestModelFromDraft
-                      .influencerList[i].isPrimarybool,
+                      .influencerList![i].isPrimarybool,
                   isPrimary: saveLeadRequestModelFromDraft
-                      .influencerList[i].isPrimary));
+                      .influencerList![i].isPrimary));
             }
           }
 
-          if (saveLeadRequestModelFromDraft.listLeadImage.length != null) {
+          if (saveLeadRequestModelFromDraft.listLeadImage!.length != null) {
             for (int i = 0;
-                i < saveLeadRequestModelFromDraft.listLeadImage.length;
+                i < saveLeadRequestModelFromDraft.listLeadImage!.length;
                 i++) {
               _imageList.add(new File(
-                  saveLeadRequestModelFromDraft.listLeadImage[i].photoPath));
+                  saveLeadRequestModelFromDraft.listLeadImage![i].photoPath!));
 
               listLeadImage.add(new ListLeadImage(
                   photoName: basename(saveLeadRequestModelFromDraft
-                      .listLeadImage[i].photoPath)));
+                      .listLeadImage![i].photoPath!)));
             }
           }
 
           // _commentsListNew = saveLeadRequestModelFromDraft.comments;
-          if (saveLeadRequestModelFromDraft.comments.length != 0) {
+          if (saveLeadRequestModelFromDraft.comments!.length != 0) {
             _comments.text =
-                saveLeadRequestModelFromDraft.comments[0].commentText;
+                saveLeadRequestModelFromDraft.comments![0].commentText!;
           }
 
           //print (saveLeadRequestModelFromDraft.comments[0].commentText);
@@ -303,7 +303,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             {
               _addLeadsController.getAccessKeyOnly().then((data) async {
                 accessKeyModel = data;
-                print("AccessKey :: " + accessKeyModel.accessKey);
+                print("AccessKey :: " + accessKeyModel.accessKey!);
                 await _addLeadsController
                     .getAddLeadsData(accessKeyModel.accessKey)
                     .then((data) {
@@ -359,7 +359,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "INFLUENCER") {
-      sourceMobile.text = _leadSourceUser;
+      sourceMobile.text = _leadSourceUser!;
       _isInfTextfieldVisible = true;
       _isDropdownVisible = false;
       _isOtherTextfieldVisible = false;
@@ -369,17 +369,17 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "OTHER") {
-      _other.text = _leadSourceUser;
+      _other.text = _leadSourceUser!;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
     } else if (leadSource == "SPOTTER") {
-      _other.text = _leadSourceUser;
+      _other.text = _leadSourceUser!;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
     } else if (leadSource == "TECH VAN") {
-      _other.text = _leadSourceUser;
+      _other.text = _leadSourceUser!;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
@@ -450,7 +450,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         orientation: Orientation.portrait);
     double _height = ScreenUtil().setSp(15);
 
-    final leadSourceDropDwn = DropdownButtonFormField(
+    final leadSourceDropDwn = DropdownButtonFormField<String>(
       value: (leadSource != null) ? leadSource : selectedItem,
       onChanged: (_) {
         setState(() {
@@ -468,9 +468,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       },
       items: sourceList == null
           ? []
-          : sourceList
+          : sourceList!
               .map((e) => DropdownMenuItem(
-                    child: Text(e.name),
+                    child: Text(e.name!),
                     value: e.name,
                   ))
               .toList(),
@@ -479,14 +479,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return sourceList == null
             ? []
-            : sourceList.map<Widget>((item) {
+            : sourceList!.map<Widget>((item) {
                 print(item.name);
-                return Text(item.name);
+                return Text(item.name!);
               }).toList();
       },
     );
 
-    final dealerDropDwn = DropdownButtonFormField(
+    final dealerDropDwn = DropdownButtonFormField<String>(
       onChanged: (value) {
         setState(() {
           print("DROPDOWN1 : $leadSource");
@@ -498,21 +498,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return dealerList == null
             ? []
-            : dealerList.map<Widget>((item) {
+            : dealerList!.map<Widget>((item) {
                 return Container(
                     width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(item.dealerName));
+                    child: Text(item.dealerName!));
               }).toList();
       },
       value: _dealerId,
       items: dealerList == null
           ? []
-          : dealerList
+          : dealerList!
               .map((e) => DropdownMenuItem(
                     value: e.dealerId != null ? e.dealerId : null,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.dealerName)),
+                        child: Text(e.dealerName!)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -521,7 +521,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       validator: (value) => value == null ? 'Please select dealer' : null,
     );
 
-    final subDealerDropDwn = DropdownButtonFormField(
+    final subDealerDropDwn = DropdownButtonFormField<String>(
       onChanged: (value) {
         setState(() {
           _subDealerId = value;
@@ -530,21 +530,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return subDealerList == null
             ? []
-            : subDealerList.map<Widget>((item) {
+            : subDealerList!.map<Widget>((item) {
                 return Container(
                     width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(item.dealerName));
+                    child: Text(item.dealerName!));
               }).toList();
       },
       value: _subDealerId,
       items: subDealerList == null
           ? []
-          : subDealerList
+          : subDealerList!
               .map((e) => DropdownMenuItem(
                     value: e.dealerId != null ? e.dealerId : null,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.dealerName)),
+                        child: Text(e.dealerName!)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -553,7 +553,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       validator: (value) => value == null ? 'Please select subdealer' : null,
     );
 
-    final eventDropDwn = DropdownButtonFormField(
+    final eventDropDwn = DropdownButtonFormField<String>(
       onChanged: (value) {
         setState(() {
           _eventId = value;
@@ -562,21 +562,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return eventList == null
             ? []
-            : eventList.map<Widget>((item) {
+            : eventList!.map<Widget>((item) {
                 return Container(
                     width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(item.eventId));
+                    child: Text(item.eventId!));
               }).toList();
       },
       value: _eventId,
       items: eventList == null
           ? []
-          : eventList
+          : eventList!
               .map((e) => DropdownMenuItem(
                     value: e.eventId != null ? e.eventId : null,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.eventId)),
+                        child: Text(e.eventId!)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -585,7 +585,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       validator: (value) => value == null ? 'Please select event' : null,
     );
 
-    final salesOfficerDropDwn = DropdownButtonFormField(
+    final salesOfficerDropDwn = DropdownButtonFormField<String>(
       onChanged: (value) {
         setState(() {
           _salesOfficerId = value;
@@ -594,21 +594,21 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       selectedItemBuilder: (BuildContext context) {
         return (salesOfficerList == null)
             ? []
-            : salesOfficerList.map<Widget>((item) {
+            : salesOfficerList!.map<Widget>((item) {
                 return Container(
                     width: MediaQuery.of(context).size.width / 1.5,
-                    child: Text(item.salesOfficerName));
+                    child: Text(item.salesOfficerName!));
               }).toList();
       },
       value: _salesOfficerId,
       items: (salesOfficerList == null)
           ? []
-          : salesOfficerList
+          : salesOfficerList!
               .map((e) => DropdownMenuItem(
                     value: e.salesOfficerId,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.salesOfficerName)),
+                        child: Text(e.salesOfficerName!)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -620,7 +620,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final sourceMobileNumber = TextFormField(
         controller: sourceMobile,
         validator: (value) {
-          if (value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter mobile number ';
           } else if (value.length != 10) {
             return 'Mobile number must be of 10 digit';
@@ -649,8 +649,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _addLeadsController
                   .getInfNewData(accessKeyModel.accessKey)
                   .then((data) {
-                InfluencerDetailModel _infDetailModel = data;
-                if (data.respCode == "NUM404") {
+                InfluencerDetailModel? _infDetailModel = data;
+                if (data!.respCode == "NUM404") {
                   sourceMobile.text = "";
                   Get.dialog(CustomDialogs()
                       .showDialog("No influencer registered with this number"));
@@ -666,7 +666,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final otherTxt = TextFormField(
       controller: _other,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter lead source user';
         }
         return null;
@@ -684,7 +684,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       initialValue: _contactName,
       //focusNode: myFocusNode,
       validator: (value) {
-        if (value.isEmpty ||
+        if (value!.isEmpty ||
             value.length <= 0 ||
             value == null ||
             value == " " ||
@@ -711,7 +711,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final contact = TextFormField(
       initialValue: _contactNumber,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter mobile number ';
         }
         if (value.length <= 9) {
@@ -741,7 +741,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final siteAddress = TextFormField(
       controller: _siteAddress,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter Address ';
         }
 
@@ -758,7 +758,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       maxLength: 6,
       controller: _pincode,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter Pincode ';
         }
         if (value.length <= 6) {
@@ -784,7 +784,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final state = TextFormField(
         controller: _state,
         validator: (value) {
-          if (value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter State ';
           }
 
@@ -800,7 +800,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final district = TextFormField(
       controller: _district,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter District ';
         }
 
@@ -817,7 +817,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final taluk = TextFormField(
       controller: _taluk,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter Taluk ';
         }
 
@@ -996,7 +996,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                               ),
                               onPressed: () async {
-                                var data = [];
+                                List<dynamic>? data = [];
                                 data = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -1007,7 +1007,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   geoTagType = "M";
                                 });
                                 _currentPosition = new Position(
-                                    latitude: data[0], longitude: data[1]);
+                                    latitude: data![0], longitude: data[1]);
                                 _getAddressFromLatLng();
                               },
                             ),
@@ -1117,8 +1117,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                             onPressed: () async {
                               print(
-                                  "controller.imageList.length    ${controller.imageList.length}");
-                              if (controller.imageList.length < 5) {
+                                  "controller.imageList.length    ${controller.imageList!.length}");
+                              if (controller.imageList!.length < 5) {
                                 /*when user create a new lead that time user selected the image by camera or gallery  only*/
                                 controller.updateImageList(
                                     await UploadImageBottomSheet.showPicker(
@@ -1138,27 +1138,27 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   Expanded(
                                     child: ListView.builder(
                                         shrinkWrap: true,
-                                        itemCount: controller.imageList.length,
+                                        itemCount: controller.imageList!.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           return GestureDetector(
-                                            onTap: () {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      content: new Container(
-                                                        // width: 500,
-                                                        // height: 500,
-                                                        child: Image.file(
-                                                            controller
-                                                                    .imageList[
-                                                                index]),
-                                                      ),
-                                                    );
-                                                  });
-                                            },
+                                            // onTap: () {
+                                            //   return showDialog(
+                                            //       context: context,
+                                            //       builder:
+                                            //           (BuildContext context) {
+                                            //         return AlertDialog(
+                                            //           content: new Container(
+                                            //             // width: 500,
+                                            //             // height: 500,
+                                            //             child: Image.file(
+                                            //                 controller
+                                            //                         .imageList![
+                                            //                     index]),
+                                            //           ),
+                                            //         );
+                                            //       });
+                                            // },
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -1328,7 +1328,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Please enter Bags ';
                                       }
 
@@ -1361,7 +1361,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     });
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Please enter MT ';
                                     }
 
@@ -1388,7 +1388,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         TextFormField(
                           controller: _rera,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return 'Please enter RERA Number ';
                             }
 
@@ -1460,13 +1460,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     children: [
                                                       Text(
                                                         _commentsList[index]
-                                                            .creatorName,
+                                                            .creatorName!,
                                                         style: TextStyles
                                                             .muliBold25,
                                                       ),
                                                       Text(
                                                         _commentsList[index]
-                                                            .commentText,
+                                                            .commentText!,
                                                         style: TextStyle(
                                                             color: Colors.black
                                                                 .withOpacity(
@@ -1510,13 +1510,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           Text(
                                             _commentsList[
                                                     _commentsList.length - 1]
-                                                .creatorName,
+                                                .creatorName!,
                                             style: TextStyles.muliBold25,
                                           ),
                                           Text(
                                             _commentsList[
                                                     _commentsList.length - 1]
-                                                .commentText,
+                                                .commentText!,
                                             style: TextStyle(
                                                 color: Colors.black
                                                     .withOpacity(0.5),
@@ -1625,7 +1625,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                   if (_contactNumber != null &&
                                       _contactNumber != '' &&
-                                      _contactNumber.length == 10) {
+                                      _contactNumber!.length == 10) {
                                     print("here");
                                     setState(() {
                                       String empId;
@@ -1673,9 +1673,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       _listInfluencerDetail
                                                               .length -
                                                           1]
-                                                  .inflName
+                                                  .inflName!
                                                   .text
-                                                  .isNullOrBlank) {
+                                                  .isNullOrBlank!) {
                                             print("here1234");
                                             _listInfluencerDetail.removeAt(
                                                 _listInfluencerDetail.length -
@@ -1690,32 +1690,32 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             i++) {
                                           influencerDetailDraft.add(new InfluencerDetailDraft(
                                               id: _listInfluencerDetail[i]
-                                                  .id
+                                                  .id!
                                                   .text,
                                               inflName: _listInfluencerDetail[i]
-                                                  .inflName
+                                                  .inflName!
                                                   .text,
                                               inflContact: _listInfluencerDetail[i]
-                                                  .inflContact
+                                                  .inflContact!
                                                   .text,
                                               inflTypeId:
                                                   _listInfluencerDetail[i]
-                                                      .inflTypeId
+                                                      .inflTypeId!
                                                       .text,
                                               inflTypeValue:
                                                   _listInfluencerDetail[i]
-                                                      .inflTypeValue
+                                                      .inflTypeValue!
                                                       .text,
                                               inflCatId: _listInfluencerDetail[i]
-                                                  .inflCatId
+                                                  .inflCatId!
                                                   .text,
                                               inflCatValue:
                                                   _listInfluencerDetail[i]
-                                                      .inflCatValue
+                                                      .inflCatValue!
                                                       .text,
                                               ilpIntrested:
                                                   _listInfluencerDetail[i]
-                                                      .ilpIntrested
+                                                      .ilpIntrested!
                                                       .text,
                                               isExpanded:
                                                   _listInfluencerDetail[i]
@@ -1732,18 +1732,18 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             listLeadImageDraft = [];
 
                                         for (int i = 0;
-                                            i < controller.imageList.length;
+                                            i < controller.imageList!.length;
                                             i++) {
                                           listLeadImageDraft.add(
                                               new ListLeadImageDraft(
                                                   photoPath: controller
-                                                      .imageList[i].path));
+                                                      .imageList![i].path));
                                         }
 
                                         final DateFormat formatter =
                                             DateFormat("dd-MM-yyyy");
 
-                                        String leadSourceUser;
+                                        String? leadSourceUser;
                                         if (leadSource == "SELF") {
                                           leadSourceUser = empId;
                                         } else if (leadSource == "DEALER") {
@@ -1775,10 +1775,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           contactName: _contactName,
                                           contactNumber: _contactNumber,
                                           geotagType: geoTagType,
-                                          leadLatitude: _currentPosition
+                                          leadLatitude: _currentPosition!
                                               .latitude
                                               .toString(),
-                                          leadLongitude: _currentPosition
+                                          leadLongitude: _currentPosition!
                                               .longitude
                                               .toString(),
                                           leadAddress: _siteAddress.text,
@@ -1871,10 +1871,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   _isSubmitButtonDisabled = true;
                                   _isSaveButtonDisabled = false;
                                   if (_contactNumber != null &&
-                                          _contactNumber.length == 10 &&
+                                          _contactNumber!.length == 10 &&
                                           _contactNumber != '' &&
-                                          _currentPosition.latitude != null &&
-                                          _currentPosition.latitude != '' &&
+                                          _currentPosition!.latitude != null &&
+                                          _currentPosition!.latitude != '' &&
                                           _pincode.text != null &&
                                           _pincode.text != ''
                                       //&&
@@ -1931,14 +1931,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                         _listInfluencerDetail
                                                                 .length -
                                                             1]
-                                                    .inflName
+                                                    .inflName!
                                                     .text
-                                                    .isNullOrBlank)) {
+                                                    .isNullOrBlank!)) {
                                           print("here1234");
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }
-                                        String leadSourceUser;
+                                        String? leadSourceUser;
                                         if (leadSource == "SELF" ||
                                             leadSource == null) {
                                           leadSource = "SELF";
@@ -1969,7 +1969,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                         List<ListLeadImage>
                                             selectedImageListDetails = [];
-                                        List<File> userSelectedImageFile = [];
+                                        List<File?> userSelectedImageFile = [];
                                         print(
                                             "addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
@@ -1998,13 +1998,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 geotagType: geoTagType,
                                                 leadLatitude:
                                                     (_currentPosition != null)
-                                                        ? _currentPosition
+                                                        ? _currentPosition!
                                                             .latitude
                                                             .toString()
                                                         : "0",
                                                 leadLongitude:
                                                     (_currentPosition != null)
-                                                        ? _currentPosition
+                                                        ? _currentPosition!
                                                             .longitude
                                                             .toString()
                                                         : "0",
@@ -2282,9 +2282,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   bool match = false;
                   if (value.length < 10) {
                     if (_listInfluencerDetail[index].inflName != null) {
-                      _listInfluencerDetail[index].inflName.clear();
-                      _listInfluencerDetail[index].inflTypeValue.clear();
-                      _listInfluencerDetail[index].inflCatValue.clear();
+                      _listInfluencerDetail[index].inflName!.clear();
+                      _listInfluencerDetail[index].inflTypeValue!.clear();
+                      _listInfluencerDetail[index].inflCatValue!.clear();
                     }
                   } else if (value.length == 10) {
                     var bodyEncrypted = {
@@ -2297,7 +2297,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           i < _listInfluencerDetail.length - 1;
                           i++) {
                         if (value ==
-                            _listInfluencerDetail[i].inflContact.text) {
+                            _listInfluencerDetail[i].inflContact!.text) {
                           match = true;
                           break;
                         }
@@ -2313,7 +2313,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   }
                 },
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter Influencer Number ';
                   }
                   if (!Validations.isValidPhoneNumber(value)) {
@@ -2371,7 +2371,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   }
 
   apiCallForGetInf(String value, int index, BuildContext context) async {
-    String empId;
+    String? empId;
     String mobileNumber;
     String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -2386,13 +2386,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
+      print("AccessKey :: " + accessKeyModel.accessKey!);
       await _addLeadsController
           .getInfNewData(accessKeyModel.accessKey)
           .then((data) {
-        InfluencerDetailModel _infDetailModel = data;
+        InfluencerDetailModel _infDetailModel = data!;
         if (_infDetailModel.respCode == "DM1002") {
-          InfluencerModel inflDetail = _infDetailModel.influencerModel;
+          InfluencerModel inflDetail = _infDetailModel.influencerModel!;
 
           if (inflDetail.inflName != "null") {
             setState(() {
@@ -2417,66 +2417,66 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               print(inflDetail.inflName);
               print("inflTypeValue : ${inflDetail.influencerTypeText}");
 
-              _listInfluencerDetail[index].inflContact.text =
-                  inflDetail.inflContact;
-              _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
-              _listInfluencerDetail[index].inflTypeValue.text =
-                  inflDetail.influencerTypeText;
-              _listInfluencerDetail[index].id.text =
+              _listInfluencerDetail[index].inflContact!.text =
+                  inflDetail.inflContact!;
+              _listInfluencerDetail[index].inflName!.text = inflDetail.inflName!;
+              _listInfluencerDetail[index].inflTypeValue!.text =
+                  inflDetail.influencerTypeText!;
+              _listInfluencerDetail[index].id!.text =
                   inflDetail.inflId.toString();
-              _listInfluencerDetail[index].ilpIntrested.text =
-                  inflDetail.ilpRegFlag;
+              _listInfluencerDetail[index].ilpIntrested!.text =
+                  inflDetail.ilpRegFlag!;
               // _listInfluencerDetail[
               //             index]
               //         .createdOn =
               //     inflDetail.createdOn;
 
-              _listInfluencerDetail[index].inflCatValue.text =
-                  inflDetail.influencerCategoryText;
+              _listInfluencerDetail[index].inflCatValue!.text =
+                  inflDetail.influencerCategoryText!;
               _listInfluencerDetail[index].createdBy = empId;
               print(_listInfluencerDetail[index].inflName);
 
               //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
-              for (int i = 0; i < influencerTypeEntity.length; i++) {
+              for (int i = 0; i < influencerTypeEntity!.length; i++) {
                 // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
                 // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
-                if (influencerTypeEntity[i].inflTypeId.toString() ==
+                if (influencerTypeEntity![i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
-                  _listInfluencerDetail[index].inflTypeId.text =
+                  _listInfluencerDetail[index].inflTypeId!.text =
                       inflDetail.inflTypeId.toString();
-                  _listInfluencerDetail[index].inflTypeValue.text =
+                  _listInfluencerDetail[index].inflTypeValue!.text =
                       inflDetail.influencerTypeText.toString();
                   break;
                 } else {
-                  _listInfluencerDetail[index].inflTypeId.clear();
-                  _listInfluencerDetail[index].inflTypeValue.clear();
+                  _listInfluencerDetail[index].inflTypeId!.clear();
+                  _listInfluencerDetail[index].inflTypeValue!.clear();
                 }
               }
               // print(_listInfluencerDetail[index].inflName);
               // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
-              for (int i = 0; i < influencerCategoryEntity.length; i++) {
-                if (influencerCategoryEntity[i].inflCatId.toString() ==
+              for (int i = 0; i < influencerCategoryEntity!.length; i++) {
+                if (influencerCategoryEntity![i].inflCatId.toString() ==
                     inflDetail.inflCatId.toString()) {
-                  _listInfluencerDetail[index].inflCatId.text =
+                  _listInfluencerDetail[index].inflCatId!.text =
                       inflDetail.inflCatId.toString();
                   //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                  _listInfluencerDetail[index].inflCatValue.text =
-                      influencerCategoryEntity[
-                              influencerCategoryEntity[i].inflCatId - 1]
-                          .inflCatDesc;
+                  _listInfluencerDetail[index].inflCatValue!.text =
+                      influencerCategoryEntity![
+                              influencerCategoryEntity![i].inflCatId! - 1]
+                          .inflCatDesc!;
                   break;
                 } else {
-                  _listInfluencerDetail[index].inflCatId.clear();
-                  _listInfluencerDetail[index].inflCatValue.clear();
+                  _listInfluencerDetail[index].inflCatId!.clear();
+                  _listInfluencerDetail[index].inflCatValue!.clear();
                 }
               }
             });
           } else {
             if (_listInfluencerDetail[index].inflContact != null) {
               setState(() {
-                _listInfluencerDetail[index].inflContact.clear();
-                _listInfluencerDetail[index].inflName.clear();
+                _listInfluencerDetail[index].inflContact!.clear();
+                _listInfluencerDetail[index].inflName!.clear();
               });
             }
             return Get.dialog(CustomDialogs()
@@ -2484,11 +2484,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           }
         } else {
           if (_listInfluencerDetail[index].inflContact != null) {
-            _listInfluencerDetail[index].inflContact.clear();
-            _listInfluencerDetail[index].inflName.clear();
+            _listInfluencerDetail[index].inflContact!.clear();
+            _listInfluencerDetail[index].inflName!.clear();
           }
           return Get.dialog(
-              CustomDialogs().showDialog(_infDetailModel.respMsg));
+              CustomDialogs().showDialog(_infDetailModel.respMsg!));
         }
         Get.back();
       });
@@ -2557,16 +2557,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
+          _currentPosition!.latitude, _currentPosition!.longitude);
 
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
-            place.name + "," + place.thoroughfare + "," + place.subLocality;
-        _district.text = place.subAdministrativeArea;
-        _state.text = place.administrativeArea;
-        _pincode.text = place.postalCode;
-        _taluk.text = place.locality;
+            place.name! + "," + place.thoroughfare! + "," + place.subLocality!;
+        _district.text = place.subAdministrativeArea!;
+        _state.text = place.administrativeArea!;
+        _pincode.text = place.postalCode!;
+        _taluk.text = place.locality!;
         //txt.text = place.postalCode;
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
@@ -2591,11 +2591,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
-              title: Text(item.headerValue),
+              title: Text(item.headerValue!),
             );
           },
           body: ListTile(
-              title: Text(item.expandedValue),
+              title: Text(item.expandedValue!),
               subtitle: Text('To delete this panel, tap the trash can icon'),
               trailing: Icon(Icons.delete),
               onTap: () {
@@ -2623,8 +2623,8 @@ class Item {
     this.isExpanded = false,
   });
 
-  String expandedValue;
-  String headerValue;
+  String? expandedValue;
+  String? headerValue;
   bool isExpanded;
 }
 

@@ -34,15 +34,15 @@ class _SiteListScreenState extends State<SiteListScreen> {
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   int selectedPosition = 0;
   int currentTab = 0;
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       _siteController.offset += 10;
       //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
@@ -543,7 +543,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                                                 ),
                                                           ),
                                                           onTap: () {
-                                                            String num = _siteController
+                                                            String? num = _siteController
                                                                 .sitesListResponse
                                                                 .sitesEntity[
                                                                     index]
@@ -621,7 +621,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
         color: Colors.white);
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportuityStatus(int? value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
@@ -632,7 +632,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     }
   }
 
-  String printProbabilityOfWinning(int value) {
+  String printProbabilityOfWinning(int? value) {
     List<SiteProbabilityWinningEntity> data =
         List<SiteProbabilityWinningEntity>.from(_splashController
             .splashDataModel.siteProbabilityWinningEntity
@@ -644,7 +644,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     }
   }
 
-  String printSiteStage(int value) {
+  String printSiteStage(int? value) {
     if (_splashController.splashDataModel.siteStageEntity != null) {
       List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
           .splashDataModel.siteStageEntity

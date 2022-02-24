@@ -14,7 +14,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FocusNode inputFieldNode;
+  FocusNode? inputFieldNode;
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();

@@ -25,7 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class ViewSiteScreenNew extends StatefulWidget {
-  int siteId;
+  int? siteId;
   final tabIndex;
 
   ViewSiteScreenNew({this.siteId, this.tabIndex}){
@@ -42,25 +42,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     with SingleTickerProviderStateMixin {
   SiteController _siteController = Get.find();
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-  TabController _tabController;
-  int selectedTabIndex;
+  TabController? _tabController;
+  int? selectedTabIndex;
   int _initialIndex = 0;
-  double siteScore = 0.0;
-  SiteStageEntity _siteStage;
-  List<SiteStageEntity> siteStageEntity = new List();
-  String labelText;
-  int labelId;
+  double? siteScore = 0.0;
+  SiteStageEntity? _siteStage;
+  List<SiteStageEntity>? siteStageEntity = new List.empty(growable: true);
+  String? labelText;
+  int? labelId;
   var closureReasonText = new TextEditingController();
   bool fromDropDown = false;
   var _nextVisitDate = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
-  SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
+  SiteOpportunityStatusEntity? _siteOpportunitStatusEnityVisit;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  String empCode, name;
-  List<File> _imageList = new List();
-  List<ProductListModel> prdduct = new List();
-  List<CounterListModel> subDealerList = new List();
-  Future<ViewSiteDataResponse> _getSiteData;
+  String? empCode, name;
+  List<File> _imageList = new List.empty(growable: true);
+  List<ProductListModel> prdduct = new List.empty(growable: true);
+  List<CounterListModel> subDealerList = new List.empty(growable: true);
+  Future<ViewSiteDataResponse>? _getSiteData;
 
   @override
   void initState() {
@@ -116,30 +116,30 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
             viewSiteDataResponse = data;
             setState(
               () {
-                siteScore = viewSiteDataResponse.sitesModal.siteScore;
+                siteScore = viewSiteDataResponse.sitesModal!.siteScore;
                 siteStageEntity = viewSiteDataResponse.siteStageEntity;
 
-                for (int i = 0; i < siteStageEntity.length; i++) {
-                  if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
-                      siteStageEntity[i].id.toString()) {
-                    labelText = siteStageEntity[i].siteStageDesc;
-                    labelId = siteStageEntity[i].id;
+                for (int i = 0; i < siteStageEntity!.length; i++) {
+                  if (viewSiteDataResponse.sitesModal!.siteStageId.toString() ==
+                      siteStageEntity![i].id.toString()) {
+                    labelText = siteStageEntity![i].siteStageDesc;
+                    labelId = siteStageEntity![i].id;
                     UpdatedValues.setSiteStageId(labelId);
                   }
                 }
 
-                if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+                if (viewSiteDataResponse.sitesModal!.siteOppertunityId != null) {
                   for (int i = 0;
                       i <
                           viewSiteDataResponse
-                              .siteOpportunityStatusEntity.length;
+                              .siteOpportunityStatusEntity!.length;
                       i++) {
-                    if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                    if (viewSiteDataResponse.sitesModal!.siteOppertunityId
                             .toString() ==
-                        viewSiteDataResponse.siteOpportunityStatusEntity[i].id
+                        viewSiteDataResponse.siteOpportunityStatusEntity![i].id
                             .toString()) {
                       _siteOpportunitStatusEnityVisit =
-                          viewSiteDataResponse.siteOpportunityStatusEntity[i];
+                          viewSiteDataResponse.siteOpportunityStatusEntity![i];
                     }
                   }
                 } else {
@@ -290,7 +290,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                     //border: Border.all()
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Colors.grey[500],
+                                          color: Colors.grey[500]!,
                                           offset: Offset(5.0, 5.0),
                                           blurRadius: 10.0,
                                           spreadRadius: 4.0)
@@ -299,13 +299,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                   child: DropdownButton(
                                     // elevation: 100,
                                     value: _siteStage,
-                                    items: siteStageEntity
+                                    items: siteStageEntity!
                                         .map((label) => DropdownMenuItem(
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 7.0),
                                                 child: Text(
-                                                  label.siteStageDesc,
+                                                  label.siteStageDesc!,
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: ColorConstants
@@ -321,12 +321,12 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                     hint: Padding(
                                       padding: const EdgeInsets.only(left: 6.0),
                                       child: (labelText != null)
-                                          ? Text(labelText)
+                                          ? Text(labelText!)
                                           : Text(""),
                                     ),
 
                                   // hint: Text('Rating'),
-                                  onChanged: (value) {
+                                  onChanged: (dynamic value) {
                                     setState(
                                       () {
                                         _siteStage = value;
@@ -499,9 +499,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         _siteStage =
                                                                             value;
                                                                         labelId =
-                                                                            _siteStage.id;
+                                                                            _siteStage!.id;
                                                                         labelText =
-                                                                            _siteStage.siteStageDesc;
+                                                                            _siteStage!.siteStageDesc;
                                                                         setState(
                                                                           () {
                                                                             fromDropDown =
@@ -709,7 +709,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                             () async {
                                                                           print(
                                                                               "here");
-                                                                          final DateTime
+                                                                          final DateTime?
                                                                               picked =
                                                                               await showDatePicker(
                                                                             context:
@@ -838,9 +838,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         _siteStage =
                                                                             value;
                                                                         labelId =
-                                                                            _siteStage.id;
+                                                                            _siteStage!.id;
                                                                         labelText =
-                                                                            _siteStage.siteStageDesc;
+                                                                            _siteStage!.siteStageDesc;
                                                                         setState(
                                                                             () {
                                                                           fromDropDown =
@@ -1052,7 +1052,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 }

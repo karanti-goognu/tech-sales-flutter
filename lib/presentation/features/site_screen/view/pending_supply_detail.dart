@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +25,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class PendingSupplyDetailScreen extends StatefulWidget {
-  String siteId;
-  String supplyHistoryId;
+  String? siteId;
+  String? supplyHistoryId;
 
   PendingSupplyDetailScreen({this.siteId, this.supplyHistoryId});
 
@@ -36,21 +37,21 @@ class PendingSupplyDetailScreen extends StatefulWidget {
 
 class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     with SingleTickerProviderStateMixin {
-  String geoTagType;
+  String? geoTagType;
   SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
   List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-  String siteCreationDate, visitRemarks, infName = "";
+  String? siteCreationDate, visitRemarks, infName = "";
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-  KittyBagsListModel _kittyBagsListModel;
+  late KittyBagsListModel _kittyBagsListModel;
   String claimableKittyBagsAvailable = "0";
   String reservedKittyBagsAvailable = "0";
-  ConstStage _selectedConstructionType;
-  SiteFloorlist _selectedFloorType;
+  ConstStage? _selectedConstructionType;
+  SiteFloorlist? _selectedFloorType;
   bool isExpanded = true;
-  String _selectedRadioValue = 'Y';
+  String? _selectedRadioValue = 'Y';
 
   getPendingSupplyData() async {
     var data = await _siteController.pendingSupplyDetails(
@@ -69,7 +70,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     super.dispose();
   }
 
-  getKittyBags(String partyCode) {
+  getKittyBags(String? partyCode) {
     print("Called now");
     //String productCode
     internetChecking().then((result) => {
@@ -80,9 +81,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                   if (data != null) {
                     _kittyBagsListModel = data;
                     claimableKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForKittyPointsList}';
                     reservedKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForReservePoolList}';
                   }
                 });
               })
@@ -373,7 +374,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   value: 'Y',
                                                   groupValue:
                                                       _selectedRadioValue,
-                                                  onChanged: (value) {
+                                                  onChanged: (dynamic value) {
                                                     setState(() {
                                                       _selectedRadioValue =
                                                           value;
@@ -399,7 +400,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   value: 'N',
                                                   groupValue:
                                                       _selectedRadioValue,
-                                                  onChanged: (value) {
+                                                  onChanged: (dynamic value) {
                                                     setState(() {
                                                       _selectedRadioValue =
                                                           value;
@@ -441,7 +442,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                       DropdownMenuItem<
                                                           SiteFloorlist>(
                                                         child: Text(
-                                                          label.siteFloorTxt,
+                                                          label.siteFloorTxt!,
                                                           style: TextStyle(
                                                               fontSize: 18,
                                                               color: ColorConstants
@@ -455,13 +456,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           onChanged: (value) {
                                             setState(() {
                                               _siteController.floorId =
-                                                  value.id;
+                                                  value!.id;
                                               _selectedFloorType = value;
                                               print(_siteController.floorId);
-                                              print(_selectedFloorType.id);
+                                              print(_selectedFloorType!.id);
                                               // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
                                             });
-                                            print(value.id);
+                                            print(value!.id);
                                           },
                                           decoration: FormFieldStyle
                                               .buildInputDecoration(
@@ -473,7 +474,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .pendingSuppliesDetailsModel
                                               .floorText,
                                           validator: (value) {
-                                            if (value.isEmpty) {
+                                            if (value!.isEmpty) {
                                               return 'Please enter Floor ';
                                             }
                                             return null;
@@ -521,7 +522,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                           ConstStage>(
                                                         child: Text(
                                                           label
-                                                              .constructionStageText,
+                                                              .constructionStageText!,
                                                           style: TextStyle(
                                                               fontSize: 18,
                                                               color: ColorConstants
@@ -537,8 +538,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               _selectedConstructionType = value;
                                               // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
                                             });
-                                            print(value.id);
-                                            print(_selectedConstructionType
+                                            print(value!.id);
+                                            print(_selectedConstructionType!
                                                 .constructionStageText);
                                           },
                                           decoration: FormFieldStyle
@@ -552,7 +553,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .pendingSuppliesDetailsModel
                                               .stageConstructionDesc,
                                           validator: (value) {
-                                            if (value.isEmpty) {
+                                            if (value!.isEmpty) {
                                               return 'Please enter Floor ';
                                             }
                                             return null;
@@ -587,7 +588,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .sitePotentialMt,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter Site Built-Up Area ';
                                           }
                                           return null;
@@ -623,7 +624,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .brandName,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter brand ';
                                           }
                                           return null;
@@ -697,13 +698,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                         value: val,
                                                         child: SizedBox(
                                                             width: SizeConfig
-                                                                    .screenWidth -
+                                                                    .screenWidth! -
                                                                 100,
                                                             child: Text(
                                                                 '${val.dealerName} (${val.dealerId})')),
                                                       );
                                                     }).toList(),
-                                                    onChanged: (val) {
+                                                    onChanged: (dynamic val) {
                                                       _siteController
                                                               .counterId =
                                                           val.dealerId;
@@ -834,7 +835,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .productName,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter product ';
                                           }
                                           return null;
@@ -870,7 +871,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .brandPrice,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter Brand Price ';
                                           }
                                           return null;
@@ -937,7 +938,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .pendingSuppliesDetailsModel
                                                     .supplyQty,
                                                 validator: (value) {
-                                                  if (value.isEmpty) {
+                                                  if (value!.isEmpty) {
                                                     return 'Please enter Bags ';
                                                   }
                                                   return null;
@@ -1113,7 +1114,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String empId = await getEmpId();
+                                          String? empId = await (getEmpId() as FutureOr<String?>);
                                           if (_siteController
                                                   .pendingSupplyDetailsResponse
                                                   .pendingSuppliesDetailsModel
@@ -1172,19 +1173,19 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             return;
                                           }
 
-                                          if (empId.isEmpty) {
+                                          if (empId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "Please enter reference Id!"));
                                             return;
                                           }
 
-                                          if (widget.siteId.isEmpty) {
+                                          if (widget.siteId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "Site id can't be null or empty!"));
                                             return;
                                           }
 
-                                          if (widget.supplyHistoryId.isEmpty) {
+                                          if (widget.supplyHistoryId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "supplyHistory id can't be null or empty!"));
                                             return;
@@ -1220,13 +1221,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedConstructionType ==
                                                         null
                                                     ? ""
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .constructionStageText,
                                             "consStageId":
                                                 _selectedConstructionType ==
                                                         null
                                                     ? null
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .id,
                                             "counterId":
                                                 _siteController.counterId,
@@ -1258,7 +1259,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String empId = await getEmpId();
+                                          String? empId = await (getEmpId() as FutureOr<String?>);
                                           if (_siteController
                                                   .pendingSupplyDetailsResponse
                                                   .pendingSuppliesDetailsModel
@@ -1316,19 +1317,19 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             return;
                                           }
 
-                                          if (empId.isEmpty) {
+                                          if (empId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "Please enter reference Id!"));
                                             return;
                                           }
 
-                                          if (widget.siteId.isEmpty) {
+                                          if (widget.siteId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "Site id can't be null or empty!"));
                                             return;
                                           }
 
-                                          if (widget.supplyHistoryId.isEmpty) {
+                                          if (widget.supplyHistoryId!.isEmpty) {
                                             Get.dialog(CustomDialogs().showMessage(
                                                 "supplyHistory id can't be null or empty!"));
                                             return;
@@ -1363,13 +1364,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedConstructionType ==
                                                         null
                                                     ? ""
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .constructionStageText,
                                             "consStageId":
                                                 _selectedConstructionType ==
                                                         null
                                                     ? null
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .id,
                                             "counterId":
                                                 _siteController.counterId,
@@ -1394,7 +1395,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);

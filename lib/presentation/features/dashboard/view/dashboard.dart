@@ -18,10 +18,10 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   DashboardController _dashboardController = Get.find();
   SplashController _splashController = Get.find();
-  List<ReportingTsoListModel> _employeeDropDownData=[];
-  String empID;
-  String yearMonth;
-  GlobalKey<MonthToDateState> monthToDateKey;
+  List<ReportingTsoListModel>? _employeeDropDownData=[];
+  String? empID;
+  String? yearMonth;
+  GlobalKey<MonthToDateState>? monthToDateKey;
   int _tabNumber=0;
 
   @override
@@ -43,13 +43,13 @@ class _DashboardState extends State<Dashboard> {
     _dashboardController.yearMonth=yearMonth;
     _employeeDropDownData = _splashController.splashDataModel.reportingTsoListModel;
 
-    empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;
+    empID = _employeeDropDownData!.isEmpty ? _dashboardController.empId: _employeeDropDownData![0].tsoId;
     _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
-      if(_employeeDropDownData.isEmpty ){
+      if(_employeeDropDownData!.isEmpty ){
         // print("isProcessComplete    $value");
         // print("_dashboardController.empId    ${_dashboardController.empId}");
-        monthToDateKey.currentState.passEmpId(_dashboardController.empId);
+        monthToDateKey!.currentState!.passEmpId(_dashboardController.empId);
         empID=_dashboardController.empId;
        // print("EMP ID is now $empID");
       }
@@ -78,12 +78,12 @@ class _DashboardState extends State<Dashboard> {
 //            centerTitle: true,
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
-              preferredSize: _employeeDropDownData.isEmpty
+              preferredSize: _employeeDropDownData!.isEmpty
                   ? Size.fromHeight(50)
                   : Size.fromHeight(110),
               child: Column(
                 children: [
-                  _employeeDropDownData.isEmpty
+                  _employeeDropDownData!.isEmpty
                       ? Container()
                       : DropdownButtonHideUnderline(
                           child: Container(
@@ -97,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
                                 isExpanded: true,
                                 value: empID,
                                 iconEnabledColor: ColorConstants.appBarColor,
-                                items: _employeeDropDownData
+                                items: _employeeDropDownData!
                                     .map((e) => DropdownMenuItem(
                                           value: e.tsoId,
                                           child: Text(
@@ -109,7 +109,7 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                         ))
                                     .toList(),
-                                onChanged: (value) {
+                                onChanged: (dynamic value) {
 //                            print(value);
                                   setState(() {
                                     empID = value;

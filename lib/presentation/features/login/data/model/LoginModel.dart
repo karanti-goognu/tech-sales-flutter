@@ -1,9 +1,9 @@
 class LoginModel {
-  String respCode;
-  String respMsg;
-  String otpTokenId;
-  String otpSmsTime;
-  String otpRetrySmsTime;
+  String? respCode;
+  String? respMsg;
+  String? otpTokenId;
+  String? otpSmsTime;
+  String? otpRetrySmsTime;
 
   LoginModel(
       {this.respCode,
@@ -13,7 +13,7 @@ class LoginModel {
       this.otpRetrySmsTime});
 
   static LoginModel fromMap(Map<String, dynamic> json) {
-    if (json == null) return null;
+   // if (json == null) return null;
 
     //{"resp-code":"DM1011","resp-msg":"OTP generated successfully","otp-sms-time":"900000","otp-retry-sms-time":"180000"}
     return LoginModel(

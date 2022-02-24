@@ -1,6 +1,6 @@
 class LeadStageEntity {
-  int id;
-  String leadStageDesc;
+  int? id;
+  String? leadStageDesc;
 
   LeadStageEntity({this.id, this.leadStageDesc});
 

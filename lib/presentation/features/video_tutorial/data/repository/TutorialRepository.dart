@@ -4,14 +4,14 @@ import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/pro
 
 class TutorialRepository{
 
-  final MyApiClient apiClient;
+  final MyApiClient? apiClient;
   TutorialRepository({this.apiClient});
 
   Future<AccessKeyModel> getAccessKey(){
-    return apiClient.getAccessKey();
+    return apiClient!.getAccessKey();
   }
 
-  Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey, String userSecretKey) async{
-    return apiClient.getAppTutorialListData(accessKey, userSecretKey);
+  Future<TsoAppTutorialListModel?> getAppTutorialListData(String? accessKey, String? userSecretKey) async{
+    return apiClient!.getAppTutorialListData(accessKey, userSecretKey);
   }
 }

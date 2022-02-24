@@ -13,7 +13,7 @@ class DataBaseProvider extends Model {
 
   String cartMsg = "";
   bool success = false;
-  Database _db;
+  late Database _db;
   List<SitesEntity> _list = [];
 
   List<SitesEntity> get siteListing => _list;
@@ -33,7 +33,7 @@ class DataBaseProvider extends Model {
   }
 
   initDatabase() async {
-    Database database;
+    Database? database;
     if(database!=null){
       _db=database;
     }else {
@@ -72,7 +72,7 @@ class DataBaseProvider extends Model {
     notifyListeners();
   }
 
-  Future<void> insertSiteEntityInTable(SitesEntity sitesEntity) async {
+  Future<dynamic> insertSiteEntityInTable(SitesEntity sitesEntity) async {
     var result = await _db.rawInsert("INSERT Into siteList (siteId, leadId, siteSegment, assignedTo, siteStatusId, siteOppertunityId, siteStageId, contactName, contactNumber, siteCreationDate, siteGeotag, siteGeotagLat, siteGeotagLong, sitePincode, siteState, siteDistrict, siteTaluk, siteScore, sitePotentialMt, reraNumber, dealerId, siteBuiltArea, noOfFloors, productDemo, productOralBriefing, soCode, plotNumber, inactiveReasonText, nextVisitDate, closureReasonText, createdBy,  createdOn, updatedBy, updatedOn)"
         " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [sitesEntity.siteId, sitesEntity.leadId, sitesEntity.siteSegment, sitesEntity.assignedTo, sitesEntity.siteStatusId, sitesEntity.siteOppertunityId, sitesEntity.siteStageId, sitesEntity.contactName, sitesEntity.contactNumber, sitesEntity.siteCreationDate, sitesEntity.siteGeotag, sitesEntity.siteGeotagLat, sitesEntity.siteGeotagLong, sitesEntity.sitePincode, sitesEntity.siteState, sitesEntity.siteDistrict, sitesEntity.siteTaluk, sitesEntity.siteScore, sitesEntity.sitePotentialMt, sitesEntity.reraNumber, sitesEntity.dealerId, sitesEntity.siteBuiltArea, sitesEntity.noOfFloors, sitesEntity.productDemo, sitesEntity.productOralBriefing, sitesEntity.soCode, sitesEntity.plotNumber, sitesEntity.inactiveReasonText, sitesEntity.nextVisitDate, sitesEntity.closureReasonText, sitesEntity.createdBy,  sitesEntity.createdOn, sitesEntity.updatedBy, sitesEntity.updatedOn]

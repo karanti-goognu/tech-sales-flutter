@@ -1,5 +1,5 @@
 class ReportSharingModel {
-  String shareWith;
+  String? shareWith;
 
   ReportSharingModel({this.shareWith});
 

@@ -25,7 +25,7 @@ class LeadScreen extends StatefulWidget {
 }
 
 //final GlobalKey<ScaffoldState> _leadScreenFormKey = GlobalKey<ScaffoldState>();
-PersistentBottomSheetController controller;
+PersistentBottomSheetController? controller;
 
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
@@ -35,15 +35,15 @@ class _LeadScreenState extends State<LeadScreen> {
   //LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   int selectedPosition = 0;
 
   int currentTab = 0;
 
   var bottomSheetController;
-  ScrollController _scrollController;
-  SiteDistrictListModel _siteDistrictListModel;
+  ScrollController? _scrollController;
+  SiteDistrictListModel? _siteDistrictListModel;
 
   @override
   void initState() {
@@ -74,8 +74,8 @@ class _LeadScreenState extends State<LeadScreen> {
   }
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       print('hello');
       _leadsFilterController.offset += 10;
       print(_leadsFilterController.offset);
@@ -144,7 +144,7 @@ class _LeadScreenState extends State<LeadScreen> {
             // titleSpacing: 50,
             // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: SizeConfig.screenHeight * .14,
+            toolbarHeight: SizeConfig.screenHeight! * .14,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -1084,7 +1084,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       ),
                                                     ),
                                                     onTap: () {
-                                                      String num =
+                                                      String? num =
                                                           _leadsFilterController
                                                               .leadsListResponse
                                                               .leadsEntity[
@@ -1138,7 +1138,7 @@ class _LeadScreenState extends State<LeadScreen> {
 
   void _closeModalBottomSheet() {
     if (controller != null) {
-      controller.close();
+      controller!.close();
       controller = null;
     }
   }

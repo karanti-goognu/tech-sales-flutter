@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BrandNameDBHelper extends ChangeNotifier{
   static final BrandNameDBHelper _instance = BrandNameDBHelper._();
-  static Database _database;
+  static Database? _database;
 
   BrandNameDBHelper._();
 
@@ -12,7 +13,7 @@ class BrandNameDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
 //      print("mko 1");
       return _database;
@@ -41,20 +42,20 @@ class BrandNameDBHelper extends ChangeNotifier{
 
   Future<int> addBrandName(BrandModelforDB brandModelforDB) async {
 //    print(brandModelforDB.brandName);
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.insert('brandName', brandModelforDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<int> addDealer(DealerForDb dealerForDb) async {
 //    print("ADDING: "+ dealerForDb.toMapForDb().toString());
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.insert('counterListDealers', dealerForDb.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> clearTable() async{
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     client.delete("brandName");
     client.delete('counterListDealers');
   }
@@ -87,7 +88,7 @@ class BrandNameDBHelper extends ChangeNotifier{
   //
 
   Future<List<BrandModelforDB>> fetchAllDistinctBrand() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.rawQuery('SELECT DISTINCT brandName FROM brandName');
 
     if (res.isNotEmpty) {
@@ -99,7 +100,7 @@ class BrandNameDBHelper extends ChangeNotifier{
   }
 
   Future<List<DealerForDb>> fetchAllDistinctDealers() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.rawQuery('SELECT DISTINCT id,dealerName FROM counterListDealers');
 
     if (res.isNotEmpty) {
@@ -110,8 +111,8 @@ class BrandNameDBHelper extends ChangeNotifier{
     return [];
   }
 
-  Future<List<BrandModelforDB>> fetchAllDistinctProduct(String brandName) async {
-    var client = await db;
+  Future<List<BrandModelforDB>> fetchAllDistinctProduct(String? brandName) async {
+    var client = await (db as FutureOr<Database>);
     var res = await client.rawQuery('SELECT * FROM brandName WHERE brandName=?', [brandName]);
 
     if (res.isNotEmpty) {
@@ -128,9 +129,9 @@ class BrandNameDBHelper extends ChangeNotifier{
 
 class BrandModelforDB {
   // @required
-   int id;
-   String brandName;
-   String productName;
+   int? id;
+   String? brandName;
+   String? productName;
 
 
   BrandModelforDB(this.id, this.brandName,this.productName);
@@ -152,8 +153,8 @@ class BrandModelforDB {
 
 
 class DealerForDb{
-   String id;
-   String dealerName;
+   String? id;
+   String? dealerName;
     DealerForDb(this.id, this.dealerName);
 
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetailView extends StatefulWidget {
-  int membershipId;
+  int? membershipId;
 
   InfluencerDetailView(this.membershipId);
 
@@ -32,32 +32,32 @@ class InfluencerDetailView extends StatefulWidget {
 
 class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   InfController _infController = Get.find();
-  InfluencerDetailDataModel _influencerDetailDataModel;
+  InfluencerDetailDataModel? _influencerDetailDataModel;
   final _addInfluencerFormKey = GlobalKey<FormState>();
-  StateDistrictListModel _stateDistrictListModel;
+  late StateDistrictListModel _stateDistrictListModel;
 
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List();
-  InfluencerTypeEntitiesList _influencerTypeEntitiesList;
+  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList = new List.empty(growable: true);
+  InfluencerTypeEntitiesList? _influencerTypeEntitiesList;
 
-  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
+  List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList =
       new List.empty(growable: true);
-  InfluencerCategoryEntitiesList _influencerCategoryEntitiesList;
+  InfluencerCategoryEntitiesList? _influencerCategoryEntitiesList;
 
-  List<InfluencerSourceList> influencerSourceList = new List.empty(growable: true);
-  InfluencerSourceList _influencerSourceList;
+  List<InfluencerSourceList>? influencerSourceList = new List.empty(growable: true);
+  InfluencerSourceList? _influencerSourceList;
 
-  List<SiteBrandList> siteBrandList = new List.empty(growable: true);
-  SiteBrandList _siteBrandList;
+  List<SiteBrandList>? siteBrandList = new List.empty(growable: true);
+  SiteBrandList? _siteBrandList;
 
 
 
   //var _date = 'Date of Birth*';
   bool _qualificationVisible = false;
-  int _influencerCategory;
-  int _source;
-  int _memberType, memberShipId;
-  String _selecedSource;
-  String _selectedEnrollValue;
+  int? _influencerCategory;
+  int? _source;
+  int? _memberType, memberShipId;
+  String? _selecedSource;
+  String? _selectedEnrollValue;
   bool checkedValue = false;
 
   TextEditingController _contactNumberController = TextEditingController();
@@ -78,14 +78,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
-  FocusNode myFocusNode;
+  FocusNode? myFocusNode;
 
   //final ScrollController _scrollController = ScrollController();
 
   // If Engineer Type
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
-  int _preferredBrandId;
+  int? _preferredBrandId;
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
 
@@ -107,7 +107,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -167,19 +167,19 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   setData() {
     if (_influencerDetailDataModel != null ||
-        _influencerDetailDataModel.response != null ||
-        _influencerDetailDataModel.response.influencerDetails != null) {
+        _influencerDetailDataModel!.response != null ||
+        _influencerDetailDataModel!.response!.influencerDetails != null) {
       InfluencerDetails _data =
-          _influencerDetailDataModel.response.influencerDetails;
+          _influencerDetailDataModel!.response!.influencerDetails!;
       // memberShipId = _data.id;
-      _contactNumberController.text = _data.inflContactNumber;
-      _nameController.text = _data.inflName;
-      _fatherNameController.text = _data.fatherName;
-      _districtController.text = _data.districtName;
-      _giftAddressController.text = _data.giftAddress;
-      _giftPincodeController.text = _data.giftAddressPincode;
-      _giftDistrictController.text = _data.giftAddressDistrict;
-      _giftStateController.text = _data.giftAddressState;
+      _contactNumberController.text = _data.inflContactNumber!;
+      _nameController.text = _data.inflName!;
+      _fatherNameController.text = _data.fatherName!;
+      _districtController.text = _data.districtName!;
+      _giftAddressController.text = _data.giftAddress!;
+      _giftPincodeController.text = _data.giftAddressPincode!;
+      _giftDistrictController.text = _data.giftAddressDistrict!;
+      _giftStateController.text = _data.giftAddressState!;
       _totalPotentialController.text =
           '${_data.monthlyPotentialVolumeMT}' == "null"
               ? ""
@@ -188,11 +188,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           ? ""
           : '${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
-      _qualificationController.text = _data.inflQualification;
-      _emailController.text = _data.email;
-      _baseCityController.text = _data.baseCity;
-      _talukaController.text = _data.taluka;
-      _pincodeController.text = _data.pinCode;
+      _qualificationController.text = _data.inflQualification!;
+      _emailController.text = _data.email!;
+      _baseCityController.text = _data.baseCity!;
+      _talukaController.text = _data.taluka!;
+      _pincodeController.text = _data.pinCode!;
       _source = _data.inflEnrollmentSourceId;
       _memberType = _data.inflTypeId;
       _influencerCategory = _data.inflCategoryId;
@@ -210,57 +210,57 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       }
 
       influencerTypeEntitiesList =
-          _influencerDetailDataModel.response.influencerTypeEntitiesList;
-      if (_influencerDetailDataModel.response.influencerDetails.inflTypeId !=
+          _influencerDetailDataModel!.response!.influencerTypeEntitiesList;
+      if (_influencerDetailDataModel!.response!.influencerDetails!.inflTypeId !=
           null) {
-        for (int i = 0; i < influencerTypeEntitiesList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.inflTypeId
+        for (int i = 0; i < influencerTypeEntitiesList!.length; i++) {
+          if (_influencerDetailDataModel!.response!.influencerDetails!.inflTypeId
                   .toString() ==
-              influencerTypeEntitiesList[i].inflTypeId.toString()) {
-            _influencerTypeEntitiesList = influencerTypeEntitiesList[i];
+              influencerTypeEntitiesList![i].inflTypeId.toString()) {
+            _influencerTypeEntitiesList = influencerTypeEntitiesList![i];
           }
         }
       }
       else {}
 
       influencerSourceList =
-          _influencerDetailDataModel.response.influencerSourceList;
-      if (_influencerDetailDataModel
-              .response.influencerDetails.inflEnrollmentSourceId !=
+          _influencerDetailDataModel!.response!.influencerSourceList;
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.inflEnrollmentSourceId !=
           null) {
-        for (int i = 0; i < influencerSourceList.length; i++) {
-          if (_influencerDetailDataModel
-                  .response.influencerDetails.inflEnrollmentSourceId
+        for (int i = 0; i < influencerSourceList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflEnrollmentSourceId
                   .toString() ==
-              influencerSourceList[i].inflSourceId.toString()) {
-            _influencerSourceList = influencerSourceList[i];
+              influencerSourceList![i].inflSourceId.toString()) {
+            _influencerSourceList = influencerSourceList![i];
           }
         }
       } else {}
 
       influencerCategoryEntitiesList =
-          _influencerDetailDataModel.response.influencerCategoryEntitiesList;
-      if (_influencerDetailDataModel
-              .response.influencerDetails.inflCategoryId !=
+          _influencerDetailDataModel!.response!.influencerCategoryEntitiesList;
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.inflCategoryId !=
           null) {
-        for (int i = 0; i < influencerCategoryEntitiesList.length; i++) {
-          if (_influencerDetailDataModel
-                  .response.influencerDetails.inflCategoryId
+        for (int i = 0; i < influencerCategoryEntitiesList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflCategoryId
                   .toString() ==
-              influencerCategoryEntitiesList[i].inflCatId.toString()) {
-            _influencerCategoryEntitiesList = influencerCategoryEntitiesList[i];
+              influencerCategoryEntitiesList![i].inflCatId.toString()) {
+            _influencerCategoryEntitiesList = influencerCategoryEntitiesList![i];
           }
         }
       } else {}
 
-      siteBrandList = _influencerDetailDataModel.response.siteBrandList;
-      if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId !=
+      siteBrandList = _influencerDetailDataModel!.response!.siteBrandList;
+      if (_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId !=
           null) {
-        for (int i = 0; i < siteBrandList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId
+        for (int i = 0; i < siteBrandList!.length; i++) {
+          if (_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId
               .toString() ==
-              siteBrandList[i].id.toString()) {
-            _siteBrandList = siteBrandList[i];
+              siteBrandList![i].id.toString()) {
+            _siteBrandList = siteBrandList![i];
           }
         }
       } else {}
@@ -268,13 +268,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       districtId = _data.districtId;
       stateName = _data.stateName;
       stateId = _data.stateId;
-      _designationController.text = _data.designation;
-      _departmentNameController.text = _data.departmentName;
-      _preferredBrandId=_influencerDetailDataModel.response.influencerDetails.preferredBrandId;
-      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary;
-      _firmNameController.text = _data.firmName;
+      _designationController.text = _data.designation!;
+      _departmentNameController.text = _data.departmentName!;
+      _preferredBrandId=_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId;
+      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary!;
+      _firmNameController.text = _data.firmName!;
       myFocusNode = FocusNode();
-      myFocusNode.requestFocus();
+      myFocusNode!.requestFocus();
 
     }
   }
@@ -313,7 +313,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         // if (value.isEmpty) {
         //   return 'Please enter email ';
         // }
-        if (value.isNotEmpty && !Validations.isEmail(value)) {
+        if (value!.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
         return null;
@@ -328,7 +328,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter name';
         }
         return null;
@@ -391,7 +391,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         // if (value.isEmpty) {
         //   return 'Please enter name';
         // }
-        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
+        if (value!.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -423,7 +423,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           activeColor: Colors.black,
           dense: true,
           value: checkedValue,
-          // onChanged: (newValue) {
+           onChanged: (newValue) {
           //   setState(() {
           //     checkedValue = newValue;
           //     if (checkedValue == true) {
@@ -432,13 +432,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           //       _selectedEnrollValue = "N";
           //     }
           //   });
-         // },
+          },
           controlAffinity:
               ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
 
     final district = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select District' : null,
+      validator: (value) => value!.isEmpty ? 'Please select District' : null,
       controller: _districtController,
       readOnly: true,
       onTap: () {
@@ -460,7 +460,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final memberDropDwn = DropdownButtonFormField<InfluencerTypeEntitiesList>(
       value: _influencerTypeEntitiesList,
-      // onChanged: (value) {
+       onChanged: (value) {
       //   setState(() {
       //     _influencerTypeEntitiesList = value;
       //     _memberType = _influencerTypeEntitiesList.inflTypeId;
@@ -473,16 +473,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       //       _qualificationVisible = false;
       //     }
       //   });
-      // },
+       },
       items: (_influencerDetailDataModel == null ||
               _influencerTypeEntitiesList == null)
           ? []
-          : influencerTypeEntitiesList
+          : influencerTypeEntitiesList!
               .map((e) => DropdownMenuItem(
                     value: e,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeDesc, style: TextStyle(color: Colors.black),)),
+                        child: Text(e.inflTypeDesc!, style: TextStyle(color: Colors.black),)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -507,7 +507,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select Birth date' : null,
+      validator: (value) => value!.isEmpty ? 'Please select Birth date' : null,
       controller: _dateController,
       readOnly: true,
       onTap: () {
@@ -550,7 +550,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       validator: (value) {
-        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
+        if (value!.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -619,16 +619,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       onChanged: (value) {
         setState(() {
           _influencerSourceList = value;
-          _source = _influencerSourceList.inflSourceId;
+          _source = _influencerSourceList!.inflSourceId;
         });
       },
       items:
           (_influencerDetailDataModel == null || influencerSourceList == null)
               ? []
-              : influencerSourceList
+              : influencerSourceList!
                   .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.inflSourceText),
+                        child: Text(e.inflSourceText!),
                       ))
                   .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -642,16 +642,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       onChanged: (value) {
         setState(() {
           _influencerCategoryEntitiesList = value;
-          _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
+          _influencerCategory = _influencerCategoryEntitiesList!.inflCatId;
         });
       },
       items: (_influencerDetailDataModel == null ||
               influencerCategoryEntitiesList == null)
           ? []
-          : influencerCategoryEntitiesList
+          : influencerCategoryEntitiesList!
               .map((e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e.inflCatDesc),
+                    child: Text(e.inflCatDesc!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -678,8 +678,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           ),
           onPressed: () {
             setState(() {
-              if (_addInfluencerFormKey.currentState.validate()) {
-                _addInfluencerFormKey.currentState.save();
+              if (_addInfluencerFormKey.currentState!.validate()) {
+                _addInfluencerFormKey.currentState!.save();
                 btnUpdatePresssed();
               }
             });
@@ -717,16 +717,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   onChanged: (value) {
                     setState(() {
                       _siteBrandList = value;
-                      _preferredBrandId = _siteBrandList.id;
+                      _preferredBrandId = _siteBrandList!.id;
                     });
                   },
-                  items: siteBrandList
+                  items: siteBrandList!
                           .map((e) => DropdownMenuItem(
                                 value: e,
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width / 1.5,
-                                    child: Text(e.brandName+" - "+e.productName)),
+                                    child: Text(e.brandName!+" - "+e.productName!)),
                               ))
                           .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
@@ -881,7 +881,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         children: [
           BackgroundContainerImage(),
           (_influencerDetailDataModel != null &&
-                  _influencerDetailDataModel.response.influencerDetails != null)
+                  _influencerDetailDataModel!.response!.influencerDetails != null)
               ? ListView(children: [
                   Container(
                     padding: EdgeInsets.all(12.sp),
@@ -1105,14 +1105,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   Future _selectBirthDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1950),
         lastDate: new DateTime.now());
     setState(() {
       var _date;
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked!);
       _dateController.text = _date;
 
       // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
@@ -1120,14 +1120,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   Future _selectMarriageAnniversaryDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1950),
         lastDate: new DateTime.now());
     setState(() {
       var _date;
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked!);
       _dateMarriageAnnController.text = _date;
       // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
@@ -1145,12 +1145,12 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   //   });
   // }
 
-  String stateName;
-  int stateId, districtId;
+  String? stateName;
+  int? stateId, districtId;
 
   districtList() {
-    List<StateDistrictList> dist =
-        _stateDistrictListModel.response.stateDistrictList;
+    List<StateDistrictList>? dist =
+        _stateDistrictListModel.response!.stateDistrictList;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) => Container(
         color: Colors.white,
@@ -1174,7 +1174,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dist = _stateDistrictListModel.response.stateDistrictList
+                    dist = _stateDistrictListModel.response!.stateDistrictList!
                         .where((element) {
                       return element.districtName
                           .toString()
@@ -1192,22 +1192,23 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
               ),
             ),
             Divider(),
-            _stateDistrictListModel.response.stateDistrictList == null ||
-                    _stateDistrictListModel.response.stateDistrictList.isEmpty
+            _stateDistrictListModel.response!.stateDistrictList == null ||
+                    _stateDistrictListModel.response!.stateDistrictList!.isEmpty
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : Expanded(
                     child: ListView(
-                      children: dist
+                      children: dist!
                           //_stateDistrictListModel.response.stateDistrictList
                           .map(
                             (e) => RadioListTile(
+                              groupValue: e,
                                 value: e,
                                 title:
                                     Text('${e.districtName} (${e.stateName})'),
                                 // groupValue: customer,
-                                onChanged: (text) {
+                                onChanged: (dynamic text) {
                                   setState(() {
                                     _districtController.text =
                                         text.districtName;
@@ -1230,7 +1231,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   btnUpdatePresssed() async {
-    String empId = await getEmpId();
+    String? empId = await (getEmpId() as FutureOr<String?>);
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
       "membershipId": memberShipId,

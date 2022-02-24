@@ -11,15 +11,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ChangeLeadToSiteDialog extends StatefulWidget {
-  NextStageConstructionEntity selectedNextStageConstructionEntity;
-  final List<DealerForDb> dealerEntityForDb;
-  final List<CounterListModel> counterListModel;
-  final List<SiteFloorsEntity> siteFloorsEntity;
-  final ChangeLeadToSiteDialogListener mListener;
+  NextStageConstructionEntity? selectedNextStageConstructionEntity;
+  final List<DealerForDb>? dealerEntityForDb;
+  final List<CounterListModel>? counterListModel;
+  final List<SiteFloorsEntity>? siteFloorsEntity;
+  final ChangeLeadToSiteDialogListener? mListener;
 
 
   ChangeLeadToSiteDialog(
-      {Key key,
+      {Key? key,
       this.selectedNextStageConstructionEntity,
       this.dealerEntityForDb,
       this.counterListModel,
@@ -33,21 +33,21 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
 
 class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   var _nextDateofConstruction = TextEditingController();
-  DateTime nextStageConstructionPickedDate;
+  DateTime? nextStageConstructionPickedDate;
   CounterListModel selectedSubDealer = CounterListModel();
   List<CounterListModel> subDealerList = new List.empty(growable: true);
-  String leadDataDealer;
-  String leadDataSubDealer;
-  NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  SiteFloorsEntity _selectedLeadFloorEntity;
+  String? leadDataDealer;
+  String? leadDataSubDealer;
+  NextStageConstructionEntity? _selectedNextStageConstructionEntity;
+  SiteFloorsEntity? _selectedLeadFloorEntity;
   var _noOfBagsSupplied = TextEditingController();
-  String _selectedRadioValue = 'I';
+  String? _selectedRadioValue = 'I';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("delearIdListLength     ${widget.dealerEntityForDb.length}");
+    print("delearIdListLength     ${widget.dealerEntityForDb!.length}");
   }
 
   @override
@@ -61,7 +61,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                 Radio(
                   value: 'I',
                   groupValue: _selectedRadioValue,
-                  onChanged: (value) {
+                  onChanged: (dynamic value) {
                     setState(() {
                       _selectedRadioValue = value;
                     });
@@ -78,7 +78,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               Radio(
                 value: 'C',
                 groupValue: _selectedRadioValue,
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   setState(() {
                     _selectedRadioValue = value;
                   });
@@ -106,10 +106,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   ihbRadio,
                   DropdownButtonFormField<NextStageConstructionEntity>(
                     value: _selectedNextStageConstructionEntity,
-                    items: nextStageConstructionEntity
+                    items: nextStageConstructionEntity!
                         .map((label) => DropdownMenuItem(
                               child: Text(
-                                label.nexStageConsText,
+                                label.nexStageConsText!,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: ColorConstants.inputBoxHintColor,
@@ -175,7 +175,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                           color: ColorConstants.clearAllTextColor,
                         ),
                         onPressed: () async {
-                          final DateTime picked = await showDatePicker(
+                          final DateTime? picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime.now(),
@@ -185,7 +185,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                             final DateFormat formatter =
                                 DateFormat("yyyy-MM-dd");
                             final String formattedDate =
-                                formatter.format(picked);
+                                formatter.format(picked!);
                             nextStageConstructionPickedDate = picked;
                             _nextDateofConstruction.text = formattedDate;
                           });
@@ -208,9 +208,9 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   /*DropDown for dealer*/
                   DropdownButtonFormField<SiteFloorsEntity>(
                     value: _selectedLeadFloorEntity,
-                    items: widget.siteFloorsEntity
+                    items: widget.siteFloorsEntity!
                         .map((label) => DropdownMenuItem(
-                      child: Text(label.siteFloorTxt,
+                      child: Text(label.siteFloorTxt!,
                         style: TextStyle(
                             fontSize: 15,
                             color: ColorConstants.inputBoxHintColor,
@@ -233,7 +233,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   TextFormField(
                       controller: _noOfBagsSupplied,
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter no of bags supplied';
                         }
                         return null;
@@ -276,7 +276,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                           Get.dialog(CustomDialogs()
                               .errorDialog("Please fill the details first"));
                         } else {
-                          if (nextStageConstructionPickedDate
+                          if (nextStageConstructionPickedDate!
                                   .difference(DateTime.now())
                                   .inDays >
                               31) {
@@ -317,7 +317,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                         onPressed: () {
                                           //  updateStatusforNextStage(context,5);
 
-                                          widget.mListener
+                                          widget.mListener!
                                               .updateStatusForNextStageAllow(
                                                   context,
                                                   5,
@@ -325,7 +325,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                                   _nextDateofConstruction.text,
                                                   leadDataDealer,
                                                   leadDataSubDealer,
-                                                  _selectedLeadFloorEntity.id,
+                                                  _selectedLeadFloorEntity!.id,
                                                   _noOfBagsSupplied.text,
                                                   _selectedRadioValue);
                                         },
@@ -335,14 +335,14 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                 });
                           } else {
                             //updateStatusforNextStage(context, 3);
-                            widget.mListener.updateStatusForNextStageAllow(
+                            widget.mListener!.updateStatusForNextStageAllow(
                                 context,
                                 3,
                                 _selectedNextStageConstructionEntity,
                                 _nextDateofConstruction.text,
                                 leadDataDealer,
                                 leadDataSubDealer,
-                                _selectedLeadFloorEntity.id,
+                                _selectedLeadFloorEntity!.id,
                                 _noOfBagsSupplied.text,
                                 _selectedRadioValue);
                           }
@@ -368,11 +368,11 @@ abstract class ChangeLeadToSiteDialogListener {
   updateStatusForNextStageAllow(
       BuildContext context,
       int statusId,
-      NextStageConstructionEntity selectedNextStageConstructionEntity,
+      NextStageConstructionEntity? selectedNextStageConstructionEntity,
       String nextStageConstructionPickedDate,
-      String dealerId,
-      String subDealerId,
-      int siteFloorId,
+      String? dealerId,
+      String? subDealerId,
+      int? siteFloorId,
       String numOfBagsSupplied,
-      String isIhbCommercial);
+      String? isIhbCommercial);
 }

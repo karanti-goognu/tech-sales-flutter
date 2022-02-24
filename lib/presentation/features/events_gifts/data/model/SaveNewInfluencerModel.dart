@@ -1,10 +1,10 @@
 class SaveNewInfluencerModel {
-  String ilpIntrested;
-  int influencerCategoryId;
-  String influencerName;
-  int influencerTypeId;
-  String mobileNumber;
-  String ilpRegFlag;
+  String? ilpIntrested;
+  int? influencerCategoryId;
+  String? influencerName;
+  int? influencerTypeId;
+  String? mobileNumber;
+  String? ilpRegFlag;
 
   SaveNewInfluencerModel(
       {this.ilpIntrested,

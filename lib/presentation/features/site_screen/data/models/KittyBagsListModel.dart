@@ -1,7 +1,7 @@
 class KittyBagsListModel {
-  Response response;
-  String respCode;
-  String respMsg;
+  Response? response;
+  String? respCode;
+  String? respMsg;
 
   KittyBagsListModel({this.response, this.respCode, this.respMsg});
 
@@ -16,7 +16,7 @@ class KittyBagsListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.response != null) {
-      data['response'] = this.response.toJson();
+      data['response'] = this.response!.toJson();
     }
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
@@ -25,17 +25,17 @@ class KittyBagsListModel {
 }
 
 class Response {
-  List<KittyPointsList> kittyPointsList;
-  List<ReservePoolList> reservePoolList;
-  int totalInvoiceSupplyBags;
-  int totalKittyPoints;
-  int totalKittyBags;
-  int totalKittyPointsForKittyPointsList;
-  int totalKittyPointsForReservePoolList;
-  int totalInvoiceSupplyBagsForKittyPointsList;
-  int totalInvoiceSupplyForReservePoolList;
-  int totalKittyBagsForKittyPointsList;
-  int totalKittyBagsForReservePoolList;
+  List<KittyPointsList>? kittyPointsList;
+  List<ReservePoolList>? reservePoolList;
+  int? totalInvoiceSupplyBags;
+  int? totalKittyPoints;
+  int? totalKittyBags;
+  int? totalKittyPointsForKittyPointsList;
+  int? totalKittyPointsForReservePoolList;
+  int? totalInvoiceSupplyBagsForKittyPointsList;
+  int? totalInvoiceSupplyForReservePoolList;
+  int? totalKittyBagsForKittyPointsList;
+  int? totalKittyBagsForReservePoolList;
 
   Response(
       {this.kittyPointsList,
@@ -52,15 +52,15 @@ class Response {
 
   Response.fromJson(Map<String, dynamic> json) {
     if (json['kittyPointsList'] != null) {
-      kittyPointsList = new List<KittyPointsList>();
+      kittyPointsList = new List<KittyPointsList>.empty(growable: true);
       json['kittyPointsList'].forEach((v) {
-        kittyPointsList.add(new KittyPointsList.fromJson(v));
+        kittyPointsList!.add(new KittyPointsList.fromJson(v));
       });
     }
     if (json['reservePoolList'] != null) {
-      reservePoolList = new List<ReservePoolList>();
+      reservePoolList = new List<ReservePoolList>.empty(growable: true);
       json['reservePoolList'].forEach((v) {
-        reservePoolList.add(new ReservePoolList.fromJson(v));
+        reservePoolList!.add(new ReservePoolList.fromJson(v));
       });
     }
     totalInvoiceSupplyBags = json['totalInvoiceSupplyBags'];
@@ -82,11 +82,11 @@ class Response {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.kittyPointsList != null) {
       data['kittyPointsList'] =
-          this.kittyPointsList.map((v) => v.toJson()).toList();
+          this.kittyPointsList!.map((v) => v.toJson()).toList();
     }
     if (this.reservePoolList != null) {
       data['reservePoolList'] =
-          this.reservePoolList.map((v) => v.toJson()).toList();
+          this.reservePoolList!.map((v) => v.toJson()).toList();
     }
     data['totalInvoiceSupplyBags'] = this.totalInvoiceSupplyBags;
     data['totalKittyPoints'] = this.totalKittyPoints;
@@ -108,10 +108,10 @@ class Response {
 }
 
 class KittyPointsList {
-  String productName;
-  int invoiceSupplyBags;
-  int kittyPoints;
-  int kittyBags;
+  String? productName;
+  int? invoiceSupplyBags;
+  int? kittyPoints;
+  int? kittyBags;
 
   KittyPointsList({this.productName,
     this.invoiceSupplyBags,
@@ -136,10 +136,10 @@ class KittyPointsList {
 }
 
   class ReservePoolList {
-    String productName;
-    int invoiceSupplyBags;
-    int kittyPoints;
-    int kittyBags;
+    String? productName;
+    int? invoiceSupplyBags;
+    int? kittyPoints;
+    int? kittyBags;
 
     ReservePoolList({this.productName,
       this.invoiceSupplyBags,

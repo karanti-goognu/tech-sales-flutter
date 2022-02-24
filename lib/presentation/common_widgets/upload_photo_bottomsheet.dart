@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();
-  static File image;
+  static File? image;
 
-  static Future<File> showPicker(context) async {
+  static Future<File?> showPicker(context) async {
     await showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -61,7 +61,7 @@ class UploadImageBottomSheet{
 
    static imgFromCamera() async {
      ImagePicker _picker = ImagePicker();
-     XFile img = await _picker.pickImage(
+     XFile? img = await _picker.pickImage(
         source: ImageSource.camera,
         imageQuality: 10,
         maxWidth: 480,
@@ -74,7 +74,7 @@ class UploadImageBottomSheet{
 
   static imgFromGallery() async {
     ImagePicker _picker = ImagePicker();
-    XFile img = await _picker.pickImage(
+    XFile? img = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
     if (img != null)
       image= File(img.path);

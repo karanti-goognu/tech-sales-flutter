@@ -30,7 +30,7 @@ class AppController extends GetxController {
   //final EventTypeController _eventTypeController = Get.find();
   // final UpdateServiceRequestController _updateServiceRequestController = Get.find();
 
-  AppController({@required this.repository}) : assert(repository != null);
+  AppController({required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;

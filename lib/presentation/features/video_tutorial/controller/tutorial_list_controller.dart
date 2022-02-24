@@ -15,9 +15,9 @@ class TutorialListController extends GetxController{
   }
 
   final TutorialRepository repository;
-  TutorialListController({@required this.repository}) : assert(repository != null);
+  TutorialListController({required this.repository}) : assert(repository != null);
 
-  final _tutorialListData = TsoAppTutorialListModel().obs;
+  final Rx<TsoAppTutorialListModel?> _tutorialListData = TsoAppTutorialListModel().obs;
   get tutorialListData => _tutorialListData.value;
   set tutorialListData(value) =>
       _tutorialListData.value = value;
@@ -36,8 +36,8 @@ class TutorialListController extends GetxController{
   }
 
 
-  Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey) async {
-    String userSecurityKey = "";
+  Future<TsoAppTutorialListModel?> getAppTutorialListData(String? accessKey) async {
+    String? userSecurityKey = "";
     // String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {

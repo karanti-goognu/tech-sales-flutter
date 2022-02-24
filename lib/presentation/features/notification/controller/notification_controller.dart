@@ -16,7 +16,7 @@ void onInit() {
 
 final MyRepositoryApp repository;
 
-NotificationController({@required this.repository}) : assert(repository != null);
+NotificationController({required this.repository}) : assert(repository != null);
 
 final _counterNotification = 0.obs;
 

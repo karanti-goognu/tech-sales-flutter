@@ -23,7 +23,7 @@ class LoginController extends GetxController {
 
   final MyRepository repository;
 
-  LoginController({@required this.repository}) : assert(repository != null);
+  LoginController({required this.repository}) : assert(repository != null);
 
   final _loginResponse = LoginModel().obs;
   final _retryOtpResponse = RetryOtpModel().obs;

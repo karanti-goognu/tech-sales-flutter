@@ -3,14 +3,14 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 class GlobalMethods{
 
 
-  static brandValue(List<SiteBrandEntity> siteBrandEntity,int brandId) {
+  static brandValue(List<SiteBrandEntity> siteBrandEntity,int? brandId) {
     for (int i = 0; i < siteBrandEntity.length; i++) {
       if (siteBrandEntity[i].id == brandId) {
         return siteBrandEntity[i].brandName;
       }
     }
   }
- static brandProductValue(List<SiteBrandEntity> siteBrandEntity,int brandId) {
+ static brandProductValue(List<SiteBrandEntity> siteBrandEntity,int? brandId) {
     for (int i = 0; i < siteBrandEntity.length; i++) {
       if (siteBrandEntity[i].id == brandId) {
         return siteBrandEntity[i].productName;
@@ -26,7 +26,7 @@ class GlobalMethods{
     }
   }
 
- static subDealerValue(List<CounterListModel>counterListModel ,String shipToParty) {
+ static subDealerValue(List<CounterListModel>counterListModel ,String? shipToParty) {
     for (int i = 0; i < counterListModel.length; i++) {
       if (counterListModel[i].shipToParty == shipToParty) {
         return counterListModel[i].shipToPartyName;
@@ -34,8 +34,8 @@ class GlobalMethods{
     }
   }
 
- static String selectedFloorText(List<SiteFloorsEntity> siteFloorsEntity,int floorId) {
-    String floorText = "";
+ static String? selectedFloorText(List<SiteFloorsEntity>? siteFloorsEntity,int? floorId) {
+    String? floorText = "";
     if (siteFloorsEntity != null && siteFloorsEntity.length > 0) {
       for (int i = 0; i < siteFloorsEntity.length; i++) {
         if (siteFloorsEntity[i].id == floorId) {
@@ -46,7 +46,7 @@ class GlobalMethods{
     return floorText;
   }
 
- static constructionStageDesc(List<ConstructionStageEntity>constructionStageEntity,int constructionStageId) {
+ static constructionStageDesc(List<ConstructionStageEntity>constructionStageEntity,int? constructionStageId) {
    for (int i = 0; i < constructionStageEntity.length; i++) {
      if (constructionStageEntity[i].id == constructionStageId) {
        return constructionStageEntity[i].constructionStageText;

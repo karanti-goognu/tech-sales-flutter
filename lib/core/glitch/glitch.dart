@@ -1,6 +1,6 @@
 
 class Glitch {
-  String message;
+  String? message;
   Glitch({
     this.message,
   });

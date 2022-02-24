@@ -1,20 +1,20 @@
 class SaveServiceRequest {
-  int requestDepartmentId;
-  int requestId;
-  String creatorType;
-  String creatorId;
-  String creatorContactNumber;
-  int siteId;
-  String description;
-  String severity;
-  String state;
-  String district;
-  String taluk;
-  String pincode;
-  int resolutionStatusId;
-  String createdBy;
-  List<SrComplaintSubtypeMappingEntity> srComplaintSubtypeMappingEntity;
-  List<SrComplaintPhotosEntity> srComplaintPhotosEntity;
+  int? requestDepartmentId;
+  int? requestId;
+  String? creatorType;
+  String? creatorId;
+  String? creatorContactNumber;
+  int? siteId;
+  String? description;
+  String? severity;
+  String? state;
+  String? district;
+  String? taluk;
+  String? pincode;
+  int? resolutionStatusId;
+  String? createdBy;
+  List<SrComplaintSubtypeMappingEntity>? srComplaintSubtypeMappingEntity;
+  List<SrComplaintPhotosEntity>? srComplaintPhotosEntity;
 
   SaveServiceRequest(
       {this.requestDepartmentId,
@@ -51,16 +51,16 @@ class SaveServiceRequest {
     createdBy = json['createdBy'];
     if (json['srComplaintSubtypeMappingEntity'] != null) {
       srComplaintSubtypeMappingEntity =
-      new List<SrComplaintSubtypeMappingEntity>();
+      new List<SrComplaintSubtypeMappingEntity>.empty(growable: true);
       json['srComplaintSubtypeMappingEntity'].forEach((v) {
-        srComplaintSubtypeMappingEntity
+        srComplaintSubtypeMappingEntity!
             .add(new SrComplaintSubtypeMappingEntity.fromJson(v));
       });
     }
     if (json['srComplaintPhotosEntity'] != null) {
-      srComplaintPhotosEntity = new List<SrComplaintPhotosEntity>();
+      srComplaintPhotosEntity = new List<SrComplaintPhotosEntity>.empty(growable: true);
       json['srComplaintPhotosEntity'].forEach((v) {
-        srComplaintPhotosEntity.add(new SrComplaintPhotosEntity.fromJson(v));
+        srComplaintPhotosEntity!.add(new SrComplaintPhotosEntity.fromJson(v));
       });
     }
   }
@@ -83,11 +83,11 @@ class SaveServiceRequest {
     data['createdBy'] = this.createdBy;
     if (this.srComplaintSubtypeMappingEntity != null) {
       data['srComplaintSubtypeMappingEntity'] =
-          this.srComplaintSubtypeMappingEntity.map((v) => v.toJson()).toList();
+          this.srComplaintSubtypeMappingEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplaintPhotosEntity != null) {
       data['srComplaintPhotosEntity'] =
-          this.srComplaintPhotosEntity.map((v) => v.toJson()).toList();
+          this.srComplaintPhotosEntity!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -95,8 +95,8 @@ class SaveServiceRequest {
 
 class SrComplaintSubtypeMappingEntity {
   Null serviceRequestComplaintId;
-  int serviceRequestComplaintTypeId;
-  String createdBy;
+  int? serviceRequestComplaintTypeId;
+  String? createdBy;
 
   SrComplaintSubtypeMappingEntity(
       {this.serviceRequestComplaintId,
@@ -119,9 +119,9 @@ class SrComplaintSubtypeMappingEntity {
 }
 
 class SrComplaintPhotosEntity {
-  int srComplaintId;
-  String photoName;
-  String createdBy;
+  int? srComplaintId;
+  String? photoName;
+  String? createdBy;
 
   SrComplaintPhotosEntity({this.srComplaintId, this.photoName, this.createdBy});
 

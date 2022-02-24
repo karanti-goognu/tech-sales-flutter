@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
@@ -29,7 +30,7 @@ class FormAddEvent extends StatefulWidget {
 }
 
 class _FormAddEventState extends State<FormAddEvent> {
-  AddEventModel addEventModel;
+  AddEventModel? addEventModel;
   //AppController _appController = Get.find();
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
@@ -41,9 +42,9 @@ class _FormAddEventState extends State<FormAddEvent> {
   // LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   var _date = 'Select Date';
-  TimeOfDay _time;
-  String geoTagType, timeString, dateString;
-  int dealerId;
+  TimeOfDay? _time;
+  String? geoTagType, timeString, dateString;
+  int? dealerId;
 
   ///textfield controllers
   TextEditingController _totalParticipantsController = TextEditingController();
@@ -56,10 +57,10 @@ class _FormAddEventState extends State<FormAddEvent> {
   TextEditingController _commentController = TextEditingController();
 
   ///DropDown Values
-  int _eventTypeId;
-  String _selectedVenue;
-  double locatinLat;
-  double locationLong;
+  int? _eventTypeId;
+  String? _selectedVenue;
+  double? locatinLat;
+  double? locationLong;
   int _value = 0;
 
 
@@ -74,7 +75,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -111,7 +112,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
 
-    final eventDropDwn = DropdownButtonFormField(
+    final eventDropDwn = DropdownButtonFormField<int>(
 
       onChanged: (value) {
         setState(() {
@@ -120,10 +121,10 @@ class _FormAddEventState extends State<FormAddEvent> {
       },
       items: addEventModel == null
           ? []
-          : addEventModel.eventTypeModels
+          : addEventModel!.eventTypeModels!
               .map((e) => DropdownMenuItem(
                     value: e.eventTypeId,
-                    child: Text(e.eventTypeText),
+                    child: Text(e.eventTypeText!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -173,7 +174,7 @@ class _FormAddEventState extends State<FormAddEvent> {
               children: <Widget>[
                 Expanded(
                     child: Text((_time != null
-                        ? '${_time.hour}:${_time.minute}'
+                        ? '${_time!.hour}:${_time!.minute}'
                         : 'Select time'))),
                 Icon(
                   Icons.calendar_today,
@@ -261,7 +262,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final venueDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
+      onChanged: (dynamic value) {
         setState(() {
           _selectedVenue = value;
         });
@@ -274,13 +275,13 @@ class _FormAddEventState extends State<FormAddEvent> {
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Venue"),
-      validator: (value) => value == null ? 'Please select the venue' : null,
+      validator: (dynamic value) => value == null ? 'Please select the venue' : null,
     );
 
     final venueAddress = TextFormField(
       controller: _venueAddController,
       validator: (value) {
-        if (value.isEmpty && _selectedVenue == 'Booked') {
+        if (value!.isEmpty && _selectedVenue == 'Booked') {
           return "Venue address can't be empty if Booked";
         }
         return null;
@@ -326,7 +327,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
-                              e.dealerName,
+                              e.dealerName!,
                               style: TextStyle(fontSize: 10),
                             ),
                             backgroundColor: Colors.lightGreen.withOpacity(0.2),
@@ -433,7 +434,7 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final location = TextFormField(
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return "Select location";
         }
         return null;
@@ -442,7 +443,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
-        final Suggestion result = await showSearch(
+        final Suggestion? result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
         );
@@ -451,8 +452,8 @@ class _FormAddEventState extends State<FormAddEvent> {
           final placeDetails =
               await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
-            _locationController.text = result.description;
-            locatinLat = placeDetails.lat;
+            _locationController.text = result.description!;
+            locatinLat = placeDetails!.lat;
             locationLong = placeDetails.lng;
           });
         }
@@ -560,7 +561,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   Future _selectFromDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime.now(),
@@ -569,7 +570,7 @@ class _FormAddEventState extends State<FormAddEvent> {
         // ),
         lastDate: new DateTime(2025));
     setState(() {
-      _date = new DateFormat('dd-MM-yyyy').format(_picked);
+      _date = new DateFormat('dd-MM-yyyy').format(_picked!);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
       dateString = '$d';
     });
@@ -580,42 +581,42 @@ class _FormAddEventState extends State<FormAddEvent> {
         ? _time = await showTimePicker(
             context: context,
             initialTime: (TimeOfDay(hour: 10, minute: 47)),
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           )
         : _time = await showTimePicker(
             context: context,
-            initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
-            builder: (BuildContext context, Widget child) {
+            initialTime: (TimeOfDay(hour: _time!.hour, minute: _time!.minute)),
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           );
     setState(() {
-      timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+      timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
     });
   }
 
-  List<bool> checkedValues;
-  List<String> selectedDealer = [];
+  late List<bool?> checkedValues;
+  List<String?> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
 
   //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = addEventModel.dealersModels;
+    List<DealersModels>? dealers = addEventModel!.dealersModels;
     checkedValues =
-        List.generate(addEventModel.dealersModels.length, (index) => false);
+        List.generate(addEventModel!.dealersModels!.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -640,7 +641,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = addEventModel.dealersModels.where((element) {
+                    dealers = addEventModel!.dealersModels!.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -662,7 +663,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: dealers.length,
+                itemCount: dealers!.length,
                 itemBuilder: (context, index) {
                   return
                       // dealerId == dealers[index].dealerId
@@ -673,19 +674,19 @@ class _FormAddEventState extends State<FormAddEvent> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
+                        Text(dealers![index].dealerName!),
+                        Text('( ${dealers![index].dealerId} )'),
                       ],
                     ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                    value: selectedDealer.contains(dealers![index].dealerName),
                     onChanged: (newValue) {
                       setState(() {
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                        selectedDealer.contains(dealers![index].dealerName)
+                            ? selectedDealer.remove(dealers![index].dealerName)
+                            : selectedDealer.add(dealers![index].dealerName);
 
-                        selectedDealersModels.contains(dealers[index]) ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
+                        selectedDealersModels.contains(dealers![index]) ? selectedDealersModels.remove(dealers![index])
+                            : selectedDealersModels.add(dealers![index]);
 
                         checkedValues[index] = newValue;
                       });
@@ -695,7 +696,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId == dealers[index].dealerId
+                  return dealerId == dealers![index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -767,8 +768,8 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   btnPresssed(int eventStatusId) async {
-    if (_addEventFormKey.currentState.validate()) {
-      _addEventFormKey.currentState.save();
+    if (_addEventFormKey.currentState!.validate()) {
+      _addEventFormKey.currentState!.save();
 
         if (_date == null || _date == 'Select Date') {
         Get.snackbar("", "Select Date",
@@ -781,11 +782,11 @@ class _FormAddEventState extends State<FormAddEvent> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-          String empId = await getEmpId();
+          String? empId = await (getEmpId() as FutureOr<String?>);
 
-          timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+          timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
 
-          List dealersList = List();
+          List dealersList = List.empty(growable: true);
           selectedDealersModels.forEach((e) {
             setState(() {
               dealersList.add({

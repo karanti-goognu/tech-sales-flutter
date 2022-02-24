@@ -364,7 +364,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num =
+                                                        String? num =
                                                             _siteController
                                                                 .sitesListResponse
                                                                 .sitesEntity[

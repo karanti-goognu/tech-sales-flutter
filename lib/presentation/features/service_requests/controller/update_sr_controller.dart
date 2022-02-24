@@ -12,10 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateServiceRequestController extends GetxController {
 
-  List<File> imageList = List<File>();
+  List<File> imageList = List<File>.empty(growable: true);
 
-  String id;
-  ComplaintViewModel complaintViewModel;
+  late String id;
+  ComplaintViewModel? complaintViewModel;
   int option = 1;
   String dropdownValue = 'Select visit sub-types';
 
@@ -26,7 +26,7 @@ class UpdateServiceRequestController extends GetxController {
 
   // List<File> get imageList => _imageList;
 
-   updateImageList(File value) {
+   updateImageList(File? value) {
     if(value!=null) {
       imageList.add(value);
       // print(imageList.length);
@@ -59,7 +59,7 @@ class UpdateServiceRequestController extends GetxController {
 
 
   //*****
-  final _complaintListData = ComplaintViewModel().obs;
+  final Rx<ComplaintViewModel?> _complaintListData = ComplaintViewModel().obs;
 
   get complaintListData => _complaintListData.value;
 
@@ -95,7 +95,7 @@ class UpdateServiceRequestController extends GetxController {
 
 
 
-  UpdateServiceRequestController({@required this.repository})
+  UpdateServiceRequestController({required this.repository})
       : assert(repository != null);
   final _updateRequestData = UpdateSRModel().obs;
   get updateRequestData => _updateRequestData.value;
@@ -108,8 +108,8 @@ class UpdateServiceRequestController extends GetxController {
   }
 
   getAccessKeyAndUpdateRequest(
-      List<File> imageList, UpdateSRModel updateRequestModel) {
-    String userSecurityKey = "";
+      List<File> imageList, UpdateSRModel? updateRequestModel) {
+    String? userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     Future.delayed(
@@ -132,7 +132,7 @@ class UpdateServiceRequestController extends GetxController {
           // } else{
           Get.defaultDialog(
             title: "Message",
-            middleText: value['resp-msg'].toString(),
+            middleText: value!['resp-msg'].toString(),
             barrierDismissible: false,
             // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
 
@@ -152,21 +152,21 @@ class UpdateServiceRequestController extends GetxController {
   }
 
 
-  Future<Map> updateServiceRequest(List<File> imageList, String accessKey,
-      String userSecurityKey, UpdateSRModel updateRequestModel) {
+  Future<Map?> updateServiceRequest(List<File> imageList, String? accessKey,
+      String? userSecurityKey, UpdateSRModel? updateRequestModel) {
     return repository.updateServiceRequest(imageList, accessKey, userSecurityKey, updateRequestModel).whenComplete(() => responseReceived = true);
   }
 
 
   //*****
-  Future getRequestUpdateDetailsData(String accessKey) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future getRequestUpdateDetailsData(String? accessKey) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID, this.id);
+      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID!, this.id);
       update();
     });
 

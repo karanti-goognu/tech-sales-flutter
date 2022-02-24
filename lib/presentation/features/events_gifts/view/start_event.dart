@@ -137,7 +137,7 @@ class _StartEventState extends State<StartEvent> {
   addInfluencerBottomSheetWidget() {
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.3,
+        height: SizeConfig.screenHeight! / 1.3,
         color: Colors.white,
         child: Column(
           children: [
@@ -252,7 +252,7 @@ class _StartEventState extends State<StartEvent> {
             Padding(
               padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
               child: DropdownButtonFormField(
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   setState(() {
                     //requestDepartmentId = value;
                   });
@@ -271,7 +271,7 @@ class _StartEventState extends State<StartEvent> {
                 style: FormFieldStyle.formFieldTextStyle,
                 decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Influencer Type"),
-                validator: (value) =>
+                validator: (dynamic value) =>
                     value == null ? 'Please select Influencer type ' : null,
               ),
             ),
@@ -324,7 +324,7 @@ class _StartEventState extends State<StartEvent> {
                       padding: const EdgeInsets.only(
                           right: 16, left: 16, bottom: 12),
                       child: DropdownButtonFormField(
-                        onChanged: (value) {
+                        onChanged: (dynamic value) {
                           setState(() {
                             //requestDepartmentId = value;
                           });
@@ -343,7 +343,7 @@ class _StartEventState extends State<StartEvent> {
                         style: FormFieldStyle.formFieldTextStyle,
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Influencer Type"),
-                        validator: (value) => value == null
+                        validator: (dynamic value) => value == null
                             ? 'Please select Influencer type '
                             : null,
                       ),

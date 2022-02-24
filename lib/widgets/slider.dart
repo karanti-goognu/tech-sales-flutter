@@ -3,13 +3,13 @@ import 'package:shimmer/shimmer.dart';
 import 'package:vibration/vibration.dart';
 
 class SliderButton extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
   final double radius;
 
   ///Use it to define a height and width of widget.
   final double height;
   final double width;
-  final double buttonSize;
+  final double? buttonSize;
 
   ///Use it to define a color of widget.
   final Color backgroundColor;
@@ -18,7 +18,7 @@ class SliderButton extends StatefulWidget {
   final Color buttonColor;
 
   ///Change it to gave a label on a widget of your choice.
-  final Text label;
+  final Text? label;
 
   ///Gives a alignment to a slider icon.
   final Alignment alignLabel;
@@ -26,8 +26,8 @@ class SliderButton extends StatefulWidget {
   color: Colors.black,
   blurRadius: 4,
   );
-  final Widget icon;
-  final Function action;
+  final Widget? icon;
+  final Function? action;
 
   ///Make it false if you want to deactivate the shimmer effect.
   final bool shimmer;
@@ -45,7 +45,7 @@ class SliderButton extends StatefulWidget {
   final bool disable;
 
   SliderButton({
-    @required this.action,
+    required this.action,
     this.radius = 100,
     this.child,
     this.vibrationFlag = false,
@@ -70,7 +70,7 @@ class SliderButton extends StatefulWidget {
 }
 
 class _SliderButtonState extends State<SliderButton> {
-  bool flag;
+  bool? flag;
 
   @override
   void initState() {
@@ -121,7 +121,7 @@ class _SliderButtonState extends State<SliderButton> {
                         left: (widget.height -
                                 (widget.buttonSize == null
                                     ? widget.height * 0.9
-                                    : widget.buttonSize)) /
+                                    : widget.buttonSize!)) /
                             2,
                       ),
                       child: widget.child ??
@@ -154,11 +154,11 @@ class _SliderButtonState extends State<SliderButton> {
                         if (widget.dismissible) {
                           flag = false;
                         } else {
-                          flag = !flag;
+                          flag = !flag!;
                         }
                       });
 
-                      widget.action();
+                      widget.action!();
                       final hasVibrator =
                           await Vibration.hasVibrator() ?? false;
                       if (widget.vibrationFlag && hasVibrator) {
@@ -177,7 +177,7 @@ class _SliderButtonState extends State<SliderButton> {
                         left: (widget.height -
                                 (widget.buttonSize == null
                                     ? widget.height
-                                    : widget.buttonSize)) /
+                                    : widget.buttonSize!)) /
                             2,
                       ),
                       child: widget.child ??

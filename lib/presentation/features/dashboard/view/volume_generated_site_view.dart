@@ -38,7 +38,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: SizeConfig.screenHeight*.10,
+        toolbarHeight: SizeConfig.screenHeight!*.10,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -318,7 +318,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num =
+                                                        String? num =
                                                             _dashboardController
                                                                 .mtdGeneratedVolumeSiteList
                                                                 .sitesEntity[
@@ -377,7 +377,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
 
   SplashController _splashController = Get.find();
 
-  String printSiteStage(int value) {
+  String printSiteStage(int? value) {
     List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
@@ -390,7 +390,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
     }
   }
 
-  String printProbabilityOfWinning(int value) {
+  String printProbabilityOfWinning(int? value) {
     List<SiteProbabilityWinningEntity> data =
         List<SiteProbabilityWinningEntity>.from(_splashController
             .splashDataModel.siteProbabilityWinningEntity
@@ -404,7 +404,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
     }
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportuityStatus(int? value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));

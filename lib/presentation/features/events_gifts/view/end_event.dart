@@ -10,7 +10,7 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
-  int eventId;
+  int? eventId;
   int fromPage;
   EndEvent(this.eventId, this.fromPage);
 
@@ -19,21 +19,21 @@ class EndEvent extends StatefulWidget {
 }
 
 class _EndEventState extends State<EndEvent> {
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
   AllEventController _eventController = Get.find();
 
-  MwpEndEventModel mwpEndEventModel;
-  List<EventCcommentsList> eventCcommentsList;
-  List<EventDealersModelList> eventDealersModelList;
-  List<EventInfluencerModelsList> eventInfluencerModelsList;
-  bool isVisible = false;
+  MwpEndEventModel? mwpEndEventModel;
+  List<EventCcommentsList>? eventCcommentsList;
+  List<EventDealersModelList>? eventDealersModelList;
+  List<EventInfluencerModelsList>? eventInfluencerModelsList;
+  bool? isVisible = false;
 
   getDetailEventsData() async {
     await _eventController
         .getEndEventDetail(widget.eventId.toString())
         .then((data) {
       setState(() {
-        isVisible = data.showUpdateButton;
+        isVisible = data!.showUpdateButton;
         mwpEndEventModel = data.mwpEndEventModel;
         eventCcommentsList = data.eventCcommentsList;
         eventDealersModelList = data.eventDealersModelList;
@@ -126,21 +126,21 @@ class _EndEventState extends State<EndEvent> {
                       child: Row(
                         children: [
                           Text(
-                            '${mwpEndEventModel.eventDate} | ${mwpEndEventModel.eventTime}',
+                            '${mwpEndEventModel!.eventDate} | ${mwpEndEventModel!.eventTime}',
                             style: TextStyles.mulliBoldBlue,
                           ),
                           ////Changes for update event after end
 
                           Visibility(
-                            visible: isVisible,
+                            visible: isVisible!,
                             //visible: true,
                             child: TextButton(
                                 onPressed: () async {
-                                  Map results = await Navigator.of(context)
+                                  Map? results = await Navigator.of(context)
                                       .push(new MaterialPageRoute(
                                     builder: (BuildContext context) {
                                       return UpdateDlrInf(
-                                          mwpEndEventModel.eventId);
+                                          mwpEndEventModel!.eventId);
                                     },
                                   ));
 
@@ -170,23 +170,23 @@ class _EndEventState extends State<EndEvent> {
                         ],
                       ),
                     ),
-                    displayInfo('Event Type', mwpEndEventModel.eventTypeText),
+                    displayInfo('Event Type', mwpEndEventModel!.eventTypeText),
                     displayInfo(
-                        'Dalmia Influencers', mwpEndEventModel.dalmiaInflCount),
+                        'Dalmia Influencers', mwpEndEventModel!.dalmiaInflCount),
                     displayInfo('Actual Dalmia Influencers',
-                        mwpEndEventModel.actualDalmiaInflCount),
+                        mwpEndEventModel!.actualDalmiaInflCount),
                     displayInfo('Non-Dalmia Influencers',
-                        mwpEndEventModel.nonDalmiaInflCount),
+                        mwpEndEventModel!.nonDalmiaInflCount),
                     displayInfo('Actual Non-Dalmia Influencers',
-                        mwpEndEventModel.actualNonDalmiaInflCount),
+                        mwpEndEventModel!.actualNonDalmiaInflCount),
                     displayInfo('Total Participants',
-                        mwpEndEventModel.totalParticipantsCount),
+                        mwpEndEventModel!.totalParticipantsCount),
                     displayInfo('Actual Total Participants',
-                        mwpEndEventModel.actualTotalParticipantsCount),
+                        mwpEndEventModel!.actualTotalParticipantsCount),
                     // displayInfo('Venue', 'Booked'),
-                    displayInfo('Venue Address', mwpEndEventModel.venueAddress),
+                    displayInfo('Venue Address', mwpEndEventModel!.venueAddress),
                     displayInfo('Actual Venue Address',
-                        mwpEndEventModel.actualVenueAddress),
+                        mwpEndEventModel!.actualVenueAddress),
                     displayChipForDealer(
                         'Dealer(s) Detail',
                         eventDealersModelList != null
@@ -200,17 +200,17 @@ class _EndEventState extends State<EndEvent> {
                                 .endEventModel.eventInfluencerModelsList
                             : []),
                     displayInfo(
-                        'Expected Leads', mwpEndEventModel.expectedLeadsCount),
+                        'Expected Leads', mwpEndEventModel!.expectedLeadsCount),
                     displayInfo(
-                        'Actual Leads', mwpEndEventModel.actualLeadsCount),
+                        'Actual Leads', mwpEndEventModel!.actualLeadsCount),
                     displayInfo('Gift distribution',
-                        mwpEndEventModel.giftDistributionCount),
+                        mwpEndEventModel!.giftDistributionCount),
                     displayInfo('Actual Gift distribution',
-                        mwpEndEventModel.actualGiftDistributionCount),
+                        mwpEndEventModel!.actualGiftDistributionCount),
                     displayInfo(
-                        'Event location', mwpEndEventModel.eventLocation),
+                        'Event location', mwpEndEventModel!.eventLocation),
                     displayInfo('Actual Event location',
-                        mwpEndEventModel.actualEventLocation),
+                        mwpEndEventModel!.actualEventLocation),
                     Card(
                       margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
                       elevation: 0,
@@ -231,7 +231,7 @@ class _EndEventState extends State<EndEvent> {
                           ),
                           children: [
                             (eventCcommentsList != null &&
-                                    eventCcommentsList.length > 0)
+                                    eventCcommentsList!.length > 0)
                                 ? getList(eventCcommentsList)
                                 : Container(
                                     child: Center(
@@ -326,7 +326,7 @@ class _EndEventState extends State<EndEvent> {
     );
   }
 
-  Widget displayChip(String title, List list) {
+  Widget displayChip(String title, List? list) {
     return Padding(
         padding: EdgeInsets.only(
           left: 15.sp,
@@ -392,7 +392,7 @@ class _EndEventState extends State<EndEvent> {
         ));
   }
 
-  Widget displayChipForDealer(String title, List list) {
+  Widget displayChipForDealer(String title, List? list) {
     return Padding(
         padding: EdgeInsets.only(
           left: 15.sp,
@@ -458,7 +458,7 @@ class _EndEventState extends State<EndEvent> {
         ));
   }
 
-  Widget getList(List list) {
+  Widget getList(List? list) {
     //  getSortedData();
     return (list != null && list.length > 0)
         //&& list != null)

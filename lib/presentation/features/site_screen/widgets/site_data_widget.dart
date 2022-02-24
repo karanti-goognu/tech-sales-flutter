@@ -20,8 +20,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SiteDataWidget extends StatefulWidget {
-  int siteId;
-  ViewSiteDataResponse viewSiteDataResponse;
+  int? siteId;
+  ViewSiteDataResponse? viewSiteDataResponse;
   SiteDataWidget({this.siteId, this.viewSiteDataResponse});
 
   SiteDataViewWidgetState createState() => SiteDataViewWidgetState();
@@ -29,16 +29,16 @@ class SiteDataWidget extends StatefulWidget {
 
 class SiteDataViewWidgetState extends State<SiteDataWidget> {
   final _updateFormKey = GlobalKey<FormState>();
-  FocusNode myFocusNode;
+  FocusNode? myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
-  String labelProbabilityText;
-  int labelProbabilityId;
-  ConstructionStageEntity _selectedConstructionType;
-  SiteFloorsEntity _selectedSiteFloor;
-  SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
-  SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
-  SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
+  String? labelProbabilityText;
+  int? labelProbabilityId;
+  ConstructionStageEntity? _selectedConstructionType;
+  SiteFloorsEntity? _selectedSiteFloor;
+  SiteProbabilityWinningEntity? _siteProbabilityWinningEntity;
+  SiteOpportunityStatusEntity? _siteOpportunitStatusEnity;
+  SiteCompetitionStatusEntity? _siteCompetitionStatusEntity;
   List<ImageDetails> _imgDetails = new List.empty(growable: true);
   List<File> _imageList = new List.empty(growable: true);
   var siteBuiltupArea = new TextEditingController();
@@ -63,57 +63,57 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _state = TextEditingController();
   var _district = TextEditingController();
   var _taluk = TextEditingController();
-  var _totalBathroomCount = TextEditingController();
-  var _totalKitchenCount = TextEditingController();
-  Position _currentPosition = new Position();
-  String geoTagType;
-  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntity =
+  TextEditingController? _totalBathroomCount = TextEditingController();
+  TextEditingController? _totalKitchenCount = TextEditingController();
+  Position? _currentPosition = new Position();
+  String? geoTagType;
+  List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity>? constructionStageEntity =
       new List.empty(growable: true);
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity =
+  List<SiteProbabilityWinningEntity>? siteProbabilityWinningEntity =
       new List.empty(growable: true);
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity =
+  List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity =
       new List.empty(growable: true);
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+  List<SiteOpportunityStatusEntity>? siteOpportunityStatusEntity =
       new List.empty(growable: true);
 
   ///site visit
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-  SitesModal sitesModal = new SitesModal();
+  ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
+  SitesModal? sitesModal = new SitesModal();
 
   UpdateDataRequest updateDataRequest = new UpdateDataRequest();
 
   setSiteData() {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
-      sitesModal = viewSiteDataResponse.sitesModal;
-      constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
-      siteBuiltupArea.text = sitesModal.siteBuiltArea;
-      siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
-      _totalKitchenCount.text = sitesModal.kitchenCount != null
-          ? sitesModal.kitchenCount.toString()
+      sitesModal = viewSiteDataResponse!.sitesModal;
+      constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
+      siteBuiltupArea.text = sitesModal!.siteBuiltArea!;
+      siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
+      _totalKitchenCount!.text = sitesModal!.kitchenCount != null
+          ? sitesModal!.kitchenCount.toString()
           : "";
-      _totalBathroomCount.text = sitesModal.bathroomCount != null
-          ? sitesModal.bathroomCount.toString()
+      _totalBathroomCount!.text = sitesModal!.bathroomCount != null
+          ? sitesModal!.bathroomCount.toString()
           : "";
 
-      _siteProductDemo.text = sitesModal.siteProductDemo;
+      _siteProductDemo.text = sitesModal!.siteProductDemo!;
       if (_siteProductDemo.text == 'N') {
         isSwitchedsiteProductDemo = false;
       } else {
         isSwitchedsiteProductDemo = true;
       }
-      _siteProductOralBriefing.text = sitesModal.siteProductOralBriefing;
+      _siteProductOralBriefing.text = sitesModal!.siteProductOralBriefing!;
       if (_siteProductOralBriefing.text == 'N') {
         isSwitchedsiteProductOralBriefing = false;
       } else {
         isSwitchedsiteProductOralBriefing = true;
       }
 
-      _ownerName.text = sitesModal.siteOwnerName;
-      _contactNumber.text = sitesModal.siteOwnerContactNumber;
+      _ownerName.text = sitesModal!.siteOwnerName!;
+      _contactNumber.text = sitesModal!.siteOwnerContactNumber!;
 
-      _siteTotalPt.text = sitesModal.siteTotalSitePotential;
+      _siteTotalPt.text = sitesModal!.siteTotalSitePotential!;
 
       if (_siteTotalPt.text == null || _siteTotalPt.text == "") {
         _siteTotalBags.clear();
@@ -122,7 +122,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
             (double.parse(_siteTotalPt.text) * 20).round().toString();
       }
 
-      _siteTotalBalanceBags.text = sitesModal.totalBalancePotential;
+      _siteTotalBalanceBags.text = sitesModal!.totalBalancePotential!;
       if (_siteTotalBalanceBags.text == null ||
           _siteTotalBalanceBags.text == "") {
         _siteTotalBalancePt.clear();
@@ -131,98 +131,98 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
             (int.parse(_siteTotalBalanceBags.text) / 20).toString();
       }
 
-      _plotNumber.text = sitesModal.sitePlotNumber;
-      _siteAddress.text = sitesModal.siteAddress;
-      _pincode.text = sitesModal.sitePincode;
-      _state.text = sitesModal.siteState;
-      _district.text = sitesModal.siteDistrict;
-      _taluk.text = sitesModal.siteTaluk;
-      _rera.text = sitesModal.siteReraNumber;
-      if (sitesModal.siteDealerName == null ||
-          sitesModal.siteDealerName == "null") {
+      _plotNumber.text = sitesModal!.sitePlotNumber!;
+      _siteAddress.text = sitesModal!.siteAddress!;
+      _pincode.text = sitesModal!.sitePincode!;
+      _state.text = sitesModal!.siteState!;
+      _district.text = sitesModal!.siteDistrict!;
+      _taluk.text = sitesModal!.siteTaluk!;
+      _rera.text = sitesModal!.siteReraNumber!;
+      if (sitesModal!.siteDealerName == null ||
+          sitesModal!.siteDealerName == "null") {
         _dealerName.text = "";
       } else {
-        _dealerName.text = sitesModal.siteDealerName;
+        _dealerName.text = sitesModal!.siteDealerName!;
       }
 
-      if (sitesModal.siteSubDealerName == null ||
-          sitesModal.siteSubDealerName == "null") {
+      if (sitesModal!.siteSubDealerName == null ||
+          sitesModal!.siteSubDealerName == "null") {
         _subDealerName.text = "";
       } else {
-        _subDealerName.text = sitesModal.siteSubDealerName;
+        _subDealerName.text = sitesModal!.siteSubDealerName!;
       }
 
-      _so.text = sitesModal.siteSoname;
-      geoTagType = sitesModal.siteGeotagType;
+      _so.text = sitesModal!.siteSoname!;
+      geoTagType = sitesModal!.siteGeotagType;
 
       //   print(sitesModal.siteGeotagLatitude);
-      if (sitesModal.siteGeotagLatitude != null &&
-          sitesModal.siteGeotagLongitude != null &&
-          sitesModal.siteGeotagLatitude != "null" &&
-          sitesModal.siteGeotagLongitude != "null" &&
-          sitesModal.siteGeotagLatitude != "" &&
-          sitesModal.siteGeotagLongitude != "") {
+      if (sitesModal!.siteGeotagLatitude != null &&
+          sitesModal!.siteGeotagLongitude != null &&
+          sitesModal!.siteGeotagLatitude != "null" &&
+          sitesModal!.siteGeotagLongitude != "null" &&
+          sitesModal!.siteGeotagLatitude != "" &&
+          sitesModal!.siteGeotagLongitude != "") {
         _currentPosition = new Position(
-            latitude: double.parse(sitesModal.siteGeotagLatitude),
-            longitude: double.parse(sitesModal.siteGeotagLongitude));
+            latitude: double.parse(sitesModal!.siteGeotagLatitude!),
+            longitude: double.parse(sitesModal!.siteGeotagLongitude!));
       }
 
-      constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
+      constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
 
-      for (int i = 0; i < constructionStageEntity.length; i++) {
-        if (viewSiteDataResponse.sitesModal.siteConstructionId.toString() ==
-            constructionStageEntity[i].id.toString()) {
-          _selectedConstructionType = constructionStageEntity[i];
+      for (int i = 0; i < constructionStageEntity!.length; i++) {
+        if (viewSiteDataResponse!.sitesModal!.siteConstructionId.toString() ==
+            constructionStageEntity![i].id.toString()) {
+          _selectedConstructionType = constructionStageEntity![i];
         }
       }
 
       siteProbabilityWinningEntity =
-          viewSiteDataResponse.siteProbabilityWinningEntity;
-      if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId != null) {
-        for (int i = 0; i < siteProbabilityWinningEntity.length; i++) {
-          if (viewSiteDataResponse.sitesModal.siteProbabilityWinningId
+          viewSiteDataResponse!.siteProbabilityWinningEntity;
+      if (viewSiteDataResponse!.sitesModal!.siteProbabilityWinningId != null) {
+        for (int i = 0; i < siteProbabilityWinningEntity!.length; i++) {
+          if (viewSiteDataResponse!.sitesModal!.siteProbabilityWinningId
                   .toString() ==
-              siteProbabilityWinningEntity[i].id.toString()) {
-            labelProbabilityId = siteProbabilityWinningEntity[i].id;
-            _siteProbabilityWinningEntity = siteProbabilityWinningEntity[i];
+              siteProbabilityWinningEntity![i].id.toString()) {
+            labelProbabilityId = siteProbabilityWinningEntity![i].id;
+            _siteProbabilityWinningEntity = siteProbabilityWinningEntity![i];
           }
         }
       } else {
-        _siteProbabilityWinningEntity = siteProbabilityWinningEntity[0];
+        _siteProbabilityWinningEntity = siteProbabilityWinningEntity![0];
       }
 
       siteCompetitionStatusEntity =
-          viewSiteDataResponse.siteCompetitionStatusEntity;
-      if (viewSiteDataResponse.sitesModal.siteCompetitionId != null) {
-        for (int i = 0; i < siteCompetitionStatusEntity.length; i++) {
-          if (viewSiteDataResponse.sitesModal.siteCompetitionId.toString() ==
-              siteCompetitionStatusEntity[i].id.toString()) {
-            _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
+          viewSiteDataResponse!.siteCompetitionStatusEntity;
+      if (viewSiteDataResponse!.sitesModal!.siteCompetitionId != null) {
+        for (int i = 0; i < siteCompetitionStatusEntity!.length; i++) {
+          if (viewSiteDataResponse!.sitesModal!.siteCompetitionId.toString() ==
+              siteCompetitionStatusEntity![i].id.toString()) {
+            _siteCompetitionStatusEntity = siteCompetitionStatusEntity![i];
           }
         }
       } else {
-        _siteCompetitionStatusEntity = siteCompetitionStatusEntity[0];
+        _siteCompetitionStatusEntity = siteCompetitionStatusEntity![0];
       }
 
       siteOpportunityStatusEntity =
-          viewSiteDataResponse.siteOpportunityStatusEntity;
-      if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
-        for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
-          if (viewSiteDataResponse.sitesModal.siteOppertunityId.toString() ==
-              siteOpportunityStatusEntity[i].id.toString()) {
-            _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+          viewSiteDataResponse!.siteOpportunityStatusEntity;
+      if (viewSiteDataResponse!.sitesModal!.siteOppertunityId != null) {
+        for (int i = 0; i < siteOpportunityStatusEntity!.length; i++) {
+          if (viewSiteDataResponse!.sitesModal!.siteOppertunityId.toString() ==
+              siteOpportunityStatusEntity![i].id.toString()) {
+            _siteOpportunitStatusEnity = siteOpportunityStatusEntity![i];
           }
         }
       } else {
-        _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
+        _siteOpportunitStatusEnity = siteOpportunityStatusEntity![0];
       }
 
-      if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
-          viewSiteDataResponse.sitesModal.noOfFloors != 0) {
-        for (int i = 0; i < siteFloorsEntity.length; i++) {
-          if (viewSiteDataResponse.sitesModal.noOfFloors.toString() ==
-              siteFloorsEntity[i].id.toString()) {
-            _selectedSiteFloor = siteFloorsEntity[i];
+      if (viewSiteDataResponse!.sitesModal!.noOfFloors != null ||
+          viewSiteDataResponse!.sitesModal!.noOfFloors != 0) {
+        for (int i = 0; i < siteFloorsEntity!.length; i++) {
+          if (viewSiteDataResponse!.sitesModal!.noOfFloors.toString() ==
+              siteFloorsEntity![i].id.toString()) {
+            _selectedSiteFloor = siteFloorsEntity![i];
           }
         }
       }
@@ -244,20 +244,20 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           _district.text,
           _taluk.text,
           _rera.text,
-          sitesModal.siteDealerId,
-          sitesModal.subdealerId,
+          sitesModal!.siteDealerId,
+          sitesModal!.subdealerId,
           _so.text,
-          sitesModal.assignedTo,
-          sitesModal.siteStatusId.toString(),
-          sitesModal.siteTotalSitePotential.toString(),
+          sitesModal!.assignedTo,
+          sitesModal!.siteStatusId.toString(),
+          sitesModal!.siteTotalSitePotential.toString(),
           geoTagType,
-          _currentPosition.latitude,
-          _currentPosition.longitude,
-          sitesModal.siteCreationDate,
+          _currentPosition!.latitude,
+          _currentPosition!.longitude,
+          sitesModal!.siteCreationDate,
           "TRADE");
 
       UpdatedValues.setSiteInfluencerEntity(
-          viewSiteDataResponse.siteInfluencerEntity);
+          viewSiteDataResponse!.siteInfluencerEntity);
 
       if (UpdatedValues.getSiteConstructionId() != null) {
         _selectedConstructionType = null;
@@ -274,7 +274,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       }
 
       if (UpdatedValues.getSiteBuiltArea() != null) {
-        siteBuiltupArea.text = UpdatedValues.getSiteBuiltArea();
+        siteBuiltupArea.text = UpdatedValues.getSiteBuiltArea()!;
       } else {
         UpdatedValues.setSiteBuiltArea(siteBuiltupArea.text);
       }
@@ -292,13 +292,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       }
 
       if (UpdatedValues.getSiteTotalPotential() != null) {
-        _siteTotalBags.text = UpdatedValues.getSiteTotalPotential();
+        _siteTotalBags.text = UpdatedValues.getSiteTotalPotential()!;
       } else {
         UpdatedValues.setSiteTotalPotential(_siteTotalBags.text);
       }
 
       if (UpdatedValues.getTotalBalancePotential() != null) {
-        _siteTotalBalanceBags.text = UpdatedValues.getTotalBalancePotential();
+        _siteTotalBalanceBags.text = UpdatedValues.getTotalBalancePotential()!;
       } else {
         UpdatedValues.setTotalBalancePotential(_siteTotalBalanceBags.text);
       }
@@ -356,10 +356,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
                           DropdownButtonFormField<ConstructionStageEntity>(
                             value: _selectedConstructionType,
-                            items: constructionStageEntity
+                            items: constructionStageEntity!
                                 .map((label) => DropdownMenuItem(
                                       child: Text(
-                                        label.constructionStageText,
+                                        label.constructionStageText!,
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: ColorConstants
@@ -375,7 +375,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 UpdatedValues.setSiteConstructionId(
                                     _selectedConstructionType);
                               });
-                              print(_selectedConstructionType.id);
+                              print(_selectedConstructionType!.id);
                             },
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
@@ -390,7 +390,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 });
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter Site Built-Up Area (sqft)';
                                 }
                                 return null;
@@ -486,10 +486,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   child:
                                       DropdownButtonFormField<SiteFloorsEntity>(
                                     value: _selectedSiteFloor,
-                                    items: siteFloorsEntity
+                                    items: siteFloorsEntity!
                                         .map((label) => DropdownMenuItem(
                                               child: Text(
-                                                label.siteFloorTxt,
+                                                label.siteFloorTxt!,
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     color: ColorConstants
@@ -732,7 +732,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Please enter Bags ';
                                       }
 
@@ -775,7 +775,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       });
                                     },
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Please enter MT ';
                                       }
 
@@ -841,7 +841,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Please enter Bags ';
                                       }
 
@@ -885,7 +885,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       });
                                     },
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Please enter MT ';
                                       }
 
@@ -913,8 +913,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                           DropdownButtonFormField<SiteProbabilityWinningEntity>(
                             value: _siteProbabilityWinningEntity,
-                            items: viewSiteDataResponse.sitesModal != null &&
-                                    viewSiteDataResponse.sitesModal
+                            items: viewSiteDataResponse!.sitesModal != null &&
+                                    viewSiteDataResponse!.sitesModal!
                                             .siteProbabilityWinningId !=
                                         null
                                 ? [_siteProbabilityWinningEntity]
@@ -922,7 +922,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.siteProbabilityStatus,
+                                                : label.siteProbabilityStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -932,12 +932,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           value: label,
                                         ))
                                     .toList()
-                                : siteProbabilityWinningEntity
+                                : siteProbabilityWinningEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.siteProbabilityStatus,
+                                                : label.siteProbabilityStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -950,7 +950,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             onChanged: (value) {
                               setState(() {
                                 labelProbabilityText =
-                                    value.siteProbabilityStatus;
+                                    value!.siteProbabilityStatus;
                                 labelProbabilityId = value.id;
                                 _siteProbabilityWinningEntity = value;
                                 UpdatedValues.setSiteProbabilityWinningId(
@@ -978,16 +978,16 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
                           DropdownButtonFormField<SiteCompetitionStatusEntity>(
                             value: _siteCompetitionStatusEntity,
-                            items: viewSiteDataResponse.sitesModal != null &&
-                                    viewSiteDataResponse
-                                            .sitesModal.siteCompetitionId !=
+                            items: viewSiteDataResponse!.sitesModal != null &&
+                                    viewSiteDataResponse!
+                                            .sitesModal!.siteCompetitionId !=
                                         null
                                 ? [_siteCompetitionStatusEntity]
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.competitionStatus,
+                                                : label.competitionStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -997,12 +997,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           value: label,
                                         ))
                                     .toList()
-                                : siteCompetitionStatusEntity
+                                : siteCompetitionStatusEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.competitionStatus,
+                                                : label.competitionStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -1041,16 +1041,16 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
                           DropdownButtonFormField<SiteOpportunityStatusEntity>(
                             value: _siteOpportunitStatusEnity,
-                            items: viewSiteDataResponse.sitesModal != null &&
-                                    viewSiteDataResponse
-                                            .sitesModal.siteOppertunityId !=
+                            items: viewSiteDataResponse!.sitesModal != null &&
+                                    viewSiteDataResponse!
+                                            .sitesModal!.siteOppertunityId !=
                                         null
                                 ? [_siteOpportunitStatusEnity]
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.opportunityStatus,
+                                                : label.opportunityStatus!,
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: ColorConstants
@@ -1060,12 +1060,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           value: label,
                                         ))
                                     .toList()
-                                : siteOpportunityStatusEntity
+                                : siteOpportunityStatusEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
                                             label == null
                                                 ? ""
-                                                : label.opportunityStatus,
+                                                : label.opportunityStatus!,
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: ColorConstants
@@ -1090,7 +1090,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _ownerName,
                             validator: (value) {
-                              if (value.isEmpty ||
+                              if (value!.isEmpty ||
                                   value.length <= 0 ||
                                   value == null ||
                                   value == " " ||
@@ -1128,7 +1128,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _contactNumber,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter contact number ';
                               }
                               if (value.length <= 9) {
@@ -1254,7 +1254,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    var data = [];
+                                    List<dynamic>? data = [];
                                     data = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -1266,7 +1266,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       UpdatedValues.setSiteGeotag(geoTagType);
                                     });
                                     _currentPosition = new Position(
-                                        latitude: data[0], longitude: data[1]);
+                                        latitude: data![0], longitude: data[1]);
                                     _getAddressFromLatLng();
                                   }),
                             ],
@@ -1297,7 +1297,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                               controller: _siteAddress,
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter Address ';
                                 }
                                 return null;
@@ -1318,7 +1318,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             //initialValue: _pincode.toString(),
                             controller: _pincode,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter Pincode ';
                               }
                               // if (value.length <= 6) {
@@ -1359,7 +1359,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _state,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter State ';
                               }
 
@@ -1393,7 +1393,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _district,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter District ';
                               }
 
@@ -1428,7 +1428,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _taluk,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter Taluk ';
                               }
 
@@ -1673,7 +1673,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  if (_updateFormKey.currentState.validate()) {
+                                  if (_updateFormKey.currentState!.validate()) {
                                     UpdatedValues updateRequest =
                                         new UpdatedValues();
                                     updateRequest.updateRequest(context);
@@ -1744,8 +1744,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSitePincode(_pincode.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
-        UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
-        UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
+        UpdatedValues.setSiteGeotagLat(_currentPosition!.latitude);
+        UpdatedValues.setSiteGeotagLong(_currentPosition!.longitude);
       });
     }
   }
@@ -1753,22 +1753,22 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
+          _currentPosition!.latitude, _currentPosition!.longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
-            place.name + "," + place.thoroughfare + "," + place.subLocality;
-        _district.text = place.subAdministrativeArea;
-        _state.text = place.administrativeArea;
-        _pincode.text = place.postalCode;
-        _taluk.text = place.locality;
+            place.name! + "," + place.thoroughfare! + "," + place.subLocality!;
+        _district.text = place.subAdministrativeArea!;
+        _state.text = place.administrativeArea!;
+        _pincode.text = place.postalCode!;
+        _taluk.text = place.locality!;
         UpdatedValues.setSiteAddress(_siteAddress.text);
         UpdatedValues.setSiteDistrict(_district.text);
         UpdatedValues.setSiteState(_state.text);
         UpdatedValues.setSitePincode(_pincode.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
-        UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
-        UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
+        UpdatedValues.setSiteGeotagLat(_currentPosition!.latitude);
+        UpdatedValues.setSiteGeotagLong(_currentPosition!.longitude);
         //txt.text = place.postalCode;
 
         print(
@@ -1782,7 +1782,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromCamera() async {
     ImagePicker _picker = ImagePicker();
-    XFile image =
+    XFile? image =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
@@ -1800,7 +1800,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromGallery() async {
     ImagePicker _picker = ImagePicker();
-    XFile image =
+    XFile? image =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {

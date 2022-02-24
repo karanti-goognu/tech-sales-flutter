@@ -64,7 +64,7 @@ String  encryptString(String plainishText, String encryptionKey) {
     );
 
   var plainBytes = (utf8.encode(plainText));
-  var cipherText = cipher.process(plainBytes);
+  var cipherText = cipher.process(plainBytes as Uint8List?);
 // print(" Dhawan "+base64.encode(cipherText) + "~" + base64.encode(params));
   return (base64.encode(cipherText) + "~" + base64.encode(params));
 }
@@ -126,7 +126,7 @@ Tuple2<Uint8List, Uint8List> deriveKeyAndIV(String passphrase, Uint8List salt) {
     else
       preHash = Uint8List.fromList(password + salt);
 
-    currentHash = md5.convert(preHash).bytes;
+    currentHash = md5.convert(preHash).bytes as Uint8List;
     concatenatedHashes = Uint8List.fromList(concatenatedHashes + currentHash);
     if (concatenatedHashes.length >= 48) enoughBytesForKey = true;
   }

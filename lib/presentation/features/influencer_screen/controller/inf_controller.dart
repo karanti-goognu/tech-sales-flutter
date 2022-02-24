@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerListModel.dart';
@@ -21,13 +21,13 @@ class InfController extends GetxController {
 
   final InfRepository repository;
 
-  InfController({@required this.repository})
+  InfController({required this.repository})
       : assert(repository != null);
 
 
-  final _infResponse = InfluencerTypeModel().obs;
-  final _distResponse = StateDistrictListModel().obs;
-  final _infListResponse = InfluencerListModel().obs;
+  final Rx<InfluencerTypeModel?> _infResponse = InfluencerTypeModel().obs;
+  final Rx<StateDistrictListModel?> _distResponse = StateDistrictListModel().obs;
+  final Rx<InfluencerListModel?> _infListResponse = InfluencerListModel().obs;
 
 
 
@@ -60,47 +60,47 @@ class InfController extends GetxController {
   set mobileNumber(value) => this._mobileNumber.value = value;
   set ditrictName(value) => this._ditrictName.value = value;
 
-  Future<String> getAccessKey() {
-    return repository.getAccessKey();
+  Future<String?> getAccessKey() {
+    return repository.getAccessKey().then((value) => value as String?);
   }
 
 
-  Future<InfluencerTypeModel> getInfType() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<InfluencerTypeModel?> getInfType() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       infResponse =
-      await repository.getInfTypeData(accessKey, userSecurityKey, empID);
+      await repository.getInfTypeData(accessKey, userSecurityKey, empID!);
     });
     return infResponse;
   }
 
-  Future<StateDistrictListModel> getDistList() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<StateDistrictListModel?> getDistList() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       distResponse =
-      await repository.getDistList(accessKey, userSecurityKey, empID);
+      await repository.getDistList(accessKey, userSecurityKey, empID!);
     });
     return distResponse;
   }
 
-  Future<InfluencerDetailModel> getInfData(String contact) async {
-    InfluencerDetailModel _infDetailModel;
+  Future<InfluencerDetailModel?> getInfData(String contact) async {
+    InfluencerDetailModel? _infDetailModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -111,28 +111,28 @@ class InfController extends GetxController {
 
   getAccessKeyAndSaveInfluencer(
       InfluencerRequestModel influencerRequestModel, bool status ) {
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     _prefs.then((SharedPreferences prefs) async {
-      String accessKey = await repository.getAccessKey();
+      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       await repository.saveInfluencerForm(accessKey, userSecurityKey, influencerRequestModel, status)
           .then((value) {
         //Get.back();
-        if (value.response.respCode == 'INF2001') {
+        if (value!.response!.respCode == 'INF2001') {
           Get.dialog(
-              CustomDialogs().showDialogSubmitInfluencer(value.response.respMsg.toString()),
+              CustomDialogs().showDialogSubmitInfluencer(value.response!.respMsg.toString()),
               barrierDismissible: false);
-        }else if (value.response.respCode == 'INF2002') {
+        }else if (value.response!.respCode == 'INF2002') {
           Get.dialog(
-              CustomDialogs().showDialogSubmitInfluencer(value.response.respMsg.toString()),
+              CustomDialogs().showDialogSubmitInfluencer(value.response!.respMsg.toString()),
               barrierDismissible: false);
         }
         else {
           // Get.back();
           Get.dialog(
-              CustomDialogs().messageDialogMWP(value.response.respMsg.toString()),
+              CustomDialogs().messageDialogMWP(value.response!.respMsg.toString()),
               barrierDismissible: false);
         }
       });
@@ -140,11 +140,11 @@ class InfController extends GetxController {
   }
 
 
-  Future<InfluencerListModel> getInfluencerList() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<InfluencerListModel?> getInfluencerList() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -177,14 +177,14 @@ class InfController extends GetxController {
   }
 
 
-  Future<InfluencerDetailDataModel> getInfDetailData(String membershipId) async {
-    InfluencerDetailDataModel _influencerDetailDataModel;
+  Future<InfluencerDetailDataModel?> getInfDetailData(String membershipId) async {
+    InfluencerDetailDataModel? _influencerDetailDataModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -194,9 +194,9 @@ class InfController extends GetxController {
   }
 
   Future infSearch(String searchText) async{
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -207,11 +207,11 @@ class InfController extends GetxController {
   }
 
 
-  Future<InfluencerResponseModel>getAccessKeyAndSaveNewInfluencer(InfluencerRequestModel influencerRequestModel, bool status) async{
-    InfluencerResponseModel influencerResponseModel;
-    String userSecurityKey = "";
+  Future<InfluencerResponseModel?>getAccessKeyAndSaveNewInfluencer(InfluencerRequestModel influencerRequestModel, bool status) async{
+    InfluencerResponseModel? influencerResponseModel;
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       influencerResponseModel = await repository.saveNewInfluencer(

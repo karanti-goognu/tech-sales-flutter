@@ -4,14 +4,14 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/provider/mwp_p
 
 class MyRepositoryApp{
 
-  final MyApiClient apiClient;
+  final MyApiClient? apiClient;
   MyRepositoryApp({this.apiClient});
 
- Future<TargetVsActualModel> getTargetVsActualData(String accessKey, String userSecretKey,String empID) async{
-   return apiClient.getTargetVsActualData(accessKey, userSecretKey,empID);
+ Future<TargetVsActualModel?> getTargetVsActualData(String accessKey, String? userSecretKey,String empID) async{
+   return apiClient!.getTargetVsActualData(accessKey, userSecretKey,empID);
  }
 
  Future<AccessKeyModel> getAccessKey(){
-   return apiClient.getAccessKey();
+   return apiClient!.getAccessKey();
  }
 }

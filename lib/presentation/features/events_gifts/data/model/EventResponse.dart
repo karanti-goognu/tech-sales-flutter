@@ -1,6 +1,6 @@
 class EventResponse{
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
 
 
   EventResponse({this.respCode, this.respMsg});

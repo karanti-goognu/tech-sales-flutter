@@ -1,16 +1,16 @@
 class MwpVisitModelUpdate {
-  int id;
-  String visitDate;
-  String visitType;
-  String visitStartTime;
-  double visitStartLat;
-  double visitStartLong;
-  String visitEndTime;
-  String nextVisitDate;
-  double visitEndLat;
-  double visitEndLong;
-  String visitOutcomes;
-  String remark;
+  int? id;
+  String? visitDate;
+  String? visitType;
+  String? visitStartTime;
+  double? visitStartLat;
+  double? visitStartLong;
+  String? visitEndTime;
+  String? nextVisitDate;
+  double? visitEndLat;
+  double? visitEndLong;
+  String? visitOutcomes;
+  String? remark;
 
 
 

@@ -1,7 +1,7 @@
 class DashboardMtdConvertedVolumeList {
-  String respCode;
-  String respMsg;
-  List<VolumeEntity> volumeEntity;
+  String? respCode;
+  String? respMsg;
+  List<VolumeEntity>? volumeEntity;
 
   DashboardMtdConvertedVolumeList(
       {this.respCode, this.respMsg, this.volumeEntity});
@@ -10,9 +10,9 @@ class DashboardMtdConvertedVolumeList {
     respCode = json['resp_code'];
     respMsg = json['resp_msg'];
     if (json['volume_entity'] != null) {
-      volumeEntity = new List<VolumeEntity>();
+      volumeEntity = new List<VolumeEntity>.empty(growable: true);
       json['volume_entity'].forEach((v) {
-        volumeEntity.add(new VolumeEntity.fromJson(v));
+        volumeEntity!.add(new VolumeEntity.fromJson(v));
       });
     }
   }
@@ -22,21 +22,21 @@ class DashboardMtdConvertedVolumeList {
     data['resp_code'] = this.respCode;
     data['resp_msg'] = this.respMsg;
     if (this.volumeEntity != null) {
-      data['volume_entity'] = this.volumeEntity.map((v) => v.toJson()).toList();
+      data['volume_entity'] = this.volumeEntity!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class VolumeEntity {
-  int brandId;
-  String brandName;
-  int constructionStageId;
-  String constructionStageText;
-  String productName;
-  int siteId;
-  String supplyDate;
-  String supplyQty;
+  int? brandId;
+  String? brandName;
+  int? constructionStageId;
+  String? constructionStageText;
+  String? productName;
+  int? siteId;
+  String? supplyDate;
+  String? supplyQty;
 
   VolumeEntity(
       {this.brandId,

@@ -800,7 +800,7 @@ class CustomDialogs {
   }
 
   Widget showExistingLeadDialog(String message, BuildContext context,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+      SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -906,7 +906,7 @@ class CustomDialogs {
   }
 
   Widget showExistingTSODialog(String respMsg, BuildContext context,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+      SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -966,7 +966,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showCommentDialog(String respMsg, BuildContext context, int eventId) {
+  Widget showCommentDialog(String respMsg, BuildContext context, int? eventId) {
     var _commentController = TextEditingController();
     return AlertDialog(
       content: SingleChildScrollView(
@@ -985,7 +985,7 @@ class CustomDialogs {
             TextFormField(
               controller: _commentController,
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'Please enter Comment ';
                 }
 
@@ -1065,7 +1065,7 @@ class CustomDialogs {
   }
 
   Widget showCommentConfirmDialog(
-      String message, int eventId, String eventComment) {
+      String message, int? eventId, String eventComment) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1114,7 +1114,7 @@ class CustomDialogs {
     );
   }
 
-  _getCurrentLocation(int eventId, String eventComment) async {
+  _getCurrentLocation(int? eventId, String eventComment) async {
     AllEventController _eventController = Get.find();
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -1133,12 +1133,12 @@ class CustomDialogs {
             .submitEndEventDetail(eventId, eventComment, currentDateString,
                 position.latitude, position.longitude)
             .then((value) => {
-                  if (value.respCode == "DM1002")
+                  if (value!.respCode == "DM1002")
                     {
                       // Get.toNamed(Routes.END_EVENT),
                       Get.dialog(
                           CustomDialogs()
-                              .showMessage1(value.respMsg, 0, eventId),
+                              .showMessage1(value.respMsg!, 0, eventId),
                           barrierDismissible: false)
                     }
                   else
@@ -1146,7 +1146,7 @@ class CustomDialogs {
                       Get.back(),
                       Get.dialog(
                           CustomDialogs()
-                              .showMessage1(value.respMsg, 1, eventId),
+                              .showMessage1(value.respMsg!, 1, eventId),
                           barrierDismissible: false)
                     }
                 });
@@ -1158,7 +1158,7 @@ class CustomDialogs {
     }
   }
 
-  Widget showMessage1(String message, int from, int eventId) {
+  Widget showMessage1(String message, int from, int? eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1246,7 +1246,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appUpdateDialog(String message, String appId, String platform) {
+  Widget appUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1309,7 +1309,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appForceUpdateDialog(String message, String appId, String platform) {
+  Widget appForceUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1450,7 +1450,7 @@ class CustomDialogs {
   }
 
 
-  Widget showCancelEventDialog(int eventId,String heading, String message) {
+  Widget showCancelEventDialog(int? eventId,String heading, String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1566,13 +1566,13 @@ class CustomDialogs {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: _kittyBagsListModel.response.kittyPointsList.length,
+                itemCount: _kittyBagsListModel.response!.kittyPointsList!.length,
                 itemBuilder:(context, index) {
                   return Row(
                     children: [
                       Expanded(
                         child: Text(
-                          _kittyBagsListModel.response.kittyPointsList[index].productName,
+                          _kittyBagsListModel.response!.kittyPointsList![index].productName!,
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,
@@ -1583,7 +1583,7 @@ class CustomDialogs {
                       ),
                       Expanded(
                         child: Text(
-                          '${_kittyBagsListModel.response.reservePoolList[index].kittyBags}',
+                          '${_kittyBagsListModel.response!.reservePoolList![index].kittyBags}',
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,
@@ -1594,7 +1594,7 @@ class CustomDialogs {
                       ),
                       Expanded(
                         child: Text(
-                          '${_kittyBagsListModel.response.kittyPointsList[index].kittyBags}',
+                          '${_kittyBagsListModel.response!.kittyPointsList![index].kittyBags}',
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,

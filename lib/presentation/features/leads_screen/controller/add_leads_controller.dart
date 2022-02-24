@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -16,8 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 class AddLeadsController extends GetxController {
 
-  List<File> imageList ;
-  List<ListLeadImage> selectedImageNameList;
+  List<File>? imageList ;
+  late List<ListLeadImage> selectedImageNameList;
   @override
   void onInit() {
     super.onInit();
@@ -25,9 +26,9 @@ class AddLeadsController extends GetxController {
     selectedImageNameList = [];
   }
 
-  updateImageList(File value, int imageStatus) {
+  updateImageList(File? value, int imageStatus) {
     if(value!=null) {
-      imageList.add(value);
+      imageList!.add(value);
       String imageName=value.path.split("/").last;
       selectedImageNameList.add(ListLeadImage(photoName: imageName,imageFilePath: value,
           imageStatus: imageStatus));
@@ -37,7 +38,7 @@ class AddLeadsController extends GetxController {
 
   updateImageAfterDelete(int index) {
     if(index!=null && index>=0) {
-      imageList.removeAt(index);
+      imageList!.removeAt(index);
       selectedImageNameList.removeAt(index);
       update();
     }
@@ -48,13 +49,13 @@ class AddLeadsController extends GetxController {
 
   @override
   void onClose(){
-    imageList.clear();
+    imageList!.clear();
     super.dispose();
   }
 
   final MyRepositoryLeads repository;
 
-  AddLeadsController({@required this.repository}) : assert(repository != null);
+  AddLeadsController({required this.repository}) : assert(repository != null);
   final _phoneNumber = "8860080067".obs;
 
   get phoneNumber => this._phoneNumber.value;
@@ -80,10 +81,10 @@ class AddLeadsController extends GetxController {
   set addLeadsInitialDataResponse(value) =>
       this._addLeadsInitialDataResponse.value = value;
 
-  getAddLeadsData(String accessKey) async {
+  getAddLeadsData(String? accessKey) async {
     //debugPrint('Access Key Response :: ');
-    String userSecurityKey = "";
-    String empID = "";
+    String? userSecurityKey = "";
+    String? empID = "";
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
@@ -98,7 +99,7 @@ class AddLeadsController extends GetxController {
 
   getInflDetailsData(String accessKey) async {
     //debugPrint('Access Key Response :: ');
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     InfluencerDetail influencerDetail = new InfluencerDetail();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
@@ -125,7 +126,7 @@ class AddLeadsController extends GetxController {
   }
 
   getAccessKeyAndSaveLead(SaveLeadRequestModel saveLeadRequestModel,
-      List<File> imageList, BuildContext context) {
+      List<File?> imageList, BuildContext context) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -139,9 +140,9 @@ class AddLeadsController extends GetxController {
     });
   }
 
-  saveLeadsData(SaveLeadRequestModel saveLeadRequestModel, List<File> imageList,
+  saveLeadsData(SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList,
       BuildContext context) async {
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -153,8 +154,8 @@ class AddLeadsController extends GetxController {
   }
 
    getLeadData(String accessKey, int leadId) async {
-     String userSecurityKey = "";
-    String empID = "";
+     String? userSecurityKey = "";
+    String? empID = "";
     ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
@@ -165,11 +166,11 @@ class AddLeadsController extends GetxController {
     return viewLeadDataResponse;
   }
 
-  Future<ViewLeadDataResponse>getLeadDataNew(int leadId) async {
-    ViewLeadDataResponse viewLeadDataResponse;
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKeyNew();
+  Future<ViewLeadDataResponse?>getLeadDataNew(int? leadId) async {
+    ViewLeadDataResponse? viewLeadDataResponse;
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -179,8 +180,8 @@ class AddLeadsController extends GetxController {
     return viewLeadDataResponse;
   }
 
-  void updateLeadData(var updateRequestModel, List<File> imageList,
-      BuildContext context, int leadId,int from) {
+  void updateLeadData(var updateRequestModel, List<File?> imageList,
+      BuildContext context, int? leadId,int from) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -192,8 +193,8 @@ class AddLeadsController extends GetxController {
   }
 
   Future<void> updateLeadDataInBackend(var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId,int from) async {
-    String userSecurityKey = "";
+      List<File?> imageList, BuildContext context, int? leadId,int from) async {
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -203,20 +204,20 @@ class AddLeadsController extends GetxController {
     });
   }
 
-  Future<InfluencerDetailModel> getInfNewData(String accessKey) async {
-    InfluencerDetailModel _infDetailModel;
-    InfluencerModel _influencerModel;
+  Future<InfluencerDetailModel?> getInfNewData(String? accessKey) async {
+    InfluencerDetailModel? _infDetailModel;
+    InfluencerModel? _influencerModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     // String accessKey = await repository.getAccessKey();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       _infDetailModel = await repository.getInflNewDetailsData(accessKey, userSecurityKey, this.phoneNumber);
-      _influencerModel = _infDetailModel.influencerModel;
+      _influencerModel = _infDetailModel!.influencerModel;
     });
     return _infDetailModel;
   }

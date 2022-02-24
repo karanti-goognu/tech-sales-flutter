@@ -20,18 +20,18 @@ class ServiceRequests extends StatefulWidget {
 }
 
 class _ServiceRequestsState extends State<ServiceRequests> {
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
   bool isVisible = true;
   List<Text> tabs = [
     Text('Resolution Status'),
     Text('Severity'),
     Text('Type of Request'),
   ];
-  TabController tabController;
+  TabController? tabController;
 
-  ServiceRequestComplaintListModel serviceRequestComplaintListModel;
+  ServiceRequestComplaintListModel? serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
-  int totalFilters;
+  int? totalFilters;
 
   getSRListData() async {
     // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -46,8 +46,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   }
 
   _scrollListener() async {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       // print('offset old value ${eventController.offset}');
       eventController.offset += 10;
       // print('offset new value ${eventController.offset}');
@@ -243,19 +243,19 @@ class _ServiceRequestsState extends State<ServiceRequests> {
             SizedBox(
               height: 5,
             ),
-            serviceRequestComplaintListModel.srComplaintListModal != null
+            serviceRequestComplaintListModel!.srComplaintListModal != null
                 ? Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                  itemCount: serviceRequestComplaintListModel
-                      .srComplaintListModal.length,
+                  itemCount: serviceRequestComplaintListModel!
+                      .srComplaintListModal!.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
                         Get.to(
                           RequestUpdation(
-                              id: serviceRequestComplaintListModel
-                                  .srComplaintListModal[index]
+                              id: serviceRequestComplaintListModel!
+                                  .srComplaintListModal![index]
                                   .srComplaintId),
                           transition: Transition.rightToLeft,
                           binding: SRBinding(),
@@ -271,8 +271,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           decoration: BoxDecoration(
                             border: Border(left: BorderSide(
                               width: 5,
-                              color: serviceRequestComplaintListModel
-                                  .srComplaintListModal[
+                              color: serviceRequestComplaintListModel!
+                                  .srComplaintListModal![
                               index]
                                   .request !=
                                   'SERVICE REQUEST'
@@ -316,7 +316,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  serviceRequestComplaintListModel.respMsg ?? "",
+                  serviceRequestComplaintListModel!.respMsg ?? "",
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -347,8 +347,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
           ),
           Flexible(
             child: Text(
-              serviceRequestComplaintListModel.totalPotential != null
-                  ? "Total Potential : ${serviceRequestComplaintListModel.totalPotential} MT"
+              serviceRequestComplaintListModel!.totalPotential != null
+                  ? "Total Potential : ${serviceRequestComplaintListModel!.totalPotential} MT"
                   : "Total Potential : 0 MT",
               style: TextStyle(
                 fontFamily: "Muli",
@@ -376,7 +376,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
-                    "Date of SR ${serviceRequestComplaintListModel.srComplaintListModal[index].createdOn}",
+                    "Date of SR ${serviceRequestComplaintListModel!.srComplaintListModal![index].createdOn}",
                     style: TextStyle(
                         color: HexColor('#FF000099'),
                         fontSize: 12,
@@ -389,7 +389,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
-                    "Site ID (${serviceRequestComplaintListModel.srComplaintListModal[index].siteId})",
+                    "Site ID (${serviceRequestComplaintListModel!.srComplaintListModal![index].siteId})",
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Muli",
@@ -401,7 +401,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
-                    "District: ${serviceRequestComplaintListModel.srComplaintListModal[index].district}",
+                    "District: ${serviceRequestComplaintListModel!.srComplaintListModal![index].district}",
                     style: TextStyle(
                         color: Colors.black38,
                         fontSize: 12,
@@ -420,13 +420,13 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         child: Chip(
                           shape: StadiumBorder(
                             side: BorderSide(
-                              color: serviceRequestComplaintListModel
-                                  .srComplaintListModal[index]
+                              color: serviceRequestComplaintListModel!
+                                  .srComplaintListModal![index]
                                   .severity ==
                                   'HIGH'
                                   ? HexColor('#9E3A0D')
-                                  : serviceRequestComplaintListModel
-                                  .srComplaintListModal[index]
+                                  : serviceRequestComplaintListModel!
+                                  .srComplaintListModal![index]
                                   .severity ==
                                   'MEDIUM'
                                   ? HexColor('#F9A61A')
@@ -434,28 +434,28 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             ),
                           ),
                           backgroundColor: HexColor(
-                              serviceRequestComplaintListModel
-                                  .srComplaintListModal[index]
+                              serviceRequestComplaintListModel!
+                                  .srComplaintListModal![index]
                                   .severity ==
                                   'HIGH'
                                   ? "#FFCD0014"
-                                  : serviceRequestComplaintListModel
-                                  .srComplaintListModal[index]
+                                  : serviceRequestComplaintListModel!
+                                  .srComplaintListModal![index]
                                   .severity ==
                                   'MEDIUM'
                                   ? "#FFCD00"
                                   : "#0054A6")
                               .withOpacity(0.1),
                           label: Text(
-                            "${serviceRequestComplaintListModel.srComplaintListModal[index].severity}",
+                            "${serviceRequestComplaintListModel!.srComplaintListModal![index].severity}",
                             style: TextStyle(
-                                color: serviceRequestComplaintListModel
-                                    .srComplaintListModal[index]
+                                color: serviceRequestComplaintListModel!
+                                    .srComplaintListModal![index]
                                     .severity ==
                                     'HIGH'
                                     ? HexColor('#9E3A0D')
-                                    : serviceRequestComplaintListModel
-                                    .srComplaintListModal[index]
+                                    : serviceRequestComplaintListModel!
+                                    .srComplaintListModal![index]
                                     .severity ==
                                     'MEDIUM'
                                     ? HexColor('#F9A61A')
@@ -510,7 +510,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         ),
                       ),
                       Text(
-                        "${serviceRequestComplaintListModel.srComplaintListModal[index].sitePotential}MT",
+                        "${serviceRequestComplaintListModel!.srComplaintListModal![index].sitePotential}MT",
                         style: TextStyle(
                           // color: Colors.black38,
                             fontSize: 15,
@@ -523,7 +523,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   ),
                 ),
                 Text(
-                  "SLA Remaining: ${serviceRequestComplaintListModel.srComplaintListModal[index].slaRemaining}",
+                  "SLA Remaining: ${serviceRequestComplaintListModel!.srComplaintListModal![index].slaRemaining}",
                   style: TextStyle(
                       color: HexColor('#000000'),
                       fontSize: 12,
@@ -549,7 +549,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       ),
                       backgroundColor: HexColor("#00000014").withOpacity(0.1),
                       label: Text(
-                        "Status: ${serviceRequestComplaintListModel.srComplaintListModal[index].status}",
+                        "Status: ${serviceRequestComplaintListModel!.srComplaintListModal![index].status}",
                         style: TextStyle(
                             color: HexColor("#666666"),
                             fontSize: 12,
@@ -573,12 +573,12 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         color: HexColor("#8DC63F"),
                       ),
                       onTap: () {
-                        launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].creatorContact}');
+                        launch('tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
                       },
                     ),
                     Flexible(
                       child: GestureDetector(
-                        child: Text("${serviceRequestComplaintListModel.srComplaintListModal[index].requesterName}",
+                        child: Text("${serviceRequestComplaintListModel!.srComplaintListModal![index].requesterName}",
                         overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.black,
@@ -588,7 +588,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           ),
                         ),
                         onTap: () {
-                          launch('tel:${serviceRequestComplaintListModel.srComplaintListModal[index].creatorContact}');
+                          launch('tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
                         },
                       ),
                     ),
@@ -610,7 +610,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         children: [
           Expanded(
             child: Text(
-              "Request Id (${serviceRequestComplaintListModel.srComplaintListModal[index].srComplaintId}) "
+              "Request Id (${serviceRequestComplaintListModel!.srComplaintListModal![index].srComplaintId}) "
                   .toUpperCase(),
               style: TextStyle(
                   color: HexColor('#002A64'),
@@ -626,14 +626,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               onTap: () {
                 Get.to(
                     SiteDetails(
-                      siteId: serviceRequestComplaintListModel
-                          .srComplaintListModal[index].siteId
+                      siteId: serviceRequestComplaintListModel!
+                          .srComplaintListModal![index].siteId
                           .toString(),
                     ),
                     transition: Transition.rightToLeft);
               },
               child: Text(
-                "${serviceRequestComplaintListModel.srComplaintListModal[index].summarySrOfSite}",
+                "${serviceRequestComplaintListModel!.srComplaintListModal![index].summarySrOfSite}",
                 textAlign: TextAlign.right,
                 style: TextStyle(
                     decoration: TextDecoration.underline,

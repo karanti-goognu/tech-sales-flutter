@@ -1,5 +1,5 @@
 class Validations{
-  static bool isValidPhoneNumber(String string) {
+  static bool isValidPhoneNumber(String? string) {
     // Null or empty string is invalid phone number
     if (string == null || string.isEmpty || string.length != 10) {
       return false;

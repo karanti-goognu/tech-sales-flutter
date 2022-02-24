@@ -1,5 +1,5 @@
 class UpdateMeetRequest {
-  MwpMeetModel mwpMeetModel;
+  MwpMeetModel? mwpMeetModel;
 
   UpdateMeetRequest({this.mwpMeetModel});
 
@@ -12,25 +12,25 @@ class UpdateMeetRequest {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.mwpMeetModel != null) {
-      data['mwpMeetModel'] = this.mwpMeetModel.toJson();
+      data['mwpMeetModel'] = this.mwpMeetModel!.toJson();
     }
     return data;
   }
 }
 
 class MwpMeetModel {
-  int id;
-  String meetType;
-  String meetDate;
-  int dalmiaInflCount;
-  int nonDalmiaInflCount;
-  String venue;
-  int expectedLeadsCount;
-  int giftsDistributedCount;
-  String eventLocation;
-  String isSaveDraft;
-  String updatedBy;
-  List<MwpMeetDealersUpdate> mwpMeetDealers;
+  int? id;
+  String? meetType;
+  String? meetDate;
+  int? dalmiaInflCount;
+  int? nonDalmiaInflCount;
+  String? venue;
+  int? expectedLeadsCount;
+  int? giftsDistributedCount;
+  String? eventLocation;
+  String? isSaveDraft;
+  String? updatedBy;
+  List<MwpMeetDealersUpdate>? mwpMeetDealers;
 
   MwpMeetModel(
       {this.id,
@@ -59,9 +59,9 @@ class MwpMeetModel {
     isSaveDraft = json['isSaveDraft'];
     updatedBy = json['updatedBy'];
     if (json['mwpMeetDealers'] != null) {
-      mwpMeetDealers = new List<MwpMeetDealersUpdate>();
+      mwpMeetDealers = new List<MwpMeetDealersUpdate>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
-        mwpMeetDealers.add(new MwpMeetDealersUpdate.fromJson(v));
+        mwpMeetDealers!.add(new MwpMeetDealersUpdate.fromJson(v));
       });
     }
   }
@@ -81,16 +81,16 @@ class MwpMeetModel {
     data['updatedBy'] = this.updatedBy;
     if (this.mwpMeetDealers != null) {
       data['mwpMeetDealers'] =
-          this.mwpMeetDealers.map((v) => v.toJson()).toList();
+          this.mwpMeetDealers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpMeetDealersUpdate {
-  int id;
-  int mwpMeetId;
-  String dealerId;
+  int? id;
+  int? mwpMeetId;
+  String? dealerId;
 
   MwpMeetDealersUpdate({this.id, this.mwpMeetId, this.dealerId});
 

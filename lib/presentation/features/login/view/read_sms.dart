@@ -7,7 +7,7 @@ class ReadOtpScreen extends StatefulWidget {
 }
 
 class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
-  String _code;
+  String? _code;
   String signature = "{{ app signature }}";
 
   @override
@@ -49,7 +49,7 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
                 currentCode: _code,
                 onCodeSubmitted: (code) {},
                 onCodeChanged: (code) {
-                  if (code.length == 6) {
+                  if (code!.length == 6) {
                     FocusScope.of(context).requestFocus(FocusNode());
                   }
                 },
@@ -107,8 +107,8 @@ class CodeAutoFillTestPage extends StatefulWidget {
 
 class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
     with CodeAutoFill {
-  String appSignature;
-  String otpCode;
+  String? appSignature;
+  String? otpCode;
 
   @override
   void codeUpdated() {

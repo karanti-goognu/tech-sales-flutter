@@ -1,5 +1,5 @@
 class StateDistrictListModel {
-  Response response;
+  Response? response;
 
   StateDistrictListModel({this.response});
 
@@ -12,16 +12,16 @@ class StateDistrictListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.response != null) {
-      data['response'] = this.response.toJson();
+      data['response'] = this.response!.toJson();
     }
     return data;
   }
 }
 
 class Response {
-  String respCode;
-  String respMsg;
-  List<StateDistrictList> stateDistrictList;
+  String? respCode;
+  String? respMsg;
+  List<StateDistrictList>? stateDistrictList;
 
   Response({this.respCode, this.respMsg, this.stateDistrictList});
 
@@ -29,9 +29,9 @@ class Response {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['stateDistrictList'] != null) {
-      stateDistrictList = new List<StateDistrictList>();
+      stateDistrictList = new List<StateDistrictList>.empty(growable: true);
       json['stateDistrictList'].forEach((v) {
-        stateDistrictList.add(new StateDistrictList.fromJson(v));
+        stateDistrictList!.add(new StateDistrictList.fromJson(v));
       });
     }
   }
@@ -42,17 +42,17 @@ class Response {
     data['respMsg'] = this.respMsg;
     if (this.stateDistrictList != null) {
       data['stateDistrictList'] =
-          this.stateDistrictList.map((v) => v.toJson()).toList();
+          this.stateDistrictList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class StateDistrictList {
-  int stateId;
-  String stateName;
-  int districtId;
-  String districtName;
+  int? stateId;
+  String? stateName;
+  int? districtId;
+  String? districtName;
 
   StateDistrictList(
       {this.stateId, this.stateName, this.districtId, this.districtName});

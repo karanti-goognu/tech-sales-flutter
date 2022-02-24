@@ -1,7 +1,7 @@
 import 'package:flutter_tech_sales/presentation/features/mwp/data/MwpVisitModel.dart';
 
 class UpdateVisitRequest {
-  MwpVisitModelUpdate mwpVisitModel;
+  MwpVisitModelUpdate? mwpVisitModel;
 
   UpdateVisitRequest({this.mwpVisitModel});
 
@@ -14,7 +14,7 @@ class UpdateVisitRequest {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.mwpVisitModel != null) {
-      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
+      data['mwpVisitModel'] = this.mwpVisitModel!.toJson();
     }
     return data;
   }

@@ -1,9 +1,9 @@
 class DashboardYearlyViewModel {
-  List<DashboardYearlyModels> dashboardYearlyModels;
-  MtdCount mtdCount;
-  MtdVolume mtdVolume;
-  String respCode;
-  String respMsg;
+  List<DashboardYearlyModels>? dashboardYearlyModels;
+  MtdCount? mtdCount;
+  MtdVolume? mtdVolume;
+  String? respCode;
+  String? respMsg;
 
   DashboardYearlyViewModel(
       {this.dashboardYearlyModels,
@@ -14,9 +14,9 @@ class DashboardYearlyViewModel {
 
   DashboardYearlyViewModel.fromJson(Map<String, dynamic> json) {
     if (json['dashboardYearlyModels'] != null) {
-      dashboardYearlyModels = new List<DashboardYearlyModels>();
+      dashboardYearlyModels = new List<DashboardYearlyModels>.empty(growable: true);
       json['dashboardYearlyModels'].forEach((v) {
-        dashboardYearlyModels.add(new DashboardYearlyModels.fromJson(v));
+        dashboardYearlyModels!.add(new DashboardYearlyModels.fromJson(v));
       });
     }
     mtdCount = json['mtd_count'] != null
@@ -33,13 +33,13 @@ class DashboardYearlyViewModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.dashboardYearlyModels != null) {
       data['dashboardYearlyModels'] =
-          this.dashboardYearlyModels.map((v) => v.toJson()).toList();
+          this.dashboardYearlyModels!.map((v) => v.toJson()).toList();
     }
     if (this.mtdCount != null) {
-      data['mtd_count'] = this.mtdCount.toJson();
+      data['mtd_count'] = this.mtdCount!.toJson();
     }
     if (this.mtdVolume != null) {
-      data['mtd_volume'] = this.mtdVolume.toJson();
+      data['mtd_volume'] = this.mtdVolume!.toJson();
     }
     data['resp_code'] = this.respCode;
     data['resp_msg'] = this.respMsg;
@@ -48,19 +48,19 @@ class DashboardYearlyViewModel {
 }
 
 class DashboardYearlyModels {
-  int avgConvertedVolume;
-  int avgGeneratedVolume;
-  int avgLeadConverted;
-  int avgLeadGenerated;
-  double convertedVolume;
-  double generatedVolume;
-  int leadConverted;
-  int leadGenerated;
-  String m1;
-  String monthYear;
-  String monthYearNo;
-  String showMonth;
-  String showYear;
+  int? avgConvertedVolume;
+  int? avgGeneratedVolume;
+  int? avgLeadConverted;
+  int? avgLeadGenerated;
+  double? convertedVolume;
+  double? generatedVolume;
+  int? leadConverted;
+  int? leadGenerated;
+  String? m1;
+  String? monthYear;
+  String? monthYearNo;
+  String? showMonth;
+  String? showYear;
 
   DashboardYearlyModels(
       {this.avgConvertedVolume,
@@ -113,14 +113,14 @@ class DashboardYearlyModels {
 }
 
 class MtdCount {
-  int convAchvCountPerc;
-  int convActCount;
-  int convProrataCount;
-  int convTargetCount;
-  int slabAchvCountPerc;
-  int slabActCount;
-  int slabProrataCount;
-  int slabTargetCount;
+  int? convAchvCountPerc;
+  int? convActCount;
+  int? convProrataCount;
+  int? convTargetCount;
+  int? slabAchvCountPerc;
+  int? slabActCount;
+  int? slabProrataCount;
+  int? slabTargetCount;
 
   MtdCount(
       {this.convAchvCountPerc,
@@ -158,14 +158,14 @@ class MtdCount {
 }
 
 class MtdVolume {
-  int convAchvVolumePerc;
-  int convActVolume;
-  int convProrataVolume;
-  int convTargetVolume;
-  int slabAchvVolumePerc;
-  int slabActVolume;
-  int slabProrataVolume;
-  int slabTargetVolume;
+  int? convAchvVolumePerc;
+  int? convActVolume;
+  int? convProrataVolume;
+  int? convTargetVolume;
+  int? slabAchvVolumePerc;
+  int? slabActVolume;
+  int? slabProrataVolume;
+  int? slabTargetVolume;
 
   MtdVolume(
       {this.convAchvVolumePerc,

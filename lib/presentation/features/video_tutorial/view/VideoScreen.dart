@@ -12,8 +12,8 @@ class Video extends StatefulWidget {
 }
 
 class _VideoState extends State<Video> {
-  VideoPlayerController videoPlayerController;
-  String videoUrl="", videoDes="";
+  late VideoPlayerController videoPlayerController;
+  String? videoUrl="", videoDes="";
 
 
   initState() {
@@ -33,7 +33,7 @@ class _VideoState extends State<Video> {
                   snackPosition: SnackPosition.BOTTOM),
             }
         });
-    videoPlayerController = VideoPlayerController.network(videoUrl);
+    videoPlayerController = VideoPlayerController.network(videoUrl!);
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       aspectRatio: 16 / 9,
@@ -51,14 +51,14 @@ class _VideoState extends State<Video> {
     super.dispose();
   }
 
-  ChewieController chewieController;
+  late ChewieController chewieController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: Text(videoDes),
+          title: Text(videoDes!),
           backgroundColor: ColorConstants.backgroundColorBlue),
       body: Container(
         child: Chewie(

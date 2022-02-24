@@ -1,9 +1,9 @@
 class DealerInfModel {
-  String respCode;
-  String respMsg;
-  List<EventDealersModelList> eventDealersModelList;
-  List<EventInfluencerModelList> eventInfluencerModelList;
-  List<DealersModel> dealersModel;
+  String? respCode;
+  String? respMsg;
+  List<EventDealersModelList>? eventDealersModelList;
+  List<EventInfluencerModelList>? eventInfluencerModelList;
+  List<DealersModel>? dealersModel;
 
   DealerInfModel(
       {this.respCode,
@@ -18,19 +18,19 @@ class DealerInfModel {
     if (json['event-dealers-model-list'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['event-dealers-model-list'].forEach((v) {
-        eventDealersModelList.add(new EventDealersModelList.fromJson(v));
+        eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
     if (json['event-influencer-model-list'] != null) {
-      eventInfluencerModelList = new List<EventInfluencerModelList>();
+      eventInfluencerModelList = new List<EventInfluencerModelList>.empty(growable: true);
       json['event-influencer-model-list'].forEach((v) {
-        eventInfluencerModelList.add(new EventInfluencerModelList.fromJson(v));
+        eventInfluencerModelList!.add(new EventInfluencerModelList.fromJson(v));
       });
     }
     if (json['dealers-model'] != null) {
-      dealersModel = new List<DealersModel>();
+      dealersModel = new List<DealersModel>.empty(growable: true);
       json['dealers-model'].forEach((v) {
-        dealersModel.add(new DealersModel.fromJson(v));
+        dealersModel!.add(new DealersModel.fromJson(v));
       });
     }
   }
@@ -41,26 +41,26 @@ class DealerInfModel {
     data['respMsg'] = this.respMsg;
     if (this.eventDealersModelList != null) {
       data['event-dealers-model-list'] =
-          this.eventDealersModelList.map((v) => v.toJson()).toList();
+          this.eventDealersModelList!.map((v) => v.toJson()).toList();
     }
     if (this.eventInfluencerModelList != null) {
       data['event-influencer-model-list'] =
-          this.eventInfluencerModelList.map((v) => v.toJson()).toList();
+          this.eventInfluencerModelList!.map((v) => v.toJson()).toList();
     }
     if (this.dealersModel != null) {
-      data['dealers-model'] = this.dealersModel.map((v) => v.toJson()).toList();
+      data['dealers-model'] = this.dealersModel!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class EventDealersModelList {
-  int eventDealerId;
-  int eventId;
-  String dealerId;
-  String dealerName;
-  String eventStage;
-  String isActive;
+  int? eventDealerId;
+  int? eventId;
+  String? dealerId;
+  String? dealerName;
+  String? eventStage;
+  String? isActive;
 
   EventDealersModelList(
       {this.eventDealerId,
@@ -92,13 +92,13 @@ class EventDealersModelList {
 }
 
 class EventInfluencerModelList {
-  int eventId;
-  int eventInflId;
-  String inflContact;
-  int inflId;
-  String inflName;
-  int inflTypeId;
-  String isActive;
+  int? eventId;
+  int? eventInflId;
+  String? inflContact;
+  int? inflId;
+  String? inflName;
+  int? inflTypeId;
+  String? isActive;
 
 
   EventInfluencerModelList(
@@ -134,8 +134,8 @@ class EventInfluencerModelList {
 }
 
 class DealersModel {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
 
   DealersModel({this.dealerId, this.dealerName});
 

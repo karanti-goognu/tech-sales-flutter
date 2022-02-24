@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,9 +18,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteProgressWidget extends StatefulWidget {
-  ViewSiteDataResponse viewSiteDataResponse;
-  TabController tabController;
-  int tabIndex;
+  ViewSiteDataResponse? viewSiteDataResponse;
+  TabController? tabController;
+  int? tabIndex;
 
   SiteProgressWidget(
       {this.viewSiteDataResponse, this.tabController, this.tabIndex});
@@ -32,32 +33,32 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   SiteController _siteController = Get.find();
   final _updateFormKey = GlobalKey<FormState>();
   final db = BrandNameDBHelper();
-  FocusNode myFocusNode;
+  FocusNode? myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
-  bool addNextButtonDisable = false;
+  bool? addNextButtonDisable = false;
   bool viewMoreActive = false;
   bool isAllowSelectDealer = false;
-  String labelText;
-  int labelId;
-  String labelConstructionText;
-  int labelConstructionId;
-  String labelProbabilityText;
-  int labelProbabilityId;
-  String labelCompetetionText;
-  int labelCompetetionId;
-  String labelOpportunityText;
-  int labelOpportunityId;
-  String visitDataDealer;
+  String? labelText;
+  int? labelId;
+  String? labelConstructionText;
+  int? labelConstructionId;
+  String? labelProbabilityText;
+  int? labelProbabilityId;
+  String? labelCompetetionText;
+  int? labelCompetetionId;
+  String? labelOpportunityText;
+  int? labelOpportunityId;
+  String? visitDataDealer;
   String visitDataSubDealer = "";
-  ConstructionStageEntity _selectedConstructionTypeVisit;
-  ConstructionStageEntity _selectedConstructionTypeVisitNextStage;
-  SiteFloorsEntity _selectedSiteVisitFloor;
-  SiteFloorsEntity _selectedSiteVisitFloorNextStage;
+  ConstructionStageEntity? _selectedConstructionTypeVisit;
+  ConstructionStageEntity? _selectedConstructionTypeVisitNextStage;
+  SiteFloorsEntity? _selectedSiteVisitFloor;
+  SiteFloorsEntity? _selectedSiteVisitFloorNextStage;
   int initialInfluencerLength = 0;
-  BrandModelforDB _siteBrandFromLocalDB;
-  BrandModelforDB _siteBrandFromLocalDBNextStage;
-  BrandModelforDB _siteProductFromLocalDBNextStage;
+  BrandModelforDB? _siteBrandFromLocalDB;
+  BrandModelforDB? _siteBrandFromLocalDBNextStage;
+  BrandModelforDB? _siteProductFromLocalDBNextStage;
   List<DropdownMenuItem<String>> productSoldVisitSite = new List.empty(growable: true);
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
@@ -74,32 +75,32 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _stageStatus = new TextEditingController();
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
-  int visitSubTypeId;
-  String geoTagType;
+  int? visitSubTypeId;
+  String? geoTagType;
 
-  String siteCreationDate, visitRemarks;
+  String? siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-  SitesModal sitesModal;
-  MwpVisitModel mwpVisitModel;
-  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
-  List<SiteFloorsEntity> siteFloorsEntityNew = new List.empty(growable: true);
-  List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List.empty(growable: true);
-  List<SitephotosEntity> sitephotosEntity = new List.empty(growable: true);
+  SitesModal? sitesModal;
+  MwpVisitModel? mwpVisitModel;
+  List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntityNew = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntityNewNextStage = new List.empty(growable: true);
+  List<SitephotosEntity>? sitephotosEntity = new List.empty(growable: true);
 
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List()
-  List<SiteStageHistory> siteStageHistorys = new List.empty(growable: true);
+  List<SiteStageHistory>? siteStageHistorys = new List.empty(growable: true);
   List<SiteSupplyHistorys> siteSupplyHistorys = new List.empty(growable: true);
 
   List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntityNew = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntityNewNextStage =
+  List<ConstructionStageEntity>? constructionStageEntityNew = new List.empty(growable: true);
+  List<ConstructionStageEntity>? constructionStageEntityNewNextStage =
       new List.empty(growable: true);
   List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List.empty(growable: true);
   List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List.empty(growable: true);
   List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List.empty(growable: true);
-  List<SiteBrandEntity> siteBrandEntity = new List.empty(growable: true);
+  List<SiteBrandEntity>? siteBrandEntity = new List.empty(growable: true);
   List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List.empty(growable: true);
-  List<BrandModelforDB> siteProductEntityfromLoaclDB = new List.empty(growable: true);
+  List<BrandModelforDB>? siteProductEntityfromLoaclDB = new List.empty(growable: true);
   List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
   List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
   List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
@@ -109,29 +110,29 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   // List<Influencer>
   List<SiteNextStageEntity> siteNextStageEntity = new List.empty(growable: true);
-  List<SiteCommentsEntity> siteCommentsEntity = new List.empty(growable: true);
-  List<CounterListModel> counterListModel = new List.empty(growable: true);
+  List<SiteCommentsEntity>? siteCommentsEntity = new List.empty(growable: true);
+  List<CounterListModel>? counterListModel = new List.empty(growable: true);
   List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
-  DealerForDb _dealerEntityForDb;
-  List<CounterListModel> subDealerList = new List.empty(growable: true);
+  DealerForDb? _dealerEntityForDb;
+  List<CounterListModel>? subDealerList = new List.empty(growable: true);
   List<CounterListModel> dealerList = new List.empty(growable: true);
 
-  String _selectedRadioValue = 'Y';
+  String? _selectedRadioValue = 'Y';
 
   ///site visit
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+  ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
 
   CounterListModel selectedSubDealer = CounterListModel();
 
-  List<ProductListModel> productDynamicList = new List.empty(growable: true);
+  List<ProductListModel>? productDynamicList = new List.empty(growable: true);
 
-  String availableKittyPoint = "0";
+  String? availableKittyPoint = "0";
   String claimableKittyBagsAvailable = "0";
   String reservedKittyBagsAvailable = "0";
 
-  KittyBagsListModel _kittyBagsListModel;
+  late KittyBagsListModel _kittyBagsListModel;
 
-  getKittyBags(String partyCode) {
+  getKittyBags(String? partyCode) {
     //String productCode
     internetChecking().then((result) => {
           if (result == true)
@@ -141,9 +142,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   if (data != null) {
                     _kittyBagsListModel = data;
                     claimableKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForKittyPointsList}';
                     reservedKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForReservePoolList}';
                   }
                 });
               })
@@ -162,7 +163,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   /// get _getProductList
   List<Widget> _getProductList() {
     List<Widget> productAddedList = [];
-    for (int i = 0; i < productDynamicList.length; i++) {
+    for (int i = 0; i < productDynamicList!.length; i++) {
       productAddedList.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
@@ -177,7 +178,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   Widget addProductDetails(int index) {
     return ExpandablePanel(
-      controller: productDynamicList[index].isExpanded,
+      controller: productDynamicList![index].isExpanded,
       header: Text(
         "Product " + (index + 1).toString(),
         softWrap: true,
@@ -197,13 +198,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               mainAxisSize: MainAxisSize.max,
               children: [
                 (index == 0)
-                    ? (productDynamicList[index].brandId == -1)
+                    ? (productDynamicList![index].brandId == -1)
                         ? DropdownButtonFormField<BrandModelforDB>(
                             value: _siteBrandFromLocalDB,
                             items: siteBrandEntityfromLoaclDB
                                 .map((label) => DropdownMenuItem(
                                       child: Text(
-                                        label.brandName,
+                                        label.brandName!,
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: ColorConstants
@@ -219,13 +220,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
                               siteProductEntityfromLoaclDB = new List.empty(growable:true);
-                              productDynamicList[index].brandModelForDB = null;
+                              productDynamicList![index].brandModelForDB = null;
                               _dealerEntityForDb = null;
                               _selectedRadioValue = null;
                               // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
                                   _siteProductEntityfromLoaclDB = await db
-                                      .fetchAllDistinctProduct(value.brandName);
+                                      .fetchAllDistinctProduct(value!.brandName);
                               setState(() {
                                 _siteBrandFromLocalDB = value;
                                 siteProductEntityfromLoaclDB =
@@ -235,7 +236,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 UpdatedValues.setProductEntityFromLocalDb(
                                     siteProductEntityfromLoaclDB);
                                 // _productSoldVisit.text = _siteBrand.productName;
-                                if (_siteBrandFromLocalDB.brandName
+                                if (_siteBrandFromLocalDB!.brandName!
                                         .toLowerCase() ==
                                     "dalmia") {
                                   _stageStatus.text = "WON";
@@ -248,7 +249,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 }
                                 UpdatedValues.setSiteProgressStageStatus(
                                     _stageStatus.text);
-                                _selectedBrand.text = value.brandName;
+                                _selectedBrand.text = value.brandName!;
                               });
                             },
                             decoration: FormFieldStyle.buildInputDecoration(
@@ -473,13 +474,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
                 ///Changes for Instead of two drop downs for dealer and subdealer only one dropdown as counter
                 (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                             "dalmia")
                     ? GestureDetector(
                         onTap: () {},
                         child: (index == 0)
-                            ? (productDynamicList[index]
-                                    .dealerName
+                            ? (productDynamicList![index]
+                                    .dealerName!
                                     .text
                                     .isEmpty)
                                 ? DropdownButtonFormField<DealerForDb>(
@@ -502,8 +503,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     onChanged: (value) {
                                       setState(() {
                                         _dealerEntityForDb = value;
-                                        visitDataDealer = value.id;
-                                        _dealerName.text = value.dealerName;
+                                        visitDataDealer = value!.id;
+                                        _dealerName.text = value.dealerName!;
                                         UpdatedValues.setDealerEntityForDb(
                                             _dealerEntityForDb);
                                         getKittyBags(value.id);
@@ -535,7 +536,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                                         .width -
                                                     100,
                                                 child: Text(
-                                                    '${label.dealerName} (${label.id})',
+                                                    '${label!.dealerName} (${label.id})',
                                                     style: TextStyle(
                                                         fontSize: 14)),
                                               ),
@@ -545,15 +546,15 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     onChanged: (value) {
                                       setState(() {
                                         _dealerEntityForDb = value;
-                                        visitDataDealer = value.id;
-                                        _dealerName.text = value.dealerName;
+                                        visitDataDealer = value!.id;
+                                        _dealerName.text = value.dealerName!;
                                         for (int i = 0;
-                                            i < counterListModel.length;
+                                            i < counterListModel!.length;
                                             i++) {
-                                          if (counterListModel[i].shipToParty ==
+                                          if (counterListModel![i].shipToParty ==
                                               value.id) {
                                             availableKittyPoint =
-                                                counterListModel[i]
+                                                counterListModel![i]
                                                     .availableKittyPoint;
                                           }
                                         }
@@ -582,13 +583,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     : Container(),
 
                 (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                             "dalmia")
                     ? MandatoryWidget().txtMandatory()
                     : Container(),
 
                 (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                             "dalmia")
                     ? Container(
                         child: Column(
@@ -613,10 +614,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     Radio(
                                       value: 'Y',
                                       groupValue: _selectedRadioValue,
-                                      onChanged: (value) {
+                                      onChanged: (dynamic value) {
                                         setState(() {
                                             _selectedRadioValue = value;
-                                            productDynamicList[index].awardLoyaltyPoint = value;
+                                            productDynamicList![index].awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
@@ -634,10 +635,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     Radio(
                                       value: 'N',
                                       groupValue: _selectedRadioValue,
-                                      onChanged: (value) {
+                                      onChanged: (dynamic value) {
                                         setState(() {
                                           _selectedRadioValue = value;
-                                          productDynamicList[index].awardLoyaltyPoint = value;
+                                          productDynamicList![index].awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
@@ -689,7 +690,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 */
 
                 (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                             "dalmia" &&
                         visitDataDealer != null)
                     ? Padding(
@@ -769,18 +770,18 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     : Container(),
 
                 (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                        _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                             "dalmia")
                     ? SizedBox(height: 8)
                     : SizedBox(),
                 Container(
                   padding: EdgeInsets.only(right: 0, top: 0),
                   child: DropdownButtonFormField<BrandModelforDB>(
-                      value: productDynamicList[index].brandModelForDB,
-                      items: siteProductEntityfromLoaclDB
+                      value: productDynamicList![index].brandModelForDB,
+                      items: siteProductEntityfromLoaclDB!
                           .map((label) => DropdownMenuItem(
                                 child: Text(
-                                  label.productName,
+                                  label.productName!,
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: ColorConstants.inputBoxHintColor,
@@ -793,7 +794,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
-                          productDynamicList[index].brandModelForDB = value;
+                          productDynamicList![index].brandModelForDB = value;
                         });
                       },
                       decoration: FormFieldStyle.buildInputDecoration(
@@ -801,9 +802,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 ),
                 MandatoryWidget().txtMandatory(),
                 TextFormField(
-                  controller: productDynamicList[index].brandPrice,
+                  controller: productDynamicList![index].brandPrice,
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Please enter Site Built-Up Area ';
                     }
 
@@ -847,7 +848,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: TextFormField(
-                          controller: productDynamicList[index].supplyDate,
+                          controller: productDynamicList![index].supplyDate,
                           readOnly: true,
                           onChanged: (data) {
                             // setState(() {
@@ -887,13 +888,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               ),
                               onPressed: () async {
                                 print("here");
-                                final DateTime picked = await showDatePicker(
+                                final DateTime? picked = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
                                   //firstDate: DateTime(2001),
                                   firstDate: DateTime.now().subtract(Duration(
                                       days: widget
-                                          .viewSiteDataResponse.supplyDate)),
+                                          .viewSiteDataResponse!.supplyDate!)),
                                   lastDate: DateTime.now(),
                                 );
 
@@ -903,7 +904,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   if (picked != null) {
                                     final String formattedDate =
                                         formatter.format(picked);
-                                    productDynamicList[index].supplyDate.text =
+                                    productDynamicList![index].supplyDate!.text =
                                         formattedDate;
                                     // _dateOfBagSupplied1.text = formattedDate;
                                   }
@@ -928,12 +929,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: TextFormField(
-                          controller: productDynamicList[index].supplyQty,
+                          controller: productDynamicList![index].supplyQty,
                           onChanged: (v) {
                             print(v);
                           },
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return 'Please enter Bags ';
                             }
 
@@ -980,7 +981,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       // print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
 
                       if (_siteBrandFromLocalDB != null &&
-                          _siteBrandFromLocalDB.brandName.toLowerCase() ==
+                          _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                               "dalmia") {
                         if (_dealerEntityForDb == null) {
                           Get.dialog(CustomDialogs()
@@ -990,49 +991,49 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       }
 
                       if (_siteBrandFromLocalDB != null &&
-                          _siteBrandFromLocalDB.brandName.toLowerCase() !=
+                          _siteBrandFromLocalDB!.brandName!.toLowerCase() !=
                               "dalmia") {
-                           productDynamicList[index].awardLoyaltyPoint = null;
+                           productDynamicList![index].awardLoyaltyPoint = null;
                       }
 
-                      if (productDynamicList[index].brandModelForDB == null) {
+                      if (productDynamicList![index].brandModelForDB == null) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please select product sold !"));
                         return;
                       }
 
-                      if (productDynamicList[index].brandPrice.text.isEmpty) {
+                      if (productDynamicList![index].brandPrice!.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please enter brand price !"));
                         return;
                       }
 
-                      if (productDynamicList[index].supplyDate.text.isEmpty) {
+                      if (productDynamicList![index].supplyDate!.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please Select Date !"));
                         return;
                       }
 
-                      if (productDynamicList[index].supplyQty.text.isEmpty) {
+                      if (productDynamicList![index].supplyQty!.text.isEmpty) {
                         Get.dialog(CustomDialogs()
                             .showMessage("Please Enter Supply Quantity !"));
                         return;
                       }
 
                       setState(() {
-                        productDynamicList[index] = new ProductListModel(
+                        productDynamicList![index] = new ProductListModel(
                             brandId:
-                                productDynamicList[index].brandModelForDB.id,
-                            brandPrice: productDynamicList[index].brandPrice,
-                            supplyDate: productDynamicList[index].supplyDate,
-                            supplyQty: productDynamicList[index].supplyQty,
+                                productDynamicList![index].brandModelForDB!.id,
+                            brandPrice: productDynamicList![index].brandPrice,
+                            supplyDate: productDynamicList![index].supplyDate,
+                            supplyQty: productDynamicList![index].supplyQty,
                             isExpanded: new ExpandableController(
                                 initialExpanded: false),
                             brandModelForDB:
-                                productDynamicList[index].brandModelForDB,
+                                productDynamicList![index].brandModelForDB,
                             dealerName: _dealerName,
-                        awardLoyaltyPoint: productDynamicList[index].awardLoyaltyPoint);
-                        print("product13 : ${(productDynamicList[index].awardLoyaltyPoint)}");
+                        awardLoyaltyPoint: productDynamicList![index].awardLoyaltyPoint);
+                        print("product13 : ${(productDynamicList![index].awardLoyaltyPoint)}");
                         sumNoOfBagsSupplied();
                         updateSiteSupplyHistory();
                       });
@@ -1049,16 +1050,16 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           Expanded(
               flex: 7,
               child: Text(
-                productDynamicList[index].supplyDate.text.isEmpty ||
-                        productDynamicList[index].supplyQty.text.isEmpty ||
-                        productDynamicList[index].brandPrice.text.isEmpty ||
-                        productDynamicList[index].brandId == -1
+                productDynamicList![index].supplyDate!.text.isEmpty ||
+                        productDynamicList![index].supplyQty!.text.isEmpty ||
+                        productDynamicList![index].brandPrice!.text.isEmpty ||
+                        productDynamicList![index].brandId == -1
                     ? "Fill product Details"
-                    : productDynamicList[index].brandModelForDB.productName +
+                    : productDynamicList![index].brandModelForDB!.productName! +
                         ",  Qty:" +
-                        productDynamicList[index].supplyQty.text +
+                        productDynamicList![index].supplyQty!.text +
                         ", Price:" +
-                        productDynamicList[index].brandPrice.text,
+                        productDynamicList![index].brandPrice!.text,
                 softWrap: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -1076,14 +1077,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 //     && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
 
                 if (productDynamicList != null &&
-                    productDynamicList.length == 1) {
-                  productDynamicList.removeAt(index);
+                    productDynamicList!.length == 1) {
+                  productDynamicList!.removeAt(index);
                   _siteBrandFromLocalDB = null;
                   _dealerEntityForDb = null;
                   subDealerList = new List.empty(growable: true);
                   siteProductEntityfromLoaclDB = new List.empty(growable: true);
                 } else {
-                  productDynamicList.removeAt(index);
+                  productDynamicList!.removeAt(index);
                   updateSiteSupplyHistory();
                 }
 
@@ -1104,12 +1105,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   setSiteProgressData() async {
     await db.clearTable();
     for (int i = 0;
-        i < widget.viewSiteDataResponse.siteBrandEntity.length;
+        i < widget.viewSiteDataResponse!.siteBrandEntity!.length;
         i++) {
       await db.addBrandName(new BrandModelforDB(
-          widget.viewSiteDataResponse.siteBrandEntity[i].id,
-          widget.viewSiteDataResponse.siteBrandEntity[i].brandName,
-          widget.viewSiteDataResponse.siteBrandEntity[i].productName));
+          widget.viewSiteDataResponse!.siteBrandEntity![i].id,
+          widget.viewSiteDataResponse!.siteBrandEntity![i].brandName,
+          widget.viewSiteDataResponse!.siteBrandEntity![i].productName));
     }
 
     // for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
@@ -1119,12 +1120,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
 ////Added shipToParty to dealers
     for (int i = 0;
-        i < widget.viewSiteDataResponse.counterListModel.length;
+        i < widget.viewSiteDataResponse!.counterListModel!.length;
         i++) {
       // int id =
       await db.addDealer(DealerForDb(
-          widget.viewSiteDataResponse.counterListModel[i].shipToParty,
-          widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
+          widget.viewSiteDataResponse!.counterListModel![i].shipToParty,
+          widget.viewSiteDataResponse!.counterListModel![i].shipToPartyName));
     }
 
     // print("list Size");fetchAllDistinctDealers
@@ -1138,21 +1139,21 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         siteBrandEntityfromLoaclDB = siteBrandEntityfromLoaclDB1;
         dealerEntityForDb = dealerEntityForDb1;
         siteBrandEntity = viewSiteDataResponse != null
-            ? viewSiteDataResponse.siteBrandEntity
+            ? viewSiteDataResponse!.siteBrandEntity
             : new List.empty(growable: true);
-        counterListModel = viewSiteDataResponse.counterListModel;
+        counterListModel = viewSiteDataResponse!.counterListModel;
         constructionStageEntityNewNextStage =
-            viewSiteDataResponse.constructionStageEntity;
+            viewSiteDataResponse!.constructionStageEntity;
         constructionStageEntityNew =
-            viewSiteDataResponse.constructionStageEntity;
+            viewSiteDataResponse!.constructionStageEntity;
         addNextButtonDisable = false;
-        siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
-        siteFloorsEntityNew = viewSiteDataResponse.siteFloorsEntity;
-        siteFloorsEntityNewNextStage = viewSiteDataResponse.siteFloorsEntity;
-        siteCommentsEntity = viewSiteDataResponse.siteCommentsEntity;
-        sitephotosEntity = viewSiteDataResponse.sitephotosEntity;
-        if (viewSiteDataResponse.siteStageHistorys != null) {
-          siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
+        siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
+        siteFloorsEntityNew = viewSiteDataResponse!.siteFloorsEntity;
+        siteFloorsEntityNewNextStage = viewSiteDataResponse!.siteFloorsEntity;
+        siteCommentsEntity = viewSiteDataResponse!.siteCommentsEntity;
+        sitephotosEntity = viewSiteDataResponse!.sitephotosEntity;
+        if (viewSiteDataResponse!.siteStageHistorys != null) {
+          siteStageHistorys = viewSiteDataResponse!.siteStageHistorys;
         } else {
           siteStageHistorys = [];
         }
@@ -1171,22 +1172,22 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
         if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
           _selectedSiteVisitFloor = null;
-          _selectedSiteVisitFloor = siteFloorsEntity.firstWhere((item) =>
-              item.id == UpdatedValues.getSiteProgressNoOfFloors().id);
+          _selectedSiteVisitFloor = siteFloorsEntity!.firstWhere((item) =>
+              item.id == UpdatedValues.getSiteProgressNoOfFloors()!.id);
         }
 
         if (UpdatedValues.getSiteProgressStagePotential() != null) {
           _stagePotentialVisit.text =
-              UpdatedValues.getSiteProgressStagePotential();
+              UpdatedValues.getSiteProgressStagePotential()!;
         }
 
         if (UpdatedValues.getSiteProgressStageStatus() != null) {
-          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus()!;
         }
 
         if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
           _dateofConstruction.text =
-              UpdatedValues.getSiteProgressDateOfConstruction();
+              UpdatedValues.getSiteProgressDateOfConstruction()!;
         }
 
         if (UpdatedValues.getAddNextButtonDisable() != null) {
@@ -1197,8 +1198,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             _siteBrandFromLocalDB != null) {
           _dealerEntityForDb = null;
           _dealerEntityForDb = UpdatedValues.getDealerEntityForDb();
-          _dealerName.text = _dealerEntityForDb.dealerName;
-          visitDataDealer = _dealerEntityForDb.id;
+          _dealerName.text = _dealerEntityForDb!.dealerName!;
+          visitDataDealer = _dealerEntityForDb!.id;
         }
 
         if (UpdatedValues.getProductEntityFromLocalDb() != null &&
@@ -1220,12 +1221,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         // }
 
         if (UpdatedValues.getSiteProgressStageStatus() != null) {
-          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
+          _stageStatus.text = UpdatedValues.getSiteProgressStageStatus()!;
         }
 
         if (UpdatedValues.getSiteProgressDateOfConstruction() != null) {
           _dateofConstruction.text =
-              UpdatedValues.getSiteProgressDateOfConstruction();
+              UpdatedValues.getSiteProgressDateOfConstruction()!;
         }
 
         if (UpdatedValues.getProductDynamicList() != null) {
@@ -1316,7 +1317,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       onTap: () {
                         setState(() {
                           widget.tabIndex = 3;
-                          widget.tabController.animateTo(3);
+                          widget.tabController!.animateTo(3);
                         });
                       },
                       child: Text(
@@ -1333,10 +1334,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               ),
               DropdownButtonFormField<ConstructionStageEntity>(
                 value: _selectedConstructionTypeVisit,
-                items: constructionStageEntityNew
+                items: constructionStageEntityNew!
                     .map((label) => DropdownMenuItem(
                           child: Text(
-                            label.constructionStageText,
+                            label.constructionStageText!,
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
@@ -1353,18 +1354,18 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     _selectedConstructionTypeVisit = value;
                     siteFloorsEntityNew = new List.empty(growable: true);
                     _selectedSiteVisitFloor = null;
-                    if (_selectedConstructionTypeVisit.id == 1 ||
-                        _selectedConstructionTypeVisit.id == 2 ||
-                        _selectedConstructionTypeVisit.id == 3) {
+                    if (_selectedConstructionTypeVisit!.id == 1 ||
+                        _selectedConstructionTypeVisit!.id == 2 ||
+                        _selectedConstructionTypeVisit!.id == 3) {
                       // siteFloorsEntityNew = new List();
-                      siteFloorsEntityNew.add(new SiteFloorsEntity(
-                          id: siteFloorsEntity[0].id,
-                          siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+                      siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                          id: siteFloorsEntity![0].id,
+                          siteFloorTxt: siteFloorsEntity![0].siteFloorTxt));
                     } else {
-                      for (int i = 0; i < siteFloorsEntity.length; i++) {
-                        siteFloorsEntityNew.add(new SiteFloorsEntity(
-                            id: siteFloorsEntity[i].id,
-                            siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                      for (int i = 0; i < siteFloorsEntity!.length; i++) {
+                        siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                            id: siteFloorsEntity![i].id,
+                            siteFloorTxt: siteFloorsEntity![i].siteFloorTxt));
                       }
                     }
                     _stagePotentialVisit.clear();
@@ -1391,10 +1392,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               SizedBox(height: 16),
               DropdownButtonFormField<SiteFloorsEntity>(
                 value: _selectedSiteVisitFloor,
-                items: siteFloorsEntityNew
+                items: siteFloorsEntityNew!
                     .map((label) => DropdownMenuItem(
                           child: Text(
-                            label.siteFloorTxt,
+                            label.siteFloorTxt!,
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
@@ -1410,30 +1411,30 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     _selectedSiteVisitFloor = value;
                     UpdatedValues.setSiteProgressNoOfFloors(
                         _selectedSiteVisitFloor);
-                    if (viewSiteDataResponse.siteStagePotentialEntity != null &&
-                        viewSiteDataResponse.siteStagePotentialEntity.length >
+                    if (viewSiteDataResponse!.siteStagePotentialEntity != null &&
+                        viewSiteDataResponse!.siteStagePotentialEntity!.length >
                             0) {
-                      double siteTotalSitePotential = viewSiteDataResponse
-                                  .sitesModal.siteTotalSitePotential !=
+                      double siteTotalSitePotential = viewSiteDataResponse!
+                                  .sitesModal!.siteTotalSitePotential !=
                               null
-                          ? double.parse(viewSiteDataResponse
-                              .sitesModal.siteTotalSitePotential)
+                          ? double.parse(viewSiteDataResponse!
+                              .sitesModal!.siteTotalSitePotential!)
                           : 0;
                       _stagePotentialVisit.clear();
                       if ((siteTotalSitePotential != null ||
-                              !siteTotalSitePotential.isBlank) &&
+                              !siteTotalSitePotential.isBlank!) &&
                           (_selectedConstructionTypeVisit != null &&
-                              (_selectedConstructionTypeVisit.id != null ||
-                                  !_selectedConstructionTypeVisit
-                                      .id.isBlank)) &&
+                              (_selectedConstructionTypeVisit!.id != null ||
+                                  !_selectedConstructionTypeVisit!
+                                      .id.isBlank!)) &&
                           (_selectedSiteVisitFloor != null &&
-                              (_selectedSiteVisitFloor.id != null ||
-                                  !_selectedSiteVisitFloor.id.isBlank))) {
+                              (_selectedSiteVisitFloor!.id != null ||
+                                  !_selectedSiteVisitFloor!.id.isBlank!))) {
                         _stagePotentialVisit.text = calculateStagePotential(
                                 siteTotalSitePotential,
-                                viewSiteDataResponse.siteStagePotentialEntity,
-                                _selectedConstructionTypeVisit.id,
-                                _selectedSiteVisitFloor.id)
+                                viewSiteDataResponse!.siteStagePotentialEntity,
+                                _selectedConstructionTypeVisit!.id,
+                                _selectedSiteVisitFloor!.id)
                             .toString();
                       }
                     }
@@ -1458,7 +1459,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               TextFormField(
                 controller: _stagePotentialVisit,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter Site Built-Up Area ';
                   }
                   return null;
@@ -1536,17 +1537,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       ),
                       onPressed: () async {
                         int index;
-                        if (productDynamicList.length == 0) {
+                        if (productDynamicList!.length == 0) {
                           index = 0;
                         } else {
-                          index = productDynamicList.length;
+                          index = productDynamicList!.length;
                         }
 
                         print("index1 " + index.toString());
                         if (index == 0) {
                           setState(() {
                             _selectedRadioValue = "Y";
-                            BrandModelforDB brand;
+                            BrandModelforDB? brand;
                             ProductListModel product11 = new ProductListModel(
                                 brandId: -1,
                                 brandPrice: new TextEditingController(),
@@ -1558,14 +1559,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 dealerName: new TextEditingController(),
                               awardLoyaltyPoint: "Y",
                             );
-                            productDynamicList.insert(index, product11);
-                            print("product11 : ${productDynamicList[index].awardLoyaltyPoint}");
+                            productDynamicList!.insert(index, product11);
+                            print("product11 : ${productDynamicList![index].awardLoyaltyPoint}");
                           });
                         } else {
-                          if (productDynamicList[index - 1].brandId != -1) {
+                          if (productDynamicList![index - 1].brandId != -1) {
                             setState(() {
                               _selectedRadioValue = "Y";
-                              BrandModelforDB brand;
+                              BrandModelforDB? brand;
                               ProductListModel product11 = new ProductListModel(
                                   brandId: -1,
                                   brandPrice: new TextEditingController(),
@@ -1576,8 +1577,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   brandModelForDB: brand,
                                   dealerName: new TextEditingController(),
                               awardLoyaltyPoint: "Y");
-                              productDynamicList.insert(index, product11);
-                              print("product112 : ${productDynamicList[index].awardLoyaltyPoint}");
+                              productDynamicList!.insert(index, product11);
+                              print("product112 : ${productDynamicList![index].awardLoyaltyPoint}");
                             });
                           } else {
                             Get.dialog(CustomDialogs().errorDialog(
@@ -1591,7 +1592,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               TextFormField(
                 controller: _stageStatus,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter Site Built-Up Area ';
                   }
 
@@ -1640,13 +1641,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     ),
                     onPressed: () async {
                       print("here");
-                      final DateTime picked = await showDatePicker(
+                      final DateTime? picked = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2001),
                         lastDate: DateTime.now().add(Duration(
                             days:
-                                widget.viewSiteDataResponse.constructionDays)),
+                                widget.viewSiteDataResponse!.constructionDays!)),
                       );
 
                       setState(() {
@@ -1665,7 +1666,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: !addNextButtonDisable
+                  child: !addNextButtonDisable!
                       ? TextButton(
     style: TextButton.styleFrom(
 
@@ -1687,7 +1688,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           ),
                           onPressed: () async {
                             setState(() {
-                              addNextButtonDisable = !addNextButtonDisable;
+                              addNextButtonDisable = !addNextButtonDisable!;
                               UpdatedValues.setAddNextButtonDisable(
                                   addNextButtonDisable);
                             });
@@ -1714,7 +1715,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           ),
                           onPressed: () async {
                             setState(() {
-                              addNextButtonDisable = !addNextButtonDisable;
+                              addNextButtonDisable = !addNextButtonDisable!;
                               UpdatedValues.setAddNextButtonDisable(
                                   addNextButtonDisable);
                             });
@@ -1725,7 +1726,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
               ////Add Next Stage Container
 
-              addNextButtonDisable ? addNextStageContainer() : Container(),
+              addNextButtonDisable! ? addNextStageContainer() : Container(),
               SizedBox(
                 height: 20,
               ),
@@ -1783,7 +1784,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               ),
               SizedBox(height: 16),
 
-              siteCommentsEntity != null && siteCommentsEntity.length != 0
+              siteCommentsEntity != null && siteCommentsEntity!.length != 0
                   ? viewMoreActive
                       ? Row(
                           children: [
@@ -1792,7 +1793,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   physics: NeverScrollableScrollPhysics(),
                                   reverse: true,
                                   shrinkWrap: true,
-                                  itemCount: siteCommentsEntity.length,
+                                  itemCount: siteCommentsEntity!.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Column(
@@ -1806,7 +1807,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              siteCommentsEntity[index]
+                                              siteCommentsEntity![index]
                                                       .creatorName ??
                                                   "",
                                               style: TextStyle(
@@ -1814,7 +1815,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                                   fontSize: 25),
                                             ),
                                             Text(
-                                              siteCommentsEntity[index]
+                                              siteCommentsEntity![index]
                                                       .siteCommentText ??
                                                   "",
                                               style: TextStyle(
@@ -1825,11 +1826,11 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                             Text(
                                               formatter.format(DateTime
                                                       .fromMillisecondsSinceEpoch(
-                                                          siteCommentsEntity[
-                                                                  siteCommentsEntity
+                                                          siteCommentsEntity![
+                                                                  siteCommentsEntity!
                                                                           .length -
                                                                       1]
-                                                              .createdOn)) ??
+                                                              .createdOn!)) ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.black
@@ -1858,17 +1859,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   height: 20,
                                 ),
                                 Text(
-                                  siteCommentsEntity[
-                                          siteCommentsEntity.length - 1]
-                                      .creatorName,
+                                  siteCommentsEntity![
+                                          siteCommentsEntity!.length - 1]
+                                      .creatorName!,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25),
                                 ),
                                 Text(
-                                  siteCommentsEntity[
-                                          siteCommentsEntity.length - 1]
-                                      .siteCommentText,
+                                  siteCommentsEntity![
+                                          siteCommentsEntity!.length - 1]
+                                      .siteCommentText!,
                                   style: TextStyle(
                                       color: Colors.black.withOpacity(0.5),
                                       fontSize: 25),
@@ -1876,9 +1877,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 Text(
                                   formatter.format(
                                       DateTime.fromMillisecondsSinceEpoch(
-                                          siteCommentsEntity[
-                                                  siteCommentsEntity.length - 1]
-                                              .createdOn)),
+                                          siteCommentsEntity![
+                                                  siteCommentsEntity!.length - 1]
+                                              .createdOn!)),
                                   style: TextStyle(
                                       color: Colors.black.withOpacity(0.5),
                                       fontSize: 15),
@@ -1902,7 +1903,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     child: !viewMoreActive
                         ? Text(
                             "VIEW MORE COMMENT (" +
-                                siteCommentsEntity.length.toString() +
+                                siteCommentsEntity!.length.toString() +
                                 ")",
                             style: TextStyle(
                                 color: HexColor("##F9A61A"),
@@ -1912,7 +1913,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           )
                         : Text(
                             "VIEW LESS COMMENT (" +
-                                siteCommentsEntity.length.toString() +
+                                siteCommentsEntity!.length.toString() +
                                 ")",
                             style: TextStyle(
                                 color: HexColor("##F9A61A"),
@@ -1953,7 +1954,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     ),
                   ),
                   onPressed: () async {
-                    if (_updateFormKey.currentState.validate()) {
+                    if (_updateFormKey.currentState!.validate()) {
                       UpdatedValues updateRequest = new UpdatedValues();
                       updateRequest.updateRequest(context);
                     }
@@ -1969,12 +1970,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   int sumNoOfBagsSupplied() {
     int totalSumBagsSupplied = 0;
-    if (productDynamicList.length > 0) {
-      for (int i = 0; i < productDynamicList.length; i++) {
-        if (productDynamicList[i].supplyQty != null &&
-            (productDynamicList[i].supplyQty.text.isNotEmpty)) {
+    if (productDynamicList!.length > 0) {
+      for (int i = 0; i < productDynamicList!.length; i++) {
+        if (productDynamicList![i].supplyQty != null &&
+            (productDynamicList![i].supplyQty!.text.isNotEmpty)) {
           totalSumBagsSupplied = totalSumBagsSupplied +
-                  int.tryParse(productDynamicList[i].supplyQty.text) ??
+                  int.tryParse(productDynamicList![i].supplyQty!.text)! ??
               0;
         }
       }
@@ -2006,10 +2007,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         ),
         DropdownButtonFormField<ConstructionStageEntity>(
           value: _selectedConstructionTypeVisitNextStage,
-          items: constructionStageEntityNewNextStage
+          items: constructionStageEntityNewNextStage!
               .map((label) => DropdownMenuItem(
                     child: Text(
-                      label.constructionStageText,
+                      label.constructionStageText!,
                       style: TextStyle(
                           fontSize: 18,
                           color: ColorConstants.inputBoxHintColor,
@@ -2023,21 +2024,21 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           onChanged: (value) {
             setState(() {
               _selectedConstructionTypeVisitNextStage = value;
-              print(_selectedConstructionTypeVisitNextStage.id);
+              print(_selectedConstructionTypeVisitNextStage!.id);
               siteFloorsEntityNewNextStage = new List.empty(growable: true);
               _selectedSiteVisitFloorNextStage = null;
-              if (_selectedConstructionTypeVisitNextStage.id == 1 ||
-                  _selectedConstructionTypeVisitNextStage.id == 2 ||
-                  _selectedConstructionTypeVisitNextStage.id == 3) {
+              if (_selectedConstructionTypeVisitNextStage!.id == 1 ||
+                  _selectedConstructionTypeVisitNextStage!.id == 2 ||
+                  _selectedConstructionTypeVisitNextStage!.id == 3) {
                 // siteFloorsEntityNew = new List();
-                siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
-                    id: siteFloorsEntity[0].id,
-                    siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
+                siteFloorsEntityNewNextStage!.add(new SiteFloorsEntity(
+                    id: siteFloorsEntity![0].id,
+                    siteFloorTxt: siteFloorsEntity![0].siteFloorTxt));
               } else {
-                for (int i = 1; i < siteFloorsEntity.length; i++) {
-                  siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
-                      id: siteFloorsEntity[i].id,
-                      siteFloorTxt: siteFloorsEntity[i].siteFloorTxt));
+                for (int i = 1; i < siteFloorsEntity!.length; i++) {
+                  siteFloorsEntityNewNextStage!.add(new SiteFloorsEntity(
+                      id: siteFloorsEntity![i].id,
+                      siteFloorTxt: siteFloorsEntity![i].siteFloorTxt));
                 }
               }
               UpdatedValues.setConstructionTypeVisitNextStage(
@@ -2061,10 +2062,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         SizedBox(height: 16),
         DropdownButtonFormField<SiteFloorsEntity>(
           value: _selectedSiteVisitFloorNextStage,
-          items: siteFloorsEntityNewNextStage
+          items: siteFloorsEntityNewNextStage!
               .map((label) => DropdownMenuItem(
                     child: Text(
-                      label.siteFloorTxt,
+                      label.siteFloorTxt!,
                       style: TextStyle(
                           fontSize: 18,
                           color: ColorConstants.inputBoxHintColor,
@@ -2122,7 +2123,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         TextFormField(
           controller: _stagePotentialVisitNextStage,
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Please enter Site Stage Potential ';
             }
 
@@ -2167,7 +2168,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           items: siteBrandEntityfromLoaclDB
               .map((label) => DropdownMenuItem(
                     child: Text(
-                      label.brandName,
+                      label.brandName!,
                       style: TextStyle(
                           fontSize: 18,
                           color: ColorConstants.inputBoxHintColor,
@@ -2180,7 +2181,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
             _siteProductFromLocalDBNextStage = null;
             List<BrandModelforDB> _siteProductEntityfromLoaclDB =
-                await db.fetchAllDistinctProduct(value.brandName);
+                await db.fetchAllDistinctProduct(value!.brandName);
             setState(() {
               _siteBrandFromLocalDBNextStage = value;
               siteProductEntityfromLoaclDBNextStage =
@@ -2192,7 +2193,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   siteProductEntityfromLoaclDBNextStage);
               print("BrandId-->" + value.brandName.toString());
               // _productSoldVisit.text = _siteBrand.productName;
-              if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
+              if (_siteBrandFromLocalDBNextStage!.brandName!.toLowerCase() ==
                   "dalmia") {
                 _stageStatusNextStage.text = "WON";
               } else {
@@ -2219,7 +2220,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         TextFormField(
           controller: _brandPriceVisitNextStage,
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Please enter Site Built-Up Area ';
             }
 
@@ -2265,7 +2266,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           items: siteProductEntityfromLoaclDBNextStage
               .map((label) => DropdownMenuItem(
                     child: Text(
-                      label.productName,
+                      label.productName!,
                       style: TextStyle(
                           fontSize: 18,
                           color: ColorConstants.inputBoxHintColor,
@@ -2279,7 +2280,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           onChanged: (value) {
             setState(() {
               _siteProductFromLocalDBNextStage = value;
-              print(_siteProductFromLocalDBNextStage.id);
+              print(_siteProductFromLocalDBNextStage!.id);
             });
           },
           decoration: FormFieldStyle.buildInputDecoration(
@@ -2359,7 +2360,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       ),
                       onPressed: () async {
                         print("here");
-                        final DateTime picked = await showDatePicker(
+                        final DateTime? picked = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2001),
@@ -2397,7 +2398,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 child: TextFormField(
                   controller: _siteCurrentTotalBagsNextStage,
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Please enter Bags ';
                     }
                     return null;
@@ -2443,7 +2444,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         TextFormField(
           controller: _stageStatusNextStage,
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Please enter Site Built-Up Area ';
             }
 
@@ -2500,7 +2501,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               ),
               onPressed: () async {
                 print("here");
-                final DateTime picked = await showDatePicker(
+                final DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
@@ -2525,24 +2526,23 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   String calculateStagePotential(
       double siteTotalSitePotential,
-      List<SiteStagePotentialEntity> siteStagePotentialEntity,
-      int selectedConstructionStageId,
-      int selectedFloorId) {
+      List<SiteStagePotentialEntity>? siteStagePotentialEntity,
+      int? selectedConstructionStageId,
+      int? selectedFloorId) {
     String stagePt = "";
-    if ((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank) &&
+    if ((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank!) &&
         (selectedConstructionStageId != null ||
-            !selectedConstructionStageId.isBlank) &&
-        (selectedFloorId != null || !selectedFloorId.isBlank)) {
-      SiteStagePotentialEntity siteStagePotentialEntity1 =
-          siteStagePotentialEntity.firstWhere(
+            !selectedConstructionStageId.isBlank!) &&
+        (selectedFloorId != null || !selectedFloorId.isBlank!)) {
+      SiteStagePotentialEntity? siteStagePotentialEntity1 =
+          siteStagePotentialEntity!.firstWhereOrNull(
               (item) =>
                   (item.constructionStageId == selectedConstructionStageId &&
-                      item.nosFloors == selectedFloorId),
-              orElse: () => null);
+                      item.nosFloors == selectedFloorId));
 
       if (siteStagePotentialEntity1 != null) {
         double potentialPercentage =
-            siteStagePotentialEntity1.potentialPercentage;
+            siteStagePotentialEntity1.potentialPercentage!;
         stagePt = ((((siteTotalSitePotential * 20) * potentialPercentage) / 100)
                 .round())
             .toString();
@@ -2555,15 +2555,15 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   updateSiteSupplyHistory() {
     List<SiteSupplyHistorys> siteSupplyHistory = new List.empty(growable: true);
-    if (productDynamicList != null && productDynamicList.length > 0) {
-      for (int i = 0; i < productDynamicList.length; i++) {
-        if (productDynamicList[i].brandId != -1) {
+    if (productDynamicList != null && productDynamicList!.length > 0) {
+      for (int i = 0; i < productDynamicList!.length; i++) {
+        if (productDynamicList![i].brandId != -1) {
           siteSupplyHistory.add(new SiteSupplyHistorys(
-              brandId: productDynamicList[i].brandId,
-              brandPrice: productDynamicList[i].brandPrice.text,
+              brandId: productDynamicList![i].brandId,
+              brandPrice: productDynamicList![i].brandPrice!.text,
               siteId: UpdatedValues.getSiteId(),
-              supplyDate: productDynamicList[i].supplyDate.text,
-              supplyQty: productDynamicList[i].supplyQty.text,
+              supplyDate: productDynamicList![i].supplyDate!.text,
+              supplyQty: productDynamicList![i].supplyQty!.text,
               createdBy: UpdatedValues.getEmpCode(),
               // soldToParty: visitDataDealer,
               // shipToParty: visitDataSubDealer,
@@ -2573,7 +2573,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               isAuthorised: "N",
               authorisedBy: "",
               authorisedOn: "",
-              awardLoyaltyPoint: productDynamicList[i].awardLoyaltyPoint));
+              awardLoyaltyPoint: productDynamicList![i].awardLoyaltyPoint));
         }
       }
     }

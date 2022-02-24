@@ -26,7 +26,7 @@ class _LogsViewState extends State<ViewLogs> {
   List _giftsCategoriesValueList = [];
   List _giftCategoriesList = [];
   var _currentMonth;
-  List<GiftStockModelList> _giftStockModelList;
+  List<GiftStockModelList>? _giftStockModelList;
 
   addDateForGiftsView() async {
     _giftsCategoriesValueList = [];
@@ -157,13 +157,13 @@ class _LogsViewState extends State<ViewLogs> {
 
                                   builder:(cc)=>
                                 DropdownButton(
-                                  onChanged: (newValue) {
+                                  onChanged: (dynamic newValue) {
                                     giftController.selectedDropdown = newValue;
                                     cc.update();
                                     giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                                   },
                                   value: giftController.selectedDropdown,
-                                  items: _giftStockModelList
+                                  items: _giftStockModelList!
                                       .map<DropdownMenuItem>((value) {
                                     return DropdownMenuItem(
                                       value: value.giftTypeId,

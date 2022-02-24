@@ -10,11 +10,11 @@ abstract class FormFieldStyle {
       fontFamily: "Muli");
 
   static InputDecoration buildInputDecoration({
-    String labelText,
-    String hintText,
-    Widget suffixIcon,
-    Widget prefixIcon,
-    String counterText,
+    String? labelText,
+    String? hintText,
+    Widget? suffixIcon,
+    Widget? prefixIcon,
+    String? counterText,
   }) {
     return InputDecoration(
       focusedBorder: InputBordersDecorations.outLineInputBorderFocused,

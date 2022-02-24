@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SplashController extends GetxController {
   final MyRepositorySplash repository;
 
-  SplashController({@required this.repository}) : assert(repository != null);
+  SplashController({required this.repository}) : assert(repository != null);
 
   final _login = LoginModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
@@ -111,8 +111,8 @@ class SplashController extends GetxController {
     });
   }
 
-  getRefreshData(String accessKey, int reqId) async {
-    List<VersionUpdateModel> versionUpdateModel = new List.empty(growable: true);
+  getRefreshData(String? accessKey, int reqId) async {
+    List<VersionUpdateModel>? versionUpdateModel = new List.empty(growable: true);
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -126,7 +126,7 @@ class SplashController extends GetxController {
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       await repository
-          .getRefreshData(url, accessKey, userSecurityKey)
+          .getRefreshData(url, accessKey!, userSecurityKey)
           .then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
@@ -135,49 +135,49 @@ class SplashController extends GetxController {
           // log('data: ${json.encode(this.splashDataModel)}');
           // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
-          if (versionUpdateModel != null && versionUpdateModel.length > 0) {
+          if (versionUpdateModel != null && versionUpdateModel!.length > 0) {
             //print("In If");
-            for (int i = 0; i < versionUpdateModel.length; i++) {
-              if (versionUpdateModel[i].platform == "ANDROID") {
-                if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "SOFT") {
+            for (int i = 0; i < versionUpdateModel!.length; i++) {
+              if (versionUpdateModel![i].platform == "ANDROID") {
+                if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "SOFT") {
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "ANDROID"),
                       barrierDismissible: true)
                       .then((value) => openNextPage());
-                } else if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "HARD") {
+                } else if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "HARD") {
                   Get.dialog(
                       CustomDialogs().appForceUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "ANDROID"),
                       barrierDismissible: false);
                 }
               }
-              if (versionUpdateModel[i].platform == "IOS") {
-                if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "SOFT") {
+              if (versionUpdateModel![i].platform == "IOS") {
+                if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "SOFT") {
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "IOS"),
                       barrierDismissible: true)
                       .then((value) => openNextPage());
-                } else if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "HARD") {
+                } else if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "HARD") {
                   Get.dialog(
                       CustomDialogs().appForceUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "IOS"),
                       barrierDismissible: false);
                 }

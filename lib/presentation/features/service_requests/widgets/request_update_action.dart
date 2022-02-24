@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestUpdateAction extends StatefulWidget {
   final dept, id, severity;
-  final List<SrcResolutionEntity> resolutionStatus;
+  final List<SrcResolutionEntity>? resolutionStatus;
   final requestType;
 
   RequestUpdateAction(
@@ -35,24 +36,24 @@ class RequestUpdateAction extends StatefulWidget {
 
 class _RequestUpdateActionState extends State<RequestUpdateAction> {
   UpdateServiceRequestController updateServiceRequestController = Get.find();
-  UpdateSRModel _updateSRModel;
+  UpdateSRModel? _updateSRModel;
   UpdateServiceRequestController updateRequest = Get.find();
-  Position _currentPosition = new Position();
+  Position? _currentPosition = new Position();
   final _updateActionFormKey = GlobalKey<FormState>();
   TextEditingController _location = TextEditingController();
   TextEditingController _noOfBags = TextEditingController();
   TextEditingController _comment = TextEditingController();
   TextEditingController _batchNo = TextEditingController();
   TextEditingController _sourcePlant = TextEditingController();
-  String _productComplaint;
-  String _techVan;
-  String _productType;
-  int _resolutionStatus;
-  String _requestNature;
+  String? _productComplaint;
+  String? _techVan;
+  String? _productType;
+  int? _resolutionStatus;
+  String? _requestNature;
   TextEditingController _dateOfPurchase = TextEditingController();
   TextEditingController _nextVisitDate = TextEditingController();
   List<File> _imageList = List<File>.empty(growable: true);
-  String _selectedTypeOfComplain;
+  String? _selectedTypeOfComplain;
 
   var _balanceQuantity = new TextEditingController();
   var _billNo = new TextEditingController();
@@ -61,12 +62,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   var _detailsOfDemoConducted = new TextEditingController();
   var _bestBeforeDate = new TextEditingController();
   var _mtController = new TextEditingController();
-  String _selectedSampleCollected;
-  String _gropuSampleCollected;
-  String _groupDemoConducted;
-  String _selectedDemoConducted;
+  String? _selectedSampleCollected;
+  String? _gropuSampleCollected;
+  String? _groupDemoConducted;
+  String? _selectedDemoConducted;
 
-  Map<String, bool> values = {
+  Map<String, bool?> values = {
     'OPC': false,
     'PPC': false,
     'CC': false,
@@ -100,7 +101,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
         child: Column(
           children: [
             DropdownButtonFormField(
-              onChanged: (value) {
+              onChanged: (dynamic value) {
                 setState(() {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _requestNature = value;
@@ -117,7 +118,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               style: FormFieldStyle.formFieldTextStyle,
               decoration: FormFieldStyle.buildInputDecoration(
                   labelText: "Request Nature*"),
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'Please select the Request Nature' : null,
             ),
             SizedBox(height: 16),
@@ -161,7 +162,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     barrierDismissible: false,
                     builder: (BuildContext context) {
                       return new WillPopScope(
-                          onWillPop: () => null,
+                          onWillPop: (() => null) as Future<bool> Function()?,
                           child: Center(
                             child: CircularProgressIndicator(),
                           ));
@@ -299,7 +300,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 Radio(
                                     value: 'Written'.toUpperCase(),
                                     groupValue: _selectedTypeOfComplain,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedTypeOfComplain = value;
                                       });
@@ -317,7 +318,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 Radio(
                                     value: 'Verbal'.toUpperCase(),
                                     groupValue: _selectedTypeOfComplain,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedTypeOfComplain = value;
                                       });
@@ -345,13 +346,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ),
                   )
                   .toList(),
-              onChanged: (val) {
+              onChanged: (dynamic val) {
                 setState(() {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _productComplaint = val;
                 });
               },
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'This field cannot be empty' : null,
             ),
             SizedBox(height: 16),
@@ -394,7 +395,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 ),
                                 value: values[key],
                                 checkColor: Colors.white,
-                                onChanged: (bool value) {
+                                onChanged: (bool? value) {
                                   setState(() {
                                     values[key] = value;
                                   });
@@ -611,7 +612,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                             ),
                             onPressed: () async {
                               print("here");
-                              final DateTime picked = await showDatePicker(
+                              final DateTime? picked = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2001),
@@ -663,7 +664,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
                                         groupValue: _gropuSampleCollected,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _gropuSampleCollected = value;
                                             _selectedSampleCollected = "Y";
@@ -682,7 +683,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'No'.toUpperCase(),
                                         groupValue: _gropuSampleCollected,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _gropuSampleCollected = value;
                                             _selectedSampleCollected = "N";
@@ -732,7 +733,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
                                         groupValue: _groupDemoConducted,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _groupDemoConducted = value;
                                             _selectedDemoConducted = "Y";
@@ -751,7 +752,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'No'.toUpperCase(),
                                         groupValue: _groupDemoConducted,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _groupDemoConducted = value;
                                             _selectedDemoConducted = "N";
@@ -794,12 +795,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           ),
                         )
                         .toList(),
-                    onChanged: (val) {
+                    onChanged: (dynamic val) {
                       setState(() {
                         _techVan = val;
                       });
                     },
-                    validator: (value) =>
+                    validator: (dynamic value) =>
                         value == null ? 'This field cannot be empty' : null,
                   )
                 : Container(),
@@ -821,12 +822,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                               ),
                             )
                             .toList(),
-                        onChanged: (val) {
+                        onChanged: (dynamic val) {
                           setState(() {
                             _productType = val;
                           });
                         },
-                        validator: (value) =>
+                        validator: (dynamic value) =>
                             (value == null) && (_productComplaint == 'YES')
                                 ? 'Please select the Product Type'
                                 : null,
@@ -838,7 +839,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           labelText: 'Batch No.',
                         ),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please select the Product Type'
                                 : null,
                       ),
@@ -857,7 +858,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     final DateFormat formatter =
                                         DateFormat("yyyy-MM-dd");
                                     _dateOfPurchase.text =
-                                        formatter.format(value);
+                                        formatter.format(value!);
                                   },
                                 ),
                         ),
@@ -877,7 +878,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Source Plant"),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please enter the details about source plant'
                                 : null,
                       ),
@@ -889,7 +890,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "No. of Bags"),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please enter the number of bags'
                                 : null,
                       ),
@@ -902,19 +903,19 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               decoration: FormFieldStyle.buildInputDecoration(
                   labelText: "Resolution Status*"),
               items: widget.resolutionStatus != null
-                  ? widget.resolutionStatus
+                  ? widget.resolutionStatus!
                       .map(
                         (e) => DropdownMenuItem(
-                          child: Text(e.resolutionText),
+                          child: Text(e.resolutionText!),
                           value: e.id,
                         ),
                       )
                       .toList()
                   : [],
-              onChanged: (val) {
+              onChanged: (dynamic val) {
                 _resolutionStatus = val;
               },
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'Please select the Resolution Status' : null,
             ),
             SizedBox(height: 16),
@@ -931,7 +932,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               style: FormFieldStyle.formFieldTextStyle,
               readOnly: true,
               validator: (value) =>
-                  value.isEmpty ? 'Please enter the next visit date' : null,
+                  value!.isEmpty ? 'Please enter the next visit date' : null,
               controller: _nextVisitDate,
               onTap: () => PickDate.selectDate(
                       context: context, firstDate: DateTime.now())
@@ -939,7 +940,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       ? null
                       : setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                          _nextVisitDate.text = formatter.format(value);
+                          _nextVisitDate.text = formatter.format(value!);
                         })),
               decoration: FormFieldStyle.buildInputDecoration(
                   labelText: "Next visit date*",
@@ -951,13 +952,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             SizedBox(height: 16),
             RaisedButton(
               onPressed: () async {
-                if (!_updateActionFormKey.currentState.validate()) {
+                if (!_updateActionFormKey.currentState!.validate()) {
                   Get.rawSnackbar(
                       message: 'All fields are mandatory',
                       title: 'Warning:',
                       backgroundColor: Colors.red);
                 } else {
-                  String empId = await getEmpId();
+                  String? empId = await (getEmpId() as FutureOr<String?>);
                   List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {
@@ -983,8 +984,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       {
                         "srComplaintId": widget.id,
                         "requestNature": _requestNature,
-                        "locationLat": _currentPosition.latitude,
-                        "locationLong": _currentPosition.longitude,
+                        "locationLat": _currentPosition!.latitude,
+                        "locationLong": _currentPosition!.longitude,
                         "productComplaint": _productComplaint,
                         "productType": _productType,
                         "techvanReqd": _techVan,
@@ -1013,7 +1014,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ],
                     "srcActionPhotosEntity": imageDetails
                   });
-                  print("Data--> " + _updateSRModel.toJson().toString());
+                  print("Data--> " + _updateSRModel!.toJson().toString());
                   updateRequest.getAccessKeyAndUpdateRequest(
                       _imageList, _updateSRModel);
                 }
@@ -1035,7 +1036,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);

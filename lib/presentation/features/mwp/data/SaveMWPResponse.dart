@@ -1,6 +1,6 @@
 class SaveMWPResponse {
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
 
   SaveMWPResponse({this.respCode, this.respMsg});
 

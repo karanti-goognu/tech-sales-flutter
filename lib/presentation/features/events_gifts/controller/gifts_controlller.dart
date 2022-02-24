@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/gifts_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
@@ -16,7 +17,7 @@ class GiftController extends GetxController {
   }
   final GiftsRepository repository;
 
-  GiftController({@required this.repository}) : assert(repository != null);
+  GiftController({required this.repository}) : assert(repository != null);
 
   final _giftStockModel = GetGiftStockModel().obs;
   final _giftStockModelList= List<GiftStockModelList>.empty(growable: true).obs;
@@ -84,17 +85,17 @@ class GiftController extends GetxController {
     _giftStockModel.value = value;
   }
 
-  Future<String> getAccessKey() {
+  Future<String?> getAccessKey() {
     return repository.getAccessKey();
   }
 
   Future getGiftStockData() async {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
-      String empID= prefs.getString(StringConstants.employeeId);
-      String securityKey = prefs.getString(StringConstants.userSecurityKey);
+      String empID= prefs.getString(StringConstants.employeeId)!;
+      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
       giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
       giftStockModelList= giftStockModel.giftStockModelList;
       giftTypeModelList= giftStockModel.giftTypeModelList;
@@ -103,28 +104,28 @@ class GiftController extends GetxController {
     return giftStockModel;
   }
 
-  Future addGiftStock({String comment, String giftTypeId, String giftTypeText,String giftInHandQty,String giftInHandQtyNew}) async {
-    SaveVisitResponse response;
+  Future addGiftStock({String? comment, String? giftTypeId, String? giftTypeText,String? giftInHandQty,String? giftInHandQtyNew}) async {
+    SaveVisitResponse? response;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
-      String empID= prefs.getString(StringConstants.employeeId);
-      String securityKey = prefs.getString(StringConstants.userSecurityKey);
-      response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
+      String? empID= prefs.getString(StringConstants.employeeId);
+      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
+      response = await (repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew) as FutureOr<SaveVisitResponse?>);
     });
     Get.back();
-    Get.rawSnackbar(title: "Message", message: response.respMsg);
+    Get.rawSnackbar(title: "Message", message: response!.respMsg);
 
     return response;
   }
   Future getViewLogsData(String monthYear) async {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
-      String empID= prefs.getString(StringConstants.employeeId);
-      String securityKey = prefs.getString(StringConstants.userSecurityKey);
+      String empID= prefs.getString(StringConstants.employeeId)!;
+      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
       Get.back();
       if(logsModel.respCode=="DM1006"){

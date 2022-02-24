@@ -14,7 +14,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
 
-  final _searchList = List<DealerModel>.empty(growable: true);
+  final _searchList = List<DealerModel?>.empty(growable: true);
 
   @override
   void initState() {
@@ -143,13 +143,13 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                             child: new Column(
                               children: <Widget>[
                                 new CheckboxListTile(
-                                    value: _searchList[index].isSelected,
+                                    value: _searchList[index]!.isSelected,
                                     title: new Text(
-                                        '${_searchList[index].dealerName}'),
+                                        '${_searchList[index]!.dealerName}'),
                                     controlAffinity:
                                         ListTileControlAffinity.leading,
-                                    onChanged: (bool val) {
-                                      itemChange1(val, _searchList[index].dealerName,index);
+                                    onChanged: (bool? val) {
+                                      itemChange1(val, _searchList[index]!.dealerName,index);
                                     })
                               ],
                             ),
@@ -171,7 +171,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
                                 '${_addEventController.dealerList[index].dealerName}'),
                             controlAffinity:
                             ListTileControlAffinity.leading,
-                            onChanged: (bool val) {
+                            onChanged: (bool? val) {
                               itemChange(val, index);
                             })
                       ],
@@ -206,13 +206,13 @@ class _DealersListWidgetState extends State<DealersListWidget> {
 
   }
 
-  void itemChange(bool val, int index) {
+  void itemChange(bool? val, int index) {
     /*else{
       _addEventController.dealerListSelected.remove(index);
     }*/
     setState(() {
       _addEventController.dealerList[index].isSelected = val;
-      if (val) {
+      if (val!) {
         print('true');
         _addEventController.dealerListSelected.add(new DealerModelSelected(
             _addEventController.dealerList[index].dealerId,
@@ -225,7 +225,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
     });
   }
 
-  void itemChange1(bool val, String dealerName,int index1) {
+  void itemChange1(bool? val, String? dealerName,int index1) {
     /*else{
       _addEventController.dealerListSelected.remove(index);
     }*/
@@ -238,13 +238,13 @@ class _DealersListWidgetState extends State<DealersListWidget> {
 
     setState(() {
       _addEventController.dealerList[index].isSelected = val;
-      if (val) {
-        _searchList[index1].isSelected = true;
+      if (val!) {
+        _searchList[index1]!.isSelected = true;
         _addEventController.dealerListSelected.add(new DealerModelSelected(
             _addEventController.dealerList[index].dealerId,
             _addEventController.dealerList[index].dealerName));
       } else {
-        _searchList[index1].isSelected = false;
+        _searchList[index1]!.isSelected = false;
         _addEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _addEventController.dealerList[index].dealerId);
       }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart';
@@ -27,9 +28,9 @@ class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // only have a single app-wide reference to the database
-  static Database _database;
+  static Database? _database;
 
-  Future<Database> get database async {
+  Future<Database?> get database async {
     if (_database != null) return _database;
     // lazily instantiate the db the first time it is accessed
     _database = await _initDatabase();
@@ -68,23 +69,23 @@ class DatabaseHelper {
   // and the value is the column value. The return value is the id of the
   // inserted row.
   Future<int> insert(String tableName, Map<String, dynamic> row) async {
-    Database db = await instance.database;
+    Database db = await (instance.database as FutureOr<Database>);
     return await db.insert(tableName, row);
   }
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Map<String, dynamic>>> queryAllRows(String tableName) async {
-    Database db = await instance.database;
+    Database db = await (instance.database as FutureOr<Database>);
     return await db.query(tableName);
   }
 
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
-  Future<int> queryRowCount(
+  Future<int?> queryRowCount(
     String tableName,
   ) async {
-    Database db = await instance.database;
+    Database db = await (instance.database as FutureOr<Database>);
     return Sqflite.firstIntValue(
         await db.rawQuery('SELECT COUNT(*) FROM $tableName'));
   }
@@ -92,8 +93,8 @@ class DatabaseHelper {
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.
   Future<int> update(String tableName, Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    int id = row[columnId];
+    Database db = await (instance.database as FutureOr<Database>);
+    int? id = row[columnId];
     return await db
         .update(tableName, row, where: '$columnId = ?', whereArgs: [id]);
   }
@@ -101,7 +102,7 @@ class DatabaseHelper {
   // Deletes the row specified by the id. The number of affected rows is
   // returned. This should be 1 as long as the row exists.
   Future<int> delete(String tableName, int id) async {
-    Database db = await instance.database;
+    Database db = await (instance.database as FutureOr<Database>);
     return await db.delete(tableName, where: '$columnId = ?', whereArgs: [id]);
   }
 }

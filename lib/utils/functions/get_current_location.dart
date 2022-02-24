@@ -15,7 +15,7 @@ class GetCurrentLocation{
   }
 
   static Future<List> getCurrentLocation() async {
-    List<String> loc;
+    List<String>? loc;
     if (!await checkLocationPermission()) {
       Get.dialog(CustomDialogs().errorDialog("Please enable your location service from device settings"));
     } else {

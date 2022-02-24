@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class ConformationDialog extends StatefulWidget {
-  final String message;
-  const ConformationDialog({Key key, this.message}) : super(key: key);
+  final String? message;
+  const ConformationDialog({Key? key, this.message}) : super(key: key);
 
 
   @override
@@ -15,8 +15,8 @@ class ConformationDialog extends StatefulWidget {
 }
 
 class _ConformationDialogState extends State<ConformationDialog> {
-   final String message;
-  double textSize;
+   final String? message;
+  double? textSize;
   _ConformationDialogState(this.message);
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class _ConformationDialogState extends State<ConformationDialog> {
     SizeConfig().init(context);
     return Padding(
       padding: new EdgeInsets.only(
-          left: SizeConfig.screenWidth * 0.07,
-          right: SizeConfig.screenWidth * 0.07,
-          bottom: SizeConfig.screenHeight * .04),
+          left: SizeConfig.screenWidth! * 0.07,
+          right: SizeConfig.screenWidth! * 0.07,
+          bottom: SizeConfig.screenHeight! * .04),
       child: Center(
         child: Card(
           shape: RoundedRectangleBorder(
@@ -48,8 +48,8 @@ class _ConformationDialogState extends State<ConformationDialog> {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                getMessageText(SizeConfig.screenHeight, SizeConfig.screenWidth),
-                getYesOrNo(SizeConfig.screenHeight, SizeConfig.screenWidth),
+                getMessageText(SizeConfig.screenHeight!, SizeConfig.screenWidth!),
+                getYesOrNo(SizeConfig.screenHeight!, SizeConfig.screenWidth!),
               ],
             ),
           ),
@@ -71,7 +71,7 @@ class _ConformationDialogState extends State<ConformationDialog> {
 // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: new Text(message,
+            child: new Text(message!,
                 style: new TextStyle(
                   color: Colors.black87,
                   fontFamily: 'Avenir_Black',

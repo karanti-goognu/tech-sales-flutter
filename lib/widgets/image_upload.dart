@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,7 +6,7 @@ import 'package:path/path.dart';
 
 class ImageUpload extends StatelessWidget {
   const ImageUpload({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -37,7 +38,7 @@ class ImageUpload extends StatelessWidget {
 
 _imgFromCamera() async {
   ImagePicker _picker = ImagePicker();
-  XFile image = await _picker.pickImage(
+  XFile? image = await _picker.pickImage(
       source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       print(1);
@@ -54,8 +55,8 @@ _imgFromCamera() async {
 
 _imgFromGallery() async {
   ImagePicker _picker = ImagePicker();
-  XFile image = await _picker.pickImage(
-      source: ImageSource.gallery, imageQuality: 50);
+  XFile image = await (_picker.pickImage(
+      source: ImageSource.gallery, imageQuality: 50) as FutureOr<XFile>);
 print(image.path);
   // setState(() {
     if (image != null) {

@@ -7,9 +7,9 @@ import 'package:moengage_inbox/inbox_data.dart';
 import 'package:moengage_inbox/inbox_message.dart';
 
 class MoEngageInboxX {
-  MethodChannel _channel;
-  MoEAndroidInbox _androidInbox;
-  MoEiOSInbox _iOSInbox;
+  MethodChannel? _channel;
+  late MoEAndroidInbox _androidInbox;
+  late MoEiOSInbox _iOSInbox;
 
   MoEngageInbox() {
     _channel = MethodChannel(CHANNEL_NAME);

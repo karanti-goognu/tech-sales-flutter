@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
@@ -16,20 +16,20 @@ class SaveEventController extends GetxController {
 
   final EgRepository repository;
 
-  SaveEventController({@required this.repository})
+  SaveEventController({required this.repository})
       : assert(repository != null);
   final _saveEventData = SaveEventFormModel().obs;
   get saveEventData => _saveEventData.value;
   set saveEventData(value) => _saveEventData.value = value;
   String responseForDialog = '';
 
-  Future<AccessKeyModel> getAccessKey() {
-    return repository.getAccessKey();
+  Future<AccessKeyModel?> getAccessKey() {
+    return repository.getAccessKey().then((value) => value as AccessKeyModel?);
   }
 
   getAccessKeyAndSaveRequest(
       SaveEventFormModel saveEventFormModel) {
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     // Future.delayed(
@@ -38,13 +38,13 @@ class SaveEventController extends GetxController {
     //         barrierDismissible: false));
 
       _prefs.then((SharedPreferences prefs) async {
-        String accessKey = await repository.getAccessKey();
+        String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
           //Get.back();
           print(")))))))$value");
-           if (value.respCode == 'DM1002') {
+           if (value!.respCode == 'DM1002') {
             Get.dialog(
                 CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),
                 barrierDismissible: false);
@@ -59,7 +59,7 @@ class SaveEventController extends GetxController {
     });
   }
 
-  Future<SaveEventResponse> saveEventRequest(String accessKey,
+  Future<SaveEventResponse?> saveEventRequest(String accessKey,
       String userSecurityKey, SaveEventFormModel saveEventFormModel) {
     return repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
         .whenComplete(() => responseForDialog = 'Test');

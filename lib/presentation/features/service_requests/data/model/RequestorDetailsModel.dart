@@ -1,16 +1,16 @@
 class RequestorDetailsModel {
-  List<SrComplaintRequesterList> srComplaintRequesterList;
-  String respCode;
-  String respMsg;
+  List<SrComplaintRequesterList>? srComplaintRequesterList;
+  String? respCode;
+  String? respMsg;
 
   RequestorDetailsModel(
       {this.srComplaintRequesterList, this.respCode, this.respMsg});
 
   RequestorDetailsModel.fromJson(Map<String, dynamic> json) {
     if (json['srComplaintRequesterList'] != null) {
-      srComplaintRequesterList = new List<SrComplaintRequesterList>();
+      srComplaintRequesterList = new List<SrComplaintRequesterList>.empty(growable: true);
       json['srComplaintRequesterList'].forEach((v) {
-        srComplaintRequesterList.add(new SrComplaintRequesterList.fromJson(v));
+        srComplaintRequesterList!.add(new SrComplaintRequesterList.fromJson(v));
       });
     }
     respCode = json['resp-code'];
@@ -21,7 +21,7 @@ class RequestorDetailsModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.srComplaintRequesterList != null) {
       data['srComplaintRequesterList'] =
-          this.srComplaintRequesterList.map((v) => v.toJson()).toList();
+          this.srComplaintRequesterList!.map((v) => v.toJson()).toList();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -30,8 +30,8 @@ class RequestorDetailsModel {
 }
 
 class SrComplaintRequesterList {
-  String requesterCode;
-  String requesterName;
+  String? requesterCode;
+  String? requesterName;
 
   SrComplaintRequesterList({this.requesterCode, this.requesterName});
 

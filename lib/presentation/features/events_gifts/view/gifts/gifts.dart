@@ -25,7 +25,7 @@ class _GiftsViewState extends State<GiftsView> {
     'Stock In Hand',
     'Utilized'
   ];
-  String giftTypeText,_giftInHandQty;
+  String? giftTypeText,_giftInHandQty;
   List _giftsCategoriesValueList = [];
   List _giftCategoriesList = [];
   TextEditingController _comments = TextEditingController();
@@ -125,7 +125,7 @@ class _GiftsViewState extends State<GiftsView> {
                           _giftController.giftStockModelList == null
                       ? Container()
                       : DropdownButton(
-                          onChanged: (newValue) {
+                          onChanged: (dynamic newValue) {
                             var x = _giftController.giftStockModelList
                                 .toList()
                                 .indexWhere((e) {
@@ -365,7 +365,7 @@ class _GiftsViewState extends State<GiftsView> {
 
 
 class GiftsCategories {
-  int count;
+  int? count;
   String text;
   GiftsCategories(this.text, this.count);
 }

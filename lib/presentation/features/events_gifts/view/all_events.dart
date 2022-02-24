@@ -17,7 +17,7 @@ class AllEvents extends StatefulWidget {
 }
 
 class _AllEventsState extends State<AllEvents> {
-  AllEventsModel allEventsModel;
+  AllEventsModel? allEventsModel;
   AllEventController allEventController = Get.find();
   List<EventListModels> pending = [];
   List<EventListModels> approved = [];
@@ -27,8 +27,8 @@ class _AllEventsState extends State<AllEvents> {
   List<EventListModels> eventRejected = [];
   List<EventListModels> notSubmitted = [];
 
-  ScrollController _scrollController;
-  String option = StringConstants.pendingApproval;
+  ScrollController? _scrollController;
+  String? option = StringConstants.pendingApproval;
 
   @override
   void initState() {
@@ -48,26 +48,26 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   getSortedData() {
-    if (allEventsModel != null && allEventsModel.eventListModels != null) {
-      for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        if (allEventsModel.eventListModels[i].eventStatusText ==
+    if (allEventsModel != null && allEventsModel!.eventListModels != null) {
+      for (int i = 0; i < allEventsModel!.eventListModels!.length; i++) {
+        if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.pendingApproval) {
-          pending.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          pending.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.approved) {
-          approved.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          approved.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.rejected) {
-          rejected.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          rejected.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.completed) {
-          completed.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          completed.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.cancelled) {
-          cancelled.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          cancelled.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.notSubmitted) {
-          notSubmitted.add(allEventsModel.eventListModels[i]);
+          notSubmitted.add(allEventsModel!.eventListModels![i]);
         }
       }
     } else {}
@@ -118,8 +118,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getStatusList() {
     return (allEventsModel != null &&
-            allEventsModel.eventStatusEntities != null &&
-            allEventsModel.eventStatusEntities.length > 0)
+            allEventsModel!.eventStatusEntities != null &&
+            allEventsModel!.eventStatusEntities!.length > 0)
         ? Container(
             padding: EdgeInsets.only(
               top: 5.sp,
@@ -137,15 +137,15 @@ class _AllEventsState extends State<AllEvents> {
                     child: FilterChip(
                       onSelected: (bool selected) {
                         setState(() {
-                          option = allEventsModel
-                              .eventStatusEntities[index].eventStatusText;
+                          option = allEventsModel!
+                              .eventStatusEntities![index].eventStatusText;
 
                           //allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
                         });
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
-                      label: Text(allEventsModel
-                          .eventStatusEntities[index].eventStatusText),
+                      label: Text(allEventsModel!
+                          .eventStatusEntities![index].eventStatusText!),
                       // backgroundColor: option == 1
                       //     ? Colors.blue.withOpacity(0.2)
                       //     : Colors.white,
@@ -167,8 +167,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getList(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
+            allEventsModel!.eventListModels != null &&
+            allEventsModel!.eventListModels!.length > 0 &&
             list != null)
         ? ListView.builder(
             shrinkWrap: true,
@@ -191,7 +191,7 @@ class _AllEventsState extends State<AllEvents> {
             ),
           );
   }
-  HexColor _color(int id){
+  HexColor _color(int? id){
     switch(id){
       case 1:return HexColor('#F9A61A');
       case 2:return HexColor('#39B54A');
@@ -200,13 +200,16 @@ class _AllEventsState extends State<AllEvents> {
       case 5:return HexColor('#B00020');
       case 6:return HexColor('#000000');
       case 7:return HexColor('#808080');
+
+      default: return HexColor('#808080');
+
     }
   }
 
   Widget getFilteredList(){
     return (allEventsModel != null &&
-        allEventsModel.eventListModels != null &&
-        allEventsModel.eventListModels.length > 0 &&
+        allEventsModel!.eventListModels != null &&
+        allEventsModel!.eventListModels!.length > 0 &&
         allEventController.egAllEventData.eventListModels != null)
         ?
     ListView.builder(
@@ -235,8 +238,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
+            allEventsModel!.eventListModels != null &&
+            allEventsModel!.eventListModels!.length > 0 &&
             list != null)
         ?
         ListView.builder(
@@ -264,8 +267,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-        allEventsModel.eventListModels != null &&
-        allEventsModel.eventListModels.length > 0 &&
+        allEventsModel!.eventListModels != null &&
+        allEventsModel!.eventListModels!.length > 0 &&
         list != null)
         ?
     ListView.builder(
@@ -321,7 +324,7 @@ class _AllEventsState extends State<AllEvents> {
                   // Obx(
                   //   () =>
                   Text(
-                    list[index].eventDate,
+                    list[index].eventDate!,
                     //"24-Mar-21",
                     style: TextStyle(
                         fontSize: 15,
@@ -345,7 +348,7 @@ class _AllEventsState extends State<AllEvents> {
                 // Obx(
                 //   () =>
                 Text(
-                  list[index].eventTypeText,
+                  list[index].eventTypeText!,
                   //allEventController.egAllEventData.eventListModels[index].eventTypeText,
                   style: TextStyle(
                       fontSize: 15,

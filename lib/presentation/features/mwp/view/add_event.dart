@@ -101,7 +101,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                           child: Obx(
                                 () => DropdownButton<String>(
                               value: _addEventController.selectedView,
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 _addEventController.selectedView = newValue;
                                 if(_addEventController.selectedView=='Service Requests'){
                                   Get.offNamed(Routes.SERVICE_REQUEST_CREATION);

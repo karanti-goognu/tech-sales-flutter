@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   final MyRepositoryHome repository;
   SplashController _splashController = Get.find();
 
-  HomeController({@required this.repository}) : assert(repository != null);
+  HomeController({required this.repository}) : assert(repository != null);
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _validateOtpResponse = ValidateOtpModel().obs;
@@ -128,7 +128,7 @@ class HomeController extends GetxController {
     });
   }
 
-  getDashboardDetails(String accessKey) async {
+  getDashboardDetails(String? accessKey) async {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -142,15 +142,15 @@ class HomeController extends GetxController {
           .then((_) {
         Get.back();
         DashboardModel data = _;
-        this.sitesConverted = data.dashBoardViewModal.sitesConverted;
-        this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
-        this.volumeConverted = data.dashBoardViewModal.volumeConverted;
-        this.newInfl = data.dashBoardViewModal.newInfl;
+        this.sitesConverted = data.dashBoardViewModal!.sitesConverted;
+        this.dspSlabsConverted = data.dashBoardViewModal!.dspSlabsConverted;
+        this.volumeConverted = data.dashBoardViewModal!.volumeConverted;
+        this.newInfl = data.dashBoardViewModal!.newInfl;
       });
     }).catchError((e) => print(e));
   }
 
-  getCheckInDetails(String accessKey) {
+  getCheckInDetails(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -210,11 +210,11 @@ class HomeController extends GetxController {
     });
   }
 
-  getCheckOutDetails(String accessKey) {
+  getCheckOutDetails(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
-    String journeyStartLat = "empty";
-    String journeyStartLong = "empty";
+    String? journeyStartLat = "empty";
+    String? journeyStartLong = "empty";
     String journeyEndLat = "empty";
     String journeyEndLong = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -236,8 +236,8 @@ class HomeController extends GetxController {
 //        debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${date.day}";
-        String journeyDate = _splashController.splashDataModel.journeyDetails.journeyDate;
-        String journeyStartTime = _splashController.splashDataModel.journeyDetails.journeyStartTime;
+        String? journeyDate = _splashController.splashDataModel.journeyDetails.journeyDate;
+        String? journeyStartTime = _splashController.splashDataModel.journeyDetails.journeyStartTime;
         repository
             .getCheckInDetails(
                 url,

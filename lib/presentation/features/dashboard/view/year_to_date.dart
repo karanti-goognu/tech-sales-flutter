@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -25,14 +26,14 @@ class YearToDate extends StatefulWidget {
 class _YearToDateState extends State<YearToDate> {
 //  final DataGridController _controller = DataGridController();
   DashboardController _dashboardController = Get.find();
-  String actualOrAverage = 'Actual';
+  String? actualOrAverage = 'Actual';
   bool _ytdIsVolume = false;
-  String yearMonth;
-  List<dynamic> _yearMonthList = [];
+  String? yearMonth;
+  List<dynamic>? _yearMonthList = [];
 //  static GlobalKey previewContainer = new GlobalKey();
-  File imgFile;
+  late File imgFile;
   Random random = Random();
-  List<DashboardYearlyModels> _thisYearData;
+  List<DashboardYearlyModels>? _thisYearData;
   List<ChartDataForYTD> _barGraphGeneratedField = [];
   List<ChartDataForYTD> _barGraphFieldConverted = [];
   List<ChartDataForYTD> _lineChartGenerated = [];
@@ -49,11 +50,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.barGraphLegend2 = 'Leads Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _barGraphGeneratedField.add(ChartDataForYTD(
-          _thisYearData[i].leadGenerated.toDouble(),
+          _thisYearData![i].leadGenerated!.toDouble(),
           _dashboardController.monthList[i]));
 
       _barGraphFieldConverted.add(ChartDataForYTD(
-          _thisYearData[i].leadConverted.toDouble(),
+          _thisYearData![i].leadConverted!.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
@@ -66,11 +67,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.barGraphLegend2 = 'Volume Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _barGraphGeneratedField.add(ChartDataForYTD(
-          _thisYearData[i].generatedVolume.toDouble(),
+          _thisYearData![i].generatedVolume!.toDouble(),
           _dashboardController.monthList[i]));
 
       _barGraphFieldConverted.add(ChartDataForYTD(
-          _thisYearData[i].convertedVolume.toDouble(),
+          _thisYearData![i].convertedVolume!.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
@@ -83,11 +84,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.lineChartLegend2 = 'Avg Converted Volume';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _lineChartGenerated.add(ChartDataForYTD(
-          _thisYearData[i].avgGeneratedVolume.toDouble(),
+          _thisYearData![i].avgGeneratedVolume!.toDouble(),
           _dashboardController.monthList[i]));
 
       _lineChartConverted.add(ChartDataForYTD(
-          _thisYearData[i].avgConvertedVolume.toDouble(),
+          _thisYearData![i].avgConvertedVolume!.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
@@ -100,11 +101,11 @@ class _YearToDateState extends State<YearToDate> {
     _dashboardController.lineChartLegend2 = 'Avg Lead Converted';
     for (int i = 0; i < _dashboardController.monthList.length; i++) {
       _lineChartGenerated.add(ChartDataForYTD(
-          _thisYearData[i].avgLeadGenerated.toDouble(),
+          _thisYearData![i].avgLeadGenerated!.toDouble(),
           _dashboardController.monthList[i]));
 
       _lineChartConverted.add(ChartDataForYTD(
-          _thisYearData[i].avgLeadConverted.toDouble(),
+          _thisYearData![i].avgLeadConverted!.toDouble(),
           _dashboardController.monthList[i]));
     }
   }
@@ -126,7 +127,7 @@ getYearlyData()async{
 
     if(mounted)
     setState(() {
-      yearMonth = _yearMonthList[1];
+      yearMonth = _yearMonthList![1];
     });
     _thisYearData = _dashboardController
         .dashboardYearlyViewModel.dashboardYearlyModels
@@ -274,7 +275,7 @@ getYearlyData()async{
                               DropdownButton(
                                   value: yearMonth,
                                   iconEnabledColor: HexColor('FF8500'),
-                                  items: _yearMonthList
+                                  items: _yearMonthList!
                                       .map<DropdownMenuItem>(
                                           (e) => DropdownMenuItem(
                                         child: Text(e,
@@ -288,7 +289,7 @@ getYearlyData()async{
                                   onTap: () {
                                   //  print("On Tap called");
                                   },
-                                  onChanged: (_) {
+                                  onChanged: (dynamic _) {
                                   //  print("On changed called");
                                     if(mounted)
                                     setState(() {
@@ -345,7 +346,7 @@ getYearlyData()async{
                                       value: e,
                                     ))
                                 .toList(),
-                            onChanged: (_) {
+                            onChanged: (dynamic _) {
                               if(mounted)
                               setState(() {
                                 actualOrAverage = _;
@@ -424,8 +425,8 @@ getYearlyData()async{
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            width: SizeConfig.screenWidth * 1.7,
-                            height: SizeConfig.screenHeight /2.8,
+                            width: SizeConfig.screenWidth! * 1.7,
+                            height: SizeConfig.screenHeight! /2.8,
                             child: BarGraphForYTD(
                               chartData: _barGraphGeneratedField,
                               chartData2: _barGraphFieldConverted,
@@ -475,9 +476,9 @@ getYearlyData()async{
     String empIdForFileName= _dashboardController.empId;
 //    print(_dashboardController.empId);
 //    var pngBytes = await _capturePng();
-    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    var pngBytes = await  (screenshotController.capture(pixelRatio: 5) as FutureOr<dynamic>);
  //   print(pngBytes);
-    final directory = (await getExternalStorageDirectory()).path;
+    final directory = (await getExternalStorageDirectory())!.path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-YTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
@@ -490,7 +491,7 @@ getYearlyData()async{
     return Column(
       children: [
         Container(
-          height: SizeConfig.screenHeight / 20,
+          height: SizeConfig.screenHeight! / 20,
           color: HexColor('707070'),
           child: Row(
             children: [
@@ -590,7 +591,7 @@ getYearlyData()async{
     return Column(
       children: [
         Container(
-          height: SizeConfig.screenHeight / 20,
+          height: SizeConfig.screenHeight! / 20,
           color: HexColor('707070'),
           child: Row(
             children: [
@@ -690,7 +691,7 @@ getYearlyData()async{
 class ChartDataForYTD {
   ChartDataForYTD(this.count, this.month);
   final double count;
-  final String month;
+  final String? month;
 }
 
 

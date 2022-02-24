@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class SiteInfluencerWidget extends StatefulWidget {
-  ViewSiteDataResponse viewSiteDataResponse;
+  ViewSiteDataResponse? viewSiteDataResponse;
 
   SiteInfluencerWidget({this.viewSiteDataResponse});
 
@@ -26,81 +26,81 @@ class SiteInfluencerWidget extends StatefulWidget {
 
 class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   int initialInfluencerLength = 0;
-  List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
-  List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
-  List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
+  List<SiteInfluencerEntity>? siteInfluencerEntity = new List.empty(growable: true);
+  List<InfluencerTypeEntity>? influencerTypeEntity = new List.empty(growable: true);
+  List<InfluencerCategoryEntity>? influencerCategoryEntity = new List.empty(growable: true);
   List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
-  List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
-  List<InfluencerDetail> _listInfluencerDetail = new List.empty(growable: true);
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+  List<InfluencerEntity>? influencerEntity = new List.empty(growable: true);
+  List<InfluencerDetail>? _listInfluencerDetail = new List.empty(growable: true);
+  ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
 
   setInfluencerData() {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
-      influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
-      String isDealerConformedChangedBySo =
-          viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
+      influencerTypeEntity = viewSiteDataResponse!.influencerTypeEntity;
+      String? isDealerConformedChangedBySo =
+          viewSiteDataResponse!.sitesModal!.isDealerConfirmedChangedBySo;
 
       //  print(influencerTypeEntity.length);
-      influencerCategoryEntity = viewSiteDataResponse.influencerCategoryEntity;
+      influencerCategoryEntity = viewSiteDataResponse!.influencerCategoryEntity;
 
-      influencerEntity = viewSiteDataResponse.influencerEntity;
-      siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
+      influencerEntity = viewSiteDataResponse!.influencerEntity;
+      siteInfluencerEntity = viewSiteDataResponse!.siteInfluencerEntity;
 
       // print(viewSiteDataResponse.influencerEntity.length);
-      if (viewSiteDataResponse.influencerEntity != null &&
-          viewSiteDataResponse.influencerEntity.length > 0) {
-        for (int i = 0; i < viewSiteDataResponse.influencerEntity.length; i++) {
-          int originalId;
-          for (int j = 0; j < siteInfluencerEntity.length; j++) {
-            if (viewSiteDataResponse.influencerEntity[i].id ==
-                siteInfluencerEntity[j].inflId) {
-              viewSiteDataResponse.influencerEntity[i].isPrimary =
-                  siteInfluencerEntity[j].isPrimary;
-              originalId = siteInfluencerEntity[j].id;
+      if (viewSiteDataResponse!.influencerEntity != null &&
+          viewSiteDataResponse!.influencerEntity!.length > 0) {
+        for (int i = 0; i < viewSiteDataResponse!.influencerEntity!.length; i++) {
+          int? originalId;
+          for (int j = 0; j < siteInfluencerEntity!.length; j++) {
+            if (viewSiteDataResponse!.influencerEntity![i].id ==
+                siteInfluencerEntity![j].inflId) {
+              viewSiteDataResponse!.influencerEntity![i].isPrimary =
+                  siteInfluencerEntity![j].isPrimary;
+              originalId = siteInfluencerEntity![j].id;
               break;
             }
           }
 
-          _listInfluencerDetail.add(new InfluencerDetail(
+          _listInfluencerDetail!.add(new InfluencerDetail(
               originalId: originalId,
-              isPrimary: viewSiteDataResponse.influencerEntity[i].isPrimary,
+              isPrimary: viewSiteDataResponse!.influencerEntity![i].isPrimary,
               isPrimarybool:
-                  viewSiteDataResponse.influencerEntity[i].isPrimary == "Y"
+                  viewSiteDataResponse!.influencerEntity![i].isPrimary == "Y"
                       ? true
                       : false,
               id: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].id.toString()),
+                  text: viewSiteDataResponse!.influencerEntity![i].id.toString()),
               inflContact: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflContact),
+                  text: viewSiteDataResponse!.influencerEntity![i].inflContact),
               //createdBy: new TextEditingController(text: viewSiteDataResponse.influencerEntity[i].inflContact),
               inflTypeId: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflTypeId
+                  text: viewSiteDataResponse!.influencerEntity![i].inflTypeId
                       .toString()),
               inflTypeValue: inflTypeValue(new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflTypeId
+                  text: viewSiteDataResponse!.influencerEntity![i].inflTypeId
                       .toString())),
               inflCatId: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflCatId
+                  text: viewSiteDataResponse!.influencerEntity![i].inflCatId
                       .toString()),
               inflCatValue: inflCatValue(new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflCatId
+                  text: viewSiteDataResponse!.influencerEntity![i].inflCatId
                       .toString())),
               inflName: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].inflName),
+                  text: viewSiteDataResponse!.influencerEntity![i].inflName),
               ilpIntrested: new TextEditingController(
-                  text: viewSiteDataResponse.influencerEntity[i].ilpIntrested),
+                  text: viewSiteDataResponse!.influencerEntity![i].ilpIntrested),
               createdOn: new TextEditingController(
                   text:
-                      viewSiteDataResponse.influencerEntity[i].createdOn.toString()),
+                      viewSiteDataResponse!.influencerEntity![i].createdOn.toString()),
               isExpanded: false));
 
           UpdatedValues.setSiteInfluencerDetails(_listInfluencerDetail);
         }
-        initialInfluencerLength = viewSiteDataResponse.influencerEntity.length;
+        initialInfluencerLength = viewSiteDataResponse!.influencerEntity!.length;
       }
 
-      if(UpdatedValues.getSiteInfluencerDetails()!=null && UpdatedValues.getSiteInfluencerDetails().length>0 && (UpdatedValues.getSiteInfluencerDetails().length>=_listInfluencerDetail.length )){
+      if(UpdatedValues.getSiteInfluencerDetails()!=null && UpdatedValues.getSiteInfluencerDetails()!.length>0 && (UpdatedValues.getSiteInfluencerDetails()!.length>=_listInfluencerDetail!.length )){
         _listInfluencerDetail = UpdatedValues.getSiteInfluencerDetails();
       }
     });
@@ -144,12 +144,12 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                   child: ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _listInfluencerDetail.length,
+                      itemCount: _listInfluencerDetail!.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (_listInfluencerDetail!= null && index>=_listInfluencerDetail.length) {
+                        if (_listInfluencerDetail!= null && index>=_listInfluencerDetail!.length) {
                           return const Offstage ();
                         }else{
-                        if (!_listInfluencerDetail[index].isExpanded) {
+                        if (!_listInfluencerDetail![index].isExpanded!) {
                           return Column(
                             // mainAxisAlignment:
                             // MainAxisAlignment.spaceBetween,
@@ -169,13 +169,13 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       setState(() {
                                         if (value) {
                                           for (int i = 0;
-                                              i < _listInfluencerDetail.length;
+                                              i < _listInfluencerDetail!.length;
                                               i++) {
                                             if (i == index) {
-                                              _listInfluencerDetail[i]
+                                              _listInfluencerDetail![i]
                                                   .isPrimarybool = value;
                                             } else {
-                                              _listInfluencerDetail[i]
+                                              _listInfluencerDetail![i]
                                                   .isPrimarybool = !value;
                                             }
                                           }
@@ -185,15 +185,15 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         }
                                       });
                                     },
-                                    value: _listInfluencerDetail[index]
-                                        .isPrimarybool,
+                                    value: _listInfluencerDetail![index]
+                                        .isPrimarybool!,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
                                         HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
                                   ),
-                                  _listInfluencerDetail[index].isExpanded
+                                  _listInfluencerDetail![index].isExpanded!
                                       ? TextButton.icon(
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(0),
@@ -213,10 +213,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           ),
                                           onPressed: () {
                                             setState(() {
-                                              _listInfluencerDetail[index]
+                                              _listInfluencerDetail![index]
                                                       .isExpanded =
-                                                  !_listInfluencerDetail[index]
-                                                      .isExpanded;
+                                                  !_listInfluencerDetail![index]
+                                                      .isExpanded!;
                                             });
                                             // _getCurrentLocation();
                                           },
@@ -240,10 +240,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           ),
                                           onPressed: () {
                                             setState(() {
-                                              _listInfluencerDetail[index]
+                                              _listInfluencerDetail![index]
                                                       .isExpanded =
-                                                  !_listInfluencerDetail[index]
-                                                      .isExpanded;
+                                                  !_listInfluencerDetail![index]
+                                                      .isExpanded!;
                                             });
                                             // _getCurrentLocation();
                                           },
@@ -269,7 +269,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         SizeConfig.safeBlockHorizontal *
                                             4.8),
                                   ),
-                                  _listInfluencerDetail[index].isExpanded
+                                  _listInfluencerDetail![index].isExpanded!
                                       ? TextButton.icon(
                                     // shape: RoundedRectangleBorder(
                                     //     borderRadius: BorderRadius.circular(0),
@@ -293,10 +293,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _listInfluencerDetail[index]
+                                        _listInfluencerDetail![index]
                                             .isExpanded =
-                                        !_listInfluencerDetail[index]
-                                            .isExpanded;
+                                        !_listInfluencerDetail![index]
+                                            .isExpanded!;
                                       });
                                       // _getCurrentLocation();
                                     },
@@ -320,10 +320,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _listInfluencerDetail[index]
+                                        _listInfluencerDetail![index]
                                             .isExpanded =
-                                        !_listInfluencerDetail[index]
-                                            .isExpanded;
+                                        !_listInfluencerDetail![index]
+                                            .isExpanded!;
                                       });
                                       // _getCurrentLocation();
                                     },
@@ -347,13 +347,13 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       setState(() {
                                         if (value) {
                                           for (int i = 0;
-                                          i < _listInfluencerDetail.length;
+                                          i < _listInfluencerDetail!.length;
                                           i++) {
                                             if (i == index) {
-                                              _listInfluencerDetail[i]
+                                              _listInfluencerDetail![i]
                                                   .isPrimarybool = value;
                                             } else {
-                                              _listInfluencerDetail[i]
+                                              _listInfluencerDetail![i]
                                                   .isPrimarybool = !value;
                                             }
                                           }
@@ -364,8 +364,8 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         }
                                       });
                                     },
-                                    value: _listInfluencerDetail[index]
-                                        .isPrimarybool,
+                                    value: _listInfluencerDetail![index]
+                                        .isPrimarybool!,
                                     activeColor: HexColor("#009688"),
                                     activeTrackColor:
                                     HexColor("#009688").withOpacity(0.5),
@@ -377,8 +377,8 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        color: _listInfluencerDetail[index]
-                                            .isPrimarybool
+                                        color: _listInfluencerDetail![index]
+                                            .isPrimarybool!
                                             ? HexColor("#009688")
                                             : Colors.black,
                                         // color: HexColor("#000000DE"),
@@ -388,7 +388,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               ),
                               TextFormField(
                                 controller:
-                                _listInfluencerDetail[index].inflContact,
+                                _listInfluencerDetail![index].inflContact,
                                 maxLength: 10,
                                 onChanged: (value) async {
                                   bool match = false;
@@ -397,16 +397,16 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     // index]
                                     //     .inflContact
                                     //     .clear();
-                                    if (_listInfluencerDetail[index].inflName !=
+                                    if (_listInfluencerDetail![index].inflName !=
                                         null) {
-                                      _listInfluencerDetail[index]
-                                          .inflName
+                                      _listInfluencerDetail![index]
+                                          .inflName!
                                           .clear();
-                                      _listInfluencerDetail[index]
-                                          .inflTypeValue
+                                      _listInfluencerDetail![index]
+                                          .inflTypeValue!
                                           .clear();
-                                      _listInfluencerDetail[index]
-                                          .inflCatValue
+                                      _listInfluencerDetail![index]
+                                          .inflCatValue!
                                           .clear();
                                     }
                                   } else if (value.length == 10) {
@@ -416,11 +416,11 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     };
 
                                     for (int i = 0;
-                                    i < _listInfluencerDetail.length - 1;
+                                    i < _listInfluencerDetail!.length - 1;
                                     i++) {
                                       if (value ==
-                                          _listInfluencerDetail[i]
-                                              .inflContact
+                                          _listInfluencerDetail![i]
+                                              .inflContact!
                                               .text) {
                                         match = true;
                                         break;
@@ -432,7 +432,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           "Already added influencer : " +
                                               value));
                                     } else {
-                                      String empId;
+                                      String? empId;
                                       String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
@@ -459,111 +459,111 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           .then((data) async {
                                         accessKeyModel = data;
                                         print("AccessKey :: " +
-                                            accessKeyModel.accessKey);
+                                            accessKeyModel.accessKey!);
                                         await _addLeadsController
                                             .getInfNewData(
                                             accessKeyModel.accessKey)
                                             .then((data) {
                                           InfluencerDetailModel
-                                          _infDetailModel = data;
+                                          _infDetailModel = data!;
                                           if (_infDetailModel.respCode ==
                                               "DM1002") {
-                                            InfluencerModel inflDetail =
+                                            InfluencerModel? inflDetail =
                                                 _infDetailModel.influencerModel;
                                             // print(inflDetail.inflName);
                                             setState(() {
-                                              if (inflDetail.inflName !=
+                                              if (inflDetail!.inflName !=
                                                   "null") {
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflContact =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflName =
                                                 new TextEditingController();
                                                 FocusScope.of(context)
                                                     .unfocus();
                                                 //  print(inflDetail.inflName.text);
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflTypeId =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflCatId =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflTypeValue =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .inflCatValue =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .id =
                                                 new TextEditingController();
-                                                _listInfluencerDetail[index]
+                                                _listInfluencerDetail![index]
                                                     .ilpIntrested =
                                                 new TextEditingController();
 
                                                 // print(inflDetail.inflName);
 
-                                                _listInfluencerDetail[index]
-                                                    .inflContact
+                                                _listInfluencerDetail![index]
+                                                    .inflContact!
                                                     .text =
-                                                    inflDetail.inflContact;
-                                                _listInfluencerDetail[index]
-                                                    .inflName
-                                                    .text = inflDetail.inflName;
-                                                _listInfluencerDetail[index]
-                                                    .id
+                                                    inflDetail.inflContact!;
+                                                _listInfluencerDetail![index]
+                                                    .inflName!
+                                                    .text = inflDetail.inflName!;
+                                                _listInfluencerDetail![index]
+                                                    .id!
                                                     .text =
                                                     inflDetail.inflId
                                                         .toString();
-                                                _listInfluencerDetail[index]
-                                                    .ilpIntrested
+                                                _listInfluencerDetail![index]
+                                                    .ilpIntrested!
                                                     .text =
-                                                    inflDetail.ilpRegFlag;
+                                                    inflDetail.ilpRegFlag!;
                                                 // _listInfluencerDetail[
                                                 //             index]
                                                 //         .createdOn =
                                                 //     inflDetail.createdOn;
-                                                _listInfluencerDetail[index]
-                                                    .inflTypeValue
+                                                _listInfluencerDetail![index]
+                                                    .inflTypeValue!
                                                     .text =
                                                     inflDetail
-                                                        .influencerTypeText;
-                                                _listInfluencerDetail[index]
-                                                    .inflCatValue
+                                                        .influencerTypeText!;
+                                                _listInfluencerDetail![index]
+                                                    .inflCatValue!
                                                     .text =
                                                     inflDetail
-                                                        .influencerCategoryText;
-                                                _listInfluencerDetail[index]
+                                                        .influencerCategoryText!;
+                                                _listInfluencerDetail![index]
                                                     .createdBy = empId;
                                                 print(
-                                                    _listInfluencerDetail[index]
+                                                    _listInfluencerDetail![index]
                                                         .inflName);
                                                 for (int i = 0;
                                                 i <
-                                                    influencerTypeEntity
+                                                    influencerTypeEntity!
                                                         .length;
                                                 i++) {
-                                                  if (influencerTypeEntity[i]
+                                                  if (influencerTypeEntity![i]
                                                       .inflTypeId
                                                       .toString() ==
                                                       inflDetail.inflTypeId
                                                           .toString()) {
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeId
+                                                    _listInfluencerDetail![index]
+                                                        .inflTypeId!
                                                         .text =
                                                         inflDetail.inflTypeId
                                                             .toString();
                                                     //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeValue
+                                                    _listInfluencerDetail![index]
+                                                        .inflTypeValue!
                                                         .text =
-                                                        influencerTypeEntity[
-                                                        influencerTypeEntity[
+                                                        influencerTypeEntity![
+                                                        influencerTypeEntity![
                                                         i]
-                                                            .inflTypeId -
+                                                            .inflTypeId! -
                                                             1]
-                                                            .inflTypeDesc;
+                                                            .inflTypeDesc!;
                                                     break;
                                                   } else {
                                                     // _listInfluencerDetail[
@@ -574,64 +574,64 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                     // index]
                                                     //     .inflName
                                                     //     .clear();
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeId
+                                                    _listInfluencerDetail![index]
+                                                        .inflTypeId!
                                                         .clear();
-                                                    _listInfluencerDetail[index]
-                                                        .inflTypeValue
+                                                    _listInfluencerDetail![index]
+                                                        .inflTypeValue!
                                                         .clear();
                                                   }
                                                 }
                                                 print(
-                                                    _listInfluencerDetail[index]
+                                                    _listInfluencerDetail![index]
                                                         .inflName);
                                                 // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
                                                 for (int i = 0;
                                                 i <
-                                                    influencerCategoryEntity
+                                                    influencerCategoryEntity!
                                                         .length;
                                                 i++) {
-                                                  if (influencerCategoryEntity[
+                                                  if (influencerCategoryEntity![
                                                   i]
                                                       .inflCatId
                                                       .toString() ==
                                                       inflDetail.inflCatId
                                                           .toString()) {
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatId
+                                                    _listInfluencerDetail![index]
+                                                        .inflCatId!
                                                         .text =
                                                         inflDetail.inflCatId
                                                             .toString();
                                                     //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatValue
+                                                    _listInfluencerDetail![index]
+                                                        .inflCatValue!
                                                         .text =
-                                                        influencerCategoryEntity[
-                                                        influencerCategoryEntity[
+                                                        influencerCategoryEntity![
+                                                        influencerCategoryEntity![
                                                         i]
-                                                            .inflCatId -
+                                                            .inflCatId! -
                                                             1]
-                                                            .inflCatDesc;
+                                                            .inflCatDesc!;
                                                     break;
                                                   } else {
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatId
+                                                    _listInfluencerDetail![index]
+                                                        .inflCatId!
                                                         .clear();
-                                                    _listInfluencerDetail[index]
-                                                        .inflCatValue
+                                                    _listInfluencerDetail![index]
+                                                        .inflCatValue!
                                                         .clear();
                                                   }
                                                 }
                                               } else {
-                                                if (_listInfluencerDetail[index]
+                                                if (_listInfluencerDetail![index]
                                                     .inflContact !=
                                                     null) {
-                                                  _listInfluencerDetail[index]
-                                                      .inflContact
+                                                  _listInfluencerDetail![index]
+                                                      .inflContact!
                                                       .clear();
-                                                  _listInfluencerDetail[index]
-                                                      .inflName
+                                                  _listInfluencerDetail![index]
+                                                      .inflName!
                                                       .clear();
                                                 }
                                                 return Get.dialog(
@@ -640,19 +640,19 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                               }
                                             });
                                           } else {
-                                            if (_listInfluencerDetail[index]
+                                            if (_listInfluencerDetail![index]
                                                 .inflContact !=
                                                 null) {
-                                              _listInfluencerDetail[index]
-                                                  .inflContact
+                                              _listInfluencerDetail![index]
+                                                  .inflContact!
                                                   .clear();
-                                              _listInfluencerDetail[index]
-                                                  .inflName
+                                              _listInfluencerDetail![index]
+                                                  .inflName!
                                                   .clear();
                                             }
                                             return Get.dialog(CustomDialogs()
                                                 .showDialog(
-                                                _infDetailModel.respMsg));
+                                                _infDetailModel.respMsg!));
                                           }
                                           Get.back();
                                         });
@@ -664,7 +664,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   // });
                                 },
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return 'Please enter Influencer Number ';
                                   }
 
@@ -712,7 +712,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               TextFormField(
                                 //  initialValue: _listInfluencerDetail[index].inflName,
                                 controller:
-                                _listInfluencerDetail[index].inflName,
+                                _listInfluencerDetail![index].inflName,
 
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
@@ -766,7 +766,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               SizedBox(height: 16),
                               TextFormField(
                                 controller:
-                                _listInfluencerDetail[index].inflTypeValue,
+                                _listInfluencerDetail![index].inflTypeValue,
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
                                 //     return 'Please enter Influencer Number ';
@@ -819,7 +819,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                               SizedBox(height: 16),
                               TextFormField(
                                 controller:
-                                _listInfluencerDetail[index].inflCatValue,
+                                _listInfluencerDetail![index].inflCatValue,
                                 // validator: (value) {
                                 //   if (value.isEmpty) {
                                 //     return 'Please enter Influencer Number ';
@@ -901,25 +901,25 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                   // //  print(_listInfluencerDetail[
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
-                  if (_listInfluencerDetail.length == 0) {
+                  if (_listInfluencerDetail!.length == 0) {
                     setState(() {
-                      _listInfluencerDetail.add(new InfluencerDetail(
+                      _listInfluencerDetail!.add(new InfluencerDetail(
                           isExpanded: true, isPrimarybool: true));
                       UpdatedValues.setSiteInfluencerDetails(
                           _listInfluencerDetail);
                     });
-                  } else if (_listInfluencerDetail[
-                                  _listInfluencerDetail.length - 1]
+                  } else if (_listInfluencerDetail![
+                                  _listInfluencerDetail!.length - 1]
                               .inflName !=
                           null &&
-                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                              .inflName
+                      _listInfluencerDetail![_listInfluencerDetail!.length - 1]
+                              .inflName!
                               .text !=
                           "null" &&
-                      !_listInfluencerDetail[_listInfluencerDetail.length - 1]
-                          .inflName
+                      !_listInfluencerDetail![_listInfluencerDetail!.length - 1]
+                          .inflName!
                           .text
-                          .isNullOrBlank) {
+                          .isNullOrBlank!) {
                     InfluencerDetail infl = new InfluencerDetail(
                         isExpanded: true, isPrimarybool: false);
 
@@ -927,9 +927,9 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                     //     headerValue: "agx ", expandedValue: "dnxcx");
                     setState(() {
                       // _data.add(item);
-                      _listInfluencerDetail[_listInfluencerDetail.length - 1]
+                      _listInfluencerDetail![_listInfluencerDetail!.length - 1]
                           .isExpanded = false;
-                      _listInfluencerDetail.add(infl);
+                      _listInfluencerDetail!.add(infl);
                       UpdatedValues.setSiteInfluencerDetails(
                           _listInfluencerDetail);
                     });
@@ -982,19 +982,19 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   }
 
   inflTypeValue(TextEditingController inflTypeId) {
-    for (int i = 0; i < influencerTypeEntity.length; i++) {
-      if (influencerTypeEntity[i].inflTypeId == int.parse(inflTypeId.text)) {
+    for (int i = 0; i < influencerTypeEntity!.length; i++) {
+      if (influencerTypeEntity![i].inflTypeId == int.parse(inflTypeId.text)) {
         return new TextEditingController(
-            text: influencerTypeEntity[i].inflTypeDesc);
+            text: influencerTypeEntity![i].inflTypeDesc);
       }
     }
   }
 
   inflCatValue(TextEditingController inflCatId) {
-    for (int i = 0; i < influencerCategoryEntity.length; i++) {
-      if (influencerCategoryEntity[i].inflCatId == int.parse(inflCatId.text)) {
+    for (int i = 0; i < influencerCategoryEntity!.length; i++) {
+      if (influencerCategoryEntity![i].inflCatId == int.parse(inflCatId.text)) {
         return new TextEditingController(
-            text: influencerCategoryEntity[i].inflCatDesc);
+            text: influencerCategoryEntity![i].inflCatDesc);
       }
     }
   }

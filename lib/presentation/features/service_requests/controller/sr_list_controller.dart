@@ -13,7 +13,7 @@ class SRListController extends GetxController {
   }
 
   final SrRepository repository;
-  SRListController({@required this.repository}) : assert(repository != null);
+  SRListController({required this.repository}) : assert(repository != null);
 
   final _offset = 0.obs;
   get offset => this._offset.value;
@@ -24,11 +24,11 @@ class SRListController extends GetxController {
   get srListData => _srListData.value;
   set srListData(value) => _srListData.value = value;
 
-  final _siteListData = ServiceRequestComplaintListModel().obs;
+  final Rx<ServiceRequestComplaintListModel?> _siteListData = ServiceRequestComplaintListModel().obs;
   get siteListData => _siteListData.value;
   set siteListData(value) => _siteListData.value = value;
 
-  var _filteredListData = ServiceRequestComplaintListModel();
+  ServiceRequestComplaintListModel? _filteredListData = ServiceRequestComplaintListModel();
   get filteredListData => _filteredListData;
   set filteredListData(value) => _filteredListData = value;
 
@@ -101,9 +101,9 @@ class SRListController extends GetxController {
 //   }
 
   Future<ServiceRequestComplaintListModel> getSrListData(
-      String accessKey, int offset) async {
-    String userSecurityKey = "";
-    String empID = "";
+      String? accessKey, int offset) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -111,7 +111,7 @@ class SRListController extends GetxController {
     //  print("offset is ${this.offset}");
 
 
-       await repository.getSrListData(accessKey, userSecurityKey, empID, this.offset).then((data){
+       await repository.getSrListData(accessKey, userSecurityKey, empID!, this.offset).then((data){
          if (data == null) {
 
            debugPrint('SR Data Response is null');
@@ -122,9 +122,9 @@ class SRListController extends GetxController {
            } else {
              ServiceRequestComplaintListModel requestComplaintListModel = data;
              if (requestComplaintListModel!=null && requestComplaintListModel.srComplaintListModal!=null) {
-               requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
+               requestComplaintListModel.srComplaintListModal!.addAll(srListData.srComplaintListModal);
                this.srListData = requestComplaintListModel;
-               this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));
+               this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn!.compareTo(a.createdOn!));
                Get.rawSnackbar(
                  titleText: Text("Note"),
                  messageText: Text("Loading more .."),
@@ -145,33 +145,33 @@ class SRListController extends GetxController {
     return srListData;
   }
 
-  Future<ServiceRequestComplaintListModel> getSrListDataWithFilters(
-      String accessKey,
-      String resolutionStatusId,
-      String severity,
-      String typeOfReqId) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<ServiceRequestComplaintListModel?> getSrListDataWithFilters(
+      String? accessKey,
+      String? resolutionStatusId,
+      String? severity,
+      String? typeOfReqId) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       filteredListData = await repository.getSrListDataWithFilters(accessKey,
-          userSecurityKey, empID, resolutionStatusId, severity, typeOfReqId);
+          userSecurityKey, empID!, resolutionStatusId!, severity!, typeOfReqId!);
     });
     return filteredListData;
   }
 
-  Future<ServiceRequestComplaintListModel> getSiteListData(
-      String accessKey, String siteID) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<ServiceRequestComplaintListModel?> getSiteListData(
+      String? accessKey, String? siteID) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       siteListData = await repository.getSiteListData(
-          accessKey, userSecurityKey, empID, siteID);
+          accessKey, userSecurityKey, empID!, siteID!);
     });
     return siteListData;
   }

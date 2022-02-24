@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -14,9 +14,9 @@ class EventTypeController extends GetxController {
 
   final EgRepository repository;
 
-  EventTypeController({@required this.repository})
+  EventTypeController({required this.repository})
       : assert(repository != null);
-  final _addEventResponse = AddEventModel().obs;
+  final Rx<AddEventModel?> _addEventResponse = AddEventModel().obs;
   final _dealerList = List<DealerModel>.empty(growable: true).obs;
   final _dealerListSelected = List<DealerModelSelected>.empty(growable: true).obs;
 
@@ -31,21 +31,21 @@ class EventTypeController extends GetxController {
 
 
 
-  Future<String> getAccessKey() {
+  Future<String?> getAccessKey() {
     // print(repository.getAccessKey().then((value) => value.accessKey));
-    return repository.getAccessKey();
+    return repository.getAccessKey().then((value) => value as String?);
   }
 
 
-  Future<AddEventModel>getEventType() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<AddEventModel?>getEventType() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, empID);
+      addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, empID!);
     });
     return addEventResponse;
   }

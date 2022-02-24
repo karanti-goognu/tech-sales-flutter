@@ -1,9 +1,9 @@
 class LeadsListModel {
-  List<LeadsEntity> leadsEntity;
-  String respCode;
-  String respMsg;
-  String totalLeadPotential;
-  String totalLeadCount;
+  List<LeadsEntity>? leadsEntity;
+  String? respCode;
+  String? respMsg;
+  String? totalLeadPotential;
+  String? totalLeadCount;
 
   LeadsListModel(
       {this.leadsEntity,
@@ -14,9 +14,9 @@ class LeadsListModel {
 
   LeadsListModel.fromJson(Map<String, dynamic> json) {
     if (json['leadsEntity'] != null) {
-      leadsEntity = new List<LeadsEntity>();
+      leadsEntity = new List<LeadsEntity>.empty(growable: true);
       json['leadsEntity'].forEach((v) {
-        leadsEntity.add(new LeadsEntity.fromJson(v));
+        leadsEntity!.add(new LeadsEntity.fromJson(v));
       });
     }
     respCode = json['resp_code'];
@@ -28,7 +28,7 @@ class LeadsListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.leadsEntity != null) {
-      data['leadsEntity'] = this.leadsEntity.map((v) => v.toJson()).toList();
+      data['leadsEntity'] = this.leadsEntity!.map((v) => v.toJson()).toList();
     }
     data['resp_code'] = this.respCode;
     data['resp_msg'] = this.respMsg;
@@ -39,43 +39,43 @@ class LeadsListModel {
 }
 
 class LeadsEntity {
-  int leadId;
-  int eventId;
-  String leadSegment;
-  String assignedTo;
+  int? leadId;
+  int? eventId;
+  String? leadSegment;
+  String? assignedTo;
   Null siteSubTypeId;
-  int leadStatusId;
-  int leadStageId;
-  String contactName;
-  String contactNumber;
-  String geotagType;
-  String leadLatitude;
-  String leadLongitude;
-  String leadAddress;
-  String leadPincode;
-  String leadStateName;
-  String leadDistrictName;
-  String leadTalukName;
-  String leadSitePotentialMt;
-  String leadReraNumber;
-  int leadRejectReason;
-  String leadIsDuplicate;
-  int leadOriginalId;
+  int? leadStatusId;
+  int? leadStageId;
+  String? contactName;
+  String? contactNumber;
+  String? geotagType;
+  String? leadLatitude;
+  String? leadLongitude;
+  String? leadAddress;
+  String? leadPincode;
+  String? leadStateName;
+  String? leadDistrictName;
+  String? leadTalukName;
+  String? leadSitePotentialMt;
+  String? leadReraNumber;
+  int? leadRejectReason;
+  String? leadIsDuplicate;
+  int? leadOriginalId;
   Null siteConverted;
-  String createdBy;
-  int createdOn;
-  String updatedBy;
-  int updatedOn;
-  int assignDate;
-  String rejectionComment;
-  String leadscol;
-  int nextDateCconstruction;
-  int nextStageConstruction;
-  String siteDealerId;
-  String leadSource;
-  String leadSourceUser;
-  String leadSourcePlatform;
-  String isIhbCommercial;
+  String? createdBy;
+  int? createdOn;
+  String? updatedBy;
+  int? updatedOn;
+  int? assignDate;
+  String? rejectionComment;
+  String? leadscol;
+  int? nextDateCconstruction;
+  int? nextStageConstruction;
+  String? siteDealerId;
+  String? leadSource;
+  String? leadSourceUser;
+  String? leadSourcePlatform;
+  String? isIhbCommercial;
 
   LeadsEntity(
       {this.leadId,

@@ -18,7 +18,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
   AllEventController _eventController = Get.find();
 
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   @override
   Widget build(BuildContext context) {
@@ -363,7 +363,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 () => Radio(
               value: eventStatus,
               groupValue: _eventController.eventStatus as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_eventController.eventStatus ==
                     StringConstants.empty) {
                   _eventController.selectedFilterCount =
@@ -411,7 +411,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 () => Radio(
               value: eventTypeText,
               groupValue: _eventController.eventType as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
       //          print(value);
                 if (_eventController.eventType ==
                     StringConstants.empty) {
@@ -443,7 +443,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
  //   print(type);
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,

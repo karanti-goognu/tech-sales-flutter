@@ -29,11 +29,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       print('hello');
       _siteController.offset += 10;
       print(_siteController.offset);
@@ -43,8 +43,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
 
     }
   }
-  PendingSupplyDataResponse pendingSupplyDataResponse;
-  List<PendingSuppliesModel> _pendingSuppliesModel;
+  PendingSupplyDataResponse? pendingSupplyDataResponse;
+  List<PendingSuppliesModel>? _pendingSuppliesModel;
 
   Future<bool> internetChecking() async {
     // do something here
@@ -58,7 +58,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
       setState(() {
         pendingSupplyDataResponse = data;
         _pendingSuppliesModel = pendingSupplyDataResponse != null
-            ? pendingSupplyDataResponse.pendingSuppliesModel
+            ? pendingSupplyDataResponse!.pendingSuppliesModel
             : new List.empty(growable: true);
       });
     });
@@ -577,7 +577,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num =
+                                                        String? num =
                                                             _siteController.pendingSupplyListResponse.pendingSuppliesModel[index].dealerContact;
                                                         launch('tel:$num');
                                                       },

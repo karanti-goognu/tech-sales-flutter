@@ -20,12 +20,12 @@ class RejectionLeadScreen extends StatefulWidget {
 }
 
 class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
-  List<LeadRejectReasonEntity> leadRejectReasonEntity;
+  List<LeadRejectReasonEntity>? leadRejectReasonEntity;
 
-  LeadRejectReasonEntity _selectedValue;
+  LeadRejectReasonEntity? _selectedValue;
 
   var _commentsController = new TextEditingController();
-  AddLeadsController _addLeadsController;
+  late AddLeadsController _addLeadsController;
 
   @override
   void initState() {
@@ -80,10 +80,10 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: DropdownButtonFormField<LeadRejectReasonEntity>(
                       value: _selectedValue,
-                      items: leadRejectReasonEntity
+                      items: leadRejectReasonEntity!
                           .map((label) => DropdownMenuItem(
                                 child: Text(
-                                  label.rejectionText,
+                                  label.rejectionText!,
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: ColorConstants.inputBoxHintColor,
@@ -203,51 +203,51 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                   "empty";
 
                           var updateRequestModel = {
-                            'leadId': viewLeadDataResponse.leadsEntity.leadId,
+                            'leadId': viewLeadDataResponse.leadsEntity!.leadId,
                             'leadSegment':
-                                viewLeadDataResponse.leadsEntity.leadSegment,
+                                viewLeadDataResponse.leadsEntity!.leadSegment,
                             'assignedTo':
-                                viewLeadDataResponse.leadsEntity.assignedTo,
-                            'eventId': viewLeadDataResponse.leadsEntity.eventId,
+                                viewLeadDataResponse.leadsEntity!.assignedTo,
+                            'eventId': viewLeadDataResponse.leadsEntity!.eventId,
                             'leadStatusId': 2,
                             'leadStage':
-                                viewLeadDataResponse.leadsEntity.leadStageId,
+                                viewLeadDataResponse.leadsEntity!.leadStageId,
                             'contactName':
-                                viewLeadDataResponse.leadsEntity.contactName,
+                                viewLeadDataResponse.leadsEntity!.contactName,
                             'contactNumber':
-                                viewLeadDataResponse.leadsEntity.contactNumber,
+                                viewLeadDataResponse.leadsEntity!.contactNumber,
                             'geotagType':
-                                viewLeadDataResponse.leadsEntity.geotagType,
+                                viewLeadDataResponse.leadsEntity!.geotagType,
                             'leadLatitude':
-                                viewLeadDataResponse.leadsEntity.leadLatitude,
+                                viewLeadDataResponse.leadsEntity!.leadLatitude,
                             'leadLongitude':
-                                viewLeadDataResponse.leadsEntity.leadLongitude,
+                                viewLeadDataResponse.leadsEntity!.leadLongitude,
                             'leadAddress':
-                                viewLeadDataResponse.leadsEntity.leadAddress,
+                                viewLeadDataResponse.leadsEntity!.leadAddress,
                             'leadPincode':
-                                viewLeadDataResponse.leadsEntity.leadPincode,
+                                viewLeadDataResponse.leadsEntity!.leadPincode,
                             'leadStateName':
-                                viewLeadDataResponse.leadsEntity.leadStateName,
+                                viewLeadDataResponse.leadsEntity!.leadStateName,
                             'leadDistrictName': viewLeadDataResponse
-                                .leadsEntity.leadDistrictName,
+                                .leadsEntity!.leadDistrictName,
                             'leadTalukName':
-                                viewLeadDataResponse.leadsEntity.leadTalukName,
+                                viewLeadDataResponse.leadsEntity!.leadTalukName,
                             'leadSalesPotentialMt': viewLeadDataResponse
-                                .leadsEntity.leadSitePotentialMt,
+                                .leadsEntity!.leadSitePotentialMt,
                             'leadReraNumber':
-                                viewLeadDataResponse.leadsEntity.leadReraNumber,
+                                viewLeadDataResponse.leadsEntity!.leadReraNumber,
                             'isStatus': "false",
                             'updatedBy': empId,
                             'leadIsDuplicate': viewLeadDataResponse
-                                .leadsEntity.leadIsDuplicate,
+                                .leadsEntity!.leadIsDuplicate,
                             'rejectionComment': _commentsController.text,
-                            'leadRejectReason': _selectedValue.rejectionId,
+                            'leadRejectReason': _selectedValue!.rejectionId,
                             'nextDateCconstruction': viewLeadDataResponse
-                                .leadsEntity.nextDateCconstruction,
+                                .leadsEntity!.nextDateCconstruction,
                             'nextStageConstruction': viewLeadDataResponse
-                                .leadsEntity.nextStageConstruction,
+                                .leadsEntity!.nextStageConstruction,
                             'siteDealerId':
-                                viewLeadDataResponse.leadsEntity.siteDealerId,
+                                viewLeadDataResponse.leadsEntity!.siteDealerId,
                             'listLeadcomments': new List.empty(growable: true),
                             'listLeadImage': new List.empty(growable: true),
                             'leadInfluencerEntity': new List.empty(growable: true)
@@ -260,7 +260,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                               updateRequestModel,
                               new List<File>.empty(growable: true),
                               context,
-                              viewLeadDataResponse.leadsEntity.leadId,1);
+                              viewLeadDataResponse.leadsEntity!.leadId,1);
 
                           Get.back();
                         });

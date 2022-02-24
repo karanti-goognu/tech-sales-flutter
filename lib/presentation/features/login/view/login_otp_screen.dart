@@ -14,7 +14,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:get/get.dart';
 
 class LoginOtpScreen extends StatefulWidget {
-  final String mobileNumber;
+  final String? mobileNumber;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,34 +23,34 @@ class LoginOtpScreen extends StatefulWidget {
   }
 
   // In the constructor, require a Todo.
-  LoginOtpScreen({Key key, this.mobileNumber}) : super(key: key);
+  LoginOtpScreen({Key? key, this.mobileNumber}) : super(key: key);
 }
 
 class LoginOtpScreenPageState extends State<LoginOtpScreen> {
-  String mobileNumber;
-  String otpCode = "";
+  String? mobileNumber;
+  String? otpCode = "";
   String isUserLoggedIn = "false";
-  FocusNode _focusNode;
+  FocusNode? _focusNode;
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
 
 
-  Timer _timer;
+  late Timer _timer;
  // int _start = 180;
   int _start = 360;
   //int _startInitial = 180;
   int _startInitial = 360;
   bool retryOtp = false;
 
-  bool _isButtonDisabled;
+  late bool _isButtonDisabled;
 
   void startTimer() {
     if (_loginController != null) {
       LoginModel loginModel = _loginController.loginResponse;
       print('Time is :: ${jsonEncode(loginModel)}');
       try {
-        _startInitial = int.parse(loginModel.otpRetrySmsTime);
+        _startInitial = int.parse(loginModel.otpRetrySmsTime!);
         _start = _startInitial ~/ 1000;
       } catch (_) {
         print('We wre in catch ${_.toString()}');
@@ -80,7 +80,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   void dispose() {
     super.dispose();
     _timer.cancel();
-    _focusNode.dispose();
+    _focusNode!.dispose();
   }
 
   @override
@@ -166,7 +166,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                     onTap: _requestFocus,
                     focusNode: _focusNode,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'Enter the code';
                       }
                       if (value.length < 6) {
@@ -202,7 +202,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                       focusColor: Colors.black,
                       labelStyle: TextStyle(
                           fontFamily: "Muli",
-                          color: (_focusNode.hasFocus)
+                          color: (_focusNode!.hasFocus)
                               ? ColorConstants.focusedInputTextColor
                               : ColorConstants.inputBoxHintColorDark,
                           fontWeight: FontWeight.normal,
@@ -245,8 +245,8 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                               highlightColor: ColorConstants.buttonPressedColor,
                               onPressed: () {
                                 if(!_isButtonDisabled) {
-                                  if (_formKey.currentState.validate()) {
-                                    afterValidateRequest(otpCode);
+                                  if (_formKey.currentState!.validate()) {
+                                    afterValidateRequest(otpCode!);
                                     _loginController.attempts++;
                                   }
                                 }
@@ -298,7 +298,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return (await showDialog(
+    return (await (showDialog(
       context: context,
       builder: (context) => new AlertDialog(
         title: new Text('Are you sure?'),
@@ -315,7 +315,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
           ),
         ],
       ),
-    )) ??
+    ) as FutureOr<bool>?)) ??
         false;
   }
 

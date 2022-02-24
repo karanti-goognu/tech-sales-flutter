@@ -21,11 +21,11 @@ class RequestUpdation extends StatefulWidget {
 
 class _RequestUpdationState extends State<RequestUpdation>{
   UpdateServiceRequestController updateServiceRequestController = Get.find();
-  Future<ComplaintViewModel> _complaintViewModel;
-  ComplaintViewModel complaintViewModel = new ComplaintViewModel();
+  Future<ComplaintViewModel?>? _complaintViewModel;
+  ComplaintViewModel? complaintViewModel = new ComplaintViewModel();
 
 
-  Future<ComplaintViewModel> getComplaintViewData() async {
+  Future<ComplaintViewModel?> getComplaintViewData() async {
  //   print("getComplaintViewData of SR update");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 

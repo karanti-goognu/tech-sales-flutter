@@ -1,7 +1,7 @@
 class TargetVsActualModel {
-  String respCode;
-  String respMsg;
-  MwpPlanTargetVsActualModel mwpPlanTargetVsActualModel;
+  String? respCode;
+  String? respMsg;
+  MwpPlanTargetVsActualModel? mwpPlanTargetVsActualModel;
 
   TargetVsActualModel(
       {this.respCode, this.respMsg, this.mwpPlanTargetVsActualModel});
@@ -21,19 +21,19 @@ class TargetVsActualModel {
     data['respMsg'] = this.respMsg;
     if (this.mwpPlanTargetVsActualModel != null) {
       data['mwpPlanTargetVsActualModel'] =
-          this.mwpPlanTargetVsActualModel.toJson();
+          this.mwpPlanTargetVsActualModel!.toJson();
     }
     return data;
   }
 }
 
 class MwpPlanTargetVsActualModel {
-  int siteConversionCountTarget;
-  int siteVisitsCountTarget;
-  int counterMeetCountTarget;
-  int siteConversionCountActual;
-  int siteVisitsCountActual;
-  int counterMeetCountActual;
+  int? siteConversionCountTarget;
+  int? siteVisitsCountTarget;
+  int? counterMeetCountTarget;
+  int? siteConversionCountActual;
+  int? siteVisitsCountActual;
+  int? counterMeetCountActual;
 
   MwpPlanTargetVsActualModel(
       {this.siteConversionCountTarget,
