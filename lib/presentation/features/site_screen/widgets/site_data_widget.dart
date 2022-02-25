@@ -91,8 +91,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       siteBuiltupArea.text = sitesModal!.siteBuiltArea!;
       siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
       _totalKitchenCount!.text = sitesModal!.kitchenCount != null
-          ? sitesModal!.kitchenCount.toString()
-          : "";
+          ? sitesModal!.kitchenCount.toString() : "";
       _totalBathroomCount!.text = sitesModal!.bathroomCount != null
           ? sitesModal!.bathroomCount.toString()
           : "";
@@ -123,8 +122,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       }
 
       _siteTotalBalanceBags.text = sitesModal!.totalBalancePotential!;
-      if (_siteTotalBalanceBags.text == null ||
-          _siteTotalBalanceBags.text == "") {
+      if (_siteTotalBalanceBags.text == "") {
         _siteTotalBalancePt.clear();
       } else {
         _siteTotalBalancePt.text =
@@ -251,8 +249,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           sitesModal!.siteStatusId.toString(),
           sitesModal!.siteTotalSitePotential.toString(),
           geoTagType,
-          _currentPosition!.latitude,
-          _currentPosition!.longitude,
+          _currentPosition.latitude,
+          _currentPosition.longitude,
           sitesModal!.siteCreationDate,
           "TRADE");
 
@@ -711,8 +709,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (_siteTotalBags.text == null ||
-                                            _siteTotalBags.text == "") {
+                                        if (_siteTotalBags.text == "") {
                                           _siteTotalPt.clear();
                                         } else {
                                           _siteTotalPt.text =
@@ -758,8 +755,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (_siteTotalPt.text == null ||
-                                            _siteTotalPt.text == "") {
+                                        if (_siteTotalPt.text == "") {
                                           _siteTotalBags.clear();
                                         } else {
                                           _siteTotalBags.text =
@@ -819,9 +815,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (_siteTotalBalanceBags.text ==
-                                                null ||
-                                            _siteTotalBalanceBags.text == "") {
+                                        if ( _siteTotalBalanceBags.text == "") {
                                           _siteTotalBalancePt.clear();
                                         } else {
                                           _siteTotalBalancePt.text = (int.parse(
@@ -868,8 +862,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (_siteTotalBalancePt.text == null ||
-                                            _siteTotalBalancePt.text == "") {
+                                        if ( _siteTotalBalancePt.text == "") {
                                           _siteTotalBalanceBags.clear();
                                         } else {
                                           _siteTotalBalanceBags.text =
@@ -935,9 +928,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 : siteProbabilityWinningEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.siteProbabilityStatus!,
+                                           label.siteProbabilityStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -1000,9 +991,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 : siteCompetitionStatusEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.competitionStatus!,
+                                             label.competitionStatus!,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: ColorConstants
@@ -1063,9 +1052,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 : siteOpportunityStatusEntity!
                                     .map((label) => DropdownMenuItem(
                                           child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.opportunityStatus!,
+                                            label.opportunityStatus!,
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: ColorConstants
@@ -1092,7 +1079,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             validator: (value) {
                               if (value!.isEmpty ||
                                   value.length <= 0 ||
-                                  value == null ||
                                   value == " " ||
                                   value.trim().isEmpty) {
                                 return 'Please enter Owner Name';
@@ -1493,8 +1479,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
-                          _imgDetails != null
-                              ? Row(
+                          Row(
                                   children: [
                                     Expanded(
                                       child: ListView.builder(
@@ -1577,9 +1562,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           }),
                                     ),
                                   ],
-                                )
-                              : Container(),
-                          //
+                                ),
+
 
                           SizedBox(height: 16),
 
@@ -1744,8 +1728,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSitePincode(_pincode.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
-        UpdatedValues.setSiteGeotagLat(_currentPosition!.latitude);
-        UpdatedValues.setSiteGeotagLong(_currentPosition!.longitude);
+        UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
+        UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
       });
     }
   }
@@ -1753,7 +1737,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition!.latitude, _currentPosition!.longitude);
+          _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
@@ -1767,8 +1751,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSiteState(_state.text);
         UpdatedValues.setSitePincode(_pincode.text);
         UpdatedValues.setSiteTaluk(_taluk.text);
-        UpdatedValues.setSiteGeotagLat(_currentPosition!.latitude);
-        UpdatedValues.setSiteGeotagLong(_currentPosition!.longitude);
+        UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
+        UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
         //txt.text = place.postalCode;
 
         print(

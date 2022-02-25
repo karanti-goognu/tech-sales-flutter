@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -39,7 +37,7 @@ class UpdateDlrInf extends StatefulWidget {
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel? _dealerInfModel;
-  InfDetailModel? _infDetailModel;
+  // InfDetailModel? _infDetailModel;
   InfluencerDetailModel? _influencerDetailModel;
   InfluencerResponseModel? _influencerResponseModel;
   //SaveNewInfluencerResponse _saveNewInfluencerResponse;
