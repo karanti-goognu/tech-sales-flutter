@@ -20,15 +20,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-  /* _moengagePlugin.setUpPushCallbacks((pushCampaign) {
-      });*/
-  _moengagePlugin.setUpPushCallbacks(_onPushClick);
-  _moengagePlugin.enableSDKLogs();
-  _moengagePlugin.initialise();
-  _moengagePlugin.registerForPushNotification();
-
-
   runZonedGuarded(
         () {
       /** Kp Changes*/
@@ -40,6 +31,16 @@ void main() async {
     },
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+  /* _moengagePlugin.setUpPushCallbacks((pushCampaign) {
+      });*/
+  _moengagePlugin.setUpPushCallbacks(_onPushClick);
+  _moengagePlugin.enableSDKLogs();
+  _moengagePlugin.initialise();
+  _moengagePlugin.registerForPushNotification();
+
+
+
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
 
 }
