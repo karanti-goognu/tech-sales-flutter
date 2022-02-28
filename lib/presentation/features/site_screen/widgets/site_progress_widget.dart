@@ -565,6 +565,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                                     .availableKittyPoint;
                                           }
                                         }
+
                                       });
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,

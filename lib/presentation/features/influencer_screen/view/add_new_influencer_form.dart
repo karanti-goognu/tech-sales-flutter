@@ -3,16 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
+import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -32,6 +36,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   final _addInfluencerFormKeyNext = GlobalKey<FormState>();
 
   InfController _infController = Get.find();
+  AppController _appController = Get.find();
+  AddEventController _addEventController = Get.find();
   InfluencerTypeModel _influencerTypeModel;
   StateDistrictListModel _stateDistrictListModel;
 
@@ -75,6 +81,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   String _district;
   int _influencerCategory;
   int _source;
+  String _primaryCounterName;
 
   @override
   void initState() {
@@ -84,6 +91,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         DateFormat('yyyy-MM-dd').format(DateTime.now());
     getDropdownData();
     getDistrictData();
+    getCounterData();
   }
 
   Future getEmpId() async {
@@ -141,6 +149,24 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   snackPosition: SnackPosition.BOTTOM),
             }
         });
+  }
+
+  getCounterData(){
+    internetChecking().then((result) => {
+      if (result == true)
+        {
+          _appController.getAccessKey(RequestIds.GET_DEALERS_LIST),
+        }
+      else
+        {
+          Get.snackbar("No internet connection.",
+              "Make sure that your wifi or mobile data is turned on.",
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM),
+          // fetchSiteList()
+        }
+    });
   }
 
   @override
@@ -334,6 +360,33 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           controlAffinity:
               ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
+
+    final primaryCounter = DropdownButtonFormField(
+        decoration: FormFieldStyle
+            .buildInputDecoration(
+            labelText:
+            "Primary Counter Name*"),
+        items: _addEventController
+            .dealerList
+            .map<
+            DropdownMenuItem<
+                dynamic>>((val) {
+          return DropdownMenuItem(
+            value: val,
+            child: SizedBox(
+                width: SizeConfig
+                    .screenWidth -
+                    100,
+                child: Text(
+                    '${val.dealerName} (${val.dealerId})')),
+          );
+        }).toList(),
+        onChanged: (val) {
+          _primaryCounterName = val.dealerId;
+        },
+        validator: (value) => value == null ? 'Please select Primary counter name' : null,
+        );
+
 
     final district = TextFormField(
       validator: (value) => value.isEmpty ? 'Please select District' : null,
@@ -810,6 +863,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               //SizedBox(height: _height),
                               // enrollDropDwn,
                               SizedBox(height: _height),
+                              primaryCounter,
+                              SizedBox(height: _height),
                               district,
                               SizedBox(height: _height),
                               baseCity,
@@ -1054,40 +1109,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "departmentName": _departmentNameController.text,
       "preferredBrandId": _preferredBrandId,
       "dateOfMarriageAnniversary": _dateMarriageAnnController.text,
-      "firmName": _firmNameController.text
+      "firmName": _firmNameController.text,
+          "primaryCounterName": _primaryCounterName
     });
-
-    //  InfluencerRequestModel _request = InfluencerRequestModel(
-    //    baseCity: _baseCityController.text,
-    //    createBy: _nameController.text,
-    //    dealership: "N",
-    //   districtId: districtId,
-    //   districtName: _districtController.text,
-    //   email: _emailController.text,
-    //   fatherName: _fatherNameController.text,
-    //   giftAddress: _giftAddressController.text,
-    //   giftAddressDistrict: _giftDistrictController.text,
-    //   giftAddressPincode: _giftPincodeController.text,
-    //   giftAddressState: _giftStateController.text,
-    //   ilpRegFlag: "N",
-    //   inflAddress: "",
-    //   inflCategoryId: _influencerCategory,
-    //   inflContactNumber: _contactNumberController.text,
-    //   inflDob: _date,
-    //   inflEnrollmentSourceId: _source,
-    //   inflJoiningDate: _enrollmentDateController.text,
-    //   inflName: _nameController.text,
-    //   inflQualification: _qualificationController.text,
-    //   inflTypeId: _memberType,
-    //   isActive: "Y",
-    //   loyaltyLinkage : "test",
-    //   monthlyPotentialVolumeMT: int.tryParse(_potentialSiteController.text),
-    //   pinCode: _pincodeController.text,
-    //   siteAssignedCount: int.tryParse(_potentialSiteController.text),
-    //   stateId: stateId,
-    //   stateName: stateName,
-    //   taluka: _talukaController.text
-    // );
 
     print('PARAMS: ${json.encode(_influencerRequestModel)}');
 

@@ -78,6 +78,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
+  TextEditingController _primaryCounterController = TextEditingController();
   FocusNode myFocusNode;
 
   //final ScrollController _scrollController = ScrollController();
@@ -96,7 +97,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     myFocusNode = FocusNode();
     getEmpId();
     getData();
-    getDistrictData();
+    //getDistrictData();
     // Future.delayed(const Duration(milliseconds: 300));
     // SchedulerBinding.instance?.addPostFrameCallback((_) {
     //   _scrollController.animateTo(
@@ -142,7 +143,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
-
+/*
   getDistrictData() {
     internetChecking().then((result) => {
           if (result == true)
@@ -166,7 +167,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
-
+*/
   setData() {
     if (_influencerDetailDataModel != null ||
         _influencerDetailDataModel.response != null ||
@@ -199,6 +200,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _memberType = _data.inflTypeId;
       _influencerCategory = _data.inflCategoryId;
       //_date = '${_data.inflDob}';
+      _primaryCounterController.text = _data.primaryCounterName;
+
+
 
       _dateController.text =
           '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
@@ -267,9 +271,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         }
       } else {}
 
-      districtId = _data.districtId;
-      stateName = _data.stateName;
-      stateId = _data.stateId;
+      // districtId = _data.districtId;
+      // stateName = _data.stateName;
+      // stateId = _data.stateId;
       _designationController.text = _data.designation;
       _departmentNameController.text = _data.departmentName;
       _preferredBrandId=_influencerDetailDataModel.response.influencerDetails.preferredBrandId;
@@ -305,15 +309,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final email = TextFormField(
       controller: _emailController,
-      validator: (value) {
-        // if (value.isEmpty) {
-        //   return 'Please enter email ';
-        // }
-        if (value.isNotEmpty && !Validations.isEmail(value)) {
-          return 'Enter valid email ';
-        }
-        return null;
-      },
+      readOnly: true,
+      // validator: (value) {
+      //   // if (value.isEmpty) {
+      //   //   return 'Please enter email ';
+      //   // }
+      //   if (value.isNotEmpty && !Validations.isEmail(value)) {
+      //     return 'Enter valid email ';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.emailAddress,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -323,12 +328,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final name = TextFormField(
       controller: _nameController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter name';
-        }
-        return null;
-      },
+      readOnly: true,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter name';
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -338,6 +344,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final fatherName = TextFormField(
       controller: _fatherNameController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter name';
@@ -353,6 +360,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final baseCity = TextFormField(
       controller: _baseCityController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter name';
@@ -368,6 +376,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final taluka = TextFormField(
       controller: _talukaController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter name';
@@ -383,21 +392,22 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final pincode = TextFormField(
       controller: _pincodeController,
-      validator: (value) {
-        // if (value.isEmpty) {
-        //   return 'Please enter name';
-        // }
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
-          return "Enter valid pincode";
-        }
-        return null;
-      },
+      readOnly: true,
+      // validator: (value) {
+      //   // if (value.isEmpty) {
+      //   //   return 'Please enter name';
+      //   // }
+      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
+      //     return "Enter valid pincode";
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      maxLength: 6,
+      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -433,13 +443,22 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
               ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
 
+    final primaryCounter = TextFormField(
+      controller: _primaryCounterController,
+      style: FormFieldStyle.formFieldTextStyle,
+      readOnly: true,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Primary Counter Name*",
+      ),
+    );
+
     final district = TextFormField(
       validator: (value) => value.isEmpty ? 'Please select District' : null,
       controller: _districtController,
       readOnly: true,
-      onTap: () {
-        Get.bottomSheet(districtList());
-      },
+      // onTap: () {
+      //   Get.bottomSheet(districtList());
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District Name*",
@@ -489,6 +508,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final qualification = TextFormField(
       controller: _qualificationController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter qualification';
@@ -506,11 +526,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       validator: (value) => value.isEmpty ? 'Please select Birth date' : null,
       controller: _dateController,
       readOnly: true,
-      onTap: () {
-        setState(() {
-          _selectBirthDate();
-        });
-      },
+      // onTap: () {
+      //   setState(() {
+      //     _selectBirthDate();
+      //   });
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Birth Date*",
@@ -536,6 +556,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final giftAddress = TextFormField(
       controller: _giftAddressController,
+      readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -545,18 +566,19 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
-      validator: (value) {
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
-          return "Enter valid pincode";
-        }
-        return null;
-      },
+      readOnly: true,
+      // validator: (value) {
+      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
+      //     return "Enter valid pincode";
+      //   }
+      //   return null;
+      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      maxLength: 6,
+      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -564,6 +586,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final giftDistrict = TextFormField(
       controller: _giftDistrictController,
+      readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -573,6 +596,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final giftState = TextFormField(
       controller: _giftStateController,
+      readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -582,6 +606,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter Total Monthly Potential (MT)';
@@ -597,6 +622,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
+      readOnly: true,
       // validator: (value) {
       //   if (value.isEmpty) {
       //     return 'Please enter Potential sites';
@@ -612,19 +638,19 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final sourceDropDwn = DropdownButtonFormField<InfluencerSourceList>(
       value: _influencerSourceList,
-      onChanged: (value) {
-        setState(() {
-          _influencerSourceList = value;
-          _source = _influencerSourceList.inflSourceId;
-        });
-      },
+      // onChanged: (value) {
+      //   setState(() {
+      //     _influencerSourceList = value;
+      //     _source = _influencerSourceList.inflSourceId;
+      //   });
+      // },
       items:
           (_influencerDetailDataModel == null || influencerSourceList == null)
               ? []
               : influencerSourceList
                   .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.inflSourceText),
+                        child: Text(e.inflSourceText, style: TextStyle(color: Colors.black),),
                       ))
                   .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -635,28 +661,28 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final influencerCategoryDropDwn =
         DropdownButtonFormField<InfluencerCategoryEntitiesList>(
       value: _influencerCategoryEntitiesList,
-      onChanged: (value) {
-        setState(() {
-          _influencerCategoryEntitiesList = value;
-          _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
-        });
-      },
+      // onChanged: (value) {
+      //   setState(() {
+      //     _influencerCategoryEntitiesList = value;
+      //     _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
+      //   });
+      // },
       items: (_influencerDetailDataModel == null ||
               influencerCategoryEntitiesList == null)
           ? []
           : influencerCategoryEntitiesList
               .map((e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e.inflCatDesc),
+                    child: Text(e.inflCatDesc, style: TextStyle(color: Colors.black),),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
-      validator: (value) =>
-          value == null ? 'Please select Influencer Category' : null,
+      // validator: (value) =>
+      //     value == null ? 'Please select Influencer Category' : null,
     );
-
+/*
     final btnSubmit = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -683,7 +709,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         ),
       ],
     );
-
+*/
     Widget engineersFields() {
       return _memberType == 7
           ? Column(
@@ -762,112 +788,13 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final firmName = TextFormField(
       controller: _firmNameController,
+      readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Firm Name",
       ),
     );
-
-/*
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: BackFloatingButton(),
-      bottomNavigationBar: BottomNavigator(),
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: (_influencerDetailDataModel != null &&
-                _influencerDetailDataModel.response.influencerDetails != null)
-                ? ListView(
-              children: [
-              Padding(
-                              padding: EdgeInsets.all(ScreenUtil().setSp(16)),
-                              child: Form(
-                                key: _addInfluencerFormKey,
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Membership ID : ",
-                                            style: TextStyles.welcomeMsgTextStyle20,
-                                          ),
-                                          Text(
-                                            "${memberShipId}",
-                                            style: TextStyles.welcomeMsgTextStyle20,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: _height),
-                                      mobileNumber,
-                                      SizedBox(height: _height),
-                                      name,
-                                      SizedBox(height: _height),
-                                      email,
-                                      SizedBox(height: _height),
-                                      //enrollDropDwn,
-                                      enrollmentCheckbox,
-                                      SizedBox(height: _height),
-                                      district,
-                                      SizedBox(height: _height),
-                                      baseCity,
-                                      SizedBox(height: _height),
-                                      taluka,
-                                      SizedBox(height: _height),
-                                      pincode,
-                                      SizedBox(height: _height),
-                                      memberDropDwn,
-                                      SizedBox(height: _height),
-                                      birthDate,
-                                      SizedBox(height: _height),
-                                      fatherName,
-                                      SizedBox(height: _height),
-                                      Visibility(
-                                          visible: _qualificationVisible,
-                                          child: qualification),
-                                      SizedBox(height: _height),
-                                      enrollmentDate,
-                                      SizedBox(height: _height),
-                                      giftAddress,
-                                      SizedBox(height: _height),
-                                      giftPincode,
-                                      SizedBox(height: _height),
-                                      giftDistrict,
-                                      SizedBox(height: _height),
-                                      giftState,
-                                      SizedBox(height: _height),
-                                      Divider(
-                                        height: ScreenUtil().setSp(1),
-                                        color: Colors.grey,
-                                      ),
-                                      SizedBox(height: _height),
-                                      totalPotential,
-                                      SizedBox(height: _height),
-                                      potentialSite,
-                                      SizedBox(height: _height),
-                                      influencerCategoryDropDwn,
-                                      SizedBox(height: _height),
-                                      sourceDropDwn,
-                                      SizedBox(height: _height),
-                                      btnSubmit,
-                                      SizedBox(height: _height),
-                                    ]),
-                    )),
-              ],
-            )
-                : Center(
-                child: Text("No Events !")
-              //CircularProgressIndicator(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  */
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -933,6 +860,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               //enrollDropDwn,
                               enrollmentCheckbox,
                               SizedBox(height: _height),
+                              primaryCounter,
+                              SizedBox(height: _height),
                               district,
                               SizedBox(height: _height),
                               baseCity,
@@ -978,124 +907,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               sourceDropDwn,
                               SizedBox(height: _height),
-                              btnSubmit,
-                              SizedBox(height: _height),
+                              // btnSubmit,
+                              // SizedBox(height: _height),
                             ]),
                       )),
                 ])
               : Center(
                   child: Text(""),
                 ),
-
-          // SingleChildScrollView(
-          //  // controller: _scrollController,
-          //  // shrinkWrap: true,
-          //   child: Column(
-          //
-          //
-          //   children: [
-          //     // Container(
-          //     //   padding: EdgeInsets.all(ScreenUtil().setSp(12)),
-          //     //   height: 56,
-          //     //   child: Row(
-          //     //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     //     children: [
-          //     //       Text(
-          //     //         'Influencer Details',
-          //     //         style: TextStyles.titleGreenStyle,
-          //     //       ),
-          //     //     ],
-          //     //   ),
-          //     //   // decoration: BoxDecoration(
-          //     //   //     border: Border(bottom: BorderSide(width: 0.3))),
-          //     // ),
-          //     // SizedBox(height: ScreenUtil().setSp(8)),
-          //     // Divider(
-          //     //   height: ScreenUtil().setSp(1),
-          //     //   color: Colors.grey,
-          //     // ),
-          //
-          //     //SizedBox(height: _height),
-          //     Padding(
-          //         padding: EdgeInsets.all(ScreenUtil().setSp(16)),
-          //         child: Form(
-          //           key: _addInfluencerFormKey,
-          //           child: Column(
-          //               crossAxisAlignment: CrossAxisAlignment.start,
-          //               children: [
-          //                 Row(
-          //                   children: [
-          //                     Text(
-          //                       "Membership ID : ",
-          //                       style: TextStyles.welcomeMsgTextStyle20,
-          //                     ),
-          //                     Text(
-          //                       "${memberShipId}",
-          //                       style: TextStyles.welcomeMsgTextStyle20,
-          //                     ),
-          //                   ],
-          //                 ),
-          //                 SizedBox(height: _height),
-          //                 mobileNumber,
-          //                 SizedBox(height: _height),
-          //                 name,
-          //                 SizedBox(height: _height),
-          //                 email,
-          //                 SizedBox(height: _height),
-          //                 //enrollDropDwn,
-          //                 enrollmentCheckbox,
-          //                 SizedBox(height: _height),
-          //                 district,
-          //                 SizedBox(height: _height),
-          //                 baseCity,
-          //                 SizedBox(height: _height),
-          //                 taluka,
-          //                 SizedBox(height: _height),
-          //                 pincode,
-          //                 SizedBox(height: _height),
-          //                 memberDropDwn,
-          //                 SizedBox(height: _height),
-          //                 birthDate,
-          //                 SizedBox(height: _height),
-          //                 fatherName,
-          //                 SizedBox(height: _height),
-          //                 Visibility(
-          //                     visible: _qualificationVisible,
-          //                     child: qualification),
-          //                 SizedBox(height: _height),
-          //                 enrollmentDate,
-          //                 SizedBox(height: _height),
-          //                 giftAddress,
-          //                 SizedBox(height: _height),
-          //                 giftPincode,
-          //                 SizedBox(height: _height),
-          //                 giftDistrict,
-          //                 SizedBox(height: _height),
-          //                 giftState,
-          //                 SizedBox(height: _height),
-          //                 Divider(
-          //                   height: ScreenUtil().setSp(1),
-          //                   color: Colors.grey,
-          //                 ),
-          //                 SizedBox(height: _height),
-          //                 totalPotential,
-          //                 SizedBox(height: _height),
-          //                 potentialSite,
-          //                 SizedBox(height: _height),
-          //                 influencerCategoryDropDwn,
-          //                 SizedBox(height: _height),
-          //                 sourceDropDwn,
-          //                 SizedBox(height: _height),
-          //                 btnSubmit,
-          //                 SizedBox(height: _height),
-          //               ]),
-          //         )),
-          //   ],
-          // )
-          // //     : Center(
-          // //   child: CircularProgressIndicator(),
-          // // ),
-          // ),
         ],
       ),
     );
@@ -1141,7 +960,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
   //   });
   // }
-
+/*
   String stateName;
   int stateId, districtId;
 
@@ -1287,4 +1106,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
+
+ */
 }

@@ -508,7 +508,7 @@ print("URL:$url ");
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
           body: json.encode(jsonData));
-      // log(""+json.encode(jsonData));
+       log(""+json.encode(jsonData));
       if(response.statusCode==200) {
         String data = response.body;
         return json.decode(data);

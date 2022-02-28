@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/TotalPotentialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -605,6 +606,41 @@ print("Length: $length");
     }
 
     return infDetailModel;
+  }
+
+  Future<TotalPotentialModel> getTotalPotential(accessKey, String userSecretKey, var updateRequestModel) async {
+    TotalPotentialModel totalPotentialModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try {
+      version = VersionClass.getVersion();
+      // var response = await http.get(Uri.parse(UrlConstants.getTotalSitePotential),
+      //     headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      // var data = json.decode(response.body);
+
+      var response = await http.post(Uri.parse(UrlConstants.getTotalSitePotential),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        body: json.encode(updateRequestModel),
+      );
+      var data = json.decode(response.body);
+      print(UrlConstants.getTotalSitePotential);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          totalPotentialModel = TotalPotentialModel.fromJson(json.decode(response.body));
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at Lead Repo $e");
+    }
+
+    return totalPotentialModel;
   }
 
 

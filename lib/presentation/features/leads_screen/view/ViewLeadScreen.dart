@@ -277,7 +277,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   updateStatusForNextStage(BuildContext context, int statusId,
       {String dealerId, String subDealerId,int floorId,
-        String noOfBagSupplied, String isIhbCommercial}) {
+        String noOfBagSupplied, String isIhbCommercial, int lapsePotential, int nextFloorLevel, double totalSitePotential}) {
     String empId;
     String mobileNumber;
     String name;
@@ -392,7 +392,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
         'nosFloors':_floorId,
         'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
-        'isIhbCommercial': _isIhbCommercial
+        'isIhbCommercial': _isIhbCommercial,
+        'lapsePotential' : _lapsePotential,
+        'nextFloorLevel' : _floorLevelId,
+        'totalSitePotential' : _totalSitePotential
       };
 
       print("Update Data-->"+"$updateRequestModel");
@@ -475,7 +478,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       viewLeadDataResponse));
                 } else if (_selectedValuedummy.id == 3) {
                   showDialog(
-                      barrierDismissible: false,
+                     // barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) =>
                           new ChangeLeadToSiteDialog(
@@ -2830,8 +2833,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   String selectedDealerSubId = "";
   String selectedDate = "";
   int _floorId;
+  int _floorLevelId;
   String _noOfBagSupplied = "";
   String _isIhbCommercial = "";
+  double _totalSitePotential;
+  int _lapsePotential;
 
   @override
   updateStatusForNextStageAllow(
@@ -2843,7 +2849,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       String subDealerId,
       int selectedFloorId,
       String noOfBagsSupplied,
-      String isIhbCommercial) {
+      String isIhbCommercial,
+      int nextFloorLevel,
+      int lapsePotential,
+      double totalSitePotential
+      ) {
     // TODO: implement updateStatusForNextStageAllow
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
@@ -2855,6 +2865,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _floorId = selectedFloorId;
     _noOfBagSupplied = noOfBagsSupplied;
     _isIhbCommercial = isIhbCommercial;
+    _floorLevelId = nextFloorLevel;
+    _lapsePotential = lapsePotential;
+    _totalSitePotential = totalSitePotential;
 
 
     updateStatusForNextStage(context, statusId,

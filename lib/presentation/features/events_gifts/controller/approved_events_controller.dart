@@ -126,12 +126,6 @@ class EventsFilterController extends GetxController {
     UpdateDealerInfResponse _updateDealerInfResponse;
     String userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-    // Future.delayed(
-    //     Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
-    //repository.getAccessKey().then((data) async {
       String accessKey = await repository.getAccessKey();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);

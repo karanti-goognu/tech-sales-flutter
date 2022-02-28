@@ -836,6 +836,8 @@ class UpdatedValues {
         siteProgressDateOfConstruction;
   }
 
+
+
   static void setSiteProgressData(
       ConstructionStageEntity siteProgressConstructionId,
       SiteFloorsEntity siteProgressnoOfFloors,

@@ -1184,9 +1184,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedRadioValue,
                                           };
                                           print(jsonEncode(jsonData));
-                                          _siteController
-                                              .updatePendingSupplyDetails(
-                                                  jsonData);
+                                          // _siteController
+                                          //     .updatePendingSupplyDetails(
+                                          //         jsonData);
                                         },
                                       ),
                                       RaisedButton(

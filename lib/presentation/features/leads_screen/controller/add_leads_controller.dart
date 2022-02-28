@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/TotalPotentialModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -223,6 +224,18 @@ class AddLeadsController extends GetxController {
       await repository.updateLeadsData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateRequestModel, imageList, context, leadId,from);
     });
+  }
+
+  Future<TotalPotentialModel> getTotalSitePotential(var updateRequestModel) async {
+    TotalPotentialModel _totalPotentialModel;
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      if(this.accessKeyResponse!=null)
+      _totalPotentialModel = await repository.getTotalPotental(this.accessKeyResponse.accessKey, userSecurityKey, updateRequestModel);
+    });
+    return _totalPotentialModel;
   }
 
   Future<InfluencerDetailModel> getInfNewData(String accessKey) async {

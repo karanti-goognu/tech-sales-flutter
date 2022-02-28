@@ -75,6 +75,12 @@ class MyRepositoryLeads {
         accessKey, userSecurityKey, phoneNumber);
   }
 
+  getTotalPotental(accessKey,
+      String userSecretKey, var updateRequestModel) {
+    return apiClient.getTotalPotential(accessKey, userSecretKey,
+        updateRequestModel);
+  }
+
   Future<SiteDistrictListModel> getLeadDistList(String accessKey, String userSecretKey, String empID) async {
     return apiClient.getLeadDistList(accessKey, userSecretKey, empID);
   }

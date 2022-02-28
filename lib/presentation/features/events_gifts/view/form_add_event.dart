@@ -632,7 +632,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Dealer(s) List',
+                    'Counter(s) List',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(

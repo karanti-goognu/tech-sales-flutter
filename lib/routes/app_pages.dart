@@ -154,7 +154,7 @@ class AppPages {
     GetPage(
       name: Routes.ADD_INFLUENCER,
       page: () => FormAddInfluencer(),
-      binding: InfBinding(),
+      bindings: [InfBinding(), AppBinding()],
     ),
      GetPage(
       name: Routes.DASHBOARD,

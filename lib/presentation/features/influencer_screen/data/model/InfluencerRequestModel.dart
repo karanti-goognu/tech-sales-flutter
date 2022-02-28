@@ -35,6 +35,7 @@ class InfluencerRequestModel {
   int preferredBrandId;
   String dateOfMarriageAnniversary;
   String firmName;
+  String primaryCounterName;
 
   InfluencerRequestModel(
       {this.membershipId,
@@ -71,7 +72,8 @@ class InfluencerRequestModel {
         this.departmentName,
         this.preferredBrandId,
         this.dateOfMarriageAnniversary,
-        this.firmName});
+        this.firmName,
+        this.primaryCounterName});
 
   InfluencerRequestModel.fromJson(Map<String, dynamic> json) {
     membershipId = json["membershipId"];
@@ -110,6 +112,7 @@ class InfluencerRequestModel {
     preferredBrandId = json['preferredBrandId'];
     dateOfMarriageAnniversary = json['dateOfMarriageAnniversary'];
     firmName = json['firmName'];
+    primaryCounterName = json['primaryCounterName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +153,7 @@ class InfluencerRequestModel {
     data['preferredBrandId'] = this.preferredBrandId;
     data['dateOfMarriageAnniversary'] = this.dateOfMarriageAnniversary;
     data['firmName'] = this.firmName;
+    data['primaryCounterName'] = this.primaryCounterName;
     return data;
   }
 }

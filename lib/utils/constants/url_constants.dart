@@ -40,7 +40,8 @@ abstract class UrlConstants {
  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
- static const String updateLeadsData = '$baseUrl/leads/lead-update';
+// static const String updateLeadsData = '$baseUrl/leads/lead-update';
+ static const String updateLeadsData = '$baseUrl/leads/v2/lead-update';
  static const String updateSiteData = '$baseUrl/sites/site-update';
  static const String updateVersion2SiteData = '$baseUrl/sites/v2/site-update';
  static const String getSearchData = '$baseUrl/leads/lead-search?';
@@ -82,6 +83,7 @@ abstract class UrlConstants {
  static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
 
  static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
+ static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
 
 
  static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="
