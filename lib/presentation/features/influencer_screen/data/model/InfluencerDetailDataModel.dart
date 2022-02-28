@@ -43,7 +43,7 @@ class Response {
         ? new InfluencerDetails.fromJson(json['influencerDetails'])
         : null;
     if (json['influencerTypeEntitiesList'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencerTypeEntitiesList'].forEach((v) {
         influencerTypeEntitiesList
             .add(new InfluencerTypeEntitiesList.fromJson(v));

@@ -1,6 +1,5 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
@@ -24,25 +23,25 @@ class SitePastStageHistoryWidget extends StatefulWidget {
 class _SitePastStageHistoryWidgetState
     extends State<SitePastStageHistoryWidget> {
   final db = BrandNameDBHelper();
-  List<SiteStageHistory> siteStageHistorys = new List();
+  List<SiteStageHistory> siteStageHistories = new List.empty(growable: true);
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-  List<CounterListModel> counterListModel = new List();
-  List<DealerForDb> dealerEntityForDb = new List();
-  List<SiteBrandEntity> siteBrandEntity = new List();
-  List<SiteFloorsEntity> siteFloorsEntity = new List();
-  List<ConstructionStageEntity> constructionStageEntity = new List();
+  List<CounterListModel> counterListModel = new List.empty(growable: true);
+  List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
+  List<SiteBrandEntity> siteBrandEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
 
   setSitePastStageHistoryData() async {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       if (viewSiteDataResponse.siteStageHistorys != null) {
-        siteStageHistorys = viewSiteDataResponse.siteStageHistorys;
+        siteStageHistories = viewSiteDataResponse.siteStageHistorys;
       } else {
-        siteStageHistorys = [];
+        siteStageHistories = [];
       }
       siteBrandEntity = viewSiteDataResponse != null
           ? viewSiteDataResponse.siteBrandEntity
-          : new List();
+          : new List.empty(growable: true);
       counterListModel = viewSiteDataResponse.counterListModel;
       siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
       constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
@@ -55,7 +54,8 @@ class _SitePastStageHistoryWidgetState
     }
 
     for (int i = 0; i < counterListModel.length; i++) {
-      int id = await db.addDealer(DealerForDb(
+      // int id =
+      await db.addDealer(DealerForDb(
           counterListModel[i].soldToParty,
           counterListModel[i].soldToPartyName));
     }
@@ -78,8 +78,14 @@ class _SitePastStageHistoryWidgetState
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return pastStageHistoryView();
   }
 
@@ -93,21 +99,21 @@ class _SitePastStageHistoryWidgetState
             Row(
               children: [
                 Expanded(
-                  child: siteStageHistorys != null
+                  child: siteStageHistories != null
                       ? ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: siteStageHistorys.length,
+                          itemCount: siteStageHistories.length,
                           itemBuilder: (BuildContext context, int index) {
                             final DateFormat formatter =
                                 DateFormat('dd-MMM-yyyy');
                             String selectedDateString = formatter.format(
                                 DateTime.fromMillisecondsSinceEpoch(
-                                    siteStageHistorys[index].createdOn));
+                                    siteStageHistories[index].createdOn));
 
-                            String constructionDateString = siteStageHistorys[index].constructionDate;
+                            // String constructionDateString = siteStageHistories[index].constructionDate;
 
-                            if (!siteStageHistorys[index].isExpanded) {
+                            if (!siteStageHistories[index].isExpanded) {
                               return Column(
                                 // mainAxisAlignment:
                                 // MainAxisAlignment.spaceBetween,
@@ -122,9 +128,8 @@ class _SitePastStageHistoryWidgetState
                                             //      fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
-                                      siteStageHistorys[index].isExpanded
-                                          ? FlatButton.icon(
-                                              color: Colors.transparent,
+                                      siteStageHistories[index].isExpanded
+                                          ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
                                                 color: HexColor("#F9A61A"),
@@ -140,16 +145,15 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistorys[index]
+                                                  siteStageHistories[index]
                                                           .isExpanded =
-                                                      !siteStageHistorys[index]
+                                                      !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
                                                 // _getCurrentLocation();
                                               },
                                             )
-                                          : FlatButton.icon(
-                                              color: Colors.transparent,
+                                          : TextButton.icon(
                                               icon: Icon(
                                                 Icons.add,
                                                 color: HexColor("#F9A61A"),
@@ -165,9 +169,9 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistorys[index]
+                                                  siteStageHistories[index]
                                                           .isExpanded =
-                                                      !siteStageHistorys[index]
+                                                      !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
                                               },
@@ -191,9 +195,8 @@ class _SitePastStageHistoryWidgetState
                                             //fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
-                                      siteStageHistorys[index].isExpanded
-                                          ? FlatButton.icon(
-                                              color: Colors.transparent,
+                                      siteStageHistories[index].isExpanded
+                                          ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
                                                 color: HexColor("#F9A61A"),
@@ -209,16 +212,15 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistorys[index]
+                                                  siteStageHistories[index]
                                                           .isExpanded =
-                                                      !siteStageHistorys[index]
+                                                      !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
                                                 // _getCurrentLocation();
                                               },
                                             )
-                                          : FlatButton.icon(
-                                              color: Colors.transparent,
+                                          : TextButton.icon(
                                               icon: Icon(
                                                 Icons.add,
                                                 color: HexColor("#F9A61A"),
@@ -234,9 +236,9 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistorys[index]
+                                                  siteStageHistories[index]
                                                           .isExpanded =
-                                                      !siteStageHistorys[index]
+                                                      !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
                                                 // _getCurrentLocation();
@@ -250,7 +252,7 @@ class _SitePastStageHistoryWidgetState
                                     initialValue:
                                         GlobalMethods.selectedFloorText(
                                             siteFloorsEntity,
-                                            siteStageHistorys[index].floorId),
+                                            siteStageHistories[index].floorId),
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -267,7 +269,7 @@ class _SitePastStageHistoryWidgetState
                                     initialValue:
                                         GlobalMethods.constructionStageDesc(
                                             constructionStageEntity,
-                                            siteStageHistorys[index]
+                                            siteStageHistories[index]
                                                 .constructionStageId),
                                     style: TextStyle(
                                         fontSize: 18,
@@ -283,7 +285,7 @@ class _SitePastStageHistoryWidgetState
                                   TextFormField(
                                     readOnly: true,
                                     initialValue:
-                                        siteStageHistorys[index].stagePotential,
+                                        siteStageHistories[index].stagePotential,
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -297,13 +299,13 @@ class _SitePastStageHistoryWidgetState
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue: (siteStageHistorys[index]
+                                    initialValue: (siteStageHistories[index]
                                                     .stageStatus !=
                                                 null &&
-                                            siteStageHistorys[index]
+                                            siteStageHistories[index]
                                                     .stageStatus !=
                                                 "null")
-                                        ? siteStageHistorys[index].stageStatus
+                                        ? siteStageHistories[index].stageStatus
                                         : "",
                                     style: TextStyle(
                                         fontSize: 18,
@@ -318,13 +320,13 @@ class _SitePastStageHistoryWidgetState
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue:  (siteStageHistorys[index]
+                                    initialValue:  (siteStageHistories[index]
                                 .constructionDate !=
                             null &&
-                            siteStageHistorys[index]
+                            siteStageHistories[index]
                                 .constructionDate !=
                             "null")
-                            ? siteStageHistorys[index].constructionDate
+                            ? siteStageHistories[index].constructionDate
                                 : "",
                                     style: TextStyle(
                                         fontSize: 18,
@@ -354,12 +356,14 @@ class _SitePastStageHistoryWidgetState
             ),
             SizedBox(height: 16),
             Center(
-              child: RaisedButton(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: HexColor("#1C99D4"),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
                 ),
-                color: HexColor("#1C99D4"),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
                   child: Text(
@@ -373,7 +377,7 @@ class _SitePastStageHistoryWidgetState
                 ),
                 onPressed: () async {
                   UpdatedValues updateRequest = new UpdatedValues();
-                  updateRequest.UpdateRequest(context);
+                  updateRequest.updateRequest(context);
                 },
               ),
             ),
@@ -387,14 +391,14 @@ class _SitePastStageHistoryWidgetState
   List<Widget> _getPastHistoryProductList(int index) {
     List<Widget> productAddedList = [];
     for (int i = 0;
-        i < siteStageHistorys[index].siteSupplyHistorys.length;
+        i < siteStageHistories[index].siteSupplyHistorys.length;
         i++) {
       productAddedList.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
           children: [
             getPastHistoryProductDetails(
-                siteStageHistorys[index].siteSupplyHistorys[i], i),
+                siteStageHistories[index].siteSupplyHistorys[i], i),
           ],
         ),
       ));

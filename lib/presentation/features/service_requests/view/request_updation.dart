@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
@@ -24,25 +26,31 @@ class _RequestUpdationState extends State<RequestUpdation>{
 
 
   Future<ComplaintViewModel> getComplaintViewData() async {
+ //   print("getComplaintViewData of SR update");
     AccessKeyModel accessKeyModel = new AccessKeyModel();
 
-    await updateServiceRequestController.getAccessKey().then((data) async {
+    var data = await updateServiceRequestController.getAccessKey();
+        // .then((data) async {
+ //     print("Data ${jsonEncode(data)}");
       accessKeyModel = data;
       updateServiceRequestController.id = widget.id.toString();
       updateServiceRequestController.coverBlockProvidedNo.clear();
       updateServiceRequestController.formwarkRemovalDate.clear();
       updateServiceRequestController.setTabOption(1);
+   //   print("Here");
       await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel.accessKey).then((value) => {
+   //     print("Vaho ${jsonEncode(value)}"),
       setState(() {
         complaintViewModel = value;
       }),
-      });
+      // });
     });
     return complaintViewModel;
   }
 
   @override
   void initState() {
+ //   print("Init state of SR update");
      _complaintViewModel=getComplaintViewData();
     super.initState();
   }
@@ -73,7 +81,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
       body: FutureBuilder(
           future: _complaintViewModel,
           builder: (context, snapshot) {
-            print(snapshot.data.toString());
+     //       print(snapshot.data.toString());
             if (snapshot.connectionState == ConnectionState.waiting) {
               return  Align(
                   alignment: Alignment.center,
@@ -189,7 +197,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                           GestureDetector(
                                             onTap: () {
                                               controller.setTabOption(1);
-                                              print(controller.option);
+                                          //    print(controller.option);
                                             },
                                             child: Chip(
                                               label: Text('Details'),

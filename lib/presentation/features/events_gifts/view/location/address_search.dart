@@ -57,8 +57,8 @@ class AddressSearch extends SearchDelegate<Suggestion> {
           Text((snapshot.data[index] as Suggestion).description),
           onTap: () {
             apiClient.getLatLong((snapshot.data[index] as Suggestion).placeId).then((value) {
-              print("latitude ${value.lat}");
-              print("longitude ${value.lng}");
+            //  print("latitude ${value.lat}");
+            //  print("longitude ${value.lng}");
             });
             close(context, snapshot.data[index] as Suggestion);
           },

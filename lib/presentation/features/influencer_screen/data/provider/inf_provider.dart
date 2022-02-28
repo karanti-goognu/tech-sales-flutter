@@ -27,7 +27,7 @@ class MyApiClientInf {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -50,14 +50,14 @@ class MyApiClientInf {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
-      print("URL-------${UrlConstants.addIlpInfluencer + empID}");
-      print("-------$data");
+     // print("URL-------${UrlConstants.addIlpInfluencer + empID}");
+     // print("-------$data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerTypeModel = InfluencerTypeModel.fromJson(json.decode(response.body));
-        print(response.body);
+      //  print(response.body);
       }
     }
     catch (e) {
@@ -81,7 +81,7 @@ class MyApiClientInf {
             data["resp_msg"]), barrierDismissible: false);
       }else {
         stateDistrictListModel = StateDistrictListModel.fromJson(json.decode(response.body));
-        print(response.body);
+       // print(response.body);
       }
     }
     catch (e) {
@@ -99,12 +99,12 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
-      print("======${UrlConstants.getInfluencerDetail + "$contact"}");
+     // print("======${UrlConstants.getInfluencerDetail + "$contact"}");
       var data = json.decode(response.body);
-      print("======$data");
+      //print("======$data");
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
+       // print("======$data");
 
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -112,7 +112,7 @@ class MyApiClientInf {
         }
         else {
           infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
-           print('URL ${UrlConstants.getInfluencerDetail + "$contact"}');
+         //  print('URL ${UrlConstants.getInfluencerDetail + "$contact"}');
         }} else {
         print('error');
       }
@@ -134,9 +134,9 @@ class MyApiClientInf {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(influencerRequestModel),
       );
-      print("__---${response.request}");
+     // print("__---${response.request}");
       var data = json.decode(response.body);
-      print("__---$data");
+     // print("__---$data");
       if (response.statusCode == 200) {
         Get.back();
         if(data["resp_code"] == "DM1005"){
@@ -146,9 +146,9 @@ class MyApiClientInf {
         else {
           influencerResponseModel =
               InfluencerResponseModel.fromJson(json.decode(response.body));
-          print('URL : ${response.request}');
-          print('RESP: ${response.body}');
-          print('RESPONSE : ${json.encode(influencerRequestModel)}');
+          // print('URL : ${response.request}');
+          // print('RESP: ${response.body}');
+          // print('RESPONSE : ${json.encode(influencerRequestModel)}');
         } } else {
         print('error');
       }
@@ -172,14 +172,12 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       Get.back();
       if(data["resp_code"] == "DM1005"){
-        //Get.back();
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
-        //Get.back();
         influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
-        print('URL : ${response.request}');
-        print('RESP: ${response.body}');
+        // print('URL : ${response.request}');
+        // print('RESP: ${response.body}');
       }
     }
     catch (e) {
@@ -201,14 +199,14 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
+       // print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
           influencerDetailDataModel = InfluencerDetailDataModel.fromJson(json.decode(response.body));
-          print('URL ${UrlConstants.getInfluencerDetailsByMembership + "$membershipId"}');
+        //  print('URL ${UrlConstants.getInfluencerDetailsByMembership + "$membershipId"}');
         }} else {
         print('error');
       }
@@ -225,10 +223,10 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       //String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
       String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
-      print(url);
-      var response = await httpClient.get(url,
+     // print(url);
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-      print('Response body is : ${json.decode(response.body)}');
+   //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         InfluencerListModel infSearchModel = InfluencerListModel.fromJson(data);
@@ -252,7 +250,7 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
+      //  print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

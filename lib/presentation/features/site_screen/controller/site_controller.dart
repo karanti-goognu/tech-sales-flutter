@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -18,7 +17,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SiteController extends GetxController {
@@ -84,9 +82,9 @@ class SiteController extends GetxController {
   get kittyBagsListModel => _kittyBagsListModel.value;
   set kittyBagsListModel(value) => _kittyBagsListModel.value = value;
 
-  var _sitesListOffline = List<SitesEntity>().obs;
+  var _sitesListOffline = List<SitesEntity>.empty(growable: true).obs;
 
-  List<SitesEntity> _siteList = new List();
+  List<SitesEntity> _siteList = new List.empty(growable: true);
 
 
   final _phoneNumber = "8860080067".obs;
@@ -376,15 +374,11 @@ class SiteController extends GetxController {
 
       String influencerID = "";
       if (influencer_id != StringConstants.empty) {
-        influencerID = "&influencerID=${influencer_id}";
+        influencerID = "&influencerID=$influencer_id";
       }
-      //debugPrint('request without encryption: $body');
-      debugPrint('request without encryption: ${this.offset}');
       String url = "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
       //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
-       debugPrint('Url is : $url');
-       debugPrint('accessKey is : $accessKey');
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
@@ -448,17 +442,12 @@ class SiteController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
-      String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
+      String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
 
       //debugPrint('request without encryption: $body');
-      String url =
-          "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
-      debugPrint('Url is : $url');
+      String url = "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
@@ -508,7 +497,6 @@ class SiteController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID =  prefs.getString(StringConstants.employeeId);
-      print('User Security Key :: $userSecurityKey');
       viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
     });
 //      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
@@ -551,7 +539,6 @@ class SiteController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      print('User Security Key :: $userSecurityKey');
 
       await repository.updateSiteData(this.accessKeyResponse.accessKey,
           userSecurityKey, updateDataRequest, list, context, siteId);
@@ -657,14 +644,12 @@ class SiteController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyList+empId}";
-      debugPrint('Url is : $url');
       repository.getPendingSupplyData(accessKey, userSecurityKey, url).then((data) {
         Get.back();
         if (data == null) {
           debugPrint('Supply Data Response is null');
         } else {
           this.pendingSupplyListResponse = data;
-          print("#### ${jsonEncode(data)}");
           if (pendingSupplyListResponse.respCode == "DM1002") {
             debugPrint('Supply Data Response is not null');
           }
@@ -691,15 +676,12 @@ class SiteController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-      print("URL: ${url}");
       var data = await repository.getPendingSupplyDetails(accessKey, userSecurityKey, url);
-      print(data);
         Get.back();
         if (data == null) {
           debugPrint('Supply Detail Response is null');
         } else {
           this.pendingSupplyDetailsResponse = data;
-          print(this.pendingSupplyDetailsResponse);
           if (pendingSupplyDetailsResponse.respCode == "DM1002") {
             debugPrint('Supply Detail Response is not null');
           }

@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/dsp_for_mtd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/top_row_for_mtd.dart';
@@ -40,30 +38,30 @@ class MonthToDateState extends State<MonthToDate> {
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-    print(_dashboardController.empId);
+//    print(_dashboardController.empId);
 //    var pngBytes = await _capturePng();
     var pngBytes = await  screenshotController.capture(pixelRatio: 5);
-    print(pngBytes);
+ //   print(pngBytes);
     //final directory = (await getExternalStorageDirectory()).path;
     final directory = (await getApplicationDocumentsDirectory()).path;
 
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
-    print('Screenshot Path:' + imgFile.path);
+ //   print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }
   /*Pass empId*/
   void passEmpId(String empIdValue) {
-    print("passed empId ...   $empIdValue");
+ //   print("passed empId ...   $empIdValue");
     this.empID = empIdValue;
   }
 
   @override
   void initState() {
     empID = widget.empID;
-    print("MTD: $empID");
+  //  print("MTD: $empID");
 
 
     yearMonthForFileName = widget.yearMonth;
@@ -279,7 +277,7 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
-                                    print("yearMonth:"+yearMonth);
+                                  //  print("yearMonth:"+yearMonth);
 
                                     if(widget.empID=="_empty"){
 
@@ -318,7 +316,7 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
-                                    print("yearMonth:"+yearMonth);
+                                   // print("yearMonth:"+yearMonth);
 
                                     if(widget.empID=="_empty"){
                                       _dashboardController.getMonthViewDetails(
@@ -326,7 +324,7 @@ class MonthToDateState extends State<MonthToDate> {
                                           yearMonth: yearMonth);
                                     }
                                     else{
-                                      print(widget.empID);
+                                    //  print(widget.empID);
                                       _dashboardController.getMonthViewDetails(
                                           empID: widget.empID,
                                           yearMonth: yearMonth);

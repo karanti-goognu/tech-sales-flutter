@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 
@@ -241,7 +237,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
       setState(() {});
       return;
     }
-    print('Hello'+text);
     for(int i=0;i<_detailEventController.dealerList.length;i++){
       if(_detailEventController.dealerList[i].dealerName.toUpperCase().contains(text)||_detailEventController.dealerList[i].dealerName.toLowerCase().contains(text)||
           _detailEventController.dealerList[i].dealerName.contains(text)){
@@ -249,7 +244,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
         setState(() {
           _searchList.add(_detailEventController.dealerList[i]);
         });
-        print("FilterList-->"+_searchList.length.toString());
+    //    print("FilterList-->"+_searchList.length.toString());
       }
     }
 
@@ -264,12 +259,12 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
     setState(() {
       _detailEventController.dealerList[index].isSelected = val;
       if (val) {
-        print('true');
+      //  print('true');
         _detailEventController.dealerListSelected.add(new DealerModelSelected(
             _detailEventController.dealerList[index].dealerId,
             _detailEventController.dealerList[index].dealerName));
       } else {
-        print('false');
+      //  print('false');
         _detailEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _detailEventController.dealerList[index].dealerId);
       }

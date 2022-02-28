@@ -90,8 +90,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -117,7 +123,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   ),
                 ),
 
-                FlatButton(
+                TextButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
                         print(value);
@@ -137,11 +143,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           });
                         });
                       }),
-                  // filterBottomSheet,
-                  shape: RoundedRectangleBorder(
+                  style: TextButton.styleFrom(shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),
-                  color: Colors.transparent,
+                      side: BorderSide(color: Colors.white)),),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Row(

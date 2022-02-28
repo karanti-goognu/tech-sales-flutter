@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -29,15 +27,21 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
   SiteController _siteController = Get.find();
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
-  List<SitesEntity> siteList = new List();
+  List<SitesEntity> siteList = new List.empty(growable: true);
 
   DateTime selectedDate = DateTime.now();
   String selectedDateString;
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);

@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/helper/createDatabaseDB.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
@@ -78,7 +77,6 @@ class SplashScreenPageState extends State<SplashScreen> {
 
   @override
   void initState() {
-    print("Calling");
     // TODO: implement initState
     super.initState();
 
@@ -89,13 +87,10 @@ class SplashScreenPageState extends State<SplashScreen> {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
-      print('$isUserLoggedIn');
+     // print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
-        print("on splash_screen.dart");
-
-
         internetChecking().then((result){
           if(result)
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);

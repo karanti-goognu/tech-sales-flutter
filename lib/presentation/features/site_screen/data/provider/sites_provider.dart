@@ -25,7 +25,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSites {
@@ -40,7 +39,7 @@ class MyApiClientSites {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version = packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -60,7 +59,7 @@ class MyApiClientSites {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version = packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -84,7 +83,7 @@ class MyApiClientSites {
         'mobile-number': mobile,
       };
 
-      var response = await httpClient.get(UrlConstants.getSecretKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
       // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -108,10 +107,10 @@ class MyApiClientSites {
       _prefs.then((SharedPreferences prefs) {
         userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        print('$userSecurityKey');
+       // print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
-        var response = await httpClient.get(UrlConstants.getFilterData,
+        var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
         // print('Response body is : ${json.decode(response.body)}');
@@ -180,13 +179,13 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID";
-      print(url);
+  //    print(url);
       final response = await get(
         Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
-print("URL:$url ");
+//print("URL:$url ");
       // print(
       //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
@@ -226,7 +225,7 @@ print("URL:$url ");
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
-    print(UrlConstants.updateSiteData);
+  //  print(UrlConstants.updateSiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
@@ -264,10 +263,10 @@ print("URL:$url ");
           json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " +
-          request.fields['siteInfluencerEntity'].toString());
-      print("Files:: " + request.files.toString());
+      // print("Request headers :: " + request.headers.toString());
+      // print("Request Body/Fields :: " +
+      //     request.fields['siteInfluencerEntity'].toString());
+      // print("Files:: " + request.files.toString());
       try {
         request
             .send()
@@ -306,7 +305,7 @@ print("URL:$url ");
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
-    print(UrlConstants.updateVersion4SiteData);
+ //   print(UrlConstants.updateVersion4SiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
@@ -341,11 +340,11 @@ print("URL:$url ");
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
       /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("###${request.fields}");
-      print("Request Body/Fields :: " +
-          request.fields['siteInfluencerEntity'].toString());
-      print("Files:: " + request.files.toString());
+      // print("Request headers :: " + request.headers.toString());
+      // print("###${request.fields}");
+      // print("Request Body/Fields :: " +
+      //     request.fields['siteInfluencerEntity'].toString());
+      // print("Files:: " + request.files.toString());
       log("Site Body--> "+json.encode(updateDataRequest));
       try {
         request
@@ -356,16 +355,13 @@ print("URL:$url ");
             // print(response.body);
 
             var data = json.decode(response.body);
-            //    print(data);
-
-            //      print(response.body)  ;
             if(data["resp_code"] == "DM1005"){
               Get.dialog(CustomDialogs().appUserInactiveDialog(
                   data["resp_msg"]), barrierDismissible: false);
             }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
-            print(response.body);
+          //  print(response.body);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs()
@@ -393,8 +389,8 @@ print("URL:$url ");
       version = VersionClass.getVersion();
       String url =
           "${UrlConstants.getSiteSearchData}searchText=${searchText}&referenceID=$empID";
-      print(url);
-      var response = await httpClient.get(url,
+   //   print(url);
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
       // print('Response body is : ${json.decode(response.body)}');
@@ -444,8 +440,6 @@ print("URL:$url ");
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
-        print("======${UrlConstants.saveUpdateSiteVisit}");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -472,7 +466,7 @@ print("URL:$url ");
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
         PendingSupplyDataResponse pendingSupplyDataResponse = pendingSupplyData.response;
-        print(pendingSupplyDataResponse);
+     //   print(pendingSupplyDataResponse);
         return pendingSupplyDataResponse;
       }else
         print('error');
@@ -489,7 +483,7 @@ print("URL:$url ");
               accessKey, securityKey, version));
       if(response.statusCode==200) {
         var data = json.decode(response.body);
-        print(data);
+     //   print(data);
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
         PendingSupplyDetailsEntity pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
@@ -503,7 +497,6 @@ print("URL:$url ");
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
     try {
       version = VersionClass.getVersion();
-      print(url);
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
@@ -530,14 +523,12 @@ print("URL:$url ");
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
-      print("URL: ${UrlConstants.siteDistList + empID}");
-      print("Data: $data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
-        print(response.body);
+     //   print(response.body);
       }
     }
     catch (e) {
@@ -551,7 +542,6 @@ print("URL:$url ");
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.siteKittyPoints + "$partyCode";
-      print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
@@ -561,7 +551,7 @@ print("URL:$url ");
             data["resp_msg"]), barrierDismissible: false);
       }else {
         kittyBagsListModel = KittyBagsListModel.fromJson(json.decode(response.body));
-        print(response.body);
+      //  print(response.body);
       }
     }
     catch (e) {

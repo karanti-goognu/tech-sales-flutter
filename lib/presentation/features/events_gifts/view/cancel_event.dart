@@ -58,15 +58,21 @@ class _CancelEventtState extends State<CancelEvent> {
           detailEventModel = data;
           selectedDealersModels = detailEventModel.dealersModels;
         });
-        print('DDDD: $data');
+      //  print('DDDD: $data');
       });
    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final dropDwnReason = DropdownButtonFormField(
       onChanged: (value) {
@@ -142,9 +148,9 @@ class _CancelEventtState extends State<CancelEvent> {
         body: Stack(children: [
     BackgroundContainerImage(),
           Positioned(
-              top: ScreenUtil().setSp(30),
-              left: ScreenUtil().setSp(8),
-              child: FlatButton(
+              top: 30.sp,
+              left: 8.sp,
+              child: TextButton(
                 onPressed: () {
                   Get.toNamed(Routes.HOME_SCREEN);
                 },
@@ -155,7 +161,7 @@ class _CancelEventtState extends State<CancelEvent> {
                       color: ColorConstants.clearAllTextColor,
                     ),
                     SizedBox(
-                      width: ScreenUtil().setSp(5),
+                      width: 5.sp,
                     ),
                     Text(
                       'HOME',
@@ -168,34 +174,32 @@ class _CancelEventtState extends State<CancelEvent> {
           //     child:
           Center(
             child: Container(
-              height: ScreenUtil().setSp(500),
+              height: 500.sp,
               margin: EdgeInsets.only(
-                left: ScreenUtil().setSp(10),
-                right: ScreenUtil().setSp(10),
-                // top: ScreenUtil().setSp(20),
-                // bottom: ScreenUtil().setSp(20),
+                left: 10.sp,
+                right: 10.sp,
               ),
               child: Form(
                 key: _cancelEventFormKey,
                 child: Column(
                   children: [
                     Container(
-                      height: ScreenUtil().setSp(94),
-                      width: ScreenUtil().setSp(76),
+                      height: 94.sp,
+                      width: 76.sp,
                       child: Image.asset(
                         'assets/images/rejected.png',
                         fit: BoxFit.fitHeight,
                       ),
                     ),
                     SizedBox(
-                      height: ScreenUtil().setSp(20),
+                      height: 20.sp,
                     ),
                     Text(
                       'Cancelled',
                       style: TextStyles.mulliSemiBoldCancelStyle,
                     ),
                     SizedBox(
-                      height: ScreenUtil().setSp(20),
+                      height: 20.sp,
                     ),
                     Text(
                       StringConstants.cancelAlertMsg,
@@ -203,15 +207,15 @@ class _CancelEventtState extends State<CancelEvent> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: ScreenUtil().setSp(20),
+                      height: 20.sp,
                     ),
                     dropDwnReason,
                     SizedBox(
-                      height: ScreenUtil().setSp(10),
+                      height: 10.sp,
                     ),
                     comment,
                     SizedBox(
-                      height: ScreenUtil().setSp(20),
+                      height: 20..sp,
                     ),
                     btnSubmit
                   ],
@@ -224,11 +228,10 @@ class _CancelEventtState extends State<CancelEvent> {
   }
 
   btnPresssed() async {
-    print('bbb');
     if (_cancelEventFormKey.currentState.validate()) {
       _cancelEventFormKey.currentState.save();
       String empId = await getEmpId();
-      List dealersList = List();
+      List dealersList = List.empty(growable: true);
       selectedDealersModels.forEach((e) {
         setState(() {
           dealersList.add({
@@ -242,7 +245,7 @@ class _CancelEventtState extends State<CancelEvent> {
           });
         });
       });
-      print('DEALERS: $dealersList');
+    //  print('DEALERS: $dealersList');
       MwpeventFormRequest _mwpeventFormRequest = MwpeventFormRequest.fromJson({
         'dalmiaInflCount': detailEventModel.mwpEventModel.dalmiaInflCount,
         'eventComment': detailEventModel.mwpEventModel.eventComment,
@@ -272,7 +275,7 @@ class _CancelEventtState extends State<CancelEvent> {
           mwpeventFormRequest: _mwpeventFormRequest,
           eventDealersModelList: _save.eventDealersModelList);
 
-      print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
+    //  print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
 
       internetChecking().then((result) => {
             if (result == true)

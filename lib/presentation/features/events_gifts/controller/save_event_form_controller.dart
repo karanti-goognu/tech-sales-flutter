@@ -30,7 +30,6 @@ class SaveEventController extends GetxController {
   getAccessKeyAndSaveRequest(
       SaveEventFormModel saveEventFormModel) {
     String userSecurityKey = "";
-    String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     // Future.delayed(
@@ -44,7 +43,7 @@ class SaveEventController extends GetxController {
         await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {
           //Get.back();
-          print(")))))))${value}");
+          print(")))))))$value");
            if (value.respCode == 'DM1002') {
             Get.dialog(
                 CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),

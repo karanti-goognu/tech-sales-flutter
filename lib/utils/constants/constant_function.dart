@@ -1,5 +1,3 @@
-
-import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 
 class GlobalMethods{

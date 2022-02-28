@@ -108,7 +108,7 @@ class SRListController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print("offset is ${this.offset}");
+    //  print("offset is ${this.offset}");
 
 
        await repository.getSrListData(accessKey, userSecurityKey, empID, this.offset).then((data){

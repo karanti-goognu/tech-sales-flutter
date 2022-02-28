@@ -78,7 +78,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   String _selectedEnrollValue = "N";
   int _memberType;
-  String _district;
   int _influencerCategory;
   int _source;
   String _primaryCounterName;
@@ -113,7 +112,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _influencerTypeModel = data;
                   }
                 });
-                print('RESPONSE, ${data}');
+             //   print('RESPONSE, $data');
               })
             }
           else
@@ -137,7 +136,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _stateDistrictListModel = data;
                   }
                 });
-                print('RESPONSE, ${data}');
+             //   print('RESPONSE, $data');
               })
             }
           else
@@ -171,9 +170,15 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
-    double _height = ScreenUtil().setSp(16);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
+    double _height = 16.sp;
 
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
@@ -212,7 +217,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 }
               }
             });
-            print('RESPONSE, ${data}');
+        //    print('RESPONSE, $data');
           });
         }
       },
@@ -315,7 +320,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         // if (value.isEmpty) {
         //   return 'Please enter name';
         // }
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -418,11 +423,13 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       onChanged: (value) {
         setState(() {
           _memberType = value;
-          if(_influencerTypeModel.response.influencerTypeList[value - 1].infRegFlag == "Y"){
-                _enrollVisible = true;
-              }else{
-                _enrollVisible = false;
-              }
+          if (_influencerTypeModel
+                  .response.influencerTypeList[value - 1].infRegFlag ==
+              "Y") {
+            _enrollVisible = true;
+          } else {
+            _enrollVisible = false;
+          }
 
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
               //_memberType == 'Structural Consultant'
@@ -477,12 +484,11 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 DropdownButtonFormField(
                   onChanged: (value) {
                     setState(() {
-                     _preferredBrandId = value;
+                      _preferredBrandId = value;
                     });
                   },
                   items: (_influencerTypeModel == null ||
-                          _influencerTypeModel.response.siteBrandList ==
-                              null)
+                          _influencerTypeModel.response.siteBrandList == null)
                       ? []
                       : _influencerTypeModel.response.siteBrandList
                           .map((e) => DropdownMenuItem(
@@ -490,7 +496,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width / 1.5,
-                                    child: Text(e.brandName+" - "+e.productName)),
+                                    child: Text(
+                                        e.brandName + " - " + e.productName)),
                               ))
                           .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
@@ -510,7 +517,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Marriage Anniversary Date",
                     suffixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 12),
                       child: Icon(
                         Icons.calendar_today,
                         size: 20,
@@ -523,7 +531,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               ],
             )
           : Container();
-    };
+    }
 
     final firmName = TextFormField(
       controller: _firmNameController,
@@ -550,7 +558,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => (checkedValue == true && value.isEmpty) ? 'Please select Birth date' : null,
+      validator: (value) => (checkedValue == true && value.isEmpty)
+          ? 'Please select Birth date'
+          : null,
       controller: _dateController,
       readOnly: true,
       onTap: () {
@@ -560,7 +570,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
-        labelText: (checkedValue == true)?"Birth Date*" : "Birth Date",
+        labelText: (checkedValue == true) ? "Birth Date*" : "Birth Date",
         suffixIcon: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
           child: Icon(
@@ -614,8 +624,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           "1/2",
           style: TextStyles.welcomeMsgTextStyle20,
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "NEXT",
             style:
@@ -624,7 +636,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -633,8 +645,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 _isSecondVisible = true;
               }
             });
-
-            // btnPresssed();
           },
         ),
       ],
@@ -652,7 +662,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       validator: (value) {
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -777,8 +787,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           "2/2",
           style: TextStyles.welcomeMsgTextStyle20,
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "SUBMIT",
             style:
@@ -787,7 +799,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -795,7 +807,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 _addInfluencerFormKeyNext.currentState.save();
                 _isVisible = false;
                 _isSecondVisible = true;
-                btnSubmitPresssed();
+                btnSubmitPressed();
               }
             });
           },
@@ -818,7 +830,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             ListView(
               children: [
                 Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  padding: EdgeInsets.all(12.sp),
                   height: 56,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -832,16 +844,16 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                   // decoration: BoxDecoration(
                   //     border: Border(bottom: BorderSide(width: 0.3))),
                 ),
-                SizedBox(height: ScreenUtil().setSp(8)),
+                SizedBox(height: 8.sp),
                 Divider(
-                  height: ScreenUtil().setSp(1),
+                  height: 1.sp,
                   color: Colors.grey,
                 ),
                 SizedBox(height: _height),
                 Visibility(
                   visible: _isVisible,
                   child: Padding(
-                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      padding: EdgeInsets.all(16.sp),
                       child: Form(
                         key: _addInfluencerFormKey,
                         child: Column(
@@ -859,7 +871,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                                   visible: _enrollVisible,
                                   child: enrollmentCheckbox),
                               //SizedBox(height: _height),
-                             // enrollmentCheckbox,
+                              // enrollmentCheckbox,
                               //SizedBox(height: _height),
                               // enrollDropDwn,
                               SizedBox(height: _height),
@@ -897,7 +909,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 Visibility(
                   visible: _isSecondVisible,
                   child: Padding(
-                      padding: EdgeInsets.all(ScreenUtil().setSp(16)),
+                      padding: EdgeInsets.all(16.sp),
                       child: Form(
                         key: _addInfluencerFormKeyNext,
                         child: Column(
@@ -917,7 +929,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               giftState,
                               SizedBox(height: _height),
                               Divider(
-                                height: ScreenUtil().setSp(1),
+                                height: 1.sp,
                                 color: Colors.grey,
                               ),
                               SizedBox(height: _height),
@@ -972,19 +984,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
-
-
-  // Future _selectEnrollmentDate() async {
-  //   DateTime _picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: new DateTime.now(),
-  //       firstDate: new DateTime(1950),
-  //       lastDate: new DateTime.now());
-  //   setState(() {
-  //     _date = new DateFormat('dd-MM-yyyy').format(_picked);
-  //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-  //   });
-  // }
 
   String stateName;
   int stateId, districtId;
@@ -1070,7 +1069,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
   }
 
-  btnSubmitPresssed() async {
+  btnSubmitPressed() async {
     String empId = await getEmpId();
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
@@ -1104,7 +1103,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "stateId": stateId,
       "stateName": stateName,
       "taluka": _talukaController.text,
-
       "designation": _designationController.text,
       "departmentName": _departmentNameController.text,
       "preferredBrandId": _preferredBrandId,
@@ -1112,8 +1110,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "firmName": _firmNameController.text,
           "primaryCounterName": _primaryCounterName
     });
-
-    print('PARAMS: ${json.encode(_influencerRequestModel)}');
 
     internetChecking().then((result) => {
           if (result == true)

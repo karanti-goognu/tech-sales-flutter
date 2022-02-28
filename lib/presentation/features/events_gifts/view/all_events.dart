@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_rejected.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/enums/event_status.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:get/get.dart';
 
@@ -47,7 +42,6 @@ class _AllEventsState extends State<AllEvents> {
       setState(() {
         allEventsModel = data;
       });
-      print("response : ");
 
       getSortedData();
     });
@@ -56,18 +50,12 @@ class _AllEventsState extends State<AllEvents> {
   getSortedData() {
     if (allEventsModel != null && allEventsModel.eventListModels != null) {
       for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        print(
-            "All data: ${allEventsModel.eventListModels.map((e) => e.eventId).toList()} I-$i");
         if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.pendingApproval) {
           pending.add(allEventsModel.eventListModels[i]);
-          print('PENDING : $pending');
-
-          print(allEventsModel.eventListModels[i].eventId);
         } else if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.approved) {
           approved.add(allEventsModel.eventListModels[i]);
-          print('APPROVED : $approved');
         } else if (allEventsModel.eventListModels[i].eventStatusText ==
             StringConstants.rejected) {
           rejected.add(allEventsModel.eventListModels[i]);
@@ -82,10 +70,6 @@ class _AllEventsState extends State<AllEvents> {
           notSubmitted.add(allEventsModel.eventListModels[i]);
         }
       }
-      print("Pending : ${pending.map((e) => e.eventId).toList()}");
-      print("approved : ${approved.map((e) => e.eventId).toList()}");
-      print("rejected : ${rejected.map((e) => e.eventId).toList()}");
-      print("completed : ${completed.map((e) => e.eventId).toList()}");
     } else {}
   }
 
@@ -93,8 +77,14 @@ class _AllEventsState extends State<AllEvents> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return Scaffold(
       body: ListView(
         children: [
@@ -132,9 +122,9 @@ class _AllEventsState extends State<AllEvents> {
             allEventsModel.eventStatusEntities.length > 0)
         ? Container(
             padding: EdgeInsets.only(
-              top: ScreenUtil().setSp(5),
+              top: 5.sp,
             ),
-            height: ScreenUtil().setSp(45),
+            height: 45.sp,
             child: ListView.builder(
                 shrinkWrap: true,
                 controller: _scrollController,
@@ -152,7 +142,6 @@ class _AllEventsState extends State<AllEvents> {
 
                           //allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
                         });
-                        print("OPTION:::$option");
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
                       label: Text(allEventsModel
@@ -177,7 +166,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getList(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
@@ -246,7 +234,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
             allEventsModel.eventListModels != null &&
             allEventsModel.eventListModels.length > 0 &&
@@ -276,7 +263,6 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
-    print("List from outside: ${list.map((e) => e.eventStatusId).toList()}");
     return (allEventsModel != null &&
         allEventsModel.eventListModels != null &&
         allEventsModel.eventListModels.length > 0 &&

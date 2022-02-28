@@ -1,17 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/cancel_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/end_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/events.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -19,12 +14,11 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/provi
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repository/leads_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/RejectionLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1125,9 +1119,7 @@ class CustomDialogs {
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String currentDateString = formatter.format(date);
-    print("DateFormat--" + currentDateString);
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
@@ -1135,8 +1127,7 @@ class CustomDialogs {
       Get.dialog(Center(
         child: CircularProgressIndicator(),
       ));
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         _eventController
             .submitEndEventDetail(eventId, eventComment, currentDateString,
@@ -1144,7 +1135,6 @@ class CustomDialogs {
             .then((value) => {
                   if (value.respCode == "DM1002")
                     {
-                      print('RESPONSE : ${value.respMsg + value.respCode}'),
                       // Get.toNamed(Routes.END_EVENT),
                       Get.dialog(
                           CustomDialogs()
@@ -1164,7 +1154,6 @@ class CustomDialogs {
         Get.back();
         Get.dialog(CustomDialogs().errorDialog(
             "Access to location data denied "));
-        print(e);
       });
     }
   }
@@ -1308,7 +1297,6 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            print("Go To Store");
            // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
             if(platform == "IOS"){
               StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
@@ -1408,7 +1396,6 @@ class CustomDialogs {
           ),
           onPressed: () async{
 
-            print("IN function");
             Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
             prefs.clear();
@@ -1674,6 +1661,7 @@ class CustomDialogs {
             //Get.back();
             AddEventController _addEventController = Get.find();
             AppController _appController = Get.find();
+
             _addEventController.viewVisitData(_appController.accessKeyResponse.accessKey);
            // Get.back();
             // Navigator.push(

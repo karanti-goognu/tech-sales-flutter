@@ -170,7 +170,6 @@ class InfController extends GetxController {
       }
 
       var url = "${UrlConstants.getInfluencerList}$empID$infId$infName$infMobile$infDist";
-      print("===============$url");
       infListResponse =
       await repository.getInfluencerList(accessKey, userSecurityKey, url);
     });

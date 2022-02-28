@@ -13,7 +13,6 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarEventController extends GetxController {
@@ -30,10 +29,10 @@ class CalendarEventController extends GetxController {
   final _calendarPlanResponse = CalendarPlanModel().obs;
   final _calendarDataByDay = CalendarDataByDay().obs;
   final _targetVsActual = TargetVsActualModel().obs;
-  final _listOfEvents = List<ListOfEventDetails>().obs;
+  final _listOfEvents = List<ListOfEventDetails>.empty(growable: true).obs;
 
   var _markedDateMap = EventList<Event>().obs;
-  final _dateList = List<String>().obs;
+  final _dateList = List<String>.empty(growable: true).obs;
   final _testMap = Map<DateTime, List<Event>>().obs;
 
   final _isLoading = false.obs;
@@ -160,6 +159,7 @@ class CalendarEventController extends GetxController {
                   ));
             }
             markedDateMap = temp;
+            print("Marked Map $markedDateMap");
           }
 
           if (calendarPlanResponse.respCode == "MWP2013") {

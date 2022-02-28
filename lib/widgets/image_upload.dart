@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,12 +10,13 @@ class ImageUpload extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      shape: RoundedRectangleBorder(
+    return TextButton(
+        style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
         side: BorderSide(color: Colors.black26),
       ),
-      color: Colors.transparent,
+      backgroundColor: Colors.transparent,),
       child: Padding(
         padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
         child: Text(
@@ -36,7 +36,8 @@ class ImageUpload extends StatelessWidget {
 }
 
 _imgFromCamera() async {
-  File image = await ImagePicker.pickImage(
+  ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
       source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       print(1);
@@ -52,7 +53,8 @@ _imgFromCamera() async {
 }
 
 _imgFromGallery() async {
-  File image = await ImagePicker.pickImage(
+  ImagePicker _picker = ImagePicker();
+  XFile image = await _picker.pickImage(
       source: ImageSource.gallery, imageQuality: 50);
 print(image.path);
   // setState(() {

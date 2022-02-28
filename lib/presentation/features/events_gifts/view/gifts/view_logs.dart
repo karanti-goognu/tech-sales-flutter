@@ -106,10 +106,8 @@ class _LogsViewState extends State<ViewLogs> {
                           ),
                         ],
                       ),
-                      child: FlatButton(
-                        padding: EdgeInsets.zero,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
+                      child: TextButton(
+                        style: TextButton.styleFrom(primary: Colors.black),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -118,6 +116,7 @@ class _LogsViewState extends State<ViewLogs> {
                           ],
                         ),
                         onPressed: (){
+                        //  print("Show picker");
                           showMonthPicker(
                             context: context,
                             firstDate: DateTime(DateTime.now().year - 5, 1),
@@ -125,11 +124,12 @@ class _LogsViewState extends State<ViewLogs> {
                             initialDate: DateTime.now(),
                             locale: Locale("en"),
                           ).then((date) {
+                          //  print("date");
                             if (date != null) {
                             final DateFormat formatter = DateFormat("MMMM");
                              _currentMonth = formatter.format(date);
                             giftController.monthYear='$_currentMonth-${date.year.toString().substring(2)}';
-                            print(giftController.monthYear);
+                          //  print(giftController.monthYear);
                             giftController.getViewLogsData(giftController.monthYear.toString());
                             }
                           });
@@ -183,7 +183,7 @@ class _LogsViewState extends State<ViewLogs> {
             SizedBox(height: 20,),
 
             Obx( (){
-              print(giftController.selectedDropdown.toString() + "Do Not Remove This");
+           //   print(giftController.selectedDropdown.toString());
               return  Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,

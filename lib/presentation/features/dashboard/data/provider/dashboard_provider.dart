@@ -14,7 +14,6 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
 
 class MyApiClientDashboard {
   final http.Client httpClient;
@@ -26,7 +25,7 @@ class MyApiClientDashboard {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -57,7 +56,7 @@ class MyApiClientDashboard {
       request.fields['shareReportWithFileModel '] =json.encode({"shareWith": "S",  "repotName":empID});
       request.send().then((result) async{http.Response.fromStream(result).then((response) {
            data = json.decode(response.body);
-              print(data);
+ //             print(data);
            if(data["resp_code"] == "DM1005"){
              Get.dialog(CustomDialogs().appUserInactiveDialog(
                  data["resp_msg"]), barrierDismissible: false);
@@ -77,12 +76,12 @@ class MyApiClientDashboard {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboadrMonthlyView+empID+'&yearMonth='+yearMonth;
-      print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
-      print('Response body is : ${json.decode(response.body)}');
+  //    print(url);
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
+  //    print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print("Monthly data ${response.body}");
+  //      print("Monthly data ${response.body}");
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -103,19 +102,19 @@ class MyApiClientDashboard {
   }
 
   Future getDashboardMtdGeneratedVolumeSiteList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
-    print('$empID $yearMonth');
+   // print('$empID $yearMonth');
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
-      print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
-      print('Response body is : ${json.decode(response.body)}');
+    //  print(url);
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
+   //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print("---$data");
+     //   print("---$data");
         if(data["resp_code"] == "DM1005"){
           //Get.back();
-          print("User Inactive");
+      //    print("User Inactive");
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
@@ -133,13 +132,13 @@ class MyApiClientDashboard {
   }
 
   Future getDashboardMtdConvertedVolumeList(String empID, String yearMonth, String accessKey, String userSecurityKey, ) async{
-    print('$empID $yearMonth');
+   // print('$empID $yearMonth');
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
-      print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
-      print('Response body is : ${json.decode(response.body)}');
+    //  print(url);
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
+    //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -164,10 +163,10 @@ class MyApiClientDashboard {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardYearlyView+empID;
-      print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
-      print('Response body is : ${json.decode(response.body)}');
-      print('URL : ${response.request}');
+     // print(url);
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
+     // print('Response body is : ${json.decode(response.body)}');
+    //  print('URL : ${response.request}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

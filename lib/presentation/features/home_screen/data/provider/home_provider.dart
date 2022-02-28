@@ -10,7 +10,6 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClientHome {
   final http.Client httpClient;
@@ -24,7 +23,7 @@ class MyApiClientHome {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -66,11 +65,11 @@ class MyApiClientHome {
 //      print('Request Body is ${json.encode(requestBody)}');
 //      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
       version = VersionClass.getVersion();
-      var response = await httpClient.post(UrlConstants.getCheckInDetails,
+      var response = await httpClient.post(Uri.parse(UrlConstants.getCheckInDetails),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
           body: jsonEncode(requestBody));
 
-      print('Response body is : ${json.decode(response.body)}');
+      //print('Response body is : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -89,10 +88,9 @@ class MyApiClientHome {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
-      print(url);
      // var response = await httpClient.get(url, headers: requestHeaders(version));
-      var response = await httpClient.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
-      print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
+      var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
+     // print('Response body is : Homepage Dashboard ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         DashboardModel dashboardModel;

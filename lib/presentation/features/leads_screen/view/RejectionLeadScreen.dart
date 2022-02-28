@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
@@ -250,9 +248,9 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                 .leadsEntity.nextStageConstruction,
                             'siteDealerId':
                                 viewLeadDataResponse.leadsEntity.siteDealerId,
-                            'listLeadcomments': new List(),
-                            'listLeadImage': new List(),
-                            'leadInfluencerEntity': new List()
+                            'listLeadcomments': new List.empty(growable: true),
+                            'listLeadImage': new List.empty(growable: true),
+                            'leadInfluencerEntity': new List.empty(growable: true)
                             // 'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                             // 'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                             // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity
@@ -260,7 +258,7 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
 
                           _addLeadsController.updateLeadData(
                               updateRequestModel,
-                              new List<File>(),
+                              new List<File>.empty(growable: true),
                               context,
                               viewLeadDataResponse.leadsEntity.leadId,1);
 

@@ -1,20 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/widgets/event_dealers_list.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -24,10 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -46,8 +37,8 @@ class _FormAddEventState extends State<FormAddEvent> {
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
 
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  LocationResult _pickedLocation;
+  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  // LocationResult _pickedLocation;
   Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay _time;
@@ -99,7 +90,6 @@ class _FormAddEventState extends State<FormAddEvent> {
           addEventModel = data;
         }
       });
-      print('RESPONSE, ${data}');
     });
   }
 
@@ -112,8 +102,14 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final eventDropDwn = DropdownButtonFormField(
 
@@ -389,11 +385,12 @@ class _FormAddEventState extends State<FormAddEvent> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        FlatButton(
-          shape: RoundedRectangleBorder(
+        TextButton(
+      style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
               side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+          backgroundColor: Colors.transparent,),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -415,7 +412,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             btnPresssed(1);
@@ -445,7 +442,6 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
-        print('SSS: $sessionToken');
         final Suggestion result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
@@ -575,7 +571,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-      dateString = '${d}';
+      dateString = '$d';
     });
   }
 
@@ -602,9 +598,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           );
     setState(() {
-      print("jj");
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-      print(timeString);
     });
   }
 
@@ -773,7 +767,6 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   btnPresssed(int eventStatusId) async {
-    print('bbb');
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
 
@@ -791,7 +784,7 @@ class _FormAddEventState extends State<FormAddEvent> {
           String empId = await getEmpId();
 
           timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-          print(timeString);
+
           List dealersList = List();
           selectedDealersModels.forEach((e) {
             setState(() {
@@ -808,7 +801,6 @@ class _FormAddEventState extends State<FormAddEvent> {
           });
 
 
-          print('DEALERS: $dealersList');
           if (dealersList == null || dealersList == [] || dealersList.length == 0) {
             Get.snackbar("", "Select Counter",
                 colorText: Colors.black,
@@ -845,7 +837,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
                 mwpeventFormRequest: _mwpeventFormRequest,
                 eventDealersModelList: _save.eventDealersModelList);
-            print("Request: ${json.encode(_saveEventFormModel)}");
 
             internetChecking().then((result) =>
             {

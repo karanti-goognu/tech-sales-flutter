@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,6 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -28,8 +25,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientLeads {
@@ -45,15 +40,12 @@ class MyApiClientLeads {
 
   getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -68,7 +60,7 @@ class MyApiClientLeads {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -93,7 +85,7 @@ class MyApiClientLeads {
       };
 
 
-      var response = await httpClient.get(UrlConstants.getSecretKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
 //      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
@@ -120,7 +112,7 @@ class MyApiClientLeads {
 //        print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
-        var response = await httpClient.get(UrlConstants.getFilterData,
+        var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey,version));
 //        print('Response body is : ${json.decode(response.body)}');
@@ -191,10 +183,9 @@ class MyApiClientLeads {
       // var response = await httpClient.get(UrlConstants.addLeadsData,
       //     headers: requestHeadersWithAccessKeyAndSecretKey(
       //         accessKey, userSecurityKey,version));
-      var response = await httpClient.get(UrlConstants.addLeadsData,
+      var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-      print("URL: ${UrlConstants.addLeadsData}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
@@ -204,7 +195,6 @@ class MyApiClientLeads {
               data["resp_msg"]), barrierDismissible: false);
         }
         print(addLeadInitialModel.siteSubTypeEntity[0]);
-        print('Response body is  : ${json.decode(response.body)}');
         return addLeadInitialModel;
       } else
         print('error');
@@ -225,9 +215,7 @@ class MyApiClientLeads {
         headers:
             requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
-     print('Response'+UrlConstants.getInflData + "/$phoneNumber");
-     print('Response body is  : ${json.decode(response.body)}');
-      // print('Response body is  : ${json.decode(response.body)}');
+
 
        if (response.statusCode == 200) {
          var data = json.decode(response.body);
@@ -283,7 +271,6 @@ class MyApiClientLeads {
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
-      print("Event Id: ${saveLeadRequestModel.eventId }");
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
         'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
@@ -318,27 +305,16 @@ class MyApiClientLeads {
       request.fields['uploadImageWithLeadModel'] =
           jsonEncode(uploadImageWithLeadModel);
 
-//print(saveLeadRequestModel.comments[0].commentedBy);
-      print("Request headers :: " + request.headers.toString());
-      print("Request Body/Fields :: " + request.fields.toString());
-     print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
-          print("RESPONSE.BODY: ${result.statusCode}");
-          print("RESPONSE.BODY: ${result.headers}");
-          print("RESPONSE.BODY: ${result.statusCode}");
-          print("RESPONSE.BODY: ${result.stream}");
-          print("URL: ${(UrlConstants.saveLeadsData)}");
 
           http.Response.fromStream(result).then((response) async {
-            print(response.body);
             var data = json.decode(response.body);
             SaveLeadResponse saveLeadResponse =
             SaveLeadResponse.fromJson(data);
 
-            print("Lead response : ${saveLeadResponse.respMsg}");
 
             if(data["resp_code"] == "DM1005"){
               Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -355,7 +331,6 @@ class MyApiClientLeads {
                   imageList));
             } else if (saveLeadResponse.respCode == "LD2007") {
               if (gv.fromLead) {
-//                    print('Draft id :: ${gv.draftID}');
                 db.removeLeadInDraft(gv.draftID);
                 gv.fromLead = false;
               }
@@ -414,7 +389,6 @@ class MyApiClientLeads {
 
         var data = json.decode(response.body);
 
-//        print(data);
         ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
         // if(data["resp_code"] == "DM1005"){
         //   Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -440,14 +414,12 @@ class MyApiClientLeads {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
           viewLeadDataResponse = ViewLeadDataResponse.fromJson(json.decode(response.body));
-          print('URL ${UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"}');
         }} else {
         print('error');
       }
@@ -465,16 +437,10 @@ class MyApiClientLeads {
         'POST', Uri.parse(UrlConstants.updateLeadsData));
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-print(UrlConstants.updateLeadsData);
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-
-      // get file length
-
       var length = await file.length(); //imageFile is your image file
-print("Length: $length");
-      // multipart that takes file
       var multipartFileSign =
           new http.MultipartFile('file', stream, length, filename: fileName);
 
@@ -495,24 +461,15 @@ print("Length: $length");
       request.fields['uploadImageWithUpdateLeadModel'] =
           json.encode(updateRequestModel);
 
-//print(saveLeadRequestModel.comments[0].commentedBy);
-      print("URL :: " + UrlConstants.updateLeadsData);
-     print("Request headers :: " + request.headers.toString());
-     print("Request Body/Fields :: " + request.fields.toString());
-      print("Files:: " + request.files.toString());
 
       try {
         request
             .send()
             .then((result) async {
               http.Response.fromStream(result).then((response) {
-                print(response.statusCode);
-
                 var data = json.decode(response.body);
-                print(data);
                 UpdateLeadResponseModel updateLeadResponseModel =
                 UpdateLeadResponseModel.fromJson(data);
-
                 if(data["resp_code"] == "DM1005"){
                     Get.dialog(CustomDialogs().appUserInactiveDialog(
                         data["resp_msg"]), barrierDismissible: false);
@@ -558,11 +515,9 @@ print("Length: $length");
   Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
     try {
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
-      print(url);
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
@@ -589,14 +544,12 @@ print("Length: $length");
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
           infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
-          // print('URL ${UrlConstants.getInfDetails + "$contact"}');
         }} else {
         print('error');
       }
@@ -658,7 +611,6 @@ print("Length: $length");
             data["resp_msg"]), barrierDismissible: false);
       }else {
         siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
-        print(response.body);
       }
     }
     catch (e) {

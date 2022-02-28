@@ -1,4 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
@@ -32,11 +39,6 @@ class NotificationRoutes {
         break;
       case StringConstants.VIDEO_TUTORIAL:
         Get.toNamed(Routes.VIDEO_TUTORIAL);
-        break;
-      case StringConstants.VIDEO_PLAYER:
-        if (payloadData['url'] != null && payloadData['des'] != null)
-          Get.toNamed(Routes.VIDEO_PLAYER,
-              arguments: [payloadData['url'], payloadData['des']]);
         break;
       case StringConstants.EVENTS_GIFTS:
         Get.toNamed(Routes.EVENTS_GIFTS);
@@ -96,7 +98,7 @@ class NotificationRoutes {
         Get.toNamed(Routes.SEARCH_SITES_SCREEN);
         break;
       case StringConstants.ADD_MWP_PLAN_SCREEN:
-        Get.toNamed(Routes.ADD_MWP_PLAN_SCREEN);
+        Get.toNamed(Routes.ADD_MWP_SCREEN);
         break;
       case StringConstants.VISIT_SCREEN:
         Get.toNamed(Routes.VISIT_SCREEN);
@@ -110,29 +112,31 @@ class NotificationRoutes {
       case StringConstants.VISIT_VIEW_SCREEN:
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
-      case StringConstants.SITES_SCREEN:
-        Get.toNamed(Routes.SITES_SCREEN);
+      case StringConstants.VIDEO_PLAYER:
+        if (payloadData['url'] != null && payloadData['des'] != null)
+          Get.toNamed(Routes.VIDEO_PLAYER,
+              arguments: [payloadData['url'], payloadData['des']]);
         break;
-
-        /// Navigation paths to be updated
-      case StringConstants.VIEW_OLD_LEAD_SCREEN:
-        Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
+      case StringConstants.SITES_SCREEN:
+        if (payloadData['id'] != null)
+        Get.to(()=>ViewSiteScreenNew(siteId: payloadData['id'],tabIndex: 0,));
         break;
       case StringConstants.SERVICE_REQUEST_UPDATESCREEN:
-        Get.toNamed(Routes.SERVICE_REQUEST_UPDATESCREEN);
+        if (payloadData['id'] != null)
+          Get.to(()=>
+            RequestUpdation(
+                id: payloadData["id"] ),
+            transition: Transition.rightToLeft,
+            binding: SRBinding(),
+          );
         break;
-      case StringConstants.ALL_EVENTS:
-        Get.toNamed(Routes.ALL_EVENTS);
-        break;
-      case StringConstants.CANCEL_EVENT:
-        Get.toNamed(Routes.CANCEL_EVENT);
-        break;
-      case StringConstants.UPDATE_EVENT:
-        Get.toNamed(Routes.UPDATE_EVENT);
-        break;
-      case StringConstants.END_EVENT:
-        Get.toNamed(Routes.END_EVENT);
-        break;
+    case StringConstants.VIEW_OLD_LEAD_SCREEN:
+      Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
+          binding: AddLeadsBinding());
+      break;
+      case StringConstants.INFLUENCER_DETAILS:
+      Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),binding: InfBinding());
+      break;
 
       default:
         Get.toNamed(Routes.HOME_SCREEN);
@@ -140,9 +144,9 @@ class NotificationRoutes {
     }
   }
 
-  // static landingPushNavigation({LandingController landingController, String screenName}) {
-  //   landingController.viewContentWidget(screenName);
-  // }
+// static landingPushNavigation({LandingController landingController, String screenName}) {
+//   landingController.viewContentWidget(screenName);
+// }
 
 }
 

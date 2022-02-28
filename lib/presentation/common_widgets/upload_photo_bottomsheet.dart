@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();
@@ -61,23 +60,24 @@ class UploadImageBottomSheet{
 
 
    static imgFromCamera() async {
-    File img = await ImagePicker.pickImage(
+     ImagePicker _picker = ImagePicker();
+     XFile img = await _picker.pickImage(
         source: ImageSource.camera,
         imageQuality: 10,
         maxWidth: 480,
         maxHeight: 600);
     if (img != null)
-      image= img;
+      image= File(img.path);
       // imageList.add(image);
   }
 
 
   static imgFromGallery() async {
-    File img = await ImagePicker.pickImage(
+    ImagePicker _picker = ImagePicker();
+    XFile img = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-    print(img);
     if (img != null)
-      image= img;
+      image= File(img.path);
     // else image = File("");
     // imageList.add(image);
   }

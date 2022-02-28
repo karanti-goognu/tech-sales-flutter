@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +17,8 @@ class EventTypeController extends GetxController {
   EventTypeController({@required this.repository})
       : assert(repository != null);
   final _addEventResponse = AddEventModel().obs;
-  final _dealerList = List<DealerModel>().obs;
-  final _dealerListSelected = List<DealerModelSelected>().obs;
+  final _dealerList = List<DealerModel>.empty(growable: true).obs;
+  final _dealerListSelected = List<DealerModelSelected>.empty(growable: true).obs;
 
   get addEventResponse => _addEventResponse.value;
   get dealerList => this._dealerList;

@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/all_events.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/approved_events.dart';
@@ -10,7 +8,6 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-
 
 
 class Events extends StatefulWidget {
@@ -54,14 +51,15 @@ AllEventController _eventController=Get.find();
                   _tabNumber==0?Container(): Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                            _settingModalBottomSheet(context);
                         },
+                        style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.white)),
-                        color: Colors.transparent,
+                        backgroundColor: Colors.transparent,),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 5),
                           child: Row(
@@ -104,16 +102,18 @@ AllEventController _eventController=Get.find();
                       ),
                     ],
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
 //                      Get.to(()=>GiftsView(), binding: GiftsBinding());
                       Get.toNamed(Routes.GIFTS_VIEW);
 
                     },
+                    style: TextButton.styleFrom(
+
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.white)),
-                    color: Colors.transparent,
+                    backgroundColor: Colors.transparent,),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 5),
                       child: Row(

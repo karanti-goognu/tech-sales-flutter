@@ -6,7 +6,6 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/contr
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
-import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
@@ -58,8 +57,14 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final name = TextFormField(
       controller: _nameController,
@@ -362,9 +367,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 SizedBox(
                   height: 16,
                 ),
-                RaisedButton(
-                  color: ColorConstants.buttonNormalColor,
-                  highlightColor: ColorConstants.buttonPressedColor,
+    ElevatedButton(
+    style: ElevatedButton.styleFrom(
+    primary:              ColorConstants.buttonNormalColor,),
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.

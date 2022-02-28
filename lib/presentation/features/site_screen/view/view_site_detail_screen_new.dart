@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -30,7 +28,11 @@ class ViewSiteScreenNew extends StatefulWidget {
   int siteId;
   final tabIndex;
 
-  ViewSiteScreenNew({this.siteId, this.tabIndex});
+  ViewSiteScreenNew({this.siteId, this.tabIndex}){
+    print(this.siteId);
+    print(this.tabIndex);
+    print("Waheguru waheguru waheguru waheguru");
+  }
 
   @override
   _ViewSiteScreenState createState() => _ViewSiteScreenState();
@@ -157,8 +159,14 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   Widget build(BuildContext context) {
     //gv.selectedClass = widget.classroomId;
     SizeConfig().init(context);
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(
@@ -504,7 +512,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         UpdatedValues
                                                                             updateRequest =
                                                                             new UpdatedValues();
-                                                                        updateRequest.UpdateRequest(
+                                                                        updateRequest.updateRequest(
                                                                             context);
                                                                         // UpdateRequest();
                                                                       } else {
@@ -843,7 +851,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         UpdatedValues
                                                                             updateRequest =
                                                                             new UpdatedValues();
-                                                                        updateRequest.UpdateRequest(
+                                                                        updateRequest.updateRequest(
                                                                             context);
                                                                         // UpdateRequest();
                                                                       } else {

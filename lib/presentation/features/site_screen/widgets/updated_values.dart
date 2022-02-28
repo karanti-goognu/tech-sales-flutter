@@ -193,7 +193,7 @@ class UpdatedValues {
   }
 
   static List<SiteNextStageEntity> getSiteNextStageEntity() {
-    List<SiteNextStageEntity> siteNextStageEntity = new List();
+    List<SiteNextStageEntity> siteNextStageEntity = new List.empty(growable: true);
     if (constructionTypeVisitNextStage != null &&
         siteBrandFromLocalDBNextStage != null) {
       siteNextStageEntity.add(new SiteNextStageEntity(
@@ -575,7 +575,7 @@ class UpdatedValues {
     }
     // print('${widget.siteId}=============');
 
-    List<SiteCommentsEntity> newSiteCommentsEntity = new List();
+    List<SiteCommentsEntity> newSiteCommentsEntity = new List.empty(growable: true);
     newSiteCommentsEntity.add(new SiteCommentsEntity(
         siteId: siteId,
         siteCommentText: siteCommentsEntity,
@@ -597,7 +597,7 @@ class UpdatedValues {
   }
 
   static List<SiteStageHistory> getSiteStageHistory1() {
-    List<SiteStageHistory> siteStageHistory = new List();
+    List<SiteStageHistory> siteStageHistory = new List.empty(growable: true);
     if (siteProgressConstructionId != null) {
       siteStageHistory.add(new SiteStageHistory(
           constructionStageId: siteProgressConstructionId.id ?? 1,
@@ -660,7 +660,7 @@ class UpdatedValues {
   }
 
   static List<SitephotosEntity> getSitePhotosEntity() {
-    List<SitephotosEntity> newSitePhotoEntity = new List();
+    List<SitephotosEntity> newSitePhotoEntity = new List.empty(growable: true);
     // sitephotosEntity.clear();
     if (imageList.length > 0) {
       for (int i = 0; i < imageList.length; i++) {
@@ -693,7 +693,7 @@ class UpdatedValues {
           listInfluencerDetail.removeAt(listInfluencerDetail.length - 1);
         }
       }
-      List<SiteInfluencerEntity> newInfluencerEntity = new List();
+      List<SiteInfluencerEntity> newInfluencerEntity = new List.empty(growable: true);
       for (int i = 0; i < listInfluencerDetail.length; i++) {
         newInfluencerEntity.add(SiteInfluencerEntity(
             id: listInfluencerDetail[i].originalId,
@@ -909,7 +909,7 @@ class UpdatedValues {
     UpdatedValues.siteSegment = siteSegment;
   }
 
-  Future<void> UpdateRequest(BuildContext context) async {
+  Future<void> updateRequest(BuildContext context) async {
     var responseBody = {
       "siteId": UpdatedValues.getSiteId(),
       "siteSegment": UpdatedValues.getSiteSegment(),

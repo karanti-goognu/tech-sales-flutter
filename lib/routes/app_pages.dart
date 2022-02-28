@@ -12,7 +12,6 @@ import 'package:flutter_tech_sales/bindings/site_binding.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/bindings/tutorial_binding.dart';
-import 'package:flutter_tech_sales/bindings/view_old_lead_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/dashboard.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_converted_table_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/volume_generated_site_view.dart';
@@ -25,7 +24,6 @@ import 'package:flutter_tech_sales/presentation/features/home_screen/view/homesc
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/add_new_influencer_form.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_view.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/AddNewLeadForm.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewOldLeadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/leadScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login.dart';
 import 'package:flutter_tech_sales/presentation/features/login/view/login_otp_screen.dart';
@@ -83,10 +81,10 @@ class AppPages {
         name: Routes.ADD_LEADS_SCREEN,
         page: () => AddNewLeadForm(),
         binding: AddLeadsBinding()),
-    GetPage(
-        name: Routes.VIEW_OLD_LEAD_SCREEN,
-        page: () => ViewOldLeadScree(),
-        binding: ViewOldLeadsBinding()),
+    // GetPage(
+    //     name: Routes.VIEW_OLD_LEAD_SCREEN,
+    //     page: () => ViewOldLeadScree(),
+    //     binding: ViewOldLeadsBinding()),
     GetPage(
         name: Routes.SITES_SCREEN,
         page: () => SiteScreen(),
@@ -119,10 +117,10 @@ class AppPages {
         name: Routes.MEET_SCREEN,
         page: () => AddEventInfluencerMeet(),
         binding: AppBinding()),
-    GetPage(
-        name: Routes.VIEW_MEET_SCREEN,
-        page: () => ViewEventVisit(),
-        binding: AppBinding()),
+    // GetPage(
+    //     name: Routes.VIEW_MEET_SCREEN,
+    //     page: () => ViewEventVisit(),
+    //     binding: AppBinding()),
     GetPage(
         name: Routes.DEALER_LIST_VIEW,
         page: () => DealersListViewWidget(),
@@ -198,11 +196,11 @@ class AppPages {
     //   page: () => EndEvent(),
     //   //binding: DashboardBinding(),
     // ),
-    GetPage(
-      name: Routes.UPDATE_EVENT,
-      page: () => UpdateEvent(),
-      //binding: DashboardBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.UPDATE_EVENT,
+    //   page: () => UpdateEvent(),
+    //   //binding: DashboardBinding(),
+    // ),
     // GetPage(
     //   name: Routes.UPDATE_DLR_INF,
     //   page: () => UpdateDlrInf(),

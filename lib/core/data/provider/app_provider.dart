@@ -26,7 +26,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClientApp {
   final http.Client httpClient;
@@ -36,16 +35,12 @@ class MyApiClientApp {
 
   getAccessKey() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      //version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -64,13 +59,11 @@ class MyApiClientApp {
         'mobile-number': mobile,
       };
 
-      var response = await httpClient.get(UrlConstants.getSecretKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return secretKeyModel;
       } else {
       //  print('Error in else');
@@ -85,14 +78,12 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
-      //print('body is  :: $body');
-      var response = await httpClient.post(UrlConstants.saveMWPData,
+      var response = await httpClient.post(Uri.parse(UrlConstants.saveMWPData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           // encoding: Encoding.getByName("utf-8")
       );
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         print('Response body is : ${(data)}');
@@ -102,7 +93,6 @@ class MyApiClientApp {
         }else {
           SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
 
-          //print('Access key Object is :: $accessKeyModel');
           return saveMWPResponse;
         }
       } else {
@@ -118,13 +108,11 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
-     // print('body is  :: $body');
-      var response = await httpClient.post(UrlConstants.saveVisit,
+      var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -150,12 +138,11 @@ class MyApiClientApp {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
      print('body is  :: $body');
-      var response = await httpClient.post(UrlConstants.saveVisit,
+      var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -182,7 +169,7 @@ class MyApiClientApp {
       var body = jsonEncode(updateVisitRequest);
       // print(url);
       // print('body is  :: $body');
-      var response = await httpClient.post(url, headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
+      var response = await httpClient.post(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
     //  print(response.body);
@@ -214,7 +201,7 @@ class MyApiClientApp {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
     //  print('body is  :: $body');
-      var response = await httpClient.post(url,
+      var response = await httpClient.post(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
@@ -236,7 +223,7 @@ class MyApiClientApp {
   getMWPData(String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body is : ${json.decode(response.body)}');
@@ -262,7 +249,7 @@ class MyApiClientApp {
   getDealerList(String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
@@ -286,7 +273,7 @@ class MyApiClientApp {
   getVisitData(String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
     //  print('Response body is : ${json.decode(response.body)}');
@@ -304,7 +291,7 @@ class MyApiClientApp {
   getMeetData(String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
      // print('Response body is : ${json.decode(response.body)}');
@@ -322,7 +309,7 @@ class MyApiClientApp {
   Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
@@ -346,7 +333,7 @@ class MyApiClientApp {
       String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for calendar plan is : ${json.decode(response.body)}');
@@ -369,7 +356,7 @@ class MyApiClientApp {
       String accessKey, String userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');

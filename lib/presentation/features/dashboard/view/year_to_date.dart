@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/bar_graph_for_ytd.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:screenshot/screenshot.dart';
 
 
@@ -115,8 +112,8 @@ class _YearToDateState extends State<YearToDate> {
 getYearlyData()async{
 //    print(widget.empID);
   await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
-    print("::::::$value ::::::");
-    print("IN VIEW");
+  //  print("::::::$value ::::::");
+  //  print("IN VIEW");
     _yearMonthList =
         _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels==null?[]:
         _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
@@ -135,17 +132,16 @@ getYearlyData()async{
         .dashboardYearlyViewModel.dashboardYearlyModels
         .where((DashboardYearlyModels i) => i.showYear == yearMonth)
         .toList();
-    print(
-        "This year data length${_thisYearData.length} yearMonth $yearMonth");
+  //  print("This year data length${_thisYearData.length} yearMonth $yearMonth");
     getCountAndActualDataForBarGraph();
     _dataForDataGrid = _dashboardController.dashboardYearlyViewModel.mtdCount;
-    print(_dataForDataGrid);
+  //  print(_dataForDataGrid);
   });
 }
 
   @override
   void initState() {
-    print("Initstate Called");
+  //  print("Initstate Called");
     getYearlyData();
     super.initState();
   }
@@ -155,7 +151,7 @@ getYearlyData()async{
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    print("Build Called");
+  //  print("Build Called");
     return SingleChildScrollView(
       child: Screenshot(
         controller: screenshotController,
@@ -290,10 +286,10 @@ getYearlyData()async{
                                       ))
                                       .toList(),
                                   onTap: () {
-                                    print("On Tap called");
+                                  //  print("On Tap called");
                                   },
                                   onChanged: (_) {
-                                    print("On changed called");
+                                  //  print("On changed called");
                                     if(mounted)
                                     setState(() {
                                       yearMonth = _;
@@ -477,15 +473,15 @@ getYearlyData()async{
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-    print(_dashboardController.empId);
+//    print(_dashboardController.empId);
 //    var pngBytes = await _capturePng();
     var pngBytes = await  screenshotController.capture(pixelRatio: 5);
-    print(pngBytes);
+ //   print(pngBytes);
     final directory = (await getExternalStorageDirectory()).path;
 //    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-YTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
-    print('Screenshot Path:' + imgFile.path);
+//    print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }

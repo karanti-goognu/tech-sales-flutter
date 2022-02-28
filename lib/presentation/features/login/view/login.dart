@@ -1,13 +1,10 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:device_info/device_info.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/constants/firebase_events.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
@@ -25,10 +22,10 @@ class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<bool> internetChecking() async {
-    // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 
@@ -207,16 +204,18 @@ class LoginScreenPageState extends State<LoginScreen> {
                   SizedBox(
                     height: 16,
                   ),
-                  RaisedButton(
-                    color: ColorConstants.buttonNormalColor,
-                    highlightColor: ColorConstants.buttonPressedColor,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorConstants.buttonNormalColor,
+                    ),
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
                       if (_formKey.currentState.validate()) {
-                        FirebaseAnalytics().logEvent(
-                            name: FirebaseEventsConstants.loginButtonClick,
-                            parameters: null);
+                        //_sendAnalyticsEvent();
+                        // FirebaseAnalytics().logEvent(
+                        //     name: FirebaseEventsConstants.loginButtonClick,
+                        //     parameters: null);
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -234,6 +233,14 @@ class LoginScreenPageState extends State<LoginScreen> {
           ],
         ));
   }
+
+  // Future<void> _sendAnalyticsEvent() async {
+  //   await analytics.logEvent(
+  //       name: FirebaseEventsConstants.loginButtonClick,
+  //       parameters : null
+  //   );
+  // }
+
 
   void afterRequestLayout(String empId, String mobileNumber) {
     print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');

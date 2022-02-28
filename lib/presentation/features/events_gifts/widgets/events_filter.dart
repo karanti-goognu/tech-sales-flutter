@@ -412,7 +412,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
               value: eventTypeText,
               groupValue: _eventController.eventType as String,
               onChanged: (String value) {
-                print(value);
+      //          print(value);
                 if (_eventController.eventType ==
                     StringConstants.empty) {
                   _eventController.selectedFilterCount =
@@ -442,7 +442,7 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
-    print(type);
+ //   print(type);
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,

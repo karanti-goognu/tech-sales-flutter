@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-// ignore: must_be_immutable
 class ChangeLeadToSiteDialog extends StatefulWidget {
   NextStageConstructionEntity selectedNextStageConstructionEntity;
   final List<DealerForDb> dealerEntityForDb;
@@ -38,7 +37,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   var _nextDateofConstruction = TextEditingController();
   DateTime nextStageConstructionPickedDate;
   CounterListModel selectedSubDealer = CounterListModel();
-  List<CounterListModel> subDealerList = new List();
+  List<CounterListModel> subDealerList = new List.empty(growable: true);
   String leadDataDealer;
   String leadDataSubDealer;
   NextStageConstructionEntity _selectedNextStageConstructionEntity;

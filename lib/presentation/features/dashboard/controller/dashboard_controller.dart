@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardController extends GetxController {
@@ -164,9 +162,6 @@ class DashboardController extends GetxController {
   shareReport(
       File image, String userSecurityKey, String accessKey, String empID) {
     print(' path$image.path');
-    print('accesskey $accessKey');
-    print('secretkey $userSecurityKey');
-    print(empID);
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
         .then((value) {
@@ -284,49 +279,49 @@ class DashboardController extends GetxController {
   set empId(value) => this._empId.value = value;
   set employeeName(value) => this._employeeName.value = value;
 
-  get convTargetCount => _convTargetCount;
+  get convTargetCount => _convTargetCount.value;
 
   set convTargetCount(value) {
     _convTargetCount.value = value;
   }
 
-  get dspRemaingTargetCount => _dspRemaingTargetCount;
+  get dspRemaingTargetCount => _dspRemaingTargetCount.value;
 
   set dspRemaingTargetCount(value) {
     _dspRemaingTargetCount.value = value;
   }
 
-  get dspSlabConvertedCount => _dspSlabConvertedCount;
+  get dspSlabConvertedCount => _dspSlabConvertedCount.value;
 
   set dspSlabConvertedCount(value) {
     _dspSlabConvertedCount.value = value;
   }
 
-  get dspSlabConvertedVolume => _dspSlabConvertedVolume;
+  get dspSlabConvertedVolume => _dspSlabConvertedVolume.value;
 
   set dspSlabConvertedVolume(value) {
     _dspSlabConvertedVolume.value = value;
   }
 
-  get dspTotalOpperVolume => _dspTotalOpperVolume;
+  get dspTotalOpperVolume => _dspTotalOpperVolume.value;
 
   set dspTotalOpperVolume(value) {
     _dspTotalOpperVolume.value = value;
   }
 
-  get dspTargetCount => _dspTargetCount;
+  get dspTargetCount => _dspTargetCount.value;
 
   set dspTargetCount(value) {
     _dspTargetCount.value = value;
   }
 
-  get dspTotalOpperCount => _dspTotalOpperCount;
+  get dspTotalOpperCount => _dspTotalOpperCount.value;
 
   set dspTotalOpperCount(value) {
     _dspTotalOpperCount.value = value;
   }
 
-  get generatedCount => _generatedCount;
+  get generatedCount => _generatedCount.value;
 
   set generatedCount(value) {
     _generatedCount.value = value;
@@ -344,7 +339,7 @@ class DashboardController extends GetxController {
     _mwpPlanApproveStatus.value = value;
   }
 
-  get remainingTargetCount => _remainingTargetCount;
+  get remainingTargetCount => _remainingTargetCount.value;
 
   set remainingTargetCount(value) {
     _remainingTargetCount.value = value;
@@ -362,7 +357,7 @@ class DashboardController extends GetxController {
     _convTargetVolume.value = value;
   }
 
-  get convertedCount => _convertedCount;
+  get convertedCount => _convertedCount.value;
 
   set convertedCount(value) {
     _convertedCount.value = value;

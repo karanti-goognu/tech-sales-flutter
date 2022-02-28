@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,7 +86,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _dealerInfModel = data;
       });
-      print('RESPONSE, ${data}');
       setData();
     });
   }
@@ -130,8 +128,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final influencer = GestureDetector(
       onTap: () => getBottomSheet(),
@@ -230,7 +234,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             updateBtnPressed();
@@ -246,7 +250,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     // letterSpacing: 2,
-                    fontSize: ScreenUtil().setSp(15)),
+                    fontSize: 15.sp),
           ),
           onPressed: () {
             Get.to(
@@ -270,9 +274,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    left: ScreenUtil().setSp(16),
-                    top: ScreenUtil().setSp(16),
-                    right: ScreenUtil().setSp(16)),
+                    left: 16.sp,
+                    top: 16.sp,
+                    right: 16.sp),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -543,7 +547,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   addNewInfluencerBottomSheetWidget() {
     (_influencerDetailModel != null)
         ? _newContactController.text = _influencerDetailModel.mobileNumber
-        : "";
+        : _newContactController.text = "";
     _enrollVisible = false;
 
     return StatefulBuilder(builder: (context, StateSetter setState) {
@@ -799,10 +803,12 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(1.0),
-                                side: BorderSide(color: Colors.black)),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(1.0),
+                                  side: BorderSide(color: Colors.black)),
+                            ),
                             onPressed: () {
                               addNewInfluencerBtnPressed();
                             },
@@ -922,7 +928,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     // },
                     onChanged: (newValue) {
                       setState(() {
-                        print('NEWVALUE : $newValue');
+                     //   print('NEWVALUE : $newValue');
                         if (newValue == true) {
                           selectedDealer.add(dealers[index].dealerName);
                           selectedDealersModels.add(dealers[index]);
@@ -936,7 +942,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                               (item) => item == dealers[index].dealerName);
                         }
                         checkedValues[index] = newValue;
-                        print("checkedValues $checkedValues");
+                    //    print("checkedValues $checkedValues");
                         // print(
                         //     'SELECTED: ${json.encode(selectedDealersModels)}');
                       });
@@ -1002,7 +1008,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_formKey.currentState.validate()) {
       _eventsFilterController.getInfData(contact).then((data) {
         _influencerDetailModel = data;
-        print("0000${_influencerDetailModel}");
+   //     print("0000$_influencerDetailModel");
         setState(() {
           if (data != null) {
             if (_influencerDetailModel.respCode == "NUM404") {
@@ -1021,28 +1027,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             }
           }
         });
-        print('RESPONSE, ${data}');
       });
-
-      // await _eventsFilterController.getInfData1(contact).then((data) {
-      //   _infDetailModel = data;
-      //   print("response : $data");
-      //   setState(() {
-      //     if (data != null) {
-      //       if (_infDetailModel.respCode == "DM1002" &&
-      //           _infDetailModel.influencerModel != null) {
-      //         _infNameController.text =
-      //             _infDetailModel.influencerModel.inflName;
-      //         _infTypeController.text =
-      //         '${_infDetailModel.influencerModel.influencerTypeText}';
-      //         _isButtonDisabled = true;
-      //       } else {
-      //         getBottomSheetInf();
-      //       }
-      //     }
-      //   });
-      //   print("response : ");
-      // });
     }
   }
 
@@ -1090,9 +1075,9 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         eventInfluencerRequestsList: _infList,
         referenceID: empId);
 
-    print('DEALERS: $_dealersList');
-    print('INF : $_infList');
-    print('PARAMS: ${json.encode(_updateDealer)}');
+   // print('DEALERS: $_dealersList');
+   // print('INF : $_infList');
+   // print('PARAMS: ${json.encode(_updateDealer)}');
 
     internetChecking().then((result) => {
           if (result == true)
@@ -1168,8 +1153,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           "primaryCounterName": _primaryCounterName
       });
 
-      print('PARAMS: ${json.encode(_influencerRequestModel)}');
-
       internetChecking().then((result) => {
             if (result == true)
               {
@@ -1179,7 +1162,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     .then((data) {
                   setState(() {
                     _influencerResponseModel = data;
-                    print('DD: ${json.encode(_influencerResponseModel)}');
                     if (data.response.respCode == "INF2001")
                       Get.dialog(successDialog(
                           _influencerResponseModel.response.respMsg));

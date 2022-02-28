@@ -26,12 +26,12 @@ class SiteInfluencerWidget extends StatefulWidget {
 
 class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   int initialInfluencerLength = 0;
-  List<SiteInfluencerEntity> siteInfluencerEntity = new List();
-  List<InfluencerTypeEntity> influencerTypeEntity = new List();
-  List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
-  List<SiteStageEntity> siteStageEntity = new List();
-  List<InfluencerEntity> influencerEntity = new List();
-  List<InfluencerDetail> _listInfluencerDetail = new List();
+  List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
+  List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
+  List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
+  List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
+  List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
+  List<InfluencerDetail> _listInfluencerDetail = new List.empty(growable: true);
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
 
   setInfluencerData() {
@@ -120,8 +120,14 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return influencerView();
   }
 
@@ -188,11 +194,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     inactiveTrackColor: Colors.black26,
                                   ),
                                   _listInfluencerDetail[index].isExpanded
-                                      ? FlatButton.icon(
+                                      ? TextButton.icon(
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(0),
                                           //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),
@@ -216,11 +221,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             // _getCurrentLocation();
                                           },
                                         )
-                                      : FlatButton.icon(
+                                      : TextButton.icon(
                                           // shape: RoundedRectangleBorder(
                                           //     borderRadius: BorderRadius.circular(0),
                                           //     side: BorderSide(color: Colors.black26)),
-                                          color: Colors.transparent,
                                           icon: Icon(
                                             Icons.add,
                                             color: HexColor("#F9A61A"),
@@ -266,11 +270,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             4.8),
                                   ),
                                   _listInfluencerDetail[index].isExpanded
-                                      ? FlatButton.icon(
+                                      ? TextButton.icon(
                                     // shape: RoundedRectangleBorder(
                                     //     borderRadius: BorderRadius.circular(0),
                                     //     side: BorderSide(color: Colors.black26)),
-                                    color: Colors.transparent,
                                     icon: Icon(
                                       Icons.remove,
                                       color: HexColor("#F9A61A"),
@@ -298,11 +301,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       // _getCurrentLocation();
                                     },
                                   )
-                                      : FlatButton.icon(
+                                      : TextButton.icon(
                                     // shape: RoundedRectangleBorder(
                                     //     borderRadius: BorderRadius.circular(0),
                                     //     side: BorderSide(color: Colors.black26)),
-                                    color: Colors.transparent,
                                     icon: Icon(
                                       Icons.add,
                                       color: HexColor("#F9A61A"),
@@ -877,11 +879,13 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
             ),
             SizedBox(height: 16),
             Center(
-              child: FlatButton(
+              child: TextButton(
+                style: TextButton.styleFrom(
+
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                     side: BorderSide(color: Colors.black26)),
-                color: Colors.transparent,
+                backgroundColor: Colors.transparent,),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
                   child: Text(
@@ -944,12 +948,14 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
             ),
             SizedBox(height: 16),
             Center(
-              child: RaisedButton(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                color: HexColor("#1C99D4"),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: HexColor("#1C99D4"),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
                   child: Text(
@@ -964,7 +970,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                 onPressed: () async {
 
                   UpdatedValues updateRequest = new UpdatedValues();
-                  updateRequest.UpdateRequest(context);
+                  updateRequest.updateRequest(context);
                 },
               ),
             ),

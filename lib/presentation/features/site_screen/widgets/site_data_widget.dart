@@ -14,6 +14,7 @@ import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,13 +39,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   SiteProbabilityWinningEntity _siteProbabilityWinningEntity;
   SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
-  List<ImageDetails> _imgDetails = new List();
-  List<File> _imageList = new List();
+  List<ImageDetails> _imgDetails = new List.empty(growable: true);
+  List<File> _imageList = new List.empty(growable: true);
   var siteBuiltupArea = new TextEditingController();
   var _siteProductDemo = new TextEditingController();
   var _siteProductOralBriefing = new TextEditingController();
 
-  //var _commentsRejectionController = new TextEditingController();
   var _siteTotalBags = new TextEditingController();
   var _siteTotalPt = new TextEditingController();
   var _siteTotalBalanceBags = new TextEditingController();
@@ -65,14 +65,17 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _taluk = TextEditingController();
   var _totalBathroomCount = TextEditingController();
   var _totalKitchenCount = TextEditingController();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   String geoTagType;
-  List<SiteFloorsEntity> siteFloorsEntity = new List();
-  List<ConstructionStageEntity> constructionStageEntity = new List();
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
+  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntity =
+      new List.empty(growable: true);
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity =
+      new List.empty(growable: true);
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity =
+      new List.empty(growable: true);
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+      new List.empty(growable: true);
 
   ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
@@ -316,8 +319,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     return siteDataView();
   }
@@ -1177,11 +1186,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              FlatButton.icon(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black26)),
-                                color: Colors.transparent,
+                              TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                      side: BorderSide(color: Colors.black26)),
+                                  backgroundColor: Colors.transparent,
+                                ),
                                 icon: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Icon(
@@ -1222,11 +1233,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     // letterSpacing: 2,
                                     fontSize: 17),
                               ),
-                              FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      side: BorderSide(color: Colors.black26)),
-                                  color: Colors.transparent,
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        side:
+                                            BorderSide(color: Colors.black26)),
+                                    backgroundColor: Colors.transparent,
+                                  ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         right: 5, bottom: 8, top: 5),
@@ -1448,12 +1462,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(height: 16),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                side: BorderSide(color: Colors.black26),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26),
+                                ),
+                                backgroundColor: Colors.transparent,
                               ),
-                              color: Colors.transparent,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     right: 5, bottom: 10, top: 10),
@@ -1660,7 +1676,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   if (_updateFormKey.currentState.validate()) {
                                     UpdatedValues updateRequest =
                                         new UpdatedValues();
-                                    updateRequest.UpdateRequest(context);
+                                    updateRequest.updateRequest(context);
                                   }
                                 }),
                           ),
@@ -1707,7 +1723,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   }
 
   _getCurrentLocation() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
       Get.dialog(CustomDialogs().showMessage(
           "Please enable your location service from device settings"));
@@ -1736,7 +1752,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
@@ -1757,7 +1773,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
         print(
             "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
-            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}");
       });
     } catch (e) {
       print(e);
@@ -1765,8 +1781,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   }
 
   _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
+    ImagePicker _picker = ImagePicker();
+    XFile image =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       //print(image.path);
@@ -1774,25 +1791,26 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         // print(basename(image.path));
 
         // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-        _imgDetails.add(new ImageDetails("asset", image));
+        _imageList.add(File(image.path));
+        _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
       }
     });
   }
 
   _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+    ImagePicker _picker = ImagePicker();
+    XFile image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       // print(image.path);
 
       if (image != null) {
         // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
+        _imageList.add(File(image.path));
 
-        _imgDetails.add(new ImageDetails("asset", image));
+        _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
       }
       // _imageList.insert(0,image);

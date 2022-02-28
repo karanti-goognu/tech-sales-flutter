@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -309,11 +305,11 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
         content: new Text(
             'Your login progress will be Lost.Do you still want to continue ?'),
         actions: <Widget>[
-          new FlatButton(
+          new TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('No'),
           ),
-          new FlatButton(
+          new TextButton(
             onPressed: () => Get.toNamed(Routes.LOGIN),
             child: new Text('Yes'),
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
@@ -18,7 +17,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/provider/eg_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 
 class EgRepository {
   final MyApiClientEvent apiClient;

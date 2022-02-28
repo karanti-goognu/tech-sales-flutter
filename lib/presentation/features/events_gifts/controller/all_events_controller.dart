@@ -183,11 +183,9 @@ class AllEventController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
     });
     dataForSearchResult = await repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
-    print(dataForSearchResult.respCode);
   }
 
   Future<AllEventsModel> getAllEventData() async {
-    print("Get All Event Data called");
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -198,9 +196,7 @@ class AllEventController extends GetxController {
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('EMP: $empID');
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&eventToDate=${this.assignToDate}";
@@ -223,7 +219,6 @@ class AllEventController extends GetxController {
 
 
       var url = "${UrlConstants.getAllEvents}$empID$assignTo$assignFrom$eventType$eventStatus";
-      print("%%%%%$url");
 
       egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
 
@@ -245,7 +240,7 @@ class AllEventController extends GetxController {
     });
 
     endEventModel = await repository.getEndEventDetail(accessKey, userSecurityKey, empID, eventId);
-    print(endEventModel.respCode);
+
     Get.back();
     return endEventModel;
 

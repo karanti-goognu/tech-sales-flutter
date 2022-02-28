@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClientEvent {
 
@@ -23,7 +22,7 @@ String version;
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -40,9 +39,9 @@ String version;
     try{
       var url=UrlConstants.getGiftStock +empID;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-      print('Response body is : ${json.decode(response.body)}');
-      print('URL is : $url');
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+     // print('Response body is : ${json.decode(response.body)}');
+     // print('URL is : $url');
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -68,8 +67,8 @@ String version;
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.getViewLogs +empID+ "&monthYear="+monthYear;
-      print(url);
-      var response = await httpClient.get(url,headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+     // print(url);
+      var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -94,8 +93,8 @@ String version;
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.addGiftStock ;
-      print(empID);
-      var response = await httpClient.post(url,
+     // print(empID);
+      var response = await httpClient.post(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
 
           body: jsonEncode({
@@ -109,7 +108,7 @@ String version;
           })
       );
 
-      print('Response body is : ${json.decode(response.body)}');
+    //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

@@ -12,7 +12,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
@@ -118,6 +117,7 @@ class HomeController extends GetxController {
             getCheckInDetails(this.accessKeyResponse.accessKey);
             break;
           case RequestIds.CHECK_OUT:
+            print("#1");
             getCheckOutDetails(this.accessKeyResponse.accessKey);
             break;
           case RequestIds.HOME_DASHBOARD:
@@ -151,7 +151,6 @@ class HomeController extends GetxController {
   }
 
   getCheckInDetails(String accessKey) {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -163,8 +162,7 @@ class HomeController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         journeyStartLat = position.latitude.toString();
         journeyStartLong = position.longitude.toString();
@@ -177,14 +175,8 @@ class HomeController extends GetxController {
 //        print('Disable the button');
         this.disableSlider = true;
         repository
-            .getCheckInDetails(
-                url,
-                accessKey,
-                userSecurityKey,
-                empId,
-                formattedDate,
-                date.toString(),
-                journeyStartLat,
+            .getCheckInDetails(url, accessKey, userSecurityKey, empId,
+            formattedDate, date.toString(), journeyStartLat,
                 journeyStartLong,
                 null,
                 null,
@@ -193,6 +185,7 @@ class HomeController extends GetxController {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
+
             this.checkInResponse = data;
             checkInStatus = StringConstants.checkOut;
             _splashController.splashDataModel.journeyDetails.journeyStartLat =
@@ -218,7 +211,6 @@ class HomeController extends GetxController {
   }
 
   getCheckOutDetails(String accessKey) {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -231,8 +223,7 @@ class HomeController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
         journeyStartLat =
             _splashController.splashDataModel.journeyDetails.journeyStartLat;
@@ -264,6 +255,7 @@ class HomeController extends GetxController {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
+            print("#2");
             this.checkInResponse = data;
             checkInStatus = StringConstants.journeyEnded;
             prefs.setString(StringConstants.JOURNEY_END_DATE,

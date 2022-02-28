@@ -1,15 +1,13 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
@@ -42,7 +40,6 @@ class SiteVisitWidget extends StatefulWidget {
 }
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition = new Position();
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
@@ -51,7 +48,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
-  TextEditingController _siteTypeController1 = TextEditingController();
+  // TextEditingController _siteTypeController1 = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -80,7 +77,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         var date = DateTime.fromMillisecondsSinceEpoch(
             widget.mwpVisitModel.nextVisitDate);
         var formattedDate = DateFormat("yyyy-MM-dd").format(date);
-        selectedDateStringNext = "${formattedDate}";
+        selectedDateStringNext = "$formattedDate";
       } else {
         selectedDateStringNext = "Next visit date";
       }
@@ -95,8 +92,14 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     final visitType = (widget.selectedOpportunitStatusEnity == null)
         ? DropdownButtonFormField(
@@ -161,9 +164,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+          ),
           onPressed: () {
             if (!_isStartButtonDisabled) {
               _isStartButtonDisabled = true;
@@ -189,9 +193,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+          ),
           onPressed: () {
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
@@ -372,14 +377,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                RaisedButton(
-                                  color: ColorConstants.buttonNormalColor,
-                                  highlightColor:
-                                      ColorConstants.buttonPressedColor,
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: ColorConstants.buttonNormalColor,
+                                  ),
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
-
                                       _getCurrentLocation(0);
                                     }
                                   },
@@ -626,7 +630,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocation(int id) async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!await GetCurrentLocation.checkLocationPermission()) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -634,10 +638,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -694,7 +698,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
+                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -722,7 +726,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationStart() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -730,10 +734,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -783,7 +787,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
@@ -811,7 +814,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationEnd() async {
-    if (!(await Geolocator().isLocationServiceEnabled())) {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.dialog(CustomDialogs().errorDialog(
           "Please enable your location service from device settings"));
     } else {
@@ -819,10 +822,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      geolocator
+      Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -873,7 +876,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: ${data}');
+                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,6 +31,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,8 +50,6 @@ class ViewLeadScreen extends StatefulWidget {
 
 class _ViewLeadScreenState extends State<ViewLeadScreen>
     implements ChangeLeadToSiteDialogListener {
-
-
   @override
   void initState() {
     super.initState();
@@ -62,7 +60,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   }
 
 //   void disposeController(BuildContext context){
-// //or what you wnat to dispose/clear
+// //or what you want to dispose/clear
 //     _addLeadsController.dispose();
 //     myFocusNode.dispose();
   // }
@@ -92,8 +90,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         });
   }
 
-
-  List<LeadInfluencerEntity> influencerListForConvertToSite = List.empty(growable: true);
+  List<LeadInfluencerEntity> influencerListForConvertToSite =
+      List.empty(growable: true);
   setData() {
     if (viewLeadDataResponse != null) {
       _addLeadsController.imageList.clear();
@@ -109,7 +107,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
       _leadSource.text = viewLeadDataResponse.leadsEntity.leadSource;
       _leadSourceUser.text = viewLeadDataResponse.leadsEntity.leadSourceUser;
-
 
       leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
       leadStageEntity = viewLeadDataResponse.leadStageEntity;
@@ -139,12 +136,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
       listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
 
-
-
       /*if (listLeadImagePhoto != null) {
         for (int i = 0; i < listLeadImagePhoto.length; i++) {
-          *//* File file = new File(UrlConstants.baseUrlforImages +
-              "/" + listLeadImagePhoto[i].photoName);*//*
+          */ /* File file = new File(UrlConstants.baseUrlforImages +
+              "/" + listLeadImagePhoto[i].photoName);*/ /*
           String imageUrl=UrlConstants.baseUrlforImages +
               "/" + listLeadImagePhoto[i].photoName;
 
@@ -159,30 +154,25 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         }
       }*/
 
-
-
       /*.......................*/
 
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
-       /* File file = new File(UrlConstants.baseUrlforImages +
+        /* File file = new File(UrlConstants.baseUrlforImages +
             "/" +
             listLeadImagePhoto[i].photoName);*/
 
-        String imageUrl=UrlConstants.baseUrlforImages +
-            "/" + listLeadImagePhoto[i].photoName;
+        String imageUrl = UrlConstants.baseUrlforImages +
+            "/" +
+            listLeadImagePhoto[i].photoName;
 
-        _addLeadsController.getFileFromUrl(imageUrl).then((imageFile){
+        _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
           print("file   .....$imageFile");
           _imgDetails.add(new ImageDetails("Network", imageFile));
 
-
-        //  _addLeadsController.imageList.add(imageFile);
+          //  _addLeadsController.imageList.add(imageFile);
 
           _addLeadsController.updateImageList(imageFile, serverImageStatus);
-
         });
-
-
 
         //_imageList.add(file);
       }
@@ -274,7 +264,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-
   updateStatusForNextStage(BuildContext context, int statusId,
       {String dealerId, String subDealerId,int floorId,
         String noOfBagSupplied, String isIhbCommercial, int lapsePotential, int nextFloorLevel, double totalSitePotential}) {
@@ -320,13 +309,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ));
       }
 
-
       if (_listInfluencerDetail.length != 0) {
         if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
-            null ||
+                null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                .inflName
-                .text ==
+                    .inflName
+                    .text ==
                 "null" ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
                 .inflName
@@ -337,7 +325,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       }
       List<updateRequest.LeadInfluencerEntity> listInfluencer = [];
 
-
       for (int i = 0; i < _listInfluencerDetail.length; i++) {
         listInfluencer.add(new updateRequest.LeadInfluencerEntity(
             id: _listInfluencerDetail[i].originalId,
@@ -347,8 +334,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             inflId: int.parse(_listInfluencerDetail[i].id.text),
             isDelete: "N"));
       }
-
-
 
       if (_SelectedDealer == null) {
         _SelectedDealer = new DealerList();
@@ -371,7 +356,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
         'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
         'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
-        'leadSalesPotentialMt': viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+        'leadSalesPotentialMt':
+            viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
         'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
         'isStatus': "false",
         'updatedBy': empId,
@@ -379,7 +365,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
         'nextDateCconstruction': _nextDateofConstruction.text,
         'nextStageConstruction':
-        _selectedNextStageConstructionEntity.nextStageConsId,
+            _selectedNextStageConstructionEntity.nextStageConsId,
         /*_selectedNextStageConstructionEntity.nextStageConsId*/
         'siteDealerId': dealerId,
         "subdealerId": subDealerId, //need to pass selected value
@@ -387,7 +373,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'listLeadImage': viewLeadDataResponse.leadphotosEntity,
         'leadInfluencerEntity': influencerListForConvertToSite,
         // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
-        'leadSource':_leadSource.text,
+        'leadSource': _leadSource.text,
         'leadSourceUser': _leadSourceUser.text,
         'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
         'nosFloors':_floorId,
@@ -396,14 +382,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'lapsePotential' : _lapsePotential,
         'nextFloorLevel' : _floorLevelId,
         'totalSitePotential' : _totalSitePotential
+
       };
 
-      print("Update Data-->"+"$updateRequestModel");
+      print("Update Data-->" + "$updateRequestModel");
       var body = jsonEncode(updateRequestModel);
-      print("Update Data1-->"+body);
+      print("Update Data1-->" + body);
 
-      _addLeadsController.updateLeadData(updateRequestModel, [],
-          context, viewLeadDataResponse.leadsEntity.leadId, 3);
+      _addLeadsController.updateLeadData(updateRequestModel, [], context,
+          viewLeadDataResponse.leadsEntity.leadId, 3);
 
       Get.back();
     });
@@ -420,8 +407,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     double _height = ScreenUtil().setSp(15);
 
     final statusDropDown = Container(
@@ -486,7 +479,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 _selectedNextStageConstructionEntity,
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
-                            siteFloorsEntity:_siteFloorsEntity,
+                            siteFloorsEntity: _siteFloorsEntity,
                             mListener: this,
                           ));
                 } else if (_selectedValuedummy.id == 4) {
@@ -515,8 +508,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                           creatorName: name)
                     ];
 
-                    List<updateRequest.ListLeadcomments> commentsList =
-                        [];
+                    List<updateRequest.ListLeadcomments> commentsList = [];
 
                     for (int i = 0; i < commentsDetails.length; i++) {
                       commentsList.add(new updateRequest.ListLeadcomments(
@@ -619,20 +611,22 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Lead Source User"),
+      decoration:
+          FormFieldStyle.buildInputDecoration(labelText: "Lead Source User"),
     );
-
 
     final btnGeo = Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        FlatButton.icon(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+                side: BorderSide(color: Colors.black26)),
+            backgroundColor: Colors.transparent,
+          ),
           icon: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Icon(
@@ -675,11 +669,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           "Or",
           style: TextStyle(fontFamily: "Muli", fontSize: 17),
         ),
-        FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+        TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+                side: BorderSide(color: Colors.black26)),
+          ),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -722,7 +718,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final pincode = TextFormField(
       controller: _pincode,
       validator: (value) {
-        if (!value.isEmpty && !Validations.isValidPincode(value)) {
+        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -806,11 +802,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final btnUploadPhoto = Container(
       width: MediaQuery.of(context).size.width,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-            side: BorderSide(color: Colors.black26)),
-        color: Colors.transparent,
+      child: TextButton(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+              side: BorderSide(color: Colors.black26)),
+          backgroundColor: Colors.transparent,
+        ),
         child: Padding(
           padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
           child: Text(
@@ -823,24 +821,28 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          print("_addLeadsController.imageList.length  ${_addLeadsController.imageList.length}");
+          print(
+              "_addLeadsController.imageList.length  ${_addLeadsController.imageList.length}");
           if (_addLeadsController.imageList.length < 5) {
             _addLeadsController.updateImageList(
-                await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
+                await UploadImageBottomSheet.showPicker(context),
+                userSelectedImageStatus);
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog("You can add only upto 5 photos"));
+                CustomDialogs().errorDialog("You can add only up to 5 photos"));
           }
         },
       ),
     );
 
     final btnAddMoreInf = Center(
-      child: FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+                side: BorderSide(color: Colors.black26)),
+            backgroundColor: Colors.transparent,
+          ),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -971,9 +973,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-         // print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
+          // print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
 
-          nextStageModalBottomSheet(context/*, _addLeadsController.imageList*/);
+          nextStageModalBottomSheet(
+              context /*, _addLeadsController.imageList*/);
 
           //nextStageModalBottomSheet(context);
         },
@@ -1134,14 +1137,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             // );
                                                             print(controller
                                                                 .imageList[
-                                                            index].toString());
+                                                                    index]
+                                                                .toString());
                                                             return AlertDialog(
                                                               content:
                                                                   new Container(
                                                                 // width: 500,
                                                                 // height: 500,
                                                                 child: Image.file(
-                                                                    controller.imageList[index]),
+                                                                    controller
+                                                                            .imageList[
+                                                                        index]),
                                                               ),
                                                             );
                                                           });
@@ -1170,17 +1176,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             ),
                                                           ],
                                                         ),
-                                                                   GestureDetector(
+                                                        GestureDetector(
                                                           child: Icon(
                                                             Icons.delete,
-                                                            color: HexColor("#FFCD00"),
+                                                            color: HexColor(
+                                                                "#FFCD00"),
                                                           ),
                                                           onTap: () {
-                                                           setState(() {
-                                                                            //controller.imageList.removeAt(index);
-                                                             controller. updateImageAfterDelete(index);
-                                                             UploadImageBottomSheet.image = null;
-                                                                          });
+                                                            setState(() {
+                                                              //controller.imageList.removeAt(index);
+                                                              controller
+                                                                  .updateImageAfterDelete(
+                                                                      index);
+                                                              UploadImageBottomSheet
+                                                                  .image = null;
+                                                            });
                                                           },
                                                         )
                                                       ],
@@ -1276,12 +1286,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       _listInfluencerDetail[
                                                                   index]
                                                               .isExpanded
-                                                          ? FlatButton.icon(
-                                                              // shape: RoundedRectangleBorder(
-                                                              //     borderRadius: BorderRadius.circular(0),
-                                                              //     side: BorderSide(color: Colors.black26)),
-                                                              color: Colors
-                                                                  .transparent,
+                                                          ? TextButton.icon(
                                                               icon: Icon(
                                                                 Icons.remove,
                                                                 color: ColorConstants
@@ -1303,9 +1308,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 });
                                                               },
                                                             )
-                                                          : FlatButton.icon(
-                                                              color: Colors
-                                                                  .transparent,
+                                                          : TextButton.icon(
                                                               icon: Icon(
                                                                 Icons.add,
                                                                 color: ColorConstants
@@ -1352,9 +1355,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       _listInfluencerDetail[
                                                                   index]
                                                               .isExpanded
-                                                          ? FlatButton.icon(
-                                                              color: Colors
-                                                                  .transparent,
+                                                          ? TextButton.icon(
+
                                                               icon: Icon(
                                                                 Icons.remove,
                                                                 color: ColorConstants
@@ -1377,14 +1379,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 // _getCurrentLocation();
                                                               },
                                                             )
-                                                          : FlatButton.icon(
-                                                              color: Colors
-                                                                  .transparent,
+                                                          : TextButton.icon(
                                                               icon: Icon(
                                                                 Icons.add,
                                                                 color: ColorConstants
                                                                     .btnOrange,
-
                                                                 size:
                                                                     ScreenUtil()
                                                                         .setSp(
@@ -1644,7 +1643,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 ),
                                 SizedBox(height: _height),
                                 Visibility(
-                                  visible: (_listInfluencerDetail.length == 0)?true:false,
+                                    visible: (_listInfluencerDetail.length == 0)
+                                        ? true
+                                        : false,
                                     child: btnAddMoreInf),
                                 SizedBox(height: _height),
                                 Divider(
@@ -1796,8 +1797,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 _commentsList.length == 1
                                     ? Container()
                                     : Center(
-                                        child: FlatButton(
-                                          color: Colors.transparent,
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  Colors.transparent),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 right: 5, bottom: 8, top: 5),
@@ -1862,14 +1865,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         ],
       ),
     );
-
-
   }
-
 
   final _addLeadFormKey = GlobalKey<FormState>();
   final _formKeyForViewLeadScreen = GlobalKey();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   int initialImagelistLength;
   LeadStatusEntity _selectedValue;
@@ -1905,9 +1904,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   DateTime nextStageConstructionPickedDate;
 
   /*List<File> _imageList = [];*/
-  List<ListLeadImage> listLeadImage = new List<ListLeadImage>();
+  List<ListLeadImage> listLeadImage =
+      new List<ListLeadImage>.empty(growable: true);
 
-  List<LeadphotosEntity> listLeadImagePhoto = new List<LeadphotosEntity>();
+  List<LeadphotosEntity> listLeadImagePhoto =
+      new List<LeadphotosEntity>.empty(growable: true);
   List<CommentsDetail> _commentsList = [];
   List<LeadcommentsEnitiy> _commentsListEntity = [];
   List<CommentsDetail> _commentsListNew = [];
@@ -1943,7 +1944,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<InfluencerTypeEntity> influencerTypeEntity;
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<SiteFloorsEntity> _siteFloorsEntity ;
+  List<SiteFloorsEntity> _siteFloorsEntity;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
   BuildContext _context;
@@ -1971,7 +1972,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   ),
                   actions: <Widget>[
                     // usually buttons at the bottom of the dialog
-                    new FlatButton(
+                    new TextButton(
                       child: new Text("Close"),
                       onPressed: () {
                         Get.back();
@@ -1987,11 +1988,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         list = new LeadStatusEntity(
             id: leadStatusEntity[i].id,
             leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
-
       }
     }
   }
-
 
   apiCallForInfContact(int index, String value, BuildContext context) async {
     String empId;
@@ -2033,7 +2032,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               _listInfluencerDetail[index].id = new TextEditingController();
               _listInfluencerDetail[index].ilpIntrested =
                   new TextEditingController();
-
 
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
@@ -2146,11 +2144,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-
-
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
@@ -2172,7 +2168,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     }
   }
 
-  void nextStageModalBottomSheet(context/*, List<File> _imageListFromController*/) {
+  void nextStageModalBottomSheet(
+      context /*, List<File> _imageListFromController*/) {
     //void nextStageModalBottomSheet(context) {
 // print(_imageListFromController);
     showModalBottomSheet(
@@ -2202,11 +2199,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                           return Padding(
                             padding:
                                 const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26)),
-                              color: Colors.transparent,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                backgroundColor: Colors.transparent,
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: Row(
@@ -2284,7 +2283,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       ];
                                       print("Step 4");
 
-
                                       List<updateRequest.ListLeadcomments>
                                           commentsList = [];
 
@@ -2301,26 +2299,28 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         ));
                                       }
 
-                                      List<updateRequest.ListLeadImage> selectedImageListDetails = [];
-                                      List<File> userSelectedImageFile=[];
-                                      print("addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
+                                      List<updateRequest.ListLeadImage>
+                                          selectedImageListDetails = [];
+                                      List<File> userSelectedImageFile = [];
+                                      print(
+                                          "addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
-                                      _addLeadsController.selectedImageNameList.forEach((leadModel) {
-                                        if(leadModel.imageStatus==userSelectedImageStatus)
-                                        selectedImageListDetails.add(
-                                            new updateRequest.ListLeadImage(
-                                              leadId: widget.leadId,
-                                              photoName: leadModel.photoName,
-                                              createdBy: empId,
-                                            ));
+                                      _addLeadsController.selectedImageNameList
+                                          .forEach((leadModel) {
+                                        if (leadModel.imageStatus ==
+                                            userSelectedImageStatus)
+                                          selectedImageListDetails.add(
+                                              new updateRequest.ListLeadImage(
+                                            leadId: widget.leadId,
+                                            photoName: leadModel.photoName,
+                                            createdBy: empId,
+                                          ));
 
-                                        userSelectedImageFile.add(leadModel.imageFilePath);
-
-
+                                        userSelectedImageFile
+                                            .add(leadModel.imageFilePath);
                                       });
 
-
-                                     /* for (int i = 0;
+                                      /* for (int i = 0;
                                           i < listLeadImage.length;
                                           i++) {
                                         selectedImageListDetails.add(
@@ -2331,7 +2331,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         ));
                                       }*/
 
-                                      print("Image List: $selectedImageListDetails");
+                                      print(
+                                          "Image List: $selectedImageListDetails");
                                       if (_listInfluencerDetail.length != 0) {
                                         if (_listInfluencerDetail[
                                                         _listInfluencerDetail
@@ -2384,7 +2385,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       }
                                       print("Step 5");
 
-
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
                                             .leadsEntity.leadId,
@@ -2428,15 +2428,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         'siteDealerId': viewLeadDataResponse
                                             .leadsEntity.siteDealerId,
                                         'listLeadcomments': commentsList,
-                                        'listLeadImage': selectedImageListDetails,
+                                        'listLeadImage':
+                                            selectedImageListDetails,
                                         'leadInfluencerEntity': listInfluencer,
-                                        'leadSource':_leadSource.text,
+                                        'leadSource': _leadSource.text,
                                         'leadSourceUser': _leadSourceUser.text,
-                                        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
+                                        'leadSourcePlatform':
+                                            viewLeadDataResponse
+                                                .leadsEntity.leadSourcePlatform
                                       };
 
                                       print("Step 6");
-
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -2446,8 +2448,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
-                                        //  _imageList,
-                                        //  _imageListFromController,
+                                          //  _imageList,
+                                          //  _imageListFromController,
                                           userSelectedImageFile,
                                           context,
                                           viewLeadDataResponse
@@ -2581,17 +2583,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                   'leadInfluencerEntity':
                       viewLeadDataResponse.leadInfluencerEntity,
-                  'leadSource':_leadSource.text,
+                  'leadSource': _leadSource.text,
                   'leadSourceUser': _leadSourceUser.text,
-                  'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform
+                  'leadSourcePlatform':
+                      viewLeadDataResponse.leadsEntity.leadSourcePlatform
                 };
 
-                _addLeadsController.updateLeadData(
-                    updateRequestModel,
-                    [],
-                    context,
-                    viewLeadDataResponse.leadsEntity.leadId,
-                    2);
+                _addLeadsController.updateLeadData(updateRequestModel, [],
+                    context, viewLeadDataResponse.leadsEntity.leadId, 2);
 
                 Get.back();
               }
@@ -2869,10 +2868,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _lapsePotential = lapsePotential;
     _totalSitePotential = totalSitePotential;
 
-
     updateStatusForNextStage(context, statusId,
-        dealerId: selectedDealerId, subDealerId: selectedDealerSubId,floorId:selectedFloorId,
-        noOfBagSupplied:noOfBagsSupplied);
+        dealerId: selectedDealerId,
+        subDealerId: selectedDealerSubId,
+        floorId: selectedFloorId,
+        noOfBagSupplied: noOfBagsSupplied);
   }
 }
 

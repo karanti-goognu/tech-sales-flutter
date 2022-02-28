@@ -19,7 +19,6 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApiClientSR {
@@ -32,7 +31,7 @@ class MyApiClientSR {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version=packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -52,7 +51,7 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
-      print("URL: ${UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId}");
+   //   print("URL: ${UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId}");
       //print("Request: ${response.body}")
      var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
@@ -76,8 +75,8 @@ class MyApiClientSR {
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
           headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
-      print("====${UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId}");
-      print("URL: ${json.decode(response.body)}");
+      // print("====${UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId}");
+      // print("URL: ${json.decode(response.body)}");
     }
     catch(e){
       print("Exception at SR Repo $e");
@@ -90,7 +89,7 @@ class MyApiClientSR {
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
-      print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
+  //    print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
@@ -101,8 +100,8 @@ class MyApiClientSR {
         serviceRequestComplaintListModel =
             ServiceRequestComplaintListModel.fromJson(
                 json.decode(response.body));
-        print(serviceRequestComplaintListModel.srComplaintListModal.length);
-        print(response.body);
+    //    print(serviceRequestComplaintListModel.srComplaintListModal.length);
+    //    print(response.body);
       }
     }
     catch(e){
@@ -170,8 +169,8 @@ class MyApiClientSR {
       request.headers.addAll(
           requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
-      print("Request Body/Fields :: " + request.fields.toString());
-      print("Headers "+ json.encode(saveServiceRequest));
+      // print("Request Body/Fields :: " + request.fields.toString());
+      // print("Headers "+ json.encode(saveServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -206,8 +205,8 @@ class MyApiClientSR {
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       // print("Request Body/Fields :: " + request.fields.toString());
        //print("Headers"+ request.headers.toString());
-       print( Uri.parse(UrlConstants.updateServiceRequest).toString());
-       print("Headers "+ json.encode(updateServiceRequest));
+       // print( Uri.parse(UrlConstants.updateServiceRequest).toString());
+       // print("Headers "+ json.encode(updateServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
         var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
@@ -222,7 +221,7 @@ class MyApiClientSR {
 
       await request.send().then((value) async {
         response = await http.Response.fromStream(value);
-         print(response.body);
+       //  print(response.body);
         // var data = json.decode(response.body);
         // if(data["resp_code"] == "DM1005"){
         //   Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -232,7 +231,7 @@ class MyApiClientSR {
       });
     }
     catch(e){
-      print("Exception at SR Repo ${e}");
+      print("Exception at SR Repo $e");
       return null;
     }
     return json.decode(response.body);
@@ -244,11 +243,11 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
-      print(url);
+    //  print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
-      print(data);
+    //  print(data);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -274,7 +273,7 @@ class MyApiClientSR {
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       });
       if (userSecurityKey == "empty") {
-        var response = await httpClient.get(UrlConstants.getFilterData,
+        var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
         // print('Response body is : ${json.decode(response.body)}');
@@ -301,7 +300,7 @@ class MyApiClientSR {
       // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
-      print(response.body);
+    //  print(response.body);
       siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
       return siteAreaDetailsModel;
     } catch (_) {

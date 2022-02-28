@@ -52,16 +52,12 @@ class SplashController extends GetxController {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
         if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            print('Has expired');
             getSecretKey(requestId);
           } else {
-            print('Not expired');
             switch (requestId) {
               case RequestIds.REFRESH_DATA:
-                print("on splash_controller.dart :::: getAccessKey");
                 getRefreshData(this.accessKeyResponse.accessKey,
                     RequestIds.GET_MASTER_DATA_FOR_SPLASH);
                 break;
@@ -86,19 +82,15 @@ class SplashController extends GetxController {
           prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      print('$empId$mobileNumber');
       String empIdEncrypted =
           encryptString(empId, StringConstants.encryptedKey);
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
-      print('$empIdEncrypted \n$mobileNumberEncrypted');
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
-
-        print("DDD:$data");
         if (data != null) {
           if (this.secretKeyResponse.respCode == "DM1005") {
             Get.dialog(
@@ -120,7 +112,7 @@ class SplashController extends GetxController {
   }
 
   getRefreshData(String accessKey, int reqId) async {
-    List<VersionUpdateModel> versionUpdateModel = new List();
+    List<VersionUpdateModel> versionUpdateModel = new List.empty(growable: true);
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -133,7 +125,6 @@ class SplashController extends GetxController {
 
       //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
-      debugPrint('Url is : $url');
       await repository
           .getRefreshData(url, accessKey, userSecurityKey)
           .then((data) {
@@ -151,7 +142,6 @@ class SplashController extends GetxController {
                 if (versionUpdateModel[i].oldVersion !=
                     versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
-                  print("in android");
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
                           versionUpdateModel[i].versionUpdateText,
@@ -174,7 +164,6 @@ class SplashController extends GetxController {
                 if (versionUpdateModel[i].oldVersion !=
                     versionUpdateModel[i].newVersion &&
                     versionUpdateModel[i].updateType == "SOFT") {
-                  print("in ios");
                   Get.dialog(
                       CustomDialogs().appUpdateDialog(
                           versionUpdateModel[i].versionUpdateText,
@@ -196,34 +185,37 @@ class SplashController extends GetxController {
             }
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // if(journeyDate != null) {
+            //   prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            // }
+            // if(journeyEndTime != null) {
+            //   prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            // }
           }
          else {
-           print("In else");
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
             var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-            prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-            prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+
+            if(journeyDate != null) {
+              prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
+            }else{
+              prefs.setString(StringConstants.JOURNEY_DATE, "NA");
+              var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
+            }
+            if(journeyEndTime != null) {
+              prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            }
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
               openNextPage();
           }
-
-          // var journeyDate = splashDataModel.journeyDetails.journeyDate;
-          // var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-          // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-          // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
-
-          // if(reqId== RequestIds.GET_MASTER_DATA_FOR_SPLASH)
-         //  openNextPage();
-
         }
       });
     });
   }
 
   openNextPage() {
-    print("on splash_controller.dart openNextPage()");
     Get.offNamed(Routes.HOME_SCREEN);
   }
 

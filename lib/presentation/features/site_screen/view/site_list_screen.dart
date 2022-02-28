@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -43,9 +43,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('hello');
       _siteController.offset += 10;
-      print(_siteController.offset);
       //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
       _appController.getAccessKey(RequestIds.GET_SITES_LIST);
@@ -56,7 +54,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
 
   Future<bool> internetChecking() async {
     // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 
@@ -169,7 +167,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
           // disposeController(context);
@@ -371,11 +368,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                                                       .withOpacity(
                                                                           0.1),
                                                               label: Text(
-                                                                (printSiteStage(_siteController
-                                                                    .sitesListResponse
-                                                                    .sitesEntity[
-                                                                        index]
-                                                                    .siteStageId)),
+                                                                (printSiteStage(_siteController.sitesListResponse.sitesEntity[index].siteStageId)),
                                                                 style: TextStyle(
                                                                     color: HexColor(
                                                                         "#39B54A"),
@@ -633,10 +626,8 @@ class _SiteListScreenState extends State<SiteListScreen> {
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -647,11 +638,8 @@ class _SiteListScreenState extends State<SiteListScreen> {
             .splashDataModel.siteProbabilityWinningEntity
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -662,10 +650,8 @@ class _SiteListScreenState extends State<SiteListScreen> {
           .splashDataModel.siteStageEntity
           .where((i) => i.id == value));
       if (data.length >= 1) {
-        print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
         return "${data[0].siteStageDesc}";
       } else {
-        print("size is 0");
         return "";
       }
     }
@@ -673,7 +659,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
 
   Widget simmerWidget() {
-    print("Simmer");
     return ListView.builder(
         itemCount: 2,
         itemBuilder: (context, index) {

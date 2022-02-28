@@ -58,9 +58,9 @@ class DetailEventController extends GetxController {
 
   //set eventDealersModelList(value) => _eventDealersModelList.value = value;
 
-  final _dealerList = List<DealerModel>().obs;
+  final _dealerList = List<DealerModel>.empty(growable: true).obs;
 
-  final _dealerListSelected = List<DealerModelSelected>().obs;
+  final _dealerListSelected = List<DealerModelSelected>.empty(growable: true).obs;
 
   get dealerList => this._dealerList;
 

@@ -11,12 +11,12 @@ String selectedLeadID = '';
 String currentId = '';
 int draftID ;
 bool fromLead = false;
-List<LeadRejectReasonEntity> leadRejectReasonEntity = new List();
-List<NextStageConstructionEntity> nextStageConstructionEntity= new List();
-List<DealerList> dealerList = new List();
+List<LeadRejectReasonEntity> leadRejectReasonEntity = new List.empty(growable: true);
+List<NextStageConstructionEntity> nextStageConstructionEntity= new List.empty(growable: true);
+List<DealerList> dealerList = new List.empty(growable: true);
 SaveLeadRequestDraftModel saveLeadRequestModel = new SaveLeadRequestDraftModel();
 SaveLeadRequestModel saveLeadRequestModelNew = new SaveLeadRequestModel();
-List<File> imageList = new List();
+List<File> imageList = new List.empty(growable: true);
 
 int serverImageStatus=0;
 int userSelectedImageStatus=1;

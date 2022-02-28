@@ -470,7 +470,7 @@
 //                           ),
 //                           Container(
 //                             width: MediaQuery.of(context).size.width,
-//                             child: FlatButton(
+//                             child: TextButton(
 //                               shape: RoundedRectangleBorder(
 //                                 borderRadius: BorderRadius.circular(0),
 //                                 side: BorderSide(color: Colors.black26),

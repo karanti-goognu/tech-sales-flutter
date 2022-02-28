@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,10 +11,8 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/loading_widget.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -63,7 +58,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   BrandModelforDB _siteBrandFromLocalDB;
   BrandModelforDB _siteBrandFromLocalDBNextStage;
   BrandModelforDB _siteProductFromLocalDBNextStage;
-  List<DropdownMenuItem<String>> productSoldVisitSite = new List();
+  List<DropdownMenuItem<String>> productSoldVisitSite = new List.empty(growable: true);
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
   var _selectedBrand = new TextEditingController();
@@ -79,49 +74,47 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _stageStatus = new TextEditingController();
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  int _initialIndex = 0, visitSubTypeId;
+  int visitSubTypeId;
   String geoTagType;
 
   String siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal sitesModal;
   MwpVisitModel mwpVisitModel;
-  List<SiteFloorsEntity> siteFloorsEntity = new List();
-  List<SiteFloorsEntity> siteFloorsEntityNew = new List();
-  List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List();
-  List<SitephotosEntity> sitephotosEntity = new List();
+  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity> siteFloorsEntityNew = new List.empty(growable: true);
+  List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List.empty(growable: true);
+  List<SitephotosEntity> sitephotosEntity = new List.empty(growable: true);
 
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List()
-  List<SiteStageHistory> siteStageHistorys = new List();
-  List<SiteSupplyHistorys> siteSupplyHistorys = new List();
+  List<SiteStageHistory> siteStageHistorys = new List.empty(growable: true);
+  List<SiteSupplyHistorys> siteSupplyHistorys = new List.empty(growable: true);
 
-  //List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List();
-  List<ConstructionStageEntity> constructionStageEntity = new List();
-  List<ConstructionStageEntity> constructionStageEntityNew = new List();
+  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntityNew = new List.empty(growable: true);
   List<ConstructionStageEntity> constructionStageEntityNewNextStage =
-      new List();
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List();
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List();
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List();
-  List<SiteBrandEntity> siteBrandEntity = new List();
-  List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List();
-  List<BrandModelforDB> siteProductEntityfromLoaclDB = new List();
-  List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List();
-  List<SiteInfluencerEntity> siteInfluencerEntity = new List();
-  List<InfluencerTypeEntity> influencerTypeEntity = new List();
-  List<InfluencerCategoryEntity> influencerCategoryEntity = new List();
-  List<SiteStageEntity> siteStageEntity = new List();
-  List<InfluencerEntity> influencerEntity = new List();
+      new List.empty(growable: true);
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List.empty(growable: true);
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List.empty(growable: true);
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List.empty(growable: true);
+  List<SiteBrandEntity> siteBrandEntity = new List.empty(growable: true);
+  List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List.empty(growable: true);
+  List<BrandModelforDB> siteProductEntityfromLoaclDB = new List.empty(growable: true);
+  List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
+  List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
+  List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
+  List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
+  List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
+  List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
 
   // List<Influencer>
-  List<SiteNextStageEntity> siteNextStageEntity = new List();
-  List<SiteCommentsEntity> siteCommentsEntity = new List();
-  List<CounterListModel> counterListModel = new List();
-  List<DealerForDb> dealerEntityForDb = new List();
+  List<SiteNextStageEntity> siteNextStageEntity = new List.empty(growable: true);
+  List<SiteCommentsEntity> siteCommentsEntity = new List.empty(growable: true);
+  List<CounterListModel> counterListModel = new List.empty(growable: true);
+  List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
   DealerForDb _dealerEntityForDb;
-  List<CounterListModel> subDealerList = new List();
-  List<CounterListModel> dealerList = new List();
+  List<CounterListModel> subDealerList = new List.empty(growable: true);
+  List<CounterListModel> dealerList = new List.empty(growable: true);
 
   String _selectedRadioValue = 'Y';
 
@@ -130,7 +123,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   CounterListModel selectedSubDealer = CounterListModel();
 
-  List<ProductListModel> productDynamicList = new List();
+  List<ProductListModel> productDynamicList = new List.empty(growable: true);
 
   String availableKittyPoint = "0";
   String claimableKittyBagsAvailable = "0";
@@ -153,7 +146,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else
@@ -226,7 +218,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             onChanged: (value) async {
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
-                              siteProductEntityfromLoaclDB = new List();
+                              siteProductEntityfromLoaclDB = new List.empty(growable:true);
                               productDynamicList[index].brandModelForDB = null;
                               _dealerEntityForDb = null;
                               _selectedRadioValue = null;
@@ -966,12 +958,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 ),
                 MandatoryWidget().txtMandatory(),
                 Center(
-                  child: RaisedButton(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: HexColor("#1C99D4"),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                     ),
-                    color: HexColor("#1C99D4"),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 1, top: 1),
                       child: Text(
@@ -1087,8 +1081,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   productDynamicList.removeAt(index);
                   _siteBrandFromLocalDB = null;
                   _dealerEntityForDb = null;
-                  subDealerList = new List();
-                  siteProductEntityfromLoaclDB = new List();
+                  subDealerList = new List.empty(growable: true);
+                  siteProductEntityfromLoaclDB = new List.empty(growable: true);
                 } else {
                   productDynamicList.removeAt(index);
                   updateSiteSupplyHistory();
@@ -1128,7 +1122,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     for (int i = 0;
         i < widget.viewSiteDataResponse.counterListModel.length;
         i++) {
-      int id = await db.addDealer(DealerForDb(
+      // int id =
+      await db.addDealer(DealerForDb(
           widget.viewSiteDataResponse.counterListModel[i].shipToParty,
           widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
     }
@@ -1145,7 +1140,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         dealerEntityForDb = dealerEntityForDb1;
         siteBrandEntity = viewSiteDataResponse != null
             ? viewSiteDataResponse.siteBrandEntity
-            : new List();
+            : new List.empty(growable: true);
         counterListModel = viewSiteDataResponse.counterListModel;
         constructionStageEntityNewNextStage =
             viewSiteDataResponse.constructionStageEntity;
@@ -1209,7 +1204,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
         if (UpdatedValues.getProductEntityFromLocalDb() != null &&
             _siteBrandFromLocalDB != null) {
-          siteProductEntityfromLoaclDB = new List();
+          siteProductEntityfromLoaclDB = new List.empty(growable: true);
           siteProductEntityfromLoaclDB =
               UpdatedValues.getProductEntityFromLocalDb();
         }
@@ -1282,8 +1277,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     return visitDataView();
   }
 
@@ -1351,7 +1352,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   setState(() {
                     FocusScope.of(context).requestFocus(new FocusNode());
                     _selectedConstructionTypeVisit = value;
-                    siteFloorsEntityNew = new List();
+                    siteFloorsEntityNew = new List.empty(growable: true);
                     _selectedSiteVisitFloor = null;
                     if (_selectedConstructionTypeVisit.id == 1 ||
                         _selectedConstructionTypeVisit.id == 2 ||
@@ -1515,11 +1516,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               Center(
                 child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
+                    child: TextButton(
+                    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
                           side: BorderSide(color: Colors.black26)),
-                      color: Colors.transparent,
+                      backgroundColor: Colors.transparent,),
                       child: Padding(
                         padding: const EdgeInsets.only(
                             right: 5, bottom: 10, top: 10),
@@ -1579,7 +1582,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             });
                           } else {
                             Get.dialog(CustomDialogs().errorDialog(
-                                "Please enter product ${index} details !"));
+                                "Please enter product $index details !"));
                           }
                         }
                       },
@@ -1664,11 +1667,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: !addNextButtonDisable
-                      ? FlatButton(
-                          shape: RoundedRectangleBorder(
+                      ? TextButton(
+    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: Colors.transparent,
+                          backgroundColor: Colors.transparent,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 10, top: 10),
@@ -1689,11 +1694,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             });
                           },
                         )
-                      : FlatButton(
-                          shape: RoundedRectangleBorder(
+                      : TextButton(
+    style: TextButton.styleFrom(
+
+    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: Colors.transparent,
+                          backgroundColor: Colors.transparent,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 10, top: 10),
@@ -1887,11 +1894,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   : Container(),
 
               Center(
-                child: FlatButton(
+                child: TextButton(
                   // shape: RoundedRectangleBorder(
                   //     borderRadius: BorderRadius.circular(0),
                   //     side: BorderSide(color: Colors.black26)),
-                  color: Colors.transparent,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
                     child: !viewMoreActive
@@ -1927,12 +1933,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               SizedBox(height: 35),
 
               Center(
-                child: RaisedButton(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  color: HexColor("#1C99D4"),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: HexColor("#1C99D4"),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
                   child: Padding(
                     padding:
                         const EdgeInsets.only(right: 5, bottom: 10, top: 10),
@@ -1948,7 +1956,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   onPressed: () async {
                     if (_updateFormKey.currentState.validate()) {
                       UpdatedValues updateRequest = new UpdatedValues();
-                      updateRequest.UpdateRequest(context);
+                      updateRequest.updateRequest(context);
                     }
 
                   }
@@ -2017,7 +2025,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             setState(() {
               _selectedConstructionTypeVisitNextStage = value;
               print(_selectedConstructionTypeVisitNextStage.id);
-              siteFloorsEntityNewNextStage = new List();
+              siteFloorsEntityNewNextStage = new List.empty(growable: true);
               _selectedSiteVisitFloorNextStage = null;
               if (_selectedConstructionTypeVisitNextStage.id == 1 ||
                   _selectedConstructionTypeVisitNextStage.id == 2 ||
@@ -2170,7 +2178,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ))
               .toList(),
           onChanged: (value) async {
-            siteProductEntityfromLoaclDBNextStage = new List();
+            siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
             _siteProductFromLocalDBNextStage = null;
             List<BrandModelforDB> _siteProductEntityfromLoaclDB =
                 await db.fetchAllDistinctProduct(value.brandName);
@@ -2541,14 +2549,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             .toString();
         UpdatedValues.setSiteProgressStagePotential(stagePt);
         UpdatedValues.setSiteProgressStagePotentialAuto(stagePt);
-        print("stagePt:${stagePt}");
       }
     }
     return stagePt;
   }
 
   updateSiteSupplyHistory() {
-    List<SiteSupplyHistorys> siteSupplyHistory = new List();
+    List<SiteSupplyHistorys> siteSupplyHistory = new List.empty(growable: true);
     if (productDynamicList != null && productDynamicList.length > 0) {
       for (int i = 0; i < productDynamicList.length; i++) {
         if (productDynamicList[i].brandId != -1) {

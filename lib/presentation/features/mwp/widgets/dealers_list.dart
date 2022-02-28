@@ -14,7 +14,7 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
 
-  final _searchList = List<DealerModel>();
+  final _searchList = List<DealerModel>.empty(growable: true);
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(

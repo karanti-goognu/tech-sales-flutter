@@ -3,7 +3,6 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
-import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
@@ -27,7 +25,6 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClientEvent {
   String version;
@@ -37,10 +34,8 @@ class MyApiClientEvent {
 
   Future getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -59,10 +54,8 @@ class MyApiClientEvent {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
-      print(url);
-      var response = await httpClient.get(url,
+      var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AllEventsModel eventSearchModel = AllEventsModel.fromJson(data);
@@ -79,8 +72,6 @@ class MyApiClientEvent {
     AddEventModel addEventModel;
     try {
       version = VersionClass.getVersion();
-      print('DDDD: ${UrlConstants.getAddEvent}');
-
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
@@ -91,7 +82,7 @@ class MyApiClientEvent {
       }else {
         addEventModel = AddEventModel.fromJson(json.decode(response.body));
 
-        print(response.body);
+       // print(response.body);
       }
     }
     catch (e) {
@@ -110,7 +101,6 @@ class MyApiClientEvent {
               accessKey, userSecretKey,version));
       influencerViewModel =
           InfluencerViewModel.fromJson(json.decode(response.body));
-      // print(response.body);
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -129,15 +119,12 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
-      print("======$data");
       if(data["resp_code"] == "DM1005"){
         Get.back();
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
-        print(response.body);
-        print("Above is the data for filter");
       }
     }
     catch (e) {
@@ -158,17 +145,13 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
-      print("======$data");
       if(data["resp_code"] == "DM1005"){
         Get.back();
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
-      }else {
-        approvedEventsModel =
-            ApprovedEventsModel.fromJson(json.decode(response.body));
-        //  print(response.body);
-        // print('URL ${UrlConstants.getApproveEvents + empID}');
       }
+      else
+        approvedEventsModel = ApprovedEventsModel.fromJson(json.decode(response.body));
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -190,19 +173,12 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
-
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
-
-          detailEventModel =
-              DetailEventModel.fromJson(json.decode(response.body));
-          print('RESP : ${response.body}');
-          print('UURL ${UrlConstants.getDetailEvent + empID + "&eventId=$eventId"}');
-
+          detailEventModel = DetailEventModel.fromJson(json.decode(response.body));
         }
       } else {
         print('error');
@@ -222,9 +198,7 @@ class MyApiClientEvent {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(saveEventFormModel),
       );
-      print("URL: ${UrlConstants.saveEvent}");
       var data = json.decode(response.body);
-      print("__---$data");
       if (response.statusCode == 200) {
         Get.back();
       if(data["resp_code"] == "DM1005"){
@@ -232,11 +206,7 @@ class MyApiClientEvent {
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
-        saveEventResponse =
-            SaveEventResponse.fromJson(json.decode(response.body));
-        print('URL : ${response.request}');
-        print('RESP: ${response.body}');
-        print('RESPONSE : ${json.encode(saveEventFormModel)}');
+        saveEventResponse = SaveEventResponse.fromJson(json.decode(response.body));
       } } else {
         print('error');
       }
@@ -260,8 +230,6 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-      print("===DATA===$data");
-        print("=URL=====${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}");
       if (data["resp_code"] == "DM1005") {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -269,8 +237,6 @@ class MyApiClientEvent {
       else {
         deleteEventModel =
             DeleteEventModel.fromJson(json.decode(response.body));
-        // print('RESP : ${response.body}');
-        // print('UURL ${UrlConstants.deleteEvent + empID + "&eventId=$eventId"}');
       }} else {
         print('error');
       }
@@ -295,7 +261,6 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -303,8 +268,6 @@ class MyApiClientEvent {
         else {
           startEventResponse =
               StartEventResponse.fromJson(json.decode(response.body));
-          // print('RESP : ${response.body}');
-          // print('UURL ${UrlConstants.startEvent}');
         }} else {
         print('error');
       }
@@ -320,13 +283,9 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
-     // print(url);
-      var response = await http.get(url, headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
-      //print(response.body);
+      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version));
       var data = json.decode(response.body);
-      print("======$data");
       if (data["resp_code"] == "DM1005") {
-
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
@@ -361,13 +320,11 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
-      //print("event1-->"+json.decode(response.body).toString());
       endEventModel = EventResponse.fromJson(json.decode(response.body));
         }} else {
         print('error');
@@ -393,16 +350,13 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
-        else {
+        else
       dealerInfModel = DealerInfModel.fromJson(json.decode(response.body));
-     // print('RESP : ${response.body}');
-     // print('UURL ${UrlConstants.getDealerInfList + empID + "&eventId=$eventId"}');
-        }} else {
+        } else {
         print('error');
       }
     }
@@ -422,13 +376,9 @@ class MyApiClientEvent {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(updateDealerInfModel),
       );
-      print('URL : ${response.request}');
-      print('RESP: ${response.body}');
-      print('RESPONSE : ${json.encode(updateDealerInfModel)}');
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -457,14 +407,12 @@ class MyApiClientEvent {
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
       Get.back();
-      print("======$data");
       if (data["resp_code"] == "DM1005") {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
         infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
-        // print('URL ${UrlConstants.getInfDetails + "$contact"}');
       }} else {
       print('error');
     }
@@ -489,7 +437,6 @@ Future<SaveNewInfluencerResponse>saveNewInfluencer(String accessKey, String user
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
       Get.back();
-      print("======$data");
       if (data["resp_code"] == "DM1005") {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);

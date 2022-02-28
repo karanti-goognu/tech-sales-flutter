@@ -29,8 +29,8 @@ class UpdateServiceRequestController extends GetxController {
    updateImageList(File value) {
     if(value!=null) {
       imageList.add(value);
-      print(imageList.length);
-      print(":::::::::::::::");
+      // print(imageList.length);
+      // print(":::::::::::::::");
       update();
     }
   }
@@ -38,8 +38,8 @@ class UpdateServiceRequestController extends GetxController {
   updateImageAfterDelete(int index) {
     if(index!=null && index>=0) {
       imageList.removeAt(index);
-      print(imageList.length);
-      print(":::::::::::::::");
+      // print(imageList.length);
+      // print(":::::::::::::::");
       update();
     }
   }
@@ -52,7 +52,7 @@ class UpdateServiceRequestController extends GetxController {
 
   @override
   void onClose(){
-     print("onClose called");
+   //  print("onClose called");
     imageList.clear();
     super.dispose();
   }

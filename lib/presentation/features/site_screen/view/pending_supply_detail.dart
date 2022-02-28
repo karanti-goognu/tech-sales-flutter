@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +39,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   String geoTagType;
   SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
-  List<DealerForDb> dealerEntityForDb = new List();
+  List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
   String siteCreationDate, visitRemarks, infName = "";
@@ -87,7 +85,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                         '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
                   }
                 });
-                print('RESPONSE, ${data}');
               })
             }
           else
@@ -126,8 +123,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -206,61 +209,108 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             fontFamily: "Muli",
                                           ),
                                         ),
-                                        (isExpanded)
-                                            ? Column(
-                                                children: [
-                                                  FlatButton.icon(
-                                                    color: Colors.transparent,
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      size: 18,
-                                                    ),
-                                                    label: Text(
-                                                      "EXPAND",
-                                                      style: TextStyle(
-                                                          color: HexColor(
-                                                              "#F9A61A"),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          // letterSpacing: 2,
-                                                          fontSize: 15),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        isExpanded =
-                                                            !isExpanded;
-                                                      });
-                                                      // _getCurrentLocation();
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                            : FlatButton.icon(
-                                                color: Colors.transparent,
-                                                icon: Icon(
-                                                  Icons.remove,
-                                                  color: HexColor("#F9A61A"),
-                                                  size: 18,
-                                                ),
-                                                label: Text(
-                                                  "COLLAPSE",
-                                                  style: TextStyle(
-                                                      color:
-                                                          HexColor("#F9A61A"),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      // letterSpacing: 2,
-                                                      fontSize: 15),
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    isExpanded = !isExpanded;
-                                                  });
-                                                  // _getCurrentLocation();
-                                                },
-                                              )
+                                        (isExpanded)?
+                                        Column(
+                                          children: [
+                                            TextButton.icon(
+                                              icon: Icon(
+                                                Icons.add,
+                                                color: HexColor("#F9A61A"),
+                                                size: 18,
+                                              ),
+                                              label: Text(
+                                                "EXPAND",
+                                                style: TextStyle(
+                                                    color: HexColor("#F9A61A"),
+                                                    fontWeight: FontWeight.bold,
+                                                    // letterSpacing: 2,
+                                                    fontSize: 15),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                      isExpanded = !isExpanded;
+                                                });
+                                                // _getCurrentLocation();
+                                              },
+                                            ),
+
+                                          ],
+                                        ):TextButton.icon(
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: HexColor("#F9A61A"),
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "COLLAPSE",
+                                            style: TextStyle(
+                                                color: HexColor("#F9A61A"),
+                                                fontWeight: FontWeight.bold,
+                                                // letterSpacing: 2,
+                                                fontSize: 15),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              isExpanded = !isExpanded;
+                                            });
+                                            // _getCurrentLocation();
+                                          },
+                                        )
+                                        // (isExpanded)
+                                        //     ? Column(
+                                        //         children: [
+                                        //           FlatButton.icon(
+                                        //             color: Colors.transparent,
+                                        //             icon: Icon(
+                                        //               Icons.add,
+                                        //               color:
+                                        //                   HexColor("#F9A61A"),
+                                        //               size: 18,
+                                        //             ),
+                                        //             label: Text(
+                                        //               "EXPAND",
+                                        //               style: TextStyle(
+                                        //                   color: HexColor(
+                                        //                       "#F9A61A"),
+                                        //                   fontWeight:
+                                        //                       FontWeight.bold,
+                                        //                   // letterSpacing: 2,
+                                        //                   fontSize: 15),
+                                        //             ),
+                                        //             onPressed: () {
+                                        //               setState(() {
+                                        //                 isExpanded =
+                                        //                     !isExpanded;
+                                        //               });
+                                        //               // _getCurrentLocation();
+                                        //             },
+                                        //           ),
+                                        //         ],
+                                        //       )
+                                        //     : FlatButton.icon(
+                                        //         color: Colors.transparent,
+                                        //         icon: Icon(
+                                        //           Icons.remove,
+                                        //           color: HexColor("#F9A61A"),
+                                        //           size: 18,
+                                        //         ),
+                                        //         label: Text(
+                                        //           "COLLAPSE",
+                                        //           style: TextStyle(
+                                        //               color:
+                                        //                   HexColor("#F9A61A"),
+                                        //               fontWeight:
+                                        //                   FontWeight.bold,
+                                        //               // letterSpacing: 2,
+                                        //               fontSize: 15),
+                                        //         ),
+                                        //         onPressed: () {
+                                        //           setState(() {
+                                        //             isExpanded = !isExpanded;
+                                        //           });
+                                        //           // _getCurrentLocation();
+                                        //         },
+                                        //       )
                                       ],
                                     ),
                                   ),

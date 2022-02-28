@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -71,7 +70,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('hello');
       _siteController.offset += 10;
       // _siteController.getAccessKey().then((value) async {
       //   _siteController.getSitesData(value.accessKey,widget.influencerID);
@@ -126,7 +124,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    // FlatButton(
+                    // TextButton(
                     //   onPressed: () {
                     //     // _settingModalBottomSheet(context);
                     //   },
@@ -827,7 +825,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
+    //  print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
       print("size is 0");
@@ -840,8 +838,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         .splashDataModel.siteProbabilityWinningEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
+    //  print("size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
       print("size is 0");

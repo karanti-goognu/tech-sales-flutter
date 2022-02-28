@@ -74,17 +74,17 @@ class PlaceApiProvider {
     //    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:IN&key=$apiKey&sessiontoken=$sessionToken';
 
     "https://maps.googleapis.com/maps/api/place/autocomplete/json?" +
-        "key=${apiKey}&" +
+        "key=$apiKey&" +
         "input={$input}&components=country:IN&sessiontoken=$sessionToken&" +
-        "language=${lang}";
+        "language=$lang";
 
-    final response = await client.get(request);
+    final response = await client.get(Uri.parse(request));
 
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = json.decode(response.body);
       if (result['status'] == 'OK') {
-        print(result);
+       // print(result);
 
         return result['predictions']
             .map<Suggestion>((p) => Suggestion(p['place_id'], p['description']))
@@ -103,7 +103,7 @@ class PlaceApiProvider {
     final latLongRequest =
         'https://maps.googleapis.com/maps/api/place/details/json?input=bar&placeid=$placeId&key=$apiKey';
 
-    final response = await client.get(latLongRequest);
+    final response = await client.get(Uri.parse(latLongRequest));
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);

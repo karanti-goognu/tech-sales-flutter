@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_list.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_list_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_filter.dart';
-import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -15,7 +12,6 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class SiteScreen extends StatefulWidget {
@@ -67,7 +63,7 @@ class _SiteScreenState extends State<SiteScreen> {
   }
 
   void disposeController(BuildContext context) {
-//or what you wnat to dispose/clear
+//or what you want to dispose/clear
     _siteController.offset = 0;
     _siteController?.dispose();
   }
@@ -139,14 +135,16 @@ class _SiteScreenState extends State<SiteScreen> {
                         ),
                         _tabNumber == 1
                             ? Container()
-                            : FlatButton(
+                            : TextButton(
                                 onPressed: () {
                                     _settingModalBottomSheet(context);
                                 },
-                                shape: RoundedRectangleBorder(
+                          style: TextButton.styleFrom(
+
+                          shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
                                     side: BorderSide(color: Colors.white)),
-                                color: Colors.transparent,
+                                backgroundColor: Colors.transparent,),
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 5),
                                   child: Row(
@@ -474,8 +472,6 @@ class _SiteScreenState extends State<SiteScreen> {
       });
     });
   }
-
-  Widget SiteFilter() {}
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(

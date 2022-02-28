@@ -1,19 +1,14 @@
 import 'dart:core';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
-import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:moengage_inbox/inbox_data.dart';
 import 'package:moengage_inbox/inbox_message.dart';
-//import 'package:moengage_inbox/moengage_inbox.dart';
+import 'package:moengage_inbox/moengage_inbox.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -26,9 +21,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
-    print("#1");
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    print("#2");
     return unReadMessageCount;
   }
 
@@ -41,7 +34,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
-    print("Test");
     _moEngageInbox = MoEngageInbox();
     WidgetsBinding.instance.addPostFrameCallback((_) => {
       unReadMessageCoun().then((value) => {
@@ -147,24 +139,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget notificationWidget() {
-    return FutureBuilder<List<InboxMessage>>(
-      future: _moEngageInbox.fetchAllInboxMessages(),
-      builder: (BuildContext context, AsyncSnapshot<List<InboxMessage>> snapshot) {
+    return FutureBuilder<InboxData>(
+      future: _moEngageInbox.fetchAllMessages(),
+      builder: (BuildContext context, AsyncSnapshot<InboxData> snapshot) {
         if (snapshot.hasData) {
-          if(snapshot.data.length > 0){
+          if(snapshot.data.messages.length > 0){
           return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.messages.length,
               padding: const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 10,top: 8),
               // itemExtent: 125.0,
               itemBuilder: (context, index) {
-                InboxMessage inboxMessage = snapshot.data[index];
+                InboxMessage inboxMessage = snapshot.data.messages[index];
                 return GestureDetector(
                   onTap: () {
                     _moEngageInbox.trackMessageClicked(inboxMessage);
                     unReadMessageCoun().then((value) => {
                       setState(() {
                         unReadMessageCount = value;
-                        Get.toNamed(Routes.SITES_SCREEN);
+                        // Get.toNamed(Routes.SITES_SCREEN);
                       }),
                     });
                   },

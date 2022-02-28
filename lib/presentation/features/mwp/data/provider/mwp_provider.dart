@@ -8,7 +8,6 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:package_info/package_info.dart';
 
 class MyApiClient {
   final http.Client httpClient;
@@ -22,7 +21,7 @@ class MyApiClient {
       // PackageInfo packageInfo = await PackageInfo.fromPlatform();
       // version= packageInfo.version;
       version = VersionClass.getVersion();
-      var response = await httpClient.get(UrlConstants.getAccessKey,
+      var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {

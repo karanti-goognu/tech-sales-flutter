@@ -13,7 +13,7 @@ class GiftTypeBottomSheet extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    print(giftController.giftTypeModelList[0].giftTypeText);
+   // print(giftController.giftTypeModelList[0].giftTypeText);
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -55,8 +55,8 @@ class GiftTypeBottomSheet extends StatelessWidget {
                       ),
                       onTap: () {
                         giftController.itemFromBottomSheetTapped = true;
-                        print("000000"+giftController.itemFromBottomSheetTapped.toString() );
-                        print("000000"+giftController.giftTypeModelList[index].giftTypeId.toString());
+                      //  print("000000"+giftController.itemFromBottomSheetTapped.toString() );
+                      //  print("000000"+giftController.giftTypeModelList[index].giftTypeId.toString());
                         setstates(() {
                           giftController.selectedDropdown=giftController.giftTypeModelList[index].giftTypeId;
                         });

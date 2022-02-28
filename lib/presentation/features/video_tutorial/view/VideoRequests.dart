@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/services/my_connectivity.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
-import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -260,7 +257,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void initState() {
-    print('####'+widget.url);
+   // print('####'+widget.url);
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.

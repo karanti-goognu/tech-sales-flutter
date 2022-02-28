@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/event_search.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_search.dart';

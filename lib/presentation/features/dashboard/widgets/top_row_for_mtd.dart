@@ -22,7 +22,7 @@ class TopRowForMTD extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Dash-- ${(int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))}");
+ //   print("Dash-- ${(int.parse(_dashboardController.convertedCount.toString()) / int.parse(_dashboardController.convTargetCount.toString()))}");
 //    print((int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).toInt());
     return Expanded(
         child: _currentMothDetailsVolume == false
@@ -77,7 +77,6 @@ class TopRowForMTD extends StatelessWidget {
                         ChartDataForMTD(
                             'Generated-${_dashboardController.generatedCount}',
                             _dashboardController.generatedCount.toDouble(),
-//                            (int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString())).isNaN ? 0 : int.parse(_dashboardController.convTargetCount.toString()) / int.parse(_dashboardController.generatedCount.toString()),
                             Color(0xff00ADEE)),
                         ChartDataForMTD(
                             'Conv. Target-${_dashboardController.convTargetCount}',

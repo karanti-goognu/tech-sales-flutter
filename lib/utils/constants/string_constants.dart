@@ -6,7 +6,7 @@ abstract class StringConstants {
       'No active internet connection found.Please check your internet connectivity.';
 
   //Map Api Key
-  static String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";
+  static const String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";
 
   //Secret Key for encryption
   static String encryptionKey = "dalmia@techexpert";
@@ -77,6 +77,7 @@ abstract class StringConstants {
   static const String ADD_MWP = "addMwp";
   static const String SERVICE_REQUESTS = "serviceRequest";
   static const String INFLUENCER_LIST = "influencerList";
+  static const String INFLUENCER_DETAILS = "influencerDetails";
   static const String VIDEO_TUTORIAL = "videoTutorial";
   static const String VIDEO_PLAYER = 'videoPlayer';
   static const String EVENTS_GIFTS = "eventsGifts";
@@ -104,18 +105,9 @@ abstract class StringConstants {
   static const String VERIFY_OTP = "verifyOtp";
   static const String VISIT_VIEW_SCREEN = "visitView";
   static const String SITES_SCREEN = "siteScreen";
-
-
-
-
-
-  ///To be updated in notification_routes
   static const String VIEW_OLD_LEAD_SCREEN = "viewOldLead";
   static const String SERVICE_REQUEST_UPDATESCREEN = "srUpdate";
-  static const String ALL_EVENTS = "allEvents";
-  static const String CANCEL_EVENT = "cancelEvent";
-  static const String UPDATE_EVENT = "updateEvent";
-  static const String END_EVENT = "endEvent";
+
 
 
 }

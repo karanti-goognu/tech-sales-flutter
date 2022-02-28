@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
@@ -56,7 +53,7 @@ class _DetailPendingState extends State<DetailPending> {
       venueLbl;
   int dealerId;
 
-  ///textfield controllers
+  ///text field controllers
   TextEditingController _totalParticipantsController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _dalmiaInflController = TextEditingController();
@@ -69,7 +66,7 @@ class _DetailPendingState extends State<DetailPending> {
 
   ///DropDown Values
   String _selectedVenue;
-  double locatinLat;
+  double locationLat;
   double locationLong;
   bool isVisible = false;
   bool saveBtnVisible = false;
@@ -111,7 +108,7 @@ class _DetailPendingState extends State<DetailPending> {
       venueLbl = detailEventModel.mwpEventModel.venue;
       _eventTypeController.text =
           detailEventModel.mwpEventModel.eventTypeText ?? '';
-      _totalParticipantsController.text = '${_total}';
+      _totalParticipantsController.text = '$_total';
       _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
       _date = detailEventModel.mwpEventModel.eventDate;
       displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
@@ -131,7 +128,7 @@ class _DetailPendingState extends State<DetailPending> {
           detailEventModel.mwpEventModel.eventComment ?? '';
       timeString = detailEventModel.mwpEventModel.eventTime;
       dateString = detailEventModel.mwpEventModel.eventDate;
-      locatinLat =
+      locationLat =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLat}');
       locationLong =
           double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
@@ -167,7 +164,6 @@ class _DetailPendingState extends State<DetailPending> {
           //selectedDealersModels = detailEventModel.eventDealersModelList;
         }
       });
-      print('DDDD: $data');
       setVisibility();
       setSaveBtnVisibility();
       setText();
@@ -195,8 +191,14 @@ class _DetailPendingState extends State<DetailPending> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     final eventType = TextFormField(
       controller: _eventTypeController,
       style: FormFieldStyle.formFieldTextStyle,
@@ -466,11 +468,12 @@ class _DetailPendingState extends State<DetailPending> {
         Visibility(
           visible: saveBtnVisible,
           child:
-        FlatButton(
+        TextButton(
+          style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
               side: BorderSide(color: Colors.black26)),
-          color: Colors.transparent,
+          backgroundColor: Colors.transparent,),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -479,7 +482,7 @@ class _DetailPendingState extends State<DetailPending> {
             ),
           ),
           onPressed: () {
-            btnPresssed(7);
+            btnPressed(7);
           },
         ),),
         RaisedButton(
@@ -492,10 +495,10 @@ class _DetailPendingState extends State<DetailPending> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 // letterSpacing: 2,
-                fontSize: ScreenUtil().setSp(15)),
+                fontSize: 15.sp),
           ),
           onPressed: () {
-            btnPresssed(1);
+            btnPressed(1);
            },
         ),
       ],
@@ -522,7 +525,7 @@ class _DetailPendingState extends State<DetailPending> {
           await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
             _locationController.text = result.description;
-            locatinLat = placeDetails.lat;
+            locationLat = placeDetails.lat;
             locationLong = placeDetails.lng;
           });
         }
@@ -553,15 +556,17 @@ class _DetailPendingState extends State<DetailPending> {
                   visible: isVisible,
                   child: Padding(
                     padding:
-                    EdgeInsets.only(left: ScreenUtil().setSp(12)),
+                    EdgeInsets.only(left: 12.sp),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FlatButton(
-                          shape: RoundedRectangleBorder(
+                        TextButton(
+                    style: TextButton.styleFrom(
+
+                    shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
-                          color: ColorConstants.cancelRed,
+                          backgroundColor: ColorConstants.cancelRed,),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 5, bottom: 8, top: 5),
@@ -578,7 +583,6 @@ class _DetailPendingState extends State<DetailPending> {
                               setState(() {
                                 _deleteEventModel = data;
                               });
-                              print("response : ");
                             });
                           },
                         ),
@@ -587,7 +591,7 @@ class _DetailPendingState extends State<DetailPending> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                  padding: EdgeInsets.all(12.sp),
                   height: 56,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -673,18 +677,17 @@ class _DetailPendingState extends State<DetailPending> {
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-      dateString = '${d}';
+      dateString = '$d';
     });
   }
 
   Future _startTime() async {
     String t = detailEventModel.mwpEventModel.eventTime;
-    TimeOfDay eventtime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
-    print('TT:$eventtime');
+    TimeOfDay eventTime = TimeOfDay(hour:int.parse(t.split(":")[0]),minute: int.parse(t.split(":")[1]));
     (_time == null)
         ? _time = await showTimePicker(
            context: context,
-            initialTime: eventtime,
+            initialTime: eventTime,
             //TimeOfDay(hour: 10, minute: 10),
             builder: (BuildContext context, Widget child) {
               return MediaQuery(
@@ -704,10 +707,8 @@ class _DetailPendingState extends State<DetailPending> {
       },
     );
     setState(() {
-      print("jj");
       displayTime = '${_time.hour}:${_time.minute}';
       timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-      print(timeString);
     });
   }
 
@@ -792,7 +793,6 @@ class _DetailPendingState extends State<DetailPending> {
 
                     onChanged: (newValue) {
                       setState(() {
-                        print('NEWVALUE : $newValue');
                         if (newValue == true) {
                           selectedDealer.add(dealers[index].dealerName);
                           selectedDealersModels.add(dealers[index]);
@@ -806,9 +806,6 @@ class _DetailPendingState extends State<DetailPending> {
 
                         }
                         checkedValues[index] = newValue;
-                        print("checkedValues $checkedValues");
-                        // print(
-                        //     'SELECTED: ${json.encode(selectedDealersModels)}');
 
                       });
                     },
@@ -908,8 +905,7 @@ class _DetailPendingState extends State<DetailPending> {
         });
   }
 
-  btnPresssed(int eventStatusId) async {
-    print('bbb');
+  btnPressed(int eventStatusId) async {
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
       if (timeString == null || displayTime == null) {
@@ -924,7 +920,7 @@ class _DetailPendingState extends State<DetailPending> {
             snackPosition: SnackPosition.BOTTOM);
       } else {
         String empId = await getEmpId();
-        List dealersList = List();
+        List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {
             dealersList.add({
@@ -947,8 +943,7 @@ class _DetailPendingState extends State<DetailPending> {
               snackPosition: SnackPosition.BOTTOM);
         }
         else {
-          print('DEALERS: $dealersList');
-          MwpeventFormRequest _mwpeventFormRequest =
+          MwpeventFormRequest _mwpEventFormRequest =
           MwpeventFormRequest.fromJson({
             'dalmiaInflCount': int.tryParse('${_dalmiaInflController.text}') ??
                 0,
@@ -956,7 +951,7 @@ class _DetailPendingState extends State<DetailPending> {
             'eventDate': dateString,
             'eventId': widget.eventId,
             'eventLocation': _locationController.text,
-            'eventLocationLat': locatinLat,
+            'eventLocationLat': locationLat,
             'eventLocationLong': locationLong,
             'eventStatusId': eventStatusId,
             'eventTime': timeString,
@@ -975,10 +970,9 @@ class _DetailPendingState extends State<DetailPending> {
           SaveEventFormModel _save =
           SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
           SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
-              mwpeventFormRequest: _mwpeventFormRequest,
+              mwpeventFormRequest: _mwpEventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
-          print('PARAMS: ${json.encode(_saveEventFormModel)}');
 
           internetChecking().then((result) =>
           {

@@ -4,12 +4,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/bindings/splash_binding.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/routes/notification_routes.dart';
 import 'package:flutter_tech_sales/utils/constants/moengage_util.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/inapp_campaign.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
@@ -18,17 +16,10 @@ import 'package:moengage_flutter/push_token.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-  /* _moengagePlugin.setUpPushCallbacks((pushCampaign) {
-      });*/
-  _moengagePlugin.setUpPushCallbacks(_onPushClick);
-  _moengagePlugin.enableSDKLogs();
-  _moengagePlugin.initialise();
-  _moengagePlugin.registerForPushNotification();
-
   runZonedGuarded(
         () {
       /** Kp Changes*/
@@ -40,6 +31,16 @@ void main() async {
     },
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
+  /* _moengagePlugin.setUpPushCallbacks((pushCampaign) {
+      });*/
+  _moengagePlugin.setUpPushCallbacks(_onPushClick);
+  _moengagePlugin.enableSDKLogs();
+  _moengagePlugin.initialise();
+  _moengagePlugin.registerForPushNotification();
+
+
+
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
 
 }
@@ -71,10 +72,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-  final MoEngageInbox _moEngageInbox = MoEngageInbox();
+
 
   @override
   void initState() {
+
     super.initState();
     initPlatformState();
     _moengagePlugin.setUpPushCallbacks(_onPushClick);

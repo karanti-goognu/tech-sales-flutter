@@ -1,10 +1,7 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -19,8 +16,8 @@ class DraftLeadListScreen extends StatefulWidget {
 
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
-  List<SaveLeadRequestDraftModel> draftList = new List();
-  List<int> draftIdList = new List();
+  List<SaveLeadRequestDraftModel> draftList = new List.empty(growable: true);
+  List<int> draftIdList = new List.empty(growable: true);
 
   @override
   void initState() {

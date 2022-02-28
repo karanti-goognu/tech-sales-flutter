@@ -9,7 +9,6 @@ Map<String, String> requestHeaders(String version){
     'app-version': version,
     'access-token': StringConstants.accessToken,
   };
-  print(requestHeaders);
   return requestHeaders;
 }
 
@@ -21,7 +20,6 @@ Map<String, String> requestHeadersWithAccessKey(String accessKey, String version
     'app-version': version,
     'access-key': accessKey,
   };
-  print(requestHeaders);
 
   return requestHeaders;
 }
@@ -35,7 +33,6 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , S
     'access-key': accessKey,
     'user-security-key' : userSecurityKey
   };
-  print(requestHeaders);
 
   return requestHeaders;
 }
@@ -49,7 +46,6 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(St
     'access-key': accessKey,
     'user-security-key' : userSecurityKey
   };
-  print(requestHeaders);
   return requestHeaders;
 }
 
@@ -63,7 +59,6 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKeyAndReferenceId(String
     'user-security-key' : userSecurityKey,
     'reference-id' : refernceId
   };
-  print(requestHeaders);
 
   return requestHeaders;
 }

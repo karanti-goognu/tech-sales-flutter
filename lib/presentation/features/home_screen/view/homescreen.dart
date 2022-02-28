@@ -1,10 +1,9 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/notification/model/moengage_inbox.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -14,12 +13,12 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/slider.dart';
 import 'package:get/get.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
-import 'package:moengage_flutter/push_campaign.dart';
+import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slider_button/slider_button.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,11 +27,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
   HomeController _homeController = Get.find();
   SplashController _splashController = Get.find();
 
-  // DashboardController _dashboardController =Get.find();
 
   List<MenuDetailsModel> list = [
     new MenuDetailsModel("Leads", "assets/images/img2.png"),
@@ -52,15 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
-    print("unReadMessageCoun called ${_moEngageInbox.getUnClickedCount().then((value) => print(value))}");
     int unReadMessageCount = await _moEngageInbox.getUnClickedCount();
-    print("unread message count $unReadMessageCount");
+   // print("unread message count $unReadMessageCount");
     return unReadMessageCount;
   }
 
   Future<bool> internetChecking() async {
-    // do something here
-    bool result = await DataConnectionChecker().hasConnection;
+    bool result = await CheckInternet.hasConnection();
     return result;
   }
 
@@ -71,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print("homescreen.dart :::::: initState()");
+   // print("home screen.dart :::::: initState()");
+
     super.initState();
     // initPlatformState();
     /** Kp Changes*/
@@ -99,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //     _homeController.checkInStatus = StringConstants.journeyEnded;
     //   }
     // }
-
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then(
@@ -107,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _homeController.checkInStatus = StringConstants.journeyEnded;
         var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
         var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
-        if (journeyDate == null) {
+        if (journeyDate == null || journeyDate == "NA") {
 //        print('Check In');
           _homeController.checkInStatus = StringConstants.checkIn;
         } else {
@@ -134,24 +129,23 @@ class _HomeScreenState extends State<HomeScreen> {
         setMoengageData(prefs);
       },
     );
-    print("notification section starts here");
+  //  print("notification section starts here");
     //   notification section starts here
     _moEngageInbox = MoEngageInbox();
-    unReadMessageCoun().then((value) => print("value:::::::::::::$value"));
     WidgetsBinding.instance.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
-            print(":::-- $value"),
+          //  print(":::-- $value"),
                 setState(() {
                   unReadMessageCount = value;
-                  print("unReadMessageCount $unReadMessageCount");
+               //   print("unReadMessageCount $unReadMessageCount");
                 }),
               })
         });
   }
 
-  /** Kp Changes*/
+  ///** Kp Changes*
   void setMoengageData(SharedPreferences prefs) {
-    print("Moengage Initialize");
+  //  print("Moengage Initialize");
     final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
     //_moengagePlugin.initialise();
     //_moengagePlugin.setAppStatus(MoEAppStatus.update);
@@ -159,23 +153,16 @@ class _HomeScreenState extends State<HomeScreen> {
     //_moengagePlugin.setUpPushCallbacks(_onPushClick);
     _moengagePlugin.setUniqueId(
         prefs.getString(StringConstants.employeeId) ?? ""); //employeeId id
-    _moengagePlugin.setUserName(
-        prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
+    _moengagePlugin.setUserName(prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
     _moengagePlugin.setPhoneNumber(
         prefs.getString(StringConstants.mobileNumber) ?? ""); //contact number
     _moengagePlugin.setEmail("test@test.com"); //email
     _moengagePlugin.setBirthDate("xx-xx-xxxx"); //dob
   }
 
-  void _onPushClick(PushCampaign message) {
-    print("This is a push click callback from native to flutter. Payload " +
-        message.toString());
-  }
-
   @override
   void dispose() {
-    // TODO: implement dispose
-    print("homescreen.dart :::::: dispose()");
+  //  print("homescreen.dart :::::: dispose()");
     super.dispose();
     // _homeController.dispose();
   }
@@ -374,6 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Obx(() {
                     if (_homeController.disableSlider != true) {
+                    //  print(_homeController.checkInStatus);
                       return (_homeController.checkInStatus ==
                               StringConstants.checkIn)
                           ? checkInSliderButton()
@@ -657,13 +645,12 @@ class _HomeScreenState extends State<HomeScreen> {
       highlightedColor: Colors.grey,
       baseColor: Colors.white,
       vibrationFlag: true,
-
       dismissible: false,
       action: null,
     );
   }
 
-  Widget checkInSliderButton() {
+  Widget checkInSliderButton()  {
     return SliderButton(
       action: () async {
         if (await Permission.location.request().isGranted) {
@@ -687,7 +674,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Swipe to start your day ",
+        "Swipe to start your day",
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -711,6 +698,7 @@ class _HomeScreenState extends State<HomeScreen> {
       baseColor: Colors.white,
       vibrationFlag: true,
       dismissible: false,
+      dismissThresholds: 0.01,
     );
   }
 
@@ -718,7 +706,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliderButton(
       action: () async {
         if (await Permission.location.request().isGranted) {
-          // Either the permission was already granted before or the user just granted it.
           internetChecking().then((result) => {
                 if (result == true)
                   {_homeController.getAccessKey(RequestIds.CHECK_OUT)}
@@ -752,7 +739,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Icons.arrow_forward_outlined,
         color: Colors.white,
         size: 40.0,
-        //  semanticLabel: 'Text to announce in accessibility modes',
       )),
 
       ///Change All the color and size from here.
@@ -765,11 +751,13 @@ class _HomeScreenState extends State<HomeScreen> {
       baseColor: Colors.white,
       vibrationFlag: true,
       dismissible: false,
+      dismissThresholds: 0.01,
     );
   }
 
   Widget journeyEnded() {
-    return GestureDetector(
+    return
+      GestureDetector(
       onTap: () {},
       child: Container(
         height: 70,
@@ -790,7 +778,6 @@ class _HomeScreenState extends State<HomeScreen> {
             childAspectRatio: 2.1,
             crossAxisSpacing: 1,
             mainAxisSpacing: 2),
-        // itemExtent: 125.0,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {

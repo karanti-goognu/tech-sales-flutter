@@ -29,8 +29,14 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(360, 690),
+        context: context,
+        minTextAdapt: true,
+        orientation: Orientation.portrait);
     _leadsFilterController.getSecretKey(10);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
@@ -211,7 +217,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                   ),
                 ),
                 Spacer(),
-                RaisedButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary:ColorConstants.buttonNormalColor,),
                   onPressed: () {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied = true;
@@ -221,7 +229,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST);
                   },
-                  color: ColorConstants.buttonNormalColor,
+
                   child: Text(
                     "APPLY",
                     style: TextStyle(color: Colors.white),

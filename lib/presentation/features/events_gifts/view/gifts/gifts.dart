@@ -6,7 +6,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
@@ -43,7 +42,7 @@ class _GiftsViewState extends State<GiftsView> {
     for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
       _giftCategoriesList.add(GiftsCategories(
           _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
-      print("printtttt->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
+     // print("print ->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
     }
     _giftInHandQtyNew.text=_giftCategoriesList[1].count.toString();
     _giftInHandQty=_giftCategoriesList[1].count.toString();
@@ -91,22 +90,15 @@ class _GiftsViewState extends State<GiftsView> {
         actions: [
           Transform.scale(
             scale: 0.6,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
-                // if(_giftController.selectedDropdown ==0){
-                //   _giftController.selectedDropdown = 1;
-                // }
                 Get.to(() => ViewLogs());
-                // if(_giftController.selectedDropdown==0){
-                //   Get.dialog(CustomDialogs().showMessage("To view log please Select Other Gift Type"));
-                // }else {
-                //   Get.to(() => ViewLogs());
-                // }
               },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28.0),
-                  side: BorderSide(color: Colors.white)),
-              color: Colors.transparent,
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28.0),
+                    side: BorderSide(color: Colors.white)),
+              ),
               child: Text(
                 'VIEW LOGS',
                 style: TextStyle(color: Colors.white, fontSize: 15),
@@ -281,7 +273,6 @@ class _GiftsViewState extends State<GiftsView> {
           onPressed: () => _giftController.selectedDropdown == 0
               ?
           _settingModalBottomSheet(context,setstates)
-          // Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController,setstates:setstates),)
               : _giftInHandQtyNew.text.isEmpty?
           Get.dialog(CustomDialogs().showMessage("Please enter value"))
           :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),
