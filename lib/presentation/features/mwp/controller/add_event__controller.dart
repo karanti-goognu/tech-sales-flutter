@@ -316,12 +316,6 @@ class AddEventController extends GetxController {
             Get.dialog(
                 CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
           }
-          // else if (saveVisitResponse.respCode == "MWP2021") {
-          //   Get.dialog(CustomDialogs().messageDialogMWPInf(
-          //       saveVisitResponse.respMsg,
-          //       contactController,
-          //       isVisibleContact));
-          // }
           else if (saveVisitResponse.respCode == "INF2004") {
             this.isVisibleContact = false;
             contactController.text = "";

@@ -997,7 +997,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {

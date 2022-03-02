@@ -5,9 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -51,16 +54,64 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   SiteFloorlist _selectedFloorType;
   bool isExpanded = true;
   String _selectedRadioValue = 'Y';
+  DealerModel _selectedDealer;
+  String _selected;
 
-  getPendingSupplyData() async {
-    var data = await _siteController.pendingSupplyDetails(
+  List<SiteFloorlist> siteFloorsEntity = new List.empty(growable: true);
+  List<ConstStage> constStageEntity = new List.empty(growable: true);
+  List<DealerModel> dealerList = new List.empty(growable: true);
+
+  PendingSupplyDetailsEntity _pendingSupplyDetailsEntity;
+  PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
+
+  getPendingSupplyData() {
+    _siteController.pendingSupplyDetails(
         widget.supplyHistoryId, widget.siteId);
-    // .then((PendingSupplyDetailsEntity data) async { });
-    print(data);
+        setData();
+
+
+    //print(data);
     // _selectedConstructionType= _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.constStage[0];
-    print(_selectedConstructionType);
-    print(_selectedFloorType);
+    // print('000000000$_selectedConstructionType');
+    // print(_selectedFloorType);
     // _selectedFloorType= _siteController.pendingSupplyDetailsResponse.pendingSuppliesDetailsModel.siteFloorlist[0];
+  }
+
+  setData(){
+    _siteController.pendingSupplyDetailsNew(widget.supplyHistoryId, widget.siteId)
+        .then((data){
+      if(data != null){
+        _pendingSuppliesDetailsModel = data;
+        siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
+        constStageEntity = _pendingSuppliesDetailsModel.constStage;
+      }
+
+    if(_pendingSuppliesDetailsModel.floorId != null){
+      for(int i = 0; i < siteFloorsEntity.length; i++){
+        if(_pendingSuppliesDetailsModel.floorId.toString() == siteFloorsEntity[i].id.toString()){
+          _selectedFloorType = siteFloorsEntity[i];
+        }
+      }
+    }
+
+    if( _pendingSuppliesDetailsModel.stageConstructionId != null){
+      for(int i = 0; i < constStageEntity.length; i++){
+        if(_pendingSuppliesDetailsModel.stageConstructionId.toString() == constStageEntity[i].id.toString()){
+          _selectedConstructionType = constStageEntity[i];
+        }
+      }
+    }
+
+    dealerList = _addEventController.dealerList;
+
+    if(_siteController.counterId != null){
+      for(int i = 0; i < dealerList.length; i++){
+        if(_siteController.counterId.toString() == dealerList[i].dealerId.toString()){
+          _selectedDealer = dealerList[i];
+        }
+      }
+    }
+    });
   }
 
   @override
@@ -107,6 +158,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
             {
               getPendingSupplyData(),
               _appController.getAccessKey(RequestIds.GET_DEALERS_LIST),
+
             }
           else
             {
@@ -118,6 +170,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
               // fetchSiteList()
             }
         });
+    //setData();
   }
 
   @override
@@ -256,61 +309,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             // _getCurrentLocation();
                                           },
                                         )
-                                        // (isExpanded)
-                                        //     ? Column(
-                                        //         children: [
-                                        //           FlatButton.icon(
-                                        //             color: Colors.transparent,
-                                        //             icon: Icon(
-                                        //               Icons.add,
-                                        //               color:
-                                        //                   HexColor("#F9A61A"),
-                                        //               size: 18,
-                                        //             ),
-                                        //             label: Text(
-                                        //               "EXPAND",
-                                        //               style: TextStyle(
-                                        //                   color: HexColor(
-                                        //                       "#F9A61A"),
-                                        //                   fontWeight:
-                                        //                       FontWeight.bold,
-                                        //                   // letterSpacing: 2,
-                                        //                   fontSize: 15),
-                                        //             ),
-                                        //             onPressed: () {
-                                        //               setState(() {
-                                        //                 isExpanded =
-                                        //                     !isExpanded;
-                                        //               });
-                                        //               // _getCurrentLocation();
-                                        //             },
-                                        //           ),
-                                        //         ],
-                                        //       )
-                                        //     : FlatButton.icon(
-                                        //         color: Colors.transparent,
-                                        //         icon: Icon(
-                                        //           Icons.remove,
-                                        //           color: HexColor("#F9A61A"),
-                                        //           size: 18,
-                                        //         ),
-                                        //         label: Text(
-                                        //           "COLLAPSE",
-                                        //           style: TextStyle(
-                                        //               color:
-                                        //                   HexColor("#F9A61A"),
-                                        //               fontWeight:
-                                        //                   FontWeight.bold,
-                                        //               // letterSpacing: 2,
-                                        //               fontSize: 15),
-                                        //         ),
-                                        //         onPressed: () {
-                                        //           setState(() {
-                                        //             isExpanded = !isExpanded;
-                                        //           });
-                                        //           // _getCurrentLocation();
-                                        //         },
-                                        //       )
                                       ],
                                     ),
                                   ),
@@ -423,23 +421,25 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ],
                                   )),
                                   SizedBox(height: 16),
-                                  Obx(() => _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .shipToPartyName ==
-                                          null
-                                      ? DropdownButtonFormField<SiteFloorlist>(
+                                 // Obx(() =>
+                                  // _siteController
+                                  //             .pendingSupplyDetailsResponse
+                                  //             .pendingSuppliesDetailsModel
+                                  //             .shipToPartyName ==
+                                  //         null
+                                  //     ?
+                                  /*
+                                  DropdownButtonFormField<SiteFloorlist>(
                                           value: _selectedFloorType,
-                                          items: _siteController
+                                          items:
+                                          //siteFloorsEntity
+                                          _siteController
                                               .pendingSupplyDetailsResponse
                                               .pendingSuppliesDetailsModel
                                               .siteFloorlist
-                                              .map<
-                                                      DropdownMenuItem<
-                                                          SiteFloorlist>>(
-                                                  (SiteFloorlist label) =>
-                                                      DropdownMenuItem<
-                                                          SiteFloorlist>(
+                                              .map
+                                            ((label) =>
+                                                      DropdownMenuItem(
                                                         child: Text(
                                                           label.siteFloorTxt,
                                                           style: TextStyle(
@@ -466,29 +466,72 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           decoration: FormFieldStyle
                                               .buildInputDecoration(
                                                   labelText: "Floor"),
-                                        )
-                                      : TextFormField(
-                                          controller: _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .floorText,
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Please enter Floor ';
-                                            }
-                                            return null;
-                                          },
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: ColorConstants
-                                                  .inputBoxHintColor,
-                                              fontFamily: "Muli"),
-                                          readOnly: true,
-                                          decoration: FormFieldStyle
-                                              .buildInputDecoration(
-                                            labelText: "Floor",
-                                          ),
-                                        )),
+                                        ),
+                                      */
+                                  DropdownButtonFormField<SiteFloorlist>(
+                                    value: _selectedFloorType,
+                                    items: siteFloorsEntity
+                                    // _siteController
+                                    //     .pendingSupplyDetailsResponse
+                                    //     .pendingSuppliesDetailsModel
+                                    //     .siteFloorlist
+                                        .map<
+                                        DropdownMenuItem<
+                                            SiteFloorlist>>(
+                                            (SiteFloorlist label) =>
+                                            DropdownMenuItem<
+                                                SiteFloorlist>(
+                                              child: Text(
+                                                label.siteFloorTxt,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily:
+                                                    "Muli"),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _siteController.floorId =
+                                            value.id;
+                                        _selectedFloorType = value;
+                                        print(_siteController.floorId);
+                                        print(_selectedFloorType.id);
+                                        // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
+                                      });
+                                      print(value.id);
+                                    },
+                                    decoration: FormFieldStyle
+                                        .buildInputDecoration(
+                                        labelText: "Floor"),
+                                  ),
+
+                                  // : TextFormField(
+                                      //     controller: _siteController
+                                      //         .pendingSupplyDetailsResponse
+                                      //         .pendingSuppliesDetailsModel
+                                      //         .floorText,
+                                      //     validator: (value) {
+                                      //       if (value.isEmpty) {
+                                      //         return 'Please enter Floor ';
+                                      //       }
+                                      //       return null;
+                                      //     },
+                                      //     style: TextStyle(
+                                      //         fontSize: 18,
+                                      //         color: ColorConstants
+                                      //             .inputBoxHintColor,
+                                      //         fontFamily: "Muli"),
+                                      //     readOnly: true,
+                                      //     decoration: FormFieldStyle
+                                      //         .buildInputDecoration(
+                                      //       labelText: "Floor",
+                                      //     ),
+                                      //   )
+                                 // ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
@@ -502,21 +545,22 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 16),
-                                  Obx(() => _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .shipToPartyName ==
-                                          null
-                                      ? DropdownButtonFormField<ConstStage>(
+                                //  Obx(() =>
+                                  // _siteController
+                                  //             .pendingSupplyDetailsResponse
+                                  //             .pendingSuppliesDetailsModel
+                                  //             .shipToPartyName ==
+                                  //         null
+                                  //     ?
+                                  DropdownButtonFormField<ConstStage>(
                                           value: _selectedConstructionType,
-                                          items: _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .constStage
-                                              .map<
-                                                      DropdownMenuItem<
-                                                          ConstStage>>(
-                                                  (ConstStage label) =>
+                                          items:constStageEntity
+                                          // _siteController
+                                          //     .pendingSupplyDetailsResponse
+                                          //     .pendingSuppliesDetailsModel
+                                          //     .constStage
+                                              .map(
+                                                  (label) =>
                                                       DropdownMenuItem<
                                                           ConstStage>(
                                                         child: Text(
@@ -545,29 +589,30 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .buildInputDecoration(
                                                   labelText:
                                                       "Stage of Construction"),
-                                        )
-                                      : TextFormField(
-                                          controller: _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .stageConstructionDesc,
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Please enter Floor ';
-                                            }
-                                            return null;
-                                          },
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: ColorConstants
-                                                  .inputBoxHintColor,
-                                              fontFamily: "Muli"),
-                                          readOnly: true,
-                                          decoration: FormFieldStyle
-                                              .buildInputDecoration(
-                                            labelText: "Stage of Construction",
-                                          ),
-                                        )),
+                                        ),
+                                      // : TextFormField(
+                                      //     controller: _siteController
+                                      //         .pendingSupplyDetailsResponse
+                                      //         .pendingSuppliesDetailsModel
+                                      //         .stageConstructionDesc,
+                                      //     validator: (value) {
+                                      //       if (value.isEmpty) {
+                                      //         return 'Please enter Floor ';
+                                      //       }
+                                      //       return null;
+                                      //     },
+                                      //     style: TextStyle(
+                                      //         fontSize: 18,
+                                      //         color: ColorConstants
+                                      //             .inputBoxHintColor,
+                                      //         fontFamily: "Muli"),
+                                      //     readOnly: true,
+                                      //     decoration: FormFieldStyle
+                                      //         .buildInputDecoration(
+                                      //       labelText: "Stage of Construction",
+                                      //     ),
+                                      //   )
+                     //   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
@@ -653,28 +698,29 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 16),
+                                  // _siteController
+                                  //             .pendingSupplyDetailsResponse
+                                  //             .pendingSuppliesDetailsModel
+                                  //             .shipToPartyName !=
+                                  //         null
+                                  //     ? TextFormField(
+                                  //         controller: _siteController
+                                  //             .pendingSupplyDetailsResponse
+                                  //             .pendingSuppliesDetailsModel
+                                  //             .counter,
+                                  //         readOnly: true,
+                                  //         decoration: FormFieldStyle
+                                  //             .buildInputDecoration(
+                                  //           labelText: "Counter",
+                                  //         ),
+                                  //         style: TextStyle(
+                                  //             fontSize: 18,
+                                  //             color: ColorConstants
+                                  //                 .inputBoxHintColor,
+                                  //             fontFamily: "Muli"),
+                                  //       )
+                                  //     :
                                   _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .shipToPartyName !=
-                                          null
-                                      ? TextFormField(
-                                          controller: _siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .counter,
-                                          readOnly: true,
-                                          decoration: FormFieldStyle
-                                              .buildInputDecoration(
-                                            labelText: "Counter",
-                                          ),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: ColorConstants
-                                                  .inputBoxHintColor,
-                                              fontFamily: "Muli"),
-                                        )
-                                      : _siteController
                                                   .pendingSupplyDetailsResponse
                                                   .pendingSuppliesDetailsModel
                                                   .requestInitiatedBy ==
@@ -683,16 +729,16 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                DropdownButtonFormField(
+                                                DropdownButtonFormField<DealerModel>(
                                                     decoration: FormFieldStyle
                                                         .buildInputDecoration(
                                                             labelText:
                                                                 "Counter"),
-                                                    items: _addEventController
-                                                        .dealerList
-                                                        .map<
-                                                            DropdownMenuItem<
-                                                                dynamic>>((val) {
+                                                    value: _selectedDealer,
+                                                    items: dealerList
+                                                    // _addEventController
+                                                    //     .dealerList
+                                                        .map((val) {
                                                       return DropdownMenuItem(
                                                         value: val,
                                                         child: SizedBox(
@@ -710,6 +756,41 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                       getKittyBags(
                                                           val.dealerId);
                                                     }),
+                                                // DropdownButtonFormField<DealerModel>(
+                                                //   value: _selectedDealer,
+                                                //   items: _addEventController.dealerList
+                                                //       .map<
+                                                //       DropdownMenuItem<
+                                                //           DealerModel>>(
+                                                //           (DealerModel label) =>
+                                                //           DropdownMenuItem<
+                                                //               DealerModel>(
+                                                //             child: Text(
+                                                //               label
+                                                //                   .dealerName,
+                                                //               style: TextStyle(
+                                                //                   fontSize: 18,
+                                                //                   color: ColorConstants
+                                                //                       .inputBoxHintColor,
+                                                //                   fontFamily:
+                                                //                   "Muli"),
+                                                //             ),
+                                                //             value: label,
+                                                //           ))
+                                                //       .toList(),
+                                                //   onChanged: (value) {
+                                                //     setState(() {
+                                                //      // _selectedConstructionType = value;
+                                                //       // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
+                                                //     });
+                                                //     print(value.dealerId);
+                                                //     print(_selectedDealer.dealerName);
+                                                //   },
+                                                //   decoration: FormFieldStyle
+                                                //       .buildInputDecoration(
+                                                //       labelText:
+                                                //       "Stage of Construction"),
+                                                // ),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -727,7 +808,34 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 ),
                                               ],
                                             )
-                                          : Container(),
+                                          : DropdownButtonFormField(
+                                      decoration: FormFieldStyle
+                                          .buildInputDecoration(
+                                          labelText:
+                                          "Counter"),
+                                      items: _addEventController
+                                          .dealerList
+                                          .map<
+                                          DropdownMenuItem<
+                                              dynamic>>((val) {
+                                        return DropdownMenuItem(
+                                          value: val,
+                                          child: SizedBox(
+                                              width: SizeConfig
+                                                  .screenWidth -
+                                                  100,
+                                              child: Text(
+                                                  '${val.dealerName} (${val.dealerId})')),
+                                        );
+                                      }).toList(),
+                                      onChanged: (val) {
+                                        // _siteController
+                                        //     .counterId =
+                                        //     val.dealerId;
+                                        // getKittyBags(
+                                        //     val.dealerId);
+                                      }),
+                                  //Container(),
                                   _siteController.counterId.toString().isEmpty
                                       ? Container()
                                       : Padding(

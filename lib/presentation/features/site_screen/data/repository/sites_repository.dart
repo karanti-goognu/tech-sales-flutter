@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
@@ -77,8 +78,13 @@ class MyRepositorySites {
     return apiClient.getPendingSupplyData(accessKey, securityKey, url);
   }
 
-  getPendingSupplyDetails(String accessKey, String securityKey, String url) {
+  Future<PendingSupplyDetailsEntity>getPendingSupplyDetails(String accessKey, String securityKey, String url) async{
     return apiClient.getPendingSupplyDetails(accessKey, securityKey, url);
+  }
+
+  Future<PendingSuppliesDetailsModel> getPendingSupplyDetailsNew(
+      String accessKey, String userSecretKey, String url) async {
+    return apiClient.getPendingSupplyDetailsNew(accessKey, userSecretKey, url);
   }
 
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) {

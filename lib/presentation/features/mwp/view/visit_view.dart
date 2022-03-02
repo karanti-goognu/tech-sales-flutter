@@ -490,13 +490,14 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);
         selectedDateString = formattedDate;
         this._addEventController.visitDateTime = selectedDateString;
       });
+    }
   }
 
   bool isValidPhoneNumber(String string) {
