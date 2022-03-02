@@ -19,10 +19,15 @@ class GetCurrentLocation{
     if (!await checkLocationPermission()) {
       Get.dialog(CustomDialogs().errorDialog("Please enable your location service from device settings"));
     } else {
-      Position position= await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+   try{
+     Position position= await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
      _currentPosition = position;
      loc= await getAddressFromLatLng();
      Get.back();
+   }catch(e){
+     Get.back();
+     Get.rawSnackbar(title: "Message", message: e.toString());
+   }
     }
     return [loc,_currentPosition];
 

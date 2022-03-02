@@ -86,8 +86,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   void initState() {
     super.initState();
     getEmpId();
-    _enrollmentDateController.text =
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _enrollmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     getDropdownData();
     getDistrictData();
     getCounterData();
