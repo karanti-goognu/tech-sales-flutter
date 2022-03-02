@@ -26,6 +26,7 @@ class GetCurrentLocation{
      Get.back();
    }catch(e){
      Get.back();
+     print(e);
      Get.rawSnackbar(title: "Message", message: e.toString());
    }
     }
