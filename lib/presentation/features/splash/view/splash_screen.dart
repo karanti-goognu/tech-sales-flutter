@@ -20,7 +20,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 class SplashScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return SplashScreenPageState();
   }
 }
@@ -96,7 +95,7 @@ class SplashScreenPageState extends State<SplashScreen> {
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);
           else{
             Future.delayed(const Duration(seconds: 3), () {
-              _splashController.openNextPage();
+              _splashController.openNextPage(4);
 
             });
 
