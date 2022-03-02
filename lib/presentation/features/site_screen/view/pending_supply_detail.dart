@@ -1222,11 +1222,11 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         ),
                                         onPressed: () async {
                                           String empId = await getEmpId();
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .shipToPartyName ==
-                                              null) {
+                                          // if (_siteController
+                                          //         .pendingSupplyDetailsResponse
+                                          //         .pendingSuppliesDetailsModel
+                                          //         .shipToPartyName ==
+                                          //     null) {
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
@@ -1240,7 +1240,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   "Please select a Construction Stage !"));
                                               return;
                                             }
-                                          }
+                                         // }
 
                                             if (_siteController
                                                     .pendingSupplyDetailsResponse
@@ -1301,15 +1301,16 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
-                                            "floor": _siteController
-                                                .pendingSupplyDetailsResponse
-                                                .pendingSuppliesDetailsModel
-                                                .floorText
-                                                .text,
+                                            // "floor": _siteController
+                                            //     .pendingSupplyDetailsResponse
+                                            //     .pendingSuppliesDetailsModel
+                                            //     .floorText
+                                            //     .text,
+                                                "floor": _selectedFloorType.siteFloorTxt,
                                             "floorId":
                                                 _selectedFloorType == null
                                                     ? null
-                                                    : _siteController.floorId,
+                                                    : _selectedFloorType.id,
                                             "brandPrice": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
@@ -1342,9 +1343,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedRadioValue,
                                           };
                                           print(jsonEncode(jsonData));
-                                          // _siteController
-                                          //     .updatePendingSupplyDetails(
-                                          //         jsonData);
+                                          _siteController
+                                              .updatePendingSupplyDetails(
+                                                  jsonData);
                                         },
                                       ),
                                       RaisedButton(
@@ -1367,11 +1368,11 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         ),
                                         onPressed: () async {
                                           String empId = await getEmpId();
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .shipToPartyName ==
-                                              null) {
+                                          // if (_siteController
+                                          //         .pendingSupplyDetailsResponse
+                                          //         .pendingSuppliesDetailsModel
+                                          //         .shipToPartyName ==
+                                          //     null) {
                                             if (_selectedFloorType == null) {
                                               Get.dialog(CustomDialogs()
                                                   .showMessage(
@@ -1385,7 +1386,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   "Please select a Construction Stage !"));
                                               return;
                                             }
-                                          }
+                                         // }
                                             if (_siteController
                                                     .pendingSupplyDetailsResponse
                                                     .pendingSuppliesDetailsModel
@@ -1444,15 +1445,16 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "A",
-                                            "floor": _siteController
-                                                .pendingSupplyDetailsResponse
-                                                .pendingSuppliesDetailsModel
-                                                .floorText
-                                                .text,
+                                            // "floor": _siteController
+                                            //     .pendingSupplyDetailsResponse
+                                            //     .pendingSuppliesDetailsModel
+                                            //     .floorText
+                                            //     .text,
+                                                "floor": _selectedFloorType.siteFloorTxt,
                                             "floorId":
                                                 _selectedFloorType == null
                                                     ? null
-                                                    : _siteController.floorId,
+                                                    : _selectedFloorType.id,
                                             "brandPrice": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
