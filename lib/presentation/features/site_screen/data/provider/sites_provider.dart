@@ -466,6 +466,7 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
         PendingSupplyDataResponse pendingSupplyDataResponse = pendingSupplyData.response;
+
      //   print(pendingSupplyDataResponse);
         return pendingSupplyDataResponse;
       }else
@@ -475,7 +476,7 @@ class MyApiClientSites {
     }
   }
 
-  getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
+  Future<PendingSupplyDetailsEntity>getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
@@ -492,6 +493,38 @@ class MyApiClientSites {
     } catch (_) {
       // print('error in catch ${_.toString()}');
     }
+  }
+
+  Future<PendingSuppliesDetailsModel> getPendingSupplyDetailsNew(String accessKey,
+      String userSecretKey, String url) async {
+    PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try {
+      version = VersionClass.getVersion();
+      var response = await http.get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      var data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        Get.back();
+        print("======$url");
+         print("======$data");
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs().appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+        else {
+          PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
+          PendingSupplyDetailsEntity pendingSupplyDetailsEntity = pendingSupplyData.response;
+          _pendingSuppliesDetailsModel = pendingSupplyDetailsEntity.pendingSuppliesDetailsModel;
+        }} else {
+        print('error');
+      }
+    }
+    catch (e) {
+      print("Exception at INF Repo $e");
+    }
+
+    return _pendingSuppliesDetailsModel;
   }
 
   updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {

@@ -75,6 +75,8 @@ class SiteController extends GetxController {
     _pendingSupplyDetailsResponse.value = value;
   }
 
+
+
   get siteDistResponse => _siteDistResponse.value;
   set siteDistResponse(value) => _siteDistResponse.value = value;
 
@@ -663,7 +665,7 @@ class SiteController extends GetxController {
     return pendingSupplyListResponse;
   }
 
-  pendingSupplyDetails(String supplyHistoryId,String siteId) async {
+  Future<PendingSupplyDetailsEntity>pendingSupplyDetails(String supplyHistoryId,String siteId) async {
     Future.delayed(Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
@@ -691,7 +693,23 @@ class SiteController extends GetxController {
         }
 
     });
-    return pendingSupplyDetailsResponse;
+    return this.pendingSupplyDetailsResponse;
+  }
+
+  Future<PendingSuppliesDetailsModel>pendingSupplyDetailsNew (String supplyHistoryId,String siteId) async {
+    PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
+    String userSecurityKey = "";
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    String accessKey = await repository.getAccessKeyNew();
+    String empId = "empty";
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+      String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
+
+      _pendingSuppliesDetailsModel = await repository.getPendingSupplyDetailsNew(accessKey, userSecurityKey, url);
+    });
+    return _pendingSuppliesDetailsModel;
   }
 
   updatePendingSupplyDetails(Map<String, dynamic> jsonData) async {
