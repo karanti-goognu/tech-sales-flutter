@@ -476,7 +476,7 @@ class MyApiClientSites {
     }
   }
 
-  Future<PendingSupplyDetailsEntity>getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
+  getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),

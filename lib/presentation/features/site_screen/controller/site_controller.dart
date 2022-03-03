@@ -665,7 +665,7 @@ class SiteController extends GetxController {
     return pendingSupplyListResponse;
   }
 
-  Future<PendingSupplyDetailsEntity>pendingSupplyDetails(String supplyHistoryId,String siteId) async {
+  pendingSupplyDetails(String supplyHistoryId,String siteId) async {
     Future.delayed(Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
@@ -691,7 +691,6 @@ class SiteController extends GetxController {
           //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
           // }
         }
-
     });
     return this.pendingSupplyDetailsResponse;
   }

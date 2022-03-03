@@ -78,7 +78,7 @@ class MyRepositorySites {
     return apiClient.getPendingSupplyData(accessKey, securityKey, url);
   }
 
-  Future<PendingSupplyDetailsEntity>getPendingSupplyDetails(String accessKey, String securityKey, String url) async{
+  getPendingSupplyDetails(String accessKey, String securityKey, String url) {
     return apiClient.getPendingSupplyDetails(accessKey, securityKey, url);
   }
 
