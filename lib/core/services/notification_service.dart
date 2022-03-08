@@ -15,7 +15,6 @@ class MoengageService {
 
     _moengagePlugin = MoEngageFlutter();
     _moengagePlugin?.setUpPushCallbacks(_onPushClick);
-    //_moengagePlugin?.enableSDKLogs();
     _moengagePlugin?.initialise();
     _moengagePlugin?.registerForPushNotification();
     moEngageInbox =new MoEngageInbox();
@@ -26,12 +25,12 @@ class MoengageService {
     MoengageService._();
   }
 
-/*Set user details on moengage dashboard*/
+///Set user details on moengage dashboard
   static void setMoengageData(
       {String uniqueId = "", String userName = "", String mobileNumber = ""}) {
-    _moengagePlugin?.setUniqueId(uniqueId); //membership id
-    _moengagePlugin?.setUserName(userName); //full name
-    _moengagePlugin?.setPhoneNumber(mobileNumber); //contact number
+    _moengagePlugin?.setUniqueId(uniqueId);
+    _moengagePlugin?.setUserName(userName);
+    _moengagePlugin?.setPhoneNumber(mobileNumber);
 
   }
 

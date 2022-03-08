@@ -38,16 +38,12 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
-      String isDealerConformedChangedBySo =
-          viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
-
-      //  print(influencerTypeEntity.length);
+      String isDealerConformedChangedBySo = viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
       influencerCategoryEntity = viewSiteDataResponse.influencerCategoryEntity;
 
       influencerEntity = viewSiteDataResponse.influencerEntity;
       siteInfluencerEntity = viewSiteDataResponse.siteInfluencerEntity;
 
-      // print(viewSiteDataResponse.influencerEntity.length);
       if (viewSiteDataResponse.influencerEntity != null &&
           viewSiteDataResponse.influencerEntity.length > 0) {
         for (int i = 0; i < viewSiteDataResponse.influencerEntity.length; i++) {
@@ -113,12 +109,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
         BoxConstraints(
@@ -151,8 +141,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                         }else{
                         if (!_listInfluencerDetail[index].isExpanded) {
                           return Column(
-                            // mainAxisAlignment:
-                            // MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 mainAxisAlignment:
@@ -195,9 +183,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? TextButton.icon(
-                                          // shape: RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.circular(0),
-                                          //     side: BorderSide(color: Colors.black26)),
+
                                           icon: Icon(
                                             Icons.remove,
                                             color: HexColor("#F9A61A"),
@@ -218,13 +204,9 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                   !_listInfluencerDetail[index]
                                                       .isExpanded;
                                             });
-                                            // _getCurrentLocation();
                                           },
                                         )
                                       : TextButton.icon(
-                                          // shape: RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.circular(0),
-                                          //     side: BorderSide(color: Colors.black26)),
                                           icon: Icon(
                                             Icons.add,
                                             color: HexColor("#F9A61A"),
@@ -235,7 +217,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             style: TextStyle(
                                                 color: HexColor("#F9A61A"),
                                                 fontWeight: FontWeight.bold,
-                                                // letterSpacing: 2,
                                                 fontSize: 15),
                                           ),
                                           onPressed: () {
@@ -245,7 +226,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                   !_listInfluencerDetail[index]
                                                       .isExpanded;
                                             });
-                                            // _getCurrentLocation();
                                           },
                                         ),
                                 ],
@@ -254,8 +234,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                           );
                         } else {
                           return Column(
-                            // mainAxisAlignment:
-                            // MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 mainAxisAlignment:
@@ -271,9 +249,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   ),
                                   _listInfluencerDetail[index].isExpanded
                                       ? TextButton.icon(
-                                    // shape: RoundedRectangleBorder(
-                                    //     borderRadius: BorderRadius.circular(0),
-                                    //     side: BorderSide(color: Colors.black26)),
                                     icon: Icon(
                                       Icons.remove,
                                       color: HexColor("#F9A61A"),
@@ -286,7 +261,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                       style: TextStyle(
                                           color: HexColor("#F9A61A"),
                                           fontWeight: FontWeight.bold,
-                                          // letterSpacing: 2,
                                           fontSize: SizeConfig
                                               .safeBlockHorizontal *
                                               4.5),
@@ -298,13 +272,9 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         !_listInfluencerDetail[index]
                                             .isExpanded;
                                       });
-                                      // _getCurrentLocation();
                                     },
                                   )
                                       : TextButton.icon(
-                                    // shape: RoundedRectangleBorder(
-                                    //     borderRadius: BorderRadius.circular(0),
-                                    //     side: BorderSide(color: Colors.black26)),
                                     icon: Icon(
                                       Icons.add,
                                       color: HexColor("#F9A61A"),
@@ -325,7 +295,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         !_listInfluencerDetail[index]
                                             .isExpanded;
                                       });
-                                      // _getCurrentLocation();
                                     },
                                   ),
                                 ],
@@ -339,7 +308,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
                                   Switch(
@@ -381,7 +349,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             .isPrimarybool
                                             ? HexColor("#009688")
                                             : Colors.black,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
                                 ],
@@ -393,10 +360,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                 onChanged: (value) async {
                                   bool match = false;
                                   if (value.length < 10) {
-                                    // _listInfluencerDetail[
-                                    // index]
-                                    //     .inflContact
-                                    //     .clear();
                                     if (_listInfluencerDetail[index].inflName !=
                                         null) {
                                       _listInfluencerDetail[index]

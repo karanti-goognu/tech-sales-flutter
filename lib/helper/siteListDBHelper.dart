@@ -34,7 +34,7 @@ class SiteListDBHelper extends ChangeNotifier{
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+          /// When creating the db, create the table
           await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteListModel TEXT)');
         });
     return database;

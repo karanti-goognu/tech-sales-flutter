@@ -86,7 +86,6 @@ class SplashScreenPageState extends State<SplashScreen> {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       String isUserLoggedIn = prefs.getString(StringConstants.isUserLoggedIn) ?? "false";
-     // print('$isUserLoggedIn');
       if (isUserLoggedIn == "false") {
         Get.offNamed(Routes.LOGIN);
       } else {
@@ -94,11 +93,7 @@ class SplashScreenPageState extends State<SplashScreen> {
           if(result)
             _splashController.getSecretKey(RequestIds.REFRESH_DATA);
           else{
-            Future.delayed(const Duration(seconds: 3), () {
-              _splashController.openNextPage(4);
-
-            });
-
+            Future.delayed(const Duration(seconds: 3), ()=> _splashController.openNextPage(4));
           }
 
         });
@@ -106,7 +101,6 @@ class SplashScreenPageState extends State<SplashScreen> {
       }
     });
     _initializeFlutterFireFuture = _initializeFlutterFire();
-
     initDatabase();
     initVersion();
   }
@@ -143,7 +137,7 @@ class SplashScreenPageState extends State<SplashScreen> {
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+          /// When creating the db, create the table
           await db.execute('CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
           await db.execute('CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
           await db.execute('CREATE TABLE counterListDealers (id TEXT, dealerName TEXT)');

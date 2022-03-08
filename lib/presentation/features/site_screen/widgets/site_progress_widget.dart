@@ -70,7 +70,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _comments = new TextEditingController();
   var closureReasonText = new TextEditingController();
 
-  //var _commentsRejectionController = new TextEditingController();
   var _stageStatus = new TextEditingController();
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
@@ -85,11 +84,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<SiteFloorsEntity> siteFloorsEntityNew = new List.empty(growable: true);
   List<SiteFloorsEntity> siteFloorsEntityNewNextStage = new List.empty(growable: true);
   List<SitephotosEntity> sitephotosEntity = new List.empty(growable: true);
-
-  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity = new List()
   List<SiteStageHistory> siteStageHistorys = new List.empty(growable: true);
   List<SiteSupplyHistorys> siteSupplyHistorys = new List.empty(growable: true);
-
   List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
   List<ConstructionStageEntity> constructionStageEntityNew = new List.empty(growable: true);
   List<ConstructionStageEntity> constructionStageEntityNewNextStage =
@@ -106,8 +102,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
   List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
   List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
-
-  // List<Influencer>
   List<SiteNextStageEntity> siteNextStageEntity = new List.empty(growable: true);
   List<SiteCommentsEntity> siteCommentsEntity = new List.empty(growable: true);
   List<CounterListModel> counterListModel = new List.empty(growable: true);
@@ -117,8 +111,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   List<CounterListModel> dealerList = new List.empty(growable: true);
 
   String _selectedRadioValue = 'Y';
-
-  ///site visit
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
 
   CounterListModel selectedSubDealer = CounterListModel();
@@ -132,7 +124,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   KittyBagsListModel _kittyBagsListModel;
 
   getKittyBags(String partyCode) {
-    //String productCode
     internetChecking().then((result) => {
           if (result == true)
             {
@@ -184,7 +175,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            // color: HexColor("#000000DE"),
             fontFamily: "Muli"),
       ),
       expanded: Container(
@@ -213,16 +203,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                       value: label,
                                     ))
                                 .toList(),
-
-                            // hint: Text('Rating'),
-                            onChanged: (value) async {
+                   onChanged: (value) async {
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
                               siteProductEntityfromLoaclDB = new List.empty(growable:true);
                               productDynamicList[index].brandModelForDB = null;
                               _dealerEntityForDb = null;
                               _selectedRadioValue = null;
-                              // _siteProductFromLocalDB = null;
                               List<BrandModelforDB>
                                   _siteProductEntityfromLoaclDB = await db
                                       .fetchAllDistinctProduct(value.brandName);
@@ -234,7 +221,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     _siteBrandFromLocalDB);
                                 UpdatedValues.setProductEntityFromLocalDb(
                                     siteProductEntityfromLoaclDB);
-                                // _productSoldVisit.text = _siteBrand.productName;
                                 if (_siteBrandFromLocalDB.brandName
                                         .toLowerCase() ==
                                     "dalmia") {
@@ -272,9 +258,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                       value: label,
                                     ))
                                 .toList(),
-
-                            // hint: Text('Rating'),
-                            onChanged: (value) async {
+                   onChanged: (value) async {
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
                             },
@@ -507,14 +491,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                         UpdatedValues.setDealerEntityForDb(
                                             _dealerEntityForDb);
                                         getKittyBags(value.id);
-                                        // Get.dialog(
-                                        //     CustomDialogs().showDialogForKittiPoints("", context),
-                                        //     barrierDismissible: false);
-                                        // for(int i=0; i<counterListModel.length;i++) {
-                                        //   if( counterListModel[i].shipToParty == value.id){
-                                        //     availableKittyPoint = counterListModel[i].availableKittyPoint;
-                                        //   }
-                                        // }
                                       });
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,
@@ -624,7 +600,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     Text("Yes",style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),)
                                   ],
                                 ),
@@ -645,7 +620,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                     Text("No",style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),)
                                   ],
                                 ),
@@ -655,39 +629,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         ],
                       ))
                     : Container(),
-/*
-                    (_siteBrandFromLocalDB != null &&
-                            _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                                "dalmia")
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5, right: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Available Kitty Point",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: HexColor("#168A08"),
-                                      fontFamily: "Muli"),
-                                ),
-                                Text(
-                                  availableKittyPoint,
-                                 // "${availableKittyPoint1()}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: HexColor("#168A08"),
-                                      fontFamily: "Muli"),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(),
-*/
 
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
@@ -720,10 +661,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   },
                                   child: Text(
                                     reservedKittyBagsAvailable,
-                                    // "${availableKittyPoint1()}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        // fontSize: 16,
                                         decoration: TextDecoration.underline,
                                         color: Colors.blue,
                                         fontFamily: "Muli"),
@@ -753,10 +692,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   },
                                   child: Text(
                                     claimableKittyBagsAvailable,
-                                    // "${availableKittyPoint1()}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        // fontSize: 16,
                                         decoration: TextDecoration.underline,
                                         color: Colors.blue,
                                         fontFamily: "Muli"),
@@ -790,8 +727,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 value: label,
                               ))
                           .toList(),
-
-                      // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
                           productDynamicList[index].brandModelForDB = value;
@@ -838,7 +773,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        // color: HexColor("#000000DE"),
                         fontFamily: "Muli"),
                   ),
                 ),
@@ -851,9 +785,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           controller: productDynamicList[index].supplyDate,
                           readOnly: true,
                           onChanged: (data) {
-                            // setState(() {
-                            //   _contactName.text = data;
-                            // });
                           },
                           style: TextStyle(
                               fontSize: 18,
@@ -864,7 +795,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: ColorConstants.backgroundColorBlue,
-                                  //color: HexColor("#0000001F"),
                                   width: 1.0),
                             ),
                             disabledBorder: OutlineInputBorder(
@@ -887,11 +817,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 color: ColorConstants.clearAllTextColor,
                               ),
                               onPressed: () async {
-                                print("here");
+
                                 final DateTime picked = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  //firstDate: DateTime(2001),
                                   firstDate: DateTime.now().subtract(Duration(
                                       days: widget
                                           .viewSiteDataResponse.supplyDate)),
@@ -906,7 +835,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                         formatter.format(picked);
                                     productDynamicList[index].supplyDate.text =
                                         formattedDate;
-                                    // _dateOfBagSupplied1.text = formattedDate;
                                   }
                                 });
                               },
@@ -924,14 +852,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         ),
                       ),
                     ),
-                    // Text(_siteCurrentTotalBags.text),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: TextFormField(
                           controller: productDynamicList[index].supplyQty,
                           onChanged: (v) {
-                            print(v);
                           },
                           validator: (value) {
                             if (value.isEmpty) {
@@ -978,7 +904,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       ),
                     ),
                     onPressed: () async {
-                      // print("cssdsa  "+productDynamicList[index].brandModelForDB.brandName);
 
                       if (_siteBrandFromLocalDB != null &&
                           _siteBrandFromLocalDB.brandName.toLowerCase() ==
@@ -1033,7 +958,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 productDynamicList[index].brandModelForDB,
                             dealerName: _dealerName,
                         awardLoyaltyPoint: productDynamicList[index].awardLoyaltyPoint);
-                        print("product13 : ${(productDynamicList[index].awardLoyaltyPoint)}");
                         sumNoOfBagsSupplied();
                         updateSiteSupplyHistory();
                       });
@@ -1066,16 +990,13 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
-                    // color: HexColor("#000000DE"),
                     fontFamily: "Muli"),
-              )),
+              ),
+          ),
           Expanded(
             flex: 1,
             child: GestureDetector(
               onTap: () {
-                // int index1 = siteStageHistorys[index].siteSupplyHistorys.indexWhere((element) => element.brandId==productDynamicList[index].brandId && element.brandPrice==productDynamicList[index].brandPrice.text
-                //     && element.supplyDate==productDynamicList[index].supplyDate.text && element.supplyQty==productDynamicList[index].supplyQty.text);
-
                 if (productDynamicList != null &&
                     productDynamicList.length == 1) {
                   productDynamicList.removeAt(index);
@@ -1087,11 +1008,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   productDynamicList.removeAt(index);
                   updateSiteSupplyHistory();
                 }
-
-                // if(index1!=-1){
-                //   siteStageHistorys.removeAt(index1);
-                // }
-
                 setState(() {});
               },
               child: Icon(Icons.delete, color: Colors.black54),
@@ -1113,22 +1029,16 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           widget.viewSiteDataResponse.siteBrandEntity[i].productName));
     }
 
-    // for (int i = 0; i < widget.viewSiteDataResponse.counterListModel.length; i++) {
-    //   int id = await db.addDealer(DealerForDb(widget.viewSiteDataResponse.counterListModel[i].soldToParty,
-    //       widget.viewSiteDataResponse.counterListModel[i].soldToPartyName));
-    // }
 
-////Added shipToParty to dealers
+///Added shipToParty to dealers
     for (int i = 0;
         i < widget.viewSiteDataResponse.counterListModel.length;
         i++) {
-      // int id =
       await db.addDealer(DealerForDb(
           widget.viewSiteDataResponse.counterListModel[i].shipToParty,
           widget.viewSiteDataResponse.counterListModel[i].shipToPartyName));
     }
 
-    // print("list Size");fetchAllDistinctDealers
     List<BrandModelforDB> siteBrandEntityfromLoaclDB1 =
         await db.fetchAllDistinctBrand();
     List<DealerForDb> dealerEntityForDb1 = await db.fetchAllDistinctDealers();
@@ -1214,12 +1124,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           subDealerList = UpdatedValues.getSubDealerList();
         }
 
-        // if (UpdatedValues.getSelectedSubDealer() != null &&
-        //     _siteBrandFromLocalDB != null) {
-        //   selectedSubDealer = UpdatedValues.getSelectedSubDealer();
-        //   visitDataSubDealer = selectedSubDealer.shipToParty;
-        // }
-
         if (UpdatedValues.getSiteProgressStageStatus() != null) {
           _stageStatus.text = UpdatedValues.getSiteProgressStageStatus();
         }
@@ -1241,24 +1145,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         }
       });
     }
-
-    //  await db.clearTable();
-    //  for (int i = 0; i < siteBrandEntity.length; i++) {
-    //    await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
-    //        siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
-    //  }
-    //
-    //  for (int i = 0; i < counterListModel.length; i++) {
-    //    int id = await db.addDealer(DealerForDb(counterListModel[i].soldToParty,
-    //        counterListModel[i].soldToPartyName));
-    //  }
-    //
-    //  // print("list Size");fetchAllDistinctDealers
-    // var siteBrandEntityfromLoaclDB = await db.fetchAllDistinctBrand();
-    // var dealerEntityForDb = await db.fetchAllDistinctDealers();
-    //  setBrandData(siteBrandEntityfromLoaclDB,dealerEntityForDb);
-
-    // UpdatedValues.setSiteProgressData(null,null,_stagePotentialVisit.text,_stageStatus.text,_dateofConstruction.text);
   }
 
   void setBrandData(var siteBrandEntityfromLoaclDB1, var dealerList) {
@@ -1271,7 +1157,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   @override
   void initState() {
     setSiteProgressData();
-    // updateSiteSupplyHistory();
     super.initState();
   }
 
@@ -1310,7 +1195,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
-                          // color: HexColor("#000000DE"),
                           fontFamily: "Muli"),
                     ),
                     GestureDetector(
@@ -1347,7 +1231,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         ))
                     .toList(),
 
-                // hint: Text('Rating'),
                 onChanged: (value) {
                   setState(() {
                     FocusScope.of(context).requestFocus(new FocusNode());
@@ -1357,7 +1240,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     if (_selectedConstructionTypeVisit.id == 1 ||
                         _selectedConstructionTypeVisit.id == 2 ||
                         _selectedConstructionTypeVisit.id == 3) {
-                      // siteFloorsEntityNew = new List();
                       siteFloorsEntityNew.add(new SiteFloorsEntity(
                           id: siteFloorsEntity[0].id,
                           siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
@@ -1404,8 +1286,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           value: label,
                         ))
                     .toList(),
-
-                // hint: Text('Rating'),
                 onChanged: (value) {
                   setState(() {
                     _selectedSiteVisitFloor = value;
@@ -1531,7 +1411,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           style: TextStyle(
                               color: HexColor("#1C99D4"),
                               fontWeight: FontWeight.bold,
-                              // letterSpacing: 2,
                               fontSize: 17),
                         ),
                       ),
@@ -1542,8 +1421,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         } else {
                           index = productDynamicList.length;
                         }
-
-                        print("index1 " + index.toString());
                         if (index == 0) {
                           setState(() {
                             _selectedRadioValue = "Y";
@@ -1560,7 +1437,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               awardLoyaltyPoint: "Y",
                             );
                             productDynamicList.insert(index, product11);
-                            print("product11 : ${productDynamicList[index].awardLoyaltyPoint}");
                           });
                         } else {
                           if (productDynamicList[index - 1].brandId != -1) {
@@ -1578,7 +1454,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   dealerName: new TextEditingController(),
                               awardLoyaltyPoint: "Y");
                               productDynamicList.insert(index, product11);
-                              print("product112 : ${productDynamicList[index].awardLoyaltyPoint}");
                             });
                           } else {
                             Get.dialog(CustomDialogs().errorDialog(
@@ -1640,7 +1515,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       color: ColorConstants.clearAllTextColor,
                     ),
                     onPressed: () async {
-                      print("here");
                       final DateTime picked = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -1682,7 +1556,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               style: TextStyle(
                                   color: HexColor("#1C99D4"),
                                   fontWeight: FontWeight.bold,
-                                  // letterSpacing: 2,
                                   fontSize: 17),
                             ),
                           ),
@@ -1696,7 +1569,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         )
                       : TextButton(
     style: TextButton.styleFrom(
-
     shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
                               side: BorderSide(color: Colors.black26)),
@@ -1709,7 +1581,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               style: TextStyle(
                                   color: Colors.redAccent,
                                   fontWeight: FontWeight.bold,
-                                  // letterSpacing: 2,
                                   fontSize: 17),
                             ),
                           ),
@@ -1724,7 +1595,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 ),
               ),
 
-              ////Add Next Stage Container
+              ///Add Next Stage Container
 
               addNextButtonDisable ? addNextStageContainer() : Container(),
               SizedBox(
@@ -1734,33 +1605,19 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               TextFormField(
                 maxLines: 4,
                 maxLength: 500,
-                // initialValue: _comments.text,
                 controller: _comments,
-
-                // validator: (value) {
-                //   if (value.isEmpty) {
-                //     return 'Please enter RERA Number ';
-                //   }
-                //
-                //   return null;
-                // },
                 style: TextStyle(
                     fontSize: 18,
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
-                  print(_comments.text);
                   UpdatedValues.setSiteCommentsEntity(_comments.text);
-                  // setState(() {
-                  //   _comments.text = value;
-                  // });
                 },
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
                         width: 1.0),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -1895,9 +1752,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
               Center(
                 child: TextButton(
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(0),
-                  //     side: BorderSide(color: Colors.black26)),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
                     child: !viewMoreActive
@@ -1908,7 +1762,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             style: TextStyle(
                                 color: HexColor("##F9A61A"),
                                 fontWeight: FontWeight.bold,
-                                // letterSpacing: 2,
                                 fontSize: 17),
                           )
                         : Text(
@@ -1918,7 +1771,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             style: TextStyle(
                                 color: HexColor("##F9A61A"),
                                 fontWeight: FontWeight.bold,
-                                // letterSpacing: 2,
                                 fontSize: 17),
                           ),
                   ),
@@ -1983,14 +1835,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     return totalSumBagsSupplied;
   }
 
-  // String availableKittyPoint1() {
-  //   String availableKittyPoint = "0";
-  //  // if (selectedSubDealer != null) {
-  //   if(visitDataDealer !=null){
-  //     availableKittyPoint = selectedSubDealer.availableKittyPoint;
-  //   }
-  //   return availableKittyPoint;
-  //}
 
   Widget addNextStageContainer() {
     return Container(
@@ -2020,17 +1864,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ))
               .toList(),
 
-          // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
               _selectedConstructionTypeVisitNextStage = value;
-              print(_selectedConstructionTypeVisitNextStage.id);
               siteFloorsEntityNewNextStage = new List.empty(growable: true);
               _selectedSiteVisitFloorNextStage = null;
               if (_selectedConstructionTypeVisitNextStage.id == 1 ||
                   _selectedConstructionTypeVisitNextStage.id == 2 ||
                   _selectedConstructionTypeVisitNextStage.id == 3) {
-                // siteFloorsEntityNew = new List();
                 siteFloorsEntityNewNextStage.add(new SiteFloorsEntity(
                     id: siteFloorsEntity[0].id,
                     siteFloorTxt: siteFloorsEntity[0].siteFloorTxt));
@@ -2074,8 +1915,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     value: label,
                   ))
               .toList(),
-
-          // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
               _selectedSiteVisitFloorNextStage = value;
@@ -2087,7 +1926,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                   color: ColorConstants.backgroundColorBlue,
-                  //color: HexColor("#0000001F"),
                   width: 1.0),
             ),
             enabledBorder: OutlineInputBorder(
@@ -2191,8 +2029,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   _siteBrandFromLocalDBNextStage);
               UpdatedValues.setSiteProductEntityFromLocalDBNextStage(
                   siteProductEntityfromLoaclDBNextStage);
-              print("BrandId-->" + value.brandName.toString());
-              // _productSoldVisit.text = _siteBrand.productName;
               if (_siteBrandFromLocalDBNextStage.brandName.toLowerCase() ==
                   "dalmia") {
                 _stageStatusNextStage.text = "WON";
@@ -2276,11 +2112,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ))
               .toList(),
 
-          // hint: Text('Rating'),
           onChanged: (value) {
             setState(() {
               _siteProductFromLocalDBNextStage = value;
-              print(_siteProductFromLocalDBNextStage.id);
             });
           },
           decoration: FormFieldStyle.buildInputDecoration(
@@ -2306,7 +2140,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                // color: HexColor("#000000DE"),
                 fontFamily: "Muli"),
           ),
         ),
@@ -2317,18 +2150,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 padding: const EdgeInsets.only(right: 10.0),
                 child: TextFormField(
                   controller: _dateOfBagSuppliedNextStage,
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return "Contact Name can't be empty";
-                  //   }
-                  //   //leagueSize = int.parse(value);
-                  //   return null;
-                  // },
                   readOnly: true,
                   onChanged: (data) {
-                    // setState(() {
-                    //   _contactName.text = data;
-                    // });
+
                   },
                   style: TextStyle(
                       fontSize: 18,
@@ -2339,7 +2163,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: ColorConstants.backgroundColorBlue,
-                          //color: HexColor("#0000001F"),
                           width: 1.0),
                     ),
                     disabledBorder: OutlineInputBorder(
@@ -2359,7 +2182,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         color: ColorConstants.clearAllTextColor,
                       ),
                       onPressed: () async {
-                        print("here");
                         final DateTime picked = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -2473,18 +2295,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         SizedBox(height: 16),
         TextFormField(
           controller: _dateofConstructionNextStage,
-          // validator: (value) {
-          //   if (value.isEmpty) {
-          //     return "Contact Name can't be empty";
-          //   }
-          //   //leagueSize = int.parse(value);
-          //   return null;
-          // },
           readOnly: true,
           onChanged: (data) {
-            // setState(() {
-            //   _contactName.text = data;
-            // });
           },
           style: TextStyle(
               fontSize: 18,
@@ -2500,7 +2312,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 color: ColorConstants.clearAllTextColor,
               ),
               onPressed: () async {
-                print("here");
                 final DateTime picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),

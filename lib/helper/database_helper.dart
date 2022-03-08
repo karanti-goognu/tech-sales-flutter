@@ -44,7 +44,7 @@ class DatabaseHelper{
     await openDatabase(path, version: 2, onCreate: _createDb, onUpgrade: _onUpgrade);
     return database;
   }
-//create database all tables
+///create database all tables
   void _createDb(Database db, int newVersion) async {
     await db.execute('CREATE TABLE ${DbConstants.TABLE_DRAFT_LEAD} ('
         '${DbConstants.COL_ID} INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -86,7 +86,7 @@ class DatabaseHelper{
   }
 
 
-//function for upgrade database tables if database version change
+///function for upgrade database tables if database version change
   void _onUpgrade(Database db,int oldVersion,  int newVersion) async {
 
     db.execute("DROP TABLE IF EXISTS ${DbConstants.TABLE_DRAFT_LEAD}");

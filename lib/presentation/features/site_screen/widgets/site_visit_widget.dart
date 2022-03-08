@@ -44,14 +44,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String _remark, visitSubType;
-
   String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
-  // TextEditingController _siteTypeController1 = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
-
   bool _isStartButtonDisabled;
   bool _isEndButtonDisabled;
 
@@ -64,14 +61,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   setData() {
-    // if (widget.mwpVisitModel == null) {
-    //   (widget.selectedOpportunitStatusEnity == null)
-    //       ? widget.siteOpportunityStatusEntity.map((e) {
-    //           _siteTypeController1.text = e.opportunityStatus;
-    //         })
-    //       : _siteTypeController1.text =
-    //           widget.selectedOpportunitStatusEnity.opportunityStatus;
-    // }
     if (widget.mwpVisitModel != null) {
       if (widget.mwpVisitModel.nextVisitDate != null) {
         var date = DateTime.fromMillisecondsSinceEpoch(
@@ -81,7 +70,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       } else {
         selectedDateStringNext = "Next visit date";
       }
-
       _siteTypeController.text = widget.mwpVisitModel.visitSubType;
       _selectedVisitType.text = widget.mwpVisitModel.visitType;
       selectedDateString = "${widget.mwpVisitModel.visitDate}";
@@ -115,17 +103,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label.opportunityStatus,
                     ))
                 .toList(),
-            // onChanged: (value) {
-            //   setState(() {
-            //     visitSubType = value;
-            //     print(visitSubType);
-            //   });
-            // },
+            onChanged: (value) {
+            },
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
-            // validator: (value) =>
-            //     value == null ? 'Please select Opportunity status' : null,
           )
         : DropdownButtonFormField<SiteOpportunityStatusEntity>(
             value: widget.selectedOpportunitStatusEnity,
@@ -141,24 +123,13 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label,
                     ))
                 .toList(),
-            // onChanged: (value) {
-            //   setState(() {
-            //     widget.selectedOpportunitStatusEnity = value;
-            //   });
-            // },
+            onChanged: (value) {
+            },
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
           );
 
-    // final visitType = TextFormField(
-    //   controller: _siteTypeController1,
-    //   style: FormFieldStyle.formFieldTextStyle,
-    //   //keyboardType: TextInputType.number,
-    //   readOnly: true,
-    //   enableInteractiveSelection: false,
-    //   decoration: FormFieldStyle.buildInputDecoration(),
-    // );
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -316,46 +287,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            // Container(
-                            //   padding: const EdgeInsets.all(16),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(2),
-                            //     color: Colors.white,
-                            //     border: Border.all(
-                            //         width: 1,
-                            //         color: ColorConstants.lineColorFilter),
-                            //   ),
-                            //   child: Column(
-                            //     children: [
-                            //       Row(
-                            //         mainAxisAlignment:
-                            //             MainAxisAlignment.spaceBetween,
-                            //         children: [
-                            //           Text(
-                            //             selectedDateStringNext,
-                            //             textAlign: TextAlign.center,
-                            //             style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 color: ColorConstants.blackColor,
-                            //                 fontFamily: "Muli"),
-                            //           ),
-                            //           GestureDetector(
-                            //             onTap: () {
-                            //               _selectDateNextVisit(context);
-                            //             },
-                            //             child: Icon(
-                            //               Icons.calendar_today_sharp,
-                            //               color: Colors.orange,
-                            //             ),
-                            //           )
-                            //         ],
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: 16,
-                            // ),
                             TextFormField(
                                 onSaved: (val) {
                                   print('saved' + val);
@@ -542,8 +473,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                     ],
                                   )
                                 : TextFormField(
-                                    // key: Key(
-                                    //     _addEventController.visitRemarks),
                                     initialValue:
                                         widget.mwpVisitModel.remark == 'null'
                                             ? ''
@@ -641,7 +570,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -737,7 +665,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -825,7 +752,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       Geolocator
           .getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       )
           .then((Position position) {
         setState(() {
@@ -1048,13 +974,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               getSiteData();
             });
 
-            //Get.back();
-            //Get.toNamed(Routes.SITES_SCREEN);
-            // Navigator.push(
-            //     context,
-            //     new CupertinoPageRoute(
-            //         builder: (BuildContext context) =>
-            //             ViewSiteScreenNew(siteId: widget.siteId,tabIndex: 0,)));
           },
         ),
       ],

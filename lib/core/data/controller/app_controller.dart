@@ -27,8 +27,6 @@ class AppController extends GetxController {
   final CalendarEventController _calendarEventController = Get.find();
   final AddEventController _addEventController = Get.find();
   final UpdateServiceRequestController _requestUpdateController = Get.find();
-  //final EventTypeController _eventTypeController = Get.find();
-  // final UpdateServiceRequestController _updateServiceRequestController = Get.find();
 
   AppController({@required this.repository}) : assert(repository != null);
 
@@ -47,7 +45,6 @@ class AppController extends GetxController {
 
   set secretKeyResponse(value) => this._secretKeyResponse.value = value;
 
-  //set filterDataResponse(value) => this._filterDataResponse.value = value;
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
@@ -83,7 +80,6 @@ class AppController extends GetxController {
   }
 
    getAccessKey(int requestId) {
-    //print("Here we go");
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -93,15 +89,11 @@ class AppController extends GetxController {
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        // print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-          //  print('Has expired');
             getSecretKey(requestId);
           } else {
-            // print('Not expired');
             Get.back();
             if(this.accessKeyResponse!=null)
             switch (requestId) {
@@ -161,16 +153,6 @@ class AppController extends GetxController {
                 _addEventController
                     .updateMeet(this.accessKeyResponse.accessKey);
                 break;
-              // case RequestIds.GET_DEALER_TYPE:
-              //   _eventTypeController.getDealerList(this.accessKeyResponse.accessKey);
-              //   break;
-              // case RequestIds.GET_EVENT_TYPE:
-              //   _eventTypeController.getEventType(this.accessKeyResponse.accessKey);
-              //   break;
-              // case RequestIds.UPDATE_SR_REQUEST:
-              //   _addEventController
-              //       .updateMeet(this.accessKeyResponse.accessKey);
-              //   break;
               case RequestIds.GET_REQUEST_DETAILS_FOR_UPDATE:
                 _requestUpdateController.getRequestUpdateDetailsData(this.accessKeyResponse.accessKey);
                 break;

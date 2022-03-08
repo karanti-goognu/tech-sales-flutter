@@ -14,10 +14,8 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
       return _database;
     }
-    print("mko 2");
     _database = await init();
 
     return _database;
@@ -30,7 +28,7 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+          /// When creating the db, create the table
           await db.execute('CREATE TABLE constructStage (id INTEGER PRIMARY KEY AUTOINCREMENT, constructStageEntity TEXT)');
         });
     return database;
@@ -86,7 +84,6 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 }
 
 class ConstructStageEntityForDB {
-  // @required
   final int id;
   @required
   final String constructStageEntity;

@@ -136,11 +136,8 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
-          // log('data: ${json.encode(this.splashDataModel)}');
-          // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
           if (versionUpdateModel != null && versionUpdateModel.length > 0) {
-            //print("In If");
             for (int i = 0; i < versionUpdateModel.length; i++) {
               if (versionUpdateModel[i].platform == "ANDROID") {
                 if (versionUpdateModel[i].oldVersion !=

@@ -86,7 +86,6 @@ class MyApiClientApp {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print('Response body is : ${(data)}');
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -121,7 +120,6 @@ class MyApiClientApp {
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
               data);
-          //print('Access key Object is :: $accessKeyModel');
           return saveVisitResponse;
         }
       } else {
@@ -137,7 +135,6 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
-     print('body is  :: $body');
       var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
@@ -151,7 +148,6 @@ class MyApiClientApp {
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
               data);
-          //print('Access key Object is :: $accessKeyModel');
           return saveVisitResponse;
         }
       } else {
@@ -167,14 +163,10 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
-      // print(url);
-      // print('body is  :: $body');
+
       var response = await httpClient.post(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-    //  print(response.body);
-     //  print('Response for update visit body is : ${json.decode(response.body)}');
-      print("Request: ${json.encode(updateVisitRequest)}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -183,12 +175,10 @@ class MyApiClientApp {
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
               data);
-          //   print(saveVisitResponse);
-          //print('Access key Object is :: $accessKeyModel');
+
           return saveVisitResponse;
         }
       } else {
-      //  print('Error in else');
       }
     } catch (_) {
     //  print('exception ${_.toString()}');
@@ -200,17 +190,14 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
-    //  print('body is  :: $body');
       var response = await httpClient.post(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return saveVisitResponse;
       } else {
       //  print('Error in else');
@@ -226,12 +213,8 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-         print('ho');
-         print(data['mwpplanModel']);
-         print("view-mwp     $data");
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -252,7 +235,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-    //  print('Response body is : ${json.decode(response.body)}');
 //       if (response.statusCode == 200) {
          var data = json.decode(response.body);
 //         if(data["resp_code"] == "DM1005"){
@@ -276,7 +258,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-    //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return VisitResponseModel.fromJson(data);
@@ -294,7 +275,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-     // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return MeetResponseModelView.fromJson(data);
@@ -312,7 +292,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-      // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
@@ -336,7 +315,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-      // print('Response body for calendar plan is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -359,7 +337,6 @@ class MyApiClientApp {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
-      // print('Response body for Target Vs Actual is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

@@ -14,10 +14,8 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
       return _database;
     }
-    print("mko 2");
     _database = await init();
     return _database;
   }
@@ -38,7 +36,6 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
 
   Future<int> addSiteVisitInDraft(SiteVisitHistoryEntityForDB siteVisitHistoryEntityForDB) async {
     var client = await db;
-    print(siteVisitHistoryEntityForDB.siteVisitHistoryEntity);
     return client.insert('siteVisitHistory', siteVisitHistoryEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -49,15 +46,12 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
     client.query('siteVisitHistory', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
       return SiteVisitHistoryEntityForDB.fromDb(maps.first);
     }
     return null;
   }
 
   Future<int> updateSiteVisitInDraft(SiteVisitHistoryEntityForDB siteVisitHistoryEntityForDB) async {
-    print(siteVisitHistoryEntityForDB.id);
     var client = await db;
     return client.update('siteVisitHistory', siteVisitHistoryEntityForDB.toMapForDb(),
         where: 'id = ?',

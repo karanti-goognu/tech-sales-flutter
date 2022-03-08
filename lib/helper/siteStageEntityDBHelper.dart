@@ -14,10 +14,8 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
       return _database;
     }
-    print("mko 2");
     _database = await init();
     return _database;
   }
@@ -29,7 +27,7 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+          /// When creating the db, create the table
           await db.execute('CREATE TABLE siteStage (id INTEGER PRIMARY KEY AUTOINCREMENT, siteStageEntity TEXT)');
         });
     return database;
@@ -38,7 +36,6 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
 
   Future<int> addSiteStageEntityInDraft(SiteStageEntityForDB siteStageEntityForDB) async {
     var client = await db;
-    print(siteStageEntityForDB.siteStageEntity);
     return client.insert('siteStage', siteStageEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -49,15 +46,12 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
     client.query('siteStage', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
       return SiteStageEntityForDB.fromDb(maps.first);
     }
     return null;
   }
 
   Future<int> updateSiteStageEntityInDraft(SiteStageEntityForDB siteStageEntityForDB) async {
-    print(siteStageEntityForDB.id);
     var client = await db;
     return client.update('siteStage', siteStageEntityForDB.toMapForDb(),
         where: 'id = ?',
@@ -85,7 +79,6 @@ class SiteStageEntityDBHelper extends ChangeNotifier{
 }
 
 class SiteStageEntityForDB {
-  // @required
   final int id;
   @required
   final String siteStageEntity;
