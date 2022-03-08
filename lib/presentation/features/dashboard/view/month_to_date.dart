@@ -28,7 +28,6 @@ class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();
   ScreenshotController screenshotController = ScreenshotController();
-//   GlobalKey previewContainer = new GlobalKey();
   File imgFile;
   String empID, _currentMonth, _previousMonth;
   String yearMonthForFileName;
@@ -38,32 +37,21 @@ class MonthToDateState extends State<MonthToDate> {
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-//    print(_dashboardController.empId);
-//    var pngBytes = await _capturePng();
     var pngBytes = await  screenshotController.capture(pixelRatio: 5);
- //   print(pngBytes);
-    //final directory = (await getExternalStorageDirectory()).path;
     final directory = (await getApplicationDocumentsDirectory()).path;
 
-//    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
- //   print('Screenshot Path:' + imgFile.path);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }
-  /*Pass empId*/
   void passEmpId(String empIdValue) {
- //   print("passed empId ...   $empIdValue");
     this.empID = empIdValue;
   }
 
   @override
   void initState() {
     empID = widget.empID;
-  //  print("MTD: $empID");
-
-
     yearMonthForFileName = widget.yearMonth;
     final DateFormat formatter = DateFormat("MMMM");
     _currentMonth = formatter.format(DateTime.now());
@@ -119,7 +107,6 @@ class MonthToDateState extends State<MonthToDate> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(25),
-//                                        color: HexColor('FF8500'),
                                           color: ThemeData.light()
                                               .scaffoldBackgroundColor,
                                           boxShadow: [
@@ -277,7 +264,6 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
-                                  //  print("yearMonth:"+yearMonth);
 
                                     if(widget.empID=="_empty"){
 
@@ -316,7 +302,6 @@ class MonthToDateState extends State<MonthToDate> {
                                               ? '0' + month.toString()
                                               : month.toString());
                                     }
-                                   // print("yearMonth:"+yearMonth);
 
                                     if(widget.empID=="_empty"){
                                       _dashboardController.getMonthViewDetails(
@@ -324,7 +309,6 @@ class MonthToDateState extends State<MonthToDate> {
                                           yearMonth: yearMonth);
                                     }
                                     else{
-                                    //  print(widget.empID);
                                       _dashboardController.getMonthViewDetails(
                                           empID: widget.empID,
                                           yearMonth: yearMonth);

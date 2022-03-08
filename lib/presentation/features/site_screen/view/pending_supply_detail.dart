@@ -125,7 +125,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   }
 
   getKittyBags(String partyCode) {
-    print("Called now");
     //String productCode
     internetChecking().then((result) => {
           if (result == true)
@@ -505,11 +504,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                       setState(() {
                                         _siteController.floorId = value.id;
                                         _selectedFloorType = value;
-                                        print(_siteController.floorId);
-                                        print(_selectedFloorType.id);
                                         // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
                                       });
-                                      print(value.id);
                                     },
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
@@ -584,9 +580,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         _selectedConstructionType = value;
                                         // UpdatedValues.setSiteConstructionId(_selectedConstructionType);
                                       });
-                                      print(value.id);
-                                      print(_selectedConstructionType
-                                          .constructionStageText);
                                     },
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
@@ -1338,7 +1331,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "awardLoyaltyPoint":
                                                 _selectedRadioValue,
                                           };
-                                          print(jsonEncode(jsonData));
                                           _siteController
                                               .updatePendingSupplyDetails(
                                                   jsonData);
@@ -1482,7 +1474,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "awardLoyaltyPoint":
                                                 _selectedRadioValue
                                           };
-                                          print(jsonEncode(jsonData));
                                           _siteController
                                               .updatePendingSupplyDetails(
                                                   jsonData);

@@ -56,7 +56,6 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            // Get.back();
             Get.back();
           },
         ),
@@ -130,7 +129,6 @@ class CustomDialogs {
             ),
             onPressed: () {
               Get.back();
-              //Get.toNamed(Routes.VISIT_VIEW_SCREEN);
               Get.offNamed(Routes.HOME_SCREEN);
             },
           ),
@@ -170,12 +168,6 @@ class CustomDialogs {
             ),
             onPressed: () {
               Get.back();
-              // visible = false;
-              // contact.text = "";
-
-              //Navigator.of(context).pop({'reload': true});
-              //Get.toNamed(Routes.VISIT_VIEW_SCREEN);
-              //Get.offNamed(Routes.HOME_SCREEN);
             },
           ),
         ],
@@ -254,7 +246,6 @@ class CustomDialogs {
             ),
             onPressed: () {
               Get.back();
-              //Get.offNamed(Routes.HOME_SCREEN);
               Get.toNamed(Routes.SERVICE_REQUESTS);
             },
           ),
@@ -328,14 +319,7 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            //Get.back();
             Get.toNamed(Routes.EVENTS_GIFTS);
-            //Get.toNamed(Routes.ALL_EVENTS);
-            // Navigator.push(
-            //     context, new CupertinoPageRoute(
-            //     builder: (BuildContext context) =>
-            //         Events(tabIndex: 1,))
-            // );
           },
         ),
       ],
@@ -370,14 +354,7 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            //Get.back();
-            //Get.back();
             Get.toNamed(Routes.SITES_SCREEN);
-            // Navigator.push(
-            //     context,
-            //     new CupertinoPageRoute(
-            //         builder: (BuildContext context) =>
-            //             ViewSiteScreenNew(siteId: siteId,tabIndex: 0,)));
           },
         ),
       ],
@@ -413,7 +390,6 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            //Get.back();
             Get.toNamed(Routes.INFLUENCER_LIST);
           },
         ),
@@ -661,7 +637,6 @@ class CustomDialogs {
 
             if(from==3){
               Get.back();
-               //Get.offAll(Routes.HOME_SCREEN);
               Get.offAndToNamed(Routes.HOME_SCREEN);
             }else if(from==4){
               Get.back();
@@ -671,14 +646,10 @@ class CustomDialogs {
              Get.back();
              Get.back();
              Get.back();
-   // Get.offAndToNamed(Routes.LEADS_SCREEN);
     }
             else {
-               // Get.back();
               Get.offAndToNamed(Routes.LEADS_SCREEN);
             }
-            //Below line was commented for leads screen, if it's being use somewhere else, please consider.. s s
-//            Get.toNamed(Routes.HOME_SCREEN);
           },
         ),
       ],
@@ -690,13 +661,6 @@ class CustomDialogs {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            // Text(heading,
-            // style: GoogleFonts.roboto(
-            //     fontSize: 20,
-            //     height: 1.4,
-            //     letterSpacing: .25,
-            //     fontWeight: FontWeight.bold,
-            //     color: ColorConstants.inputBoxHintColorDark),),
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -834,10 +798,6 @@ class CustomDialogs {
 
             Get.back();
             Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
-            // Navigator.push(
-            //     context,
-            //     new CupertinoPageRoute(
-            //         builder: (BuildContext context) => ViewLeadScreen(100042)));
           },
         ),
       ],
@@ -875,7 +835,6 @@ class CustomDialogs {
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                // fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
@@ -894,7 +853,6 @@ class CustomDialogs {
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                //  fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
@@ -1000,7 +958,6 @@ class CustomDialogs {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: ColorConstants.backgroundColorBlue,
-                      //color: HexColor("#0000001F"),
                       width: 1.0),
                 ),
                 enabledBorder: OutlineInputBorder(
@@ -1135,7 +1092,6 @@ class CustomDialogs {
             .then((value) => {
                   if (value.respCode == "DM1002")
                     {
-                      // Get.toNamed(Routes.END_EVENT),
                       Get.dialog(
                           CustomDialogs()
                               .showMessage1(value.respMsg, 0, eventId),
@@ -1163,13 +1119,7 @@ class CustomDialogs {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            // Text(heading,
-            // style: GoogleFonts.roboto(
-            //     fontSize: 20,
-            //     height: 1.4,
-            //     letterSpacing: .25,
-            //     fontWeight: FontWeight.bold,
-            //     color: ColorConstants.inputBoxHintColorDark),),
+
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -1209,13 +1159,6 @@ class CustomDialogs {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            // Text(heading,
-            // style: GoogleFonts.roboto(
-            //     fontSize: 20,
-            //     height: 1.4,
-            //     letterSpacing: .25,
-            //     fontWeight: FontWeight.bold,
-            //     color: ColorConstants.inputBoxHintColorDark),),
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -1297,7 +1240,6 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-           // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
             if(platform == "IOS"){
               StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
             }else{
@@ -1346,7 +1288,6 @@ class CustomDialogs {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-           // StoreRedirect.redirect(androidAppId: "com.dalmia.flutter_tech_sales", iOSAppId: "1554988271");
             if(platform == "IOS"){
               StoreRedirect.redirect(androidAppId: "", iOSAppId: appId);
             }else{
@@ -1363,15 +1304,6 @@ class CustomDialogs {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            // Text(
-            //   "App Update",
-            //   style: GoogleFonts.roboto(
-            //       fontSize: 20,
-            //       height: 1.4,
-            //       letterSpacing: .25,
-            //       fontWeight: FontWeight.bold,
-            //       color: ColorConstants.inputBoxHintColorDark),
-            // ),
             Text(
               message,
               style: GoogleFonts.roboto(
@@ -1399,13 +1331,7 @@ class CustomDialogs {
             Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
             final SharedPreferences prefs = await _prefs;
             prefs.clear();
-            // Get.back();
-            // Get.back();
             exit(0);
-           // SystemNavigator.pop();
-           //  Future.delayed(const Duration(milliseconds: 1000), () {
-           //    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-           //  });
           },
         ),
       ],
@@ -1441,7 +1367,6 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            //Get.back();
             Get.offAllNamed(Routes.HOME_SCREEN);
           },
         ),
@@ -1502,7 +1427,6 @@ class CustomDialogs {
           onPressed: () {
             Get.back();
             Get.to(() => CancelEvent(eventId), binding: EGBinding());
-            //Get.toNamed(Routes.CANCEL_EVENT);
           },
         ),
       ],
@@ -1516,7 +1440,6 @@ class CustomDialogs {
         width: MediaQuery.of(context).size.width*0.75,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-         // child: Column(
             children: <Widget>[
               Text(
                 "Kitty Bags",
@@ -1609,7 +1532,6 @@ class CustomDialogs {
              ],
           ),
       ),
-      //),
       actions: <Widget>[
         TextButton(
           child: Text(
@@ -1622,7 +1544,6 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            //Get.back();
           },
         ),
       ],
@@ -1658,18 +1579,10 @@ class CustomDialogs {
           ),
           onPressed: () {
             Get.back();
-            //Get.back();
             AddEventController _addEventController = Get.find();
             AppController _appController = Get.find();
 
             _addEventController.viewVisitData(_appController.accessKeyResponse.accessKey);
-           // Get.back();
-            // Navigator.push(
-            //     context, new CupertinoPageRoute(
-            //     builder: (BuildContext context) =>
-            //         EditEventVisit())
-            // );
-            // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
           },
         ),
       ],

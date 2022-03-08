@@ -25,14 +25,6 @@ class MySharedPreferences {
     return null;
   }
 
-/*Future setHomeCountry(HomeCountry country) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(SharedPreferencesKeys.homeCountryDetails, <String>[
-      country.name,
-      country.cases,
-      country.deaths,
-    ]);
-  }*/
 }
 
 Future<bool> internetChecking() async {
