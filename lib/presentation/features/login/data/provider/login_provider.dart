@@ -23,19 +23,13 @@ class MyApiClient {
 
   getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
-      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
-
-
       } else
         print('error');
     } catch (_) {
@@ -48,14 +42,11 @@ class MyApiClient {
       version = VersionClass.getVersion();
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
-
       String decryptedEmpId =
           decryptString(encryptedEmpId, StringConstants.encryptedKey)
               .toString();
-
       String encryptedMobileNumber =
           encryptString(mobileNumber, StringConstants.encryptedKey).toString();
-
       String decryptedMobileNumber =
           decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
               .toString();
@@ -81,25 +72,13 @@ class MyApiClient {
         "device-type": deviceType,
       };
 
-//      print('request with encryption: $bodyEncrypted');
-//      print('decrypted EmpId :: $decryptedEmpId   Encrypted MobileNumber :: $decryptedMobileNumber');
-      //debugPrint('request without encryption: $body');
-//      print('request with encryption: ${requestHeadersWithAccessKey(accessKey)}');
-//      print('Url is : ${UrlConstants.loginCheck}');
-      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       final response = await post(Uri.parse(UrlConstants.loginCheck),
           headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-      print("REQUEST: ${json.encode(bodyEncrypted)}");
-      print('decrypted EmpId :: $decryptedEmpId   decrypted MobileNumber :: $decryptedMobileNumber');
-      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-//        print('success');
         var data = json.decode(response.body);
         LoginModel loginModel = LoginModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
         return loginModel;
       } else
         print('error in else');
@@ -111,16 +90,12 @@ class MyApiClient {
   retryOtp(String empId, String mobileNumber, String accessKey,
       String otpTokenId) async {
     try {
-//      print('Token Id :: $otpTokenId');
       version = VersionClass.getVersion();
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
-
       String encryptedMobile =
           encryptString(mobileNumber, StringConstants.encryptedKey).toString();
-
       var deviceId, deviceType;
-
       if (Platform.isAndroid) {
         AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
         deviceId = build.androidId;
@@ -141,19 +116,13 @@ class MyApiClient {
         "otp-token-id": otpTokenId,
       };
 
-      debugPrint('request without encryption: $body');
-      debugPrint('request without encryption: ${json.encode(body)}');
       final response = await post(Uri.parse(UrlConstants.retryOtp),
           headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-//        print('success');
         var data = json.decode(response.body);
         RetryOtpModel retryOtpModel = RetryOtpModel.fromJson(data);
-//        print('Retry Model key Object is :: ${json.encode(retryOtpModel)}');
         return retryOtpModel;
       } else
         print('error in else');
@@ -172,10 +141,6 @@ class MyApiClient {
 
     String encryptedOtp =
         encryptString(otpCode, StringConstants.encryptedKey).toString();
-
-    // String decryptedOtp = decryptString(encryptedOtp, StringConstants.encryptedKey).toString();
-
-//    print('$encryptedOtp  -----Decrypt String :: $decryptedOtp');
     try {
       var deviceId, deviceType;
       version = VersionClass.getVersion();
@@ -198,19 +163,14 @@ class MyApiClient {
         "otp-code": encryptedOtp,
       };
 
-//      debugPrint('request without encryption: $body');
-//      debugPrint('request headers: ${requestHeadersWithAccessKey(accessKey)}');
       final response = await post(Uri.parse(UrlConstants.validateOtp),
           headers: requestHeadersWithAccessKey(accessKey,version),
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
-//      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-//        print('success');
         var data = json.decode(response.body);
         print(data);
         ValidateOtpModel validateOtpModel = ValidateOtpModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
         return validateOtpModel;
       } else
         print('error in else');
