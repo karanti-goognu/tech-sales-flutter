@@ -5,7 +5,7 @@ Future asyncInputDialog(BuildContext context, String prompt) async {
   return showDialog(
     context: context,
     barrierDismissible:
-    false, // dialog is dismissible with a tap on the barrier
+    false,
     builder: (BuildContext context) {
       return AlertDialog(
         content: new Row(

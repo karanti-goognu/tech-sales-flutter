@@ -1,8 +1,8 @@
 class DbConstants{
-  /*db name*/
+  ///db name
   static const String DATA_BASE = "database.db";
 
-  /*Tables Name*/
+  ///Tables Name
   static const String TABLE_DRAFT_LEAD = "draftLead";
   static const String TABLE_BRAND_NAME = "brandName";
   static const String TABLE_COUNTER_LIST_DEALERS = "counterListDealers";
@@ -13,10 +13,9 @@ class DbConstants{
   static const String TABLE_SITE_STAGE = "siteStage";
   static const String TABLE_SITE_VISIT_HISTORY = "siteVisitHistory";
 
-  /*Tables column name*/
+  ///Tables column name
   static const String COL_ID = "id";
   static const String COL_LEAD_MODEL = "leadModel";
-  
   static const String COL_BRAND_NAME = "brandName";
   static const String COL_PRODUCT_NAME = "productName";
   static const String COL_DEALER_NAME = "dealerName";

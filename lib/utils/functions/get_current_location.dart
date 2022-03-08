@@ -28,7 +28,6 @@ class GetCurrentLocation{
       bool serviceEnabled;
       LocationPermission permission;
       List<String> loc;
-      // Test if location services are enabled.
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         Get.rawSnackbar(title: "Message", message:'Location services are disabled.');
@@ -45,39 +44,12 @@ class GetCurrentLocation{
       if (permission == LocationPermission.deniedForever) {
         Get.rawSnackbar(title: "Message", message:'Location permissions are permanently denied, we cannot request permissions.');
       }
-
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       print(position);
       _currentPosition = position;
       loc = await getAddressFromLatLng();
       Get.back();
-    // print("IN");
-    // LocationPermission permission = await Geolocator.checkPermission();
-    // List<String> loc;
-    //   if (!await checkLocationPermission()) {
-    //     Get.dialog(CustomDialogs().errorDialog(
-    //         "Please enable your location service from device settings"));
-    //   } else {
-    //    // try {
-    //       if (permission == LocationPermission.denied) {
-    //         permission = await Geolocator.requestPermission();
-    //         if (permission == LocationPermission.denied) {
-    //           Get.rawSnackbar(title: "Message", message:" Location permissions are denied");
-    //         }else{
-    //           Position position = await Geolocator.getCurrentPosition(
-    //               desiredAccuracy: LocationAccuracy.best);
-    //           _currentPosition = position;
-    //           loc = await getAddressFromLatLng();
-    //           Get.back();
-    //         }
-    //       }
-    //
-    //     // } catch (e) {
-    //     //   Get.back();
-    //     //   Get.rawSnackbar(title: "Message", message: e.toString());
-    //     // }
-    // }
      return [loc,_currentPosition];
 
   }
