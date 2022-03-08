@@ -406,7 +406,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       ),
                       SizedBox(height: 15),
                       Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -417,7 +416,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 15,
-                                  // color: HexColor("#000000DE"),
                                   fontFamily: "Muli"),
                             ),
                           ),
@@ -510,25 +508,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           ),
                         ],
                       ),
-                      // TextFormField(
-                      //   controller: _balanceQuantity,
-                      //   style: FormFieldStyle.formFieldTextStyle,
-                      //   keyboardType: TextInputType.number,
-                      //   inputFormatters: [
-                      //     FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                      //     TextInputFormatter.withFunction((oldValue, newValue) {
-                      //       try {
-                      //         final text = newValue.text;
-                      //         if (text.isNotEmpty) double.parse(text);
-                      //         return newValue;
-                      //       } catch (e) {}
-                      //       return oldValue;
-                      //     }),
-                      //   ],
-                      //   decoration: FormFieldStyle.buildInputDecoration(
-                      //     labelText: "Balance quantity",
-                      //   ),
-                      // ),
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _billNo,
@@ -574,10 +553,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         controller: _bestBeforeDate,
                         readOnly: true,
                         onChanged: (data) {
-                          // setState(() {
-                          //   _contactName.text = data;
-                          // });
-                        },
+                                              },
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
@@ -587,7 +563,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
                                 width: 1.0),
                           ),
                           disabledBorder: OutlineInputBorder(
@@ -846,7 +821,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       TextFormField(
                         controller: _dateOfPurchase,
                         readOnly: true,
-                        // validator: (value)=> '$value',
                         onTap: () => PickDate.selectDate(
                                 context: context, lastDate: DateTime.now())
                             .then(
@@ -1013,7 +987,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ],
                     "srcActionPhotosEntity": imageDetails
                   });
-                  print("Data--> " + _updateSRModel.toJson().toString());
                   updateRequest.getAccessKeyAndUpdateRequest(
                       _imageList, _updateSRModel);
                 }
@@ -1024,7 +997,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
                     fontSize: 17),
               ),
             ),

@@ -68,7 +68,6 @@ class _ConformationDialogState extends State<ConformationDialog> {
         right: parentWidth * .05,
       ),
       child: new Row(
-// crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
             child: new Text(message,
@@ -102,7 +101,6 @@ class _ConformationDialogState extends State<ConformationDialog> {
     return GestureDetector(
       onTap: ()  => {
         Get.back()
-        //Navigator.pop(context, false),
       },
       onDoubleTap: () {},
       child: Padding(
@@ -119,7 +117,6 @@ class _ConformationDialogState extends State<ConformationDialog> {
               style: new TextStyle(
                 color:  Colors.cyan,
                 fontFamily: 'Avenir_Black',
-//                  fontSize: textSize
                 fontSize: SizeConfig.safeBlockHorizontal * 4.3,
               ),
               textScaleFactor: 1.3,

@@ -36,16 +36,12 @@ class MyApiClientSites {
 
   getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version = packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -56,8 +52,6 @@ class MyApiClientSites {
 
   Future getAccessKeyNew() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version = packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
@@ -85,11 +79,9 @@ class MyApiClientSites {
 
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return secretKeyModel;
       } else {
         print('Error in else');
@@ -107,17 +99,14 @@ class MyApiClientSites {
       _prefs.then((SharedPreferences prefs) {
         userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-       // print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
-        // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-          //print('Access key Object is :: $accessKeyModel');
           return accessKeyModel;
         } else
           print('error');
@@ -131,19 +120,13 @@ class MyApiClientSites {
 
   getSitesData(String accessKey, String securityKey, String url) async {
     try {
-      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-      // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        // print('success');
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
-        //print('Response body is : ${json.decode(response.body)}');
         return sitesListModel;
       } else
         print('error in else');
@@ -154,18 +137,13 @@ class MyApiClientSites {
 
   getSearchData(String accessKey, String securityKey, String url) async {
     try {
-      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-     // print('response is :  ${response.body}');
       if (response.statusCode == 200) {
-        // print('success');
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
         return sitesListModel;
       } else
         print('error in else');
@@ -178,30 +156,18 @@ class MyApiClientSites {
       String empID) async {
     try {
       version = VersionClass.getVersion();
-      String url = UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID";
-  //    print(url);
       final response = await get(
         Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
-//print("URL:$url ");
-      // print(
-      //     'Response body is  ---: ${json.decode(response.body)['siteVisitHistoryEntity']}');
       if (response.statusCode == 200) {
-        // Get.back();
         var data = json.decode(response.body);
-        // print('@@@@');
-        //print(data);
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else{
         ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
-
-        // print('@@@@');
-        // print(viewSiteDataResponse.counterListModel[0].soldToParty);
-        // print('SITE VISIT: ${json.encode(viewSiteDataResponse.mwpVisitModel)}');
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
@@ -225,23 +191,14 @@ class MyApiClientSites {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
-  //  print(UrlConstants.updateSiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
 
-    // print(json.encode(updateDataRequest));
-
-    // updateDataRequest['siteVisitHistoryEntity'].forEach((e) => print(e));
-
     for (var file in list) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-
-      // get file length
-      var length = await file.length(); //imageFile is your image file
-
-      // multipart that takes file
+      var length = await file.length();
       var multipartFileSign =
       new http.MultipartFile('file', stream, length, filename: fileName);
 
@@ -259,29 +216,16 @@ class MyApiClientSites {
 
       gv.currentId = empId;
 
-      request.fields['uploadImageWithUpdateSiteModel'] =
-          json.encode(updateDataRequest);
+      request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
 
-      /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      // print("Request headers :: " + request.headers.toString());
-      // print("Request Body/Fields :: " +
-      //     request.fields['siteInfluencerEntity'].toString());
-      // print("Files:: " + request.files.toString());
       try {
         request
             .send()
             .then((result) async {
           http.Response.fromStream(result).then((response) {
-            // print("---@@---");
-            // print(response.body);
-
             var data = json.decode(response.body);
-            //    print(data);
-
-            //      print(response.body)  ;
             UpdateLeadResponseModel updateLeadResponseModel =
             UpdateLeadResponseModel.fromJson(data);
-            //  print(response.body);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs()
@@ -305,7 +249,6 @@ class MyApiClientSites {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
- //   print(UrlConstants.updateVersion4SiteData);
     request.headers.addAll(
         requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
             accessKey, userSecurityKey, version));
@@ -316,10 +259,8 @@ class MyApiClientSites {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
 
-      // get file length
-      var length = await file.length(); //imageFile is your image file
+      var length = await file.length();
 
-      // multipart that takes file
       var multipartFileSign =
       new http.MultipartFile('file', stream, length, filename: fileName);
 
@@ -338,22 +279,12 @@ class MyApiClientSites {
       gv.currentId = empId;
 
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
-
-      /// rint(saveLeadRequestModel.comments[0].commentedBy);
-      // print("Request headers :: " + request.headers.toString());
-      // print("###${request.fields}");
-      // print("Request Body/Fields :: " +
-      //     request.fields['siteInfluencerEntity'].toString());
-      // print("Files:: " + request.files.toString());
       log("Site Body--> "+json.encode(updateDataRequest));
       try {
         request
             .send()
             .then((result) async {
           http.Response.fromStream(result).then((response) {
-            // print("---@@---");
-            // print(response.body);
-
             var data = json.decode(response.body);
             if(data["resp_code"] == "DM1005"){
               Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -361,7 +292,6 @@ class MyApiClientSites {
             }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
-          //  print(response.body);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs()
@@ -388,8 +318,7 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       String url =
-          "${UrlConstants.getSiteSearchData}searchText=${searchText}&referenceID=$empID";
-   //   print(url);
+          "${UrlConstants.getSiteSearchData}searchText=$searchText&referenceID=$empID";
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
@@ -404,29 +333,6 @@ class MyApiClientSites {
       print('exception at EG repo ${_.toString()}');
     }
   }
-
-
-  // Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-  //   SiteVisitResponseModel siteVisitResponseModel;
-  //   try{
-  //     version = VersionClass.getVersion();
-  //     var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
-  //       headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
-  //       body: json.encode(siteVisitRequestModel),
-  //     );
-  //     print("URL ${UrlConstants.saveUpdateSiteVisit}");
-  //     print('Request : ${response.request}');
-  //     print('RESPONSE : ${json.encode(siteVisitRequestModel)}');
-  //
-  //     var data = json.decode(response.body);
-  //       siteVisitResponseModel =
-  //           SiteVisitResponseModel.fromJson(json.decode(response.body));
-  //   }
-  //   catch(e){
-  //     print("Exception at EG Repo $e");
-  //   }
-  //   return siteVisitResponseModel;
-  // }
 
   Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
     SiteVisitResponseModel siteVisitResponseModel;
@@ -466,8 +372,6 @@ class MyApiClientSites {
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
         PendingSupplyDataResponse pendingSupplyDataResponse = pendingSupplyData.response;
-
-     //   print(pendingSupplyDataResponse);
         return pendingSupplyDataResponse;
       }else
         print('error');
@@ -484,7 +388,6 @@ class MyApiClientSites {
               accessKey, securityKey, version));
       if(response.statusCode==200) {
         var data = json.decode(response.body);
-     //   print(data);
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
         PendingSupplyDetailsEntity pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
@@ -506,8 +409,6 @@ class MyApiClientSites {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$url");
-         print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -541,7 +442,6 @@ class MyApiClientSites {
       }else
         print('error');
     } catch (_) {
-      // print('error in catch ${_.toString()}');
     }
   }
 
@@ -561,7 +461,6 @@ class MyApiClientSites {
             data["resp_msg"]), barrierDismissible: false);
       }else {
         siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
-     //   print(response.body);
       }
     }
     catch (e) {
@@ -584,7 +483,6 @@ class MyApiClientSites {
             data["resp_msg"]), barrierDismissible: false);
       }else {
         kittyBagsListModel = KittyBagsListModel.fromJson(json.decode(response.body));
-      //  print(response.body);
       }
     }
     catch (e) {

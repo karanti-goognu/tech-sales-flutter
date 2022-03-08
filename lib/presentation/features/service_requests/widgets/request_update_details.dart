@@ -23,7 +23,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
 
   setValues() {
     setState(() {
-      print("No Bags ${updateServiceRequestController.coverBlockProvidedNo.text}");
       updateServiceRequestController.complaintID.text = widget.complaintViewModel.id.toString();
       updateServiceRequestController. allocatedToID.text = widget.complaintViewModel.referenceId;
       updateServiceRequestController. allocatedToName.text = widget.complaintViewModel.allocatedToName;
@@ -44,8 +43,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
       updateServiceRequestController.district.text = widget.complaintViewModel.district;
       updateServiceRequestController.taluk.text = widget.complaintViewModel.taluk;
       updateServiceRequestController.pin.text = widget.complaintViewModel.pincode;
-
-
       if(updateServiceRequestController.coverBlockProvidedNo!=null && updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
         if(widget.complaintViewModel.coverBlockProvidedNo==null){
           updateServiceRequestController.coverBlockProvidedNo.text = "";
@@ -148,117 +145,11 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
           ),
           SizedBox(height: 16),
-
-          // TextFormField(
-          //   readOnly: true,
-          //   controller: updateServiceRequestController.requestSubType,
-          //   style: FormFieldStyle.formFieldTextStyle,
-          //   decoration: FormFieldStyle.buildInputDecoration(
-          //       labelText: "Request Sub-type*"),
-          // ),
-          //SizedBox(height: 16),
           displayChipForRequestSubType("Request Sub-type*", widget.complaintViewModel.srcSubtypeMappingModal),
           SizedBox(height: 16),
           Visibility(
             visible: isSlabVisible, child:slab()),
-
-          // (updateServiceRequestController.requestType.text=='SERVICE REQUEST') && (updateServiceRequestController.requestSubType.text=="SLAB SUPERVISION")?
-          // Column(children: [
-          //   TextFormField(
-          //     controller: updateServiceRequestController.coverBlockProvidedNo,
-          //     style: FormFieldStyle.formFieldTextStyle,
-          //     keyboardType: TextInputType.number,
-          //     maxLength: 3,
-          //     inputFormatters: [
-          //       FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-          //       TextInputFormatter.withFunction((oldValue, newValue) {
-          //         try {
-          //           final text = newValue.text;
-          //           if (text.isNotEmpty) double.parse(text);
-          //           return newValue;
-          //         } catch (e) {}
-          //         return oldValue;
-          //       }),
-          //     ],
-          //     decoration: FormFieldStyle.buildInputDecoration(
-          //         labelText: "No. of Cover Blocks",),
-          //
-          //   ),
-          //   SizedBox(height: 1),
-          //   TextFormField(
-          //     controller: updateServiceRequestController.formwarkRemovalDate,
-          //     readOnly: true,
-          //     onChanged: (data) {
-          //       // setState(() {
-          //       //   _contactName.text = data;
-          //       // });
-          //     },
-          //     style: TextStyle(
-          //         fontSize: 18,
-          //         color: ColorConstants.inputBoxHintColor,
-          //         fontFamily: "Muli"),
-          //     keyboardType: TextInputType.text,
-          //     decoration: InputDecoration(
-          //       focusedBorder: OutlineInputBorder(
-          //         borderSide: BorderSide(
-          //             color: ColorConstants.backgroundColorBlue,
-          //             //color: HexColor("#0000001F"),
-          //             width: 1.0),
-          //       ),
-          //       disabledBorder: OutlineInputBorder(
-          //         borderSide:
-          //         BorderSide(color: Colors.black26, width: 1.0),
-          //       ),
-          //       enabledBorder: OutlineInputBorder(
-          //         borderSide:
-          //         BorderSide(color: Colors.black26, width: 1.0),
-          //       ),
-          //       errorBorder: OutlineInputBorder(
-          //         borderSide:
-          //         BorderSide(color: Colors.red, width: 1.0),
-          //       ),
-          //       labelText: "Form Work Removal Date",
-          //       suffixIcon: IconButton(
-          //         icon: Icon(
-          //           Icons.date_range_rounded,
-          //           size: 22,
-          //           color: ColorConstants.clearAllTextColor,
-          //         ),
-          //         onPressed: () async {
-          //           print("here");
-          //           final DateTime picked = await showDatePicker(
-          //             context: context,
-          //             initialDate: DateTime.now(),
-          //             firstDate: DateTime(2001),
-          //             lastDate: DateTime.now(),
-          //           );
-          //           setState(() {
-          //             final DateFormat formatter =
-          //             DateFormat("yyyy-MM-dd");
-          //             if (picked != null) {
-          //               final String formattedDate =
-          //               formatter.format(picked);
-          //               updateServiceRequestController.formwarkRemovalDate.text = formattedDate;
-          //             }
-          //           });
-          //         },
-          //       ),
-          //       filled: false,
-          //       focusColor: Colors.black,
-          //       isDense: false,
-          //       labelStyle: TextStyle(
-          //           fontFamily: "Muli",
-          //           color: ColorConstants.inputBoxHintColorDark,
-          //           fontWeight: FontWeight.normal,
-          //           fontSize: 16.0),
-          //       fillColor: ColorConstants.backgroundColor,
-          //     ),
-          //   ),
-          //   SizedBox(height: 18),
-          // ],) :Container(),
-
-
-          TextFormField(
+                    TextFormField(
             controller: updateServiceRequestController.customerType,
             readOnly: true,
             style: FormFieldStyle.formFieldTextStyle,
@@ -370,9 +261,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
         controller: updateServiceRequestController.formwarkRemovalDate,
         readOnly: true,
         onChanged: (data) {
-          // setState(() {
-          //   _contactName.text = data;
-          // });
         },
         style: TextStyle(
             fontSize: 18,
@@ -383,7 +271,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
                 color: ColorConstants.backgroundColorBlue,
-                //color: HexColor("#0000001F"),
                 width: 1.0),
           ),
           disabledBorder: OutlineInputBorder(
@@ -469,7 +356,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
                   child: Chip(
                     label: Text(
                       e.requestTypeText,
-                      // e.serviceRequestTypeText,
                       style: TextStyle(
                           fontFamily: "Muli",
                           color: Colors.black,
@@ -477,7 +363,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
                           fontSize: 14.0),
                     ),
                     backgroundColor: Colors.white,
-                    // elevation: 3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
@@ -492,13 +377,6 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
                     .toList(),
               ),
             ),
-            // Padding(
-            //   padding: EdgeInsets.only(top: (20)),
-            //   child: Divider(
-            //     height: 1,
-            //     color: ColorConstants.lightBlackBorderColor,
-            //   ),
-            // )
           ],
         ));
   }

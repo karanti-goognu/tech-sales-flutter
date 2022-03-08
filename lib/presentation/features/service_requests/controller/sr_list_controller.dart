@@ -45,60 +45,6 @@ class SRListController extends GetxController {
     return repository.getAccessKey();
   }
 
-//   Future<ServiceRequestComplaintListModel> getSrListData(
-//       String accessKey, int offset) async {
-//     String userSecurityKey = "";
-//     String empID = "";
-//     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//     await _prefs.then((SharedPreferences prefs) async {
-//       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-//       empID = prefs.getString(StringConstants.employeeId);
-//       ServiceRequestComplaintListModel srDataToBeAdded;
-//       print("offset is ${this.offset}");
-//       srDataToBeAdded = await repository.getSrListData(
-//           accessKey, userSecurityKey, empID, this.offset);
-//       if (srListData.srComplaintListModal == null ||
-//           srListData.srComplaintListModal.isEmpty) {
-//         print('---------------------------');
-//         print('For the first time');
-//         srListData = srDataToBeAdded;
-//       } else {
-//         print('---------------------------');
-//         print('New One');
-//         print(srDataToBeAdded.srComplaintListModal);
-//         if(srDataToBeAdded.srComplaintListModal!=null &&srDataToBeAdded.srComplaintListModal.isNotEmpty){
-//           print('---------------------------');
-//           print('For the second time');
-//           print("adding");
-//           print(srDataToBeAdded.srComplaintListModal.length);
-//           srListData.srComplaintListModal.clear();
-//           srListData.srComplaintListModal
-//               .addAll(srDataToBeAdded.srComplaintListModal);
-//           Get.rawSnackbar(
-//             titleText: Text("Note"),
-//             messageText: Text(
-//                 "Loading more .."),
-//             backgroundColor: Colors.white,
-//           );
-// //          Get.snackbar("Note", "Loading more ..",
-// //              snackPosition: SnackPosition.BOTTOM,
-// //              backgroundColor: Color(0xffffffff),
-// //              duration: Duration(milliseconds: 2000));
-//         }
-//         else{
-//           print('---------------------------');
-//           print('When empty');
-//           Get.rawSnackbar(
-//             titleText: Text("Note"),
-//             messageText: Text(
-//                 "No more leads .."),
-//             backgroundColor: Colors.white,
-//           );
-// //          Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
-//         }}
-//     });
-//     return srListData;
-//   }
 
   Future<ServiceRequestComplaintListModel> getSrListData(
       String accessKey, int offset) async {
@@ -108,12 +54,8 @@ class SRListController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-    //  print("offset is ${this.offset}");
-
-
        await repository.getSrListData(accessKey, userSecurityKey, empID, this.offset).then((data){
          if (data == null) {
-
            debugPrint('SR Data Response is null');
          } else {
            if (srListData.srComplaintListModal == null ||
@@ -176,20 +118,5 @@ class SRListController extends GetxController {
     return siteListData;
   }
 
-  //*****
-  // Future getComplaintViewData(String accessKey, String id) async {
-  //   String userSecurityKey = "";
-  //   String empID = "";
-  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //   await _prefs.then((SharedPreferences prefs) async {
-  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-  //     empID = prefs.getString(StringConstants.employeeId);
-  //     complaintListData = await repository.getComplaintViewData(
-  //         accessKey, userSecurityKey, empID, id);
-  //     print(complaintListData);
-  //   });
-  //   return complaintListData;
-  // }
-  //*****
 
 }

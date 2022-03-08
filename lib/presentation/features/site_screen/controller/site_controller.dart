@@ -27,13 +27,13 @@ class SiteController extends GetxController {
 
   @override
   void onReady() {
-    // called after the widget is rendered on screen
+    /// called after the widget is rendered on screen
     super.onReady();
   }
 
   @override
   void onClose() {
-    // called just before the Controller is deleted from memory
+    /// called just before the Controller is deleted from memory
     super.onClose();
   }
 
@@ -41,8 +41,6 @@ class SiteController extends GetxController {
   final MyRepositorySites repository;
 
   SiteController({@required this.repository}) : assert(repository != null);
-
-  //final _filterDataResponse = SitesFilterModel().obs;
   final _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
@@ -163,7 +161,6 @@ class SiteController extends GetxController {
 
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
 
-  //set filterDataResponse(value) => this._filterDataResponse.value = value;
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
@@ -223,107 +220,14 @@ class SiteController extends GetxController {
     return repository.getAccessKey();
   }
 
-  // set sitesListOffline(value) => this._sitesListOffline.assignAll(value);
-/*
-  getSecretKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    String empId = "empty";
-    String mobileNumber = "empty";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      String empIdEncrypted =
-      encryptString(empId, StringConstants.encryptedKey);
-      String mobileNumberEncrypted =
-      encryptString(mobileNumber, StringConstants.encryptedKey);
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
-          .then((data) {
-        print(data.toJson()['secret-key']);
-        Get.back();
-        this.secretKeyResponse = data;
-        if (data != null) {
-          prefs.setString(StringConstants.userSecurityKey,
-              this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
-        } else {
-          print('Secret key response is null');
-        }
-      });
-    });
-  }
-
-  getAccessKey(int requestId) {
-
-    Future.delayed(
-        Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
-    repository.getAccessKey().then((data) {
-      Get.back();
-      this.accessKeyResponse = data;
-
-      if (this.accessKeyResponse.respCode == 'DM1005') {
-        print(this.accessKeyResponse.respMsg);
-        Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-        _prefs.then((SharedPreferences prefs) {
-          prefs.setString(StringConstants.userSecurityKey, '');
-          prefs.setString(StringConstants.isUserLoggedIn, "false");
-          prefs.setString(StringConstants.employeeName, '');
-          prefs.setString(StringConstants.employeeId, '');
-          prefs.setString(StringConstants.mobileNumber, '');
-        });
-        SystemNavigator.pop();
-      }
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
-        String userSecurityKey =
-            prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-//        print('User Security key is :: $userSecurityKey');
-        if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
-          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
-          if (hasExpired) {
-            print('Has expired');
-            getSecretKey(requestId);
-          } else {
-            print('Not expired');
-            switch (requestId) {
-              case RequestIds.GET_SITES_LIST:
-                getSitesData(this.accessKeyResponse.accessKey);
-                break;
-              // case RequestIds.GET_LEADS_LIST:
-              //   getLeadsData(this.accessKeyResponse.accessKey);
-              //   break;
-              // case RequestIds.SEARCH_LEADS:
-              //   searchLeads(this.accessKeyResponse.accessKey);
-              //   break;
-            }
-          }
-        }
-      });
-    });
-  }
-*/
-  getSitesData(String accessKey,String influencer_id) {
-    // Future.delayed(Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
+  getSitesData(String accessKey,String influencerId) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      // print('$empId');
-      userSecurityKey =
-          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      // print('User Security key is :: $userSecurityKey');
-      String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      String encryptedEmpId =  encryptString(empId, StringConstants.encryptedKey).toString();
 
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
@@ -375,18 +279,15 @@ class SiteController extends GetxController {
       }
 
       String influencerID = "";
-      if (influencer_id != StringConstants.empty) {
-        influencerID = "&influencerID=$influencer_id";
+      if (influencerId != StringConstants.empty) {
+        influencerID = "&influencerID=$influencerId";
       }
       String url = "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
-      //${this.offset}
       var encodedUrl = Uri.encodeFull(url);
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
-
-            // Get.back();
-        if (data == null) {
+            if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
 
@@ -398,19 +299,14 @@ class SiteController extends GetxController {
               this.sitesListResponse.sitesEntity.isEmpty) {
             this.sitesListResponse = data;
           } else {
-            // this.sitesListResponse = data;
             SitesListModel sitesListModel = data;
             if (sitesListModel.sitesEntity.isNotEmpty) {
-               // sitesListModel.sitesEntity=[];
               sitesListModel.sitesEntity.addAll(this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
               this.sitesListResponse.sitesEntity.sort((SitesEntity a, SitesEntity b) => b.createdOn.compareTo(a.createdOn));
-              ///filter issue
               if(this.isFilterApplied==true){
                 this.sitesListResponse = sitesListModel;
               }
-
-              ////
               Get.rawSnackbar(
                 titleText: Text("Note"),
                 messageText: Text(
@@ -426,7 +322,6 @@ class SiteController extends GetxController {
               );
             }
             if (sitesListResponse.respCode == "ST2006") {
-              //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             } else {
               Get.dialog(
                   CustomDialogs().errorDialog(sitesListResponse.respMsg));
@@ -447,8 +342,6 @@ class SiteController extends GetxController {
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
-
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
@@ -456,8 +349,6 @@ class SiteController extends GetxController {
         } else {
           this.sitesListResponse = data;
           if (sitesListResponse.respCode == "ST2004") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            //SitesDetailWidget();
           } else if(sitesListResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 sitesListResponse.respMsg), barrierDismissible: false);
@@ -484,11 +375,7 @@ class SiteController extends GetxController {
   }
 
   getAccessKeyOnly() {
-    // Future.delayed(Duration.zero, () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
-
     return repository.getAccessKey();
-    //   return this.accessKeyResponse;
   }
 
   getSitedetailsData(String accessKey, int siteId) async {
@@ -501,9 +388,6 @@ class SiteController extends GetxController {
       empID =  prefs.getString(StringConstants.employeeId);
       viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
     });
-//      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
-    // print(viewSiteDataResponse);
-
     return viewSiteDataResponse;
   }
 
@@ -526,10 +410,8 @@ class SiteController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-      // Get.back();
 
       this.accessKeyResponse = data;
-//print(this.accessKeyResponse.accessKey);
       updateSiteDataInBackend(updateDataRequest, list, context, siteId);
     }
     );
@@ -555,7 +437,6 @@ class SiteController extends GetxController {
        _siteList = value
      });
      return _siteList;
-    //await db.removeLeadInDraft(2);
   }
 
   fetchFliterSiteList(String appendQuery,String whereArgs) async {
@@ -565,7 +446,6 @@ class SiteController extends GetxController {
       _siteList = value
     });
     return _siteList;
-    //await db.removeLeadInDraft(2);
   }
 
 
@@ -574,39 +454,10 @@ class SiteController extends GetxController {
       _siteList = value;
 
     return _siteList;
-    //await db.removeLeadInDraft(2);
   }
 
 
 
-  // getAccessKeyAndSaveSiteRequest (
-  //     SiteVisitRequestModel siteVisitRequestModel){
-  //   String userSecurityKey = "";
-  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //   Future.delayed(
-  //       Duration.zero,
-  //           () => Get.dialog(Center(child: CircularProgressIndicator()),
-  //           barrierDismissible: false));
-  //
-  //   _prefs.then((SharedPreferences prefs) async {
-  //     String accessKey = await repository.getAccessKeyNew();
-  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-  //     await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel)
-  //         .then((value) {
-  //       Get.back();
-  //       if (value.respCode == 'MWP2028') {
-  //         Get.dialog(
-  //             CustomDialogs().showDialogSubmitSite(value.respMsg.toString()),
-  //             barrierDismissible: false);
-  //       } else {
-  //         Get.back();
-  //         Get.dialog(
-  //             CustomDialogs().errorDialog(value.respMsg.toString()),
-  //             barrierDismissible: false);
-  //       }
-  //     });
-  //   });
-  // }
 
   Future<SiteVisitResponseModel>getAccessKeyAndSaveSiteRequest(SiteVisitRequestModel siteVisitRequestModel) async{
     SiteVisitResponseModel siteVisitResponseModel;
@@ -655,9 +506,6 @@ class SiteController extends GetxController {
           if (pendingSupplyListResponse.respCode == "DM1002") {
             debugPrint('Supply Data Response is not null');
           }
-          // else {
-          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
-          // }
         }
 
       });
@@ -687,9 +535,6 @@ class SiteController extends GetxController {
           if (pendingSupplyDetailsResponse.respCode == "DM1002") {
             debugPrint('Supply Detail Response is not null');
           }
-          // else {
-          //   Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
-          // }
         }
     });
     return this.pendingSupplyDetailsResponse;
@@ -722,8 +567,6 @@ class SiteController extends GetxController {
     _prefs.then((SharedPreferences prefs) {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       String url = "${UrlConstants.updatePendingSupply}";
-      // print("Url-->"+url);
-      // print("Body-->"+jsonData.toString());
       repository.updatePendingSupplyDetails(accessKey, userSecurityKey, url,jsonData).then((data) {
         Get.back();
         if (data == null) {

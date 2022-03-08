@@ -80,7 +80,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: Container(
                           height: 45,
                           width: 45,
-                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                           decoration: new BoxDecoration(
                             color: Colors.white,
                             border:
@@ -147,7 +146,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           return ListView.builder(
               itemCount: snapshot.data.messages.length,
               padding: const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 10,top: 8),
-              // itemExtent: 125.0,
               itemBuilder: (context, index) {
                 InboxMessage inboxMessage = snapshot.data.messages[index];
                 return GestureDetector(
@@ -156,14 +154,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     unReadMessageCoun().then((value) => {
                       setState(() {
                         unReadMessageCount = value;
-                        // Get.toNamed(Routes.SITES_SCREEN);
                       }),
                     });
                   },
                   child:Card(
                     clipBehavior: Clip.antiAlias,
                     borderOnForeground: true,
-                    //shadowColor: colornew,
                     elevation: 6,
                     margin: EdgeInsets.all(5.0),
                     color: (inboxMessage.isClicked == true)
@@ -189,7 +185,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               fontSize: 18,
                                               fontFamily: "Muli",
                                               fontWeight: FontWeight.bold
-                                            //fontWeight: FontWeight.normal
                                           ),
                                         )),
                                     Padding(
@@ -202,7 +197,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               fontSize: 13,
                                               fontFamily: "Muli",
                                               fontWeight: FontWeight.bold
-                                            //fontWeight: FontWeight.normal
                                           ),
                                         )),
                                   ],
@@ -224,7 +218,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     fontSize: 11,
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.bold
-                                  //fontWeight: FontWeight.normal
                                 ),
                               )),)
                         ],
@@ -248,7 +241,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: Container(
                           height: 45,
                           width: 45,
-                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                           decoration: new BoxDecoration(
                             color: Colors.indigo,
                             border:

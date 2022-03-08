@@ -41,14 +41,11 @@ class SaveServiceRequestController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) async {
-      // Get.back();
-
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveServiceRequest(
                 imageList, data.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
-          // print(value);
           Get.back();
           if (value['resp-code'] == 'SRC2035') {
             Get.defaultDialog(
@@ -59,21 +56,13 @@ class SaveServiceRequestController extends GetxController {
                      Get.back();
                      Get.offAndToNamed(Routes.SERVICE_REQUESTS);
                   },
-                  //Get.toNamed(Routes.SERVICE_REQUESTS),
                   child: Text('OK'),
                 ),
                 barrierDismissible: false);
           } else {
-            //Get.back();
             Get.dialog(
                 CustomDialogs().messageDialogSRC(value['resp-msg'].toString()),
                 barrierDismissible: false);
-            // Get.defaultDialog(title:"Message",
-            //   middleText: value['resp-msg'].toString(),
-            //   // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
-            //   confirm: MaterialButton(onPressed: ()=>Get.toNamed(Routes.HOME_SCREEN),child: Text('OK'),),
-            //     barrierDismissible: false
-            // );
           }
         });
       });

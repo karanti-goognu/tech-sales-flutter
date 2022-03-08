@@ -869,7 +869,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                       .add(element.complaintSeverity);
                                 });
                               });
-                              //   print(selectedRequestSubtypeSeverity);
 
                               checkedValues[index] = newValue;
                               // dataToBeSentBack = requestSubtype[index];
@@ -916,8 +915,6 @@ class _RequestCreationState extends State<RequestCreation> {
                         setState(() {
                           _severity.text = 'LOW';
                         });
-                      } else {
-                        //  print('No request sub type selected');
                       }
                       Get.back();
                     },
