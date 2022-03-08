@@ -337,14 +337,14 @@ class MyApiClientLeads {
               gv.fromLead = false;
               Get.dialog(CustomDialogs()
                   .showDialogSubmitLead(
-                  saveLeadResponse.respMsg, 2, context));
+                  saveLeadResponse.respMsg, 2, context),barrierDismissible: false);
               // Get.back();
               // Get.back();
               if (saveLeadRequestModel.eventId == null) {
                 Get.back();
                 Get.dialog(CustomDialogs()
                     .showDialogSubmitLead(
-                    saveLeadResponse.respMsg, 1, context));
+                    saveLeadResponse.respMsg, 1, context),barrierDismissible: false);
                 //Get.toNamed(Routes.HOME_SCREEN);
               }
 
@@ -484,11 +484,11 @@ class MyApiClientLeads {
                   Get.back();
 //                  Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs().showDialogSubmitLead(
-                      updateLeadResponseModel.respMsg, from, context));
+                      updateLeadResponseModel.respMsg, from, context), barrierDismissible: false);
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
                   Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
+                      .showDialog(updateLeadResponseModel.respMsg), barrierDismissible: false);
                 }
                 // else if(updateLeadResponseModel.respCode == "DM1005"){
                 //   Get.dialog(CustomDialogs().appUserInactiveDialog(

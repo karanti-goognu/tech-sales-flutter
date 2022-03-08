@@ -382,7 +382,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'lapsePotential' : _lapsePotential,
         'nextFloorLevel' : _floorLevelId,
         'totalSitePotential' : _totalSitePotential
-
       };
 
       print("Update Data-->" + "$updateRequestModel");

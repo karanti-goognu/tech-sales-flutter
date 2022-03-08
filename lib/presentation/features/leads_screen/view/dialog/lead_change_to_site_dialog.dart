@@ -255,7 +255,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             fontSize: 18,
             color: ColorConstants.inputBoxHintColor,
             fontFamily: "Muli"),
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.numberWithOptions(signed: true),
+        //TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
           TextInputFormatter.withFunction((oldValue, newValue) {
