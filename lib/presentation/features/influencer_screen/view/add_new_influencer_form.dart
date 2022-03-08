@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,7 +109,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _influencerTypeModel = data;
                   }
                 });
-             //   print('RESPONSE, $data');
               })
             }
           else
@@ -135,7 +132,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                     _stateDistrictListModel = data;
                   }
                 });
-             //   print('RESPONSE, $data');
               })
             }
           else
@@ -216,7 +212,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 }
               }
             });
-        //    print('RESPONSE, $data');
           });
         }
       },
@@ -261,12 +256,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final fatherName = TextFormField(
       controller: _fatherNameController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[0-9.a-zA-Z ]")),
@@ -279,12 +268,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final baseCity = TextFormField(
       controller: _baseCityController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
@@ -297,12 +280,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final taluka = TextFormField(
       controller: _talukaController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
@@ -316,9 +293,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final pincode = TextFormField(
       controller: _pincodeController,
       validator: (value) {
-        // if (value.isEmpty) {
-        //   return 'Please enter name';
-        // }
         if (value.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
@@ -340,7 +314,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.all(
-              Radius.circular(5.0) //                 <--- border radius here
+              Radius.circular(5.0)
               ),
         ),
         child: CheckboxListTile(
@@ -362,7 +336,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             });
           },
           controlAffinity:
-              ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ListTileControlAffinity.leading,
         ));
 
     final primaryCounter = DropdownButtonFormField(
@@ -431,7 +405,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           }
 
           if (_memberType == 2 || _memberType == 3 || _memberType == 4
-              //_memberType == 'Structural Consultant'
               ) {
             _qualificationVisible = true;
           } else {
@@ -543,12 +516,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final qualification = TextFormField(
       controller: _qualificationController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter qualification';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -581,31 +548,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    // final enrollmentDate = Container(
-    //     decoration: BoxDecoration(
-    //       border: Border.all(width: 1, color: Colors.black26),
-    //       borderRadius: BorderRadius.circular(3),
-    //     ),
-    //     child: Padding(
-    //       padding: const EdgeInsets.only(top: 5, bottom: 5),
-    //       child: RaisedButton(
-    //         color: Colors.white,
-    //         elevation: 0,
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: <Widget>[
-    //             Expanded(child: Text(_enrollmentDate)),
-    //             Icon(
-    //               Icons.calendar_today,
-    //               color: ColorConstants.clearAllTextColor,
-    //             ),
-    //           ],
-    //         ),
-    //         onPressed: () {
-    //           //_selectEnrollmentDate();
-    //         },
-    //       ),
-    //     ));
 
     final enrollmentDate = TextFormField(
       controller: _enrollmentDateController,
@@ -630,11 +572,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           child: Text(
             "NEXT",
             style:
-                //TextStyles.btnWhite,
                 TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
                     fontSize: 15.sp),
           ),
           onPressed: () {
@@ -703,12 +643,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter Total Monthly Potential (MT)';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       inputFormatters: <TextInputFormatter>[
@@ -721,12 +655,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter Potential sites';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
@@ -754,7 +682,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
-      //validator: (value) => value == null ? 'Please select Source' : null,
     );
 
     final influencerCategoryDropDwn = DropdownButtonFormField(
@@ -793,11 +720,9 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           child: Text(
             "SUBMIT",
             style:
-                //TextStyles.btnWhite,
                 TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
                     fontSize: 15.sp),
           ),
           onPressed: () {
@@ -840,8 +765,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                       ),
                     ],
                   ),
-                  // decoration: BoxDecoration(
-                  //     border: Border(bottom: BorderSide(width: 0.3))),
                 ),
                 SizedBox(height: 8.sp),
                 Divider(
@@ -869,10 +792,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               Visibility(
                                   visible: _enrollVisible,
                                   child: enrollmentCheckbox),
-                              //SizedBox(height: _height),
-                              // enrollmentCheckbox,
-                              //SizedBox(height: _height),
-                              // enrollDropDwn,
                               SizedBox(height: _height),
                               primaryCounter,
                               SizedBox(height: _height),
@@ -884,8 +803,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                               SizedBox(height: _height),
                               pincode,
                               SizedBox(height: _height),
-                              //memberDropDwn,
-                              //SizedBox(height: _height),
                               engineersFields(),
                               SizedBox(height: _height),
                               birthDate,
@@ -947,10 +864,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 )
               ],
             )
-            //     : Center(
-            //   child: CircularProgressIndicator(),
-            // ),
-            // ),
           ],
         ),
       ),
@@ -966,7 +879,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     setState(() {
       _date = new DateFormat('yyyy-MM-dd').format(_picked);
       _dateController.text = _date;
-      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
 
@@ -980,7 +892,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       var _date;
       _date = new DateFormat('yyyy-MM-dd').format(_picked);
       _dateMarriageAnnController.text = _date;
-      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
 
@@ -1039,13 +950,11 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 : Expanded(
                     child: ListView(
                       children: dist
-                          //_stateDistrictListModel.response.stateDistrictList
                           .map(
                             (e) => RadioListTile(
                                 value: e,
                                 title:
                                     Text('${e.districtName} (${e.stateName})'),
-                                // groupValue: customer,
                                 onChanged: (text) {
                                   setState(() {
                                     _districtController.text =
@@ -1053,7 +962,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                                     stateName = text.stateName;
                                     stateId = text.stateId;
                                     districtId = text.districtId;
-                                    // customer = text;
                                   });
                                   Get.back();
                                 }),

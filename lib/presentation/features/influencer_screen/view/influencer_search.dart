@@ -57,7 +57,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                           setState(() {
                           controller.clear();
                           onSearchTextChanged('');
-                          // _infController.infListResponse.response.ilpInfluencerEntity == null;
                           });
                         },
                       ),
@@ -65,15 +64,14 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                   ),
                 ),
               ),
-              new Expanded(child: InfluencerDetailWidget()),
+              new Expanded(child: influencerDetailWidget()),
             ],
           ),
         ));
   }
 
-  Widget InfluencerDetailWidget(){
+  Widget influencerDetailWidget(){
     return Obx(()=>
-   // _infController.infListResponse.response.ilpInfluencerEntity == null?Container():
     (_infController.infListResponse == null)
         ? Container(
       child: Center(
@@ -105,7 +103,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
         itemCount: _infController.infListResponse.response.ilpInfluencerEntity.length,
         padding: const EdgeInsets.only(
             left: 10.0, right: 10, bottom: 80),
-        // itemExtent: 125.0,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
@@ -173,9 +170,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
-                                    // crossAxisAlignment:
-                                    //     CrossAxisAlignment
-                                    //         .baseline,
+
                                     children: [
                                       Text(
                                         "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflName == null ? " " : _infController.infListResponse.response.ilpInfluencerEntity[index].inflName}",
@@ -211,7 +206,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                 fontWeight:
                                                 FontWeight
                                                     .bold
-                                              //fontWeight: FontWeight.normal
                                             ),
                                           ),
                                         ),
@@ -227,22 +221,13 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
-                                    // crossAxisAlignment:
-                                    // CrossAxisAlignment
-                                    //     .baseline,
+
                                     children: [
-                                      //Expanded(
-                                      // flex: 1,
-                                      // child:
 
                                       Text(
                                           "${_infController.infListResponse.response.ilpInfluencerEntity[index].baseCity == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].baseCity}" ,
                                           style: TextStyles
                                               .formfieldLabelText),
-                                      // ),
-                                      // Expanded(
-                                      // flex: 2,
-                                      // child:
                                       Chip(
                                         shape: StadiumBorder(
                                             side: BorderSide(
@@ -255,12 +240,9 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                             style: TextStyles
                                                 .btnWhite),
                                       ),
-                                      // ),
                                     ],
                                   ),
                                 ),
-                                //  FittedBox(
-                                //   child:
                                 Padding(
                                   padding: EdgeInsets.only(
                                       left: 2.sp,
@@ -297,7 +279,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                     fontWeight:
                                                     FontWeight
                                                         .bold
-                                                  //fontWeight: FontWeight.normal
                                                 ),
                                               ),
                                               Icon(Icons.arrow_forward_ios, color: HexColor(
@@ -317,7 +298,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                         },
                                         child: Text(
                                             "Contact Info",
-                                            // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
 
                                             style: TextStyles
                                                 .contactTextStyle),
@@ -325,7 +305,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     ],
                                   ),
                                 ),
-                                //  )
                               ],
                             ),
                           ),
@@ -391,11 +370,6 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                   ),
                   onTap: () {
                     String num = "";
-                    // _leadsFilterController
-                    //     .leadsListResponse
-                    //     .leadsEntity[
-                    // index]
-                    //     .contactNumber;
                     launch('tel:$num');
                   },
                 ),
@@ -405,12 +379,9 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                // Expanded(
-                //  child:
                 Text(
                   "Address:",
                   style: TextStyles.formfieldLabelText,
-                  //  )
                 ),
                 SizedBox(width: 40.sp,),
                 Expanded(
@@ -426,12 +397,9 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                // Expanded(
-                //     child:
                 Text(
                   "Email:",
                   style: TextStyles.formfieldLabelText,
-                  //  )
                 ),
                 SizedBox(width: 40.sp),
                 Expanded(
@@ -452,15 +420,8 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
 
 
 
-  @override
-  void dispose() {
-    // _infController.infListResponse.response.ilpInfluencerEntity == null;
-    super.dispose();
-  }
 
   onSearchTextChanged(String text) async {
-   // if (controller.text.length >= 1) {
       _infController.infSearch(text);
-   // }
   }
 }
