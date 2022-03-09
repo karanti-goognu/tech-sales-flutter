@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -205,15 +202,16 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
               SizedBox(
                 height: 10,
               ),
-              RaisedButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: ColorConstants.buttonNormalColor,
+                ),
                 onPressed: () {
                   _siteController.offset = 0;
-                  // getData();
                   getData().whenComplete(() {
                     Get.back();
                   });
                 },
-                color: ColorConstants.buttonNormalColor,
                 child: Text(
                   "TRY AGAIN",
                   style: TextStyle(color: Colors.white),
@@ -330,7 +328,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                 .siteOppertunityId ==
                                 null)
                                 ? ""
-                                : printOpportuityStatus(
+                                : printOpportunityStatus(
                                 _siteController.sitesListResponse.sitesEntity[index]
                                     .siteOppertunityId),
                               style: TextStyle(
@@ -543,23 +541,19 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
       return "${data[0].siteStageDesc}";
     } else {
-      print("size is 0");
       return "";
     }
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportunityStatus(int value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-    //  print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -571,7 +565,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     if (data.length >= 1) {
       return "${data[0].siteProbabilityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }

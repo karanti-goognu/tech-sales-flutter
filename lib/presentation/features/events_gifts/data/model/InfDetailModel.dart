@@ -18,7 +18,7 @@ class InfDetailModel {
         : null;
 
     if (json['influencer_type_entities_list'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencer_type_entities_list'].forEach((v) {
         influencerTypeEntitiesList
             .add(new InfluencerTypeEntitiesList.fromJson(v));
@@ -26,7 +26,7 @@ class InfDetailModel {
     }
     if (json['influencer_category_entities_list'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>();
+      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencer_category_entities_list'].forEach((v) {
         influencerCategoryEntitiesList
             .add(new InfluencerCategoryEntitiesList.fromJson(v));
@@ -56,46 +56,46 @@ class InfDetailModel {
 }
 
 class InfluencerModel {
-  int infl_id;
+  int inflId;
   String inflName;
   String inflContact;
   int inflTypeId;
   String influencerTypeText;
   int inflCatId;
   String influencerCategoryText;
-  String ilpIntrested;
+  String ilpInterested;
 
   InfluencerModel(
-      { this.infl_id,
+      { this.inflId,
         this.inflName,
         this.inflContact,
         this.inflTypeId,
         this.influencerTypeText,
         this.inflCatId,
         this.influencerCategoryText,
-        this.ilpIntrested});
+        this.ilpInterested});
 
   InfluencerModel.fromJson(Map<String, dynamic> json) {
-    infl_id = json['infl_id'];
+    inflId = json['infl_id'];
     inflName = json['infl_name'];
     inflContact = json['infl_contact'];
     inflTypeId = json['infl_type_id'];
     influencerTypeText = json['influencer_type_text'];
     inflCatId = json['infl_cat_id'];
     influencerCategoryText = json['influencer_category_text'];
-    ilpIntrested = json['ilp_intrested'];
+    ilpInterested = json['ilp_intrested'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['infl_id'] = this.infl_id;
+    data['infl_id'] = this.inflId;
     data['infl_name'] = this.inflName;
     data['infl_contact'] = this.inflContact;
     data['infl_type_id'] = this.inflTypeId;
     data['influencer_type_text'] = this.influencerTypeText;
     data['infl_cat_id'] = this.inflCatId;
     data['influencer_category_text'] = this.influencerCategoryText;
-    data['ilp_intrested'] = this.ilpIntrested;
+    data['ilp_intrested'] = this.ilpInterested;
     return data;
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,7 @@ class _SiteScreenState extends State<SiteScreen> {
                 _siteDistrictListModel = data;
               }
             });
-            print('RESPONSE, ${data}');
+            TsoLogger.printLog('RESPONSE, $data');
           })
         }
       else

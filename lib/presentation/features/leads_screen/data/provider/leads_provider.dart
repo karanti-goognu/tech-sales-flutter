@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
@@ -248,15 +247,10 @@ class MyApiClientLeads {
 
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-
-      // get file length
-
-      var length = await file.length(); //imageFile is your image file
-
-      // multipart that takes file
-      var multipartFileSign =
-          new http.MultipartFile('file', stream, length, filename: fileName);
+      var stream = new http.ByteStream(file.openRead());
+      stream.cast();
+      var length = await file.length();
+      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
 
       request.files.add(multipartFileSign);
     }
@@ -439,8 +433,9 @@ class MyApiClientLeads {
         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
     for (var file in imageList) {
       String fileName = file.path.split("/").last;
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-      var length = await file.length(); //imageFile is your image file
+      var stream = new http.ByteStream(file.openRead());
+      stream.cast();
+      var length = await file.length();
       var multipartFileSign =
           new http.MultipartFile('file', stream, length, filename: fileName);
 

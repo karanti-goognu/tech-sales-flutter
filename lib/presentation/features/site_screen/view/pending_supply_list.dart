@@ -260,11 +260,13 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                               SizedBox(
                                 height: 10,
                               ),
-                              RaisedButton(
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary:ColorConstants.buttonNormalColor,
+                                ),
                                 onPressed: () {
                                   getPendingSupplyData();
                                 },
-                                color: ColorConstants.buttonNormalColor,
                                 child: Text(
                                   "TRY AGAIN",
                                   style: TextStyle(color: Colors.white),

@@ -375,7 +375,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 UpdatedValues.setSiteConstructionId(
                                     _selectedConstructionType);
                               });
-
                             },
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
@@ -1585,12 +1584,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(height: 35),
 
                           Center(
-                            child: RaisedButton(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  primary: HexColor("#1C99D4"),
                                 ),
-                                color: HexColor("#1C99D4"),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       right: 5, bottom: 10, top: 10),
@@ -1697,7 +1698,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
         UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
         //txt.text = place.postalCode;
-
       });
     } catch (e) {
       TsoLogger.printLog(e);
@@ -1724,7 +1724,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
-
       if (image != null) {
         _imageList.add(File(image.path));
         _imgDetails.add(new ImageDetails("asset", File(image.path)));

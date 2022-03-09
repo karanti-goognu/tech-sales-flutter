@@ -1,5 +1,5 @@
 class SaveNewInfluencerResponse {
-  String ilpIntrested;
+  String ilpInterested;
   int influencerCategoryId;
   String influencerCategoryText;
   String influencerName;
@@ -8,10 +8,10 @@ class SaveNewInfluencerResponse {
   String mobileNumber;
   String respCode;
   String respMsg;
-  int infl_id;
+  int inflId;
 
   SaveNewInfluencerResponse(
-      {this.ilpIntrested,
+      {this.ilpInterested,
         this.influencerCategoryId,
         this.influencerCategoryText,
         this.influencerName,
@@ -20,11 +20,11 @@ class SaveNewInfluencerResponse {
         this.mobileNumber,
         this.respCode,
         this.respMsg,
-        this.infl_id
+        this.inflId
       });
 
   SaveNewInfluencerResponse.fromJson(Map<String, dynamic> json) {
-    ilpIntrested = json['ilp_intrested'];
+    ilpInterested = json['ilp_intrested'];
     influencerCategoryId = json['influencer_category_id'];
     influencerCategoryText = json['influencer_category_text'];
     influencerName = json['influencer_name'];
@@ -33,12 +33,12 @@ class SaveNewInfluencerResponse {
     mobileNumber = json['mobile_number'];
     respCode = json['respCode'];
     respMsg = json['respMsg'];
-    infl_id = json['infl_id'];
+    inflId = json['infl_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ilp_intrested'] = this.ilpIntrested;
+    data['ilp_intrested'] = this.ilpInterested;
     data['influencer_category_id'] = this.influencerCategoryId;
     data['influencer_category_text'] = this.influencerCategoryText;
     data['influencer_name'] = this.influencerName;
@@ -47,7 +47,7 @@ class SaveNewInfluencerResponse {
     data['mobile_number'] = this.mobileNumber;
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
-    data['infl_id'] = this.infl_id;
+    data['infl_id'] = this.inflId;
     return data;
   }
 }

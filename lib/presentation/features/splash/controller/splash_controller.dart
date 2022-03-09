@@ -124,10 +124,9 @@ class SplashController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
+      // String encryptedEmpId =
+      // encryptString(empId, StringConstants.encryptedKey).toString();
 
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       await repository
           .getRefreshData(url, accessKey, userSecurityKey)

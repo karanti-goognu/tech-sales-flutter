@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:async/async.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
@@ -197,7 +195,8 @@ class MyApiClientSites {
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      var stream = new http.ByteStream(file.openRead());
+      stream.cast();
       var length = await file.length();
       var multipartFileSign =
       new http.MultipartFile('file', stream, length, filename: fileName);
@@ -257,7 +256,8 @@ class MyApiClientSites {
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      var stream = new http.ByteStream(file.openRead());
+      stream.cast();
 
       var length = await file.length();
 

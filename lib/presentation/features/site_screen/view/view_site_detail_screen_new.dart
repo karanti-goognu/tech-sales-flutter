@@ -47,7 +47,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   int _initialIndex = 0;
   double siteScore = 0.0;
   SiteStageEntity _siteStage;
-  List<SiteStageEntity> siteStageEntity = new List();
+  List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
   String labelText;
   int labelId;
   var closureReasonText = new TextEditingController();
@@ -57,9 +57,9 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String empCode, name;
-  List<File> _imageList = new List();
-  List<ProductListModel> prdduct = new List();
-  List<CounterListModel> subDealerList = new List();
+  List<File> _imageList = new List.empty(growable: true);
+  List<ProductListModel> prdduct = new List.empty(growable: true);
+  List<CounterListModel> subDealerList = new List.empty(growable: true);
   Future<ViewSiteDataResponse> _getSiteData;
 
   @override
@@ -455,17 +455,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                 ),
                                                                 Center(
                                                                   child:
-                                                                      RaisedButton(
-                                                                    elevation:
-                                                                        5,
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5.0),
-                                                                    ),
-                                                                    color: HexColor(
-                                                                        "#1C99D4"),
+                                                                      ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          elevation:
+                                                                          5,
+                                                                          shape:
+                                                                          RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                5.0),
+                                                                          ),
+                                                                          primary: HexColor(
+                                                                              "#1C99D4"),
+                                                                        ),
                                                                     child:
                                                                         Padding(
                                                                       padding: const EdgeInsets
@@ -796,17 +798,20 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                 ),
                                                                 Center(
                                                                   child:
-                                                                      RaisedButton(
-                                                                    elevation:
-                                                                        5,
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5.0),
-                                                                    ),
-                                                                    color: HexColor(
-                                                                        "#1C99D4"),
+                                                                      ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          elevation:
+                                                                          5,
+                                                                          shape:
+                                                                          RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                5.0),
+                                                                          ),
+                                                                          primary: HexColor(
+                                                                              "#1C99D4"),
+                                                                        ),
+
                                                                     child:
                                                                         Padding(
                                                                       padding: const EdgeInsets

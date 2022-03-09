@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -18,7 +17,6 @@ class SiteSearchScreen extends StatefulWidget {
 class _SiteSearchScreenState extends State<SiteSearchScreen> {
   TextEditingController controller = new TextEditingController();
   SiteController _siteController = Get.find();
-  AppController _appController = Get.find();
 
   List<LeadDetailsModel> list = [
     new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,

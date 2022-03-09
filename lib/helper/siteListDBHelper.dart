@@ -8,7 +8,6 @@ class SiteListDBHelper extends ChangeNotifier{
   static Database _database;
 
   List<SitesEntity> _list = [];
-
   List<SitesEntity> get siteListing => _list;
 
   SiteListDBHelper._();
@@ -19,10 +18,8 @@ class SiteListDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
       return _database;
     }
-    print("mko 2");
     _database = await init();
     return _database;
   }
@@ -46,7 +43,7 @@ class SiteListDBHelper extends ChangeNotifier{
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+/// When creating the db, create the table
           await db.execute('CREATE TABLE siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteId INTEGER, leadId INTEGER, siteSegment TEXT, assignedTo TEXT, siteStatusId INTEGER, siteOppertunityId INTEGER, siteStageId INTEGER, contactName TEXT, contactNumber TEXT, siteCreationDate TEXT, siteGeotag TEXT, siteGeotagLat TEXT, siteGeotagLong TEXT, sitePincode TEXT, siteState TEXT, siteDistrict TEXT, siteTaluk TEXT, siteScore DOUBLE, sitePotentialMt TEXT, reraNumber TEXT, dealerId TEXT, siteBuiltArea TEXT, noOfFloors INTEGER, productDemo TEXT, productOralBriefing TEXT, soCode TEXT, plotNumber TEXT, inactiveReasonText TEXT, nextVisitDate TEXT, closureReasonText TEXT, createdBy TEXT,  createdOn INTEGER, updatedBy TEXT, updatedOn INTEGER)');
         });
     return database;
@@ -56,8 +53,7 @@ class SiteListDBHelper extends ChangeNotifier{
 
   Future<List<SitesEntity>> filterSiteEntityList(String appendQuery,String whereArgs) async {
     var client = await db;
-    var res = await client.rawQuery('SELECT * FROM siteList WHERE ${appendQuery}', [whereArgs]);
-    print("sadsad  "+res.toString());
+    var res = await client.rawQuery('SELECT * FROM siteList WHERE $appendQuery', [whereArgs]);
     _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
     return _list;
   }

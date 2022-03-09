@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -157,20 +156,15 @@ class MyApiClientSR {
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        // get file length
-
-        var length = await file.length(); //imageFile is your image file
-        // multipart that takes file
+        var stream = new http.ByteStream(file.openRead());
+        stream.cast();
+        var length = await file.length();
         var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
         request.files.add(multipartFileSign);
       }
       await request.send().then((value) async {
-
-
         response = await http.Response.fromStream(value);
         return json.decode(response.body);
-
       });
     }
     catch(e){
@@ -189,7 +183,8 @@ class MyApiClientSR {
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+        var stream = new http.ByteStream(file.openRead());
+        stream.cast();
         var length = await file.length();
         var multipartFileSign =
         new http.MultipartFile('file', stream, length, filename: fileName);

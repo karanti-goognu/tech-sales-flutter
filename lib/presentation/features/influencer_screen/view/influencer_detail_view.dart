@@ -31,7 +31,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   final _addInfluencerFormKey = GlobalKey<FormState>();
   StateDistrictListModel _stateDistrictListModel;
 
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List();
+  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List.empty(growable: true);
   InfluencerTypeEntitiesList _influencerTypeEntitiesList;
 
   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
@@ -40,20 +40,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   List<InfluencerSourceList> influencerSourceList = new List.empty(growable: true);
   InfluencerSourceList _influencerSourceList;
-
   List<SiteBrandList> siteBrandList = new List.empty(growable: true);
   SiteBrandList _siteBrandList;
-
-
-
   bool _qualificationVisible = false;
   int _influencerCategory;
   int _source;
   int _memberType, memberShipId;
-  String _selecedSource;
   String _selectedEnrollValue;
   bool checkedValue = false;
-
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
@@ -74,8 +68,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _primaryCounterController = TextEditingController();
   FocusNode myFocusNode;
-
-  // If Engineer Type
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
   int _preferredBrandId;

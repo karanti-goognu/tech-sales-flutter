@@ -1,4 +1,3 @@
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';

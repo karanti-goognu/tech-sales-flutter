@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
@@ -17,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,16 +28,10 @@ class FormAddEvent extends StatefulWidget {
 
 class _FormAddEventState extends State<FormAddEvent> {
   AddEventModel addEventModel;
-  //AppController _appController = Get.find();
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
-  DetailEventController _detailEventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
-
-  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  // LocationResult _pickedLocation;
-  Position _currentPosition = new Position();
   var _date = 'Select Date';
   TimeOfDay _time;
   String geoTagType, timeString, dateString;
@@ -60,14 +52,9 @@ class _FormAddEventState extends State<FormAddEvent> {
   String _selectedVenue;
   double locatinLat;
   double locationLong;
-  int _value = 0;
-
-
 
   @override
   void initState() {
-    //eventController.dealerList.clear();
-    //_appController.getAccessKey(RequestIds.GET_DEALER_TYPE);
     getDropdownData();
     getEmpId();
     super.initState();
@@ -82,11 +69,10 @@ class _FormAddEventState extends State<FormAddEvent> {
     return empID;
   }
 
-
   getDropdownData() async {
     await eventController.getEventType().then((data) {
       setState(() {
-        if(data!=null) {
+        if (data != null) {
           addEventModel = data;
         }
       });
@@ -112,7 +98,6 @@ class _FormAddEventState extends State<FormAddEvent> {
         orientation: Orientation.portrait);
 
     final eventDropDwn = DropdownButtonFormField(
-
       onChanged: (value) {
         setState(() {
           _eventTypeId = value;
@@ -139,9 +124,11 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: RaisedButton(
-            color: Colors.white,
-            elevation: 0,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              elevation: 0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -165,9 +152,11 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: RaisedButton(
-            color: Colors.white,
-            elevation: 0,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              elevation: 0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -189,13 +178,13 @@ class _FormAddEventState extends State<FormAddEvent> {
 
     final dalmiaInfluencer = TextFormField(
       onChanged: (data) {
-        if(data.length > 0) {
+        if (data.length > 0) {
           setState(() {
             _totalParticipantsController.text = _dalmiaInflController.text;
             calculateTotal(
                 _dalmiaInflController.text, _nonDalmiaInflController.text);
           });
-        }else{
+        } else {
           _totalParticipantsController.text = _nonDalmiaInflController.text;
         }
       },
@@ -211,8 +200,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             return newValue;
           } catch (e) {}
           return oldValue;
-        }
-        ),
+        }),
       ],
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Dalmia influencers"),
@@ -221,18 +209,16 @@ class _FormAddEventState extends State<FormAddEvent> {
     final nondalmia = TextFormField(
       controller: _nonDalmiaInflController,
       onChanged: (data) {
-        if(data.length > 0) {
-
+        if (data.length > 0) {
           setState(() {
             _totalParticipantsController.text = _nonDalmiaInflController.text;
             calculateTotal(
                 _dalmiaInflController.text, _nonDalmiaInflController.text);
           });
-        }else{
+        } else {
           _totalParticipantsController.text = _dalmiaInflController.text;
         }
       },
-
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.numberWithOptions(signed: true),
       inputFormatters: [
@@ -244,8 +230,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             return newValue;
           } catch (e) {}
           return oldValue;
-        }
-        ),
+        }),
       ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Non-Dalmia influencers"),
@@ -288,7 +273,9 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.text,
-      inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")), ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")),
+      ],
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Venue address (if booked)"),
     );
@@ -296,12 +283,6 @@ class _FormAddEventState extends State<FormAddEvent> {
     final dealer = GestureDetector(
       onTap: () => getBottomSheetForDealer(),
       child: FormField(
-        // validator: (value){
-        //   if (value.isEmpty) {
-        //     return "Please select Counter";
-        //   }
-        //   return null;
-        // },
         builder: (state) {
           return InputDecorator(
             decoration: FormFieldStyle.buildInputDecoration(
@@ -316,8 +297,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 ),
               ),
             ),
-            child:
-            Container(
+            child: Container(
               height: 30,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -341,12 +321,6 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final expectedLeads = TextFormField(
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return "Expected Leads can't be empty";
-      //   }
-      //   return null;
-      // },
       controller: _expectedLeadsController,
       style: TextStyles.formfieldLabelText,
       inputFormatters: <TextInputFormatter>[
@@ -358,12 +332,6 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final giftDistribution = TextFormField(
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return "Gift Distribution can't be empty";
-      //   }
-      //   return null;
-      // },
       controller: _giftsDistributionController,
       style: TextStyles.formfieldLabelText,
       keyboardType: TextInputType.numberWithOptions(signed: true),
@@ -386,11 +354,12 @@ class _FormAddEventState extends State<FormAddEvent> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-      style: TextButton.styleFrom(
-    shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-              side: BorderSide(color: Colors.black26)),
-          backgroundColor: Colors.transparent,),
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+                side: BorderSide(color: Colors.black26)),
+            backgroundColor: Colors.transparent,
+          ),
           child: Padding(
             padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
             child: Text(
@@ -402,33 +371,22 @@ class _FormAddEventState extends State<FormAddEvent> {
             btnPresssed(7);
           },
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "SUBMIT",
-            style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: 15.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp),
           ),
           onPressed: () {
             btnPresssed(1);
           },
         ),
       ],
-    );
-
-    final contact = Padding(
-      padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16, top: 16),
-      child: TextFormField(
-        style: TextStyles.formfieldLabelText,
-        keyboardType: TextInputType.number,
-        decoration:
-            FormFieldStyle.buildInputDecoration(labelText: "Contact No."),
-      ),
     );
 
     final location = TextFormField(
@@ -473,7 +431,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Stack(
@@ -494,15 +452,14 @@ class _FormAddEventState extends State<FormAddEvent> {
                               ),
                               Chip(
                                 shape: StadiumBorder(
-                                    side: BorderSide(color: HexColor("#39B54A"))),
+                                    side:
+                                        BorderSide(color: HexColor("#39B54A"))),
                                 backgroundColor:
                                     HexColor("#39B54A").withOpacity(0.1),
                                 label: Text('Status: Not Submitted'),
                               ),
                             ],
                           ),
-                          // decoration: BoxDecoration(
-                          //     border: Border(bottom: BorderSide(width: 0.3))),
                         ),
                         SizedBox(height: 16),
                         Padding(
@@ -564,9 +521,6 @@ class _FormAddEventState extends State<FormAddEvent> {
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime.now(),
-        // DateTime(
-        //   new DateTime.now().year,
-        // ),
         lastDate: new DateTime(2025));
     setState(() {
       _date = new DateFormat('dd-MM-yyyy').format(_picked);
@@ -606,7 +560,6 @@ class _FormAddEventState extends State<FormAddEvent> {
   List<String> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
 
-  //List<String> selectedDealerList = [];
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
@@ -665,8 +618,6 @@ class _FormAddEventState extends State<FormAddEvent> {
                 itemCount: dealers.length,
                 itemBuilder: (context, index) {
                   return
-                      // dealerId == dealers[index].dealerId
-                      //   ?
                       CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
@@ -684,7 +635,8 @@ class _FormAddEventState extends State<FormAddEvent> {
                             ? selectedDealer.remove(dealers[index].dealerName)
                             : selectedDealer.add(dealers[index].dealerName);
 
-                        selectedDealersModels.contains(dealers[index]) ? selectedDealersModels.remove(dealers[index])
+                        selectedDealersModels.contains(dealers[index])
+                            ? selectedDealersModels.remove(dealers[index])
                             : selectedDealersModels.add(dealers[index]);
 
                         checkedValues[index] = newValue;
@@ -692,10 +644,9 @@ class _FormAddEventState extends State<FormAddEvent> {
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   );
-                  //  : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId == dealers[index].dealerId
+                  return dealerId.toString() == dealers[index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -770,7 +721,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     if (_addEventFormKey.currentState.validate()) {
       _addEventFormKey.currentState.save();
 
-        if (_date == null || _date == 'Select Date') {
+      if (_date == null || _date == 'Select Date') {
         Get.snackbar("", "Select Date",
             colorText: Colors.black,
             backgroundColor: Colors.white,
@@ -781,83 +732,81 @@ class _FormAddEventState extends State<FormAddEvent> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-          String empId = await getEmpId();
+        String empId = await getEmpId();
 
-          timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+        timeString = ('$_date ${_time.hour}:${_time.minute}:00');
 
-          List dealersList = List();
-          selectedDealersModels.forEach((e) {
-            setState(() {
-              dealersList.add({
-                'eventDealerId': null,
-                'eventId': null,
-                'dealerId': e.dealerId,
-                'dealerName': e.dealerName,
-                'eventStage': 'PLAN',
-                'isActive': 'Y',
-                'createdBy': empId,
-              });
+        List dealersList = List.empty(growable: true);
+        selectedDealersModels.forEach((e) {
+          setState(() {
+            dealersList.add({
+              'eventDealerId': null,
+              'eventId': null,
+              'dealerId': e.dealerId,
+              'dealerName': e.dealerName,
+              'eventStage': 'PLAN',
+              'isActive': 'Y',
+              'createdBy': empId,
             });
           });
+        });
 
+        if (dealersList == null ||
+            dealersList == [] ||
+            dealersList.length == 0) {
+          Get.snackbar("", "Select Counter",
+              colorText: Colors.black,
+              backgroundColor: Colors.white,
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          MwpeventFormRequest _mwpeventFormRequest =
+              MwpeventFormRequest.fromJson({
+            'dalmiaInflCount':
+                int.tryParse('${_dalmiaInflController.text}') ?? 0,
+            'eventComment': _commentController.text,
+            'eventDate': dateString,
+            'eventId': null,
+            'eventLocation': _locationController.text,
+            'eventLocationLat': locatinLat,
+            'eventLocationLong': locationLong,
+            'eventStatusId': eventStatusId,
+            'eventTime': timeString,
+            'eventTypeId': _eventTypeId,
+            'expectedLeadsCount':
+                int.tryParse('${_expectedLeadsController.text}') ?? 0,
+            'giftDistributionCount':
+                int.tryParse('${_giftsDistributionController.text}') ?? 0,
+            'nondalmiaInflCount':
+                int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
+            'referenceId': empId,
+            'venue': _selectedVenue,
+            'venueAddress': _venueAddController.text,
+          });
 
-          if (dealersList == null || dealersList == [] || dealersList.length == 0) {
-            Get.snackbar("", "Select Counter",
-                colorText: Colors.black,
-                backgroundColor: Colors.white,
-                snackPosition: SnackPosition.BOTTOM);
-          }
-          else {
-            MwpeventFormRequest _mwpeventFormRequest =
-            MwpeventFormRequest.fromJson({
-              'dalmiaInflCount': int.tryParse(
-                  '${_dalmiaInflController.text}') ?? 0,
-              'eventComment': _commentController.text,
-              'eventDate': dateString,
-              'eventId': null,
-              'eventLocation': _locationController.text,
-              'eventLocationLat': locatinLat,
-              'eventLocationLong': locationLong,
-              'eventStatusId': eventStatusId,
-              'eventTime': timeString,
-              'eventTypeId': _eventTypeId,
-              'expectedLeadsCount':
-              int.tryParse('${_expectedLeadsController.text}') ?? 0,
-              'giftDistributionCount':
-              int.tryParse('${_giftsDistributionController.text}') ?? 0,
-              'nondalmiaInflCount':
-              int.tryParse('${_nonDalmiaInflController.text}') ?? 0,
-              'referenceId': empId,
-              'venue': _selectedVenue,
-              'venueAddress': _venueAddController.text,
-            });
+          SaveEventFormModel _save = SaveEventFormModel.fromJson(
+              {'eventDealersModelList': dealersList});
+          SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
+              mwpeventFormRequest: _mwpeventFormRequest,
+              eventDealersModelList: _save.eventDealersModelList);
 
-            SaveEventFormModel _save =
-            SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
-            SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
-                mwpeventFormRequest: _mwpeventFormRequest,
-                eventDealersModelList: _save.eventDealersModelList);
-
-            internetChecking().then((result) =>
-            {
-              if (result == true)
-                {
-                  saveEventController
-                      .getAccessKeyAndSaveRequest(_saveEventFormModel)
-                }
-              else
-                {
-                  Get.snackbar("No internet connection.",
-                      "Make sure that your wifi or mobile data is turned on.",
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM),
-                }
-            });
-          }
+          internetChecking().then((result) => {
+                if (result == true)
+                  {
+                    saveEventController
+                        .getAccessKeyAndSaveRequest(_saveEventFormModel)
+                  }
+                else
+                  {
+                    Get.snackbar("No internet connection.",
+                        "Make sure that your wifi or mobile data is turned on.",
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                        snackPosition: SnackPosition.BOTTOM),
+                  }
+              });
         }
+      }
     }
   }
 }
 
-///dd-MM-yyyy HH:mm:ss
