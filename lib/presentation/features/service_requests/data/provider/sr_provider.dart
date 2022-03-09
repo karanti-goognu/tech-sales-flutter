@@ -68,7 +68,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
-          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
+          headers: headersWithAccessAndSecretWithoutContent(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -152,7 +152,7 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+          headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
@@ -179,7 +179,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;

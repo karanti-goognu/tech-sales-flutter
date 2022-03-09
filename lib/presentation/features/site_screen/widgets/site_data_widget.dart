@@ -12,9 +12,9 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -379,7 +379,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                               controller: siteBuiltupArea,
@@ -415,7 +415,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               decoration: FormFieldStyle.buildInputDecoration(
                                   labelText: "Site Built-up area (sqft)")),
 
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 20, left: 5),
@@ -971,7 +971,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           //     ),
                           //   ),
                           // ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(
                             height: 20,
                           ),
@@ -1034,7 +1034,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           //   ),
                           // ),
                           //txtMandatory(),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(
                             height: 20,
                           ),
@@ -1122,7 +1122,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           //     ),
                           //   ),
                           // ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _contactNumber,
@@ -1156,7 +1156,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Contact Number",
                             ),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           // Padding(
                           //   padding: const EdgeInsets.only(left: 15),
                           //   child: Text(
@@ -1340,7 +1340,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Pincode",
                             ),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _state,
@@ -1363,7 +1363,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "State",
                             ),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _district,
@@ -1387,7 +1387,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
 
                           TextFormField(
@@ -1412,7 +1412,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
-                          MandatoryWidget().txtMandatory(),
+                            TextStyles.mandatoryText,
 
                           SizedBox(height: 16),
                           Container(

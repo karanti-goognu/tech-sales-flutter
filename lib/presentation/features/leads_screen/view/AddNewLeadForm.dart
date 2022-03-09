@@ -31,7 +31,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -992,18 +991,18 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         siteAddress,
                         SizedBox(height: _height),
                         pincode,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         //txtMandatory,
                         SizedBox(height: _height),
                         state,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
                         district,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
 
                         taluk,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
                         Container(
                           width: MediaQuery.of(context).size.width,

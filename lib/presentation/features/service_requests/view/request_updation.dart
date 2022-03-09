@@ -57,7 +57,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
         width: 68.0,
         child: FittedBox(
           child: FloatingActionButton(
-            backgroundColor: ColorConstants.checkinColor,
+            backgroundColor: ColorConstants.checkInColor,
             child: Icon(
               Icons.keyboard_backspace,
               color: Colors.black,

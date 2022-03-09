@@ -11,8 +11,8 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -277,7 +277,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Brand In Use"),
                       ),
-                MandatoryWidget().txtMandatory(),
+                TextStyles.mandatoryText,
                 SizedBox(height: 12),
 
 /*
@@ -561,7 +561,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 (_siteBrandFromLocalDB != null &&
                         _siteBrandFromLocalDB.brandName.toLowerCase() ==
                             "dalmia")
-                    ? MandatoryWidget().txtMandatory()
+                    ? TextStyles.mandatoryText
                     : Container(),
 
                 (_siteBrandFromLocalDB != null &&
@@ -735,7 +735,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       decoration: FormFieldStyle.buildInputDecoration(
                           labelText: "Product Sold")),
                 ),
-                MandatoryWidget().txtMandatory(),
+                TextStyles.mandatoryText,
                 TextFormField(
                   controller: productDynamicList[index].brandPrice,
                   validator: (value) {
@@ -764,7 +764,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   decoration: FormFieldStyle.buildInputDecoration(
                       labelText: "Brand Price"),
                 ),
-                MandatoryWidget().txtMandatory(),
+                TextStyles.mandatoryText,
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
@@ -882,7 +882,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     ),
                   ],
                 ),
-                MandatoryWidget().txtMandatory(),
+                TextStyles.mandatoryText,
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(

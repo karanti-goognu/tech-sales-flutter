@@ -13,6 +13,7 @@ class CustomSimmerWidget extends StatelessWidget {
     this.height
   }): this.shapeBorder = const RoundedRectangleBorder();
 
+
   const CustomSimmerWidget.circular({
     this.width = double.infinity,
     this.height,
@@ -30,7 +31,6 @@ class CustomSimmerWidget extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Colors.grey[400],
         shape: shapeBorder,
-
       ),
     ),
   );

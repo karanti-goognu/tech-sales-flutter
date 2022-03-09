@@ -22,13 +22,13 @@ class DealerInfModel {
       });
     }
     if (json['event-influencer-model-list'] != null) {
-      eventInfluencerModelList = new List<EventInfluencerModelList>();
+      eventInfluencerModelList = new List<EventInfluencerModelList>.empty(growable: true);
       json['event-influencer-model-list'].forEach((v) {
         eventInfluencerModelList.add(new EventInfluencerModelList.fromJson(v));
       });
     }
     if (json['dealers-model'] != null) {
-      dealersModel = new List<DealersModel>();
+      dealersModel = new List<DealersModel>.empty(growable: true);
       json['dealers-model'].forEach((v) {
         dealersModel.add(new DealersModel.fromJson(v));
       });

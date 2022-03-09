@@ -24,25 +24,6 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
 
   @override
-  void initState() {
-
-    // _connectivity.initialise();
-    // _connectivity?.myStream?.listen((source) {
-    //   setState(() => _source = source);
-    // });
-
-
-     super.initState();
-  }
-
-
-  @override
-  void dispose() {
-    // _connectivity?.disposeStream();
-     super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
 
     List<String> mwpNames = [
@@ -73,27 +54,6 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "New Influencer"
     ];
 
-    /*List<String> mwpNames = [
-      "Total Conversion Vol. (MT)",
-      "New ILP members",
-      "DSP Slabs Conv. Nos.",
-      "Site Conv. (Vol MT)",
-      "Site Visits (Total)",
-      "Contractor Visit",
-      "Technocrat visit",
-      "Tech Van Demo",
-      "Tech Van Service",
-      "Influencer Visits",
-      "Mason Meet",
-      "Counter Meet",
-      "Contractor Meet",
-      "Mini Contractor Meet",
-      "Consumer Meet",
-      "Technocrat meet",
-      "Block Level meet"
-
-
-    ];*/
 
     List<AddMwpModel> mwpPlanList = new List.empty(growable: true);
     for (int i = 0; i < mwpNames.length; i++) {

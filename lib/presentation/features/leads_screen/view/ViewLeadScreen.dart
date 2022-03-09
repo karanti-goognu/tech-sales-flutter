@@ -40,7 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dialog/lead_change_to_site_dialog.dart';
 
 class ViewLeadScreen extends StatefulWidget {
-  int leadId;
+  final int leadId;
 
   ViewLeadScreen(this.leadId);
 
@@ -54,16 +54,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   void initState() {
     super.initState();
     UploadImageBottomSheet.image = null;
-
     myFocusNode = FocusNode();
     getData();
   }
 
-//   void disposeController(BuildContext context){
-// //or what you want to dispose/clear
-//     _addLeadsController.dispose();
-//     myFocusNode.dispose();
-  // }
 
   getData() {
     internetChecking().then((result) => {
@@ -104,13 +98,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
       _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
       _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
-
       _leadSource.text = viewLeadDataResponse.leadsEntity.leadSource;
       _leadSourceUser.text = viewLeadDataResponse.leadsEntity.leadSourceUser;
-
       leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
       leadStageEntity = viewLeadDataResponse.leadStageEntity;
-
       for (int i = 0; i < leadStageEntity.length; i++) {
         if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
             leadStageEntity[i].id.toString()) {
@@ -118,14 +109,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
         }
       }
-
       leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
       gv.leadRejectReasonEntity = leadRejectReasonEntity;
       nextStageConstructionEntity =
           viewLeadDataResponse.nextStageConstructionEntity;
       gv.nextStageConstructionEntity = nextStageConstructionEntity;
       dealerList = viewLeadDataResponse.dealerList;
-
       _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
@@ -136,55 +125,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
       listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
 
-      /*if (listLeadImagePhoto != null) {
-        for (int i = 0; i < listLeadImagePhoto.length; i++) {
-          */ /* File file = new File(UrlConstants.baseUrlforImages +
-              "/" + listLeadImagePhoto[i].photoName);*/ /*
-          String imageUrl=UrlConstants.baseUrlforImages +
-              "/" + listLeadImagePhoto[i].photoName;
-
-          _addLeadsController.getFileFromUrl(imageUrl).then((imageFile){
-            print("file   .....$imageFile");
-            _imgDetails.add(new ImageDetails("Network", imageFile));
-
-            _addLeadsController.imageList.add(imageFile);
-
-          });
-
-        }
-      }*/
-
-      /*.......................*/
-
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
-        /* File file = new File(UrlConstants.baseUrlforImages +
-            "/" +
-            listLeadImagePhoto[i].photoName);*/
-
-        String imageUrl = UrlConstants.baseUrlforImages +
-            "/" +
-            listLeadImagePhoto[i].photoName;
-
+        String imageUrl = UrlConstants.baseUrlforImages + "/" + listLeadImagePhoto[i].photoName;
         _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
-          print("file   .....$imageFile");
           _imgDetails.add(new ImageDetails("Network", imageFile));
-
-          //  _addLeadsController.imageList.add(imageFile);
-
           _addLeadsController.updateImageList(imageFile, serverImageStatus);
         });
-
-        //_imageList.add(file);
       }
-      //initialImagelistLength = _imageList.length;
       initialImagelistLength = _addLeadsController.imageList.length;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-
       influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-
       _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
       _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
-
       if (_listInfluencerEntity.length != null) {
         for (int i = 0; i < _listInfluencerEntity.length; i++) {
           int originalId;
@@ -384,10 +336,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'totalSitePotential' : _totalSitePotential
       };
 
-      print("Update Data-->" + "$updateRequestModel");
       var body = jsonEncode(updateRequestModel);
-      print("Update Data1-->" + body);
-
       _addLeadsController.updateLeadData(updateRequestModel, [], context,
           viewLeadDataResponse.leadsEntity.leadId, 3);
 
@@ -401,7 +350,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     myFocusNode?.dispose();
     myFocusNode = null;
     super.dispose();
-    //_addLeadsController?.dispose();
   }
 
   @override
@@ -421,7 +369,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
-          //border: Border.all()
           boxShadow: [
             BoxShadow(
                 color: Colors.grey[500],
@@ -431,7 +378,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ]),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
-          // elevation: 100,
           value: _selectedValue,
           items: leadStatusEntity
               .map((label) => DropdownMenuItem(
@@ -1947,12 +1893,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<SiteFloorsEntity> _siteFloorsEntity;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
-  BuildContext _context;
 
   checkStatus() {
     leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
     LeadStatusEntity list;
-    // print(viewLeadDataResponse.leadsEntity.leadStatusId);
 
     for (int i = 0; i < leadStatusEntity.length; i++) {
       if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
@@ -2057,14 +2001,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                           .inflTypeDesc;
                   break;
                 } else {
-                  // _listInfluencerDetail[
-                  // index]
-                  //     .inflContact
-                  //     .clear();
-                  // _listInfluencerDetail[
-                  // index]
-                  //     .inflName
-                  //     .clear();
                   _listInfluencerDetail[index].inflTypeId.clear();
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }
@@ -2075,7 +2011,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     inflDetail.inflCatId.toString()) {
                   _listInfluencerDetail[index].inflCatId.text =
                       inflDetail.inflCatId.toString();
-                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                   _listInfluencerDetail[index].inflCatValue.text =
                       influencerCategoryEntity[
                               influencerCategoryEntity[i].inflCatId - 1]
@@ -2107,10 +2042,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   .showDialogRestrictSystemBack(_infDetailModel.respMsg),
               barrierDismissible: false);
         }
-        // });
         Get.back();
       });
-      // Get.back();
     });
   }
 
@@ -2124,11 +2057,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
               null &&
           _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
-              "null" &&
+              null &&
           !_listInfluencerDetail[_listInfluencerDetail.length - 1]
               .inflName
               .text
-              .isNullOrBlank) {
+              .isBlank) {
         InfluencerDetail infl =
             new InfluencerDetail(isExpanded: true, isPrimarybool: false);
         setState(() {
@@ -2137,7 +2070,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           _listInfluencerDetail.add(infl);
         });
       } else {
-        // print("Error : Please fill previous influencer first");
         Get.dialog(CustomDialogs()
             .errorDialog("Please fill previous influencer first"));
       }
@@ -2157,21 +2089,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
-        //txt.text = place.postalCode;
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
-
-        // print("${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}, ${place.position}");
+        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
     }
   }
 
-  void nextStageModalBottomSheet(
-      context /*, List<File> _imageListFromController*/) {
-    //void nextStageModalBottomSheet(context) {
-// print(_imageListFromController);
+  void nextStageModalBottomSheet(context) {
     showModalBottomSheet(
         backgroundColor: ColorConstants.lightGeyColor,
         context: context,
@@ -2229,10 +2154,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 ),
                               ),
                               onPressed: () async {
-                                print("Step 1");
                                 if (leadStageVal.id !=
                                     leadStageEntity[index].id) {
-                                  print("Step 2");
 
                                   if (!(leadStageEntity[index].id == 2 ||
                                       (leadStageEntity[index].id == 3 &&
@@ -2281,8 +2204,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             // commentedAt: DateTime.now(),
                                             creatorName: name)
                                       ];
-                                      print("Step 4");
-
                                       List<updateRequest.ListLeadcomments>
                                           commentsList = [];
 
@@ -2296,8 +2217,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               commentsDetails[i].commentText,
                                           creatorName: name,
                                           createdBy: empId,
-                                        ));
-                                      }
+                                        ));                                     }
 
                                       List<updateRequest.ListLeadImage>
                                           selectedImageListDetails = [];
@@ -2314,25 +2234,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             leadId: widget.leadId,
                                             photoName: leadModel.photoName,
                                             createdBy: empId,
-                                          ));
-
-                                        userSelectedImageFile
+                                          ));                                        userSelectedImageFile
                                             .add(leadModel.imageFilePath);
                                       });
 
-                                      /* for (int i = 0;
-                                          i < listLeadImage.length;
-                                          i++) {
-                                        selectedImageListDetails.add(
-                                            new updateRequest.ListLeadImage(
-                                          leadId: widget.leadId,
-                                          photoName: listLeadImage[i].photoName,
-                                          createdBy: empId,
-                                        ));
-                                      }*/
-
-                                      print(
-                                          "Image List: $selectedImageListDetails");
                                       if (_listInfluencerDetail.length != 0) {
                                         if (_listInfluencerDetail[
                                                         _listInfluencerDetail
@@ -2361,12 +2266,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       List<updateRequest.LeadInfluencerEntity>
                                           listInfluencer = [];
 
-//                                      print(_listInfluencerDetail.length);
-
                                       for (int i = 0;
                                           i < _listInfluencerDetail.length;
                                           i++) {
-//                                        print(_listInfluencerDetail[i].toJson());
                                         listInfluencer.add(new updateRequest
                                                 .LeadInfluencerEntity(
                                             id: _listInfluencerDetail[i]
@@ -2437,8 +2339,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             viewLeadDataResponse
                                                 .leadsEntity.leadSourcePlatform
                                       };
-
-                                      print("Step 6");
 
                                       leadStageVal.id =
                                           leadStageEntity[index].id;
@@ -2659,13 +2559,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               ),
               TextFormField(
                 controller: _nextDateofConstruction,
-                // validator: (value) {
-                //   if (value.isEmpty) {
-                //     return "Contact Name can't be empty";
-                //   }
-                //   //leagueSize = int.parse(value);
-                //   return null;
-                // },
                 readOnly: true,
                 onChanged: (data) {
                   // setState(() {
@@ -2747,9 +2640,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           onPressed: () {
             if (!(_selectedNextStageConstructionEntity.nextStageConsId !=
                     null &&
-                _selectedNextStageConstructionEntity.nextStageConsId != "" &&
+                _selectedNextStageConstructionEntity.nextStageConsId.toString() != "" &&
                 _selectedNextStageConstructionEntity.nextStageConsId != null &&
-                _selectedNextStageConstructionEntity.nextStageConsId != "")) {
+                _selectedNextStageConstructionEntity.nextStageConsId.toString() != "")) {
               Get.dialog(
                   CustomDialogs().errorDialog("Please fill the details first"));
             } else {
@@ -2760,67 +2653,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       ],
     );
   }
-/*
-  _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
-
-    setState(() {
-      //print(image.path);
-      if (image != null) {
-        // print(basename(image.path));
-
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-      }
-    });
-  }
-
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-
-    setState(() {
-      // print(image.path);
-      if (image != null) {
-        listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-        _imageList.add(image);
-      }
-      // _imageList.insert(0,image);
-    });
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
- */
 
   @override
   userChangeDealerId() {
@@ -2853,13 +2685,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       int lapsePotential,
       double totalSitePotential
       ) {
-    // TODO: implement updateStatusForNextStageAllow
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
     _selectedNextStageConstructionEntity = selectedNextStageConstructionEntity;
     selectedDate = nextStageConstructionPicked;
-    // print("_selectedNextStageConstructionEntity  $nextStageConstructionPicked    ${_selectedNextStageConstructionEntity.nextStageConsId}");
-    // nextStageConstructionPickedDate=nextStageConstructionPicked;
     _nextDateofConstruction.text = nextStageConstructionPicked;
     _floorId = selectedFloorId;
     _noOfBagSupplied = noOfBagsSupplied;

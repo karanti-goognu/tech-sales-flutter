@@ -1,33 +1,11 @@
-import 'package:flutter_tech_sales/network/network_calls.dart';
 import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-
-final netWorkCalls = NetworkCalls();
-
-final mySharedPreferences = MySharedPreferences();
-
-final RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-final Function mathFunc = (Match match) => '${match[1]},';
 
 abstract class SharedPreferencesKeys {
   static const String isDarkTheme = 'isDarkTheme';
   static const String homeCountryDetails = 'homeCountry';
 }
 
-class MySharedPreferences {
-  Future<List<String>> fetchHomeCountry() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var list = prefs.getStringList(SharedPreferencesKeys.homeCountryDetails);
-    if (list != null) {
-      return list;
-    }
-    return null;
-  }
-
-}
-
-Future<bool> internetChecking() async {
+ Future<bool> internetChecking() async {
   bool result = await CheckInternet.hasConnection();
   return result;
 }

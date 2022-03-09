@@ -190,7 +190,7 @@ class MyApiClientSites {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateSiteData));
     request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
+        headersWithAccessAndSecretWithoutContent(
             accessKey, userSecurityKey, version));
 
     for (var file in list) {
@@ -249,7 +249,7 @@ class MyApiClientSites {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
     request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKeywithoutContentType(
+        headersWithAccessAndSecretWithoutContent(
             accessKey, userSecurityKey, version));
 
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
