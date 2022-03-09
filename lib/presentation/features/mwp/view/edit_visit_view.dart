@@ -874,9 +874,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
             ),
           ),
         ),
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
+    ElevatedButton(
+    style: ElevatedButton.styleFrom(
+          primary: ColorConstants.buttonNormalColor,),
           onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.
@@ -903,10 +903,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        RaisedButton(
-          color: ColorConstants.buttonNormalColor,
-          highlightColor: ColorConstants.buttonPressedColor,
-          onPressed: () {
+    ElevatedButton(
+    style: ElevatedButton.styleFrom(          primary: ColorConstants.buttonNormalColor,
+    ),          onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.
             if (_formKey.currentState.validate()) {

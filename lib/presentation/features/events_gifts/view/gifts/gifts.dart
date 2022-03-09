@@ -269,14 +269,16 @@ class _GiftsViewState extends State<GiftsView> {
   Widget buildBody(context){
     return Container(
       child: StatefulBuilder( builder: (BuildContext context, StateSetter setstates){
-        return RaisedButton(
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: HexColor("#1C99D4"),
+          ),
           onPressed: () => _giftController.selectedDropdown == 0
               ?
           _settingModalBottomSheet(context,setstates)
               : _giftInHandQtyNew.text.isEmpty?
           Get.dialog(CustomDialogs().showMessage("Please enter value"))
           :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),
-          color: HexColor("#1C99D4"),
           child: Text(
             "Update Inventory",
             style: TextStyle(

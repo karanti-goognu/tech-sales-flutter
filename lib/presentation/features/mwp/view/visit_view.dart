@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -446,7 +447,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
             }
           }
         });
-        print('RESPONSE, ${data}');
+        TsoLogger.printLog('RESPONSE, $data');
       });
     }
   }

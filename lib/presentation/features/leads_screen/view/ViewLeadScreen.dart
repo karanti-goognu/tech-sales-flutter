@@ -954,12 +954,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     );
 
     final btnMoveToNextStage = Center(
-      child: RaisedButton(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
-        color: HexColor("#1C99D4"),
+        primary: HexColor("#1C99D4"),),
         child: Padding(
           padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
           child: Text(

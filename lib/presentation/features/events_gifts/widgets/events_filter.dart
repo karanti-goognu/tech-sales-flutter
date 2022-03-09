@@ -177,13 +177,15 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                   ),
                 ),
                 Spacer(),
-                RaisedButton(
-                  onPressed: () {
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: ColorConstants.buttonNormalColor,
+        ),
+          onPressed: () {
                     Navigator.pop(context);
                     _eventController.isFilterApplied=true;
                     _eventController.getAllEventData();
                   },
-                  color: ColorConstants.buttonNormalColor,
                   child: Text(
                     "APPLY",
                     style: TextStyle(color: Colors.white),

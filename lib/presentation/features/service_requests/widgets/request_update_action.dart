@@ -923,7 +923,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   )),
             ),
             SizedBox(height: 16),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 if (!_updateActionFormKey.currentState.validate()) {
                   Get.rawSnackbar(
@@ -991,7 +991,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       _imageList, _updateSRModel);
                 }
               },
-              color: HexColor("#1C99D4"),
+              style: ElevatedButton.styleFrom(
+              primary: HexColor("#1C99D4"),),
               child: Text(
                 "UPDATE",
                 style: TextStyle(

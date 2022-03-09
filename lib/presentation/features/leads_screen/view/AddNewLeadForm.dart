@@ -1672,8 +1672,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 }
                               },
                             ),
-                            RaisedButton(
-                              color: HexColor("#1C99D4"),
+                            ElevatedButton(
+    style: ElevatedButton.styleFrom(
+    primary:  HexColor("#1C99D4"),
+    ),
+
                               child: Text(
                                 "SUBMIT",
                                 style: TextStyle(

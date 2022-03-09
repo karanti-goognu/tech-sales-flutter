@@ -229,10 +229,10 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                       ),
                       Expanded(
                         child: Container(
-                            child: RaisedButton(
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
                               elevation: 4,
-                              color: ColorConstants.buttonNormalColor,
-                              highlightColor: ColorConstants.buttonPressedColor,
+                              primary: ColorConstants.buttonNormalColor,),
                               onPressed: () {
                                 if(!_isButtonDisabled) {
                                   if (_formKey.currentState.validate()) {

@@ -166,12 +166,15 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                     ),
                   ),
                   Center(
-                    child: RaisedButton(
+                    child:
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      color: HexColor("#1C99D4"),
+                      primary: HexColor("#1C99D4"),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 10, top: 10),
                         child: Text(

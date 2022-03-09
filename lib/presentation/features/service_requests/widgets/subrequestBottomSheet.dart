@@ -135,9 +135,7 @@ class _SRRequestSubTypeBottomSheetState
                 MaterialButton(
                   color: HexColor('#1C99D4'),
                   onPressed: () {
-                    dataToBeSentBack != null
-                        ? widget.customFunction(dataToBeSentBack)
-                        : null;
+                    dataToBeSentBack ?? widget.customFunction(dataToBeSentBack);
                     Get.back();
                   },
                   child: Text(
