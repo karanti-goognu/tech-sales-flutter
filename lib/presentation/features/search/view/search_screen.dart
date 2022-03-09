@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
+import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';

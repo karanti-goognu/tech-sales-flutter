@@ -315,6 +315,7 @@ class MyApiClientSites {
 
   Future<SitesListModel> getSearchDataNew(String accessKey,
       String userSecurityKey, String empID, String searchText) async {
+    SitesListModel sitesListModel;
     try {
       version = VersionClass.getVersion();
       String url =
@@ -322,16 +323,15 @@ class MyApiClientSites {
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
-      // print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        SitesListModel sitesListModel = SitesListModel.fromJson(data);
-        return sitesListModel;
+        sitesListModel = SitesListModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception at EG repo ${_.toString()}');
     }
+    return sitesListModel;
   }
 
   Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {

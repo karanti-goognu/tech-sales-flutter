@@ -37,12 +37,10 @@ class _YearToDateState extends State<YearToDate> {
   List<ChartDataForYTD> _barGraphFieldConverted = [];
   List<ChartDataForYTD> _lineChartGenerated = [];
   List<ChartDataForYTD> _lineChartConverted = [];
-  var _dataForDataGrid;
   ScreenshotController screenshotController = ScreenshotController();
 
 
   getCountAndActualDataForBarGraph() {
-//    print("Count and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Leads Generated';
@@ -132,10 +130,7 @@ getYearlyData()async{
         .dashboardYearlyViewModel.dashboardYearlyModels
         .where((DashboardYearlyModels i) => i.showYear == yearMonth)
         .toList();
-  //  print("This year data length${_thisYearData.length} yearMonth $yearMonth");
     getCountAndActualDataForBarGraph();
-    _dataForDataGrid = _dashboardController.dashboardYearlyViewModel.mtdCount;
-  //  print(_dataForDataGrid);
   });
 }
 

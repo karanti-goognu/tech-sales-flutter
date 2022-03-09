@@ -287,25 +287,27 @@ class MyApiClientApp {
   }
 
   Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
+    var data;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
+        data = json.decode(response.body);
 
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
-        return CalendarPlanModel.fromJson(data);
       } else {
         print('Error in else');
       }
     } catch (_) {
       print('exception ${_.toString()}');
     }
+    return CalendarPlanModel.fromJson(data);
+
   }
 
   getCalenderPlanByDay(

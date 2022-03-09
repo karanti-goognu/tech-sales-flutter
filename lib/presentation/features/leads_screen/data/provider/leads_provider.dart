@@ -332,18 +332,13 @@ class MyApiClientLeads {
               Get.dialog(CustomDialogs()
                   .showDialogSubmitLead(
                   saveLeadResponse.respMsg, 2, context),barrierDismissible: false);
-              // Get.back();
-              // Get.back();
               if (saveLeadRequestModel.eventId == null) {
                 Get.back();
                 Get.dialog(CustomDialogs()
                     .showDialogSubmitLead(
                     saveLeadResponse.respMsg, 1, context),barrierDismissible: false);
-                //Get.toNamed(Routes.HOME_SCREEN);
               }
 
-              // Get.dialog(CustomDialogs()
-              //     .showDialogSubmitLead("Lead Added Successfully !!!"));
             } else if (saveLeadResponse.respCode == "LD2012") {
               gv.fromLead = false;
               Get.dialog(CustomDialogs().showExistingTSODialog(
@@ -384,10 +379,6 @@ class MyApiClientLeads {
         var data = json.decode(response.body);
 
         ViewLeadDataResponse viewLeadDataResponse = ViewLeadDataResponse.fromJson(data);
-        // if(data["resp_code"] == "DM1005"){
-        //   Get.dialog(CustomDialogs().appUserInactiveDialog(
-        //       data["resp_msg"]), barrierDismissible: false);
-        // }
         return viewLeadDataResponse;
       } else
         print('error');
@@ -477,7 +468,6 @@ class MyApiClientLeads {
                   Get.back();
                   Get.back();
                   Get.back();
-//                  Get.offNamed(Routes.LEADS_SCREEN);
                   Get.dialog(CustomDialogs().showDialogSubmitLead(
                       updateLeadResponseModel.respMsg, from, context), barrierDismissible: false);
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
@@ -485,10 +475,6 @@ class MyApiClientLeads {
                   Get.dialog(CustomDialogs()
                       .showDialog(updateLeadResponseModel.respMsg), barrierDismissible: false);
                 }
-                // else if(updateLeadResponseModel.respCode == "DM1005"){
-                //   Get.dialog(CustomDialogs().appUserInactiveDialog(
-                //       updateLeadResponseModel.respMsg), barrierDismissible: false);
-                // }
                 else {
                   Get.back();
                   Get.dialog(
@@ -508,6 +494,7 @@ class MyApiClientLeads {
   }
 
   Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    LeadsListModel leadsListModel;
     try {
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
       version = VersionClass.getVersion();
@@ -515,17 +502,18 @@ class MyApiClientLeads {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
+        leadsListModel = LeadsListModel.fromJson(data);
         if(leadsListModel.respCode == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               leadsListModel.respMsg), barrierDismissible: false);
         }
-        return leadsListModel;
       } else
         print('error');
     } catch (_) {
       print('exception at Lead repo ${_.toString()}');
     }
+    return leadsListModel;
+
   }
 
   Future<InfluencerDetailModel> getInfNewData(String accessKey,

@@ -21,6 +21,7 @@ class GetCurrentLocation{
         return Future.error('Location permissions are denied');
       }
     }
+
   }
 
   static Future<List> getCurrentLocation() async {

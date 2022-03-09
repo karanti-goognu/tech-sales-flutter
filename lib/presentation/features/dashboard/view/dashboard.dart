@@ -47,23 +47,11 @@ class _DashboardState extends State<Dashboard> {
     _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
       if(_employeeDropDownData.isEmpty ){
-        // print("isProcessComplete    $value");
-        // print("_dashboardController.empId    ${_dashboardController.empId}");
         monthToDateKey.currentState.passEmpId(_dashboardController.empId);
         empID=_dashboardController.empId;
-       // print("EMP ID is now $empID");
       }
 
     });
-
-/*    if(_employeeDropDownData.isEmpty){
-      monthToDateKey.currentState.passEmpId(empID);
-      print(empID);
-    }else{
-      empID = _employeeDropDownData[0].tsoId;
-    }
-//      empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;*/
-
     super.initState();
   }
 
@@ -75,7 +63,6 @@ class _DashboardState extends State<Dashboard> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text('MY DASHBOARD'),
-//            centerTitle: true,
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
               preferredSize: _employeeDropDownData.isEmpty
@@ -110,16 +97,12 @@ class _DashboardState extends State<Dashboard> {
                                         ))
                                     .toList(),
                                 onChanged: (value) {
-//                            print(value);
                                   setState(() {
                                     empID = value;
                                   });
                                   if(_tabNumber==0){
                                     _dashboardController.getMonthViewDetails(
                                         empID: empID, yearMonth: yearMonth);
-                                  }else{
-                                  //  print("Tab changed");
-//                                    _dashboardController.getYearlyViewDetails(empID);
                                   }
                                 }),
                           ),
@@ -153,13 +136,7 @@ class _DashboardState extends State<Dashboard> {
               YearToDate(empID: empID,)
             ],
           )),
-      // ),
     );
   }
 
-//  @override
-//  void dispose() {
-//    _dashboardController.dispose();
-//    super.dispose();
-//  }
 }

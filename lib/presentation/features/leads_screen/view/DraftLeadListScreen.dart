@@ -119,7 +119,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                     ],
                   ),
                 ),
-                Expanded(child: DraftLeadsDetailWidget()),
+                Expanded(child: draftLeadsDetailWidget()),
                 SizedBox(
                   height: 50,
                 ),
@@ -129,7 +129,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
         ));
   }
 
-  Widget DraftLeadsDetailWidget() {
+  Widget draftLeadsDetailWidget() {
     return Container(
       child: Align(
         alignment: Alignment.topCenter,

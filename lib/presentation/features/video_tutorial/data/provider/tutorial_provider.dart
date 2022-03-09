@@ -18,19 +18,22 @@ class MyApiClient {
   MyApiClient({@required this.httpClient});
 
   Future<AccessKeyModel> getAccessKey() async {
+    AccessKeyModel accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
+         accessKeyModel = AccessKeyModel.fromJson(data);
         return accessKeyModel;
       } else
         print('error');
     } catch (_) {
       print('exception at Tutorial repo ${_.toString()}');
     }
+    return accessKeyModel;
+
   }
 
 
