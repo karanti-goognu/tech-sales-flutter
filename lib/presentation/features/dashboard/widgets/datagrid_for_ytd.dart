@@ -105,50 +105,5 @@ class _DataGridForYTDState extends State<DataGridForYTD> {
 
           ],
         );
-//      Container(
-//      decoration: BoxDecoration(
-//        border: Border.all(color: Colors.black26),
-//        color: HexColor('#000001F')
-//      ),
-//    child: SfDataGrid(
-//    controller: widget._controller,
-//    source: _employeeDataSource,
-//    gridLinesVisibility: GridLinesVisibility.none,
-//    verticalScrollPhysics: NeverScrollableScrollPhysics(),
-//    columns: [
-//      GridNumericColumn(
-////        mappingName: 'id',
-//        headerText: 'MTD',
-//        width: 60,
-//        padding: EdgeInsets.zero,
-//        headerPadding: EdgeInsets.zero,
-//      ),
-//      GridTextColumn(
-////        mappingName: 'name',
-//        headerText: '    Tgt',
-//        width: 75,
-//        headerPadding: EdgeInsets.zero,
-//      ),
-//      GridTextColumn(
-////        mappingName: 'designation',
-//        headerText: 'Pro. Rata',
-//        width: 60,
-//        headerPadding: EdgeInsets.zero,
-//      ),
-//      GridNumericColumn(
-////        mappingName: 'salary',
-//        headerText: 'Act',
-//        width: 60,
-//        headerPadding: EdgeInsets.zero,
-//      ),
-//      GridNumericColumn(
-////        mappingName: 'salary',
-//        headerText: 'Act%',
-//        width: 80,
-//        headerPadding: EdgeInsets.zero,
-//      ),
-//    ],
-//        ),
-//            );
   }
 }

@@ -4,6 +4,9 @@ import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 
 class FormFieldStyle {
+
+  FormFieldStyle._();
+
   static TextStyle formFieldTextStyle = TextStyle(
       fontSize: 18,
       color: ColorConstants.inputBoxHintColor,
