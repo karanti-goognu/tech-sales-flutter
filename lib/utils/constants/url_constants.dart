@@ -4,6 +4,7 @@ final client = Client();
 
 
 abstract class UrlConstants {
+ UrlConstants._();
 
  //PROD
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
