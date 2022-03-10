@@ -47,7 +47,8 @@ abstract class UrlConstants {
  static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
  static const String getCheckInDetails = '$baseUrl/journey/details';
  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
- static const String saveMWPData = '$baseUrl/mwp/mwp-save';
+ //static const String saveMWPData = '$baseUrl/mwp/mwp-save';
+ static const String saveMWPData = '$baseUrl/mwp/v2/mwp-save';
  static const String getMWPData = '$baseUrl/mwp/view-mwp?';
  static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';
  static const String getCalendarEventDataByDay = '$baseUrl/mwp/visit-view?';

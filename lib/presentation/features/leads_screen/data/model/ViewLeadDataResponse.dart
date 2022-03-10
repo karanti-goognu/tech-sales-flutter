@@ -15,6 +15,8 @@ class ViewLeadDataResponse {
   LeadsEntity leadsEntity;
   List<DealerList> dealerList;
   List<SiteFloorsEntity> siteFloorsEntity;
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity;
+
 
   ViewLeadDataResponse(
       {this.respCode,
@@ -32,7 +34,8 @@ class ViewLeadDataResponse {
         this.counterListModel,
       this.leadsEntity,
       this.dealerList,
-      this.siteFloorsEntity
+      this.siteFloorsEntity,
+      this.siteCompetitionStatusEntity,
         });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
@@ -124,6 +127,13 @@ class ViewLeadDataResponse {
         siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });
     }
+
+    if (json['siteCompetitionStatusEntity'] != null) {
+      siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
+      json['siteCompetitionStatusEntity'].forEach((v) {
+        siteCompetitionStatusEntity.add(new SiteCompetitionStatusEntity.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -184,6 +194,12 @@ class ViewLeadDataResponse {
     if (this.siteFloorsEntity != null) {
       data['siteFloorsEntity'] = this.siteFloorsEntity.map((v) => v.toJson()).toList();
     }
+
+    if (this.siteCompetitionStatusEntity != null) {
+      data['siteCompetitionStatusEntity'] =
+          this.siteCompetitionStatusEntity.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
@@ -700,6 +716,25 @@ class CounterListModel {
     data['shipToPartyName'] = this.shipToPartyName;
     data['soldToParty'] = this.soldToParty;
     data['soldToPartyName'] = this.soldToPartyName;
+    return data;
+  }
+}
+
+class SiteCompetitionStatusEntity {
+  int id;
+  String competitionStatus;
+
+  SiteCompetitionStatusEntity({this.id, this.competitionStatus});
+
+  SiteCompetitionStatusEntity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    competitionStatus = json['competitionStatus'].toString() ?? "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['competitionStatus'] = this.competitionStatus;
     return data;
   }
 }

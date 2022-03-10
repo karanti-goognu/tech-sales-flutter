@@ -51,6 +51,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _siteTotalBalancePt = new TextEditingController();
   var _ownerName = new TextEditingController();
   var _contactNumber = new TextEditingController();
+  TextEditingController _completitionStatus = new TextEditingController();
+  TextEditingController _opportunityStatus = new TextEditingController();
 
   //String _comment;
   var _rera = new TextEditingController();
@@ -198,10 +200,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           if (viewSiteDataResponse.sitesModal.siteCompetitionId.toString() ==
               siteCompetitionStatusEntity[i].id.toString()) {
             _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
+            _completitionStatus.text =
+                siteCompetitionStatusEntity[i].competitionStatus;
           }
         }
       } else {
         _siteCompetitionStatusEntity = siteCompetitionStatusEntity[0];
+        _completitionStatus.text =
+            siteCompetitionStatusEntity[0].competitionStatus;
       }
 
       siteOpportunityStatusEntity =
@@ -211,10 +217,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           if (viewSiteDataResponse.sitesModal.siteOppertunityId.toString() ==
               siteOpportunityStatusEntity[i].id.toString()) {
             _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+            _opportunityStatus.text =
+                siteOpportunityStatusEntity[i].opportunityStatus;
           }
         }
       } else {
         _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
+        _opportunityStatus.text =
+            siteOpportunityStatusEntity[0].opportunityStatus;
       }
 
       if (viewSiteDataResponse.sitesModal.noOfFloors != null ||
@@ -976,6 +986,19 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(
                             height: 20,
                           ),
+
+                          TextFormField(
+                            controller: _completitionStatus,
+                            readOnly: true,
+                            decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Competition Status",
+                            ),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.inputBoxHintColor,
+                                fontFamily: "Muli"),
+                          ),
+                          /*
                           DropdownButtonFormField<SiteCompetitionStatusEntity>(
                             value: _siteCompetitionStatusEntity,
                             items: viewSiteDataResponse.sitesModal != null &&
@@ -1012,33 +1035,35 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           value: label,
                                         ))
                                     .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _siteCompetitionStatusEntity = value;
-                                UpdatedValues.setSiteCompetitionId(
-                                    _siteCompetitionStatusEntity);
-                              });
-                            },
+                            // onChanged: (value) {
+                            //   setState(() {
+                            //     _siteCompetitionStatusEntity = value;
+                            //     UpdatedValues.setSiteCompetitionId(
+                            //         _siteCompetitionStatusEntity);
+                            //   });
+                            // },
                             decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Competition Status",
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
-                          //txtMandatory(),
-                          MandatoryWidget().txtMandatory(),
+                          */
+
                           SizedBox(
                             height: 20,
                           ),
+
+                          TextFormField(
+                            controller: _opportunityStatus,
+                            readOnly: true,
+                            decoration: FormFieldStyle.buildInputDecoration(
+                              labelText: "Opportunity Status",
+                            ),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.inputBoxHintColor,
+                                fontFamily: "Muli"),
+                          ),
+                          /*
                           DropdownButtonFormField<SiteOpportunityStatusEntity>(
                             value: _siteOpportunitStatusEnity,
                             items: viewSiteDataResponse.sitesModal != null &&
@@ -1086,6 +1111,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Opportunity Status",
                             ),
                           ),
+
+                           */
                           SizedBox(height: 25),
                           TextFormField(
                             controller: _ownerName,

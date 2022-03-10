@@ -1,3 +1,4 @@
+/*
 class SaveMWPModel {
   String mwpMonth;
   String referenceId;
@@ -28,6 +29,8 @@ class SaveMWPModel {
   int blockLevelMeet;
   int headMasonMeet;
   int newInfluencer;
+  int counterVisit;
+  int ilpVolume;
 
 
   SaveMWPModel(
@@ -58,7 +61,9 @@ class SaveMWPModel {
       this.technocratMeet,
       this.blockLevelMeet,
       this.headMasonMeet,
-      this.newInfluencer
+      this.newInfluencer,
+      this.counterVisit,
+      this.ilpVolume
       );
 
   SaveMWPModel.fromJson(Map<String, dynamic> json) {
@@ -90,6 +95,8 @@ class SaveMWPModel {
     blockLevelMeet = json['blockLevelMeet'];
     headMasonMeet = json['headMasonMeet'];
     newInfluencer = json['newInfluencer'];
+    counterVisit = json[''];
+    ilpVolume = json[''];
   }
 
   Map<String, dynamic> toJson() {
@@ -122,6 +129,85 @@ class SaveMWPModel {
     data['blockLevelMeet'] = this.blockLevelMeet;
     data['headMasonMeet'] = this.headMasonMeet;
     data['newInfluencer'] = this.newInfluencer;
+    data[''] = this.counterVisit;
+    data[''] = this.ilpVolume;
     return data;
   }
 }
+*/
+
+import 'package:flutter_tech_sales/presentation/features/mwp/data/GetMWPResponse.dart';
+
+class SaveMWPModel {
+  String mwpMonth;
+  String referenceId;
+  String status;
+  String createdBy;
+  String actionedBy;
+  List<MwpPlannigList> mwpPlannigList;
+
+
+  SaveMWPModel(
+      this.mwpMonth,
+      this.referenceId,
+      this.status,
+      this.createdBy,
+      this.actionedBy,
+      this.mwpPlannigList
+      );
+
+  SaveMWPModel.fromJson(Map<String, dynamic> json) {
+    mwpMonth = json['mwpMonth'];
+    referenceId = json['referenceId'];
+    status = json['status'];
+    createdBy = json['createdBy'];
+    actionedBy = json['actionedBy'];
+    if (json['mwpPlannigList'] != null) {
+      mwpPlannigList = <MwpPlannigList>[];
+      json['mwpPlannigList'].forEach((v) {
+        mwpPlannigList.add(new MwpPlannigList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['mwpMonth'] = this.mwpMonth;
+    data['referenceId'] = this.referenceId;
+    data['status'] = this.status;
+    data['createdBy'] = this.createdBy;
+    data['actionedBy'] = this.actionedBy;
+    if (this.mwpPlannigList != null) {
+      data['mwpPlannigList'] =
+          this.mwpPlannigList.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+// class MwpPlannigList {
+//   String name;
+//   int id;
+//   int actualValue;
+//   int targetValue;
+//
+//   MwpPlannigList({this.name, this.id, this.actualValue, this.targetValue});
+//
+//   MwpPlannigList.fromJson(Map<String, dynamic> json) {
+//     name = json['name'];
+//     id = json['id'];
+//     actualValue = json['actualValue'];
+//     targetValue = json['targetValue'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['name'] = this.name;
+//     data['id'] = this.id;
+//     data['actualValue'] = this.actualValue;
+//     data['targetValue'] = this.targetValue;
+//     return data;
+//   }
+// }
+
+

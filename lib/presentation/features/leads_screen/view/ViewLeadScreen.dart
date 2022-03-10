@@ -127,6 +127,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       dealerList = viewLeadDataResponse.dealerList;
 
       _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
+      _siteCompetitionStatusEntity = viewLeadDataResponse.siteCompetitionStatusEntity;
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
       influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
@@ -266,7 +267,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   updateStatusForNextStage(BuildContext context, int statusId,
       {String dealerId, String subDealerId,int floorId,
-        String noOfBagSupplied, String isIhbCommercial, int lapsePotential, int nextFloorLevel, double totalSitePotential}) {
+        String noOfBagSupplied, String isIhbCommercial, int lapsePotential, int nextFloorLevel, int totalSitePotential}) {
     String empId;
     String mobileNumber;
     String name;
@@ -381,7 +382,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         'isIhbCommercial': _isIhbCommercial,
         'lapsePotential' : _lapsePotential,
         'nextFloorLevel' : _floorLevelId,
-        'totalSitePotential' : _totalSitePotential
+        'totalSitePotential' : _totalSitePotential,
+        'siteCompitationId' : _siteCompitationId
       };
 
       print("Update Data-->" + "$updateRequestModel");
@@ -479,6 +481,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
                             siteFloorsEntity: _siteFloorsEntity,
+                            siteCompetitionStatusEntity: _siteCompetitionStatusEntity,
                             mListener: this,
                           ));
                 } else if (_selectedValuedummy.id == 4) {
@@ -1944,6 +1947,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   List<InfluencerCategoryEntity> influencerCategoryEntity;
   List<SiteFloorsEntity> _siteFloorsEntity;
+  List<SiteCompetitionStatusEntity> _siteCompetitionStatusEntity;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
   BuildContext _context;
@@ -2834,8 +2838,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   int _floorLevelId;
   String _noOfBagSupplied = "";
   String _isIhbCommercial = "";
-  double _totalSitePotential;
+  int _totalSitePotential;
   int _lapsePotential;
+  int _siteCompitationId;
 
   @override
   updateStatusForNextStageAllow(
@@ -2850,7 +2855,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       String isIhbCommercial,
       int nextFloorLevel,
       int lapsePotential,
-      double totalSitePotential
+      int totalSitePotential,
+      int siteCompitationId
       ) {
     // TODO: implement updateStatusForNextStageAllow
     selectedDealerId = dealerId;
@@ -2866,6 +2872,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     _floorLevelId = nextFloorLevel;
     _lapsePotential = lapsePotential;
     _totalSitePotential = totalSitePotential;
+    _siteCompitationId = siteCompitationId;
 
     updateStatusForNextStage(context, statusId,
         dealerId: selectedDealerId,
