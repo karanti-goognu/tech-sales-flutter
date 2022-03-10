@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -36,7 +35,6 @@ class MyApiClientSR {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -51,15 +49,12 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
-   //   print("URL: ${UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId}");
-      //print("Request: ${response.body}")
      var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         complaintModel = SrComplaintModel.fromJson(json.decode(response.body));
-        // print(response.body);
       }
     }
     catch(e){
@@ -73,10 +68,8 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
-          headers: requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey,userSecretKey, version));
+          headers: headersWithAccessAndSecretWithoutContent(accessKey,userSecretKey, version));
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
-      // print("====${UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId}");
-      // print("URL: ${json.decode(response.body)}");
     }
     catch(e){
       print("Exception at SR Repo $e");
@@ -89,7 +82,6 @@ class MyApiClientSR {
     ServiceRequestComplaintListModel serviceRequestComplaintListModel;
     try{
       version = VersionClass.getVersion();
-  //    print(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10');
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
@@ -97,11 +89,7 @@ class MyApiClientSR {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
-        serviceRequestComplaintListModel =
-            ServiceRequestComplaintListModel.fromJson(
-                json.decode(response.body));
-    //    print(serviceRequestComplaintListModel.srComplaintListModal.length);
-    //    print(response.body);
+        serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
       }
     }
     catch(e){
@@ -125,11 +113,9 @@ class MyApiClientSR {
       if (typeOfReqId.isNotEmpty){
         url=url+'&typeOfReqId=$typeOfReqId';
       }
-      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
-      //print("=====$data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -150,7 +136,6 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
-      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
@@ -167,26 +152,19 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
-          requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+          headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
-      // print("Request Body/Fields :: " + request.fields.toString());
-      // print("Headers "+ json.encode(saveServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        // get file length
-
-        var length = await file.length(); //imageFile is your image file
-        // multipart that takes file
+        var stream = new http.ByteStream(file.openRead());
+        stream.cast();
+        var length = await file.length();
         var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
         request.files.add(multipartFileSign);
       }
       await request.send().then((value) async {
-
-
         response = await http.Response.fromStream(value);
         return json.decode(response.body);
-
       });
     }
     catch(e){
@@ -201,19 +179,13 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecretKey, version));
+      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
-      // print("Request Body/Fields :: " + request.fields.toString());
-       //print("Headers"+ request.headers.toString());
-       // print( Uri.parse(UrlConstants.updateServiceRequest).toString());
-       // print("Headers "+ json.encode(updateServiceRequest));
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
-        var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-        // get file length
-        var length = await file.length(); //imageFile is your image file
-        // multipart that takes file
-
+        var stream = new http.ByteStream(file.openRead());
+        stream.cast();
+        var length = await file.length();
         var multipartFileSign =
         new http.MultipartFile('file', stream, length, filename: fileName);
         request.files.add(multipartFileSign);
@@ -221,12 +193,6 @@ class MyApiClientSR {
 
       await request.send().then((value) async {
         response = await http.Response.fromStream(value);
-       //  print(response.body);
-        // var data = json.decode(response.body);
-        // if(data["resp_code"] == "DM1005"){
-        //   Get.dialog(CustomDialogs().appUserInactiveDialog(
-        //       data["resp_msg"]), barrierDismissible: false);
-        // }
         return json.decode(response.body);
       });
     }
@@ -243,11 +209,9 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
-    //  print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
-    //  print(data);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
@@ -276,11 +240,9 @@ class MyApiClientSR {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
                 accessKey, userSecurityKey, version));
-        // print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-          //print('Access key Object is :: $accessKeyModel');
           return accessKeyModel;
         } else
           print('error');
@@ -297,10 +259,8 @@ class MyApiClientSR {
     version = VersionClass.getVersion();
     try {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
-      // print(url);
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
-    //  print(response.body);
       siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
       return siteAreaDetailsModel;
     } catch (_) {

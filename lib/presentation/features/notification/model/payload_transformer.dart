@@ -33,7 +33,7 @@ InboxData deSerializeInboxMessages(dynamic messagesPayload) {
 }
 
 List<InboxMessage> messagesJsonToList(List<dynamic> messageArray) {
-  List<InboxMessage> messages = List<InboxMessage>();
+  List<InboxMessage> messages = List<InboxMessage>.empty(growable: true);
   for (final message in messageArray) {
     InboxMessage inboxMessage = messageFromJson(message);
     if (inboxMessage != null) {
@@ -86,7 +86,7 @@ Media mediaFromMap(Map<String, dynamic> mediaMap) {
 }
 
 List<Action> actionsFromMap(List<dynamic> actions) {
-  List<Action> actionList = List<Action>();
+  List<Action> actionList = List<Action>.empty(growable: true);
   for (final action in actions) {
     Action parsedAction = actionFromMap(action);
     if (parsedAction != null) {
@@ -128,7 +128,7 @@ Map<String, String> mapFromMedia(Media media) {
 }
 
 List<Map<String, dynamic>> actionsListFromModel(List<Action> actions) {
-  List<Map<String, dynamic>> actionsList = List<Map<String, dynamic>>();
+  List<Map<String, dynamic>> actionsList = List<Map<String, dynamic>>.empty(growable: true);
   for (final action in actions) {
     Map<String, dynamic> actionMap = actionToMap(action);
     if (actionMap != null) {

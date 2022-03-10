@@ -34,7 +34,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   int totalFilters;
 
   getSRListData() async {
-    // Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     await eventController.getAccessKey().then((value) async {
       await eventController.getSrListData(value.accessKey, 0).then((data){
         setState(() {
@@ -42,15 +41,12 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         });
       });
     });
-    // Get.back();
   }
 
   _scrollListener() async {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      // print('offset old value ${eventController.offset}');
       eventController.offset += 10;
-      // print('offset new value ${eventController.offset}');
       await eventController.getAccessKey().then((value) async {
         await eventController.getSrListData(value.accessKey, eventController.offset).then((data) {
           setState(() {
@@ -62,7 +58,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   }
 
   void disposeController(BuildContext context){
-//or what you wnat to dispose/clear
     eventController.offset = 0;
     eventController?.dispose();
 
@@ -73,10 +68,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     super.initState();
     eventController.srListData.srComplaintListModal = null;
     getSRListData();
-    //  print("scroll controller init");
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
-    //  print("scroll listener added");
 
 
   }
@@ -126,9 +119,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 TextButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
-                        print(value);
                         setState(() {
-                          // totalFilters = value.isEmpty ? value[3] : 0;
                           totalFilters = value[3];
                         });
                         eventController.getAccessKey().then((accessKeyModel) {
@@ -136,7 +127,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                               .getSrListDataWithFilters(accessKeyModel.accessKey,
                               value[0], value[1], value[2])
                               .then((data) {
-                            // print(data.toJson());
                             setState(() {
                               serviceRequestComplaintListModel = data;
                             });
@@ -153,7 +143,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         Container(
                           height: 18,
                           width: 18,
-                          // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                           decoration: new BoxDecoration(
                             color: Colors.white,
                             border:
@@ -168,7 +157,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                   : 0.toString(),
                               style: TextStyle(
                                   color: Colors.black,
-                                  //fontFamily: 'Raleway',
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal),
                             ),
@@ -335,13 +323,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-       //     child: Text("Total Count : ${(eventController.srListData.srComplaintListModal == null) ? 0 : eventController.srListData.srComplaintListModal.length}",
       child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
 
         style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
-                // color: HexColor("#FFFFFF99"),
               ),
             ),
           ),
@@ -353,7 +339,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
               style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
-                // color: HexColor("#FFFFFF99"),
               ),
             ),
           ),
@@ -382,7 +367,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         fontSize: 12,
                         fontFamily: "Muli",
                         fontWeight: FontWeight.normal
-                      //fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
@@ -394,7 +378,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         fontSize: 18,
                         fontFamily: "Muli",
                         fontWeight: FontWeight.bold
-                      //fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
@@ -407,7 +390,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         fontSize: 12,
                         fontFamily: "Muli",
                         fontWeight: FontWeight.bold
-                      //fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
@@ -463,7 +445,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                                 fontSize: 12,
                                 fontFamily: "Muli",
                                 fontWeight: FontWeight.bold
-                              //fontWeight: FontWeight.normal
                             ),
                           ),
                         ),
@@ -473,12 +454,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       padding: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "",
-                        //  textAlign: TextAlign.start,
                         style: TextStyle(
                           fontSize: 13,
                           fontFamily: "Muli",
                           fontWeight: FontWeight.bold,
-                          //fontWeight: FontWeight.normal
                         ),
                       ),
                     ),
@@ -506,17 +485,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             fontSize: 15,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
                         ),
                       ),
                       Text(
                         "${serviceRequestComplaintListModel.srComplaintListModal[index].sitePotential}MT",
                         style: TextStyle(
-                          // color: Colors.black38,
                             fontSize: 15,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
                         ),
                       ),
                     ],
@@ -529,15 +505,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       fontSize: 12,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.bold
-                    //fontWeight: FontWeight.normal
                   ),
                 ),
-                // Expanded(
-                //   child: Container(),
-                // ),
+
                 Padding(
                   padding: const EdgeInsets.all(0),
-                  // padding: const EdgeInsets.only(left: 1.0, top: 20),
                   child: Transform(
                     transform: new Matrix4.identity()..scale(0.7),
                     alignment: Alignment.centerRight,
@@ -555,7 +527,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             fontSize: 12,
                             fontFamily: "Muli",
                             fontWeight: FontWeight.bold
-                          //fontWeight: FontWeight.normal
                         ),
                       ),
                     ),
@@ -564,9 +535,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Expanded(
-                    //     child:Container()
-                    // ),
+
                     GestureDetector(
                       child: Icon(
                         Icons.call,
@@ -617,7 +586,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   fontSize: 12,
                   fontFamily: "Muli",
                   fontWeight: FontWeight.bold
-                //fontWeight: FontWeight.normal
               ),
             ),
           ),
@@ -641,7 +609,6 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                     fontSize: 10,
                     fontFamily: "Muli",
                     fontWeight: FontWeight.bold
-                  //fontWeight: FontWeight.normal
                 ),
               ),
             ),

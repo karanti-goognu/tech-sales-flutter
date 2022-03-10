@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,20 +47,17 @@ class _InfluencerViewState extends State<InfluencerView> {
                 setState(() {
                   if (data != null) {
                     _influencerListModel = data;
-                    _influencerTypeList = _influencerListModel.response.influencerTypeList;
+                    _influencerTypeList =
+                        _influencerListModel.response.influencerTypeList;
 
-                    List<InfluencerTypeList> infList = [InfluencerTypeList(inflTypeId: 0, inflTypeDesc: 'All', infRegFlag: 'Y')];
+                    List<InfluencerTypeList> infList = [
+                      InfluencerTypeList(
+                          inflTypeId: 0, inflTypeDesc: 'All', infRegFlag: 'Y')
+                    ];
 
-
-
-                   _inf = infList + _influencerTypeList ;
-
-                   // print("))))))))))))${json.encode(_inf)}");
-
-
+                    _inf = infList + _influencerTypeList;
                     total =
                         '${(_influencerListModel.response.totalInfluencerCount == null) ? 0 : _influencerListModel.response.totalInfluencerCount}';
-                  //  print("count : ${_influencerListModel.response.totalInfluencerCount}");
                   }
                 });
               })
@@ -77,7 +73,6 @@ class _InfluencerViewState extends State<InfluencerView> {
         });
   }
 
-
   Widget build(BuildContext context) {
     ScreenUtil.init(
         BoxConstraints(
@@ -89,7 +84,6 @@ class _InfluencerViewState extends State<InfluencerView> {
         orientation: Orientation.portrait);
     return WillPopScope(
         onWillPop: () async {
-          // disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
@@ -104,8 +98,6 @@ class _InfluencerViewState extends State<InfluencerView> {
               title:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 Row(
-                  // mainAxisSize: MainAxisSize.max,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
@@ -131,9 +123,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                           onChanged: (value) {
                             setState(() {
                               _selectedValue = value;
-                              if(_selectedValue == 0){
+                              if (_selectedValue == 0) {
                                 _infController.inflTypeId = "";
-                              }else {
+                              } else {
                                 _infController.inflTypeId = '$_selectedValue';
                               }
                               getData();
@@ -160,9 +152,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                                       ))
                                   .toList(),
                           style: FormFieldStyle.formFieldTextStyle,
-
-                          // validator: (value) =>
-                          // value == null ? 'Please select Dalmia Master' : null,
                         ),
                       ),
                     ),
@@ -175,7 +164,9 @@ class _InfluencerViewState extends State<InfluencerView> {
                 SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavigator(searchType: "influencer",),
+            bottomNavigationBar: BottomNavigator(
+              searchType: "influencer",
+            ),
             body: Container(
                 child: Column(children: [
               Padding(
@@ -184,17 +175,13 @@ class _InfluencerViewState extends State<InfluencerView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // Obx(
-                    //       () =>
                     Text(
                       "Total Influencer : $total",
                       style: TextStyle(
                         fontFamily: "Muli",
                         fontSize: SizeConfig.safeBlockHorizontal * 3.5,
-                        // color: HexColor("#FFFFFF99"),
                       ),
                     ),
-                    // ),
                   ],
                 ),
               ),
@@ -206,8 +193,7 @@ class _InfluencerViewState extends State<InfluencerView> {
     return (_influencerListModel == null)
         ? Container(
             child: Center(
-              child:Text(""),
-              //Text("Influencer controller  is empty!!"),
+              child: Text(""),
             ),
           )
         : (_influencerListModel.response == null)
@@ -233,11 +219,13 @@ class _InfluencerViewState extends State<InfluencerView> {
                               SizedBox(
                                 height: 10,
                               ),
-                              RaisedButton(
+                              ElevatedButton(
                                 onPressed: () {
                                   getData();
                                 },
-                                color: ColorConstants.buttonNormalColor,
+                                style: ElevatedButton.styleFrom(
+                                  primary:ColorConstants.buttonNormalColor,
+                                ),
                                 child: Text(
                                   "TRY AGAIN",
                                   style: TextStyle(color: Colors.white),
@@ -253,15 +241,18 @@ class _InfluencerViewState extends State<InfluencerView> {
                             .response.ilpInfluencerEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 80),
-                        // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                  context, new CupertinoPageRoute(
-                                  builder: (BuildContext context) =>
-                                      InfluencerDetailView(_influencerListModel.response.ilpInfluencerEntity[index].membershipId))
-                              );
+                                  context,
+                                  new CupertinoPageRoute(
+                                      builder: (BuildContext context) =>
+                                          InfluencerDetailView(
+                                              _influencerListModel
+                                                  .response
+                                                  .ilpInfluencerEntity[index]
+                                                  .membershipId)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
@@ -306,10 +297,11 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
-                                                            "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
-                                                            style: TextStyles.formfieldLabelText,
-                                                         textAlign: TextAlign.end,
-                                                         // overflow: TextOverflow.ellipsis,
+                                                          "Avg.Monthly Vol.:${_influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+                                                          style: TextStyles
+                                                              .formfieldLabelText,
+                                                          textAlign:
+                                                              TextAlign.end,
                                                         ),
                                                       ),
                                                     ],
@@ -322,64 +314,51 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                    // crossAxisAlignment:
-                                                    //     CrossAxisAlignment
-                                                    //         .end,
                                                     children: [
                                                       Flexible(
                                                         child: Container(
-                                                          padding: new EdgeInsets.only(right: 5.0),
+                                                          padding:
+                                                              new EdgeInsets
+                                                                      .only(
+                                                                  right: 5.0),
                                                           child: Text(
                                                             "${_influencerListModel.response.ilpInfluencerEntity[index].inflName == null ? " " : _influencerListModel.response.ilpInfluencerEntity[index].inflName}",
                                                             style: TextStyles
                                                                 .mulliBold18,
-                                                            overflow: TextOverflow.ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
                                                         ),
                                                       ),
-                                                      // Container(
-                                                      //   width: MediaQuery.of(
-                                                      //                   context)
-                                                      //               .size
-                                                      //               .width /
-                                                      //           2-10,
-                                                      //   child:
-                                                      //       Row(
-                                                      //         mainAxisAlignment: MainAxisAlignment.end,
-                                                      //         children: [
-                                                                Flexible(
-                                                                  child: Chip(
-                                                                    shape: StadiumBorder(
-                                                                        side: BorderSide(
-                                                                            color: HexColor(
-                                                                                "#6200EE"))),
-                                                                    backgroundColor:
-                                                                        HexColor(
-                                                                                "#6200EE")
-                                                                            .withOpacity(
-                                                                                0.1),
-                                                                    label: Text(
-                                                                      "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
-                                                                      //softWrap: true,
-                                                                      overflow: TextOverflow.ellipsis,
-                                                                      style: TextStyle(
-                                                                          color: HexColor(
-                                                                              "#6200EE"),
-                                                                          fontSize: 11,
-                                                                          fontFamily:
-                                                                              "Muli",
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .bold
-                                                                          //fontWeight: FontWeight.normal
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                      //         ],
-                                                      //       ),
-                                                      //
-                                                      // ),
+                                                      Flexible(
+                                                        child: Chip(
+                                                          shape: StadiumBorder(
+                                                              side: BorderSide(
+                                                                  color: HexColor(
+                                                                      "#6200EE"))),
+                                                          backgroundColor:
+                                                              HexColor(
+                                                                      "#6200EE")
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                          label: Text(
+                                                            "${_influencerListModel.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _influencerListModel.response.ilpInfluencerEntity[index].inflTypeText}",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                                color: HexColor(
+                                                                    "#6200EE"),
+                                                                fontSize: 11,
+                                                                fontFamily:
+                                                                    "Muli",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
@@ -391,22 +370,12 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                    // crossAxisAlignment:
-                                                    //     CrossAxisAlignment
-                                                    //         .baseline,
                                                     children: [
-                                                      //Expanded(
-                                                      // flex: 1,
-                                                      // child:
 
                                                       Text(
-                                                          "${(_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null || _influencerListModel.response.ilpInfluencerEntity[index].baseCity == "") ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}" ,
+                                                          "${(_influencerListModel.response.ilpInfluencerEntity[index].baseCity == null || _influencerListModel.response.ilpInfluencerEntity[index].baseCity == "") ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].baseCity}",
                                                           style: TextStyles
                                                               .formfieldLabelText),
-                                                      // ),
-                                                      // Expanded(
-                                                      // flex: 2,
-                                                      // child:
                                                       Chip(
                                                         shape: StadiumBorder(
                                                             side: BorderSide(
@@ -419,64 +388,75 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                             style: TextStyles
                                                                 .btnWhite),
                                                       ),
-                                                      // ),
                                                     ],
                                                   ),
                                                 ),
-                                                //  FittedBox(
-                                                //   child:
+
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left:
-                                                          2.sp,
-                                                      right: 2.sp),
+                                                      left: 2.sp, right: 2.sp),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
                                                       GestureDetector(
-                                                          onTap: (){
+                                                          onTap: () {
                                                             Get.to(
-                                                                    () => InfluencerNameList(influencerID:'${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}',influencerName:_influencerListModel.response.ilpInfluencerEntity[index].inflName),
-                                                                binding: InfBinding());
+                                                                () => InfluencerNameList(
+                                                                    influencerID:
+                                                                        '${_influencerListModel.response.ilpInfluencerEntity[index].membershipId}',
+                                                                    influencerName: _influencerListModel
+                                                                        .response
+                                                                        .ilpInfluencerEntity[
+                                                                            index]
+                                                                        .inflName),
+                                                                binding:
+                                                                    InfBinding());
                                                           },
                                                           child: Chip(
-                                                        shape: StadiumBorder(
-                                                            side: BorderSide(
-                                                                color: HexColor(
-                                                                    "#007CBF"))),
-                                                        backgroundColor:
-                                                            HexColor("#007CBF"),
-                                                        label: Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              3,
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                "A. SITE - ${_influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount}",
-                                                                style: TextStyle(
+                                                            shape: StadiumBorder(
+                                                                side: BorderSide(
                                                                     color: HexColor(
-                                                                        "#FFFFFFDE"),
-                                                                    fontSize: 11.sp,
-                                                                    fontFamily:
-                                                                        "Muli",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold
-                                                                    //fontWeight: FontWeight.normal
-                                                                    ),
+                                                                        "#007CBF"))),
+                                                            backgroundColor:
+                                                                HexColor(
+                                                                    "#007CBF"),
+                                                            label: Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  3,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    "A. SITE - ${_influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _influencerListModel.response.ilpInfluencerEntity[index].activeSitesCount}",
+                                                                    style: TextStyle(
+                                                                        color: HexColor(
+                                                                            "#FFFFFFDE"),
+                                                                        fontSize: 11
+                                                                            .sp,
+                                                                        fontFamily:
+                                                                            "Muli",
+                                                                        fontWeight:
+                                                                            FontWeight.bold
+                                                                        ),
+                                                                  ),
+                                                                  Icon(
+                                                                      Icons
+                                                                          .arrow_forward_ios,
+                                                                      color: HexColor(
+                                                                          "#FFFFFFDE"),
+                                                                      size:
+                                                                          11.sp)
+                                                                ],
                                                               ),
-                                                              Icon(Icons.arrow_forward_ios, color: HexColor(
-                                                                  "#FFFFFFDE"),size: 11.sp)
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )),
+                                                            ),
+                                                          )),
                                                       GestureDetector(
                                                         onTap: () {
                                                           Get.dialog(showContactDialog(
@@ -488,7 +468,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                         },
                                                         child: Text(
                                                             "Contact Info",
-                                                            // " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
 
                                                             style: TextStyles
                                                                 .contactTextStyle),
@@ -496,7 +475,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                     ],
                                                   ),
                                                 ),
-                                                //  )
                                               ],
                                             ),
                                           ),
@@ -524,7 +502,6 @@ class _InfluencerViewState extends State<InfluencerView> {
                   respMsg,
                   style: TextStyles.mulliBold16,
                 ),
-
                 IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
@@ -565,15 +542,11 @@ class _InfluencerViewState extends State<InfluencerView> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                // Expanded(
-                   //  child:
-                     Text(
+                Text(
                   "Address:",
                   style: TextStyles.formfieldLabelText,
-              //  )
-      ),
+                ),
                 SizedBox(width: 40.sp),
                 Expanded(
                     child: Text(
@@ -586,24 +559,20 @@ class _InfluencerViewState extends State<InfluencerView> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             // crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
-                // Expanded(
-                //     child:
-                    Text(
+
+                Text(
                   "Email:",
                   style: TextStyles.formfieldLabelText,
-              //  )
-      ),
+                ),
                 SizedBox(width: 40.sp),
                 Expanded(
-                    child:
-                    Text(email,
+                    child: Text(
+                  email,
                   maxLines: null,
                   textAlign: TextAlign.end,
                   style: TextStyles.formfieldLabelTextDark,
-                )
-                ),
+                )),
               ],
             )
           ],
@@ -612,44 +581,3 @@ class _InfluencerViewState extends State<InfluencerView> {
     );
   }
 }
-
-/*
-class _InfluencerViewState extends State<InfluencerView> {
-  Color _color= ColorConstants.backgroundColorBlue;
-  final random = Random();
-  Duration oneSec = const Duration(seconds:1);
-  changeColors(){
-    new Timer.periodic(oneSec, (Timer t) =>
-    setState(() {
-      _color = Color.fromRGBO(
-        random.nextInt(100),
-        random.nextInt(56),
-        random.nextInt(256),
-        0.1,
-      );
-    }));
-  }
-  @override
-  void initState() {
-    if(!this.mounted){
-      changeColors();
-    }
-    super.initState();
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: BackFloatingButton(),
-     body: AnimatedContainer(
-       height: MediaQuery.of(context).size.height,
-       width:MediaQuery.of(context).size.width,
-       color: Colors.white,
-       // color: _color,
-       child: Center(child: Text("Page coming soon",),),
-     duration: Duration(seconds: 4),curve: Curves.fastOutSlowIn,),
-    );
-  }
-
-}
-
- */

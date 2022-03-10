@@ -225,19 +225,18 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
                   ),
                 ),
                 Spacer(),
-                RaisedButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ColorConstants.buttonNormalColor,
+                  ),
                   onPressed: () {
-                    // setState(() {
                     Navigator.pop(context, siteList);
                     _siteController.isFilterApplied = true;
                     _siteController.offset = 0;
                     _siteController.sitesListResponse.sitesEntity = null;
                     _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-                    // _siteController.offset = 0;
-                    //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-                    // });
                   },
-                  color: ColorConstants.buttonNormalColor,
+
                   child: Text(
                     "APPLY",
                     style: TextStyle(color: Colors.white),
@@ -253,7 +252,6 @@ class _SiteFilterWidgetState extends State<SiteFilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-          // height: 50,
           color: (_siteController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,

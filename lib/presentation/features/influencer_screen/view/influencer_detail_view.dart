@@ -1,17 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
+import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
-import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
@@ -36,7 +31,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   final _addInfluencerFormKey = GlobalKey<FormState>();
   StateDistrictListModel _stateDistrictListModel;
 
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List();
+  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List.empty(growable: true);
   InfluencerTypeEntitiesList _influencerTypeEntitiesList;
 
   List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
@@ -45,21 +40,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   List<InfluencerSourceList> influencerSourceList = new List.empty(growable: true);
   InfluencerSourceList _influencerSourceList;
-
   List<SiteBrandList> siteBrandList = new List.empty(growable: true);
   SiteBrandList _siteBrandList;
-
-
-
-  //var _date = 'Date of Birth*';
   bool _qualificationVisible = false;
   int _influencerCategory;
   int _source;
   int _memberType, memberShipId;
-  String _selecedSource;
   String _selectedEnrollValue;
   bool checkedValue = false;
-
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
@@ -80,10 +68,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _primaryCounterController = TextEditingController();
   FocusNode myFocusNode;
-
-  //final ScrollController _scrollController = ScrollController();
-
-  // If Engineer Type
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
   int _preferredBrandId;
@@ -97,14 +81,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     myFocusNode = FocusNode();
     getEmpId();
     getData();
-    //getDistrictData();
-    // Future.delayed(const Duration(milliseconds: 300));
-    // SchedulerBinding.instance?.addPostFrameCallback((_) {
-    //   _scrollController.animateTo(
-    //       _scrollController.position.maxScrollExtent,
-    //       duration: const Duration(milliseconds: 400),
-    //       curve: Curves.fastOutSlowIn);
-    // });
+
   }
 
   Future getEmpId() async {
@@ -129,7 +106,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     setData();
                   }
                 });
-              //  print('RESPONSE, $data');
               })
             }
           else
@@ -142,30 +118,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
-/*
-  getDistrictData() {
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _infController.getDistList().then((data) {
-                setState(() {
-                  if (data != null) {
-                    _stateDistrictListModel = data;
-                  }
-                });
-              })
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
-  }
-*/
   setData() {
     if (_influencerDetailDataModel != null ||
         _influencerDetailDataModel.response != null ||
@@ -269,9 +221,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         }
       } else {}
 
-      // districtId = _data.districtId;
-      // stateName = _data.stateName;
-      // stateId = _data.stateId;
       _designationController.text = _data.designation;
       _departmentNameController.text = _data.departmentName;
       _preferredBrandId=_influencerDetailDataModel.response.influencerDetails.preferredBrandId;
@@ -479,20 +428,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final memberDropDwn = DropdownButtonFormField<InfluencerTypeEntitiesList>(
       value: _influencerTypeEntitiesList,
-      // onChanged: (value) {
-      //   setState(() {
-      //     _influencerTypeEntitiesList = value;
-      //     _memberType = _influencerTypeEntitiesList.inflTypeId;
-      //     print(_memberType.toString());
-      //     if (_memberType == 2 || _memberType == 3 || _memberType == 4
-      //         //_memberType == 'Structural Consultant'
-      //         ) {
-      //       _qualificationVisible = true;
-      //     } else {
-      //       _qualificationVisible = false;
-      //     }
-      //   });
-      // },
       items: (_influencerDetailDataModel == null ||
               _influencerTypeEntitiesList == null)
           ? []
@@ -611,12 +546,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final totalPotential = TextFormField(
       controller: _totalPotentialController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter Total Monthly Potential (MT)';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: FormFieldStyle.buildInputDecoration(
@@ -627,12 +556,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final potentialSite = TextFormField(
       controller: _potentialSiteController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter Potential sites';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -642,12 +565,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final sourceDropDwn = DropdownButtonFormField<InfluencerSourceList>(
       value: _influencerSourceList,
-      // onChanged: (value) {
-      //   setState(() {
-      //     _influencerSourceList = value;
-      //     _source = _influencerSourceList.inflSourceId;
-      //   });
-      // },
       items:
           (_influencerDetailDataModel == null || influencerSourceList == null)
               ? []
@@ -659,18 +576,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
-      // validator: (value) => value == null ? 'Please select Source' : null,
     );
 
     final influencerCategoryDropDwn =
         DropdownButtonFormField<InfluencerCategoryEntitiesList>(
       value: _influencerCategoryEntitiesList,
-      // onChanged: (value) {
-      //   setState(() {
-      //     _influencerCategoryEntitiesList = value;
-      //     _influencerCategory = _influencerCategoryEntitiesList.inflCatId;
-      //   });
-      // },
       items: (_influencerDetailDataModel == null ||
               influencerCategoryEntitiesList == null)
           ? []
@@ -683,37 +593,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Influencer Category"),
-      // validator: (value) =>
-      //     value == null ? 'Please select Influencer Category' : null,
     );
-/*
-    final btnSubmit = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        RaisedButton(
-          color: ColorConstants.btnBlue,
-          child: Text(
-            "UPDATE",
-            style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: 15.sp),
-          ),
-          onPressed: () {
-            setState(() {
-              if (_addInfluencerFormKey.currentState.validate()) {
-                _addInfluencerFormKey.currentState.save();
-                btnUpdatePresssed();
-              }
-            });
-          },
-        ),
-      ],
-    );
-*/
+
     Widget engineersFields() {
       return _memberType == 7
           ? Column(
@@ -822,11 +703,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                         ),
                       ],
                     ),
-                    // decoration: BoxDecoration(
-                    //     border: Border(bottom: BorderSide(width: 0.3))),
                   ),
-                  //   ],
-                  // ),
+
                   SizedBox(height: 8.sp),
                   Divider(
                     height: 1.sp,
@@ -873,8 +751,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               pincode,
                               SizedBox(height: _height),
-                              // memberDropDwn,
-                              // SizedBox(height: _height),
                               engineersFields(),
                               SizedBox(height: _height),
                               birthDate,
@@ -910,8 +786,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                               SizedBox(height: _height),
                               sourceDropDwn,
                               SizedBox(height: _height),
-                              // btnSubmit,
-                              // SizedBox(height: _height),
                             ]),
                       )),
                 ])
@@ -921,21 +795,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         ],
       ),
     );
-  }
-
-  Future _selectBirthDate() async {
-    DateTime _picked = await showDatePicker(
-        context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(1950),
-        lastDate: new DateTime.now());
-    setState(() {
-      var _date;
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
-      _dateController.text = _date;
-
-      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-    });
   }
 
   Future _selectMarriageAnniversaryDate() async {
@@ -948,167 +807,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       var _date;
       _date = new DateFormat('yyyy-MM-dd').format(_picked);
       _dateMarriageAnnController.text = _date;
-      // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
     });
   }
 
-  // Future _selectEnrollmentDate() async {
-  //   DateTime _picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: new DateTime.now(),
-  //       firstDate: new DateTime(1950),
-  //       lastDate: new DateTime.now());
-  //   setState(() {
-  //     _date = new DateFormat('dd-MM-yyyy').format(_picked);
-  //     // var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
-  //   });
-  // }
-/*
-  String stateName;
-  int stateId, districtId;
-
-  districtList() {
-    List<StateDistrictList> dist =
-        _stateDistrictListModel.response.stateDistrictList;
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) => Container(
-        color: Colors.white,
-        height: 300,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Please select district from the below list',
-              style: TextStyles.mulliBoldYellow18,
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextFormField(
-                controller: _query,
-                onChanged: (value) {
-                  setState(() {
-                    dist = _stateDistrictListModel.response.stateDistrictList
-                        .where((element) {
-                      return element.districtName
-                          .toString()
-                          .toLowerCase()
-                          .contains(value);
-                    }).toList();
-                  });
-                },
-                decoration: FormFieldStyle.buildInputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    ),
-                    labelText: 'Search'),
-              ),
-            ),
-            Divider(),
-            _stateDistrictListModel.response.stateDistrictList == null ||
-                    _stateDistrictListModel.response.stateDistrictList.isEmpty
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Expanded(
-                    child: ListView(
-                      children: dist
-                          //_stateDistrictListModel.response.stateDistrictList
-                          .map(
-                            (e) => RadioListTile(
-                                value: e,
-                                title:
-                                    Text('${e.districtName} (${e.stateName})'),
-                                // groupValue: customer,
-                                onChanged: (text) {
-                                  setState(() {
-                                    _districtController.text =
-                                        text.districtName;
-                                    stateName = text.stateName;
-                                    stateId = text.stateId;
-                                    districtId = text.districtId;
-                                    // customer = text;
-                                  });
-                                  Get.back();
-                                }),
-                          )
-                          .toList(),
-                      shrinkWrap: true,
-                    ),
-                  ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  btnUpdatePresssed() async {
-    String empId = await getEmpId();
-    InfluencerRequestModel _influencerRequestModel =
-        InfluencerRequestModel.fromJson({
-      "membershipId": memberShipId,
-      "baseCity": _baseCityController.text,
-      "createBy": empId,
-      "dealership": "N",
-      "districtId": districtId,
-      "districtName": _districtController.text,
-      "email": _emailController.text,
-      "fatherName": _fatherNameController.text,
-      "giftAddress": _giftAddressController.text,
-      "giftAddressDistrict": _giftDistrictController.text,
-      "giftAddressPincode": _giftPincodeController.text,
-      "giftAddressState": _giftStateController.text,
-      "ilpRegFlag": _selectedEnrollValue,
-      "inflAddress": "",
-      "inflCategoryId": _influencerCategory,
-      "inflContactNumber": _contactNumberController.text,
-      "inflDob":
-          _dateController.text == "Birth Date" ? "" : _dateController.text,
-      "inflEnrollmentSourceId": _source,
-      "inflJoiningDate": _enrollmentDateController.text,
-      "inflName": _nameController.text,
-      "inflQualification": _qualificationController.text,
-      "inflTypeId": _memberType,
-      "isActive": "Y",
-      "loyaltyLinkage": "test",
-      "monthlyPotentialVolumeMT": int.tryParse(_totalPotentialController.text),
-      "pinCode": _pincodeController.text,
-      "siteAssignedCount": int.tryParse(_potentialSiteController.text),
-      "stateId": stateId,
-      "stateName": stateName,
-      "taluka": _talukaController.text,
-
-      "designation": _designationController.text,
-      "departmentName": _departmentNameController.text,
-      "preferredBrandId": _preferredBrandId,
-      "dateOfMarriageAnniversary": _dateMarriageAnnController.text,
-      "firmName": _firmNameController.text
-    });
-
-    print('PARAMS: ${json.encode(_influencerRequestModel)}');
-
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _infController.getAccessKeyAndSaveInfluencer(
-                  _influencerRequestModel, true)
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
-  }
-
- */
 }

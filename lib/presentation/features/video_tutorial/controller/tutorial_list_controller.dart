@@ -38,13 +38,10 @@ class TutorialListController extends GetxController{
 
   Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey) async {
     String userSecurityKey = "";
-    // String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      // empID = prefs.getString(StringConstants.employeeId);
       tutorialListData = await repository.getAppTutorialListData(accessKey,userSecurityKey);
-      //print(tutorialListData);
     });
     return tutorialListData;
   }

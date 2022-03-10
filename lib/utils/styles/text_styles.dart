@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-abstract class TextStyles {
+class TextStyles {
   static TextStyle formfieldLabelText = TextStyle(
       fontFamily: "Muli",
       color: ColorConstants.inputBoxHintColorDark,
@@ -49,10 +49,8 @@ abstract class TextStyles {
       fontSize: 18,
       fontWeight: FontWeight.bold);
 
-  static TextStyle muliBold25 = TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
-          fontFamily: "Muli");
+  static TextStyle muliBold25 =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 25, fontFamily: "Muli");
 
   static TextStyle mulliBoldBlue = TextStyle(
       color: ColorConstants.darkBlue,
@@ -125,7 +123,7 @@ abstract class TextStyles {
       color: ColorConstants.greenTitle,
       fontWeight: FontWeight.bold,
       fontSize: ScreenUtil().setSp(20));
-  
+
   static TextStyle btnWhite = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
@@ -134,15 +132,12 @@ abstract class TextStyles {
   static TextStyle btnBlue = TextStyle(
       color: ColorConstants.btnBlue,
       fontWeight: FontWeight.bold,
-      fontSize: ScreenUtil().setSp(15)
-  );
+      fontSize: ScreenUtil().setSp(15));
 
   static TextStyle btnOrange = TextStyle(
       color: ColorConstants.btnOrange,
       fontWeight: FontWeight.bold,
-      fontSize: ScreenUtil().setSp(15)
-  );
-
+      fontSize: ScreenUtil().setSp(15));
 
   static TextStyle mulliRegular14Italic = TextStyle(
       color: Colors.blueAccent,
@@ -164,6 +159,15 @@ abstract class TextStyles {
       fontWeight: FontWeight.bold,
       fontSize: ScreenUtil().setSp(17));
 
-
+  static Padding mandatoryText = Padding(
+    padding: const EdgeInsets.only(left: 15),
+    child: Text(
+      "Mandatory",
+      style: TextStyle(
+        fontFamily: "Muli",
+        color: ColorConstants.inputBoxHintColorDark,
+        fontWeight: FontWeight.normal,
+      ),
+    ),
+  );
 }
-

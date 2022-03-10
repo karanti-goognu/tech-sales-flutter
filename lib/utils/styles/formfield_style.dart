@@ -3,7 +3,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 
-abstract class FormFieldStyle {
+class FormFieldStyle {
   static TextStyle formFieldTextStyle = TextStyle(
       fontSize: 18,
       color: ColorConstants.inputBoxHintColor,

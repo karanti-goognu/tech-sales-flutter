@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/view/r
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 
 class NotificationRoutes {
@@ -15,9 +16,8 @@ class NotificationRoutes {
 
   static navigateAfterResponse(
       {@required String screenName, Map<String, dynamic> payloadData}) {
-    /*need to add firebase */
-    print("navigateAfterResponse   $screenName");
-    print("payloadData   $payloadData");
+    TsoLogger.printLog("navigateAfterResponse   $screenName");
+    TsoLogger.printLog("payloadData   $payloadData");
     switch (screenName) {
       case StringConstants.SITE_LIST:
         Get.toNamed(Routes.SITES_SCREEN);
@@ -144,9 +144,6 @@ class NotificationRoutes {
     }
   }
 
-// static landingPushNavigation({LandingController landingController, String screenName}) {
-//   landingController.viewContentWidget(screenName);
-// }
 
 }
 

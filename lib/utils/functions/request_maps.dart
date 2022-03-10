@@ -37,7 +37,7 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String accessKey , S
   return requestHeaders;
 }
 
-Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(String accessKey , String userSecurityKey, String version) {
+Map<String, String> headersWithAccessAndSecretWithoutContent(String accessKey , String userSecurityKey, String version) {
 
   Map<String, String> requestHeaders = new Map();
   requestHeaders = {
@@ -49,7 +49,7 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKeywithoutContentType(St
   return requestHeaders;
 }
 
-Map<String, String> requestHeadersWithAccessKeyAndSecretKeyAndReferenceId(String accessKey , String userSecurityKey, String version, String refernceId) {
+Map<String, String> requestHeadersWithAccessSecretAndReferenceId(String accessKey , String userSecurityKey, String version, String refernceId) {
   Map<String, String> requestHeaders = new Map();
   requestHeaders = {
     'Content-type': 'application/json',

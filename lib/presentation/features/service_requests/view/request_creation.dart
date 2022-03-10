@@ -18,10 +18,10 @@ import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
 class RequestCreation extends StatefulWidget {
@@ -869,7 +869,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                       .add(element.complaintSeverity);
                                 });
                               });
-                              //   print(selectedRequestSubtypeSeverity);
 
                               checkedValues[index] = newValue;
                               // dataToBeSentBack = requestSubtype[index];
@@ -916,8 +915,6 @@ class _RequestCreationState extends State<RequestCreation> {
                         setState(() {
                           _severity.text = 'LOW';
                         });
-                      } else {
-                        //  print('No request sub type selected');
                       }
                       Get.back();
                     },

@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateServiceRequestController extends GetxController {
 
-  List<File> imageList = List<File>();
+  List<File> imageList = List<File>.empty(growable: true);
 
   String id;
   ComplaintViewModel complaintViewModel;
@@ -24,13 +24,9 @@ class UpdateServiceRequestController extends GetxController {
     update();
   }
 
-  // List<File> get imageList => _imageList;
-
    updateImageList(File value) {
     if(value!=null) {
       imageList.add(value);
-      // print(imageList.length);
-      // print(":::::::::::::::");
       update();
     }
   }
@@ -38,35 +34,26 @@ class UpdateServiceRequestController extends GetxController {
   updateImageAfterDelete(int index) {
     if(index!=null && index>=0) {
       imageList.removeAt(index);
-      // print(imageList.length);
-      // print(":::::::::::::::");
       update();
     }
   }
 
   @override
   void onInit() {
-
     super.onInit();
   }
 
   @override
   void onClose(){
-   //  print("onClose called");
     imageList.clear();
     super.dispose();
   }
 
-
-  //*****
   final _complaintListData = ComplaintViewModel().obs;
-
   get complaintListData => _complaintListData.value;
-
   set complaintListData(value) {
     _complaintListData.value = value;
   }
-//*****
 
   final SrRepository repository;
   /// Request Update Details
@@ -93,15 +80,12 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController formwarkRemovalDate = TextEditingController();
 
 
-
-
   UpdateServiceRequestController({@required this.repository})
       : assert(repository != null);
   final _updateRequestData = UpdateSRModel().obs;
   get updateRequestData => _updateRequestData.value;
   set updateRequestData(value) => _updateRequestData.value = value;
   bool responseReceived = false;
-  // List<File> imageList = List<File>();
 
   Future<AccessKeyModel> getAccessKey() {
     return repository.getAccessKey();
@@ -117,30 +101,20 @@ class UpdateServiceRequestController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) async {
-      // Get.back();
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         updateServiceRequest(
                 imageList, data.accessKey, userSecurityKey, updateRequestModel)
             .then((value) {
           Get.back();
-          // if(value['resp-code']=='SRC2035'){
-          // Get.defaultDialog(title:"Message",
-          //   middleText: value['resp-msg'].toString(),
-          //   confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
-          // );
-          // } else{
           Get.defaultDialog(
             title: "Message",
             middleText: value['resp-msg'].toString(),
             barrierDismissible: false,
-            // confirm: MaterialButton(onPressed: ()=>Get.back(),child: Text('OK'),),
-
             confirm: MaterialButton(
               onPressed: () {
                   Get.back();
                   Get.offAll(() => HomeScreen(), binding: HomeScreenBinding());
-                  // Get.offAll(HomeScreen());
                   },
               child: Text('OK'),
             ),
@@ -158,7 +132,6 @@ class UpdateServiceRequestController extends GetxController {
   }
 
 
-  //*****
   Future getRequestUpdateDetailsData(String accessKey) async {
     String userSecurityKey = "";
     String empID = "";
@@ -172,6 +145,5 @@ class UpdateServiceRequestController extends GetxController {
 
      return complaintListData;
   }
-//*****
 
 }

@@ -52,8 +52,6 @@ class BottomNavigator extends StatelessWidget {
               ],
             ),
 
-            // Right Tab bar icons
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -88,7 +86,6 @@ class BottomNavigator extends StatelessWidget {
                 MaterialButton(
                   minWidth: 40,
                   onPressed: () {
-                    // Get.back();
                     searchType=='event'?Get.to(()=>EventSearch()):
                     searchType == "influencer"?Get.to(()=>InfluencerSearch()):
 
@@ -159,8 +156,6 @@ class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
                 ),
               ],
             ),
-
-            // Right Tab bar icons
           ],
         ),
       ),

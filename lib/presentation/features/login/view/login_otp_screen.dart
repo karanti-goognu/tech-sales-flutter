@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
@@ -18,11 +17,8 @@ class LoginOtpScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return LoginOtpScreenPageState(this.mobileNumber);
   }
-
-  // In the constructor, require a Todo.
   LoginOtpScreen({Key key, this.mobileNumber}) : super(key: key);
 }
 
@@ -37,18 +33,14 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
 
   Timer _timer;
- // int _start = 180;
   int _start = 360;
-  //int _startInitial = 180;
   int _startInitial = 360;
   bool retryOtp = false;
-
   bool _isButtonDisabled;
 
   void startTimer() {
     if (_loginController != null) {
       LoginModel loginModel = _loginController.loginResponse;
-      print('Time is :: ${jsonEncode(loginModel)}');
       try {
         _startInitial = int.parse(loginModel.otpRetrySmsTime);
         _start = _startInitial ~/ 1000;
@@ -88,7 +80,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     super.initState();
     _isButtonDisabled = false;
     _focusNode = FocusNode();
-    //isUserLoggedIn = _loginController.getSharedPreference(StringConstants.isUserLoggedIn) as String?? "false";
     startTimer();
   }
 
@@ -99,7 +90,7 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-          resizeToAvoidBottomInset: true, //
+          resizeToAvoidBottomInset: true,
           backgroundColor: ColorConstants.backgroundColor,
           body: SingleChildScrollView(
             child: _buildLoginInterface(context),
@@ -115,11 +106,10 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
 
   Widget _buildLoginInterface(BuildContext context) {
     SizeConfig().init(context);
-    var secToMin = Duration(seconds: _start).inMinutes; // 2 mins
+    var secToMin = Duration(seconds: _start).inMinutes;
     var sec = _start % 60;
     var timeFormat = secToMin.toString() + ":" + sec.toString();
 
-    // var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Padding(
         padding: EdgeInsets.all(16),
@@ -239,10 +229,10 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                       ),
                       Expanded(
                         child: Container(
-                            child: RaisedButton(
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
                               elevation: 4,
-                              color: ColorConstants.buttonNormalColor,
-                              highlightColor: ColorConstants.buttonPressedColor,
+                              primary: ColorConstants.buttonNormalColor,),
                               onPressed: () {
                                 if(!_isButtonDisabled) {
                                   if (_formKey.currentState.validate()) {
@@ -336,8 +326,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
               snackPosition: SnackPosition.BOTTOM),
         }
     });
-    // (connectivityString == 'Offline') ? _loginController.showNoInternetSnack() : _loginController.getAccessKey(RequestIds.RETRY_OTP_REQUEST);
-    /*_loginController.loginResponse*/
   }
 
   void afterValidateRequest(String otpCode) {
@@ -359,11 +347,9 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
               colorText: Colors.white,
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
         }
     });
 
-    // (connectivityString == 'Offline') ? _loginController.showNoInternetSnack() : _loginController.getAccessKey(RequestIds.VALIDATE_OTP_REQUEST);
   }
 
   LoginOtpScreenPageState(this.mobileNumber);

@@ -15,10 +15,8 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
 
   Future<Database> get db async {
     if (_database != null) {
-      print("mko 1");
       return _database;
     }
-    print("mko 2");
     _database = await init();
 
     return _database;
@@ -31,7 +29,7 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
 
     Database database = await openDatabase(dbPath, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
+          /// When creating the db, create the table
           await db.execute('CREATE TABLE siteFloor (id INTEGER PRIMARY KEY AUTOINCREMENT, siteFloorEntity TEXT)');
         });
     return database;
@@ -51,8 +49,6 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
     client.query('siteFloor', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
       return SiteFloorEntityForDB.fromDb(maps.first);
     }
     return null;

@@ -11,11 +11,6 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
   String signature = "{{ app signature }}";
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     SmsAutoFill().unregisterListener();
     super.dispose();
@@ -26,8 +21,7 @@ class _ReadOtpScreenPageState extends State<ReadOtpScreen> {
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(
-          resizeToAvoidBottomInset:false,
-        // resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset:false,
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -21,7 +22,7 @@ class DataBaseProvider extends Model {
 
 
   DataBaseProvider() {
-    // Create DB Instance & Create Table
+    /// Create DB Instance & Create Table
     initDatabase();
   }
 
@@ -40,7 +41,7 @@ class DataBaseProvider extends Model {
       var databasesPath = await getDatabasesPath();
       String dbPath = join(databasesPath, 'database.db');
       await openDatabase(dbPath, version: 1, onCreate: (Database db, int version) async {
-            // When creating the db, create the table
+            /// When creating the db, create the table
             this._db = db;
             this.createTable();
       });
@@ -53,21 +54,17 @@ class DataBaseProvider extends Model {
     try {
       var qry = 'CREATE TABLE IF NOT EXISTS siteList (id INTEGER PRIMARY KEY AUTOINCREMENT, siteId INTEGER, leadId INTEGER, siteSegment TEXT, assignedTo TEXT, siteStatusId INTEGER, siteOppertunityId INTEGER, siteStageId INTEGER, contactName TEXT, contactNumber TEXT, siteCreationDate TEXT, siteGeotag TEXT, siteGeotagLat TEXT, siteGeotagLong TEXT, sitePincode TEXT, siteState TEXT, siteDistrict TEXT, siteTaluk TEXT, siteScore DOUBLE, sitePotentialMt TEXT, reraNumber TEXT, dealerId TEXT, siteBuiltArea TEXT, noOfFloors INTEGER, productDemo TEXT, productOralBriefing TEXT, soCode TEXT, plotNumber TEXT, inactiveReasonText TEXT, nextVisitDate TEXT, closureReasonText TEXT, createdBy TEXT,  createdOn INTEGER, updatedBy TEXT, updatedOn INTEGER)';
       await this._db.execute(qry);
-
       await _db.execute('CREATE TABLE draftLead (id INTEGER PRIMARY KEY AUTOINCREMENT, leadModel TEXT)');
       await _db.execute('CREATE TABLE brandName (id INTEGER , brandName TEXT , productName TEXT)');
       await _db.execute('CREATE TABLE counterListDealers (id TEXT, dealerName TEXT)');
     } catch (e) {
-      print("ERRR ^^^");
-      print(e);
+      TsoLogger.printLog(e);
     }
   }
 
 
     filterSiteEntityList(String appendQuery,String whereArgs) async {
-
     var res = await _db.rawQuery('SELECT * FROM siteList WHERE $appendQuery', [whereArgs]);
-    print("sadsad  "+res.toString());
     _list = res.isNotEmpty ? res.map((c) => SitesEntity.fromJson(c)).toList() : [];
     notifyListeners();
   }

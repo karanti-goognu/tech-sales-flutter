@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:async/async.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardYearlyViewModel.dart';
@@ -47,9 +45,10 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       String url = UrlConstants.shareReport+empID;
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(url));
-      request.headers.addAll(requestHeadersWithAccessKeyAndSecretKeywithoutContentType(accessKey, userSecurityKey,version));
+      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey,version));
       String fileName = image.path.split("/").last;
-      var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+      var stream = new http.ByteStream(image.openRead());
+      stream.cast();
       var length = await image.length();
       var multipartFileSign =new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
@@ -62,7 +61,7 @@ class MyApiClientDashboard {
                  data["resp_msg"]), barrierDismissible: false);
            }
            //else {
-           Get.snackbar('Note', data['resp-msg'].toString(),backgroundColor: ColorConstants.checkinColor);
+           Get.snackbar('Note', data['resp-msg'].toString(),backgroundColor: ColorConstants.checkInColor);
            return data;
         });
           });

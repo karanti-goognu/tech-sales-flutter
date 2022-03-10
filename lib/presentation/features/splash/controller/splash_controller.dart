@@ -124,10 +124,9 @@ class SplashController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
+      // String encryptedEmpId =
+      // encryptString(empId, StringConstants.encryptedKey).toString();
 
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.refreshSplashData}$empId";
       await repository
           .getRefreshData(url, accessKey, userSecurityKey)
@@ -136,11 +135,8 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
-          // log('data: ${json.encode(this.splashDataModel)}');
-          // print('VERSION: ${this.splashDataModel.versionUpdateModel}');
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
           if (versionUpdateModel != null && versionUpdateModel.length > 0) {
-            //print("In If");
             for (int i = 0; i < versionUpdateModel.length; i++) {
               if (versionUpdateModel[i].platform == "ANDROID") {
                 if (versionUpdateModel[i].oldVersion !=

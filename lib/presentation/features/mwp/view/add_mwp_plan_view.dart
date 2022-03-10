@@ -475,6 +475,8 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
 
 /*
   @override
+=======
+>>>>>>> 88ca01f338712038aae7390a805d4097fc6f2cb2
   Widget build(BuildContext context) {
 
     List<String> mwpNames = [
@@ -508,6 +510,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       "23 ILP Volume"
     ];
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 88ca01f338712038aae7390a805d4097fc6f2cb2
     List<AddMwpModel> mwpPlanList = new List.empty(growable: true);
     for (int i = 0; i < mwpNames.length; i++) {
       mwpPlanList.add(
@@ -671,10 +677,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnApprovedRow() {
-    return RaisedButton(
-        color: Colors.orange,
-        highlightColor: ColorConstants.buttonPressedColor,
-        onPressed: () {},
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+        primary: Colors.orange,
+        ),        onPressed: () {},
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
           child: Text(
@@ -746,10 +752,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
           width: 4,
         ),
         Flexible(
-          child: RaisedButton(
-            color: ColorConstants.buttonNormalColor,
-            highlightColor: ColorConstants.buttonPressedColor,
-            onPressed: () {
+          child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+    ),            onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
               internetChecking().then((result) => {
@@ -786,10 +792,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: RaisedButton(
-            color: ColorConstants.buttonNormalColor,
-            highlightColor: ColorConstants.buttonPressedColor,
-            onPressed: () {
+          child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+    ),            onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
               internetChecking().then((result) => {

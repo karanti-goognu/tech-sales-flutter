@@ -111,12 +111,8 @@ class _SitePastStageHistoryWidgetState
                                 DateTime.fromMillisecondsSinceEpoch(
                                     siteStageHistories[index].createdOn));
 
-                            // String constructionDateString = siteStageHistories[index].constructionDate;
-
                             if (!siteStageHistories[index].isExpanded) {
                               return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -125,7 +121,6 @@ class _SitePastStageHistoryWidgetState
                                       Text(
                                         "Visit Date:" + selectedDateString,
                                         style: TextStyle(
-                                            //      fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       siteStageHistories[index].isExpanded
@@ -140,7 +135,6 @@ class _SitePastStageHistoryWidgetState
                                                 style: TextStyle(
                                                     color: HexColor("#F9A61A"),
                                                     fontWeight: FontWeight.bold,
-                                                    // letterSpacing: 2,
                                                     fontSize: 17),
                                               ),
                                               onPressed: () {
@@ -150,7 +144,6 @@ class _SitePastStageHistoryWidgetState
                                                       !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
-                                                // _getCurrentLocation();
                                               },
                                             )
                                           : TextButton.icon(
@@ -164,7 +157,6 @@ class _SitePastStageHistoryWidgetState
                                                 style: TextStyle(
                                                     color: HexColor("#F9A61A"),
                                                     fontWeight: FontWeight.bold,
-                                                    // letterSpacing: 2,
                                                     fontSize: 17),
                                               ),
                                               onPressed: () {
@@ -182,8 +174,6 @@ class _SitePastStageHistoryWidgetState
                               );
                             } else {
                               return Column(
-                                // mainAxisAlignment:
-                                // MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -192,7 +182,6 @@ class _SitePastStageHistoryWidgetState
                                       Text(
                                         "Visit Date:" + selectedDateString,
                                         style: TextStyle(
-                                            //fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       siteStageHistories[index].isExpanded
@@ -207,7 +196,6 @@ class _SitePastStageHistoryWidgetState
                                                 style: TextStyle(
                                                     color: HexColor("#F9A61A"),
                                                     fontWeight: FontWeight.bold,
-                                                    // letterSpacing: 2,
                                                     fontSize: 17),
                                               ),
                                               onPressed: () {
@@ -217,7 +205,6 @@ class _SitePastStageHistoryWidgetState
                                                       !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
-                                                // _getCurrentLocation();
                                               },
                                             )
                                           : TextButton.icon(
@@ -231,7 +218,6 @@ class _SitePastStageHistoryWidgetState
                                                 style: TextStyle(
                                                     color: HexColor("#F9A61A"),
                                                     fontWeight: FontWeight.bold,
-                                                    // letterSpacing: 2,
                                                     fontSize: 17),
                                               ),
                                               onPressed: () {
@@ -241,7 +227,6 @@ class _SitePastStageHistoryWidgetState
                                                       !siteStageHistories[index]
                                                           .isExpanded;
                                                 });
-                                                // _getCurrentLocation();
                                               },
                                             ),
                                     ],
@@ -415,7 +400,6 @@ class _SitePastStageHistoryWidgetState
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            // color: HexColor("#000000DE"),
             fontFamily: "Muli"),
       ),
       expanded: Container(
@@ -501,33 +485,7 @@ class _SitePastStageHistoryWidgetState
                     labelText: "Product Sold",
                   ),
                 ),
-                SizedBox(height: 12),
-                // TextFormField(
-                //   readOnly: true,
-                //   initialValue:GlobalMethods.dealerValue(
-                //       counterListModel, siteSupplyHistory.soldToParty),
-                //   style: TextStyle(
-                //       fontSize: 18,
-                //       color: ColorConstants.inputBoxHintColor,
-                //       fontFamily: "Muli"),
-                //   keyboardType: TextInputType.text,
-                //   decoration: FormFieldStyle.buildInputDecoration(
-                //     labelText: "Dealer",
-                //   ),
-                // ),
-                SizedBox(height: 16),
-                // TextFormField(
-                //   readOnly: true,
-                //   initialValue: GlobalMethods.subDealerValue(
-                //       counterListModel, siteSupplyHistory.shipToParty),
-                //   style: TextStyle(
-                //       fontSize: 18,
-                //       color: ColorConstants.inputBoxHintColor,
-                //       fontFamily: "Muli"),
-                //   keyboardType: TextInputType.text,
-                //   decoration: FormFieldStyle.buildInputDecoration(
-                //     labelText: "Sub-Dealer",
-                //   ),
+                SizedBox(height: 28),
                   TextFormField(
                     readOnly: true,
                     initialValue: GlobalMethods.subDealerValue(
@@ -591,7 +549,6 @@ class _SitePastStageHistoryWidgetState
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
-                    // color: HexColor("#000000DE"),
                     fontFamily: "Muli"),
               )),
         ],

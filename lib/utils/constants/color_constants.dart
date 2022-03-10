@@ -4,32 +4,25 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 
 abstract class ColorConstants {
 
-  //Hex Color
+  ///Hex Color
   static Color appBarColor = HexColor("#002A64");
   static Color backgroundColorBlue = HexColor("#0054A6");
   static Color backgroundColorGrey = HexColor("#F1F1F1");
   static Color backgroundColor = HexColor("#FFFFFF");
   static Color blackColor = HexColor("#2B2828");
   static Color lightBlackBorderColor = HexColor("#00001F");
-  static Color checkinColor = HexColor("#8DC63F");
+  static Color checkInColor = HexColor("#8DC63F");
   static Color darkBlue = HexColor('#0054A6');
   static Color cancelRed = HexColor('#B00020');
   static Color btnBlue = HexColor('#1C99D4');
   static Color greenTitle = HexColor('#006838');
   static Color btnOrange = HexColor("#F9A61A");
-
-
-  ///events and gifts
   static Color eventApproved = HexColor('#39B54A');
   static Color eventPending = HexColor('#F9A61A');
   static Color eventRejected = HexColor('#B00020');
   static Color eventCancelled = HexColor('#B00020');
   static Color eventCompleted = HexColor('#39B54A');
   static Color eventNotSubmited = HexColor('#808080');
-
-
-
-  //Color Constants
   static Color inputBoxHintColor = const Color(0x00000000).withOpacity(0.8);
   static Color inputBoxBorderSideColor = const Color(0xFF000000).withOpacity(0.4);
   static Color inputBoxHintColorDark = const Color(0x00000000).withOpacity(0.6);

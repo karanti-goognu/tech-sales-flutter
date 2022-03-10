@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -224,8 +223,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+    ElevatedButton(
+    style: ElevatedButton.styleFrom(          primary: ColorConstants.btnBlue,),
           child: Text(
             "UPDATE",
             style:
@@ -240,8 +239,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             updateBtnPressed();
           },
         ),
-        RaisedButton(
-          color: ColorConstants.btnBlue,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(          primary: ColorConstants.btnBlue,),
           child: Text(
             "ADD LEAD",
             style:
@@ -496,11 +495,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RaisedButton(
-                      color: HexColor('#1C99D4'),
-                      disabledColor: Colors.grey,
+                ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: HexColor('#1C99D4'),
+                ),
                       onPressed: () {
-//print("Add");
                         if (_isButtonDisabled == true) {
                           setState(() {
                             selectedInfModels.add(EventInfluencerModelList(
@@ -952,7 +951,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   //  : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId == dealers[index].dealerId
+                  return dealerId.toString() == dealers[index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),

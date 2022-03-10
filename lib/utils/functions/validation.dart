@@ -1,6 +1,5 @@
 class Validations{
   static bool isValidPhoneNumber(String string) {
-    // Null or empty string is invalid phone number
     if (string == null || string.isEmpty || string.length != 10) {
       return false;
     }
@@ -13,18 +12,6 @@ class Validations{
     return true;
   }
 
-  // static String validateMobile(String value) {
-  //   String pattern = r'(^[5-9]{1}[0-9]{9}$)';
-  //   RegExp regExp = new RegExp(pattern);
-  //   if (value.length == 0) {
-  //     return 'Please enter mobile number';
-  //   }else if (value.length!=10) {
-  //     return 'Mobile number must be of 10 digit';
-  //   } else if (!regExp.hasMatch(value)) {
-  //     return 'Please enter valid mobile number';
-  //   }
-  //   return "Valid mobile number";
-  // }
 
   static bool isEmail(String em) {
     if (em.isEmpty) return false;

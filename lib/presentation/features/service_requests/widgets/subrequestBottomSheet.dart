@@ -20,7 +20,6 @@ class SRRequestSubTypeBottomSheet extends StatefulWidget {
 class _SRRequestSubTypeBottomSheetState
     extends State<SRRequestSubTypeBottomSheet> {
   List<bool> checkedValues;
-  // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
   ServiceRequestComplaintTypeEntity dataToBeSentBack;
   List<ServiceRequestComplaintTypeEntity> requestSubtype;
   TextEditingController _query = TextEditingController();
@@ -28,7 +27,6 @@ class _SRRequestSubTypeBottomSheetState
   @override
   void initState() {
     requestSubtype = widget.srComplaintModel.serviceRequestComplaintTypeEntity;
-    // print(resultsOnScreen[0].serviceRequestTypeText);
     setState(() {
       checkedValues = List.generate(
           widget.srComplaintModel.serviceRequestComplaintTypeEntity.length,
@@ -90,12 +88,10 @@ class _SRRequestSubTypeBottomSheetState
                             .serviceRequestTypeText),
                         value: checkedValues[index],
                         onChanged: (newValue) {
-                          // if (widget.isComplaint==false) {
                           if (!checkedValues.contains(true) ||
                               checkedValues[index] == true) {
                             setState(() {
                               checkedValues[index] = newValue;
-                              // dataToBeSentBack.add(widget.srComplaintModel.serviceRequestComplaintTypeEntity[index]);
                               dataToBeSentBack = requestSubtype[index];
                             });
                           } else {
@@ -105,14 +101,6 @@ class _SRRequestSubTypeBottomSheetState
                               snackPosition: SnackPosition.BOTTOM,
                             );
                           }
-                          // }
-                          // else{
-                          //   setState(() {
-                          //     checkedValues[index] = newValue;
-                          //     // dataToBeSentBack.add(widget.srComplaintModel.serviceRequestComplaintTypeEntity[index]);
-                          //     dataToBeSentBack=widget.srComplaintModel.serviceRequestComplaintTypeEntity[index];
-                          //   });
-                          // }
                         },
                         controlAffinity: ListTileControlAffinity.leading,
                       )
@@ -147,14 +135,8 @@ class _SRRequestSubTypeBottomSheetState
                 MaterialButton(
                   color: HexColor('#1C99D4'),
                   onPressed: () {
-                    dataToBeSentBack != null
-                        ? widget.customFunction(dataToBeSentBack)
-                        : null;
+                    dataToBeSentBack ?? widget.customFunction(dataToBeSentBack);
                     Get.back();
-                    // dataToBeSentBack.isEmpty
-                    //     ? widget.customFunction(dataToBeSentBack)
-                    //     : null;
-                    // print(dataToBeSentBack);
                   },
                   child: Text(
                     'OK',

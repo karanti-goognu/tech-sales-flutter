@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
+import 'package:flutter_tech_sales/widgets/background_container_image.dart';
+import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart';
@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +30,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -162,7 +160,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   @override
   void dispose() {
-    print("dispose  call $_addLeadsController.imageList");
     _addLeadsController.imageList.clear();
     super.dispose();
     _formKeyForNewLeadForm.currentState != null
@@ -174,7 +171,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   getInitialData() {
     setState(() {
-      print(gv.fromLead);
       try {
         if (gv.fromLead) {
           saveLeadRequestModelFromDraft = gv.saveLeadRequestModel;
@@ -207,19 +203,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           leadSource = saveLeadRequestModelFromDraft.leadSource;
           _leadSourceUser = saveLeadRequestModelFromDraft.leadSourceUser;
           displayLeadSourceUserForDraft();
-          // print("=======$leadSource");
-          //print("=======${saveLeadRequestModelFromDraft.leadSourceUser}");
-
-          // listLeadImage = saveLeadRequestModelFromDraft.listLeadImage;
-          //print(saveLeadRequestModelFromDraft.influencerList[0].toJson());
           if (saveLeadRequestModelFromDraft.influencerList.length != 0) {
-            print(saveLeadRequestModelFromDraft.influencerList[0].inflName);
             for (int i = 0;
                 i < saveLeadRequestModelFromDraft.influencerList.length;
                 i++) {
-              /*print(23454);
-            print(saveLeadRequestModelFromDraft.influencerList[i].toJson());
-            print(saveLeadRequestModelFromDraft.influencerList[i].id);*/
               _listInfluencerDetail.add(new InfluencerDetail(
                   id: new TextEditingController(
                       text: saveLeadRequestModelFromDraft.influencerList[i].id),
@@ -271,8 +258,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             _comments.text =
                 saveLeadRequestModelFromDraft.comments[0].commentText;
           }
-
-          //print (saveLeadRequestModelFromDraft.comments[0].commentText);
           saveLeadRequestModelFromDraft = new SaveLeadRequestDraftModel();
           gv.saveLeadRequestModel = new SaveLeadRequestDraftModel();
         }
@@ -301,7 +286,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             {
               _addLeadsController.getAccessKeyOnly().then((data) async {
                 accessKeyModel = data;
-                print("AccessKey :: " + accessKeyModel.accessKey);
                 await _addLeadsController
                     .getAddLeadsData(accessKeyModel.accessKey)
                     .then((data) {
@@ -312,7 +296,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         addLeadInitialModel.influencerTypeEntity;
                     influencerCategoryEntity =
                         addLeadInitialModel.influencerCategoryEntity;
-                    //  print(influencerCategoryEntity[0].inflCatDesc);
                     dealerList = addLeadInitialModel.dealerList;
                     subDealerList = addLeadInitialModel.subDealerList;
                     eventList = addLeadInitialModel.eventList;
@@ -453,7 +436,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (_) {
         setState(() {
           leadSource = _;
-          print("DROPDOWN : $leadSource");
           // _dealerId = null;
           // _subDealerId = null;
           // _eventId = null;
@@ -478,7 +460,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         return sourceList == null
             ? []
             : sourceList.map<Widget>((item) {
-                print(item.name);
                 return Text(item.name);
               }).toList();
       },
@@ -487,10 +468,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final dealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-          print("DROPDOWN1 : $leadSource");
-          print("DEALER : $value");
-
-          _dealerId = value;
+           _dealerId = value;
         });
       },
       selectedItemBuilder: (BuildContext context) {
@@ -961,7 +939,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 if (result != null) {
                                   _currentPosition = result[1];
                                   List<String> loc = result[0];
-                                  print("ADD: ${result[0]}");
                                   _siteAddress.text =
                                       "${loc[7]}, ${loc[6]}, ${loc[4]}";
                                   _district.text = "${loc[2]}";
@@ -999,8 +976,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => CustomMap()));
-                                print(data);
-                                print(data.runtimeType);
                                 setState(() {
                                   geoTagType = "M";
                                 });
@@ -1011,86 +986,22 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             ),
                           ],
                         ),
-//                     Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: <Widget>[
-//                         RaisedButton(
-//                           onPressed: () async {
-//                             LocationResult result = await showLocationPicker(
-//                                 context,
-//                                 "AIzaSyBEMGF1RVNoYyxMaYE8v2isPlmeCuHDMlc",
-//                                 initialCenter: LatLng(31.1975844, 29.9598339),
-//                                 automaticallyAnimateToCurrentLocation: true,
-// //                      mapStylePath: 'assets/mapStyle.json',
-//                                 myLocationButtonEnabled: true,
-//                                 // requiredGPS: true,
-//                                 layersButtonEnabled: true,
-//                                 countries: ['AE', 'NG']
-//
-// //                      resultCardAlignment: Alignment.bottomCenter,
-//                                 // desiredAccuracy: LocationAccuracy.best,
-//                                 );
-//                             print("result = $result");
-//                             setState(() => _pickedLocation = result);
-//                           },
-//                        //   child: Text('Pick location'),
-//                         ),
-//                         Text(_pickedLocation.toString()),
-//                       ],
-//                     ),
-//                     Container(
-//                         decoration: BoxDecoration(
-//                           color: Theme.of(context).canvasColor,
-//                         ),
-//                         padding:
-//                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                         child: Column(children: <Widget>[
-//                           Row(
-//                             children: <Widget>[
-//                               Icon(Icons.location_on),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                               Expanded(
-//                                 child: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: <Widget>[
-//                                     Text(
-//                                       'Location',
-//                                       style:
-//                                           Theme.of(context).textTheme.caption,
-//                                     ),
-//                                     if (_currentPosition != null &&
-//                                         _currentAddress != null)
-//                                       Text(_currentAddress,
-//                                           style: Theme.of(context)
-//                                               .textTheme
-//                                               .bodyText2),
-//                                   ],
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: 8,
-//                               ),
-//                             ],
-//                           ),
-//                         ])),
                         SizedBox(height: _height),
                         siteAddress,
                         SizedBox(height: _height),
                         pincode,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         //txtMandatory,
                         SizedBox(height: _height),
                         state,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
                         district,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
 
                         taluk,
-                        MandatoryWidget().txtMandatory(),
+                        TextStyles.mandatoryText,
                         SizedBox(height: _height),
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -1114,8 +1025,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               ),
                             ),
                             onPressed: () async {
-                              print(
-                                  "controller.imageList.length    ${controller.imageList.length}");
                               if (controller.imageList.length < 5) {
                                 /*when user create a new lead that time user selected the image by camera or gallery  only*/
                                 controller.updateImageList(
@@ -1231,64 +1140,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         //   ],
                         // ),
                         SizedBox(height: 16),
-
-                        // Center(
-                        //   child: TextButton(
-                        //     shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(0),
-                        //         side: BorderSide(color: Colors.black26)),
-                        //     color: Colors.transparent,
-                        //     child: Padding(
-                        //       padding: const EdgeInsets.only(
-                        //           right: 5, bottom: 8, top: 5),
-                        //       child: Text(
-                        //         "ADD MORE INFLUENCER",
-                        //         style: TextStyle(
-                        //             color: HexColor("#1C99D4"),
-                        //             fontWeight: FontWeight.bold,
-                        //             // letterSpacing: 2,
-                        //             fontSize: 17),
-                        //       ),
-                        //     ),
-                        //     onPressed: () async {
-                        //       // //  print(_listInfluencerDetail[
-                        //       //   _listInfluencerDetail.length - 1]
-                        //       //       .inflName);
-                        //       if (_listInfluencerDetail[
-                        //       _listInfluencerDetail.length - 1]
-                        //           .inflName !=
-                        //           null &&
-                        //           _listInfluencerDetail[
-                        //           _listInfluencerDetail.length - 1]
-                        //               .inflName !=
-                        //               "null" &&
-                        //           !_listInfluencerDetail[
-                        //           _listInfluencerDetail.length - 1]
-                        //               .inflName
-                        //               .text
-                        //               .isNullOrBlank) {
-                        //         InfluencerDetail infl = new InfluencerDetail(
-                        //             isExpanded: true, isPrimarybool: false);
-                        //
-                        //         // Item item = new Item(
-                        //         //     headerValue: "agx ", expandedValue: "dnxcx");
-                        //         setState(() {
-                        //           // _data.add(item);
-                        //           _listInfluencerDetail[
-                        //           _listInfluencerDetail.length - 1]
-                        //               .isExpanded = false;
-                        //           _listInfluencerDetail.add(infl);
-                        //         });
-                        //       } else {
-                        //         print(
-                        //             "Error : Please fill previous influencer first");
-                        //         Get.dialog(CustomDialogs().errorDialog(
-                        //             "Please fill previous influencer first"));
-                        //       }
-                        //     },
-                        //   ),
-                        // ),
-
                         Divider(
                           color: Colors.black26,
                           thickness: 1,
@@ -1423,7 +1274,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-                            print(_comments.text);
                             // setState(() {
                             //   _comments.text = value;
                             // });
@@ -1538,30 +1388,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     ],
                                   )
                             : Container(),
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsets.only(top: 10.0, bottom: 10, left: 5),
-                        //   child: Text(
-                        //     "XYZ Kumar",
-                        //     style: TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 25,
-                        //         // color: HexColor("#000000DE"),
-                        //         fontFamily: "Muli"),
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsets.only(top: 5.0, bottom: 20, left: 5),
-                        //   child: Text(
-                        //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                        //     style: TextStyle(
-                        //         //fontWeight: FontWeight.bold,
-                        //         fontSize: 20,
-                        //         // color: HexColor("#000000DE"),
-                        //         fontFamily: "Muli"),
-                        //   ),
-                        // ),
                         Center(
                           child: TextButton(
                             // shape: RoundedRectangleBorder(
@@ -1616,7 +1442,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                               ),
                               onPressed: () async {
-                                // print(_comments.text);
                                 if (!_isSaveButtonDisabled) {
                                   _isSaveButtonDisabled = true;
                                   _isSubmitButtonDisabled = false;
@@ -1624,7 +1449,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   if (_contactNumber != null &&
                                       _contactNumber != '' &&
                                       _contactNumber.length == 10) {
-                                    print("here");
                                     setState(() {
                                       String empId;
                                       String mobileNumber;
@@ -1674,7 +1498,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   .inflName
                                                   .text
                                                   .isNullOrBlank) {
-                                            print("here1234");
                                             _listInfluencerDetail.removeAt(
                                                 _listInfluencerDetail.length -
                                                     1);
@@ -1806,9 +1629,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 //
 //                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
 
-                                        print(
-                                            saveLeadRequestDraftModel.toJson());
-                                        print(gv.fromLead);
                                         if (!gv.fromLead) {
                                           DraftLeadModelforDB
                                               draftLeadModelforDB =
@@ -1816,12 +1636,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                   null,
                                                   json.encode(
                                                       saveLeadRequestDraftModel));
-                                          print(draftLeadModelforDB.leadModel);
                                           await _dbHelper.addLeadInDraft(
                                               draftLeadModelforDB);
                                         } else {
-                                          print(json.encode(
-                                              saveLeadRequestDraftModel));
                                           DraftLeadModelforDB
                                               draftLeadModelforDB =
                                               new DraftLeadModelforDB(
@@ -1853,8 +1670,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 }
                               },
                             ),
-                            RaisedButton(
-                              color: HexColor("#1C99D4"),
+                            ElevatedButton(
+    style: ElevatedButton.styleFrom(
+    primary:  HexColor("#1C99D4"),
+    ),
+
                               child: Text(
                                 "SUBMIT",
                                 style: TextStyle(
@@ -1864,7 +1684,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     fontSize: 17),
                               ),
                               onPressed: () async {
-                                //print(_comments.text);
                                 if (!_isSubmitButtonDisabled) {
                                   _isSubmitButtonDisabled = true;
                                   _isSaveButtonDisabled = false;
@@ -1878,8 +1697,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       //&&
                                       // _listInfluencerDetail.length != 0
                                       ) {
-                                    // print(_comments.text);
-                                    print("here");
                                     setState(() {
                                       String empId;
                                       String mobileNumber;
@@ -1897,7 +1714,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         name = prefs.getString(
                                                 StringConstants.employeeName) ??
                                             "empty";
-                                        //   print("DHAWAM " + _comments.text);
                                         if (_comments.text == "" ||
                                             _comments.text == "null" ||
                                             _comments.text == null) {
@@ -1910,7 +1726,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                               // commentedAt: DateTime.now(),
                                               creatorName: name),
                                         );
-                                        // print("DHAWAM " + _commentsListNew[0].commentText);
 
                                         if (_listInfluencerDetail.length != 0 &&
                                             (_listInfluencerDetail[
@@ -1932,7 +1747,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     .inflName
                                                     .text
                                                     .isNullOrBlank)) {
-                                          print("here1234");
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }
@@ -1962,15 +1776,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadSource = "SELF";
                                           leadSourceUser = empId;
                                         }
-                                        //  print("Update Image Add Lead controller:::::::::::::: save    ${imageList.length}  ");
-                                        // print(_listIC:\Projects\Flutter\tech-sales-flutter\android\app\Users\neosoft\Documents\Development\jks\dalmiadigitaltso.jksnfluencerDetail[1].toJson());
-
                                         List<ListLeadImage>
                                             selectedImageListDetails = [];
                                         List<File> userSelectedImageFile = [];
-                                        print(
-                                            "addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
-
                                         _addLeadsController
                                             .selectedImageNameList
                                             .forEach((leadModel) {
@@ -2377,14 +2185,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
-      print(_comments.text);
     });
     AddLeadsController _addLeadsController = Get.find();
     _addLeadsController.phoneNumber = value;
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _addLeadsController.getAccessKeyOnly().then((data) async {
       accessKeyModel = data;
-      print("AccessKey :: " + accessKeyModel.accessKey);
       await _addLeadsController
           .getInfNewData(accessKeyModel.accessKey)
           .then((data) {
@@ -2399,7 +2205,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].inflName =
                   new TextEditingController();
               FocusScope.of(context).unfocus();
-              //  print(inflDetail.inflName.text);
               _listInfluencerDetail[index].inflTypeId =
                   new TextEditingController();
               _listInfluencerDetail[index].inflCatId =
@@ -2411,9 +2216,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].id = new TextEditingController();
               _listInfluencerDetail[index].ilpIntrested =
                   new TextEditingController();
-
-              print(inflDetail.inflName);
-              print("inflTypeValue : ${inflDetail.influencerTypeText}");
 
               _listInfluencerDetail[index].inflContact.text =
                   inflDetail.inflContact;
@@ -2432,12 +2234,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _listInfluencerDetail[index].inflCatValue.text =
                   inflDetail.influencerCategoryText;
               _listInfluencerDetail[index].createdBy = empId;
-              print(_listInfluencerDetail[index].inflName);
 
-              //print("influencerTypeEntity : ${json.encode(influencerTypeEntity)}");
               for (int i = 0; i < influencerTypeEntity.length; i++) {
-                // print("influencerTypeEntity[i].inflTypeId : ${influencerTypeEntity[i].inflTypeId}");
-                // print("inflDetail.inflTypeId : ${inflDetail.inflTypeId}");
                 if (influencerTypeEntity[i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
                   _listInfluencerDetail[index].inflTypeId.text =
@@ -2450,15 +2248,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   _listInfluencerDetail[index].inflTypeValue.clear();
                 }
               }
-              // print(_listInfluencerDetail[index].inflName);
-              // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
+
 
               for (int i = 0; i < influencerCategoryEntity.length; i++) {
                 if (influencerCategoryEntity[i].inflCatId.toString() ==
                     inflDetail.inflCatId.toString()) {
                   _listInfluencerDetail[index].inflCatId.text =
                       inflDetail.inflCatId.toString();
-                  //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                   _listInfluencerDetail[index].inflCatValue.text =
                       influencerCategoryEntity[
                               influencerCategoryEntity[i].inflCatId - 1]
@@ -2493,65 +2289,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     });
   }
 
-  // _imgFromCamera() async {
-  //   File image = await ImagePicker.pickImage(
-  //       source: ImageSource.camera, imageQuality: 50);
-  //
-  //   setState(() {
-  //     //print(image.path);
-  //     if (image != null) {
-  //       // print(basename(image.path));
-  //
-  //       listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-  //       _imageList.add(image);
-  //     }
-  //   });
-  // }
-  //
-  // _imgFromGallery() async {
-  //   File image = await ImagePicker.pickImage(
-  //       source: ImageSource.gallery, imageQuality: 50);
-  //
-  //   setState(() {
-  //     // print(image.path);
-  //     if (image != null) {
-  //       listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
-  //       _imageList.add(image);
-  //     }
-  //     // _imageList.insert(0,image);
-  //   });
-  // }
-  //
-  // void _showPicker(context) {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return SafeArea(
-  //           child: Container(
-  //             child: new Wrap(
-  //               children: <Widget>[
-  //                 new ListTile(
-  //                     leading: new Icon(Icons.photo_library),
-  //                     title: new Text('Photo Library'),
-  //                     onTap: () {
-  //                       _imgFromGallery();
-  //                       Navigator.of(context).pop();
-  //                     }),
-  //                 new ListTile(
-  //                   leading: new Icon(Icons.photo_camera),
-  //                   title: new Text('Camera'),
-  //                   onTap: () {
-  //                     _imgFromCamera();
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
-
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
@@ -2568,10 +2305,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         //txt.text = place.postalCode;
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
-        print(
-            "........ selected ${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, "
-            "${place.administrativeArea}, ${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, "
-            "${place.thoroughfare}, ${place.subThoroughfare}");
       });
     } catch (e) {
       print("ex.....   $e");

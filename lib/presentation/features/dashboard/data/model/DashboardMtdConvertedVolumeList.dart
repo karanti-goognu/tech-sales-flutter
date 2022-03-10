@@ -10,7 +10,7 @@ class DashboardMtdConvertedVolumeList {
     respCode = json['resp_code'];
     respMsg = json['resp_msg'];
     if (json['volume_entity'] != null) {
-      volumeEntity = new List<VolumeEntity>();
+      volumeEntity = new List<VolumeEntity>.empty(growable: true);
       json['volume_entity'].forEach((v) {
         volumeEntity.add(new VolumeEntity.fromJson(v));
       });

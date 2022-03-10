@@ -38,7 +38,6 @@ class _SiteDetailsState extends State<SiteDetails> {
         {
           getData().whenComplete(() {
             if (mounted) {
-        // Update data.
              setState(() {
                siteListModel = data;
              });
@@ -50,7 +49,6 @@ class _SiteDetailsState extends State<SiteDetails> {
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM),
-        // fetchSiteList()
       }
     });
     super.initState();
@@ -91,7 +89,7 @@ class _SiteDetailsState extends State<SiteDetails> {
         width: 68.0,
         child: FittedBox(
           child: FloatingActionButton(
-            backgroundColor: ColorConstants.checkinColor,
+            backgroundColor: ColorConstants.checkInColor,
             child: Icon(
               Icons.keyboard_backspace,
               color: Colors.black,
@@ -124,7 +122,6 @@ class _SiteDetailsState extends State<SiteDetails> {
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: 12,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ),
                         Text(
@@ -134,7 +131,6 @@ class _SiteDetailsState extends State<SiteDetails> {
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: 12,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ),
                       ],
@@ -398,7 +394,6 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold
-                                                                  //fontWeight: FontWeight.normal
                                                                   ),
                                                             ),
                                                             Text(
@@ -411,7 +406,6 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold
-                                                                  //fontWeight: FontWeight.normal
                                                                   ),
                                                             ),
                                                           ],
@@ -426,17 +420,10 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
-                                                      // Expanded(
-                                                      //   child: Container(),
-                                                      // ),
                                                       Padding(
-                                                        padding:
-                                                            const EdgeInsets.only(
-                                                                left: 1.0,
-                                                                top: 20),
+                                                        padding:  const EdgeInsets.only(left: 1.0, top: 20),
                                                         child: Chip(
                                                           shape: StadiumBorder(
                                                             side: BorderSide(
@@ -444,11 +431,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                   "#666666"),
                                                             ),
                                                           ),
-                                                          backgroundColor:
-                                                              HexColor(
-                                                                      "#00000014")
-                                                                  .withOpacity(
-                                                                      0.1),
+                                                          backgroundColor: HexColor("#00000014").withOpacity(0.1),
                                                           label: Text(
                                                             "Status: ${siteListModel.srComplaintListModal[index].status}",
                                                             style: TextStyle(
@@ -460,7 +443,6 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold
-                                                                //fontWeight: FontWeight.normal
                                                                 ),
                                                           ),
                                                         ),

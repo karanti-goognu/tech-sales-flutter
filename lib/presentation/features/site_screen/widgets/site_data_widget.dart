@@ -12,8 +12,9 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:flutter_tech_sales/widgets/loading_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -157,7 +158,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       _so.text = sitesModal.siteSoname;
       geoTagType = sitesModal.siteGeotagType;
 
-      //   print(sitesModal.siteGeotagLatitude);
       if (sitesModal.siteGeotagLatitude != null &&
           sitesModal.siteGeotagLongitude != null &&
           sitesModal.siteGeotagLatitude != "null" &&
@@ -385,12 +385,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 UpdatedValues.setSiteConstructionId(
                                     _selectedConstructionType);
                               });
-                              print(_selectedConstructionType.id);
                             },
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                               controller: siteBuiltupArea,
@@ -426,7 +425,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               decoration: FormFieldStyle.buildInputDecoration(
                                   labelText: "Site Built-up area (sqft)")),
 
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 20, left: 5),
@@ -982,7 +981,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           //     ),
                           //   ),
                           // ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(
                             height: 20,
                           ),
@@ -1047,7 +1046,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
                           */
-
                           SizedBox(
                             height: 20,
                           ),
@@ -1150,7 +1148,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           //     ),
                           //   ),
                           // ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _contactNumber,
@@ -1184,7 +1182,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Contact Number",
                             ),
                           ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           // Padding(
                           //   padding: const EdgeInsets.only(left: 15),
                           //   child: Text(
@@ -1286,8 +1284,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => CustomMap()));
-                                    print(data);
-                                    print(data.runtimeType);
                                     setState(() {
                                       geoTagType = "M";
                                       UpdatedValues.setSiteGeotag(geoTagType);
@@ -1370,18 +1366,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Pincode",
                             ),
                           ),
-                          MandatoryWidget().txtMandatory(),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _state,
@@ -1404,18 +1389,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "State",
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
-                          MandatoryWidget().txtMandatory(),
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
                             controller: _district,
@@ -1438,18 +1412,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "District",
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
-                          MandatoryWidget().txtMandatory(),
+
+                          TextStyles.mandatoryText,
                           SizedBox(height: 16),
 
                           TextFormField(
@@ -1473,18 +1437,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Taluk",
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
-                          MandatoryWidget().txtMandatory(),
+
+                            TextStyles.mandatoryText,
 
                           SizedBox(height: 16),
                           Container(
@@ -1505,7 +1459,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   style: TextStyle(
                                       color: HexColor("#1C99D4"),
                                       fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
                                       fontSize: 17),
                                 ),
                               ),
@@ -1531,9 +1484,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                           itemCount: _imgDetails.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            print(_imgDetails[index]
-                                                .from
-                                                .toLowerCase());
                                             return GestureDetector(
                                               onTap: () {
                                                 return showDialog(
@@ -1542,8 +1492,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         content: new Container(
-                                                          // width: 500,
-                                                          // height: 500,
                                                           child: _imgDetails[
                                                                           index]
                                                                       .from
@@ -1612,13 +1560,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                           TextFormField(
                             controller: _rera,
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return 'Please enter RERA';
-                            //   }
-                            //
-                            //   return null;
-                            // },
                             onChanged: (String data) {
                               UpdatedValues.setReraNumber(data);
                             },
@@ -1637,12 +1578,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextFormField(
                             controller: _dealerName,
                             readOnly: true,
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return 'Please enter dealer Name ';
-                            //   }
-                            //   return null;
-                            // },
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
@@ -1657,12 +1592,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                           TextFormField(
                             controller: _so,
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return 'Please enter SO ';
-                            //   }
-                            //   return null;
-                            // },
                             onChanged: (String data) {
                               UpdatedValues.setSoCode(data);
                             },
@@ -1681,12 +1610,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(height: 35),
 
                           Center(
-                            child: RaisedButton(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  primary: HexColor("#1C99D4"),
                                 ),
-                                color: HexColor("#1C99D4"),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       right: 5, bottom: 10, top: 10),
@@ -1719,14 +1650,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         isSwitchedsiteProductDemo = true;
         _siteProductDemo.text = "Y";
         UpdatedValues.setProductDemo(_siteProductDemo.text);
-        // textValue = 'Switch Button is ON';
       });
     } else {
       setState(() {
         isSwitchedsiteProductDemo = false;
         _siteProductDemo.text = "N";
         UpdatedValues.setProductDemo(_siteProductDemo.text);
-        // textValue = 'Switch Button is OFF';
       });
     }
   }
@@ -1737,14 +1666,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         isSwitchedsiteProductOralBriefing = true;
         _siteProductOralBriefing.text = "Y";
         UpdatedValues.setProductOralBriefing(_siteProductOralBriefing.text);
-        // textValue = 'Switch Button is ON';
       });
     } else {
       setState(() {
         isSwitchedsiteProductOralBriefing = false;
         _siteProductOralBriefing.text = "N";
         UpdatedValues.setProductOralBriefing(_siteProductOralBriefing.text);
-        // textValue = 'Switch Button is OFF';
       });
     }
   }
@@ -1797,13 +1724,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSiteGeotagLat(_currentPosition.latitude);
         UpdatedValues.setSiteGeotagLong(_currentPosition.longitude);
         //txt.text = place.postalCode;
-
-        print(
-            "${place.name}, ${place.isoCountryCode}, ${place.country},${place.postalCode}, ${place.administrativeArea}, "
-            "${place.subAdministrativeArea},${place.locality}, ${place.subLocality}, ${place.thoroughfare}, ${place.subThoroughfare}");
       });
     } catch (e) {
-      print(e);
+      TsoLogger.printLog(e);
     }
   }
 
@@ -1813,11 +1736,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
-      //print(image.path);
       if (image != null) {
-        // print(basename(image.path));
-
-        // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(File(image.path));
         _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
@@ -1831,16 +1750,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
-      // print(image.path);
-
       if (image != null) {
-        // listLeadImage.add(new ListLeadImage(photoName: basename(image.path)));
         _imageList.add(File(image.path));
-
         _imgDetails.add(new ImageDetails("asset", File(image.path)));
         UpdatedValues.setImageList(_imageList);
       }
-      // _imageList.insert(0,image);
     });
   }
 

@@ -4,19 +4,19 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter_tech_sales/utils/enums/connectivity_status.dart';
 
 class ConnectivityService {
-  // Create our public controller
+  /// Create our public controller
   StreamController<ConnectivityStatus> connectionStatusController =
       StreamController<ConnectivityStatus>();
 
   ConnectivityService() {
-    // Subscribe to the connectivity Changed Stream
+    /// Subscribe to the connectivity Changed Stream
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // Use Connectivity() here to gather more info if you need t
+     /// Use Connectivity() here to gather more info if you need
       connectionStatusController.add(_getStatusFromResult(result));
     });
   }
 
-  // Convert from the third part enum to our own enum
+  /// Convert from the third part enum to our own enum
   ConnectivityStatus _getStatusFromResult(ConnectivityResult result) {
     switch (result) {
       case ConnectivityResult.mobile:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/background_container_image.dart';
+import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -19,13 +19,6 @@ class _SearchScreenState extends State<SearchScreen> {
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
 
-
-
-    @override
-  void initState() {
-    super.initState();
-      // getUserDetails();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,45 +59,6 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     ));
   }
- // String tempStr = "";
- //  Widget textKB(){
- //    return TextField(
- //      autofocus: true,
- //      controller: controller,
- //      keyboardType: TextInputType.text,
- //      decoration: new InputDecoration(
- //          hintText: 'Search', border: InputBorder.none),
- //      onChanged: (value){
- //          if(value == null || value.length >= 3 && _isNumeric(value)){
- //            setState(() {
- //              controller.text = value;
- //              tempStr = value;
- //            });
- //          }else{
- //            onSearchTextChanged(value);
- //          }
- //      },
- //    );
- //  }
- //
- //  Widget numKB(){
- //    return TextField(
- //      controller: controller,
- //      autofocus: true,
- //      keyboardType: TextInputType.numberWithOptions(signed: true),
- //      decoration: new InputDecoration(
- //          hintText: 'Search', border: InputBorder.none),
- //      onChanged: onSearchTextChanged
- //    );
- //  }
- //
- //  bool _isNumeric(String result) {
- //    if (result == null) {
- //      return false;
- //    }
- //    return double.tryParse(result) != null;
- //
- //  }
 
   Widget leadsDetailWidget() {
     return Obx(() => (_leadsFilterController == null)
@@ -152,19 +106,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                         .leadsEntity[index].assignDate));
                           }
                           return GestureDetector(
-                            /*onTap: (){
-                              Navigator.push(context, new CupertinoPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ViewLeadScreen(_leadsFilterController.leadsListResponse.leadsEntity[index].leadId)));
-                              */ /*Navigator.push(context,new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ViewLeadScreen(_leadsFilterController.leadsListResponse.leadsEntity[index].leadId)));
-                           */ /* }*/
-
-                            child: Card(
+                          child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
-                              //shadowColor: colornew,
                               elevation: 6,
                               margin: EdgeInsets.all(10.0),
                               color: Colors.white,
@@ -209,7 +153,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                   )),
@@ -225,7 +168,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                   )),
@@ -255,7 +197,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold
-                                                              //fontWeight: FontWeight.normal
                                                               ),
                                                         ),
                                                       ),
@@ -266,14 +207,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         left: 10.0),
                                                     child: Text(
                                                       "$selectedDateString",
-                                                      //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,
                                                         fontFamily: "Muli",
                                                         fontWeight:
                                                             FontWeight.bold,
-
-                                                        //fontWeight: FontWeight.normal
                                                       ),
                                                     ),
                                                   ),
@@ -312,51 +250,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       () => Text(
                                                         "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
                                                         style: TextStyle(
-                                                            // color: Colors.black38,
-                                                            // fontSize: 15,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                     )
                                                   ],
                                                 ),
                                               ),
-                                              // !list[index].verifiedStatus
-                                              //     ? Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#F9A61A"),
-                                              //         label: Text(
-                                              //           "NON VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       )
-                                              //     : Chip(
-                                              //         // shape: StadiumBorder(side: BorderSide(
-                                              //         //     color: HexColor("#6200EE")
-                                              //         // )),
-                                              //         backgroundColor: HexColor("#00ADEE"),
-                                              //         label: Text(
-                                              //           "TELE VERIFIED",
-                                              //           style: TextStyle(
-                                              //               color: Colors.white,
-                                              //               fontSize: 14,
-                                              //               fontFamily: "Muli",
-                                              //               fontWeight: FontWeight.bold
-                                              //               //fontWeight: FontWeight.normal
-                                              //               ),
-                                              //         ),
-                                              //       ),
                                               SizedBox(
                                                 height: 30,
                                               ),
@@ -389,7 +291,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               FontWeight.bold,
                                                           fontStyle:
                                                               FontStyle.italic
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                   ),

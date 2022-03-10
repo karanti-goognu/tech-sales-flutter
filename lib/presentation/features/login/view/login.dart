@@ -13,7 +13,6 @@ import 'package:get/get.dart';
 class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return LoginScreenPageState();
   }
 }
@@ -22,8 +21,6 @@ class LoginScreenPageState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   LoginController _loginController = Get.find();
-  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
   Future<bool> internetChecking() async {
     bool result = await CheckInternet.hasConnection();
     return result;
@@ -39,7 +36,7 @@ class LoginScreenPageState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, //
+      resizeToAvoidBottomInset: true,
       backgroundColor: ColorConstants.backgroundColor,
       body: Stack(
         children: [
@@ -77,7 +74,6 @@ class LoginScreenPageState extends State<LoginScreen> {
 
     SizeConfig().init(context);
 
-    //var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Padding(
         padding: EdgeInsets.all(16),
@@ -209,13 +205,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                       primary: ColorConstants.buttonNormalColor,
                     ),
                     onPressed: () {
-                      // Validate returns true if the form is valid, or false
-                      // otherwise.
                       if (_formKey.currentState.validate()) {
-                        //_sendAnalyticsEvent();
-                        // FirebaseAnalytics().logEvent(
-                        //     name: FirebaseEventsConstants.loginButtonClick,
-                        //     parameters: null);
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -234,29 +224,10 @@ class LoginScreenPageState extends State<LoginScreen> {
         ));
   }
 
-  // Future<void> _sendAnalyticsEvent() async {
-  //   await analytics.logEvent(
-  //       name: FirebaseEventsConstants.loginButtonClick,
-  //       parameters : null
-  //   );
-  // }
 
 
   void afterRequestLayout(String empId, String mobileNumber) {
-    print('Emp Id is :: $empId Mobile Number is :: $mobileNumber');
-
-    // switch (_source.keys.toList()[0]) {
-    //   case ConnectivityResult.none:
-    //     connectivityString = "Offline";
-    //     break;
-    //   case ConnectivityResult.mobile:
-    //     connectivityString = "Mobile: Online";
-    //     break;
-    //   case ConnectivityResult.wifi:
-    //     connectivityString = "WiFi: Online";
-    // }
-
-    internetChecking().then((result) => {
+        internetChecking().then((result) => {
       if (result == true)
         {
           _loginController.empId = empId,
@@ -268,7 +239,6 @@ class LoginScreenPageState extends State<LoginScreen> {
               colorText: Colors.white,
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
         }
     });
 

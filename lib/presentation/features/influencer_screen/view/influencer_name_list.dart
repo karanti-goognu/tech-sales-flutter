@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -94,19 +91,14 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     SizeConfig().init(context);
     return WillPopScope(
         onWillPop: () async {
-          // disposeController(context);
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          //resizeToAvoidBottomInset: true,
           extendBody: true,
-//          key: _leadScreenFormKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
-            // titleSpacing: 50,
-            // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
             toolbarHeight: SizeConfig.screenHeight*.14,
             centerTitle: false,
@@ -124,166 +116,9 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           color: Colors.white,
                           fontFamily: "Muli"),
                     ),
-                    // TextButton(
-                    //   onPressed: () {
-                    //     // _settingModalBottomSheet(context);
-                    //   },
-                    //   shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(18.0),
-                    //       side: BorderSide(color: Colors.white)),
-                    //   color: Colors.transparent,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.only(bottom: 5),
-                    //     child: Row(
-                    //       children: [
-                    //         //  Icon(Icons.exposure_zero_outlined),
-                    //         Container(
-                    //             height: 18,
-                    //             width: 18,
-                    //             // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                    //             decoration: new BoxDecoration(
-                    //               color: Colors.white,
-                    //               border: Border.all(
-                    //                   color: Colors.black, width: 0.0),
-                    //               borderRadius:
-                    //               new BorderRadius.all(Radius.circular(3)),
-                    //             ),
-                    //             child: Center(
-                    //                 child: Obx(() => Text(
-                    //                     "${_siteController.selectedFilterCount}",
-                    //                     style: TextStyle(
-                    //                         color: Colors.black,
-                    //                         //fontFamily: 'Raleway',
-                    //                         fontSize: 12,
-                    //                         fontWeight: FontWeight.normal))))),
-                    //         Padding(
-                    //           padding: const EdgeInsets.only(left: 8.0),
-                    //           child: Text(
-                    //             'FILTER',
-                    //             style: TextStyle(
-                    //                 color: Colors.white, fontSize: 18),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
-                // SingleChildScrollView(
-                //     scrollDirection: Axis.horizontal,
-                //     child: Row(
-                //       children: [
-                //         SizedBox(
-                //           width: 8,
-                //         ),
-                //         Obx(() => (_siteController.assignToDate ==
-                //             StringConstants.empty)
-                //             ? Container()
-                //             : FilterChip(
-                //           label: Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.check,
-                //                 color: Colors.black,
-                //               ),
-                //               SizedBox(
-                //                 width: 4,
-                //               ),
-                //               Text(
-                //                   "${_siteController.assignFromDate} to ${_siteController.assignToDate}")
-                //             ],
-                //           ),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(side: BorderSide()),
-                //           onSelected: (bool value) {
-                //             print("selected");
-                //           },
-                //         )),
-                //         SizedBox(
-                //           width: 8,
-                //         ),
-                //         Obx(() => (_siteController.selectedLeadStatus ==
-                //             StringConstants.empty)
-                //             ? Container()
-                //             : FilterChip(
-                //           label: Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.check,
-                //                 color: Colors.black,
-                //               ),
-                //               SizedBox(
-                //                 width: 4,
-                //               ),
-                //               Text(
-                //                   "${_siteController.selectedLeadStatus}")
-                //             ],
-                //           ),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(side: BorderSide()),
-                //           onSelected: (bool value) {
-                //             print("selected");
-                //           },
-                //         )),
-                //         SizedBox(
-                //           width: 8,
-                //         ),
-                //         Obx(() => (_siteController.selectedLeadStage ==
-                //             StringConstants.empty)
-                //             ? Container()
-                //             : FilterChip(
-                //           label: Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.check,
-                //                 color: Colors.black,
-                //               ),
-                //               SizedBox(
-                //                 width: 4,
-                //               ),
-                //               Text(
-                //                   "${_siteController.selectedLeadStage}")
-                //             ],
-                //           ),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(side: BorderSide()),
-                //           onSelected: (bool value) {
-                //             print("selected");
-                //           },
-                //         )),
-                //         SizedBox(
-                //           width: 8,
-                //         ),
-                //         Obx(() =>
-                //         (_siteController.selectedLeadPotential ==
-                //             StringConstants.empty)
-                //             ? Container()
-                //             : FilterChip(
-                //           label: Row(
-                //             children: [
-                //               Icon(
-                //                 Icons.check,
-                //                 color: Colors.black,
-                //               ),
-                //               SizedBox(
-                //                 width: 4,
-                //               ),
-                //               Text(
-                //                   "${_siteController.selectedLeadPotential}")
-                //             ],
-                //           ),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(side: BorderSide()),
-                //           onSelected: (bool value) {
-                //             print("selected");
-                //           },
-                //         )),
-                //         SizedBox(
-                //           width: 8,
-                //         ),
-                //       ],
-                //     ))
+
               ],
             ),
             automaticallyImplyLeading: false,
@@ -324,71 +159,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                     ],
                   ),
                 ),
-                // Padding(
-                //     padding:
-                //     EdgeInsets.only(left: 10.0, right: 5.0, bottom: 5),
-                //     child:Row(
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Padding(
-                //             padding: const EdgeInsets.only(right: 8),
-                //             child: Row(
-                //               children: [
-                //                 Padding(
-                //                   padding: const EdgeInsets.only(top: 4.0),
-                //                   child: Container(
-                //                     width: 10,
-                //                     height: 10,
-                //                     decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         color: HexColor("#1C99D4")),
-                //                   ),
-                //                 ),
-                //                 Padding(
-                //                   padding: const EdgeInsets.only(left: 3.0),
-                //                   child: Text(
-                //                     "Tele-Verified",
-                //                     style: TextStyle(
-                //                       fontFamily: "Muli",
-                //                       fontSize: 14,
-                //                       // color: HexColor("#FFFFFF99"),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //           Padding(
-                //             padding: const EdgeInsets.only(right: 8),
-                //             child: Row(
-                //               children: [
-                //                 Padding(
-                //                   padding: const EdgeInsets.only(top: 4.0),
-                //                   child: Container(
-                //                     width: 10,
-                //                     height: 10,
-                //                     decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         color: HexColor("#39B54A")),
-                //                   ),
-                //                 ),
-                //                 Padding(
-                //                   padding: const EdgeInsets.only(left: 3.0),
-                //                   child: Text(
-                //                     "Phy-Verified",
-                //                     style: TextStyle(
-                //                       fontFamily: "Muli",
-                //                       fontSize: 14,
-                //                       // color: HexColor("#FFFFFF99"),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ],
-                //       ),),
                 Expanded(child: leadsDetailWidget()),
                 Container(
                   height: 70,
@@ -432,16 +202,16 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
               SizedBox(
                 height: 10,
               ),
-              RaisedButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: ColorConstants.buttonNormalColor,
+                ),
                 onPressed: () {
                   _siteController.offset = 0;
-                  // getData();
                   getData().whenComplete(() {
                     Get.back();
                   });
-                  // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
                 },
-                color: ColorConstants.buttonNormalColor,
                 child: Text(
                   "TRY AGAIN",
                   style: TextStyle(color: Colors.white),
@@ -474,25 +244,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                 margin: EdgeInsets.all(4.0),
                 color: Colors.white,
                 child: Container(
-                  // decoration: BoxDecoration(
-                  //   border: Border(
-                  //       left: BorderSide(
-                  //         color: (_siteController
-                  //             .sitesListResponse
-                  //             .sitesEntity[index]
-                  //             .siteStageId ==
-                  //             1)
-                  //             ? HexColor("#F9A61A")
-                  //             : (_siteController
-                  //             .sitesListResponse
-                  //             .sitesEntity[index]
-                  //             .siteStageId ==
-                  //             2)
-                  //             ? HexColor("#007CBF")
-                  //             : HexColor("#39B54A"),
-                  //         width: 6,
-                  //       )),
-                  // ),
                   child: Column(
                     children: [
                       Row(
@@ -509,7 +260,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                   fontFamily: "Muli",
                                   fontWeight:
                                   FontWeight.bold
-                                //fontWeight: FontWeight.normal
                               ),
                             ),
                           ),
@@ -531,14 +281,12 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         fontWeight:
                                         FontWeight
                                             .bold
-                                      //fontWeight: FontWeight.normal
                                     ),
                                   ),
                                   Obx(
                                         () => Text(
                                       "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                       style: TextStyle(
-                                        // color: Colors.black38,
                                           fontSize: SizeConfig
                                               .safeBlockHorizontal *
                                               3.7,
@@ -547,7 +295,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                           fontWeight:
                                           FontWeight
                                               .bold
-                                        //fontWeight: FontWeight.normal
                                       ),
                                     ),
                                   )
@@ -573,7 +320,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                       fontFamily: "Muli",
                                       fontWeight:
                                       FontWeight.bold
-                                    //fontWeight: FontWeight.normal
                                   ),
                                 ),
                               )),
@@ -582,7 +328,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                 .siteOppertunityId ==
                                 null)
                                 ? ""
-                                : printOpportuityStatus(
+                                : printOpportunityStatus(
                                 _siteController.sitesListResponse.sitesEntity[index]
                                     .siteOppertunityId),
                               style: TextStyle(
@@ -628,7 +374,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.normal
-                                //fontWeight: FontWeight.normal
                               )
                           )),
                         ],
@@ -675,7 +420,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                                 fontWeight:
                                                 FontWeight
                                                     .bold
-                                              //fontWeight: FontWeight.normal
                                             ),
                                           ))),
                                 ),
@@ -687,7 +431,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         1.3),
                                 child: Text(
                                   " ${_siteController.sitesListResponse.sitesEntity[index].siteCreationDate}",
-                                  //  textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: SizeConfig
                                         .safeBlockHorizontal *
@@ -696,7 +439,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                     fontWeight:
                                     FontWeight.bold,
 
-                                    //fontWeight: FontWeight.normal
                                   ),
                                 ),
                               ),
@@ -714,7 +456,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         "#8DC63F"),
                                   ),
                                   Text(
-                                    // "${_siteController.sitesListResponse.sitesEntity[index].contactNumber}",
                                     " Call Contact",
                                     style: TextStyle(
                                         color: Colors
@@ -728,7 +469,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                         fontStyle:
                                         FontStyle
                                             .normal
-                                      //fontWeight: FontWeight.normal
                                     ),
                                   ),
                                 ],
@@ -781,9 +521,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                 fontSize: 14,
                                 fontFamily: "Muli",
                                 fontWeight: FontWeight.bold
-                              //fontWeight: FontWeight.normal
                             ),),
-                              // Icon(Icons.whatshot,color: Colors.orange,)
                             ],)
                           ],
                         ),
@@ -797,38 +535,25 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     );
   }
 
-  void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return FilterWidget();
-        });
-  }
 
   String printSiteStage(int value) {
     List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
       return "${data[0].siteStageDesc}";
     } else {
-      print("size is 0");
       return "";
     }
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportunityStatus(int value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-    //  print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -838,10 +563,8 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
         .splashDataModel.siteProbabilityWinningEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-    //  print("size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }

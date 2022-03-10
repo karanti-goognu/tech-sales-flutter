@@ -17,7 +17,6 @@ class MyConnectivity {
   Stream get myStream => controller.stream;
 
   void initialise() async {
-    print("Initialize called::::::::::::::::::::::::::::::::::::");
     ConnectivityResult result = await connectivity.checkConnectivity();
     _checkStatus(result);
     connectivity.onConnectivityChanged.listen((result) {
@@ -26,7 +25,6 @@ class MyConnectivity {
   }
 
   void _checkStatus(ConnectivityResult result) async {
-//    print("check status called");
     bool isOnline = false;
     try {
       final result = await InternetAddress.lookup('google.com');

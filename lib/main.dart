@@ -11,26 +11,21 @@ import 'package:get/get.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   runZonedGuarded(
-        () {
+    () {
       /** Kp Changes*/
       runApp(MyApp());
-
     },
-        (error, stackTrace) {
+    (error, stackTrace) {
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   MoengageService.getInstance();
-
 }
-
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -38,8 +33,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   Widget build(BuildContext context) {
     return new GetMaterialApp(
@@ -53,5 +46,4 @@ class _MyAppState extends State<MyApp> {
       theme: appThemeData,
     );
   }
-
 }

@@ -18,7 +18,6 @@ class _VideoState extends State<Video> {
 
   initState() {
     var data = Get.arguments;
-   // print(data);
     videoUrl= data[0];
     videoDes= data[1];
     internetChecking().then((result) => {
@@ -39,7 +38,6 @@ class _VideoState extends State<Video> {
       aspectRatio: 16 / 9,
       autoPlay: true,
       showControls: true,
-      // fullScreenByDefault: true,
     );
     super.initState();
   }

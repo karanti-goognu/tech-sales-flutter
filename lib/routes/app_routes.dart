@@ -32,12 +32,10 @@ abstract class Routes {
   ///Gifts & Events
   static const EVENTS_GIFTS = '/events';
   static const ADD_EVENTS = '/form_add_event';
-  //static const DETAIL_EVENT = '/detail_view_event';
   static const CANCEL_EVENT = '/cancel_event';
   static const START_EVENT = '/start_event';
   static const END_EVENT = '/end_event';
   static const UPDATE_EVENT = '/update_event';
-  //static const UPDATE_DLR_INF = '/update_dlr_inf';
   static const GIFTS_VIEW= '/gifts_view';
   static const ALL_EVENTS = 'all_events';
   ///Influencer

@@ -19,7 +19,6 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/view/event
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/form_add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/start_event.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/update_event.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/view/homescreen.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/add_new_influencer_form.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_view.dart';
@@ -31,7 +30,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/add_calender_e
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_event.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
@@ -46,7 +44,6 @@ import 'package:flutter_tech_sales/presentation/features/splash/view/splash_scre
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoRequests.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
 import 'package:get/get.dart';
-
 part './app_routes.dart';
 
 class AppPages {
@@ -81,10 +78,6 @@ class AppPages {
         name: Routes.ADD_LEADS_SCREEN,
         page: () => AddNewLeadForm(),
         binding: AddLeadsBinding()),
-    // GetPage(
-    //     name: Routes.VIEW_OLD_LEAD_SCREEN,
-    //     page: () => ViewOldLeadScree(),
-    //     binding: ViewOldLeadsBinding()),
     GetPage(
         name: Routes.SITES_SCREEN,
         page: () => SiteScreen(),
@@ -117,10 +110,6 @@ class AppPages {
         name: Routes.MEET_SCREEN,
         page: () => AddEventInfluencerMeet(),
         binding: AppBinding()),
-    // GetPage(
-    //     name: Routes.VIEW_MEET_SCREEN,
-    //     page: () => ViewEventVisit(),
-    //     binding: AppBinding()),
     GetPage(
         name: Routes.DEALER_LIST_VIEW,
         page: () => DealersListViewWidget(),
@@ -181,31 +170,11 @@ class AppPages {
       binding: EGBinding(),
     ),
 
-    // GetPage(
-    //   name: Routes.CANCEL_EVENT,
-    //   page: () => CancelEvent(),
-    //   //binding: DashboardBinding(),
-    // ),
     GetPage(
       name: Routes.START_EVENT,
       page: () => StartEvent(),
       //binding: DashboardBinding(),
     ),
-    // GetPage(
-    //   name: Routes.END_EVENT,
-    //   page: () => EndEvent(),
-    //   //binding: DashboardBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.UPDATE_EVENT,
-    //   page: () => UpdateEvent(),
-    //   //binding: DashboardBinding(),
-    // ),
-    // GetPage(
-    //   name: Routes.UPDATE_DLR_INF,
-    //   page: () => UpdateDlrInf(),
-    //   binding: EGBinding(),
-    // ),
     GetPage(
       name: Routes.GIFTS_VIEW,
       page: () => GiftsView(),

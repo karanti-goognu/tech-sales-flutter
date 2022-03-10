@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tech_sales/presentation/common_widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/datepicker.dart';
+import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -406,7 +406,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       ),
                       SizedBox(height: 15),
                       Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -417,7 +416,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 15,
-                                  // color: HexColor("#000000DE"),
                                   fontFamily: "Muli"),
                             ),
                           ),
@@ -510,25 +508,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           ),
                         ],
                       ),
-                      // TextFormField(
-                      //   controller: _balanceQuantity,
-                      //   style: FormFieldStyle.formFieldTextStyle,
-                      //   keyboardType: TextInputType.number,
-                      //   inputFormatters: [
-                      //     FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                      //     TextInputFormatter.withFunction((oldValue, newValue) {
-                      //       try {
-                      //         final text = newValue.text;
-                      //         if (text.isNotEmpty) double.parse(text);
-                      //         return newValue;
-                      //       } catch (e) {}
-                      //       return oldValue;
-                      //     }),
-                      //   ],
-                      //   decoration: FormFieldStyle.buildInputDecoration(
-                      //     labelText: "Balance quantity",
-                      //   ),
-                      // ),
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _billNo,
@@ -574,10 +553,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         controller: _bestBeforeDate,
                         readOnly: true,
                         onChanged: (data) {
-                          // setState(() {
-                          //   _contactName.text = data;
-                          // });
-                        },
+                                              },
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
@@ -587,7 +563,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: ColorConstants.backgroundColorBlue,
-                                //color: HexColor("#0000001F"),
                                 width: 1.0),
                           ),
                           disabledBorder: OutlineInputBorder(
@@ -846,7 +821,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       TextFormField(
                         controller: _dateOfPurchase,
                         readOnly: true,
-                        // validator: (value)=> '$value',
                         onTap: () => PickDate.selectDate(
                                 context: context, lastDate: DateTime.now())
                             .then(
@@ -949,7 +923,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   )),
             ),
             SizedBox(height: 16),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 if (!_updateActionFormKey.currentState.validate()) {
                   Get.rawSnackbar(
@@ -1013,18 +987,17 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ],
                     "srcActionPhotosEntity": imageDetails
                   });
-                  print("Data--> " + _updateSRModel.toJson().toString());
                   updateRequest.getAccessKeyAndUpdateRequest(
                       _imageList, _updateSRModel);
                 }
               },
-              color: HexColor("#1C99D4"),
+              style: ElevatedButton.styleFrom(
+              primary: HexColor("#1C99D4"),),
               child: Text(
                 "UPDATE",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
                     fontSize: 17),
               ),
             ),
