@@ -3,9 +3,10 @@ class GetMWPResponse {
   String respMsg;
   List<String> listOfMonthYear;
   MwpplanModel mwpplanModel;
+  List<MwpPlannigList> mwpPlannigList;
 
   GetMWPResponse(
-      {this.respCode, this.respMsg, this.listOfMonthYear, this.mwpplanModel});
+      {this.respCode, this.respMsg, this.listOfMonthYear, this.mwpplanModel, this.mwpPlannigList});
 
   GetMWPResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -14,6 +15,12 @@ class GetMWPResponse {
     mwpplanModel = json['mwpplanModel'] != null
         ? new MwpplanModel.fromJson(json['mwpplanModel'])
         : null;
+    if (json['mwpPlannigList'] != null) {
+      mwpPlannigList = <MwpPlannigList>[];
+      json['mwpPlannigList'].forEach((v) {
+        mwpPlannigList.add(new MwpPlannigList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +30,10 @@ class GetMWPResponse {
     data['listOfMonthYear'] = this.listOfMonthYear;
     if (this.mwpplanModel != null) {
       data['mwpplanModel'] = this.mwpplanModel.toJson();
+    }
+    if (this.mwpPlannigList != null) {
+      data['mwpPlannigList'] =
+          this.mwpPlannigList.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -276,6 +287,31 @@ class MwpplanModel {
     data['newInfluencer'] = this.newInfluencer;
     data['actualHeadMasonMeet'] = this.actualHeadMasonMeet;
     data['actualNewInfluencer'] = this.actualNewInfluencer;
+    return data;
+  }
+}
+
+class MwpPlannigList {
+  String name;
+  int id;
+  String actualValue;
+  String targetValue;
+
+  MwpPlannigList({this.name, this.id, this.actualValue, this.targetValue});
+
+  MwpPlannigList.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    id = json['id'];
+    actualValue = json['actualValue'];
+    targetValue = json['targetValue'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['id'] = this.id;
+    data['actualValue'] = this.actualValue;
+    data['targetValue'] = this.targetValue;
     return data;
   }
 }

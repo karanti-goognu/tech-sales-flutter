@@ -586,25 +586,48 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             ),
                                           ],
                                         )
-                                      : DropdownButtonFormField(
-                                          decoration: FormFieldStyle
-                                              .buildInputDecoration(
-                                                  labelText: "Counter"),
-                                          items: _addEventController.dealerList
-                                              .map<DropdownMenuItem<dynamic>>(
-                                                  (val) {
-                                            return DropdownMenuItem(
-                                              value: val,
-                                              child: SizedBox(
-                                                  width:
-                                                      SizeConfig.screenWidth -
-                                                          100,
-                                                  child: Text(
-                                                      '${val.dealerName} (${val.dealerId})')),
-                                            );
-                                          }).toList(),
-                                          onChanged: (val) {
-                                          }),
+                                      : TextFormField(
+                                            controller: _siteController
+                                                .pendingSupplyDetailsResponse
+                                                .pendingSuppliesDetailsModel
+                                                .counter,
+                                            readOnly: true,
+                                            decoration: FormFieldStyle
+                                                .buildInputDecoration(
+                                              labelText: "Counter",
+                                            ),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: ColorConstants
+                                                    .inputBoxHintColor,
+                                                fontFamily: "Muli"),
+                                          ),
+                                  // DropdownButtonFormField(
+                                  //         decoration: FormFieldStyle
+                                  //             .buildInputDecoration(
+                                  //                 labelText: "Counter"),
+                                  //         items: _addEventController.dealerList
+                                  //             .map<DropdownMenuItem<dynamic>>(
+                                  //                 (val) {
+                                  //           return DropdownMenuItem(
+                                  //             value: val,
+                                  //             child: SizedBox(
+                                  //                 width:
+                                  //                     SizeConfig.screenWidth -
+                                  //                         100,
+                                  //                 child: Text(
+                                  //                     '${val.dealerName} (${val.dealerId})')),
+                                  //           );
+                                  //         }).toList(),
+                                  //         onChanged: (val) {
+                                  //           // _siteController
+                                  //           //     .counterId =
+                                  //           //     val.dealerId;
+                                  //           // getKittyBags(
+                                  //           //     val.dealerId);
+                                  //         }),
+                                  //Container(),
+
                                   _siteController.counterId.toString().isEmpty
                                       ? Container()
                                       : Padding(

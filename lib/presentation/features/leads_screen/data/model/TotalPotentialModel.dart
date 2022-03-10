@@ -1,7 +1,7 @@
 class TotalPotentialModel {
   String respCode;
   String respMsg;
-  double totalSitePotential;
+  int totalSitePotential;
 
   TotalPotentialModel({this.respCode, this.respMsg, this.totalSitePotential});
 

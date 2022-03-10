@@ -1063,11 +1063,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       });
     });
 
-    UpdateDealerInfModel _update = UpdateDealerInfModel.fromJson({
-      'eventDealerRequestsList': _dealersList,
-      'eventInfluencerRequestsList': _infList,
-      'referenceID': empId
-    });
+    // UpdateDealerInfModel _update = UpdateDealerInfModel.fromJson({
+    //   'eventDealerRequestsList': _dealersList,
+    //   'eventInfluencerRequestsList': _infList,
+    //   'referenceID': empId
+    // });
 
     UpdateDealerInfModel _updateDealer = new UpdateDealerInfModel(
         eventDealerRequestsList: _dealersList,
