@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -46,12 +47,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   PendingSupplyDataResponse pendingSupplyDataResponse;
   List<PendingSuppliesModel> _pendingSuppliesModel;
 
-  Future<bool> internetChecking() async {
-    // do something here
-    // CheckInternet instance = CheckInternet();
-    bool result = await CheckInternet.hasConnection();
-    return result;
-  }
 
    getPendingSupplyData() async {
     await _siteController.pendingSupplyList().then((data) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +25,7 @@ class UploadImageBottomSheet{
                            Navigator.of(context).pop();
                        }
                        catch(e){
-                         print(e);
+                         TsoLogger.printLog(e);
                          Get.snackbar(
                              "Permission Denied.", "Make sure that you have enabled photos permission.",
                              colorText: Colors.white,
@@ -41,7 +42,7 @@ class UploadImageBottomSheet{
                        Navigator.of(context).pop();
                      }
                      catch(e){
-                       print(e);
+                       TsoLogger.printLog(e);
                        // var request = await Permission.camera.request();
                        Get.snackbar(
                            "Permission Denied.", "Make sure that you have enabled camera permission.",

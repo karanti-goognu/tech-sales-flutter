@@ -371,7 +371,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.all(
-              Radius.circular(5.0) //                 <--- border radius here
+              Radius.circular(5.0)
               ),
         ),
         child: CheckboxListTile(

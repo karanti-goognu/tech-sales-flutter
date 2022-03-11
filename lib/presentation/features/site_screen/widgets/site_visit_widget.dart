@@ -40,7 +40,7 @@ class SiteVisitWidget extends StatefulWidget {
 }
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
-  Position _currentPosition = new Position();
+  Position _currentPosition;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String _remark, visitSubType;

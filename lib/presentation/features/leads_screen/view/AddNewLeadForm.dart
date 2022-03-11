@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
@@ -49,14 +50,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
   String _myActivity;
-  // LocationResult _pickedLocation;
   bool isSwitchedPrimary = false;
   var txt = TextEditingController();
-  // SiteSubTypeEntity _selectedValue;
   String _contactName;
   FocusNode myFocusNode;
   String _contactNumber;
-  // String _comment;
   String leadSource;
   var _siteAddress = TextEditingController();
   var _pincode = TextEditingController();
@@ -111,7 +109,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = [];
 
-  Position _currentPosition = new Position();
+  Position _currentPosition ;
   String _currentAddress;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [
@@ -808,11 +806,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     );
 
     return Scaffold(
-//      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       floatingActionButton: BackFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // resizeToAvoidBottomPadding: false,
       bottomNavigationBar: BottomNavigator(),
       body: SingleChildScrollView(
         child: Stack(
@@ -979,9 +975,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 setState(() {
                                   geoTagType = "M";
                                 });
-                                _currentPosition = new Position(
-                                    latitude: data[0], longitude: data[1]);
-                                _getAddressFromLatLng();
+                                _getAddressFromLatLng(latitude: data[0], longitude: data[1]);
                               },
                             ),
                           ],
@@ -2289,11 +2283,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     });
   }
 
-  _getAddressFromLatLng() async {
+  _getAddressFromLatLng({double latitude,double longitude}) async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-
+      TsoLogger.printLog("$latitude + $longitude");
+      List<Placemark> p = await placemarkFromCoordinates(latitude, longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
@@ -2302,43 +2295,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
-        //txt.text = place.postalCode;
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
+        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print("ex.....   $e");
     }
   }
 
-  Widget _buildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(item.headerValue),
-            );
-          },
-          body: ListTile(
-              title: Text(item.expandedValue),
-              subtitle: Text('To delete this panel, tap the trash can icon'),
-              trailing: Icon(Icons.delete),
-              onTap: () {
-                setState(() {
-                  _data.removeWhere((currentItem) => item == currentItem);
-                });
-              }),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
-    );
-  }
 
   void toggleSwitchforPrimary(bool value) {
     setState(() {

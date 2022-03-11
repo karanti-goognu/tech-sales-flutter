@@ -68,7 +68,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _taluk = TextEditingController();
   var _totalBathroomCount = TextEditingController();
   var _totalKitchenCount = TextEditingController();
-  Position _currentPosition = new Position();
+  Position _currentPosition;
   String geoTagType;
   List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
   List<ConstructionStageEntity> constructionStageEntity =
