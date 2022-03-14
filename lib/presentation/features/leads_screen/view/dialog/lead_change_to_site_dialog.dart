@@ -123,7 +123,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         });
       },
       decoration:
-      FormFieldStyle.buildInputDecoration(labelText: "Please Select Completition Status*"),
+      FormFieldStyle.buildInputDecoration(labelText: "Please Select Competition Status*"),
     );
 
     final nextStageOfConstuction =
@@ -521,7 +521,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                   if(bal < 0){
                                     _lapPotentialController.text = "";
                                     Get.dialog(errorDialogLaps(
-                                        "Laps Potential can’t be greater than Total Site Potential"));
+                                        "Lapse Potential can’t be greater than Total Site Potential"));
                                   }else {
                                     _balancePotentialController.text = balance;
                                   }
@@ -547,7 +547,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                             style: FormFieldStyle.formFieldTextStyle,
                             readOnly: true,
                             decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Total Site Potential (No of Bags)*",
+                              labelText: "Total Site Potential (No of Bags)",
                             ),
                           ),
                           SizedBox(
@@ -569,7 +569,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
                                 if (_lapPotentialController.text == null || _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
                                   Get.dialog(
-                                      CustomDialogs().errorDialog("Please enter Laps Potential"));
+                                      CustomDialogs().errorDialog("Please enter Lapse Potential"));
                                 } else {
                                   //updateStatusforNextStage(context, 3);
                                   widget.mListener

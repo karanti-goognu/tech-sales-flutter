@@ -24,9 +24,7 @@ class AddMWPPlan extends StatefulWidget {
 class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   MWPPlanController _mwpPlanController = Get.find();
   AppController _appController = Get.find();
-  // List<MwpPlannigRequestList> selectedMwpModels = [];
-  // List<MwpPlannigList> _mwpList = new List();
-
+  
   @override
   void initState() {
     super.initState();
@@ -100,6 +98,11 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 ? Container(
               height: SizeConfig.screenHeight,
             )
+    //             :(_mwpPlanController.mwpPlannigList.leght == null)?
+    //  Container(
+    // child: Center(
+    // child : Text("No data !!"),
+    // ))
                 : ListView.separated(
               separatorBuilder: (BuildContext context, int index) =>
                   SizedBox(height: 2),
@@ -381,7 +384,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
                 ? returnTargetValue(index)
                 : ""
                 : "",
-            readOnly: (_mwpPlanController.getMWPResponse.mwpPlannigList != null)
+            readOnly: (_mwpPlanController.getMWPResponse.mwpplanModel != null)
                 ? (_mwpPlanController.getMWPResponse.mwpplanModel.status ==
                 "APPROVE")
                 ? true

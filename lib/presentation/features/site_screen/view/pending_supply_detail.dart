@@ -602,31 +602,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .inputBoxHintColor,
                                                 fontFamily: "Muli"),
                                           ),
-                                  // DropdownButtonFormField(
-                                  //         decoration: FormFieldStyle
-                                  //             .buildInputDecoration(
-                                  //                 labelText: "Counter"),
-                                  //         items: _addEventController.dealerList
-                                  //             .map<DropdownMenuItem<dynamic>>(
-                                  //                 (val) {
-                                  //           return DropdownMenuItem(
-                                  //             value: val,
-                                  //             child: SizedBox(
-                                  //                 width:
-                                  //                     SizeConfig.screenWidth -
-                                  //                         100,
-                                  //                 child: Text(
-                                  //                     '${val.dealerName} (${val.dealerId})')),
-                                  //           );
-                                  //         }).toList(),
-                                  //         onChanged: (val) {
-                                  //           // _siteController
-                                  //           //     .counterId =
-                                  //           //     val.dealerId;
-                                  //           // getKittyBags(
-                                  //           //     val.dealerId);
-                                  //         }),
-                                  //Container(),
 
                                   _siteController.counterId.toString().isEmpty
                                       ? Container()
