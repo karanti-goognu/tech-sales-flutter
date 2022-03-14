@@ -124,7 +124,9 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: ElevatedButton(
+          child:
+          // RaisedButton(
+          ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
               elevation: 0,
@@ -132,7 +134,8 @@ class _FormAddEventState extends State<FormAddEvent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),                Icon(
+                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),
+                Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
                 ),
@@ -143,6 +146,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           ),
         ));
+
 
     final time = Container(
         decoration: BoxDecoration(
