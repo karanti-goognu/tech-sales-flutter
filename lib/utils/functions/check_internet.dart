@@ -2,6 +2,7 @@ import 'dart:io';
 
 class CheckInternet{
   CheckInternet._();
+
   static const int DEFAULT_PORT = 53;
   static const Duration DEFAULT_TIMEOUT = const Duration(seconds: 10);
 

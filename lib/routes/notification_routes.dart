@@ -7,7 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewL
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
-import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/deep_link_constants.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 
@@ -19,131 +19,137 @@ class NotificationRoutes {
     TsoLogger.printLog("navigateAfterResponse   $screenName");
     TsoLogger.printLog("payloadData   $payloadData");
     switch (screenName) {
-      case StringConstants.SITE_LIST:
+      case DeepLinkConstants.SITE_LIST:
         Get.toNamed(Routes.SITES_SCREEN);
         break;
-      case StringConstants.LEAD_LIST:
+      case DeepLinkConstants.LEAD_LIST:
         Get.toNamed(Routes.LEADS_SCREEN);
         break;
-      case StringConstants.DASHBOARD:
+      case DeepLinkConstants.DASHBOARD:
         Get.toNamed(Routes.DASHBOARD);
         break;
-      case StringConstants.ADD_MWP:
+      case DeepLinkConstants.ADD_MWP:
         Get.toNamed(Routes.ADD_MWP_SCREEN);
         break;
-      case StringConstants.SERVICE_REQUESTS:
+      case DeepLinkConstants.SERVICE_REQUESTS:
         Get.toNamed(Routes.SERVICE_REQUESTS);
         break;
-      case StringConstants.INFLUENCER_LIST:
+      case DeepLinkConstants.INFLUENCER_LIST:
         Get.toNamed(Routes.INFLUENCER_LIST);
         break;
-      case StringConstants.VIDEO_TUTORIAL:
+      case DeepLinkConstants.VIDEO_TUTORIAL:
         Get.toNamed(Routes.VIDEO_TUTORIAL);
         break;
-      case StringConstants.EVENTS_GIFTS:
+      case DeepLinkConstants.EVENTS_GIFTS:
         Get.toNamed(Routes.EVENTS_GIFTS);
         break;
-      case StringConstants.ADD_EVENTS:
+      case DeepLinkConstants.ADD_EVENTS:
         Get.toNamed(Routes.ADD_EVENTS);
         break;
-      case StringConstants.SERVICE_REQUEST_CREATION:
+      case DeepLinkConstants.SERVICE_REQUEST_CREATION:
         Get.toNamed(Routes.SERVICE_REQUEST_CREATION);
         break;
-      case StringConstants.ADD_INFLUENCER:
+      case DeepLinkConstants.ADD_INFLUENCER:
         Get.toNamed(Routes.ADD_INFLUENCER);
         break;
-      case StringConstants.ADD_LEADS_SCREEN:
+      case DeepLinkConstants.ADD_LEADS_SCREEN:
         Get.toNamed(Routes.ADD_LEADS_SCREEN);
         break;
-      case StringConstants.NOTIFICATION:
+      case DeepLinkConstants.NOTIFICATION:
         Get.toNamed(Routes.NOTIFICATION);
         break;
-      case StringConstants.GIFTS_VIEW:
+      case DeepLinkConstants.GIFTS_VIEW:
         Get.toNamed(Routes.GIFTS_VIEW);
         break;
-      case StringConstants.START_EVENT:
+      case DeepLinkConstants.START_EVENT:
         Get.toNamed(Routes.START_EVENT);
         break;
-      case StringConstants.DASHBOARD_VOLUME_CONVERTED:
+      case DeepLinkConstants.DASHBOARD_VOLUME_CONVERTED:
         Get.toNamed(Routes.DASHBOARD_VOLUME_CONVERTED);
         break;
-      case StringConstants.DASHBOARD_SITE_LIST:
+      case DeepLinkConstants.DASHBOARD_SITE_LIST:
         Get.toNamed(Routes.DASHBOARD_SITE_LIST);
         break;
-      case StringConstants.DEALER_LIST_VIEW:
+      case DeepLinkConstants.DEALER_LIST_VIEW:
         Get.toNamed(Routes.DEALER_LIST_VIEW);
         break;
-      case StringConstants.VIEW_MEET_SCREEN:
+      case DeepLinkConstants.VIEW_MEET_SCREEN:
         Get.toNamed(Routes.VIEW_MEET_SCREEN);
         break;
-      case StringConstants.SEARCH_SCREEN:
+      case DeepLinkConstants.SEARCH_SCREEN:
         Get.toNamed(Routes.SEARCH_SCREEN);
         break;
-      case StringConstants.ADD_CALENDER_SCREEN:
+      case DeepLinkConstants.ADD_CALENDER_SCREEN:
         Get.toNamed(Routes.ADD_CALENDER_SCREEN);
         break;
-      case StringConstants.HOME_SCREEN:
+      case DeepLinkConstants.HOME_SCREEN:
         Get.toNamed(Routes.HOME_SCREEN);
         break;
-      case StringConstants.MEET_SCREEN:
+      case DeepLinkConstants.MEET_SCREEN:
         Get.toNamed(Routes.MEET_SCREEN);
         break;
-      case StringConstants.LOGIN:
+      case DeepLinkConstants.LOGIN:
         Get.toNamed(Routes.LOGIN);
         break;
-      case StringConstants.LEADS_SCREEN:
+      case DeepLinkConstants.LEADS_SCREEN:
         Get.toNamed(Routes.LEADS_SCREEN);
         break;
-      case StringConstants.SEARCH_SITES_SCREEN:
+      case DeepLinkConstants.SEARCH_SITES_SCREEN:
         Get.toNamed(Routes.SEARCH_SITES_SCREEN);
         break;
-      case StringConstants.ADD_MWP_PLAN_SCREEN:
+      case DeepLinkConstants.ADD_MWP_PLAN_SCREEN:
         Get.toNamed(Routes.ADD_MWP_SCREEN);
         break;
-      case StringConstants.VISIT_SCREEN:
+      case DeepLinkConstants.VISIT_SCREEN:
         Get.toNamed(Routes.VISIT_SCREEN);
         break;
-      case StringConstants.ADD_EVENT_SCREEN:
+      case DeepLinkConstants.ADD_EVENT_SCREEN:
         Get.toNamed(Routes.ADD_EVENT_SCREEN);
         break;
-      case StringConstants.VERIFY_OTP:
+      case DeepLinkConstants.VERIFY_OTP:
         Get.toNamed(Routes.VERIFY_OTP);
         break;
-      case StringConstants.VISIT_VIEW_SCREEN:
+      case DeepLinkConstants.VISIT_VIEW_SCREEN:
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
-      case StringConstants.VIDEO_PLAYER:
-        if (payloadData['url'] != null && payloadData['des'] != null)
+      case DeepLinkConstants.VIDEO_PLAYER:
+        if (payloadData['url'] != null && payloadData['des'] != null) {
           Get.toNamed(Routes.VIDEO_PLAYER,
               arguments: [payloadData['url'], payloadData['des']]);
+        }
         break;
-      case StringConstants.SITES_SCREEN:
-        if (payloadData['id'] != null)
-        Get.to(()=>ViewSiteScreenNew(siteId: payloadData['id'],tabIndex: 0,));
+      case DeepLinkConstants.SITES_SCREEN:
+        if (payloadData['id'] != null) {
+          Get.to(() => ViewSiteScreenNew(
+                siteId: payloadData['id'],
+                tabIndex: 0,
+              ));
+        }
         break;
-      case StringConstants.SERVICE_REQUEST_UPDATESCREEN:
-        if (payloadData['id'] != null)
-          Get.to(()=>
-            RequestUpdation(
-                id: payloadData["id"] ),
+      case DeepLinkConstants.SERVICE_REQUEST_UPDATESCREEN:
+        if (payloadData['id'] != null) {
+          Get.to(
+            () => RequestUpdation(id: payloadData["id"]),
             transition: Transition.rightToLeft,
             binding: SRBinding(),
           );
+        }
         break;
-    case StringConstants.VIEW_OLD_LEAD_SCREEN:
-      Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
-          binding: AddLeadsBinding());
-      break;
-      case StringConstants.INFLUENCER_DETAILS:
-      Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),binding: InfBinding());
-      break;
-
+      case DeepLinkConstants.VIEW_OLD_LEAD_SCREEN:
+        if (payloadData['id'] != null) {
+          Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
+              binding: AddLeadsBinding());
+        }
+        break;
+      case DeepLinkConstants.INFLUENCER_DETAILS:
+        if (payloadData['id'] != null) {
+          Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),
+              binding: InfBinding());
+        }
+        break;
       default:
         Get.toNamed(Routes.HOME_SCREEN);
         break;
     }
   }
-
-
 }
-

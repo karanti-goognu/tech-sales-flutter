@@ -1,6 +1,7 @@
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 
 class GlobalMethods{
+  GlobalMethods._();
 
 
   static brandValue(List<SiteBrandEntity> siteBrandEntity,int brandId) {

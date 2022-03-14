@@ -1,4 +1,7 @@
 class DbConstants{
+
+  DbConstants._();
+
   ///db name
   static const String DATA_BASE = "database.db";
 

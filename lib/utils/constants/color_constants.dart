@@ -4,6 +4,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 
 abstract class ColorConstants {
 
+  ColorConstants._();
+
   ///Hex Color
   static Color appBarColor = HexColor("#002A64");
   static Color backgroundColorBlue = HexColor("#0054A6");
