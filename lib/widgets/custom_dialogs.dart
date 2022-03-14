@@ -1072,20 +1072,28 @@ class CustomDialogs {
   }
 
   _getCurrentLocation(int eventId, String eventComment) async {
+    Position position;
     AllEventController _eventController = Get.find();
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String currentDateString = formatter.format(date);
-    if (!(await GetCurrentLocation.checkLocationPermission())) {
-      Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Get.dialog(Center(
-        child: CircularProgressIndicator(),
-      ));
-      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
+    // if (!(await GetCurrentLocation.checkLocationPermission())) {
+    //   Get.back();
+    //   Get.dialog(CustomDialogs().errorDialog(
+    //       "Please enable your location service from device settings"));
+    // } else {
+    //   Get.dialog(Center(
+    //     child: CircularProgressIndicator(),
+    //   ));
+    //   Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+    //       .then((Position position) {
+    List result;
+    result = await GetCurrentLocation.getCurrentLocation();
+
+
+    if (result != null) {
+      position = result[1];
+
         _eventController
             .submitEndEventDetail(eventId, eventComment, currentDateString,
                 position.latitude, position.longitude)
@@ -1106,11 +1114,11 @@ class CustomDialogs {
                           barrierDismissible: false)
                     }
                 });
-      }).catchError((e) {
-        Get.back();
-        Get.dialog(CustomDialogs().errorDialog(
-            "Access to location data denied "));
-      });
+      // }).catchError((e) {
+      //   Get.back();
+      //   Get.dialog(CustomDialogs().errorDialog(
+      //       "Access to location data denied "));
+      // });
     }
   }
 

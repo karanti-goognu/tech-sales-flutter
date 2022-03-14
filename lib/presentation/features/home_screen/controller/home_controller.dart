@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -87,6 +88,8 @@ class HomeController extends GetxController {
 
   set checkInStatus(value) => this._checkInStatus.value = value;
 
+  Position _currentPosition;
+
   showNoInternetSnack() {
     Get.snackbar(
         "No internet connection.", "Please check your internet connection.",
@@ -156,16 +159,25 @@ class HomeController extends GetxController {
     String journeyStartLat = "empty";
     String journeyStartLong = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
 //      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
-        journeyStartLat = position.latitude.toString();
-        journeyStartLong = position.longitude.toString();
+      // Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      //     .then((Position position) {
+      //   journeyStartLat = position.latitude.toString();
+      //   journeyStartLong = position.longitude.toString();
+      List result;
+      result = await GetCurrentLocation.getCurrentLocation();
+
+      if (result != null) {
+        _currentPosition = result[1];
+
+        print('start');
+        journeyStartLat = _currentPosition.latitude.toString();
+        journeyStartLong = _currentPosition.longitude.toString();
         //debugPrint('request without encryption: $body');
         String url = "${UrlConstants.getCheckInDetails}";
         debugPrint('Url is : $url');
@@ -175,17 +187,22 @@ class HomeController extends GetxController {
 //        print('Disable the button');
         this.disableSlider = true;
         repository
-            .getCheckInDetails(url, accessKey, userSecurityKey, empId,
-            formattedDate, date.toString(), journeyStartLat,
-                journeyStartLong,
-                null,
-                null,
-                null)
+            .getCheckInDetails(
+            url,
+            accessKey,
+            userSecurityKey,
+            empId,
+            formattedDate,
+            date.toString(),
+            journeyStartLat,
+            journeyStartLong,
+            null,
+            null,
+            null)
             .then((data) async {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
           } else {
-
             this.checkInResponse = data;
             checkInStatus = StringConstants.checkOut;
             _splashController.splashDataModel.journeyDetails.journeyStartLat =
@@ -204,10 +221,12 @@ class HomeController extends GetxController {
           }
           Get.back();
         });
-      }).catchError((e) {
-        print(e);
-      });
-    });
+      }
+
+    //   ).catchError((e) {
+    //     print(e);
+    //   });
+     });
   }
 
   getCheckOutDetails(String accessKey) {
@@ -218,39 +237,49 @@ class HomeController extends GetxController {
     String journeyEndLat = "empty";
     String journeyEndLong = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) async{
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .then((Position position) {
+      // Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+      //     .then((Position position) {
+      List result;
+      result = await GetCurrentLocation.getCurrentLocation();
+
+      if (result != null) {
+        _currentPosition = result[1];
+
+        print('start');
+        journeyStartLong = _currentPosition.longitude.toString();
         journeyStartLat =
             _splashController.splashDataModel.journeyDetails.journeyStartLat;
         journeyStartLong =
             _splashController.splashDataModel.journeyDetails.journeyStartLong;
-        journeyEndLat = position.latitude.toString();
-        journeyEndLong = position.longitude.toString();
-           //debugPrint('request without encryption: $body');
+        journeyEndLat = _currentPosition.latitude.toString();
+        journeyEndLong = _currentPosition.longitude.toString();
+        //debugPrint('request without encryption: $body');
         String url = "${UrlConstants.getCheckInDetails}";
 //        debugPrint('Url is : $url');
         var date = DateTime.now();
         var formattedDate = "${date.year}-${date.month}-${date.day}";
-        String journeyDate = _splashController.splashDataModel.journeyDetails.journeyDate;
-        String journeyStartTime = _splashController.splashDataModel.journeyDetails.journeyStartTime;
+        String journeyDate = _splashController.splashDataModel.journeyDetails
+            .journeyDate;
+        String journeyStartTime = _splashController.splashDataModel
+            .journeyDetails.journeyStartTime;
         repository
             .getCheckInDetails(
-                url,
-                accessKey,
-                userSecurityKey,
-                empId,
-                journeyDate,
-                journeyStartTime,
-                journeyStartLat,
-                journeyStartLong,
-                date.toString(),
-                journeyEndLat,
-                journeyEndLong)
+            url,
+            accessKey,
+            userSecurityKey,
+            empId,
+            journeyDate,
+            journeyStartTime,
+            journeyStartLat,
+            journeyStartLong,
+            date.toString(),
+            journeyEndLat,
+            journeyEndLong)
             .then((data) {
           if (data == null) {
             debugPrint('Check in  Data Response is null');
@@ -265,9 +294,10 @@ class HomeController extends GetxController {
           }
         });
         Get.back();
-      }).catchError((e) {
-        print(e);
-      });
+      }
+      // }).catchError((e) {
+      //   print(e);
+      // });
     });
   }
 
