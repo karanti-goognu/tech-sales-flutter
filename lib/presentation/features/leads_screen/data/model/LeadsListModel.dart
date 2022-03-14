@@ -14,7 +14,7 @@ class LeadsListModel {
 
   LeadsListModel.fromJson(Map<String, dynamic> json) {
     if (json['leadsEntity'] != null) {
-      leadsEntity = new List<LeadsEntity>();
+      leadsEntity = new List<LeadsEntity>.empty(growable: true);
       json['leadsEntity'].forEach((v) {
         leadsEntity.add(new LeadsEntity.fromJson(v));
       });

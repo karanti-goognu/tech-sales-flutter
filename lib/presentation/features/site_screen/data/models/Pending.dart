@@ -34,7 +34,7 @@ class PendingSupplyDataResponse {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['pendingSuppliesModel'] != null) {
-      pendingSuppliesModel = new List<PendingSuppliesModel>();
+      pendingSuppliesModel = new List<PendingSuppliesModel>.empty(growable: true);
       json['pendingSuppliesModel'].forEach((v) {
         pendingSuppliesModel.add(new PendingSuppliesModel.fromJson(v));
       });

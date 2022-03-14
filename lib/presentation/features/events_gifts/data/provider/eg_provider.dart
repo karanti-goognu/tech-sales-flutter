@@ -51,6 +51,7 @@ class MyApiClientEvent {
 
 
   Future<AllEventsModel> eventSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    AllEventsModel eventSearchModel;
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
@@ -58,13 +59,13 @@ class MyApiClientEvent {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AllEventsModel eventSearchModel = AllEventsModel.fromJson(data);
-        return eventSearchModel;
+        eventSearchModel = AllEventsModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception at EG repo ${_.toString()}');
     }
+    return eventSearchModel;
   }
 
   Future<AddEventModel> getEventTypeData(String accessKey, String userSecretKey,

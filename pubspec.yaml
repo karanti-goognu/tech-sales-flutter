@@ -39,7 +39,6 @@ dependencies:
   encrypt: ^5.0.1
   device_info: ^2.0.3
   get: ^4.6.1
-  sms_autofill: ^2.2.0
   expandable: ^5.0.1
   pointycastle: ^3.5.0
   async: ^2.4.2

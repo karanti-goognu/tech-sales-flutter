@@ -882,7 +882,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                       !_listInfluencerDetail[_listInfluencerDetail.length - 1]
                           .inflName
                           .text
-                          .isNullOrBlank) {
+                          .isBlank) {
                     InfluencerDetail infl = new InfluencerDetail(
                         isExpanded: true, isPrimarybool: false);
 

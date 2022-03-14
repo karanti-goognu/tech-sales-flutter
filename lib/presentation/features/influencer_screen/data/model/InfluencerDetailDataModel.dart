@@ -51,21 +51,21 @@ class Response {
     }
     if (json['influencerCategoryEntitiesList'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>();
+      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencerCategoryEntitiesList'].forEach((v) {
         influencerCategoryEntitiesList
             .add(new InfluencerCategoryEntitiesList.fromJson(v));
       });
     }
     if (json['influencerSourceList'] != null) {
-      influencerSourceList = new List<InfluencerSourceList>();
+      influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
       json['influencerSourceList'].forEach((v) {
         influencerSourceList.add(new InfluencerSourceList.fromJson(v));
       });
     }
 
     if (json['siteBrandList'] != null) {
-      siteBrandList = new List<SiteBrandList>();
+      siteBrandList = new List<SiteBrandList>.empty(growable: true);
       json['siteBrandList'].forEach((v) {
         siteBrandList.add(new SiteBrandList.fromJson(v));
       });

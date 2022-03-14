@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -129,8 +130,7 @@ class LoginController extends GetxController {
     // await  _prefs.then((SharedPreferences prefs) async {
     // userSecurityKey =
     //     prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-    repository
-        .checkLoginStatus(
+    repository.checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
         .then((data) {
       if (data == null) {
@@ -156,7 +156,7 @@ class LoginController extends GetxController {
         debugPrint('Otp Retry Response is null');
       } else {
         this.retryOtpResponse = data;
-        print('Retry Otp Response is :: ${jsonEncode(this.retryOtpResponse)}');
+        TsoLogger.printLog('Retry Otp Response is :: ${jsonEncode(this.retryOtpResponse)}');
         if (retryOtpResponse.respCode == "DM1015") {
           this.retryOtpActive = false;
         } else if (retryOtpResponse.respCode == "DM1016") {

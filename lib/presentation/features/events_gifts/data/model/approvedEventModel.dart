@@ -14,13 +14,13 @@ class ApprovedEventsModel {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['eventListModels'] != null) {
-      eventListModels = new List<EventListModels>();
+      eventListModels = new List<EventListModels>.empty(growable: true);
       json['eventListModels'].forEach((v) {
         eventListModels.add(new EventListModels.fromJson(v));
       });
     }
     if (json['eventStatusEntities'] != null) {
-      eventStatusEntities = new List<EventStatusEntities>();
+      eventStatusEntities = new List<EventStatusEntities>.empty(growable: true);
       json['eventStatusEntities'].forEach((v) {
         eventStatusEntities.add(new EventStatusEntities.fromJson(v));
       });

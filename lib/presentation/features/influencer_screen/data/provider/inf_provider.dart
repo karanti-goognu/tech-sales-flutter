@@ -219,23 +219,21 @@ class MyApiClientInf {
   }
 
   Future<InfluencerListModel> infSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
+    InfluencerListModel infSearchModel;
     try {
       version = VersionClass.getVersion();
-      //String url = UrlConstants.searchInfluencerList+empID+"&searchText=$searchText";
       String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
-     // print(url);
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
-   //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        InfluencerListModel infSearchModel = InfluencerListModel.fromJson(data);
-        return infSearchModel;
+         infSearchModel = InfluencerListModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception at INF repo ${_.toString()}');
     }
+    return infSearchModel;
   }
 
   Future<InfluencerResponseModel>saveNewInfluencer(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {

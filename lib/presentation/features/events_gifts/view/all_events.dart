@@ -191,7 +191,7 @@ class _AllEventsState extends State<AllEvents> {
             ),
           );
   }
-  HexColor _color(int id){
+  _color(int id){
     switch(id){
       case 1:return HexColor('#F9A61A');
       case 2:return HexColor('#39B54A');

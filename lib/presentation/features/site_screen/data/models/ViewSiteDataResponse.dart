@@ -76,13 +76,13 @@ class ViewSiteDataResponse {
         ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;
     if (json['siteFloorsEntity'] != null) {
-      siteFloorsEntity = new List<SiteFloorsEntity>();
+      siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
       json['siteFloorsEntity'].forEach((v) {
         siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });
     }
     if (json['sitephotosEntity'] != null) {
-      sitephotosEntity = new List<SitephotosEntity>();
+      sitephotosEntity = new List<SitephotosEntity>.empty(growable: true);
       json['sitephotosEntity'].forEach((v) {
         sitephotosEntity.add(new SitephotosEntity.fromJson(v));
       });
@@ -139,7 +139,7 @@ class ViewSiteDataResponse {
       });
     }
     if (json['siteNextStageEntity'] != null) {
-      siteNextStageEntity = new List<SiteNextStageEntity>();
+      siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
       json['siteNextStageEntity'].forEach((v) {
         siteNextStageEntity.add(new SiteNextStageEntity.fromJson(v));
       });
@@ -163,7 +163,7 @@ class ViewSiteDataResponse {
       });
     }
     if (json['siteOpportunityStatusEntity'] != null) {
-      siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>();
+      siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>.empty(growable: true);
       json['siteOpportunityStatusEntity'].forEach((v) {
         siteOpportunityStatusEntity.add(new SiteOpportunityStatusEntity.fromJson(v));
       });

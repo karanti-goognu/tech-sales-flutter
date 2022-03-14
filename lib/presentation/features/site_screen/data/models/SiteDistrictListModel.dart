@@ -9,7 +9,7 @@ class SiteDistrictListModel {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['districtList'] != null) {
-      districtList = new List<DistrictList>();
+      districtList = new List<DistrictList>.empty(growable: true);
       json['districtList'].forEach((v) {
         districtList.add(new DistrictList.fromJson(v));
       });

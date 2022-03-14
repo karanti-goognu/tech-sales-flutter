@@ -11,7 +11,7 @@ class CalendarDataByDay {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['listOfEventDetails'] != null) {
-      listOfEventDetails = new List<ListOfEventDetails>();
+      listOfEventDetails = new List<ListOfEventDetails>.empty(growable: true);
       json['listOfEventDetails'].forEach((v) {
         listOfEventDetails.add(new ListOfEventDetails.fromJson(v));
       });

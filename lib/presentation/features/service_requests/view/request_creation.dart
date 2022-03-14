@@ -313,18 +313,19 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                   SizedBox(height: 16),
                                   DropdownSearch<ActiveSiteTSOListsEntity>(
+
                                     mode: Mode.BOTTOM_SHEET,
                                     items: srComplaintModel.activeSiteTSOLists,
                                     itemAsString: (ActiveSiteTSOListsEntity
                                             u) =>
-                                        '${toBeginningOfSentenceCase(u.contact_name)} (${u.site_id})',
+                                        '${toBeginningOfSentenceCase(u.contactName)} (${u.siteId})',
                                     maxHeight: 240,
                                     label: "Site Id *",
                                     validator: (value) => value == null
                                         ? "Site id is required "
                                         : null,
                                     onChanged: (value) async {
-                                      siteId = value.site_id;
+                                      siteId = value.siteId;
                                       SiteAreaModel siteDetails =
                                           await srFormDataController
                                               .getSiteAreaDetails(
@@ -632,7 +633,10 @@ class _RequestCreationState extends State<RequestCreation> {
                                             labelText: "Pincode"),
                                   ),
                                   SizedBox(height: 16),
-                                  RaisedButton(
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: HexColor("#1C99D4"),
+                                    ),
                                     onPressed: () async {
                                       if (!_srCreationFormKey.currentState
                                           .validate())
@@ -713,7 +717,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                             });
                                       }
                                     },
-                                    color: HexColor("#1C99D4"),
                                     child: Text(
                                       "SUBMIT",
                                       style: TextStyle(

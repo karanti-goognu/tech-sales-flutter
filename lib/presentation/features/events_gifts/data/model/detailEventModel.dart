@@ -23,7 +23,7 @@ class DetailEventModel {
         ? new MwpEventModel.fromJson(json['mwpEventModel'])
         : null;
     if (json['eventDealersModelList'] != null) {
-      eventDealersModelList = new List<EventDealersModelList>();
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
         eventDealersModelList.add(new EventDealersModelList.fromJson(v));
       });
@@ -35,13 +35,13 @@ class DetailEventModel {
       // });
     }
     if (json['cancelReasonList'] != null) {
-      cancelReasonList = new List<CancelReasonList>();
+      cancelReasonList = new List<CancelReasonList>.empty(growable: true);
       json['cancelReasonList'].forEach((v) {
         cancelReasonList.add(new CancelReasonList.fromJson(v));
       });
     }
     if (json['dealersModels'] != null) {
-      dealersModels = new List<DealersModels>();
+      dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {
         dealersModels.add(new DealersModels.fromJson(v));
       });

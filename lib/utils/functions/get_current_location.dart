@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class GetCurrentLocation{
   GetCurrentLocation._();
-  static Position _currentPosition = new Position();
+  static Position _currentPosition;
   static GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
   static Future<bool> checkLocationPermission() async{
@@ -13,16 +13,16 @@ class GetCurrentLocation{
   }
 
 
-  static Future<bool> checkPermission() async{
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-  }
+  // static Future<bool> checkPermission() async{
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //   }
+  //
+  // }
 
   static Future<List> getCurrentLocation() async {
       bool serviceEnabled;

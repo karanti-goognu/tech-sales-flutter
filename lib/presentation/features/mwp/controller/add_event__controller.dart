@@ -339,7 +339,7 @@ class AddEventController extends GetxController {
   }
 
   saveMeet(String accessKey) {
-    List<MwpMeetDealers> list = new List();
+    List<MwpMeetDealers> list = new List.empty(growable: true);
     for (int i = 0; i < this.dealerListSelected.length; i++) {
       list.add(new MwpMeetDealers(dealerId: dealerListSelected[i].dealerId));
     }

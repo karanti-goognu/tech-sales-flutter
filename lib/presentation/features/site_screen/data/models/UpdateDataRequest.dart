@@ -139,32 +139,32 @@ class UpdateDataRequest {
     // shipToParty = json['shipToParty'];
 
     if (json['siteCommentsEntity'] != null) {
-      siteCommentsEntity = new List<SiteCommentsEntity>();
+      siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
       json['siteCommentsEntity'].forEach((v) {
         siteCommentsEntity.add(new SiteCommentsEntity.fromJson(v));
       });
     }
     if (json['siteStageHistorys'] != null) {
-      siteStageHistory = new List<SiteStageHistory>();
+      siteStageHistory = new List<SiteStageHistory>.empty(growable: true);
       json['siteStageHistorys'].forEach((v) {
         siteStageHistory.add(new SiteStageHistory.fromJson(v));
       });
     }
 
     if (json['siteNextStageEntity'] != null) {
-      siteNextStageEntity = new List<SiteNextStageEntity>();
+      siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
       json['siteNextStageEntity'].forEach((v) {
         siteNextStageEntity.add(new SiteNextStageEntity.fromJson(v));
       });
     }
     if (json['sitePhotosEntity'] != null) {
-      sitePhotosEntity = new List<SitePhotosEntity>();
+      sitePhotosEntity = new List<SitePhotosEntity>.empty(growable: true);
       json['sitePhotosEntity'].forEach((v) {
         sitePhotosEntity.add(new SitePhotosEntity.fromJson(v));
       });
     }
     if (json['siteInfluencerEntity'] != null) {
-      siteInfluencerEntity = new List<SiteInfluencerEntity>();
+      siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
       json['siteInfluencerEntity'].forEach((v) {
         siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
       });

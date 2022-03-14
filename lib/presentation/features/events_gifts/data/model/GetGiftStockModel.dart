@@ -14,13 +14,13 @@ class GetGiftStockModel {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['giftStockModelList'] != null) {
-      giftStockModelList = new List<GiftStockModelList>();
+      giftStockModelList = new List<GiftStockModelList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
         giftStockModelList.add(new GiftStockModelList.fromJson(v));
       });
     }
     if (json['giftTypeModelList'] != null) {
-      giftTypeModelList = new List<GiftTypeModelList>();
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {
         giftTypeModelList.add(new GiftTypeModelList.fromJson(v));
       });

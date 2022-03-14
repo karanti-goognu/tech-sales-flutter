@@ -149,13 +149,13 @@ class PendingSuppliesDetailsModel {
     requestInitiatedBy = json['requestInitiatedBy'];
 
     if (json['constStage'] != null) {
-      constStage = new List<ConstStage>();
+      constStage = new List<ConstStage>.empty(growable: true);
       json['constStage'].forEach((v) {
         constStage.add(new ConstStage.fromJson(v));
       });
     }
     if (json['siteFloorlist'] != null) {
-      siteFloorlist = new List<SiteFloorlist>();
+      siteFloorlist = new List<SiteFloorlist>.empty(growable: true);
       json['siteFloorlist'].forEach((v) {
         siteFloorlist.add(new SiteFloorlist.fromJson(v));
       });

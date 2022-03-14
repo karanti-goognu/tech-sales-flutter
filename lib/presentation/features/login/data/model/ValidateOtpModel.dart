@@ -28,7 +28,7 @@ class ValidateOtpModel {
         ? new EmployeeDetails.fromJson(json['employee-details'])
         : null;
     if (json['user-menu'] != null) {
-      userMenu = new List<UserMenu>();
+      userMenu = new List<UserMenu>.empty(growable: true);
       json['user-menu'].forEach((v) {
         userMenu.add(new UserMenu.fromJson(v));
       });
@@ -37,13 +37,13 @@ class ValidateOtpModel {
         ? new JourneyDetails.fromJson(json['journey-details'])
         : null;
     if (json['leadStatusEntity'] != null) {
-      leadStatusEntity = new List<LeadStatusEntity>();
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
       });
     }
     if (json['leadStageEntity'] != null) {
-      leadStageEntity = new List<LeadStageEntity>();
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
       });

@@ -14,13 +14,13 @@ class LogsModel {
 
   LogsModel.fromJson(Map<String, dynamic> json) {
     if (json['giftStockModelList'] != null) {
-      giftStockModelList = new List<GiftStockList>();
+      giftStockModelList = new List<GiftStockList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
         giftStockModelList.add(new GiftStockList.fromJson(v));
       });
     }
     if (json['giftTypeModelList'] != null) {
-      giftTypeModelList = new List<GiftTypeModelList>();
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {
         giftTypeModelList.add(new GiftTypeModelList.fromJson(v));
       });

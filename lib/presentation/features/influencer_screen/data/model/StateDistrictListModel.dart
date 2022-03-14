@@ -29,7 +29,7 @@ class Response {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['stateDistrictList'] != null) {
-      stateDistrictList = new List<StateDistrictList>();
+      stateDistrictList = new List<StateDistrictList>.empty(growable: true);
       json['stateDistrictList'].forEach((v) {
         stateDistrictList.add(new StateDistrictList.fromJson(v));
       });

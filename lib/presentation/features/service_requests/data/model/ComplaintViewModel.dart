@@ -112,19 +112,19 @@ class ComplaintViewModel {
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
     if (json['srcSubtypeMappingModal'] != null) {
-      srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>();
+      srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>.empty(growable: true);
       json['srcSubtypeMappingModal'].forEach((v) {
         srcSubtypeMappingModal.add(new SrcSubtypeMappingModal.fromJson(v));
       });
     }
     if (json['srcResolutionEntity'] != null) {
-      srcResolutionEntity = new List<SrcResolutionEntity>();
+      srcResolutionEntity = new List<SrcResolutionEntity>.empty(growable: true);
       json['srcResolutionEntity'].forEach((v) {
         srcResolutionEntity.add(new SrcResolutionEntity.fromJson(v));
       });
     }
     if (json['srComplaintActionList'] != null) {
-      srComplaintActionList = new List<SrComplaintActionList>();
+      srComplaintActionList = new List<SrComplaintActionList>.empty(growable: true);
       json['srComplaintActionList'].forEach((v) {
         srComplaintActionList.add(new SrComplaintActionList.fromJson(v));
       });

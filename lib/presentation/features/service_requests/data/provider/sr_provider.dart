@@ -26,21 +26,20 @@ class MyApiClientSR {
   MyApiClientSR({@required this.httpClient});
 
   Future<AccessKeyModel> getAccessKey() async {
+    AccessKeyModel accessKeyModel;
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version=packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel;
+        accessKeyModel = AccessKeyModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception at SR repo ${_.toString()}');
     }
+    return accessKeyModel;
   }
 
   Future<SrComplaintModel> getSrComplaintData(String accessKey, String userSecretKey,String empId) async{

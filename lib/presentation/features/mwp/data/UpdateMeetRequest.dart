@@ -59,7 +59,7 @@ class MwpMeetModel {
     isSaveDraft = json['isSaveDraft'];
     updatedBy = json['updatedBy'];
     if (json['mwpMeetDealers'] != null) {
-      mwpMeetDealers = new List<MwpMeetDealersUpdate>();
+      mwpMeetDealers = new List<MwpMeetDealersUpdate>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
         mwpMeetDealers.add(new MwpMeetDealersUpdate.fromJson(v));
       });

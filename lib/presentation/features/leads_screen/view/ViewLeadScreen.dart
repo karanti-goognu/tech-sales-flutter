@@ -272,7 +272,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
                 .inflName
                 .text
-                .isNullOrBlank) {
+                .isBlank) {
           _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
         }
       }
@@ -288,8 +288,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             isDelete: "N"));
       }
 
-      if (_SelectedDealer == null) {
-        _SelectedDealer = new DealerList();
+      if (selectedDealer == null) {
+        selectedDealer = new DealerList();
       }
       print(influencerListForConvertToSite);
       var updateRequestModel = {
@@ -488,7 +488,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                   _listInfluencerDetail.length - 1]
                               .inflName
                               .text
-                              .isNullOrBlank)) {
+                              .isBlank)) {
                         _listInfluencerDetail
                             .removeAt(_listInfluencerDetail.length - 1);
                       }
@@ -642,8 +642,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             setState(() {
               geoTagType.text = "M";
             });
-            _currentPosition =
-                new Position(latitude: data[0], longitude: data[1]);
+            _currentPosition = new Position(latitude: data[0], longitude: data[1]);
             _getAddressFromLatLng();
           },
         ),
@@ -1822,7 +1821,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   int initialImagelistLength;
   LeadStatusEntity _selectedValue;
   NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  DealerList _SelectedDealer;
+  DealerList selectedDealer;
   LeadStatusEntity _selectedValuedummy;
   int initialInfluencerListLength;
   String labelText;
@@ -2262,7 +2261,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         1]
                                                 .inflName
                                                 .text
-                                                .isNullOrBlank) {
+                                                .isBlank) {
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }

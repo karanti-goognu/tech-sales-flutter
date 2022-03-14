@@ -211,9 +211,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   }
 
   Widget returnApprovedRow() {
-    return RaisedButton(
-      color: Colors.orange,
-      highlightColor: ColorConstants.buttonPressedColor,
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+      primary: Colors.orange,
+        ),
       onPressed: () {},
       child: Padding(
         padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -230,9 +231,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          child: RaisedButton(
-            color: ColorConstants.greenText,
-            highlightColor: ColorConstants.buttonPressedColor,
+          child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+            primary: ColorConstants.greenText,
+    ),
             onPressed: (_mwpPlanController.getMWPResponse.mwpplanModel == null)
                 ? () {
               // Validate returns true if the form is valid, or false
@@ -292,9 +294,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
           width: 4,
         ),
         Flexible(
-          child: RaisedButton(
-            color: ColorConstants.buttonNormalColor,
-            highlightColor: ColorConstants.buttonPressedColor,
+          child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+    ),
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.
@@ -335,9 +338,10 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: RaisedButton(
-            color: ColorConstants.buttonNormalColor,
-            highlightColor: ColorConstants.buttonPressedColor,
+          child:    ElevatedButton(
+    style: ElevatedButton.styleFrom(
+            primary: ColorConstants.buttonNormalColor,
+            ),
             onPressed: () {
               // Validate returns true if the form is valid, or false
               // otherwise.

@@ -100,19 +100,19 @@ class SaveLeadRequestModel {
 
     // photos = json['photos'];
     if (json['comments'] != null) {
-      comments = new List<CommentsDetail>();
+      comments = new List<CommentsDetail>.empty(growable: true);
       json['comments'].forEach((v) {
         comments.add(new CommentsDetail.fromJson(v));
       });
     }
     if (json['influencerList'] != null) {
-      influencerList = new List<InfluencerDetail>();
+      influencerList = new List<InfluencerDetail>.empty(growable: true);
       json['influencerList'].forEach((v) {
         influencerList.add(new InfluencerDetail.fromJson(v));
       });
     }
     if (json['listLeadImage'] != null) {
-      listLeadImage = new List<ListLeadImage>();
+      listLeadImage = new List<ListLeadImage>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
         listLeadImage.add(new ListLeadImage.fromJson(v));
       });

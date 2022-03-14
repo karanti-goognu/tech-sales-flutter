@@ -20,7 +20,7 @@ class MeetResponseModelView {
         ? new MwpMeetModelView.fromJson(json['mwpMeetModel'])
         : null;
     if (json['dealerModel'] != null) {
-      dealerModel = new List<DealerModelView>();
+      dealerModel = new List<DealerModelView>.empty(growable: true);
       json['dealerModel'].forEach((v) {
         dealerModel.add(new DealerModelView.fromJson(v));
       });
@@ -80,7 +80,7 @@ class MwpMeetModelView {
     eventLocation = json['eventLocation'];
     isSaveDraft = json['isSaveDraft'];
     if (json['mwpMeetDealers'] != null) {
-      mwpMeetDealers = new List<MwpMeetDealersView>();
+      mwpMeetDealers = new List<MwpMeetDealersView>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
         mwpMeetDealers.add(new MwpMeetDealersView.fromJson(v));
       });

@@ -10,13 +10,13 @@ class UpdateDealerInfModel {
 
   UpdateDealerInfModel.fromJson(Map<String, dynamic> json) {
     if (json['event_dealer_requests_list'] != null) {
-      eventDealerRequestsList = new List<EventDealerRequestsList>();
+      eventDealerRequestsList = new List<EventDealerRequestsList>.empty(growable: true);
       json['event_dealer_requests_list'].forEach((v) {
         eventDealerRequestsList.add(new EventDealerRequestsList.fromJson(v));
       });
     }
     if (json['event_influencer_requests_list'] != null) {
-      eventInfluencerRequestsList = new List<EventInfluencerRequestsList>();
+      eventInfluencerRequestsList = new List<EventInfluencerRequestsList>.empty(growable: true);
       json['event_influencer_requests_list'].forEach((v) {
         eventInfluencerRequestsList
             .add(new EventInfluencerRequestsList.fromJson(v));

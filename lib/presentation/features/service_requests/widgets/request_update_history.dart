@@ -41,9 +41,7 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
                 TextEditingController _visitDate =
                     TextEditingController(text: visitDate);
                 return Theme(
-                  data: ThemeData(
-                      splashColor: Colors.transparent,
-                      accentColor: Colors.black),
+                  data: ThemeData(splashColor: Colors.transparent,).copyWith(colorScheme: ThemeData().colorScheme.copyWith(secondary: Colors.black)),
                   child: ExpansionTile(
                     onExpansionChanged: (val) {
                       setState(() {

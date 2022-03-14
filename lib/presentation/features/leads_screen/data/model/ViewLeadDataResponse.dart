@@ -42,69 +42,69 @@ class ViewLeadDataResponse {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['counterListModel'] != null) {
-      counterListModel = new List<CounterListModel>();
+      counterListModel = new List<CounterListModel>.empty(growable: true);
       json['counterListModel'].forEach((v) {
         counterListModel.add(new CounterListModel.fromJson(v));
       });
     }
 
     if (json['leadStageEntity'] != null) {
-      leadStageEntity = new List<LeadStageEntity>();
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
       });
     }
     if (json['leadStatusEntity'] != null) {
-      leadStatusEntity = new List<LeadStatusEntity>();
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
       });
     }
     if (json['leadInfluencerEntity'] != null) {
-      leadInfluencerEntity = new List<LeadInfluencerEntity>();
+      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
       json['leadInfluencerEntity'].forEach((v) {
         leadInfluencerEntity.add(new LeadInfluencerEntity.fromJson(v));
       });
     }
     if (json['leadcommentsEnitiy'] != null) {
-      leadcommentsEnitiy = new List<LeadcommentsEnitiy>();
+      leadcommentsEnitiy = new List<LeadcommentsEnitiy>.empty(growable: true);
       json['leadcommentsEnitiy'].forEach((v) {
         leadcommentsEnitiy.add(new LeadcommentsEnitiy.fromJson(v));
       });
     }
     if (json['leadphotosEntity'] != null) {
-      leadphotosEntity = new List<LeadphotosEntity>();
+      leadphotosEntity = new List<LeadphotosEntity>.empty(growable: true);
       json['leadphotosEntity'].forEach((v) {
         leadphotosEntity.add(new LeadphotosEntity.fromJson(v));
       });
     }
     if (json['influencerEntity'] != null) {
-      influencerEntity = new List<InfluencerEntity>();
+      influencerEntity = new List<InfluencerEntity>.empty(growable: true);
       json['influencerEntity'].forEach((v) {
         print(v);
         influencerEntity.add(new InfluencerEntity.fromJson(v));
       });
     }
     if (json['influencerCategoryEntity'] != null) {
-      influencerCategoryEntity = new List<InfluencerCategoryEntity>();
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
     if (json['influencerTypeEntity'] != null) {
-      influencerTypeEntity = new List<InfluencerTypeEntity>();
+      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
       json['influencerTypeEntity'].forEach((v) {
         influencerTypeEntity.add(new InfluencerTypeEntity.fromJson(v));
       });
     }
     if (json['leadRejectReasonEntity'] != null) {
-      leadRejectReasonEntity = new List<LeadRejectReasonEntity>();
+      leadRejectReasonEntity = new List<LeadRejectReasonEntity>.empty(growable: true);
       json['leadRejectReasonEntity'].forEach((v) {
         leadRejectReasonEntity.add(new LeadRejectReasonEntity.fromJson(v));
       });
     }
     if (json['nextStageConstructionEntity'] != null) {
-      nextStageConstructionEntity = new List<NextStageConstructionEntity>();
+      nextStageConstructionEntity = new List<NextStageConstructionEntity>.empty(growable: true);
       json['nextStageConstructionEntity'].forEach((v) {
         nextStageConstructionEntity
             .add(new NextStageConstructionEntity.fromJson(v));
@@ -115,14 +115,14 @@ class ViewLeadDataResponse {
         : null;
 
     if (json['dealerList'] != null) {
-      dealerList = new List<DealerList>();
+      dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
       });
     }
 
     if (json['siteFloorsEntity'] != null) {
-      siteFloorsEntity = new List<SiteFloorsEntity>();
+      siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
       json['siteFloorsEntity'].forEach((v) {
         siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
       });

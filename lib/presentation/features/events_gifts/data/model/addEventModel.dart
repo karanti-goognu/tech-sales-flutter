@@ -16,19 +16,19 @@ class AddEventModel {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['eventTypeModels'] != null) {
-      eventTypeModels = new List<EventTypeModels>();
+      eventTypeModels = new List<EventTypeModels>.empty(growable: true);
       json['eventTypeModels'].forEach((v) {
         eventTypeModels.add(new EventTypeModels.fromJson(v));
       });
     }
     if (json['dealersModels'] != null) {
-      dealersModels = new List<DealersModels>();
+      dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {
         dealersModels.add(new DealersModels.fromJson(v));
       });
     }
     if (json['statusEntitieList'] != null) {
-      statusEntitieList = new List<StatusEntitieList>();
+      statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
       json['statusEntitieList'].forEach((v) {
         statusEntitieList.add(new StatusEntitieList.fromJson(v));
       });

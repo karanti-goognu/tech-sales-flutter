@@ -46,7 +46,7 @@ class SaveMeetRequest {
     createdBy = json['createdBy'];
     meetInitiatorName = json['meetInitiatorName'];
     if (json['mwpMeetDealers'] != null) {
-      mwpMeetDealers = new List<MwpMeetDealers>();
+      mwpMeetDealers = new List<MwpMeetDealers>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
         mwpMeetDealers.add(new MwpMeetDealers.fromJson(v));
       });

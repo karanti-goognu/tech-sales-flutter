@@ -20,49 +20,49 @@ class AddLeadInitialModel {
 
   AddLeadInitialModel.fromJson(Map<String, dynamic> json) {
     if (json['siteSubTypeEntity'] != null) {
-      siteSubTypeEntity = new List<SiteSubTypeEntity>();
+      siteSubTypeEntity = new List<SiteSubTypeEntity>.empty(growable: true);
       json['siteSubTypeEntity'].forEach((v) {
         siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
       });
     }
     if (json['influencerCategoryEntity'] != null) {
-      influencerCategoryEntity = new List<InfluencerCategoryEntity>();
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
     if (json['influencerTypeEntity'] != null) {
-      influencerTypeEntity = new List<InfluencerTypeEntity>();
+      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
       json['influencerTypeEntity'].forEach((v) {
         influencerTypeEntity.add(new InfluencerTypeEntity.fromJson(v));
       });
     }
     if (json['dealerList'] != null) {
-      dealerList = new List<DealerList>();
+      dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
       });
     }
     if (json['subDealerList'] != null) {
-      subDealerList = new List<SubDealerList>();
+      subDealerList = new List<SubDealerList>.empty(growable: true);
       json['subDealerList'].forEach((v) {
         subDealerList.add(new SubDealerList.fromJson(v));
       });
     }
     if (json['salesOfficerList'] != null) {
-      salesOfficerList = new List<SalesOfficerList>();
+      salesOfficerList = new List<SalesOfficerList>.empty(growable: true);
       json['salesOfficerList'].forEach((v) {
         salesOfficerList.add(new SalesOfficerList.fromJson(v));
       });
     }
     if (json['eventList'] != null) {
-      eventList = new List<EventList>();
+      eventList = new List<EventList>.empty(growable: true);
       json['eventList'].forEach((v) {
         eventList.add(new EventList.fromJson(v));
       });
     }
     if (json['leadSourceList'] != null) {
-      leadSourceList = new List<LeadSourceList>();
+      leadSourceList = new List<LeadSourceList>.empty(growable: true);
       json['leadSourceList'].forEach((v) {
         leadSourceList.add(new LeadSourceList.fromJson(v));
       });
