@@ -21,7 +21,6 @@ class GetCurrentLocation{
   //       return Future.error('Location permissions are denied');
   //     }
   //   }
-  //
   // }
 
   static Future<List> getCurrentLocation() async {
@@ -44,14 +43,11 @@ class GetCurrentLocation{
       if (permission == LocationPermission.deniedForever) {
         Get.rawSnackbar(title: "Message", message:'Location permissions are permanently denied, we cannot request permissions.');
       }
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      print(position);
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentPosition = position;
       loc = await getAddressFromLatLng();
       Get.back();
      return [loc,_currentPosition];
-
   }
 
 
@@ -65,6 +61,3 @@ class GetCurrentLocation{
     }
   }
 }
-
-
-

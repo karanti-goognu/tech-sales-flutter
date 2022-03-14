@@ -107,8 +107,6 @@ class _RequestCreationState extends State<RequestCreation> {
   int siteId;
   String selectedValue;
 
-  // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
-  // GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
 
   @override
   void initState() {

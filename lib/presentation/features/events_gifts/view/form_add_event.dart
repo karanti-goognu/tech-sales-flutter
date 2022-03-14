@@ -124,7 +124,9 @@ class _FormAddEventState extends State<FormAddEvent> {
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: ElevatedButton(
+          child:
+    // RaisedButton(
+    ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
               elevation: 0,
@@ -132,7 +134,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date)),
+                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -163,7 +165,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 Expanded(
                     child: Text((_time != null
                         ? '${_time.hour}:${_time.minute}'
-                        : 'Select time'))),
+                        : 'Select time'),style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
