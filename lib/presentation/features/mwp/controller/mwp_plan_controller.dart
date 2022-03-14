@@ -260,7 +260,8 @@ class MWPPlanController extends GetxController {
       repository.getMWPPlan(accessKey, userSecurityKey, url).then((data) {
         this.isLoading = false;
         print('JJJJJJ'+data.toString());
-        if (data.mwpplanModel == null) {
+        if(data == null){
+       // if (data.mwpplanModel == null) {
           this.getMWPResponse = data;
           debugPrint('MWP Data Response is null');
           // this.totalConversionVol = 0;
