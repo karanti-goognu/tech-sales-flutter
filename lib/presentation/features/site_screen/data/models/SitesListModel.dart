@@ -14,7 +14,7 @@ class SitesListModel {
 
   SitesListModel.fromJson(Map<String, dynamic> json) {
     if (json['sitesEntity'] != null) {
-      sitesEntity = new List<SitesEntity>();
+      sitesEntity = new List<SitesEntity>.empty(growable: true);
       json['sitesEntity'].forEach((v) {
         sitesEntity.add(new SitesEntity.fromJson(v));
       });

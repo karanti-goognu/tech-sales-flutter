@@ -18,21 +18,20 @@ String version;
   MyApiClientEvent({@required this.httpClient});
 
   Future<String> getAccessKey() async {
+    AccessKeyModel accessKeyModel;
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel.accessKey;
+        accessKeyModel = AccessKeyModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception at EG repo ${_.toString()}');
     }
+    return accessKeyModel.accessKey;
   }
 
   Future getGiftStockData(String empID,String accessKey, String userSecurityKey)async{

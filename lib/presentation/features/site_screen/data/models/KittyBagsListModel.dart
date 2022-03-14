@@ -52,13 +52,13 @@ class Response {
 
   Response.fromJson(Map<String, dynamic> json) {
     if (json['kittyPointsList'] != null) {
-      kittyPointsList = new List<KittyPointsList>();
+      kittyPointsList = new List<KittyPointsList>.empty(growable: true);
       json['kittyPointsList'].forEach((v) {
         kittyPointsList.add(new KittyPointsList.fromJson(v));
       });
     }
     if (json['reservePoolList'] != null) {
-      reservePoolList = new List<ReservePoolList>();
+      reservePoolList = new List<ReservePoolList>.empty(growable: true);
       json['reservePoolList'].forEach((v) {
         reservePoolList.add(new ReservePoolList.fromJson(v));
       });

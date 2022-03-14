@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/UpdateDealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -37,10 +36,8 @@ class UpdateDlrInf extends StatefulWidget {
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
   DealerInfModel _dealerInfModel;
-  InfDetailModel _infDetailModel;
   InfluencerDetailModel _influencerDetailModel;
   InfluencerResponseModel _influencerResponseModel;
-  //SaveNewInfluencerResponse _saveNewInfluencerResponse;
   EventsFilterController _eventsFilterController = Get.find();
   int dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false, _isButtonDisabled = false;
@@ -1031,8 +1028,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   updateBtnPressed() async {
-    List<EventDealerRequestsList> _dealersList = new List();
-    List<EventInfluencerRequestsList> _infList = new List();
+    List<EventDealerRequestsList> _dealersList = new List.empty(growable: true);
+    List<EventInfluencerRequestsList> _infList = new List.empty(growable: true);
     String empId = await getEmpId();
     selectedDealersModels.forEach((e) {
       setState(() {

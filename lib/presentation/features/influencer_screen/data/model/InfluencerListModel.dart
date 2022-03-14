@@ -36,13 +36,13 @@ class Response {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['influencerTypeList'] != null) {
-      influencerTypeList = new List<InfluencerTypeList>();
+      influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
       json['influencerTypeList'].forEach((v) {
         influencerTypeList.add(new InfluencerTypeList.fromJson(v));
       });
     }
     if (json['ilpInfluencerEntity'] != null) {
-      ilpInfluencerEntity = new List<IlpInfluencerEntity>();
+      ilpInfluencerEntity = new List<IlpInfluencerEntity>.empty(growable: true);
       json['ilpInfluencerEntity'].forEach((v) {
         ilpInfluencerEntity.add(new IlpInfluencerEntity.fromJson(v));
       });

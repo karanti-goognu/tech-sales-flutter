@@ -9,7 +9,7 @@ class DealerListResponse {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['dealerList'] != null) {
-      dealerList = new List<DealerList>();
+      dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {
         dealerList.add(new DealerList.fromJson(v));
       });

@@ -14,26 +14,26 @@ class SrFilterModel {
 
   SrFilterModel.fromJson(Map<String, dynamic> json) {
     if (json['leadStatusEntity'] != null) {
-      leadStatusEntity = new List<LeadStatusEntity>();
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
       });
     }
     if (json['leadStageEntity'] != null) {
-      leadStageEntity = new List<LeadStageEntity>();
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
         leadStageEntity.add(new LeadStageEntity.fromJson(v));
       });
     }
     if (json['srComplainResolutionEntity'] != null) {
-      srComplainResolutionEntity = new List<SrComplainResolutionEntity>();
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
       json['srComplainResolutionEntity'].forEach((v) {
         srComplainResolutionEntity
             .add(new SrComplainResolutionEntity.fromJson(v));
       });
     }
     if (json['srComplaintTypeEntity'] != null) {
-      srComplaintTypeEntity = new List<SrComplaintTypeEntity>();
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty();
       json['srComplaintTypeEntity'].forEach((v) {
         srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
       });

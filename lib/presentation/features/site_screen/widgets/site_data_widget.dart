@@ -1438,7 +1438,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
-                            TextStyles.mandatoryText,
+                          TextStyles.mandatoryText,
 
                           SizedBox(height: 16),
                           Container(
@@ -1605,9 +1605,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
-                          SizedBox(height: 16),
-
-                          SizedBox(height: 35),
+                          SizedBox(height: 51),
 
                           Center(
                             child: ElevatedButton(
@@ -1706,8 +1704,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
+      List<Placemark> p = await placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =

@@ -212,7 +212,7 @@ class _LogsViewState extends State<ViewLogs> {
                            ),
                            child: Theme(
                              data: ThemeData(splashColor: Colors.transparent,
-                                 accentColor: Colors.amber, unselectedWidgetColor:  Colors.amber
+                                  unselectedWidgetColor:  Colors.amber,
                              ),
                              child: ExpansionTile(
                                title: Text(giftController.dataForViewLog[i].giftAddDate.toString()),

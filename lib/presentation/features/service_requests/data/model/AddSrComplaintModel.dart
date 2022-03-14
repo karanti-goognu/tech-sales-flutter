@@ -21,7 +21,7 @@ class SrComplaintModel {
     respMsg = json['respMsg'];
     if (json['serviceRequestComplaintDepartmentEntity'] != null) {
       serviceRequestComplaintDepartmentEntity =
-          new List<ServiceRequestComplaintDepartmentEntity>();
+          new List<ServiceRequestComplaintDepartmentEntity>.empty(growable: true);
       json['serviceRequestComplaintDepartmentEntity'].forEach((v) {
         serviceRequestComplaintDepartmentEntity
             .add(new ServiceRequestComplaintDepartmentEntity.fromJson(v));
@@ -29,7 +29,7 @@ class SrComplaintModel {
     }
     if (json['serviceRequestComplaintRequestEntity'] != null) {
       serviceRequestComplaintRequestEntity =
-          new List<ServiceRequestComplaintRequestEntity>();
+          new List<ServiceRequestComplaintRequestEntity>.empty(growable: true);
       json['serviceRequestComplaintRequestEntity'].forEach((v) {
         serviceRequestComplaintRequestEntity
             .add(new ServiceRequestComplaintRequestEntity.fromJson(v));
@@ -37,7 +37,7 @@ class SrComplaintModel {
     }
     if (json['serviceRequestComplaintTypeEntity'] != null) {
       serviceRequestComplaintTypeEntity =
-          new List<ServiceRequestComplaintTypeEntity>();
+          new List<ServiceRequestComplaintTypeEntity>.empty(growable: true);
       json['serviceRequestComplaintTypeEntity'].forEach((v) {
         serviceRequestComplaintTypeEntity
             .add(new ServiceRequestComplaintTypeEntity.fromJson(v));
@@ -46,7 +46,7 @@ class SrComplaintModel {
 
     if (json['activeSiteTSOLists'] != null) {
       activeSiteTSOLists =
-      new List<ActiveSiteTSOListsEntity>();
+      new List<ActiveSiteTSOListsEntity>.empty(growable: true);
       json['activeSiteTSOLists'].forEach((v) {
         activeSiteTSOLists
             .add(new ActiveSiteTSOListsEntity.fromJson(v));
@@ -159,22 +159,22 @@ class ServiceRequestComplaintTypeEntity {
 }
 
 class ActiveSiteTSOListsEntity {
-  int site_id;
-  String contact_name;
+  int siteId;
+  String contactName;
 
   ActiveSiteTSOListsEntity(
-      {this.site_id,
-        this.contact_name});
+      {this.siteId,
+        this.contactName});
 
   ActiveSiteTSOListsEntity.fromJson(Map<String, dynamic> json) {
-    site_id = json['site_id'];
-    contact_name = json['contact_name'];
+    siteId = json['site_id'];
+    contactName = json['contact_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['site_id'] = this.site_id;
-    data['contact_name'] = this.contact_name;
+    data['site_id'] = this.siteId;
+    data['contact_name'] = this.contactName;
     return data;
   }
 }

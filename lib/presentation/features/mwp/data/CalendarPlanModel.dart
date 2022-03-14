@@ -17,7 +17,7 @@ class CalendarPlanModel {
     respMsg = json['respMsg'];
     listOfEventDates = json['listOfEventDates'].cast<String>();
     if (json['listOfEventDetails'] != null) {
-      listOfEventDetails = new List<ListOfEventDetails>();
+      listOfEventDetails = new List<ListOfEventDetails>.empty(growable: true);
       json['listOfEventDetails'].forEach((v) {
         listOfEventDetails.add(new ListOfEventDetails.fromJson(v));
       });

@@ -11,7 +11,6 @@ import 'package:flutter_tech_sales/presentation/features/splash/data/models/Spla
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';

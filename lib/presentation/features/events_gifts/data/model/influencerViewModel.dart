@@ -19,14 +19,14 @@ class InfluencerViewModel {
         ? new InfluencerModel.fromJson(json['influencerModel'])
         : null;
     if (json['influencerTypeEntitiesList'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencerTypeEntitiesList'].forEach((v) {
         influencerTypeEntitiesList
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
     if (json['categoryEntitiesList'] != null) {
-      categoryEntitiesList = new List<CategoryEntitiesList>();
+      categoryEntitiesList = new List<CategoryEntitiesList>.empty(growable: true);
       json['categoryEntitiesList'].forEach((v) {
         categoryEntitiesList.add(new CategoryEntitiesList.fromJson(v));
       });

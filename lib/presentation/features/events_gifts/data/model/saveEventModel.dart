@@ -8,7 +8,7 @@ class SaveEventFormModel {
 
   SaveEventFormModel.fromJson(Map<String, dynamic> json) {
     if (json['eventDealersModelList'] != null) {
-      eventDealersModelList = new List<EventDealersModelList>();
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
         eventDealersModelList.add(new EventDealersModelList.fromJson(v));
       });

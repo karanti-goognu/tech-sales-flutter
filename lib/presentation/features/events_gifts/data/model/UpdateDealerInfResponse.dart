@@ -14,19 +14,19 @@ class UpdateDealerInfResponse {
 
   UpdateDealerInfResponse.fromJson(Map<String, dynamic> json) {
     if (json['dealers-model'] != null) {
-      dealersModel = new List<DealersModel>();
+      dealersModel = new List<DealersModel>.empty(growable: true);
       json['dealers-model'].forEach((v) {
         dealersModel.add(new DealersModel.fromJson(v));
       });
     }
     if (json['event-dealers-model-list'] != null) {
-      eventDealersModelList = new List<EventDealersModelList>();
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['event-dealers-model-list'].forEach((v) {
         eventDealersModelList.add(new EventDealersModelList.fromJson(v));
       });
     }
     if (json['event-influencer-model-list'] != null) {
-      eventInfluencerModelList = new List<EventInfluencerModelList>();
+      eventInfluencerModelList = new List<EventInfluencerModelList>.empty(growable: true);
       json['event-influencer-model-list'].forEach((v) {
         eventInfluencerModelList.add(new EventInfluencerModelList.fromJson(v));
       });

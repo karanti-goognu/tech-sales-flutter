@@ -51,14 +51,14 @@ class SaveServiceRequest {
     createdBy = json['createdBy'];
     if (json['srComplaintSubtypeMappingEntity'] != null) {
       srComplaintSubtypeMappingEntity =
-      new List<SrComplaintSubtypeMappingEntity>();
+      new List<SrComplaintSubtypeMappingEntity>.empty(growable: true);
       json['srComplaintSubtypeMappingEntity'].forEach((v) {
         srComplaintSubtypeMappingEntity
             .add(new SrComplaintSubtypeMappingEntity.fromJson(v));
       });
     }
     if (json['srComplaintPhotosEntity'] != null) {
-      srComplaintPhotosEntity = new List<SrComplaintPhotosEntity>();
+      srComplaintPhotosEntity = new List<SrComplaintPhotosEntity>.empty(growable: true);
       json['srComplaintPhotosEntity'].forEach((v) {
         srComplaintPhotosEntity.add(new SrComplaintPhotosEntity.fromJson(v));
       });

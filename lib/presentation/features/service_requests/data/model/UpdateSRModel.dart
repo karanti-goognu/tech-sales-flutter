@@ -24,13 +24,13 @@ class UpdateSRModel {
     resoulutionStatus = json['resoulutionStatus'];
     updatedBy = json['updatedBy'];
     if (json['srComplaintAction'] != null) {
-      srComplaintAction = new List<SrComplaintAction>();
+      srComplaintAction = new List<SrComplaintAction>.empty(growable: true);
       json['srComplaintAction'].forEach((v) {
         srComplaintAction.add(new SrComplaintAction.fromJson(v));
       });
     }
     if (json['srcActionPhotosEntity'] != null) {
-      srcActionPhotosEntity = new List<SrcActionPhotosEntity>();
+      srcActionPhotosEntity = new List<SrcActionPhotosEntity>.empty(growable: true);
       json['srcActionPhotosEntity'].forEach((v) {
         srcActionPhotosEntity.add(new SrcActionPhotosEntity.fromJson(v));
       });

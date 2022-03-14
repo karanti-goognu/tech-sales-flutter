@@ -39,7 +39,6 @@ class _DetailPendingState extends State<DetailPending> {
   DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
-  //List<EventDealersModelList> selectedDealersModels = [];
   List<DealersModels> selectedDealersModels = [];
   List<bool> checkedValues;
 

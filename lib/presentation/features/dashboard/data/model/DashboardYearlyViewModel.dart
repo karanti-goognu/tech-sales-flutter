@@ -14,7 +14,7 @@ class DashboardYearlyViewModel {
 
   DashboardYearlyViewModel.fromJson(Map<String, dynamic> json) {
     if (json['dashboardYearlyModels'] != null) {
-      dashboardYearlyModels = new List<DashboardYearlyModels>();
+      dashboardYearlyModels = new List<DashboardYearlyModels>.empty(growable: true);
       json['dashboardYearlyModels'].forEach((v) {
         dashboardYearlyModels.add(new DashboardYearlyModels.fromJson(v));
       });

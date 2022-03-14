@@ -82,19 +82,19 @@ class UpdateLeadRequestModel {
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
     if (json['listLeadcomments'] != null) {
-      listLeadcomments = new List<ListLeadcomments>();
+      listLeadcomments = new List<ListLeadcomments>.empty(growable: true);
       json['listLeadcomments'].forEach((v) {
         listLeadcomments.add(new ListLeadcomments.fromJson(v));
       });
     }
     if (json['listLeadImage'] != null) {
-      listLeadImage = new List<ListLeadImage>();
+      listLeadImage = new List<ListLeadImage>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
         listLeadImage.add(new ListLeadImage.fromJson(v));
       });
     }
     if (json['leadInfluencerEntity'] != null) {
-      leadInfluencerEntity = new List<LeadInfluencerEntity>();
+      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
       json['leadInfluencerEntity'].forEach((v) {
         leadInfluencerEntity.add(new LeadInfluencerEntity.fromJson(v));
       });

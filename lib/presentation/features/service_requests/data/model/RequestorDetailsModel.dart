@@ -8,7 +8,7 @@ class RequestorDetailsModel {
 
   RequestorDetailsModel.fromJson(Map<String, dynamic> json) {
     if (json['srComplaintRequesterList'] != null) {
-      srComplaintRequesterList = new List<SrComplaintRequesterList>();
+      srComplaintRequesterList = new List<SrComplaintRequesterList>.empty(growable: true);
       json['srComplaintRequesterList'].forEach((v) {
         srComplaintRequesterList.add(new SrComplaintRequesterList.fromJson(v));
       });

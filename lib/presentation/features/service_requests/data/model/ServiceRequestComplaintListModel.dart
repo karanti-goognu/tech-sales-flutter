@@ -16,7 +16,7 @@ class ServiceRequestComplaintListModel {
     totalCount = json['totalCount'];
     totalPotential = json['totalPotential'];
     if (json['srComplaintListModal'] != null) {
-      srComplaintListModal = new List<SrComplaintListModal>();
+      srComplaintListModal = new List<SrComplaintListModal>.empty(growable: true);
       json['srComplaintListModal'].forEach((v) {
         srComplaintListModal.add(new SrComplaintListModal.fromJson(v));
       });

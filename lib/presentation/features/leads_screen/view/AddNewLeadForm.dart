@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
@@ -47,9 +46,7 @@ class AddNewLeadForm extends StatefulWidget {
 
 class _AddNewLeadFormState extends State<AddNewLeadForm> {
   final _dbHelper = DraftLeadDBHelper();
-
   final _formKeyForNewLeadForm = GlobalKey<FormState>();
-  String _myActivity;
   bool isSwitchedPrimary = false;
   var txt = TextEditingController();
   String _contactName;
@@ -63,15 +60,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   var _taluk = TextEditingController();
   var _comments = TextEditingController();
   var _rera = TextEditingController();
-  // TextEditingController _nameController = TextEditingController();
-  // var _influencerNumber = TextEditingController();
-  // var _influencerName = TextEditingController();
-  // var _influencerType = TextEditingController();
-  // var _influencerCategory = TextEditingController();
   var _other = TextEditingController();
   var sourceMobile = TextEditingController();
   String geoTagType;
-
   var _totalBags = TextEditingController();
   var _totalMT = TextEditingController();
   List<File> _imageList = [];
@@ -106,10 +97,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     return result;
   }
 
-  List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = [];
 
-  Position _currentPosition ;
+  Position _currentPosition;
   String _currentAddress;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [
@@ -466,7 +456,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     final dealerDropDwn = DropdownButtonFormField(
       onChanged: (value) {
         setState(() {
-           _dealerId = value;
+          _dealerId = value;
         });
       },
       selectedItemBuilder: (BuildContext context) {
@@ -975,7 +965,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 setState(() {
                                   geoTagType = "M";
                                 });
-                                _getAddressFromLatLng(latitude: data[0], longitude: data[1]);
+                                _currentPosition = new Position(
+                                    latitude: data[0], longitude: data[1]);
+                                _getAddressFromLatLng();
                               },
                             ),
                           ],
@@ -1463,7 +1455,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
                                         if (_comments.text != null &&
                                             _comments.text != '') {
-                                           _commentsListNew.add(
+                                          _commentsListNew.add(
                                             new CommentsDetail(
                                                 createdBy: empId,
                                                 commentText: _comments.text,
@@ -1483,7 +1475,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                           _listInfluencerDetail
                                                                   .length -
                                                               1]
-                                                      .inflName ==
+                                                      .inflName.text ==
                                                   "null" ||
                                               _listInfluencerDetail[
                                                       _listInfluencerDetail
@@ -1491,7 +1483,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                           1]
                                                   .inflName
                                                   .text
-                                                  .isNullOrBlank) {
+                                                  .isBlank) {
                                             _listInfluencerDetail.removeAt(
                                                 _listInfluencerDetail.length -
                                                     1);
@@ -1665,10 +1657,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               },
                             ),
                             ElevatedButton(
-    style: ElevatedButton.styleFrom(
-    primary:  HexColor("#1C99D4"),
-    ),
-
+                              style: ElevatedButton.styleFrom(
+                                primary: HexColor("#1C99D4"),
+                              ),
                               child: Text(
                                 "SUBMIT",
                                 style: TextStyle(
@@ -1685,7 +1676,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           _contactNumber.length == 10 &&
                                           _contactNumber != '' &&
                                           _currentPosition.latitude != null &&
-                                          _currentPosition.latitude != '' &&
                                           _pincode.text != null &&
                                           _pincode.text != ''
                                       //&&
@@ -1713,7 +1703,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             _comments.text == null) {
                                           _comments.text = "Added New Lead";
                                         }
-                                        await _commentsListNew.add(
+                                        _commentsListNew.add(
                                           new CommentsDetail(
                                               createdBy: empId,
                                               commentText: _comments.text,
@@ -1732,7 +1722,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             _listInfluencerDetail
                                                                     .length -
                                                                 1]
-                                                        .inflName ==
+                                                        .inflName.text ==
                                                     "null" ||
                                                 _listInfluencerDetail[
                                                         _listInfluencerDetail
@@ -1740,7 +1730,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                             1]
                                                     .inflName
                                                     .text
-                                                    .isNullOrBlank)) {
+                                                    .isBlank)) {
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }
@@ -2243,7 +2233,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 }
               }
 
-
               for (int i = 0; i < influencerCategoryEntity.length; i++) {
                 if (influencerCategoryEntity[i].inflCatId.toString() ==
                     inflDetail.inflCatId.toString()) {
@@ -2283,10 +2272,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     });
   }
 
-  _getAddressFromLatLng({double latitude,double longitude}) async {
+  _getAddressFromLatLng() async {
     try {
-      TsoLogger.printLog("$latitude + $longitude");
-      List<Placemark> p = await placemarkFromCoordinates(latitude, longitude);
+      List<Placemark> p = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
@@ -2295,13 +2284,13 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print("ex.....   $e");
     }
   }
-
 
   void toggleSwitchforPrimary(bool value) {
     setState(() {

@@ -145,7 +145,7 @@ class DetailEventController extends GetxController {
     });
   }
 
-  Future<DeleteEventModel> deleteEvent(int eventId) async {
+  deleteEvent(int eventId) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -157,9 +157,7 @@ class DetailEventController extends GetxController {
         repository
             .deleteEvent(accessKey, userSecurityKey, empID, eventId)
             .then((value) {
-          //Get.back();
           if (value.respMsg == 'DM1002') {
-           // Get.back();
             Get.defaultDialog(
                 title: "Message",
                 middleText: value.respMsg.toString(),
@@ -169,7 +167,6 @@ class DetailEventController extends GetxController {
                 ),
                 barrierDismissible: false);
           } else {
-          //  Get.back();
             Get.dialog(
                 CustomDialogs().messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);

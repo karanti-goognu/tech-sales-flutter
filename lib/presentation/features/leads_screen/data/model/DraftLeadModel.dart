@@ -93,19 +93,19 @@ class SaveLeadRequestDraftModel {
     isIhbCommercial = json['isIhbCommercial'];
     // photos = json['photos'];
     if (json['comments'] != null) {
-      comments = new List<CommentsDetail>();
+      comments = new List<CommentsDetail>.empty(growable: true);
       json['comments'].forEach((v) {
         comments.add(new CommentsDetail.fromJson(v));
       });
     }
     if (json['influencerList'] != null) {
-      influencerList = new List<InfluencerDetailDraft>();
+      influencerList = new List<InfluencerDetailDraft>.empty(growable: true);
       json['influencerList'].forEach((v) {
         influencerList.add(new InfluencerDetailDraft.fromJson(v));
       });
     }
     if (json['listLeadImage'] != null) {
-      listLeadImage = new List<ListLeadImageDraft>();
+      listLeadImage = new List<ListLeadImageDraft>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
         listLeadImage.add(new ListLeadImageDraft.fromJson(v));
       });

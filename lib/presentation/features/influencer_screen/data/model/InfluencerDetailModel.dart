@@ -18,7 +18,7 @@ class InfluencerDetailModel {
         : null;
 
     if (json['influencer_type_entities_list'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>();
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencer_type_entities_list'].forEach((v) {
         influencerTypeEntitiesList
             .add(new InfluencerTypeEntitiesList.fromJson(v));
@@ -26,7 +26,7 @@ class InfluencerDetailModel {
     }
     if (json['influencer_category_entities_list'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>();
+      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencer_category_entities_list'].forEach((v) {
         influencerCategoryEntitiesList
             .add(new InfluencerCategoryEntitiesList.fromJson(v));

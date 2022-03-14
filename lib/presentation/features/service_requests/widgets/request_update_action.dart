@@ -823,7 +823,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         onTap: () => PickDate.selectDate(
                                 context: context, lastDate: DateTime.now())
                             .then(
-                          (value) => value.isNull
+                          (value) => value==null
                               ? null
                               : setState(
                                   () {
@@ -908,7 +908,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               controller: _nextVisitDate,
               onTap: () => PickDate.selectDate(
                       context: context, firstDate: DateTime.now())
-                  .then((value) => value.isNull
+                  .then((value) => value==null
                       ? null
                       : setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");

@@ -38,26 +38,26 @@ class Response {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     if (json['influencerTypeList'] != null) {
-      influencerTypeList = new List<InfluencerTypeList>();
+      influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
       json['influencerTypeList'].forEach((v) {
         influencerTypeList.add(new InfluencerTypeList.fromJson(v));
       });
     }
     if (json['influencerCategoryList'] != null) {
-      influencerCategoryList = new List<InfluencerCategoryList>();
+      influencerCategoryList = new List<InfluencerCategoryList>.empty(growable: true);
       json['influencerCategoryList'].forEach((v) {
         influencerCategoryList.add(new InfluencerCategoryList.fromJson(v));
       });
     }
     if (json['influencerSourceList'] != null) {
-      influencerSourceList = new List<InfluencerSourceList>();
+      influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
       json['influencerSourceList'].forEach((v) {
         influencerSourceList.add(new InfluencerSourceList.fromJson(v));
       });
     }
 
     if (json['siteBrandList'] != null) {
-      siteBrandList = new List<SiteBrandList>();
+      siteBrandList = new List<SiteBrandList>.empty(growable: true);
       json['siteBrandList'].forEach((v) {
         siteBrandList.add(new SiteBrandList.fromJson(v));
       });
