@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,6 +115,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
             .then(
           (data) async {
             // print("here");
+
             viewSiteDataResponse = data;
             setState(
               () {
@@ -130,10 +133,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
                 if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
                   for (int i = 0;
-                      i <
-                          viewSiteDataResponse
-                              .siteOpportunityStatusEntity.length;
-                      i++) {
+                      i < viewSiteDataResponse.siteOpportunityStatusEntity.length; i++) {
                     if (viewSiteDataResponse.sitesModal.siteOppertunityId
                             .toString() ==
                         viewSiteDataResponse.siteOpportunityStatusEntity[i].id
@@ -143,7 +143,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                     }
                   }
                 } else {
-                  _siteOpportunitStatusEnityVisit = null;
+                  _siteOpportunitStatusEnityVisit = viewSiteDataResponse.siteOpportunityStatusEntity[0];
+                  //_siteOpportunitStatusEnityVisit = null;
                 }
               },
             );
@@ -985,6 +986,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                             _siteOpportunitStatusEnityVisit,
                         visitRemarks:
                             snapshot.data.sitesModal.siteClosureReasonText,
+                          viewSiteDataResponse: snapshot.data
                       )
                     ],
                   ); // snapshot.data  :- get your object which is pass from your downloadData() function

@@ -589,7 +589,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   children: [
                                     Radio(
                                       value: 'Y',
-                                      groupValue: _selectedRadioValue,
+                                      groupValue: productDynamicList[index].awardLoyaltyPoint,
+                                      //_selectedRadioValue,
                                       onChanged: (value) {
                                         setState(() {
                                             _selectedRadioValue = value;
@@ -609,7 +610,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   children: [
                                     Radio(
                                       value: 'N',
-                                      groupValue: _selectedRadioValue,
+                                      groupValue: productDynamicList[index].awardLoyaltyPoint,
+                                      //_selectedRadioValue,
                                       onChanged: (value) {
                                         setState(() {
                                           _selectedRadioValue = value;

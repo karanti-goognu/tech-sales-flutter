@@ -21,8 +21,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class SiteVisitWidget extends StatefulWidget {
-  MwpVisitModel mwpVisitModel;
   int siteId;
+  ViewSiteDataResponse viewSiteDataResponse;
+  MwpVisitModel mwpVisitModel;
   String siteDate;
   int visitSubTypeId;
   SiteOpportunityStatusEntity selectedOpportunitStatusEnity;
@@ -30,27 +31,34 @@ class SiteVisitWidget extends StatefulWidget {
   String visitRemarks;
   SiteVisitWidget(
       {this.mwpVisitModel,
-      this.siteId,
+       this.siteId,
+        this.viewSiteDataResponse,
       this.siteDate,
       this.visitSubTypeId,
       this.selectedOpportunitStatusEnity,
       this.siteOpportunityStatusEntity,
-      this.visitRemarks});
+      this.visitRemarks
+      });
   _SiteVisitWidgetState createState() => _SiteVisitWidgetState();
 }
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
+
   Position _currentPosition;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String _remark, visitSubType;
   String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
+  SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   TextEditingController _siteTypeController = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
   bool _isStartButtonDisabled;
   bool _isEndButtonDisabled;
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+  new List.empty(growable: true);
+  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
 
   @override
   void initState() {
@@ -61,6 +69,25 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   setData() {
+    setState(() {
+    viewSiteDataResponse = widget.viewSiteDataResponse;
+    siteOpportunityStatusEntity =
+        viewSiteDataResponse.siteOpportunityStatusEntity;
+    if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+      for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
+        if (viewSiteDataResponse.sitesModal.siteOppertunityId.toString() ==
+            siteOpportunityStatusEntity[i].id.toString()) {
+          _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+          _siteTypeController.text =
+              siteOpportunityStatusEntity[i].opportunityStatus;
+        }
+      }
+    } else {
+      _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
+      _siteTypeController.text =
+          siteOpportunityStatusEntity[0].opportunityStatus;
+    }
+
     if (widget.mwpVisitModel != null) {
       if (widget.mwpVisitModel.nextVisitDate != null) {
         var date = DateTime.fromMillisecondsSinceEpoch(
@@ -74,8 +101,9 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       _selectedVisitType.text = widget.mwpVisitModel.visitType;
       selectedDateString = "${widget.mwpVisitModel.visitDate}";
     } else {
-      _siteTypeController.text = "";
+     // _siteTypeController.text = "";
     }
+    });
   }
 
   @override
@@ -209,7 +237,18 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            visitType,
+                            //visitType,
+                            TextFormField(
+                              controller: _siteTypeController,
+                              readOnly: true,
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "Opportunity Status",
+                              ),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
                             SizedBox(height: 16),
                             Container(
                                 width: double.infinity,
@@ -337,11 +376,14 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                           children: <Widget>[
                             TextFormField(
                               controller: _siteTypeController,
-                              style: FormFieldStyle.formFieldTextStyle,
-                              keyboardType: TextInputType.number,
                               readOnly: true,
-                              enableInteractiveSelection: false,
-                              decoration: FormFieldStyle.buildInputDecoration(),
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "Opportunity Status",
+                              ),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
                             ),
                             SizedBox(height: 16),
                             ((widget.mwpVisitModel.visitStartTime != null &&
@@ -619,18 +661,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitSubType": visitSubType,
       "visitType": typeValue,
     });
-
     internetChecking().then((result) => {
           if (result == true)
             {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
-                    print('DD: ${json.encode(_siteVisitResponseModel)}');
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
                     else {
@@ -708,6 +747,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitType": typeValue,
     });
 
+
     internetChecking().then((result) => {
           if (result == true)
             {
@@ -717,7 +757,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
-                    print('DD: ${json.encode(_siteVisitResponseModel)}');
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
                     else {
@@ -802,11 +841,9 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               _siteController
                   .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
                   .then((data) {
-                print('data: $data');
                 if (data != null) {
                   setState(() {
                     _siteVisitResponseModel = data;
-                    print('DD: ${json.encode(_siteVisitResponseModel)}');
 
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
@@ -891,7 +928,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       });
   }
 
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+ // ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   getSiteData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then(

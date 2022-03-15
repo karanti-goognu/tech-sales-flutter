@@ -170,7 +170,7 @@ class MWPPlanController extends GetxController {
       print('User Security key is :: $userSecurityKey');
 
 
-      log('PARAMS: ${json.encode(this.mwpPlannigList)}');
+     // log('PARAMS: ${json.encode(this.mwpPlannigList)}');
 
       SaveMWPModel saveMWPModel = new SaveMWPModel(
           this.selectedMonth,
@@ -181,7 +181,7 @@ class MWPPlanController extends GetxController {
           this.selectedMwpPlannigList
       );
 
-
+      //log('PARAMS: ${json.encode(saveMWPModel)}');
       // SaveMWPModel saveMWPModel = new SaveMWPModel(
       //     this.selectedMonth,
       //     empId,

@@ -28,6 +28,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   @override
   void initState() {
     super.initState();
+    _mwpPlanController.selectedMwpPlannigList = _mwpPlanController.mwpPlannigList;
   }
 
 
@@ -402,7 +403,7 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
               counterText: '',
               counterStyle: TextStyle(fontSize: 0),
             ),
-            onFieldSubmitted: (_) {
+            onChanged: (_) {
               try {
                   _mwpPlanController.getMWPResponse.mwpPlannigList[index].targetValue = _;
                   _mwpPlanController.selectedMwpPlannigList = _mwpPlanController.mwpPlannigList;
