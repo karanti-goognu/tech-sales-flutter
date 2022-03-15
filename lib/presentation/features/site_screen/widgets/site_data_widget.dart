@@ -16,13 +16,13 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SiteDataWidget extends StatefulWidget {
-  int siteId;
-  ViewSiteDataResponse viewSiteDataResponse;
+  final int siteId;
+  final ViewSiteDataResponse viewSiteDataResponse;
   SiteDataWidget({this.siteId, this.viewSiteDataResponse});
 
   SiteDataViewWidgetState createState() => SiteDataViewWidgetState();
@@ -52,10 +52,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _siteTotalBalancePt = new TextEditingController();
   var _ownerName = new TextEditingController();
   var _contactNumber = new TextEditingController();
-  TextEditingController _completitionStatus = new TextEditingController();
+  TextEditingController _completionStatus = new TextEditingController();
   TextEditingController _opportunityStatus = new TextEditingController();
 
-  //String _comment;
   var _rera = new TextEditingController();
   var _dealerName = new TextEditingController();
   var _subDealerName = new TextEditingController();
@@ -68,7 +67,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _taluk = TextEditingController();
   var _totalBathroomCount = TextEditingController();
   var _totalKitchenCount = TextEditingController();
-  Position _currentPosition;
+  LatLng _currentPosition;
   String geoTagType;
   List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
   List<ConstructionStageEntity> constructionStageEntity =
@@ -87,6 +86,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   UpdateDataRequest updateDataRequest = new UpdateDataRequest();
 
   setSiteData() {
+    TsoLogger.printLog(":::::::::Set Site Data:::::::::");
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       sitesModal = viewSiteDataResponse.sitesModal;
@@ -164,9 +164,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           sitesModal.siteGeotagLongitude != "null" &&
           sitesModal.siteGeotagLatitude != "" &&
           sitesModal.siteGeotagLongitude != "") {
-        _currentPosition = new Position(
-            latitude: double.parse(sitesModal.siteGeotagLatitude),
-            longitude: double.parse(sitesModal.siteGeotagLongitude));
+        TsoLogger.printLog(":::::::::Set Site Data::::::::: current position");
+
+        _currentPosition = new LatLng(
+            double.parse(sitesModal.siteGeotagLatitude),
+            double.parse(sitesModal.siteGeotagLongitude));
       }
 
       constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
@@ -200,13 +202,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           if (viewSiteDataResponse.sitesModal.siteCompetitionId.toString() ==
               siteCompetitionStatusEntity[i].id.toString()) {
             _siteCompetitionStatusEntity = siteCompetitionStatusEntity[i];
-            _completitionStatus.text =
+            _completionStatus.text =
                 siteCompetitionStatusEntity[i].competitionStatus;
           }
         }
       } else {
         _siteCompetitionStatusEntity = siteCompetitionStatusEntity[0];
-        _completitionStatus.text =
+        _completionStatus.text =
             siteCompetitionStatusEntity[0].competitionStatus;
       }
 
@@ -322,12 +324,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
         BoxConstraints(
@@ -379,13 +375,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       value: label,
                                     ))
                                 .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedConstructionType = value;
-                                UpdatedValues.setSiteConstructionId(
-                                    _selectedConstructionType);
-                              });
-                            },
+                            onChanged: (_) => setState(() {
+                              _selectedConstructionType = _;
+                              UpdatedValues.setSiteConstructionId(
+                                  _selectedConstructionType);
+                            }),
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
                           ),
@@ -393,11 +387,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(height: 16),
                           TextFormField(
                               controller: siteBuiltupArea,
-                              onChanged: (String text) {
-                                setState(() {
-                                  UpdatedValues.setSiteBuiltArea(text);
-                                });
-                              },
+                              onChanged: (String _) => setState(() {
+                                    UpdatedValues.setSiteBuiltArea(_);
+                                  }),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter Site Built-Up Area (sqft)';
@@ -428,16 +420,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 20, left: 5),
-                            child: Text(
-                              "No. of Floors",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
+                              padding:
+                                  const EdgeInsets.only(bottom: 20, left: 5),
+                              child: Text("No. of Floors",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      fontFamily: "Muli"))),
                           Row(
                             children: [
                               Expanded(
@@ -449,16 +438,12 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
                                         fontFamily: "Muli"),
-                                    // keyboardType: TextInputType.text,
-                                    // decoration: FormFieldStyle.buildInputDecoration(labelText:"Ground"),
                                     decoration: InputDecoration(
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: ColorConstants
-                                                .backgroundColorBlue,
-                                            //color: HexColor("#0000001F"),
-                                            width: 1.0),
-                                      ),
+                                          borderSide: BorderSide(
+                                              color: ColorConstants
+                                                  .backgroundColorBlue,
+                                              width: 1.0)),
                                       disabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: const Color(0xFF000000)
@@ -508,7 +493,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                               value: label,
                                             ))
                                         .toList(),
-                                    // hint: Text('Rating'),
                                     onChanged: (value) {
                                       setState(() {
                                         FocusScope.of(context)
@@ -602,124 +586,94 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
                           SizedBox(height: 16),
                           Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Product demo",
-                                  style: TextStyle(
-                                      //fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      // color: HexColor("#000000DE"),
-                                      fontFamily: "Muli"),
-                                ),
-                                Row(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "No",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          // color: HexColor("#000000DE"),
-                                          fontFamily: "Muli"),
-                                    ),
-                                    Switch(
-                                      onChanged: toggleSwitchForProductDemo,
-                                      value: isSwitchedsiteProductDemo,
-                                      activeColor: HexColor("#009688"),
-                                      activeTrackColor:
-                                          HexColor("#009688").withOpacity(0.5),
-                                      inactiveThumbColor: HexColor("#F1F1F1"),
-                                      inactiveTrackColor: Colors.black26,
-                                    ),
-                                    Text(
-                                      "Yes",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: isSwitchedsiteProductDemo
-                                              ? HexColor("#009688")
-                                              : Colors.black,
-                                          // color: HexColor("#000000DE"),
-                                          fontFamily: "Muli"),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          //SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Product oral briefing",
-                                  style: TextStyle(
-                                      fontSize: 16, fontFamily: "Muli"),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "No",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          // color: HexColor("#000000DE"),
-                                          fontFamily: "Muli"),
-                                    ),
-                                    Switch(
-                                      onChanged: toggleSwitchForOralBriefing,
-                                      value: isSwitchedsiteProductOralBriefing,
-                                      activeColor: HexColor("#009688"),
-                                      activeTrackColor:
-                                          HexColor("#009688").withOpacity(0.5),
-                                      inactiveThumbColor: HexColor("#F1F1F1"),
-                                      inactiveTrackColor: Colors.black26,
-                                    ),
-                                    Text(
-                                      "Yes",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color:
-                                              isSwitchedsiteProductOralBriefing
+                                    Text("Product demo",
+                                        style: TextStyle(
+                                            fontSize: 18, fontFamily: "Muli")),
+                                    Row(children: [
+                                      Text("No",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              fontFamily: "Muli")),
+                                      Switch(
+                                          onChanged: toggleSwitchForProductDemo,
+                                          value: isSwitchedsiteProductDemo,
+                                          activeColor: HexColor("#009688"),
+                                          activeTrackColor: HexColor("#009688")
+                                              .withOpacity(0.5),
+                                          inactiveThumbColor:
+                                              HexColor("#F1F1F1"),
+                                          inactiveTrackColor: Colors.black26),
+                                      Text("Yes",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: isSwitchedsiteProductDemo
                                                   ? HexColor("#009688")
                                                   : Colors.black,
-                                          // color: HexColor("#000000DE"),
-                                          fontFamily: "Muli"),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                                              fontFamily: "Muli"))
+                                    ])
+                                  ])),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Product oral briefing",
+                                        style: TextStyle(
+                                            fontSize: 16, fontFamily: "Muli")),
+                                    Row(children: [
+                                      Text("No",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              fontFamily: "Muli")),
+                                      Switch(
+                                          onChanged:
+                                              toggleSwitchForOralBriefing,
+                                          value:
+                                              isSwitchedsiteProductOralBriefing,
+                                          activeColor: HexColor("#009688"),
+                                          activeTrackColor: HexColor("#009688")
+                                              .withOpacity(0.5),
+                                          inactiveThumbColor:
+                                              HexColor("#F1F1F1"),
+                                          inactiveTrackColor: Colors.black26),
+                                      Text("Yes",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color:
+                                                  isSwitchedsiteProductOralBriefing
+                                                      ? HexColor("#009688")
+                                                      : Colors.black,
+                                              fontFamily: "Muli"))
+                                    ])
+                                  ])),
 
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Total Site Potential",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 20, left: 5),
+                              child: Text("Total Site Potential",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      fontFamily: "Muli"))),
                           Row(
                             children: [
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
                                   child: TextFormField(
-                                    // initialValue: _totalBags.toString(),
                                     controller: _siteTotalBags,
                                     onChanged: (value) {
                                       setState(() {
-                                        // _totalBags.text = value ;
                                         if (_siteTotalBags.text == null ||
                                             _siteTotalBags.text == "") {
                                           _siteTotalPt.clear();
@@ -747,12 +701,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                                       return null;
                                     },
-
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
                                         fontFamily: "Muli"),
-                                    // keyboardType: TextInputType.text,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Bags"),
@@ -766,7 +718,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     controller: _siteTotalPt,
                                     onChanged: (value) {
                                       setState(() {
-                                        // _totalBags.text = value ;
                                         if (_siteTotalPt.text == null ||
                                             _siteTotalPt.text == "") {
                                           _siteTotalBags.clear();
@@ -987,7 +938,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
 
                           TextFormField(
-                            controller: _completitionStatus,
+                            controller: _completionStatus,
                             readOnly: true,
                             decoration: FormFieldStyle.buildInputDecoration(
                               labelText: "Competition Status",
@@ -1251,12 +1202,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               ),
                               Text(
                                 "Or",
-                                style: TextStyle(
-                                    fontFamily: "Muli",
-                                    //color: HexColor("#F9A61A"),
-                                    // fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
-                                    fontSize: 17),
+                                style:
+                                    TextStyle(fontFamily: "Muli", fontSize: 17),
                               ),
                               TextButton(
                                   style: TextButton.styleFrom(
@@ -1288,8 +1235,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       geoTagType = "M";
                                       UpdatedValues.setSiteGeotag(geoTagType);
                                     });
-                                    _currentPosition = new Position(
-                                        latitude: data[0], longitude: data[1]);
+                                    _currentPosition =
+                                        new LatLng(data[0], data[1]);
                                     _getAddressFromLatLng();
                                   }),
                             ],
@@ -1680,11 +1627,11 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       Get.dialog(CustomDialogs().showMessage(
           "Please enable your location service from device settings"));
     } else {
-      List result;
+      LocationDetails result;
       result = await GetCurrentLocation.getCurrentLocation();
       setState(() {
-        _currentPosition = result[1];
-        List<String> loc = result[0];
+        _currentPosition = result.latLng;
+        List<String> loc = result.loc;
         _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
         _district.text = "${loc[2]}";
         _state.text = "${loc[1]}";
@@ -1704,7 +1651,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+      List<Placemark> p = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =

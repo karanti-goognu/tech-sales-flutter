@@ -180,7 +180,6 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
-            print(data.toJson()['secret-key']);
         Get.back();
         this.secretKeyResponse = data;
         if (data != null) {
@@ -205,7 +204,6 @@ class LeadsFilterController extends GetxController {
       this.accessKeyResponse = data;
 
       if (this.accessKeyResponse.respCode == 'DM1005') {
-        print(this.accessKeyResponse.respMsg);
         Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
         _prefs.then((SharedPreferences prefs) {
           prefs.setString(StringConstants.userSecurityKey, '');
@@ -220,15 +218,12 @@ class LeadsFilterController extends GetxController {
       _prefs.then((SharedPreferences prefs) {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-//        print('User Security key is :: $userSecurityKey');
         if (userSecurityKey != "empty") {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            print('Has expired');
             getSecretKey(requestId);
           } else {
-            print('Not expired');
             switch (requestId) {
               case RequestIds.LEADS_FILTER_DATA_REQUEST:
                 getFilterData();
@@ -248,8 +243,6 @@ class LeadsFilterController extends GetxController {
 
   getFilterData() {
     repository.getFilterData(this.accessKeyResponse.accessKey).then((data) {
-      debugPrint('Access Key Response :: ');
-      print(json.encode(data));
       if (data == null) {
         debugPrint('Filter Data Response is null');
       } else {
@@ -273,10 +266,8 @@ class LeadsFilterController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
       encryptString(empId, StringConstants.encryptedKey).toString();
       String assignTo = "";
@@ -320,7 +311,6 @@ class LeadsFilterController extends GetxController {
       }
       String deliveryPoints = "";
       if (this.selectedDeliveryPointsValue != StringConstants.empty) {
-        print("Inside controller ${this.selectedDeliveryPointsValue}");
         switch (this.selectedDeliveryPointsValue) {
           case "Yes":
             deliveryPoints="&deliveryPoint=Y";
@@ -343,7 +333,6 @@ class LeadsFilterController extends GetxController {
       String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints$districtName&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
-      debugPrint('Url is : $encodedUrl');
       repository
           .getLeadsData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
@@ -352,27 +341,17 @@ class LeadsFilterController extends GetxController {
         } else {
           if(this.leadsListResponse.leadsEntity == null|| this.leadsListResponse.leadsEntity.isEmpty){
             this.leadsListResponse = data;
-            debugPrint(json.encode(data), wrapWidth: 2800);
           }else{
-           // print("adding");
-            //print(json.encode(data));
-            debugPrint(json.encode(data), wrapWidth: 2800);
-           // print(data.leadsEntity.length);
-            LeadsListModel leadListResponseServer = data;
-            //print(json.encode(leadListResponseServer));
-            if(leadListResponseServer.leadsEntity.isNotEmpty){
 
+            LeadsListModel leadListResponseServer = data;
+            if(leadListResponseServer.leadsEntity.isNotEmpty){
               leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
               this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
 
               ///filter issue
               if(this.isFilterApplied==true){
-                print("Filter will be implemented here");
-               // print('////////////LEADS: ${this.leadsListResponse.leadsEntity.length}');
-                //debugPrint(json.encode(data), wrapWidth: 2800);
 
-                //this.leadsListResponse = [];
                 this.leadsListResponse = leadListResponseServer;
                 Get.rawSnackbar(
                   titleText: Text("Note"),
@@ -381,7 +360,6 @@ class LeadsFilterController extends GetxController {
                   backgroundColor: Colors.white,
                 );
               }
-              ////
               Get.rawSnackbar(
                 titleText: Text("Note"),
                 messageText: Text(
@@ -389,19 +367,6 @@ class LeadsFilterController extends GetxController {
                 backgroundColor: Colors.white,
               );
             }
-           // else {
-            //  print("Is Filter Applied: ${this.isFilterApplied}");
-            //   if(this.isFilterApplied==true){
-            //     print("Filter will be implemented here");
-            //     //this.offset = 0;
-            //     this.leadsListResponse = data;
-            //     // Get.rawSnackbar(
-            //     //   titleText: Text("Note"),
-            //     //   messageText: Text(
-            //     //       "Loading more .."),
-            //     //   backgroundColor: Colors.white,
-            //     // );
-            //   }
               else{
                 Get.rawSnackbar(
                   titleText: Text("Note"),
@@ -411,19 +376,15 @@ class LeadsFilterController extends GetxController {
                 );
               }
 
-//              Get.snackbar("Note", "No more leads ..",snackPosition: SnackPosition.BOTTOM,backgroundColor:Color(0xff0fffff),duration: Duration(milliseconds: 2000));
-         //   }
+
           }
-          //this.fullLeadsList= this.fullLeadsList.arrdd(this.leadsListResponse);
-          //  print("Length of full list is ${this.fullLeadsList.length}");
+
           if (leadsListResponse.respCode == "LD2006") {
-            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }else if(this.leadsListResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(
                 leadsListResponse.respMsg), barrierDismissible: false);
           }
           else {
-            print(json.encode(data));
             Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
           }
         }
@@ -437,16 +398,11 @@ class LeadsFilterController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
-
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
-      debugPrint('Url is : $url');
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
@@ -454,7 +410,6 @@ class LeadsFilterController extends GetxController {
           this.leadsListResponse = data;
           if (leadsListResponse.respCode == "LD2004") {
             //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
-            print('success');
             //leadsDetailWidget();
           } else if(leadsListResponse.respCode == "DM1005"){
             Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -482,8 +437,6 @@ class LeadsFilterController extends GetxController {
   }
 
 
-  //////
-
   Future srSearch(String searchText) async {
     String userSecurityKey = "";
     String empID = "";
@@ -497,7 +450,6 @@ class LeadsFilterController extends GetxController {
     });
     leadsListResponse = await repository.getSearchDataNew(
         accessKey, userSecurityKey, empID, searchText);
-    print(leadsListResponse.respCode);
   }
 
 

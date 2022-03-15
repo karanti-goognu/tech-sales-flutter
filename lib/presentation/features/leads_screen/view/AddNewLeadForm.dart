@@ -31,8 +31,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,20 +77,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
   bool _isInfTextfieldVisible = false;
   bool _isOtherTextfieldVisible = false;
 
-  List<String> _items = []; // to store comments
-
   final myController = TextEditingController();
-
-  void _addComment() {
-    if (myController.text.isNotEmpty) {
-      // check if the comments text input is not empty
-      setState(() {
-        _items.add(myController.text); // add new commnet to the existing list
-      });
-
-      myController.clear(); // clear the text from the input
-    }
-  }
 
   Future<bool> internetChecking() async {
     bool result = await CheckInternet.hasConnection();
@@ -99,8 +86,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   List<InfluencerDetail> _listInfluencerDetail = [];
 
-  Position _currentPosition;
-  String _currentAddress;
+  LatLng _currentPosition;
 
   List<SiteSubTypeEntity> siteSubTypeEntity = [
     new SiteSubTypeEntity(siteSubId: 1, siteSubTypeDesc: "Ground"),
@@ -153,8 +139,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     _formKeyForNewLeadForm.currentState != null
         ? _formKeyForNewLeadForm.currentState.dispose()
         : print("nothing happened");
-    //_addLeadsController.dispose();
-    // _formKey.currentState.dispose();
   }
 
   getInitialData() {
@@ -167,11 +151,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           _contactNumber = saveLeadRequestModelFromDraft.contactNumber;
           if (saveLeadRequestModelFromDraft.leadLatitude != "null" &&
               saveLeadRequestModelFromDraft.leadLatitude != null) {
-            _currentPosition = new Position(
-                latitude:
-                    double.parse(saveLeadRequestModelFromDraft.leadLatitude),
-                longitude:
-                    double.parse(saveLeadRequestModelFromDraft.leadLongitude));
+            _currentPosition = new LatLng(
+                double.parse(saveLeadRequestModelFromDraft.leadLatitude),
+                double.parse(saveLeadRequestModelFromDraft.leadLongitude));
           }
           _siteAddress.text = saveLeadRequestModelFromDraft.leadAddress;
           _pincode.text = saveLeadRequestModelFromDraft.leadPincode;
@@ -218,8 +200,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           .influencerList[i].inflCatValue),
                   ilpIntrested: new TextEditingController(
                       text: saveLeadRequestModelFromDraft
-                          .influencerList[i].ilpIntrested),
-                  isExpanded: saveLeadRequestModelFromDraft
+                          .influencerList[i].ilpIntrested), isExpanded: saveLeadRequestModelFromDraft
                       .influencerList[i].isExpanded,
                   isPrimarybool: saveLeadRequestModelFromDraft
                       .influencerList[i].isPrimarybool,
@@ -241,7 +222,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             }
           }
 
-          // _commentsListNew = saveLeadRequestModelFromDraft.comments;
           if (saveLeadRequestModelFromDraft.comments.length != 0) {
             _comments.text =
                 saveLeadRequestModelFromDraft.comments[0].commentText;
@@ -263,7 +243,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
             }
         });
     AddLeadInitialModel addLeadInitialModel = new AddLeadInitialModel();
@@ -279,7 +258,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     .then((data) {
                   addLeadInitialModel = data;
                   setState(() {
-                    //siteSubTypeEntity = addLeadInitialModel.siteSubTypeEntity;
                     influencerTypeEntity =
                         addLeadInitialModel.influencerTypeEntity;
                     influencerCategoryEntity =
@@ -306,7 +284,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
             }
         });
   }
@@ -361,42 +338,34 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   displayLeadSourceUser() {
     if (leadSource == "DEALER") {
-      //_dealerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "SUB-DEALER") {
-      //_subDealerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "SALES OFFICER") {
-      //_salesOfficerId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "INFLUENCER") {
-      //sourceMobile.text = _leadSourceUser;
       _isInfTextfieldVisible = true;
       _isDropdownVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "EVENT") {
-      //_eventId = _leadSourceUser;
       _isDropdownVisible = true;
       _isInfTextfieldVisible = false;
       _isOtherTextfieldVisible = false;
     } else if (leadSource == "OTHER") {
-      //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
     } else if (leadSource == "SPOTTER") {
-      //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
     } else if (leadSource == "TECH VAN") {
-      //_other.text = _leadSourceUser;
       _isOtherTextfieldVisible = true;
       _isDropdownVisible = false;
       _isInfTextfieldVisible = false;
@@ -424,12 +393,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       onChanged: (_) {
         setState(() {
           leadSource = _;
-          // _dealerId = null;
-          // _subDealerId = null;
-          // _eventId = null;
-          // _salesOfficerId = null;
-          // sourceMobile.text = null;
-          // _other.text = null;
           _leadSourceUser = null;
           displayLeadSourceUser();
         });
@@ -600,7 +563,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           FilteringTextInputFormatter.digitsOnly
         ],
         maxLength: 10,
-        //maxLengthEnforced: true,
         decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Influencer Mobile number*",
         ),
@@ -613,7 +575,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               _addLeadsController
                   .getInfNewData(accessKeyModel.accessKey)
                   .then((data) {
-                InfluencerDetailModel _infDetailModel = data;
                 if (data.respCode == "NUM404") {
                   sourceMobile.text = "";
                   Get.dialog(CustomDialogs()
@@ -646,7 +607,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
     final name = TextFormField(
       initialValue: _contactName,
-      //focusNode: myFocusNode,
       validator: (value) {
         if (value.isEmpty ||
             value.length <= 0 ||
@@ -739,7 +699,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //  maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -833,7 +792,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               : null,
                         ),
                         SizedBox(height: _height),
-
                         leadSourceDropDwn,
                         SizedBox(height: _height),
                         Visibility(
@@ -918,21 +876,16 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 Get.dialog(Center(
                                   child: CircularProgressIndicator(),
                                 ));
-                                List result;
-                                result = await GetCurrentLocation
-                                    .getCurrentLocation();
-
+                          LocationDetails  result = await GetCurrentLocation.getCurrentLocation();
                                 if (result != null) {
-                                  _currentPosition = result[1];
-                                  List<String> loc = result[0];
+                                  _currentPosition = result.latLng;
+                                  List<String> loc = result.loc;
                                   _siteAddress.text =
                                       "${loc[7]}, ${loc[6]}, ${loc[4]}";
                                   _district.text = "${loc[2]}";
                                   _state.text = "${loc[1]}";
                                   _pincode.text = "${loc[5]}";
                                   _taluk.text = "${loc[3]}";
-                                  _currentAddress =
-                                      "${loc[3]}, ${loc[5]}, ${loc[1]}";
                                 }
                               },
                             ),
@@ -957,16 +910,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ),
                               ),
                               onPressed: () async {
-                                var data = [];
-                                data = await Navigator.push(
+                                List<double> data = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => CustomMap()));
                                 setState(() {
                                   geoTagType = "M";
                                 });
-                                _currentPosition = new Position(
-                                    latitude: data[0], longitude: data[1]);
+                                _currentPosition = new LatLng( data[0], data[1]);
                                 _getAddressFromLatLng();
                               },
                             ),
@@ -1006,13 +957,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 style: TextStyle(
                                     color: HexColor("#1C99D4"),
                                     fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
                                     fontSize: 17),
                               ),
                             ),
                             onPressed: () async {
                               if (controller.imageList.length < 5) {
-                                /*when user create a new lead that time user selected the image by camera or gallery  only*/
                                 controller.updateImageList(
                                     await UploadImageBottomSheet.showPicker(
                                         context),
@@ -1042,8 +991,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                       content: new Container(
-                                                        // width: 500,
-                                                        // height: 500,
                                                         child: Image.file(
                                                             controller
                                                                     .imageList[
@@ -1087,8 +1034,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                       controller
                                                           .updateImageAfterDelete(
                                                               index);
-
-                                                      //     .removeAt(index);
                                                     });
                                                   },
                                                 )
@@ -1100,12 +1045,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 ],
                               )
                             : Container(),
-
-                        //SizedBox(height: 16),
-                        Divider(
-                          color: Colors.black26,
-                          thickness: 1,
-                        ),
+                    Divider(color: Colors.black26,thickness: 1,),
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 10.0, bottom: 0.0, left: 5),
@@ -1114,17 +1054,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             style: TextStyles.muliBold25,
                           ),
                         ),
-                        // Container(
-                        //   child: _buildPanel(),
-                        // ),
                         influencer(),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: influencer(),
-                        //     ),
-                        //   ],
-                        // ),
                         SizedBox(height: 16),
                         Divider(
                           color: Colors.black26,
@@ -1147,7 +1077,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     controller: _totalBags,
                                     onChanged: (value) {
                                       setState(() {
-                                        // _totalBags.text = value ;
                                         if (_totalBags.text == null ||
                                             _totalBags.text == "") {
                                           _totalMT.clear();
@@ -1183,7 +1112,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   controller: _totalMT,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _totalBags.text = value ;
                                       if (_totalMT.text == null ||
                                           _totalMT.text == "") {
                                         _totalBags.clear();
@@ -1244,16 +1172,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         TextFormField(
                           maxLines: 4,
                           maxLength: 500,
-                          // initialValue: _comments.text,
                           controller: _comments,
-
-                          // validator: (value) {
-                          //   if (value.isEmpty) {
-                          //     return 'Please enter RERA Number ';
-                          //   }
-                          //
-                          //   return null;
-                          // },
                           style: FormFieldStyle.formFieldTextStyle,
                           decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Comment",
@@ -1266,7 +1185,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           },
                         ),
                         SizedBox(height: 16),
-
                         _commentsList != null && _commentsList.length != 0
                             ? viewMoreActive
                                 ? Row(
@@ -1376,9 +1294,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             : Container(),
                         Center(
                           child: TextButton(
-                            // shape: RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.circular(0),
-                            //     side: BorderSide(color: Colors.black26)),
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   right: 5, bottom: 8, top: 5),
@@ -1423,7 +1338,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   style: TextStyle(
                                       color: HexColor("#1C99D4"),
                                       fontWeight: FontWeight.bold,
-                                      // letterSpacing: 2,
                                       fontSize: 17),
                                 ),
                               ),
@@ -1437,7 +1351,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       _contactNumber.length == 10) {
                                     setState(() {
                                       String empId;
-                                      String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
                                           SharedPreferences.getInstance();
@@ -1445,9 +1358,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           (SharedPreferences prefs) async {
                                         empId = prefs.getString(
                                                 StringConstants.employeeId) ??
-                                            "empty";
-                                        mobileNumber = prefs.getString(
-                                                StringConstants.mobileNumber) ??
                                             "empty";
                                         name = prefs.getString(
                                                 StringConstants.employeeName) ??
@@ -1459,7 +1369,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                             new CommentsDetail(
                                                 createdBy: empId,
                                                 commentText: _comments.text,
-                                                // commentedAt: DateTime.now(),
                                                 creatorName: name),
                                           );
                                         }
@@ -1598,9 +1507,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadBags: _totalBags.text,
                                           leadReraNumber: _rera.text,
                                           isStatus: "false",
-                                          // listLeadImage: [],
-                                          //  influencerList: [],
-                                          // comments: [],
                                           listLeadImage: listLeadImageDraft,
                                           influencerList: influencerDetailDraft,
                                           comments: _commentsListNew,
@@ -1611,10 +1517,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           leadSourcePlatform: "TSO",
                                           isIhbCommercial: null,
                                         );
-
-//
-//                                   SaveLeadRequestModel saveLeadRequestModel1 = json.decode(draftLeadModelforDB.leadModel);
-
                                         if (!gv.fromLead) {
                                           DraftLeadModelforDB
                                               draftLeadModelforDB =
@@ -1646,12 +1548,10 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     (BuildContext context) =>
                                                         DraftLeadListScreen()));
                                       });
-
-                                      //  _comments.clear();
                                     });
                                   } else {
                                     Get.dialog(CustomDialogs().errorDialog(
-                                        "Please fill atleast a contact number"));
+                                        "Please provide a contact number"));
                                   }
                                 }
                               },
@@ -1665,7 +1565,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    // letterSpacing: 2,
                                     fontSize: 17),
                               ),
                               onPressed: () async {
@@ -1678,12 +1577,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           _currentPosition.latitude != null &&
                                           _pincode.text != null &&
                                           _pincode.text != ''
-                                      //&&
-                                      // _listInfluencerDetail.length != 0
                                       ) {
                                     setState(() {
                                       String empId;
-                                      String mobileNumber;
                                       String name;
                                       Future<SharedPreferences> _prefs =
                                           SharedPreferences.getInstance();
@@ -1691,9 +1587,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           (SharedPreferences prefs) async {
                                         empId = prefs.getString(
                                                 StringConstants.employeeId) ??
-                                            "empty";
-                                        mobileNumber = prefs.getString(
-                                                StringConstants.mobileNumber) ??
                                             "empty";
                                         name = prefs.getString(
                                                 StringConstants.employeeName) ??
@@ -1707,7 +1600,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                           new CommentsDetail(
                                               createdBy: empId,
                                               commentText: _comments.text,
-                                              // commentedAt: DateTime.now(),
                                               creatorName: name),
                                         );
 
@@ -1726,13 +1618,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                     "null" ||
                                                 _listInfluencerDetail[
                                                         _listInfluencerDetail
-                                                                .length -
-                                                            1]
-                                                    .inflName
-                                                    .text
-                                                    .isBlank)) {
-                                          _listInfluencerDetail.removeAt(
-                                              _listInfluencerDetail.length - 1);
+        .length -1].inflName.text.isBlank)) {_listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
                                         }
                                         String leadSourceUser;
                                         if (leadSource == "SELF" ||
@@ -1810,8 +1696,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                 isStatus: "false",
                                                 listLeadImage:
                                                     selectedImageListDetails,
-
-                                                //listLeadImage: listLeadImage,
                                                 influencerList:
                                                     _listInfluencerDetail,
                                                 comments: _commentsListNew,
@@ -1844,17 +1728,14 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                                           Colors.red,
                                                       snackPosition:
                                                           SnackPosition.BOTTOM),
-                                                  // fetchSiteList()
                                                 }
                                             });
                                       });
-
-                                      //  _comments.clear();
                                     });
                                   } else {
                                     _isSubmitButtonDisabled = false;
                                     Get.dialog(CustomDialogs().errorDialog(
-                                        "Please fill the mandotary fields. i.e. Contact Number , Address  . "));
+                                        "Please fill the mandatory fields. i.e. Contact Number , Address  . "));
                                   }
                                 }
                               },
@@ -1881,190 +1762,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: _listInfluencerDetail.length,
         itemBuilder: (BuildContext context, int index) {
-          // if (!_listInfluencerDetail[index].isExpanded) {
-          //   return Column(
-          //     children: [
-          //       Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text(
-          //             "Influencer Details ${(index + 1)} ",
-          //             style: TextStyles.mulliBold18,
-          //           ),
-          //           Switch(
-          //             onChanged: (value) {
-          //               setState(() {
-          //                 if (value) {
-          //                   for (int i = 0;
-          //                   i < _listInfluencerDetail.length;
-          //                   i++) {
-          //                     if (i == index) {
-          //                       _listInfluencerDetail[i].isPrimarybool = value;
-          //                     } else {
-          //                       _listInfluencerDetail[i].isPrimarybool = !value;
-          //                     }
-          //                   }
-          //                 } else {
-          //                   Get.dialog(CustomDialogs().errorDialog(
-          //                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-          //                 }
-          //               });
-          //             },
-          //             value: _listInfluencerDetail[index].isPrimarybool,
-          //             activeColor: HexColor("#009688"),
-          //             activeTrackColor: HexColor("#009688").withOpacity(0.5),
-          //             inactiveThumbColor: HexColor("#F1F1F1"),
-          //             inactiveTrackColor: Colors.black26,
-          //           ),
-          //           _listInfluencerDetail[index].isExpanded
-          //               ? TextButton.icon(
-          //             color: Colors.transparent,
-          //             icon: Icon(
-          //               Icons.remove,
-          //               color: ColorConstants.btnOrange,
-          //               size: 18,
-          //             ),
-          //             label: Text(
-          //               "COLLAPSE",
-          //               style: TextStyles.muliBoldOrange17,
-          //             ),
-          //             onPressed: () {
-          //               setState(() {
-          //                 _listInfluencerDetail[index].isExpanded =
-          //                 !_listInfluencerDetail[index].isExpanded;
-          //               });
-          //             },
-          //           )
-          //               : TextButton.icon(
-          //             color: Colors.transparent,
-          //             icon: Icon(
-          //               Icons.add,
-          //               color: ColorConstants.btnOrange,
-          //               size: 18,
-          //             ),
-          //             label: Text(
-          //               "EXPAND",
-          //               style: TextStyles.muliBoldOrange17,
-          //             ),
-          //             onPressed: () {
-          //               setState(() {
-          //                 _listInfluencerDetail[index].isExpanded =
-          //                 !_listInfluencerDetail[index].isExpanded;
-          //               });
-          //             },
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   );
-          // } else {
           return Column(
             children: [
-              // FittedBox(
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              // (index == 0)
-              //     ?
-              // Text(
-              //   "Influencer Details",
-              //   style: TextStyle(
-              //       fontWeight: FontWeight.bold, fontSize: 18),
-              // ),
-              //     : Text(
-              //   "Influencer Details ${(index + 1)} ",
-              //   style: TextStyle(
-              //       fontWeight: FontWeight.bold, fontSize: 18),
-              // ),
-              // _listInfluencerDetail[index].isExpanded
-              //     ? TextButton.icon(
-              //   color: Colors.transparent,
-              //   icon: Icon(
-              //     Icons.remove,
-              //     color: ColorConstants.btnOrange,
-              //     size: 18,
-              //   ),
-              //   label: Text(
-              //     "COLLAPSE",
-              //     style: TextStyles.muliBoldOrange17,
-              //   ),
-              //   onPressed: () {
-              //     setState(() {
-              //       _listInfluencerDetail[index].isExpanded =
-              //       !_listInfluencerDetail[index].isExpanded;
-              //     });
-              //   },
-              // )
-              //     : TextButton.icon(
-              //   color: Colors.transparent,
-              //   icon: Icon(
-              //     Icons.add,
-              //     color: ColorConstants.btnOrange,
-              //     size: 18,
-              //   ),
-              //   label: Text(
-              //     "EXPAND",
-              //     style: TextStyles.muliBoldOrange17,
-              //   ),
-              //   onPressed: () {
-              //     setState(() {
-              //       _listInfluencerDetail[index].isExpanded =
-              //       !_listInfluencerDetail[index].isExpanded;
-              //     });
-              //   },
-              // ),
-              //    ],
-              //  ),
-              // ),
-              // SizedBox(height: 10),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Text(
-              //       "Secondary",
-              //       style: TextStyle(
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 18,
-              //           // color: HexColor("#000000DE"),
-              //           fontFamily: "Muli"),
-              //     ),
-              //     Switch(
-              //       onChanged: (value) {
-              //         setState(() {
-              //           if (value) {
-              //             for (int i = 0;
-              //             i < _listInfluencerDetail.length;
-              //             i++) {
-              //               if (i == index) {
-              //                 _listInfluencerDetail[i].isPrimarybool = value;
-              //               } else {
-              //                 _listInfluencerDetail[i].isPrimarybool = !value;
-              //               }
-              //             }
-              //           } else {
-              //             Get.dialog(CustomDialogs().errorDialog(
-              //                 "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-              //           }
-              //         });
-              //       },
-              //       value: _listInfluencerDetail[index].isPrimarybool,
-              //       activeColor: HexColor("#009688"),
-              //       activeTrackColor: HexColor("#009688").withOpacity(0.5),
-              //       inactiveThumbColor: HexColor("#F1F1F1"),
-              //       inactiveTrackColor: Colors.black26,
-              //     ),
-              //     Text(
-              //       "Primary",
-              //       style: TextStyle(
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 18,
-              //           color: _listInfluencerDetail[index].isPrimarybool
-              //               ? HexColor("#009688")
-              //               : Colors.black,
-              //           fontFamily: "Muli"),
-              //     ),
-              //   ],
-              // ),
               TextFormField(
                 controller: _listInfluencerDetail[index].inflContact,
                 maxLength: 10,
@@ -2077,11 +1776,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                       _listInfluencerDetail[index].inflCatValue.clear();
                     }
                   } else if (value.length == 10) {
-                    var bodyEncrypted = {
-                      //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                      "inflContact": value
-                    };
-
                     if (_listInfluencerDetail.length != 0) {
                       for (int i = 0;
                           i < _listInfluencerDetail.length - 1;
@@ -2162,13 +1856,9 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   apiCallForGetInf(String value, int index, BuildContext context) async {
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
     });
     AddLeadsController _addLeadsController = Get.find();
     _addLeadsController.phoneNumber = value;
@@ -2284,19 +1974,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         _state.text = place.administrativeArea;
         _pincode.text = place.postalCode;
         _taluk.text = place.locality;
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print("ex.....   $e");
     }
   }
 
-  void toggleSwitchforPrimary(bool value) {
-    setState(() {
-      isSwitchedPrimary = value;
-    });
-  }
 }
 
 class Item {

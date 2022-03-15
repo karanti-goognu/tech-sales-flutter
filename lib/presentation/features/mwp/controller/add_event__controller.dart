@@ -280,10 +280,8 @@ class AddEventController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
       print(this.visitDateTime);
       SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
         empId,
@@ -348,10 +346,8 @@ class AddEventController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
 
       SaveMeetRequest saveMeetRequest = new SaveMeetRequest(
         empId,
@@ -572,16 +568,13 @@ class AddEventController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
 
       // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
-      print('=============================');
-      debugPrint('Url is : $url');
+
       if (this.visitActionType == "UPDATE") {
         print('update');
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
@@ -835,10 +828,8 @@ class AddEventController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
 
       MwpMeetModel mwpMeetModel = new MwpMeetModel(
           id: visitId,

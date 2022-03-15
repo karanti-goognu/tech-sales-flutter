@@ -67,7 +67,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   var _date = 'Date of Birth*';
 
-  //var _enrollmentDate = 'Enrollment Date';
   bool _isVisible = true;
   bool _isSecondVisible = false;
   bool checkedValue = false;

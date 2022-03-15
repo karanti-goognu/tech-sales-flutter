@@ -254,17 +254,28 @@ class _SiteListScreenState extends State<SiteListScreen> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      new CupertinoPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewSiteScreenNew(
-                                                siteId: _siteController
-                                                    .sitesListResponse
-                                                    .sitesEntity[index]
-                                                    .siteId,
-                                                tabIndex: 0,
-                                              ))).then((_) => {_getRequests()});
+                                  if(_siteController
+                                      .sitesListResponse
+                                      .sitesEntity==null){
+                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.transparent);
+                                  }
+                                  else {
+                                    Navigator.push(
+                                        context,
+                                        new CupertinoPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ViewSiteScreenNew(
+                                                  siteId:
+                                                  _siteController
+                                                      .sitesListResponse
+                                                      .sitesEntity[index]
+                                                      .siteId,
+                                                  tabIndex: 0,
+                                                ))).then((_) =>
+                                    {
+                                      _getRequests()
+                                    });
+                                  }
                                 },
                                 child: Card(
                                   clipBehavior: Clip.antiAlias,

@@ -26,7 +26,6 @@ class PendingSupplyListScreen extends StatefulWidget {
 
 class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   SiteController _siteController = Get.find();
-  AppController _appController = Get.find();
   SplashController _splashController = Get.find();
 
   ScrollController _scrollController;
@@ -34,27 +33,17 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('hello');
       _siteController.offset += 10;
-      print(_siteController.offset);
-      //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
-       _siteController.pendingSupplyList();
-
+      _siteController.pendingSupplyList();
     }
   }
+
   PendingSupplyDataResponse pendingSupplyDataResponse;
-  List<PendingSuppliesModel> _pendingSuppliesModel;
 
-
-   getPendingSupplyData() async {
-    await _siteController.pendingSupplyList().then((data) async {
-      setState(() {
-        pendingSupplyDataResponse = data;
-        _pendingSuppliesModel = pendingSupplyDataResponse != null
-            ? pendingSupplyDataResponse.pendingSuppliesModel
-            : new List.empty(growable: true);
-      });
+  getPendingSupplyData() async {
+    var data = await _siteController.pendingSupplyList();
+    setState(() {
+      pendingSupplyDataResponse = data;
     });
   }
 
@@ -65,7 +54,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     internetChecking().then((result) => {
           if (result == true)
             {
-               getPendingSupplyData(),
+              getPendingSupplyData(),
               _siteController.offset = 0,
             }
           else
@@ -122,106 +111,115 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         child: Scaffold(
           extendBody: true,
           backgroundColor: ColorConstants.backgroundColorGrey,
-          body: pendingSupplyDataResponse!=null?Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 10.0, bottom: 5, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [],
+          body: pendingSupplyDataResponse != null
+              ? Container(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, bottom: 5, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [],
+                        ),
+                      ),
+                      Padding(
+                          padding:
+                              EdgeInsets.only(left: 0.0, right: 0.0, bottom: 5),
+                          child: SingleChildScrollView(
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Container(
+                                          width: 10,
+                                          height: 10,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: HexColor("#39B54A")),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 3.0),
+                                        child: Text(
+                                          "Approved Bags",
+                                          style: TextStyle(
+                                              fontFamily: "Muli",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold
+                                              // color: HexColor("#FFFFFF99"),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Container(
+                                          width: 10,
+                                          height: 10,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: HexColor("#F9A61A")),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 3.0),
+                                        child: Text(
+                                          "Pending Bags",
+                                          style: TextStyle(
+                                              fontFamily: "Muli",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold
+                                              // color: HexColor("#FFFFFF99"),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 10)),
+                                Obx(
+                                  () => Text(
+                                    // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
+                                    "Count- ${(_siteController.pendingSupplyListResponse.pendingSupplyListCount == null || _siteController.pendingSupplyListResponse.pendingSupplyListCount == 0) ? 0 : _siteController.pendingSupplyListResponse.pendingSupplyListCount}",
+
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontSize:
+                                          SizeConfig.safeBlockHorizontal * 4.0,
+                                      // color: HexColor("#FFFFFF99"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            scrollDirection: Axis.horizontal,
+                          )),
+                      Expanded(child: leadsDetailWidget()),
+                    ],
+                  ),
+                )
+              : Container(
+                  child: Center(
+                    child: Text("Sites list is empty!!"),
                   ),
                 ),
-                Padding(
-                    padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 5),
-                    child: SingleChildScrollView(
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: HexColor("#39B54A")),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3.0),
-                                  child: Text(
-                                    "Approved Bags",
-                                    style: TextStyle(
-                                        fontFamily: "Muli",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold
-                                        // color: HexColor("#FFFFFF99"),
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: HexColor("#F9A61A")),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3.0),
-                                  child: Text(
-                                    "Pending Bags",
-                                    style: TextStyle(
-                                        fontFamily: "Muli",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold
-                                        // color: HexColor("#FFFFFF99"),
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(left: 10, right: 10)),
-                          Obx(
-                            () => Text(
-                              // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
-                              "Count- ${(_siteController.pendingSupplyListResponse.pendingSupplyListCount == null||_siteController.pendingSupplyListResponse.pendingSupplyListCount == 0) ? 0 : _siteController.pendingSupplyListResponse.pendingSupplyListCount}",
-
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                fontSize: SizeConfig.safeBlockHorizontal * 4.0,
-                                // color: HexColor("#FFFFFF99"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      scrollDirection: Axis.horizontal,
-                    )),
-                Expanded(child: leadsDetailWidget()),
-              ],
-            ),
-          ):  Container(
-        child: Center(
-        child: Text("Sites list is empty!!"),
-    ),
-    ),
         ));
   }
 
@@ -238,13 +236,16 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                   child: Text("Supply list response  is empty!!"),
                 ),
               )
-            : (_siteController.pendingSupplyListResponse.pendingSuppliesModel == null)
+            : (_siteController.pendingSupplyListResponse.pendingSuppliesModel ==
+                    null)
                 ? Container(
                     child: Center(
                       child: Text("Pending Supply list is empty!!"),
                     ),
                   )
-                : (_siteController.pendingSupplyListResponse.pendingSuppliesModel.length == 0)
+                : (_siteController.pendingSupplyListResponse
+                            .pendingSuppliesModel.length ==
+                        0)
                     ? Container(
                         child: Center(
                           child: Column(
@@ -256,7 +257,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary:ColorConstants.buttonNormalColor,
+                                  primary: ColorConstants.buttonNormalColor,
                                 ),
                                 onPressed: () {
                                   getPendingSupplyData();
@@ -272,8 +273,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                       )
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: _siteController
-                            .pendingSupplyListResponse.pendingSuppliesModel.length,
+                        itemCount: _siteController.pendingSupplyListResponse
+                            .pendingSuppliesModel.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
                         // itemExtent: 125.0,
@@ -285,20 +286,18 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
                                           PendingSupplyDetailScreen(
-                                            siteId: _siteController
-                                                .pendingSupplyListResponse
-                                                .pendingSuppliesModel[index]
-                                                .siteId,
-                                              supplyHistoryId:_siteController
+                                              siteId: _siteController
                                                   .pendingSupplyListResponse
                                                   .pendingSuppliesModel[index]
-                                                  .siteSupplyHistoryId
-                                          )));
+                                                  .siteId,
+                                              supplyHistoryId: _siteController
+                                                  .pendingSupplyListResponse
+                                                  .pendingSuppliesModel[index]
+                                                  .siteSupplyHistoryId)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
-                              //shadowColor: colornew,
                               elevation: 6,
                               margin: EdgeInsets.all(5.0),
                               color: Colors.white,
@@ -310,49 +309,29 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                         padding: const EdgeInsets.only(
                                             left: 5.0, right: 5),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Date: ${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].requestDate}",
-                                              style: TextStyle(
-                                                  color: Colors.black38,
-                                                  fontSize: 12,
-                                                  fontFamily: "Muli",
-                                                  fontWeight: FontWeight.bold
-                                                  //fontWeight: FontWeight.normal
-                                                  ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                // Text(
-                                                //   "Product Name: ",
-                                                //   style: TextStyle(
-                                                //       color: Colors.black38,
-                                                //       fontSize: SizeConfig
-                                                //               .safeBlockHorizontal *
-                                                //           3.8,
-                                                //       fontFamily: "Muli",
-                                                //       fontWeight:
-                                                //           FontWeight.bold
-                                                //       //fontWeight: FontWeight.normal
-                                                //       ),
-                                                // ),
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Date: ${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].requestDate}",
+                                                style: TextStyle(
+                                                    color: Colors.black38,
+                                                    fontSize: 12,
+                                                    fontFamily: "Muli",
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Row(children: [
                                                 Text(
                                                   "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].productName}",
                                                   style: TextStyle(
-                                                      // color: Colors.black38,
                                                       fontSize: 13,
                                                       fontFamily: "Muli",
                                                       fontWeight:
-                                                          FontWeight.bold
-                                                      //fontWeight: FontWeight.normal
-                                                      ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        )),
+                                                          FontWeight.bold),
+                                                )
+                                              ])
+                                            ])),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -379,24 +358,22 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                     )),
                                                 Padding(
                                                     padding:
-                                                    const EdgeInsets.all(
-                                                        2.0),
+                                                        const EdgeInsets.all(
+                                                            2.0),
                                                     child: Obx(
-                                                          () => Text(
+                                                      () => Text(
                                                         "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].siteOwnerName ?? ""}",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontFamily: "Muli",
                                                             fontWeight:
-                                                            FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
-                                                        ),
+                                                                FontWeight.bold
+                                                            ),
                                                       ),
                                                     )),
                                                 Padding(
@@ -413,7 +390,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                     )),
@@ -421,7 +397,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                   height: 3,
                                                 ),
                                                 Text(
-                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName!=null?toBeginningOfSentenceCase(_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName):""}",
+                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName != null ? toBeginningOfSentenceCase(_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].inflName) : ""}",
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14,
@@ -430,7 +406,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             FontWeight.bold,
                                                         fontStyle:
                                                             FontStyle.normal
-                                                        //fontWeight: FontWeight.normal
                                                         )),
                                               ],
                                             ),
@@ -484,7 +459,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty!=null?_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty:""}",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty != null ? _siteController.pendingSupplyListResponse.pendingSuppliesModel[index].approvedQty : ""}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -492,7 +467,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                             14,
                                                                         fontWeight:
                                                                             FontWeight.bold
-                                                                        // color: HexColor("#FFFFFF99"),
                                                                         ),
                                                                   ),
                                                                 ),
@@ -527,7 +501,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                       left:
                                                                           3.0),
                                                                   child: Text(
-                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty!=null?_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty:""}",
+                                                                    "${_siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty != null ? _siteController.pendingSupplyListResponse.pendingSuppliesModel[index].pendingQty : ""}",
                                                                     style: TextStyle(
                                                                         fontFamily:
                                                                             "Muli",
@@ -535,7 +509,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                             14,
                                                                         fontWeight:
                                                                             FontWeight.bold
-                                                                        // color: HexColor("#FFFFFF99"),
                                                                         ),
                                                                   ),
                                                                 ),
@@ -569,12 +542,14 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                                 FontWeight.bold,
                                                             fontStyle:
                                                                 FontStyle.normal
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num =
-                                                            _siteController.pendingSupplyListResponse.pendingSuppliesModel[index].dealerContact;
+                                                        String num = _siteController
+                                                            .pendingSupplyListResponse
+                                                            .pendingSuppliesModel[
+                                                                index]
+                                                            .dealerContact;
                                                         launch('tel:$num');
                                                       },
                                                     ),
@@ -600,12 +575,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         color: Colors.white);
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportunityStatus(int value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].opportunityStatus)}");
       return "${data[0].opportunityStatus}";
     } else {
       print("size is 0");

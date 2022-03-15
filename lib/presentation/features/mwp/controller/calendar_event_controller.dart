@@ -118,8 +118,6 @@ class CalendarEventController extends GetxController {
       print('$url');
       repository.getCalenderPlan(accessKey, userSecurityKey, url).then((data) {
         this.isCalenderLoading = false;
-        // print('@${json.encode(data)}');
-        /*this.isLoading = false;*/
         if (data == null) {
           debugPrint('MWP Data Response is null');
         } else {
@@ -147,30 +145,18 @@ class CalendarEventController extends GetxController {
                   new Event(
                     date: new DateTime(
                         tempDate.year, tempDate.month, tempDate.day),
-                    // date: new DateTime(tempDate.year, tempDate.month, tempDate.day),
                     title: 'Event 5',
                     icon: _eventIcon,
-                    /* dot: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 1.0),
-                      color: Colors.red,
-                      height: 5.0,
-                      width: 5.0,
-                    ),*/
                   ));
             }
             markedDateMap = temp;
-            print("Marked Map $markedDateMap");
           }
 
           if (calendarPlanResponse.respCode == "MWP2013") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            print('${calendarPlanResponse.respMsg}');
-            //SitesDetailWidget();
+
           } else {
-            /*Get.dialog(
-                CustomDialogs().errorDialog(calendarPlanResponse.respMsg));*/
+
           }
-       // }
       }
       });
     });
@@ -181,27 +167,17 @@ class CalendarEventController extends GetxController {
     _prefs.then((SharedPreferences prefs) {
       String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       String empId = prefs.getString(StringConstants.employeeId);
-      String url = UrlConstants.getCalendarEventDataByDay +
-          "referenceID=$empId&" +
-          "&date=${this.selectedDate}";
-      print('---++---$url');
+      String url = UrlConstants.getCalendarEventDataByDay + "referenceID=$empId&" + "&date=${this.selectedDate}";
       repository
           .getCalenderPlanByDay(accessKey, userSecurityKey, url)
           .then((data) {
         if (data == null) {
           this.isDayEventLoading = false;
-          debugPrint('MWP Data Response is null');
         } else {
-          debugPrint('MWP Data Response is not null');
-          debugPrint("VISIT DATA: ${json.encode(data)}");
           this.calendarDataByDay = data;
-          this.listOfEvents =
-              this.calendarDataByDay.listOfEventDetails;
+          this.listOfEvents = this.calendarDataByDay.listOfEventDetails;
           this.isDayEventLoading = false;
           if (calendarDataByDay.respCode == "MWP2019") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
-            print('${calendarDataByDay.respMsg}');
-            //SitesDetailWidget();
           } else {
             this.isLoading = false;
             Get.dialog(CustomDialogs().errorDialog(calendarDataByDay.respMsg));

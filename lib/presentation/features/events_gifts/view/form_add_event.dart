@@ -163,9 +163,7 @@ class _FormAddEventState extends State<FormAddEvent> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                    child: Text((_time != null
-                        ? '${_time.hour}:${_time.minute}'
-                        : 'Select time'),style: TextStyle(color: Colors.black),)),
+                    child: Text((_time != null? '${_time.hour}:${_time.minute}': 'Select time'),style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,

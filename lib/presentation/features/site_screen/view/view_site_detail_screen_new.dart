@@ -28,11 +28,7 @@ class ViewSiteScreenNew extends StatefulWidget {
   int siteId;
   final tabIndex;
 
-  ViewSiteScreenNew({this.siteId, this.tabIndex}){
-    print(this.siteId);
-    print(this.tabIndex);
-    print("Waheguru waheguru waheguru waheguru");
-  }
+  ViewSiteScreenNew({this.siteId, this.tabIndex});
 
   @override
   _ViewSiteScreenState createState() => _ViewSiteScreenState();
@@ -64,7 +60,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     selectedTabIndex = 0;
     _tabController =
@@ -107,18 +102,15 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     await _siteController.getAccessKeyOnly().then(
       (data) async {
         accessKeyModel = data;
-        // print("AccessKey :: " + accessKeyModel.accessKey);
         await _siteController
             .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
             .then(
           (data) async {
-            // print("here");
             viewSiteDataResponse = data;
             setState(
               () {
                 siteScore = viewSiteDataResponse.sitesModal.siteScore;
                 siteStageEntity = viewSiteDataResponse.siteStageEntity;
-
                 for (int i = 0; i < siteStageEntity.length; i++) {
                   if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
                       siteStageEntity[i].id.toString()) {
@@ -127,7 +119,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                     UpdatedValues.setSiteStageId(labelId);
                   }
                 }
-
                 if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
                   for (int i = 0;
                       i <
@@ -157,7 +148,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
   @override
   Widget build(BuildContext context) {
-    //gv.selectedClass = widget.classroomId;
     SizeConfig().init(context);
     ScreenUtil.init(
         BoxConstraints(
@@ -177,374 +167,261 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
         initialIndex: _initialIndex,
         length: 4,
         child: Scaffold(
-//            resizeToAvoidBottomInset: true,
-            resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              toolbarHeight: 180,
-              titleSpacing: 0,
-              title: Stack(
-                children: [
-                  Positioned(
-                      top: 0,
-                      left: 200,
-                      right: 0,
-                      child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/Container.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ],
-                          ))),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20.0, bottom: 10, left: 10),
-                            child: Text(
-                              "Trade site details",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 25,
-                                  color: HexColor("#006838"),
-                                  fontFamily: "Muli"),
+            toolbarHeight: 180,
+            titleSpacing: 0,
+            title: Stack(
+              children: [
+                Positioned(
+                    top: 0,
+                    left: 200,
+                    right: 0,
+                    child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/Container.png',
+                              fit: BoxFit.fill,
                             ),
+                          ],
+                        ))),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, bottom: 10, left: 10),
+                          child: Text(
+                            "Trade site details",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 25,
+                                color: HexColor("#006838"),
+                                fontFamily: "Muli"),
                           ),
-                          selectedTabIndex == 3 || selectedTabIndex == 4
-                              ? Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20.0, bottom: 10),
-                                      child: Icon(
-                                        Icons.edit_outlined,
-                                        color: Colors.amber,
-                                      ),
+                        ),
+                        selectedTabIndex == 3 || selectedTabIndex == 4
+                            ? Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0, bottom: 10),
+                                    child: Icon(
+                                      Icons.edit_outlined,
+                                      color: Colors.amber,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20.0, bottom: 10, right: 15),
-                                      child: Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 18,
-                                            color: Colors.amber,
-                                            fontFamily: "Muli"),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Container()
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text(
-                                  "ID: " + widget.siteId.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontFamily: "Muli",
                                   ),
-                                ),
-                                siteScore != 0.0
-                                    ? Text(
-                                        "Site Score: " + siteScore.toString(),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: HexColor("#002A64"),
-                                          fontFamily: "Muli",
-                                        ),
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                            SizedBox(width: 100),
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                    left: 1.0, right: 1.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
-                                    //border: Border.all()
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey[500],
-                                          offset: Offset(5.0, 5.0),
-                                          blurRadius: 10.0,
-                                          spreadRadius: 4.0)
-                                    ]),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                    // elevation: 100,
-                                    value: _siteStage,
-                                    items: siteStageEntity
-                                        .map((label) => DropdownMenuItem(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 7.0),
-                                                child: Text(
-                                                  label.siteStageDesc,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: ColorConstants
-                                                          .inputBoxHintColor,
-                                                      fontFamily: "Muli"),
-                                                ),
-                                              ),
-                                              value: label,
-                                            ))
-                                        .toList(),
-                                    //  elevation: 0,
-                                    iconSize: 30,
-                                    hint: Padding(
-                                      padding: const EdgeInsets.only(left: 6.0),
-                                      child: (labelText != null)
-                                          ? Text(labelText)
-                                          : Text(""),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0, bottom: 10, right: 15),
+                                    child: Text(
+                                      "Edit",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 18,
+                                          color: Colors.amber,
+                                          fontFamily: "Muli"),
                                     ),
+                                  ),
+                                ],
+                              )
+                            : Container()
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                "ID: " + widget.siteId.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: "Muli",
+                                ),
+                              ),
+                              siteScore != 0.0
+                                  ? Text(
+                                      "Site Score: " + siteScore.toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: HexColor("#002A64"),
+                                        fontFamily: "Muli",
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                          SizedBox(width: 100),
+                          Expanded(
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 1.0, right: 1.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey[500],
+                                        offset: Offset(5.0, 5.0),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 4.0)
+                                  ]),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  // elevation: 100,
+                                  value: _siteStage,
+                                  items: siteStageEntity
+                                      .map((label) => DropdownMenuItem(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 7.0),
+                                              child: Text(
+                                                label.siteStageDesc,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily: "Muli"),
+                                              ),
+                                            ),
+                                            value: label,
+                                          ))
+                                      .toList(),
+                                  iconSize: 30,
+                                  hint: Padding(
+                                    padding: const EdgeInsets.only(left: 6.0),
+                                    child: (labelText != null)
+                                        ? Text(labelText)
+                                        : Text(""),
+                                  ),
 
-                                  // hint: Text('Rating'),
                                   onChanged: (value) {
                                     setState(
                                       () {
                                         _siteStage = value;
-                                        // labelId = _siteStage.id;
-                                        // labelText = _siteStage.siteStageDesc;
-                                        // print(labelId);
                                         UpdatedValues.setSiteStageId(value.id);
-
                                         if (value.id == 2) {
                                           showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                contentPadding:
-                                                    EdgeInsets.all(0.0),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(5.0),
-                                                  ),
-                                                ),
-                                                content: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: SingleChildScrollView(
-                                                    child: Stack(
-                                                      //
-
-                                                      children: [
-                                                        Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.03,
-                                                                ),
-                                                                Container(
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.3,
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.12,
-                                                                  child: Image
-                                                                      .asset(
-                                                                    'assets/images/rejected.png',
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "Closed",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        30,
-                                                                    color: HexColor(
-                                                                        "#B00020"),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.03,
-                                                                ),
-                                                                Center(
-                                                                  child: Text(
-                                                                    "Please add your comment to complete this rejection",
-                                                                    maxLines: 2,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
-
-                                                                      //color: HexColor("#B00020")
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          10.0),
-                                                                  child:
-                                                                      TextFormField(
-                                                                    controller:
-                                                                        closureReasonText,
-                                                                    maxLength:
-                                                                        100,
-                                                                    onChanged:
-                                                                        (value) async {},
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: ColorConstants
-                                                                            .inputBoxHintColor,
-                                                                        fontFamily:
-                                                                            "Muli"),
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    maxLines: 4,
-                                                                    decoration: FormFieldStyle.buildInputDecoration(
-                                                                        labelText:
-                                                                            "Comments"),
-                                                                  ),
-                                                                ),
-                                                                Center(
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                          elevation:
-                                                                          5,
-                                                                          shape:
-                                                                          RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                5.0),
-                                                                          ),
-                                                                          primary: HexColor(
-                                                                              "#1C99D4"),
-                                                                        ),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          bottom:
-                                                                              10,
-                                                                          top:
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        "SUBMIT",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.white,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          letterSpacing:
-                                                                              1,
-                                                                          fontSize:
-                                                                              17,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      if (closureReasonText.text !=
-                                                                              null &&
-                                                                          closureReasonText.text !=
-                                                                              "") {
-                                                                        _siteStage =
-                                                                            value;
-                                                                        labelId =
-                                                                            _siteStage.id;
-                                                                        labelText =
-                                                                            _siteStage.siteStageDesc;
-                                                                        setState(
-                                                                          () {
-                                                                            fromDropDown =
-                                                                                true;
-                                                                            UpdatedValues.setFromDropDown(fromDropDown);
-                                                                          },
-                                                                        );
-                                                                        UpdatedValues
-                                                                            updateRequest =
-                                                                            new UpdatedValues();
-                                                                        updateRequest.updateRequest(
-                                                                            context);
-                                                                        // UpdateRequest();
-                                                                      } else {
-                                                                        Get.dialog(
-                                                                          CustomDialogs()
-                                                                              .showMessage("Please fill all details !!!"),
-                                                                        );
-                                                                      }
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.01,
-                                                                ),
-                                                                //         // Image.asset('assets/images/rejected.png'),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                    contentPadding:
+                                                        EdgeInsets.all(0.0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(5.0),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                                    content: Container(
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        child:
+                                                            SingleChildScrollView(
+                                                                child: Stack(
+                                                                    children: [
+                                                              Center(
+                                                                  child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                                        SizedBox(
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height * 0.03,
+                                                                        ),
+                                                                        Container(
+                                                                            width: MediaQuery.of(context).size.width *
+                                                                                0.3,
+                                                                            height: MediaQuery.of(context).size.height *
+                                                                                0.12,
+                                                                            child:
+                                                                                Image.asset('assets/images/rejected.png')),
+                                                                        Text(
+                                                                            "Closed",
+                                                                            style:
+                                                                                TextStyle(fontSize: 30, color: HexColor("#B00020"))),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height * 0.03,
+                                                                        ),
+                                                                        Center(
+                                                                            child: Text("Please add your comment to complete this rejection",
+                                                                                maxLines: 2,
+                                                                                textAlign: TextAlign.center,
+                                                                                style: TextStyle(fontSize: 15))),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(10.0),
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                closureReasonText,
+                                                                            maxLength:
+                                                                                100,
+                                                                            onChanged:
+                                                                                (value) async {},
+                                                                            style: TextStyle(
+                                                                                fontSize: 18,
+                                                                                color: ColorConstants.inputBoxHintColor,
+                                                                                fontFamily: "Muli"),
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            maxLines:
+                                                                                4,
+                                                                            decoration:
+                                                                                FormFieldStyle.buildInputDecoration(labelText: "Comments"),
+                                                                          ),
+                                                                        ),
+                                                                        Center(
+                                                                            child: ElevatedButton(
+                                                                                style: ElevatedButton.styleFrom(
+                                                                                  elevation: 5,
+                                                                                  shape: RoundedRectangleBorder(
+                                                                                    borderRadius: BorderRadius.circular(5.0),
+                                                                                  ),
+                                                                                  primary: HexColor("#1C99D4"),
+                                                                                ),
+                                                                                child: Padding(padding: const EdgeInsets.only(bottom: 10, top: 10), child: Text("SUBMIT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17))),
+                                                                                onPressed: () async {
+                                                                                  if (closureReasonText.text != null && closureReasonText.text != "") {
+                                                                                    _siteStage = value;
+                                                                                    labelId = _siteStage.id;
+                                                                                    labelText = _siteStage.siteStageDesc;
+                                                                                    setState(() {
+                                                                                      fromDropDown = true;
+                                                                                      UpdatedValues.setFromDropDown(fromDropDown);
+                                                                                    });
+                                                                                    UpdatedValues updateRequest = new UpdatedValues();
+                                                                                    updateRequest.updateRequest(context);
+                                                                                  } else {
+                                                                                    Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
+                                                                                  }
+                                                                                })),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.01)
+                                                                      ])))
+                                                            ]))));
+                                              });
                                         } else if (value.id == 3) {
                                           showDialog(
                                             context: context,
@@ -563,8 +440,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                       .width,
                                                   child: SingleChildScrollView(
                                                     child: Stack(
-                                                      //
-
                                                       children: [
                                                         Center(
                                                           child: Padding(
@@ -599,37 +474,28 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                     'assets/images/rejected.png',
                                                                   ),
                                                                 ),
-                                                                Text(
-                                                                  "Inactive",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          30,
-                                                                      color: HexColor(
-                                                                          "#B00020")),
-                                                                ),
+                                                                Text("Inactive",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            30,
+                                                                        color: HexColor(
+                                                                            "#B00020"))),
                                                                 SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.03,
-                                                                ),
+                                                                    height: MediaQuery.of(context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.03),
                                                                 Center(
-                                                                  child: Text(
-                                                                    "Please add your comment to complete this Inactive",
-                                                                    maxLines: 2,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          15,
-
-                                                                      //color: HexColor("#B00020")
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                                    child: Text(
+                                                                        "Please add your comment to complete this Inactive",
+                                                                        maxLines:
+                                                                            2,
+                                                                        textAlign:
+                                                                            TextAlign
+                                                                                .center,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15))),
                                                                 SizedBox(
                                                                   height: MediaQuery.of(
                                                                               context)
@@ -649,11 +515,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                     readOnly:
                                                                         true,
                                                                     onChanged:
-                                                                        (data) {
-                                                                      // setState(() {
-                                                                      //   _contactName.text = data;
-                                                                      // });
-                                                                    },
+                                                                        (data) {},
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             18,
@@ -666,27 +528,18 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                             .text,
                                                                     decoration:
                                                                         InputDecoration(
-                                                                      focusedBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color: ColorConstants.backgroundColorBlue,
-                                                                            //color: HexColor("#0000001F"),
-                                                                            width: 1.0),
-                                                                      ),
-                                                                      disabledBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color:
-                                                                                Colors.black26,
-                                                                            width: 1.0),
-                                                                      ),
-                                                                      enabledBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color:
-                                                                                Colors.black26,
-                                                                            width: 1.0),
-                                                                      ),
+                                                                      focusedBorder: OutlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: ColorConstants.backgroundColorBlue,
+                                                                              width: 1.0)),
+                                                                      disabledBorder: OutlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Colors.black26,
+                                                                              width: 1.0)),
+                                                                      enabledBorder: OutlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Colors.black26,
+                                                                              width: 1.0)),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
                                                                         borderSide: BorderSide(
@@ -799,19 +652,19 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                 Center(
                                                                   child:
                                                                       ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                          elevation:
+                                                                    style: ElevatedButton
+                                                                        .styleFrom(
+                                                                      elevation:
                                                                           5,
-                                                                          shape:
+                                                                      shape:
                                                                           RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                5.0),
-                                                                          ),
-                                                                          primary: HexColor(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(5.0),
+                                                                      ),
+                                                                      primary:
+                                                                          HexColor(
                                                                               "#1C99D4"),
-                                                                        ),
-
+                                                                    ),
                                                                     child:
                                                                         Padding(
                                                                       padding: const EdgeInsets
@@ -856,8 +709,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         UpdatedValues
                                                                             updateRequest =
                                                                             new UpdatedValues();
-                                                                        updateRequest.updateRequest(
-                                                                            context);
+                                                                        updateRequest
+                                                                            .updateRequest(context);
                                                                         // UpdateRequest();
                                                                       } else {
                                                                         Get.dialog(
@@ -916,78 +769,51 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                 });
               },
               tabs: [
-                Tab(
-                  text: "Site Data",
-                ),
-                // Tab(
-                //   text: "Visit Data",
-                // ),
-                Tab(
-                  text: "Site Progress",
-                ),
-                Tab(
-                  text: "Influencer",
-                ),
-                Tab(
-                  text: "Past Stage History",
-                ),
-                Tab(
-                  text: "Site Visit",
-                ),
+                Tab(text: "Site Data"),
+                Tab(text: "Site Progress"),
+                Tab(text: "Influencer"),
+                Tab(text: "Past Stage History"),
+                Tab(text: "Site Visit"),
               ],
             ),
           ),
           body: FutureBuilder(
             future: _getSiteData,
             builder: (context, snapshot) {
-              // print(snapshot.data.toString());
               if (snapshot.connectionState == ConnectionState.waiting) {
-                // return Align(
-                //     alignment: Alignment.center,
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         CircularProgressIndicator(),
-                //         SizedBox(
-                //           height: 5,
-                //         ),
-                //         Text('Please wait data loading...')
-                //       ],
-                //     ));
                 return simmerWidget(context);
               } else {
                 if (snapshot.hasError)
                   return Center(child: Text('Error: ${snapshot.error}'));
                 else
                   return TabBarView(
-                    controller: _tabController,
-                    children: <Widget>[
-                      SiteDataWidget(
+                      controller: _tabController,
+                      children: <Widget>[
+                        SiteDataWidget(
+                            siteId: widget.siteId,
+                            viewSiteDataResponse: snapshot.data),
+                        SiteProgressWidget(
+                            viewSiteDataResponse: snapshot.data,
+                            tabController: _tabController,
+                            tabIndex: selectedTabIndex),
+                        SiteInfluencerWidget(
+                            viewSiteDataResponse: snapshot.data),
+                        SitePastStageHistoryWidget(
+                            viewSiteDataResponse: snapshot.data),
+                        SiteVisitWidget(
+                          mwpVisitModel: snapshot.data.mwpVisitModel,
                           siteId: widget.siteId,
-                          viewSiteDataResponse: snapshot.data),
-                      SiteProgressWidget(
-                          viewSiteDataResponse: snapshot.data,
-                          tabController: _tabController,
-                          tabIndex: selectedTabIndex),
-                      SiteInfluencerWidget(viewSiteDataResponse: snapshot.data),
-                      SitePastStageHistoryWidget(
-                          viewSiteDataResponse: snapshot.data),
-                      SiteVisitWidget(
-                        mwpVisitModel: snapshot.data.mwpVisitModel,
-                        siteId: widget.siteId,
-                        visitSubTypeId:
-                            snapshot.data.sitesModal.siteOppertunityId,
-                        siteOpportunityStatusEntity:
-                            snapshot.data.siteOpportunityStatusEntity,
-                        siteDate: snapshot.data.sitesModal.siteCreationDate,
-                        selectedOpportunitStatusEnity:
-                            _siteOpportunitStatusEnityVisit,
-                        visitRemarks:
-                            snapshot.data.sitesModal.siteClosureReasonText,
-                      )
-                    ],
-                  ); // snapshot.data  :- get your object which is pass from your downloadData() function
+                          visitSubTypeId:
+                              snapshot.data.sitesModal.siteOppertunityId,
+                          siteOpportunityStatusEntity:
+                              snapshot.data.siteOpportunityStatusEntity,
+                          siteDate: snapshot.data.sitesModal.siteCreationDate,
+                          selectedOpportunitStatusEnity:
+                              _siteOpportunitStatusEnityVisit,
+                          visitRemarks:
+                              snapshot.data.sitesModal.siteClosureReasonText,
+                        )
+                      ]);
               }
             },
           ),
@@ -995,7 +821,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
-          //child:Text("classroomName")
         ),
       ),
     );

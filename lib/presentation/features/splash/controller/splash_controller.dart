@@ -183,16 +183,6 @@ class SplashController extends GetxController {
                 }
               }
             }
-            var journeyDate = splashDataModel.journeyDetails.journeyDate;
-            var journeyEndTime = splashDataModel.journeyDetails.journeyEndTime;
-            // prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-            // prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
-            // if(journeyDate != null) {
-            //   prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
-            // }
-            // if(journeyEndTime != null) {
-            //   prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
-            // }
           }
           else {
             var journeyDate = splashDataModel.journeyDetails.journeyDate;
@@ -202,7 +192,6 @@ class SplashController extends GetxController {
               prefs.setString(StringConstants.JOURNEY_DATE, journeyDate);
             } else {
               prefs.setString(StringConstants.JOURNEY_DATE, "NA");
-              var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
             }
             if (journeyEndTime != null) {
               prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
