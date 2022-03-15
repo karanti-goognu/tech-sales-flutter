@@ -131,8 +131,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label.opportunityStatus,
                     ))
                 .toList(),
-            onChanged: (value) {
-            },
+            onChanged: (value) {},
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
@@ -151,13 +150,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label,
                     ))
                 .toList(),
-            onChanged: (value) {
-            },
+            onChanged: (value) {},
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
           );
-
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -600,30 +597,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     return empID;
   }
 
-  _getCurrentLocation(int id) async {
-    if (!await GetCurrentLocation.checkLocationPermission()) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Future.delayed(
-          Duration.zero,
-          () => Get.dialog(Center(child: CircularProgressIndicator()),
-              barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnCreatePressed(id);
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
-      });
-    }
-  }
 
   SiteVisitResponseModel _siteVisitResponseModel;
   btnCreatePressed(int id) async {
@@ -692,30 +665,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         });
   }
 
-  _getCurrentLocationStart() async {
-    if (!(await GetCurrentLocation.checkLocationPermission())) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Future.delayed(
-          Duration.zero,
-          () => Get.dialog(Center(child: CircularProgressIndicator()),
-              barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnStartPressed();
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
-      });
-    }
-  }
 
   btnStartPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
@@ -779,6 +728,56 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         });
   }
 
+  ///Location
+  _getCurrentLocation(int id) async {
+    if (!await GetCurrentLocation.checkLocationPermission()) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(Center(child: CircularProgressIndicator()),
+              barrierDismissible: false));
+      Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      ).then((Position position) {
+        setState(() {
+          _currentPosition = position;
+          btnCreatePressed(id);
+        });
+        Get.back();
+      }).catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+
+  ///Location Start
+  _getCurrentLocationStart() async {
+    if (!(await GetCurrentLocation.checkLocationPermission())) {
+      Get.dialog(CustomDialogs().errorDialog(
+          "Please enable your location service from device settings"));
+    } else {
+      Future.delayed(
+          Duration.zero,
+              () => Get.dialog(Center(child: CircularProgressIndicator()),
+              barrierDismissible: false));
+      Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      ).then((Position position) {
+        setState(() {
+          _currentPosition = position;
+          btnStartPressed();
+        });
+        Get.back();
+      }).catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+  ///Location End
   _getCurrentLocationEnd() async {
     if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.dialog(CustomDialogs().errorDialog(
@@ -788,19 +787,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           Duration.zero,
           () => Get.dialog(Center(child: CircularProgressIndicator()),
               barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
+      Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnEndPressed();
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
+      );
+
+      setState(() {
+        _currentPosition = position;
+        btnEndPressed();
       });
+      Get.back();
     }
   }
 
@@ -1010,7 +1005,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             setState(() {
               getSiteData();
             });
-
           },
         ),
       ],
