@@ -22,6 +22,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailViewEvent extends StatefulWidget {
   int eventId;
@@ -32,7 +33,7 @@ class DetailViewEvent extends StatefulWidget {
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
-  Position _currentPosition;
+  LatLng _currentPosition;
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
   EventsFilterController _eventsFilterController = Get.find();
@@ -466,12 +467,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
 
   _getCurrentLocation() async {
-    List result;
-    result = await GetCurrentLocation.getCurrentLocation();
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
     if (result != null) {
       setState(() {
-        _currentPosition = result[1];
+        _currentPosition = result.latLng;
               startEvent();
       });
 

@@ -19,6 +19,7 @@ import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -269,7 +270,7 @@ class AddEventController extends GetxController {
   get isVisibleContact => this._isVisibleContact.value;
 
   set isVisibleContact(value) => this._isVisibleContact.value = value;
-  Position _currentPosition;
+  LatLng _currentPosition;
  // bool isVisibleContact = false;
 
   saveVisit(String accessKey) {
@@ -645,11 +646,10 @@ class AddEventController extends GetxController {
           // Geolocator
           //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           //     .then((Position position) {
-            List result;
-            result = await GetCurrentLocation.getCurrentLocation();
+            LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
             if (result != null) {
-              _currentPosition = result[1];
+              _currentPosition = result.latLng;
 
               print('start');
               var journeyStartLat = _currentPosition.latitude;
@@ -742,11 +742,11 @@ class AddEventController extends GetxController {
         //     var journeyEndLat = position.latitude;
         //     var journeyEndLong = position.longitude;
 
-            List result;
+            LocationDetails result;
             result = await GetCurrentLocation.getCurrentLocation();
 
             if (result != null) {
-              _currentPosition = result[1];
+              _currentPosition = result.latLng;
 
               print('start');
               var journeyEndLat = _currentPosition.latitude;
