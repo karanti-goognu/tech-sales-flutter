@@ -59,9 +59,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
-      setState(() {
-        detailEventModel = data;
-      });
+     // if (mounted) {
+        setState(() {
+          detailEventModel = data;
+        });
+     // }
       referenceID = detailEventModel.mwpEventModel.referenceId;
       isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
       setVisibility();
@@ -464,31 +466,41 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
 
   _getCurrentLocation() async {
-    if (!(await GetCurrentLocation.checkLocationPermission())) {
-      Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Get.dialog(Center(
-        child: CircularProgressIndicator(),
-      ));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-        // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          startEvent();
-        });
-        Get.back();
-      }).catchError((e) {
-        Get.back();
-        Get.dialog(
-            CustomDialogs().errorDialog("Access to location data denied "));
-        print(e);
+    List result;
+    result = await GetCurrentLocation.getCurrentLocation();
+
+    if (result != null) {
+      setState(() {
+        _currentPosition = result[1];
+              startEvent();
       });
+
+    // if (!(await GetCurrentLocation.checkLocationPermission())) {
+    //   Get.back();
+    //   Get.dialog(CustomDialogs().errorDialog(
+    //       "Please enable your location service from device settings"));
+    // } else {
+    //   Get.dialog(Center(
+    //     child: CircularProgressIndicator(),
+    //   ));
+    //   Geolocator
+    //       .getCurrentPosition(
+    //     desiredAccuracy: LocationAccuracy.best,
+    //     // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+    //   )
+    //       .then((Position position) {
+    //     setState(() {
+    //       _currentPosition = position;
+    //       startEvent();
+    //     });
+    //    Get.back();
+
+      // }).catchError((e) {
+      //   Get.back();
+      //   Get.dialog(
+      //       CustomDialogs().errorDialog("Access to location data denied "));
+      //   print(e);
+      // });
     }
   }
 
@@ -569,14 +581,16 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            Navigator.push(
-                    context,
-                    new CupertinoPageRoute(
-                        builder: (BuildContext context) =>
-                            DetailViewEvent(eventId)))
-                .then((_) => {getDetailEventsData()});
-            // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-          },
+            if (mounted) {
+              Navigator.push(
+                  context,
+                  new CupertinoPageRoute(
+                      builder: (BuildContext context) =>
+                          DetailViewEvent(eventId)))
+                  .then((_) => {getDetailEventsData()});
+              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
+            }
+          }
         ),
       ],
     );
@@ -611,14 +625,17 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            Navigator.push(
-                    context,
-                    new CupertinoPageRoute(
-                        builder: (BuildContext context) =>
-                            DetailViewEvent(eventId)))
-                .then((_) => {getDetailEventsData()});
-            // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-          },
+            if (mounted) {
+              Navigator.push(
+                  context,
+                  new CupertinoPageRoute(
+                      builder: (BuildContext context) =>
+                          DetailViewEvent(eventId)))
+                  .then((_) => {getDetailEventsData()});
+              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
+            }
+
+          }
         ),
       ],
     );

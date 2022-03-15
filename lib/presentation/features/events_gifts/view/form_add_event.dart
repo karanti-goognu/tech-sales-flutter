@@ -125,8 +125,8 @@ class _FormAddEventState extends State<FormAddEvent> {
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child:
-    // RaisedButton(
-    ElevatedButton(
+          // RaisedButton(
+          ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
               elevation: 0,
@@ -146,6 +146,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           ),
         ));
+
 
     final time = Container(
         decoration: BoxDecoration(
