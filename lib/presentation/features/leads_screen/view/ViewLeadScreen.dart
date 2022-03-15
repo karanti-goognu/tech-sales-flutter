@@ -35,6 +35,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dialog/lead_change_to_site_dialog.dart';
@@ -120,10 +121,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       gv.dealerList = dealerList;
       influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
       influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-      _currentPosition = new Position(
-          latitude: double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
-          longitude:
-              double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
+      _currentPosition = new LatLng(
+          double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
+          double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
       listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
 
       for (int i = 0; i < listLeadImagePhoto.length; i++) {
@@ -601,10 +601,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             Get.dialog(Center(
               child: CircularProgressIndicator(),
             ));
-            List result;
+            LocationDetails result;
             result = await GetCurrentLocation.getCurrentLocation();
-            _currentPosition = result[1];
-            List<String> loc = result[0];
+            _currentPosition = result.latLng;
+            List<String> loc = result.loc;
             _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
             _district.text = "${loc[2]}";
             _state.text = "${loc[1]}";
@@ -642,7 +642,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             setState(() {
               geoTagType.text = "M";
             });
-            _currentPosition = new Position(latitude: data[0], longitude: data[1]);
+            _currentPosition = new LatLng(data[0], data[1]);
             _getAddressFromLatLng();
           },
         ),
@@ -1884,7 +1884,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<InfluencerDetail> _listInfluencerDetail = [];
   List<InfluencerEntity> _listInfluencerEntity = [];
   List<LeadInfluencerEntity> _listLeadInfluencerEntity = [];
-  Position _currentPosition;
+  LatLng _currentPosition;
   String _currentAddress;
   List<LeadStatusEntity> leadStatusEntity = [];
   ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();

@@ -19,10 +19,10 @@ class CancelEvent extends StatefulWidget {
   int eventId;
   CancelEvent(this.eventId);
   @override
-  _CancelEventtState createState() => _CancelEventtState();
+  _CancelEventState createState() => _CancelEventState();
 }
 
-class _CancelEventtState extends State<CancelEvent> {
+class _CancelEventState extends State<CancelEvent> {
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
   SaveEventController saveEventController = Get.find();

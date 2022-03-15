@@ -164,10 +164,8 @@ class MWPPlanController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      print('======$empId');
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print('User Security key is :: $userSecurityKey');
 
 
      // log('PARAMS: ${json.encode(this.mwpPlannigList)}');

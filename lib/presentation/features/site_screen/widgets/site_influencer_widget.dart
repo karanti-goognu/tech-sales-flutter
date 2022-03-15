@@ -38,7 +38,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       influencerTypeEntity = viewSiteDataResponse.influencerTypeEntity;
-      String isDealerConformedChangedBySo = viewSiteDataResponse.sitesModal.isDealerConfirmedChangedBySo;
       influencerCategoryEntity = viewSiteDataResponse.influencerCategoryEntity;
 
       influencerEntity = viewSiteDataResponse.influencerEntity;
@@ -373,11 +372,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           .clear();
                                     }
                                   } else if (value.length == 10) {
-                                    var bodyEncrypted = {
-                                      //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                                      "inflContact": value
-                                    };
-
                                     for (int i = 0;
                                     i < _listInfluencerDetail.length - 1;
                                     i++) {
@@ -396,20 +390,12 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                               value));
                                     } else {
                                       String empId;
-                                      String mobileNumber;
-                                      String name;
                                       Future<SharedPreferences> _prefs =
                                       SharedPreferences.getInstance();
                                       await _prefs
                                           .then((SharedPreferences prefs) {
                                         empId = prefs.getString(
                                             StringConstants.employeeId) ??
-                                            "empty";
-                                        mobileNumber = prefs.getString(
-                                            StringConstants.mobileNumber) ??
-                                            "empty";
-                                        name = prefs.getString(
-                                            StringConstants.employeeName) ??
                                             "empty";
                                       });
                                       AddLeadsController _addLeadsController =
@@ -885,11 +871,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                           .isBlank) {
                     InfluencerDetail infl = new InfluencerDetail(
                         isExpanded: true, isPrimarybool: false);
-
-                    // Item item = new Item(
-                    //     headerValue: "agx ", expandedValue: "dnxcx");
                     setState(() {
-                      // _data.add(item);
                       _listInfluencerDetail[_listInfluencerDetail.length - 1]
                           .isExpanded = false;
                       _listInfluencerDetail.add(infl);

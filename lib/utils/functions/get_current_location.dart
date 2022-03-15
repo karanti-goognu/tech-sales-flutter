@@ -1,10 +1,12 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GetCurrentLocation{
   GetCurrentLocation._();
   static Position _currentPosition;
+  static LatLng latLng;
   static GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
   static Future<bool> checkLocationPermission() async{
@@ -13,17 +15,7 @@ class GetCurrentLocation{
   }
 
 
-  // static Future<bool> checkPermission() async{
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-  // }
-
-  static Future<List> getCurrentLocation() async {
+  static Future<LocationDetails> getCurrentLocation() async {
       bool serviceEnabled;
       LocationPermission permission;
       List<String> loc;
@@ -46,8 +38,8 @@ class GetCurrentLocation{
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentPosition = position;
       loc = await getAddressFromLatLng();
-     // Get.back();
-     return [loc,_currentPosition];
+      latLng = LatLng(_currentPosition.latitude, _currentPosition.longitude);
+     return LocationDetails(loc,_currentPosition, latLng);
   }
 
 
@@ -60,4 +52,13 @@ class GetCurrentLocation{
       print(e);
     }
   }
+}
+
+class LocationDetails{
+  List<String> loc;
+  Position position;
+  LatLng latLng;
+
+  LocationDetails(this.loc,this.position,this.latLng);
+
 }

@@ -22,6 +22,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailViewEvent extends StatefulWidget {
   int eventId;
@@ -32,7 +33,7 @@ class DetailViewEvent extends StatefulWidget {
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
-  Position _currentPosition;
+  LatLng _currentPosition;
   DetailEventModel detailEventModel;
   DetailEventController detailEventController = Get.find();
   EventsFilterController _eventsFilterController = Get.find();
@@ -470,72 +471,13 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         ));
   }
 
-  // Widget showCancelEventDialog(int eventId, String heading, String message) {
-  //   return AlertDialog(
-  //     content: SingleChildScrollView(
-  //       child: ListBody(
-  //         children: <Widget>[
-  //           Text(
-  //             heading,
-  //             style: GoogleFonts.roboto(
-  //                 fontSize: 20,
-  //                 height: 1.4,
-  //                 letterSpacing: .25,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: ColorConstants.inputBoxHintColorDark),
-  //           ),
-  //           Text(
-  //             message,
-  //             style: GoogleFonts.roboto(
-  //                 fontSize: 16,
-  //                 height: 1.4,
-  //                 letterSpacing: .25,
-  //                 fontStyle: FontStyle.normal,
-  //                 color: ColorConstants.inputBoxHintColorDark),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //     actions: <Widget>[
-  //       TextButton(
-  //         child: Text(
-  //           'NO',
-  //           style: GoogleFonts.roboto(
-  //               fontSize: 20,
-  //               letterSpacing: 1.25,
-  //               fontStyle: FontStyle.normal,
-  //               color: ColorConstants.buttonNormalColor),
-  //         ),
-  //         onPressed: () {
-  //           Get.back();
-  //         },
-  //       ),
-  //       TextButton(
-  //         child: Text(
-  //           'YES',
-  //           style: GoogleFonts.roboto(
-  //               fontSize: 20,
-  //               letterSpacing: 1.25,
-  //               fontStyle: FontStyle.normal,
-  //               color: ColorConstants.buttonNormalColor),
-  //         ),
-  //         onPressed: () {
-  //           Get.back();
-  //           Get.to(() => CancelEvent(eventId), binding: EGBinding());
-  //           //Get.toNamed(Routes.CANCEL_EVENT);
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
 
   _getCurrentLocation() async {
-    List result;
-    result = await GetCurrentLocation.getCurrentLocation();
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
     if (result != null) {
       setState(() {
-        _currentPosition = result[1];
+        _currentPosition = result.latLng;
               startEvent();
       });
 

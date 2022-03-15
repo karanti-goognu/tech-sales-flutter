@@ -1,4 +1,6 @@
 // import 'package:data_connection_checker/data_connection_checker.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/controller/home_controller.dart';
@@ -55,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<bool> internetChecking() async {
+    print("##1");
     bool result = await CheckInternet.hasConnection();
     return result;
   }
@@ -194,10 +197,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        print("Tap");
                         internetChecking().then(
                           (result) => {
+                            print("Internet"),
                             if (result == true)
                               {
+                                print("Result"),
                                 Get.toNamed(Routes.ADD_CALENDER_SCREEN),
                               }
                             else

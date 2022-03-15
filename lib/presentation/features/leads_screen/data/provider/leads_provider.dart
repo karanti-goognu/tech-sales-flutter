@@ -397,7 +397,6 @@ class MyApiClientLeads {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
       );
       var data = json.decode(response.body);
-      print("URL: ${UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"}");
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {

@@ -25,7 +25,6 @@ class CheckInternet{
     ),
   ]);
 
-  static List<AddressCheckResult> _lastTryResults = <AddressCheckResult>[];
 
   static Future<AddressCheckResult> isHostReachable(
       AddressCheckOptions options,
@@ -48,9 +47,14 @@ class CheckInternet{
   static List<AddressCheckOptions> addresses = defaultAddresses;
 
   static Future<bool>  hasConnection() async {
+    List<AddressCheckResult> _lastTryResults = <AddressCheckResult>[];
     List<Future<AddressCheckResult>> requests = [];
     for (var addressOptions in addresses) {
       requests.add(isHostReachable(addressOptions));
+      AddressCheckResult _ =await isHostReachable(addressOptions);
+      if(_.isSuccess){
+        return true;
+      }
     }
     _lastTryResults = List.unmodifiable(await Future.wait(requests));
 

@@ -21,8 +21,6 @@ class CustomMap extends StatefulWidget {
 class _CustomMapState extends State<CustomMap> {
   GoogleMapController controller;
   LatLng _markerPosition;
-  //= LatLng(28.644800, 77.216721);
-  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   TextEditingController _locationController = TextEditingController();
 
   _getAddressFromLatLng() async {
@@ -105,9 +103,9 @@ class _CustomMapState extends State<CustomMap> {
           onMapCreated: (controller) {
             this.controller = controller;
           },
-          onTap: (loc) {
+          onTap: (_) {
             setState(() {
-              _markerPosition = loc;
+              _markerPosition = _;
             });
             _getAddressFromLatLng();
           },
@@ -121,8 +119,9 @@ class _CustomMapState extends State<CustomMap> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Get.back();
-              },
+                Navigator.pop(context,
+                    [_markerPosition.latitude, _markerPosition.longitude]);
+                },
             )),
         Positioned(
             left: 90,
@@ -174,7 +173,6 @@ class _CustomMapState extends State<CustomMap> {
                 child: GestureDetector(
                   onTap: () async {
                     final sessionToken = Uuid().v4();
-                   // print('SSS: $sessionToken');
                     final Suggestion result = await showSearch(
                       context: context,
                       delegate: AddressSearch(sessionToken),

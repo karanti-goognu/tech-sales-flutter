@@ -85,7 +85,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
 
   @override
   void initState() {
-    // TODO: implement initState
     varietyTmpArray = [];
     UploadImageBottomSheet.image = null;
     super.initState();
@@ -150,7 +149,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   style: TextStyle(
                       color: HexColor("#F9A61A"),
                       fontWeight: FontWeight.bold,
-                      // letterSpacing: 2,
                       fontSize: 17),
                 ),
               ),
@@ -165,16 +163,16 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                             child: CircularProgressIndicator(),
                           ));
                     });
-                List result;
+                LocationDetails result;
                 result = await GetCurrentLocation.getCurrentLocation();
-                if(result != null) {
+                if (result != null) {
                   Get.back();
-                  _currentPosition = result[1];
-                  List<String> loc = result[0];
+                  _currentPosition = result.position;
+                  List<String> loc = result.loc;
                   _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
                 }
-                //result[0];
-              },
+
+              }
             ),
             SizedBox(
               height: 16,
@@ -937,7 +935,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {
-                      print(element);
                       imageDetails.add({
                         //ToDo: Change srComplaint Id to some dynamic value
                         'srComplaintId': widget.id,

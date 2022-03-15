@@ -1087,12 +1087,11 @@ class CustomDialogs {
     //   ));
     //   Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
     //       .then((Position position) {
-    List result;
-    result = await GetCurrentLocation.getCurrentLocation();
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
 
     if (result != null) {
-      position = result[1];
+      position = result.position;
 
         _eventController
             .submitEndEventDetail(eventId, eventComment, currentDateString,

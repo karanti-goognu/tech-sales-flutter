@@ -13,6 +13,7 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
@@ -88,7 +89,7 @@ class HomeController extends GetxController {
 
   set checkInStatus(value) => this._checkInStatus.value = value;
 
-  Position _currentPosition;
+  LatLng _currentPosition;
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -169,11 +170,10 @@ class HomeController extends GetxController {
       //     .then((Position position) {
       //   journeyStartLat = position.latitude.toString();
       //   journeyStartLong = position.longitude.toString();
-      List result;
-      result = await GetCurrentLocation.getCurrentLocation();
+      LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
       if (result != null) {
-        _currentPosition = result[1];
+        _currentPosition = result.latLng;
 
         print('start');
         journeyStartLat = _currentPosition.latitude.toString();
@@ -244,11 +244,10 @@ class HomeController extends GetxController {
 
       // Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
       //     .then((Position position) {
-      List result;
-      result = await GetCurrentLocation.getCurrentLocation();
+      LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
       if (result != null) {
-        _currentPosition = result[1];
+        _currentPosition = result.latLng;
 
         print('start');
         journeyStartLong = _currentPosition.longitude.toString();

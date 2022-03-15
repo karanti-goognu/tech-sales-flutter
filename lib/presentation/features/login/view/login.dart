@@ -205,7 +205,9 @@ class LoginScreenPageState extends State<LoginScreen> {
                       primary: ColorConstants.buttonNormalColor,
                     ),
                     onPressed: () {
+                      print("press");
                       if (_formKey.currentState.validate()) {
+                        print("late");
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
@@ -233,7 +235,9 @@ class LoginScreenPageState extends State<LoginScreen> {
           _loginController.empId = empId,
           _loginController.phoneNumber = mobileNumber,
           _loginController.getAccessKey(RequestIds.LOGIN_REQUEST),
-        }else{
+        }
+      else
+        {
           Get.snackbar(
               "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
               colorText: Colors.white,
