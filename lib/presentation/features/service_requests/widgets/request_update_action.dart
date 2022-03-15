@@ -167,9 +167,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     });
                 List result;
                 result = await GetCurrentLocation.getCurrentLocation();
-                _currentPosition = result[1];
-                List<String> loc = result[0];
-                _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
+                if(result != null) {
+                  Get.back();
+                  _currentPosition = result[1];
+                  List<String> loc = result[0];
+                  _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
+                }
                 //result[0];
               },
             ),

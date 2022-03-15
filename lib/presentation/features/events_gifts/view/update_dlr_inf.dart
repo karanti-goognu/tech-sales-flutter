@@ -354,7 +354,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         color: Colors.white,
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -552,7 +552,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         color: Colors.white,
         child: Form(
           key: _newFormKey,
-          child: Column(
+          child: ListView(
             children: [
               Padding(
                 padding: const EdgeInsets.only(

@@ -547,7 +547,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                             style: FormFieldStyle.formFieldTextStyle,
                             readOnly: true,
                             decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Total Site Potential (No of Bags)",
+                              labelText: "Balance Potential",
                             ),
                           ),
                           SizedBox(

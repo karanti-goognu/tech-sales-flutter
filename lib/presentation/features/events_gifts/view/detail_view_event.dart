@@ -47,6 +47,12 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     getDetailEventsData();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   setVisibility() {
     if (detailEventModel.mwpEventModel.eventStatusText ==
             StringConstants.approved &&
@@ -639,7 +645,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            if (mounted) {
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => super.widget)).then((_) => {getDetailEventsData()});
               Navigator.push(
                   context,
                   new CupertinoPageRoute(
@@ -647,7 +656,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                           DetailViewEvent(eventId)))
                   .then((_) => {getDetailEventsData()});
               // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-            }
           }
         ),
       ],
@@ -683,15 +691,15 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           ),
           onPressed: () {
             Get.back();
-            if (mounted) {
+            //if (mounted) {
               Navigator.push(
                   context,
                   new CupertinoPageRoute(
                       builder: (BuildContext context) =>
                           DetailViewEvent(eventId)))
-                  .then((_) => {getDetailEventsData()});
+                 .then((_) => {getDetailEventsData()});
               // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-            }
+           // }
 
           }
         ),

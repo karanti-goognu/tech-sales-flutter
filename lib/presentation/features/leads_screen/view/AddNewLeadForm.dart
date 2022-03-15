@@ -923,6 +923,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     .getCurrentLocation();
 
                                 if (result != null) {
+                                  Get.back();
                                   _currentPosition = result[1];
                                   List<String> loc = result[0];
                                   _siteAddress.text =
