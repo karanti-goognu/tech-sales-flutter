@@ -1,4 +1,3 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
@@ -19,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeController extends GetxController {
   @override
   void onInit() {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
   }
 
@@ -219,7 +217,6 @@ class HomeController extends GetxController {
         journeyEndLong = _currentPosition.longitude.toString();
         String url = "${UrlConstants.getCheckInDetails}";
         var date = DateTime.now();
-        var formattedDate = "${date.year}-${date.month}-${date.day}";
         String journeyDate = _splashController.splashDataModel.journeyDetails
             .journeyDate;
         String journeyStartTime = _splashController.splashDataModel
