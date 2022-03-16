@@ -38,11 +38,13 @@ class MyApiClientLeads {
 
 
   getAccessKey() async {
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
+       // Get.back();
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         return accessKeyModel;
@@ -73,6 +75,7 @@ class MyApiClientLeads {
   }
 
   getSecretKey(String empId, String mobile) async {
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
@@ -88,6 +91,7 @@ class MyApiClientLeads {
           headers: requestHeadersEmpIdAndNo);
 //      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
+       // Get.back();
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
         //print('Access key Object is :: $accessKeyModel');
@@ -131,6 +135,8 @@ class MyApiClientLeads {
   }
 
   getLeadsData(String accessKey, String securityKey, String url) async {
+    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+
     try {
       //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       version = VersionClass.getVersion();
@@ -139,7 +145,10 @@ class MyApiClientLeads {
               requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
       //var response = await httpClient.post(UrlConstants.loginCheck);
 //      print('response is :  ${response.body}');
+     // Get.back();
+
       if (response.statusCode == 200) {
+   //     Get.back();
 //        print('success');
         var data = json.decode(response.body);
 //        print(response.body);

@@ -50,17 +50,6 @@ class _LeadScreenState extends State<LeadScreen> {
     print("Leads init state called");
 
     super.initState();
-
-    /* try {
-      if (_loginController.validateOtpResponse.leadStatusEntity != null) {
-        if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
-          _splashController.splashDataModel.leadStatusEntity =
-              _loginController.validateOtpResponse.leadStatusEntity;
-        }
-      }
-    } catch (_) {
-      print('${_.toString()}');
-    }*/
     _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
     getDropdownDistData();
@@ -717,10 +706,14 @@ class _LeadScreenState extends State<LeadScreen> {
                 )
               : (_leadsFilterController.leadsListResponse.leadsEntity == null)
                   ? Container(
-                      child: Center(
-                        child: Text("Leads list is empty!!"),
-                      ),
-                    )
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text("Leads list is empty!!"),
+                        ],
+                      ))
                   : (_leadsFilterController
                               .leadsListResponse.leadsEntity.length ==
                           0)

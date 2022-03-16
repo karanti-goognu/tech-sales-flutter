@@ -240,9 +240,17 @@ class _SiteListScreenState extends State<SiteListScreen> {
                     : (_siteController.sitesListResponse.sitesEntity.length ==
                             0)
                         ? Container(
-                            child: Center(
-                              child: Text("No Sites records available!!"),
-                            ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            Text("No Sites records available!!"),
+          ],
+        )
+                            // child: Center(
+                            //   child: Text("No Sites records available!!"),
+                            // ),
                           )
                         : ListView.builder(
                             controller: _scrollController,

@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -165,6 +166,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             primary: ColorConstants.buttonNormalColor,
           ),
           onPressed: () {
+            TsoLogger.printLog("In Start");
             if (!_isStartButtonDisabled) {
               _isStartButtonDisabled = true;
               _isEndButtonDisabled = false;
@@ -194,6 +196,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             primary: ColorConstants.buttonNormalColor,
           ),
           onPressed: () {
+            TsoLogger.printLog("In End");
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
               if (_formKey.currentState.validate()) {
@@ -349,6 +352,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                     primary: ColorConstants.buttonNormalColor,
                                   ),
                                   onPressed: () {
+                                    TsoLogger.printLog("In Create");
                                     if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
                                       _getCurrentLocation(0);
@@ -645,6 +649,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitSubType": visitSubType,
       "visitType": typeValue,
     });
+    TsoLogger.printLog("Create: ${json.encode(_siteVisitRequestModel)}");
     internetChecking().then((result) => {
           if (result == true)
             {
@@ -718,7 +723,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitType": typeValue,
     });
 
-
+    TsoLogger.printLog("Start: ${json.encode(_siteVisitRequestModel)}");
     internetChecking().then((result) => {
           if (result == true)
             {
@@ -793,7 +798,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitSubType": widget.mwpVisitModel.visitSubType,
       "visitType": widget.mwpVisitModel.visitType,
     });
-
+    TsoLogger.printLog("End: ${json.encode(_siteVisitRequestModel)}");
     internetChecking().then((result) => {
           if (result == true)
             {

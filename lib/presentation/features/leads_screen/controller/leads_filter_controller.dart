@@ -163,10 +163,10 @@ class LeadsFilterController extends GetxController {
   String accessKeyNew;
 
   getSecretKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //     () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     String empId = "empty";
     String mobileNumber = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -180,7 +180,7 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
-        Get.back();
+       // Get.back();
         this.secretKeyResponse = data;
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
@@ -195,12 +195,12 @@ class LeadsFilterController extends GetxController {
 
   getAccessKey(int requestId) {
 
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //     () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     repository.getAccessKey().then((data) {
-      Get.back();
+     // Get.back();
       this.accessKeyResponse = data;
 
       if (this.accessKeyResponse.respCode == 'DM1005') {
@@ -358,6 +358,7 @@ class LeadsFilterController extends GetxController {
                   messageText: Text(
                       "Loading more .."),
                   backgroundColor: Colors.white,
+                  duration: Duration(milliseconds: 5)
                 );
               }
               Get.rawSnackbar(

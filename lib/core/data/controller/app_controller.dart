@@ -80,10 +80,10 @@ class AppController extends GetxController {
   }
 
    getAccessKey(int requestId) {
-    Future.delayed(
-        Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator()),
-            barrierDismissible: false));
+    // Future.delayed(
+    //     Duration.zero,
+    //     () => Get.dialog(Center(child: CircularProgressIndicator()),
+    //         barrierDismissible: false));
     repository.getAccessKey().then((data) {
       this.accessKeyResponse = data;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -94,7 +94,7 @@ class AppController extends GetxController {
           if (hasExpired) {
             getSecretKey(requestId);
           } else {
-            Get.back();
+           // Get.back();
             if(this.accessKeyResponse!=null)
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:

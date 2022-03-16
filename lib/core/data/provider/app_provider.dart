@@ -75,6 +75,7 @@ class MyApiClientApp {
 
   saveMWPData(String accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) async {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
@@ -85,6 +86,7 @@ class MyApiClientApp {
           // encoding: Encoding.getByName("utf-8")
       );
       if (response.statusCode == 200) {
+        Get.back();
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -187,6 +189,7 @@ class MyApiClientApp {
 
   updateMeetPlan(String accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) async {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
@@ -196,6 +199,7 @@ class MyApiClientApp {
           body: body,
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
+        Get.back();
         var data = json.decode(response.body);
         SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(data);
         return saveVisitResponse;
@@ -208,12 +212,14 @@ class MyApiClientApp {
   }
 
   getMWPData(String accessKey, String userSecurityKey, String url) async {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
+        Get.back();
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -312,12 +318,15 @@ class MyApiClientApp {
 
   getCalenderPlanByDay(
       String accessKey, String userSecurityKey, String url) async {
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
+        Get.back();
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
           Get.dialog(CustomDialogs().appUserInactiveDialog(
