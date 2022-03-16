@@ -16,6 +16,7 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,7 +45,7 @@ class SiteVisitWidget extends StatefulWidget {
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
-  Position _currentPosition;
+  LatLng _currentPosition;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String _remark, visitSubType;
@@ -71,8 +72,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   setData() {
     setState(() {
     viewSiteDataResponse = widget.viewSiteDataResponse;
-    siteOpportunityStatusEntity =
-        viewSiteDataResponse.siteOpportunityStatusEntity;
+    siteOpportunityStatusEntity = viewSiteDataResponse.siteOpportunityStatusEntity;
     if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
       for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
         if (viewSiteDataResponse.sitesModal.siteOppertunityId.toString() ==
@@ -601,26 +601,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocation(int id) async {
-    if (!await GetCurrentLocation.checkLocationPermission()) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Future.delayed(
-          Duration.zero,
-          () => Get.dialog(Center(child: CircularProgressIndicator()),
-              barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnCreatePressed(id);
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
+
+    if (result != null) {
+      setState(() {
+        _currentPosition = result.latLng;
+        btnCreatePressed(id);
       });
     }
   }
@@ -693,26 +679,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationStart() async {
-    if (!(await GetCurrentLocation.checkLocationPermission())) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Future.delayed(
-          Duration.zero,
-          () => Get.dialog(Center(child: CircularProgressIndicator()),
-              barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnStartPressed();
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
+
+    if (result != null) {
+      setState(() {
+        _currentPosition = result.latLng;
+        btnStartPressed();
       });
     }
   }
@@ -780,26 +752,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   _getCurrentLocationEnd() async {
-    if (!(await GetCurrentLocation.checkLocationPermission())) {
-      Get.dialog(CustomDialogs().errorDialog(
-          "Please enable your location service from device settings"));
-    } else {
-      Future.delayed(
-          Duration.zero,
-          () => Get.dialog(Center(child: CircularProgressIndicator()),
-              barrierDismissible: false));
-      Geolocator
-          .getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      )
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
-          btnEndPressed();
-        });
-        Get.back();
-      }).catchError((e) {
-        print(e);
+    LocationDetails result = await GetCurrentLocation.getCurrentLocation();
+
+    if (result != null) {
+      setState(() {
+        _currentPosition = result.latLng;
+        btnEndPressed();
       });
     }
   }
