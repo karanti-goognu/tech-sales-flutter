@@ -131,8 +131,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label.opportunityStatus,
                     ))
                 .toList(),
-            onChanged: (value) {
-            },
+            onChanged: (value) {},
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
@@ -151,13 +150,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                       value: label,
                     ))
                 .toList(),
-            onChanged: (value) {
-            },
+            onChanged: (value) {},
             decoration: FormFieldStyle.buildInputDecoration(
               labelText: "Opportunity Status",
             ),
           );
-
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -600,6 +597,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     return empID;
   }
 
+
   _getCurrentLocation(int id) async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
@@ -678,6 +676,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         });
   }
 
+
   _getCurrentLocationStart() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
@@ -751,6 +750,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         });
   }
 
+
   _getCurrentLocationEnd() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
@@ -761,6 +761,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       });
     }
   }
+
 
   btnEndPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
@@ -886,18 +887,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       });
   }
 
- // ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
   getSiteData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
     await _siteController.getAccessKeyOnly().then(
       (data) async {
         accessKeyModel = data;
-        // print("AccessKey :: " + accessKeyModel.accessKey);
         await _siteController
             .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
             .then(
           (data) async {
-            // print("here");
             viewSiteDataResponse = data;
             setState(() {
               widget.mwpVisitModel = viewSiteDataResponse.mwpVisitModel;
@@ -933,7 +931,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       },
     );
 
-    //return viewSiteDataResponse;
   }
 
   Widget showDialogSubmitSite(String message) {
@@ -968,7 +965,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             setState(() {
               getSiteData();
             });
-
           },
         ),
       ],
