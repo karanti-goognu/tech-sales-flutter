@@ -142,7 +142,7 @@ class _GiftsViewState extends State<GiftsView> {
                           },
                     value: _giftController.selectedDropdown,
                     items: _giftController.giftStockModelList
-                              .map<DropdownMenuItem>((value) {
+                              .map<DropdownMenuItem<Object>>((value) {
                             return DropdownMenuItem(
                               value: value.giftTypeId,
                               child: Text(
@@ -348,7 +348,7 @@ class _GiftsViewState extends State<GiftsView> {
         ),
         TextButton(
           child: Text(
-            'NO',
+            'No',
             style: GoogleFonts.roboto(
                 fontSize: 17,
                 letterSpacing: 1.25,

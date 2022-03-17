@@ -1296,8 +1296,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                               .sitesModal!.siteTotalSitePotential!)
                           : 0;
                       _stagePotentialVisit.clear();
-                      if ((siteTotalSitePotential != null ||
-                              !siteTotalSitePotential.isBlank!) &&
+                      if ((!siteTotalSitePotential.isBlank!) &&
                           (_selectedConstructionTypeVisit != null &&
                               (_selectedConstructionTypeVisit!.id != null ||
                                   !_selectedConstructionTypeVisit!
@@ -2332,7 +2331,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       int? selectedConstructionStageId,
       int? selectedFloorId) {
     String stagePt = "";
-    if ((siteTotalSitePotential != null || !siteTotalSitePotential.isBlank!) &&
+    if (( !siteTotalSitePotential.isBlank!) &&
         (selectedConstructionStageId != null ||
             !selectedConstructionStageId.isBlank!) &&
         (selectedFloorId != null || !selectedFloorId.isBlank!)) {

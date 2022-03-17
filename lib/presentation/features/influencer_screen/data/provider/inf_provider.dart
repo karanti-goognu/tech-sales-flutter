@@ -30,7 +30,7 @@ class MyApiClientInf {
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -50,7 +50,7 @@ class MyApiClientInf {
 
       var response = await http.get(Uri.parse(UrlConstants.addIlpInfluencer + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
      // print("URL-------${UrlConstants.addIlpInfluencer + empID}");
      // print("-------$data");
@@ -76,7 +76,7 @@ class MyApiClientInf {
 
       var response = await http.get(Uri.parse(UrlConstants.stateDistrictList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -100,7 +100,7 @@ class MyApiClientInf {
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
      // print("======${UrlConstants.getInfluencerDetail + "$contact"}");
       var data = json.decode(response.body);
       //print("======$data");
@@ -133,7 +133,7 @@ class MyApiClientInf {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer + "$status"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(influencerRequestModel),
       );
      // print("__---${response.request}");
@@ -170,7 +170,7 @@ class MyApiClientInf {
 
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       Get.back();
       if(data["resp_code"] == "DM1005"){
@@ -197,7 +197,7 @@ class MyApiClientInf {
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetailsByMembership + "$membershipId"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -226,7 +226,7 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
       var response = await httpClient.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
          infSearchModel = InfluencerListModel.fromJson(data);
@@ -244,7 +244,7 @@ class MyApiClientInf {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer + "$status"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(influencerRequestModel),
       );
       var data = json.decode(response.body);

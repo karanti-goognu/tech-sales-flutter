@@ -1,12 +1,20 @@
 abstract class StringConstants {
   StringConstants._();
 
-
+/// String Constants for App
   static String empIdAndNoNotMatch =
       'Emp ID & Contact number is not registered. Please recheck your details or Contact your Regional TS Admin';
-
   static String noInternetConnectionError =
       'No active internet connection found.Please check your internet connectivity.';
+  static const String ACCESS_LOCATION = "Accessing your location";
+
+
+
+
+
+
+
+
 
   ///Map Api Key
   static const String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";

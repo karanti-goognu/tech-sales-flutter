@@ -67,7 +67,6 @@ class MyApiClientHome {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
           body: jsonEncode(requestBody));
 
-      //print('Response body is : ${json.decode(response.body)}');
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -87,16 +86,12 @@ class MyApiClientHome {
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
-      print("Waheguru");
-      print(version);
-      print(url);
       var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print(data);
         dashboardModel = DashboardModel.fromJson(data);
       } else
-        print('error');
+        print('error: ${response.statusCode}');
     } catch (_) {
       print('Exception at Dashboard Repo (Homepage Dashboard Details) ${_.toString()}');
     }

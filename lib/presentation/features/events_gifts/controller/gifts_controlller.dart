@@ -115,7 +115,7 @@ class GiftController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       String? empID= prefs.getString(StringConstants.employeeId);
       String? securityKey = prefs.getString(StringConstants.userSecurityKey);
-      response = await (repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew) as FutureOr<SaveVisitResponse?>);
+      response = await (repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew));
     });
     Get.back();
     Get.rawSnackbar(title: "Message", message: response!.respMsg);

@@ -45,7 +45,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
       updateServiceRequestController.district.text = widget.complaintViewModel!.district!;
       updateServiceRequestController.taluk.text = widget.complaintViewModel!.taluk!;
       updateServiceRequestController.pin.text = widget.complaintViewModel!.pincode!;
-      if(updateServiceRequestController.coverBlockProvidedNo!=null && updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
+      if(updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
         if(widget.complaintViewModel!.coverBlockProvidedNo==null){
           updateServiceRequestController.coverBlockProvidedNo.text = "";
         }else{
@@ -53,7 +53,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
         }
       }
 
-      if(updateServiceRequestController.formwarkRemovalDate!=null && updateServiceRequestController.formwarkRemovalDate.text.isEmpty){
+      if(updateServiceRequestController.formwarkRemovalDate.text.isEmpty){
         if(widget.complaintViewModel!.formwarkRemovalDate==null){
           updateServiceRequestController.formwarkRemovalDate.text = "";
         }else{

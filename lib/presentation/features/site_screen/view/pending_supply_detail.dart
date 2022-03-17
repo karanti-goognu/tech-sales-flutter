@@ -984,7 +984,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String? empId = await (getEmpId() as FutureOr<String?>);
+                                          String? empId = await (getEmpId() );
                                           if (_selectedFloorType == null) {
                                             Get.dialog(CustomDialogs()
                                                 .showMessage(
@@ -1124,7 +1124,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String? empId = await (getEmpId() as FutureOr<String?>);
+                                          String? empId = await (getEmpId() );
                                           // if (_siteController
                                           //         .pendingSupplyDetailsResponse
                                           //         .pendingSuppliesDetailsModel

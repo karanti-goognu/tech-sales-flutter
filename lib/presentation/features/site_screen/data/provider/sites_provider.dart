@@ -38,7 +38,7 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -54,7 +54,7 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -103,7 +103,7 @@ class MyApiClientSites {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey, version) as Map<String, String>?);
+                accessKey, userSecurityKey, version));
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -123,7 +123,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version) as Map<String, String>?);
+              accessKey, securityKey, version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -140,7 +140,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version) as Map<String, String>?);
+              accessKey, securityKey, version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -159,7 +159,7 @@ class MyApiClientSites {
       final response = await get(
         Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
-            accessKey, userSecurityKey, version) as Map<String, String>?,
+            accessKey, userSecurityKey, version),
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -193,7 +193,7 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateSiteData));
     request.headers.addAll(
         headersWithAccessAndSecretWithoutContent(
-            accessKey, userSecurityKey, version) as Map<String, String>);
+            accessKey, userSecurityKey, version));
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
@@ -247,7 +247,7 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
     request.headers.addAll(
         headersWithAccessAndSecretWithoutContent(
-            accessKey, userSecurityKey, version) as Map<String, String>);
+            accessKey, userSecurityKey, version) );
 
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
 
@@ -315,7 +315,7 @@ class MyApiClientSites {
           "${UrlConstants.getSiteSearchData}searchText=$searchText&referenceID=$empID";
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey, version) as Map<String, String>?);
+              accessKey, userSecurityKey, version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         sitesListModel = SitesListModel.fromJson(data);
@@ -333,7 +333,7 @@ class MyApiClientSites {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
@@ -360,7 +360,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version) as Map<String, String>?);
+              accessKey, securityKey, version));
       if(response.statusCode==200) {
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
@@ -378,7 +378,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version) as Map<String, String>?);
+              accessKey, securityKey, version) );
       if(response.statusCode==200) {
         var data = json.decode(response.body);
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
@@ -398,7 +398,7 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -426,7 +426,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version) as Map<String, String>?,
+              accessKey, securityKey, version),
           body: json.encode(jsonData));
        log(""+json.encode(jsonData));
       if(response.statusCode==200) {
@@ -447,7 +447,7 @@ class MyApiClientSites {
 
       var response = await http.get(Uri.parse(UrlConstants.siteDistList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -469,7 +469,7 @@ class MyApiClientSites {
       String url = UrlConstants.siteKittyPoints + "$partyCode";
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(

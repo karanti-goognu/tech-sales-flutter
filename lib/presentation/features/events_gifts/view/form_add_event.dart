@@ -737,7 +737,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        String? empId = await (getEmpId() as FutureOr<String?>);
+        String? empId = await (getEmpId() );
 
         timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
 

@@ -1032,7 +1032,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   updateBtnPressed() async {
     List<EventDealerRequestsList> _dealersList = new List.empty(growable: true);
     List<EventInfluencerRequestsList> _infList = new List.empty(growable: true);
-    String? empId = await (getEmpId() as FutureOr<String?>);
+    String? empId = await (getEmpId() );
     selectedDealersModels.forEach((e) {
       setState(() {
         _dealersList.add(new EventDealerRequestsList(
@@ -1115,7 +1115,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     InfController _infController = Get.find();
 
     if (_newFormKey.currentState!.validate()) {
-      String? empId = await (getEmpId() as FutureOr<String?>);
+      String? empId = await (getEmpId() );
       InfluencerRequestModel _influencerRequestModel =
           InfluencerRequestModel.fromJson({
         "membershipId": null,

@@ -363,7 +363,7 @@ class SiteController extends GetxController {
     String? userSecurityKey = "";
     String empID = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId) ?? "empty";
@@ -461,7 +461,7 @@ class SiteController extends GetxController {
     SiteVisitResponseModel? siteVisitResponseModel;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
@@ -473,7 +473,7 @@ class SiteController extends GetxController {
   Future siteSearch(String searchText) async{
     String? userSecurityKey = "";
     String? empID = "";
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -486,7 +486,7 @@ class SiteController extends GetxController {
     Future.delayed(Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -515,7 +515,7 @@ class SiteController extends GetxController {
     Future.delayed(Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -542,7 +542,7 @@ class SiteController extends GetxController {
     PendingSuppliesDetailsModel? _pendingSuppliesDetailsModel;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     String empId = "empty";
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -559,7 +559,7 @@ class SiteController extends GetxController {
         Duration.zero,
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
@@ -586,7 +586,7 @@ class SiteController extends GetxController {
   Future<KittyBagsListModel?> getSiteKittyBags(String? partyCode) async {
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKeyNew() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       kittyBagsListModel = await repository.getKittyBagsList(accessKey, partyCode, userSecurityKey);

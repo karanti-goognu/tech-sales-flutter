@@ -61,7 +61,7 @@ class EventsFilterController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey());
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -80,7 +80,7 @@ class EventsFilterController extends GetxController {
     StartEventResponse? _startEventResponse;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
 
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -117,7 +117,7 @@ class EventsFilterController extends GetxController {
     UpdateDealerInfResponse? _updateDealerInfResponse;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+      String? accessKey = await (repository.getAccessKey() );
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         _updateDealerInfResponse = await repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel);
@@ -134,7 +134,7 @@ class EventsFilterController extends GetxController {
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -153,7 +153,7 @@ class EventsFilterController extends GetxController {
     //     Duration.zero,
     //         () => Get.dialog(Center(child: CircularProgressIndicator()),
     //         barrierDismissible: false));
-      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+      String? accessKey = await (repository.getAccessKey() );
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveNewInfluencerResponse = await repository.saveNewInfluencer(

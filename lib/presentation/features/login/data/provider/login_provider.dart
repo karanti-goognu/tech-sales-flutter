@@ -27,7 +27,7 @@ class MyApiClient {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -75,7 +75,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.loginCheck),
-          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
+          headers: requestHeadersWithAccessKey(accessKey,version) ,
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -119,7 +119,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.retryOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
+          headers: requestHeadersWithAccessKey(accessKey,version) ,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -166,7 +166,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.validateOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
+          headers: requestHeadersWithAccessKey(accessKey,version) ,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {

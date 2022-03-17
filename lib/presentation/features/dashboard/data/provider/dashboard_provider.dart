@@ -22,11 +22,9 @@ class MyApiClientDashboard {
 
   getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient!.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel;
@@ -47,7 +45,7 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       String url = UrlConstants.shareReport+empID;
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(url));
-      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey,version) as Map<String, String>);
+      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey,version));
       String fileName = image.path.split("/").last;
       var stream = new http.ByteStream(image.openRead());
       stream.cast();
@@ -78,7 +76,7 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboadrMonthlyView+empID+'&yearMonth='+yearMonth;
   //    print(url);
-      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version) as Map<String, String>?);
+      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
   //    print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -108,7 +106,7 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdGeneratedVolumeSiteList+empID+'&yearMonth='+yearMonth;
     //  print(url);
-      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version) as Map<String, String>?);
+      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
    //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -138,7 +136,7 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardMtdConvertedVolumeList+empID+'&yearMonth='+yearMonth;
     //  print(url);
-      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version) as Map<String, String>?);
+      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
     //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -165,7 +163,7 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       var url=UrlConstants.dashboardYearlyView+empID;
      // print(url);
-      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version) as Map<String, String>?);
+      var response = await httpClient!.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
      // print('Response body is : ${json.decode(response.body)}');
     //  print('URL : ${response.request}');
       if (response.statusCode == 200) {

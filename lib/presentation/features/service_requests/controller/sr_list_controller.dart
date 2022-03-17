@@ -15,7 +15,7 @@ class SRListController extends GetxController {
   }
 
   final SrRepository repository;
-  SRListController({required this.repository}) : assert(repository != null);
+  SRListController({required this.repository});
 
   final _offset = 0.obs;
   get offset => this._offset.value;
@@ -65,7 +65,7 @@ class SRListController extends GetxController {
                srListData = data;
            } else {
              ServiceRequestComplaintListModel requestComplaintListModel = data;
-             if (requestComplaintListModel!=null && requestComplaintListModel.srComplaintListModal!=null) {
+             if (requestComplaintListModel.srComplaintListModal!=null) {
                requestComplaintListModel.srComplaintListModal!.addAll(srListData.srComplaintListModal);
                this.srListData = requestComplaintListModel;
                this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn!.compareTo(a.createdOn!));

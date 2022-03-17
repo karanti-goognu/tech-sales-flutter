@@ -95,7 +95,7 @@ class DetailEventController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+      String? accessKey = await (repository.getAccessKey() );
       print('EMP: $empID');
       egDetailEventDaa = await repository.getdetailEvents(
           accessKey, userSecurityKey, empID!, eventId);
@@ -111,7 +111,7 @@ class DetailEventController extends GetxController {
             barrierDismissible: false));
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     _prefs.then((SharedPreferences prefs) {
       String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       String empId = prefs.getString(StringConstants.employeeId)!;
@@ -152,7 +152,7 @@ class DetailEventController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     repository.getAccessKey().then((data) async {
       await _prefs.then((SharedPreferences prefs) async {
         empID = prefs.getString(StringConstants.employeeId);

@@ -40,7 +40,7 @@ class EventTypeController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);

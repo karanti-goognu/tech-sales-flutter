@@ -896,7 +896,7 @@ class _DetailPendingState extends State<DetailPending> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        String? empId = await (getEmpId() as FutureOr<String?>);
+        String? empId = await (getEmpId() );
         List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {

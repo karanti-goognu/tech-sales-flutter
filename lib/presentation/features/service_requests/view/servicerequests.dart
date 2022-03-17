@@ -242,7 +242,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(
+                        Get.to(()=>
                           RequestUpdation(
                               id: serviceRequestComplaintListModel!
                                   .srComplaintListModal![index]

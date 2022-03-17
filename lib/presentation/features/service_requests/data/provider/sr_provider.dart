@@ -30,7 +30,7 @@ class MyApiClientSR {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         accessKeyModel = AccessKeyModel.fromJson(data);
@@ -47,7 +47,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getServiceRequestFormDataNew+'?referenceID='+empId),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
      var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -67,7 +67,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getRequestorDetails+empID+'&requesterType='+requesterType+'&siteId='+siteId),
-          headers: headersWithAccessAndSecretWithoutContent(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: headersWithAccessAndSecretWithoutContent(accessKey,userSecretKey, version) );
       requestorDetailsModel = RequestorDetailsModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -82,7 +82,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getComplaintListData+empID+'&offset=$offset&limit=10'),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -113,7 +113,7 @@ class MyApiClientSR {
         url=url+'&typeOfReqId=$typeOfReqId';
       }
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -136,7 +136,7 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       var url=UrlConstants.getComplaintListData+empID+'&siteId='+siteID;
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
     }
     catch(e){
@@ -151,7 +151,7 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.addServiceRequest));
       request.headers.addAll(
-          headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version) as Map<String, String>);
+          headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version) );
       request.fields['uploadImageWithSRCompalintModal'] = json.encode(saveServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
@@ -178,7 +178,7 @@ class MyApiClientSR {
     try{
       version = VersionClass.getVersion();
       http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateServiceRequest));
-      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version) as Map<String, String>);
+      request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecretKey, version));
       request.fields['uploadImageWithSRCompalintUpdateModal'] = json.encode(updateServiceRequest) ;
       for (var file in imageList) {
         String fileName = file.path.split("/").last;
@@ -209,7 +209,7 @@ class MyApiClientSR {
       version = VersionClass.getVersion();
       var url=UrlConstants.srComplaintView+empID+'&id='+id;
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -238,7 +238,7 @@ class MyApiClientSR {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey, version) as Map<String, String>?);
+                accessKey, userSecurityKey, version));
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -259,7 +259,7 @@ class MyApiClientSR {
     try {
       var url=UrlConstants.getSiteAreaDetails+empID+'&siteId='+siteID;
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       siteAreaDetailsModel = SiteAreaModel.fromJson(json.decode(response.body));
       return siteAreaDetailsModel;
     } catch (_) {

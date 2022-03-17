@@ -17,7 +17,7 @@ class TutorialListController extends GetxController{
   }
 
   final TutorialRepository repository;
-  TutorialListController({required this.repository}) : assert(repository != null);
+  TutorialListController({required this.repository});
 
   final Rx<TsoAppTutorialListModel?> _tutorialListData = TsoAppTutorialListModel().obs;
   get tutorialListData => _tutorialListData.value;

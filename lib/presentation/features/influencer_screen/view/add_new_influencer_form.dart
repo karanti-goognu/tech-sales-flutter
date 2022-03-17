@@ -981,7 +981,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   }
 
   btnSubmitPressed() async {
-    String? empId = await (getEmpId() as FutureOr<String?>);
+    String? empId = await (getEmpId() );
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
       "membershipId": null,

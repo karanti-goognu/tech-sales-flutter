@@ -34,7 +34,7 @@ class UpdateServiceRequestController extends GetxController {
   }
 
   updateImageAfterDelete(int index) {
-    if(index!=null && index>=0) {
+    if(index>=0) {
       imageList.removeAt(index);
       update();
     }
@@ -82,8 +82,7 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController formwarkRemovalDate = TextEditingController();
 
 
-  UpdateServiceRequestController({required this.repository})
-      : assert(repository != null);
+  UpdateServiceRequestController({required this.repository});
   final _updateRequestData = UpdateSRModel().obs;
   get updateRequestData => _updateRequestData.value;
   set updateRequestData(value) => _updateRequestData.value = value;

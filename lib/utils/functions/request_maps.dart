@@ -12,13 +12,13 @@ Map<String, String> requestHeaders(String? version){
   return requestHeaders;
 }
 
-Map<String, String?> requestHeadersWithAccessKey(String? accessKey, String? version) {
-  Map<String, String?> requestHeaders = new Map();
+Map<String, String> requestHeadersWithAccessKey(String? accessKey, String? version) {
+  Map<String, String> requestHeaders = new Map();
   requestHeaders = {
     'Content-type': 'application/json',
     'app-name': StringConstants.appName,
-    'app-version': version,
-    'access-key': accessKey,
+    'app-version': version!,
+    'access-key': accessKey!,
   };
 
   return requestHeaders;
@@ -37,14 +37,14 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String? accessKey , 
   return requestHeaders;
 }
 
-Map<String, String?> headersWithAccessAndSecretWithoutContent(String? accessKey , String? userSecurityKey, String? version) {
+Map<String, String> headersWithAccessAndSecretWithoutContent(String? accessKey , String? userSecurityKey, String? version) {
 
-  Map<String, String?> requestHeaders = new Map();
+  Map<String, String> requestHeaders = new Map();
   requestHeaders = {
     'app-name': StringConstants.appName,
-    'app-version': version,
-    'access-key': accessKey,
-    'user-security-key' : userSecurityKey
+    'app-version': version!,
+    'access-key': accessKey!,
+    'user-security-key' : userSecurityKey!
   };
   return requestHeaders;
 }

@@ -20,8 +20,7 @@ class SaveServiceRequestController extends GetxController {
 
   final SrRepository repository;
 
-  SaveServiceRequestController({required this.repository})
-      : assert(repository != null);
+  SaveServiceRequestController({required this.repository});
   final _saveRequestData = SrComplaintModel().obs;
   get saveRequestData => _saveRequestData.value;
   set saveRequestData(value) => _saveRequestData.value = value;

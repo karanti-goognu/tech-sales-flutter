@@ -571,7 +571,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   btnCreatePressed(int id) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
-    String? empId = await (getEmpId() as FutureOr<String?>);
+    String? empId = await (getEmpId() );
 
     if (widget.selectedOpportunitStatusEnity == null) {
       visitSubType = visitSubType;
@@ -647,7 +647,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   btnStartPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
-    String? empId = await (getEmpId() as FutureOr<String?>);
+    String? empId = await (getEmpId() );
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
       selectedDateStringNext = '${widget.mwpVisitModel!.nextVisitDate}';
@@ -720,7 +720,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   btnEndPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String currentTime = dateFormat.format(DateTime.now());
-    String? empId = await (getEmpId() as FutureOr<String?>);
+    String? empId = await (getEmpId() );
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
       selectedDateStringNext = '${widget.mwpVisitModel!.nextVisitDate}';

@@ -37,7 +37,7 @@ class SaveEventController extends GetxController {
     //         barrierDismissible: false));
 
       _prefs.then((SharedPreferences prefs) async {
-        String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+        String? accessKey = await (repository.getAccessKey() );
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         await repository.saveEventForm(accessKey, userSecurityKey, saveEventFormModel)
             .then((value) {

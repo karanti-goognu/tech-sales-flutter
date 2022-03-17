@@ -68,7 +68,7 @@ class InfController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -82,7 +82,7 @@ class InfController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -99,7 +99,7 @@ class InfController extends GetxController {
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -114,7 +114,7 @@ class InfController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     _prefs.then((SharedPreferences prefs) async {
-      String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+      String? accessKey = await (repository.getAccessKey() );
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       await repository.saveInfluencerForm(accessKey, userSecurityKey, influencerRequestModel, status)
           .then((value) {
@@ -143,7 +143,7 @@ class InfController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -183,7 +183,7 @@ class InfController extends GetxController {
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -195,7 +195,7 @@ class InfController extends GetxController {
   Future infSearch(String searchText) async{
     String? userSecurityKey = "";
     String? empID = "";
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -210,7 +210,7 @@ class InfController extends GetxController {
     InfluencerResponseModel? influencerResponseModel;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
+    String? accessKey = await (repository.getAccessKey() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       influencerResponseModel = await repository.saveNewInfluencer(

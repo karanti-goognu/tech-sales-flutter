@@ -38,7 +38,7 @@ class MyApiClientEvent {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -58,7 +58,7 @@ class MyApiClientEvent {
       version = VersionClass.getVersion();
       String url = UrlConstants.eventSearch+empID+"&searchText=$searchText";
       var response = await httpClient.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         eventSearchModel = AllEventsModel.fromJson(data);
@@ -77,7 +77,7 @@ class MyApiClientEvent {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -101,7 +101,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getInfluencer + mobileNo),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       influencerViewModel =
           InfluencerViewModel.fromJson(json.decode(response.body));
     }
@@ -120,7 +120,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.back();
@@ -146,7 +146,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getApproveEvents + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.back();
@@ -172,7 +172,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getDetailEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey, version) as Map<String, String>?);
+              accessKey, userSecretKey, version));
       if (response.statusCode == 200) {
         Get.back();
         var data = json.decode(response.body);
@@ -198,7 +198,7 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEvent),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(saveEventFormModel),
       );
       var data = json.decode(response.body);
@@ -229,7 +229,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.deleteEvent + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -258,7 +258,7 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.startEvent),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(startEventModel),
       );
       var data = json.decode(response.body);
@@ -286,7 +286,7 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var url = UrlConstants.endEvent +empId + "&eventId=$eventId";
-      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?);
+      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) );
       var data = json.decode(response.body);
       if (data["resp_code"] == "DM1005") {
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -317,7 +317,7 @@ class MyApiClientEvent {
           "referenceId": empId
       };
       var response = await http.post(Uri.parse(UrlConstants.submitEndEvent),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(endEventDetailModel)
       );
       var data = json.decode(response.body);
@@ -349,7 +349,7 @@ class MyApiClientEvent {
       var response = await http.get(
           Uri.parse(UrlConstants.getDealerInfList + empID + "&eventId=$eventId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -376,7 +376,7 @@ class MyApiClientEvent {
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEventDealersInfluencers),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(updateDealerInfModel),
       );
       var data = json.decode(response.body);
@@ -406,7 +406,7 @@ class MyApiClientEvent {
   try {
     version = VersionClass.getVersion();
     var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
       Get.back();
@@ -434,7 +434,7 @@ Future<SaveNewInfluencerResponse?>saveNewInfluencer(String? accessKey, String? u
   try{
     version = VersionClass.getVersion();
     var response = await http.post(Uri.parse(UrlConstants.saveInfluencer),
-      headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+      headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
       body: json.encode(saveNewInfluencerModel),
     );
     var data = json.decode(response.body);

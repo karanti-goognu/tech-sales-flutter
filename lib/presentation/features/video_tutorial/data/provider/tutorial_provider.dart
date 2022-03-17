@@ -23,7 +23,7 @@ class MyApiClient {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
          accessKeyModel = AccessKeyModel.fromJson(data);
@@ -43,7 +43,7 @@ class MyApiClient {
     try{
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.AppTutorialList),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(

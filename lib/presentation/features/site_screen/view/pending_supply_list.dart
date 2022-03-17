@@ -224,13 +224,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_siteController == null)
-        ? Container(
-            child: Center(
-              child: Text("Sites controller  is empty!!"),
-            ),
-          )
-        : (_siteController.pendingSupplyListResponse == null)
+    return Obx(() => (_siteController.pendingSupplyListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Supply list response  is empty!!"),

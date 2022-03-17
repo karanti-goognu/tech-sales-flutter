@@ -232,7 +232,7 @@ class _CancelEventState extends State<CancelEvent> {
   btnPresssed() async {
     if (_cancelEventFormKey.currentState!.validate()) {
       _cancelEventFormKey.currentState!.save();
-      String? empId = await (getEmpId() as FutureOr<String?>);
+      String? empId = await (getEmpId() );
       List dealersList = List.empty(growable: true);
       selectedDealersModels!.forEach((e) {
         setState(() {

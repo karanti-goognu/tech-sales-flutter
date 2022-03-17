@@ -1,7 +1,4 @@
 
-
-import 'package:flutter/material.dart';
-
 class DropListModel {
   DropListModel(this.listOptionItems);
 

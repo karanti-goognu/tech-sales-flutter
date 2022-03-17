@@ -43,7 +43,7 @@ class MyApiClientLeads {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -62,7 +62,7 @@ class MyApiClientLeads {
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version) as Map<String, String>?);
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -115,7 +115,7 @@ class MyApiClientLeads {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey,version) as Map<String, String>?);
+                accessKey, userSecurityKey,version) );
 //        print('Response body is : ${json.decode(response.body)}');
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
@@ -138,7 +138,7 @@ class MyApiClientLeads {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) as Map<String, String>?);
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
       //var response = await httpClient.post(UrlConstants.loginCheck);
 //      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -161,7 +161,7 @@ class MyApiClientLeads {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) as Map<String, String>?);
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
       //var response = await httpClient.post(UrlConstants.loginCheck);
 //      print('response is :  ${response.body}');
       if (response.statusCode == 200) {
@@ -186,7 +186,7 @@ class MyApiClientLeads {
       //         accessKey, userSecurityKey,version));
       var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version) as Map<String, String>?);
+              accessKey, userSecurityKey,version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
@@ -214,7 +214,7 @@ class MyApiClientLeads {
       final response = await get(
         Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
         headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?,
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
 
 
@@ -373,7 +373,7 @@ class MyApiClientLeads {
        final response = await get(
         Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
          headers:
-         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?,
+         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
       if (response.statusCode == 200) {
         Get.back();
@@ -396,7 +396,7 @@ class MyApiClientLeads {
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?,
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
@@ -501,7 +501,7 @@ class MyApiClientLeads {
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         leadsListModel = LeadsListModel.fromJson(data);
@@ -525,7 +525,7 @@ class MyApiClientLeads {
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -556,7 +556,7 @@ class MyApiClientLeads {
       // var data = json.decode(response.body);
 
       var response = await http.post(Uri.parse(UrlConstants.getTotalSitePotential),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(updateRequestModel),
       );
       var data = json.decode(response.body);
@@ -589,7 +589,7 @@ class MyApiClientLeads {
 
       var response = await http.get(Uri.parse(UrlConstants.leadDistList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version) as Map<String, String>?);
+              accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(

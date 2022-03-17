@@ -650,7 +650,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                             middleText:
                                                 "Request Sub-type and Severity cannot be empty");
                                       else {
-                                        String? empId = await (getEmpId() as FutureOr<String?>);
+                                        String? empId = await (getEmpId() );
                                         List imageDetails =
                                             List.empty(growable: true);
                                         List subTypeDetails =

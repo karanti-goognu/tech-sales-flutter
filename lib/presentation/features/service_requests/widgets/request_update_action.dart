@@ -156,25 +156,23 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 ),
               ),
               onPressed: () async {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return new WillPopScope(
-                          onWillPop: (() => null) as Future<bool> Function()?,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ));
-                    });
+                // showDialog(
+                //     context: context,
+                //     barrierDismissible: false,
+                //     builder: (BuildContext context) {
+                //       return new WillPopScope(
+                //           onWillPop: (() => null) as Future<bool> Function()?,
+                //           child: Center(
+                //             child: CircularProgressIndicator(),
+                //           ));
+                //     });
+                Get.rawSnackbar(title: "Message",message: StringConstants.ACCESS_LOCATION);
                 LocationDetails result;
                 result = await GetCurrentLocation.getCurrentLocation();
-                if (result != null) {
-                  Get.back();
+                  // Get.back();
                   _currentPosition = result.position;
                   List<String> loc = result.loc;
                   _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
-                }
-
               }
             ),
             SizedBox(
@@ -431,7 +429,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _balanceQuantity,
                                     onChanged: (_) {
                                       setState(() {
-                                        if (_balanceQuantity.text == null ||
+                                        if (
                                             _balanceQuantity.text == "") {
                                           _mtController.clear();
                                         } else {
@@ -472,7 +470,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _mtController,
                                     onChanged: (value) {
                                       setState(() {
-                                        if (_mtController.text == null ||
+                                        if (
                                             _mtController.text == "") {
                                           _balanceQuantity.clear();
                                         } else {
@@ -934,7 +932,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       title: 'Warning:',
                       backgroundColor: Colors.red);
                 } else {
-                  String? empId = await (getEmpId() as FutureOr<String?>);
+                  String? empId = await (getEmpId() );
                   List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {

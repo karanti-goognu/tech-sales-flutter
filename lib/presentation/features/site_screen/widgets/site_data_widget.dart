@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/functions/validation.dart';
@@ -128,8 +127,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       }
 
       _siteTotalBalanceBags.text = sitesModal!.totalBalancePotential!;
-      if (
-      _siteTotalBalanceBags.text == "") {
+      if (_siteTotalBalanceBags.text == "") {
         _siteTotalBalancePt.clear();
       } else {
         _siteTotalBalancePt.text =
@@ -719,8 +717,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     controller: _siteTotalPt,
                                     onChanged: (value) {
                                       setState(() {
-                                        if (
-                                            _siteTotalPt.text == "") {
+                                        if (_siteTotalPt.text == "") {
                                           _siteTotalBags.clear();
                                         } else {
                                           _siteTotalBags.text =
@@ -780,8 +777,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (
-                                            _siteTotalBalanceBags.text == "") {
+                                        if (_siteTotalBalanceBags.text == "") {
                                           _siteTotalBalancePt.clear();
                                         } else {
                                           _siteTotalBalancePt.text = (int.parse(
@@ -828,8 +824,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     onChanged: (value) {
                                       setState(() {
                                         // _totalBags.text = value ;
-                                        if (
-                                            _siteTotalBalancePt.text == "") {
+                                        if (_siteTotalBalancePt.text == "") {
                                           _siteTotalBalanceBags.clear();
                                         } else {
                                           _siteTotalBalanceBags.text =
@@ -1191,9 +1186,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     geoTagType = "A";
                                     UpdatedValues.setSiteGeotag(geoTagType);
                                   });
-                                  Get.dialog(Center(
-                                    child: CircularProgressIndicator(),
-                                  ));
+                                  Get.rawSnackbar(
+                                      title: "Message",
+                                      message: StringConstants.ACCESS_LOCATION);
                                   _getCurrentLocation();
                                 },
                               ),
@@ -1232,9 +1227,15 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       geoTagType = "M";
                                       UpdatedValues.setSiteGeotag(geoTagType);
                                     });
+                                    if (data != null) {
+                                      Get.rawSnackbar(
+                                          title: "Message",
+                                          message:
+                                              "Location picked successfully");
+                                    }
                                     _currentPosition =
                                         new LatLng(data![0], data[1]);
-                                    _getAddressFromLatLng();
+                                    getAddressFromLatLng();
                                   }),
                             ],
                           ),
@@ -1417,87 +1418,77 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
 
- Row(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: _imgDetails.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                 showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content: new Container(
-                                                          child: _imgDetails[
-                                                                          index]
-                                                                      .from
-                                                                      .toLowerCase() ==
-                                                                  "network"
-                                                              ? Image.network(
-                                                                  _imgDetails[
-                                                                          index]
-                                                                      .file
-                                                                      .path)
-                                                              : Image.file(
-                                                                  _imgDetails[
-                                                                          index]
-                                                                      .file),
-                                                        ),
-                                                      );
-                                                    });
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "Picture ${(index + 1)}. ",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 15),
-                                                      ),
-                                                      Text(
-                                                        "Image_${(index + 1)}.jpg",
-                                                        style: TextStyle(
-                                                            color: HexColor(
-                                                                "#007CBF"),
-                                                            fontSize: 15),
-                                                      ),
-                                                    ],
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: _imgDetails.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: new Container(
+                                                    child: _imgDetails[index]
+                                                                .from
+                                                                .toLowerCase() ==
+                                                            "network"
+                                                        ? Image.network(
+                                                            _imgDetails[index]
+                                                                .file
+                                                                .path)
+                                                        : Image.file(
+                                                            _imgDetails[index]
+                                                                .file),
                                                   ),
-                                                  GestureDetector(
-                                                    child: Icon(
-                                                      Icons.delete,
+                                                );
+                                              });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Picture ${(index + 1)}. ",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15),
+                                                ),
+                                                Text(
+                                                  "Image_${(index + 1)}.jpg",
+                                                  style: TextStyle(
                                                       color:
-                                                          HexColor("#FFCD00"),
-                                                    ),
-                                                    onTap: () {
-                                                      setState(() {
-                                                        _imgDetails
-                                                            .removeAt(index);
-                                                      });
-                                                    },
-                                                  )
-                                                ],
+                                                          HexColor("#007CBF"),
+                                                      fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              child: Icon(
+                                                Icons.delete,
+                                                color: HexColor("#FFCD00"),
                                               ),
-                                            );
-                                          }),
-                                    ),
-                                  ],
-                                )
-                             ,
-
+                                              onTap: () {
+                                                setState(() {
+                                                  _imgDetails.removeAt(index);
+                                                });
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
+                          ),
 
                           SizedBox(height: 16),
 
@@ -1645,7 +1636,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
     }
   }
 
-  _getAddressFromLatLng() async {
+  getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition!.latitude, _currentPosition!.longitude);
