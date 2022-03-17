@@ -1,7 +1,9 @@
+
+
 class AccessKeyModel {
-  String accessKey;
-  String respCode;
-  String respMsg;
+  String? accessKey;
+  String? respCode;
+  String? respMsg;
 
   AccessKeyModel({this.accessKey, this.respCode, this.respMsg});
 

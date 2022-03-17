@@ -1,11 +1,11 @@
 
 class VersionClass {
-  static String version;
+  static String? version;
   static void setVersion(String newValue) {
     version = newValue;
   }
 
-  static String getVersion() {
+  static String? getVersion() {
     return version;
   }
 }

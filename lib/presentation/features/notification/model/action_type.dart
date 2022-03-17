@@ -1,3 +1,5 @@
+
+
 enum ActionType { navigation }
 
 extension ActionTypeExt on ActionType {

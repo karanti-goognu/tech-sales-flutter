@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +20,7 @@ class InfluencerSearch extends StatefulWidget {
 class _InfluencerSearchState extends State<InfluencerSearch> {
   TextEditingController controller = new TextEditingController();
   InfController _infController = Get.find();
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   @override
   Widget build(BuildContext context) {

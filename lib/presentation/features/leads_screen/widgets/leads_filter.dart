@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
@@ -13,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FilterWidget extends StatefulWidget {
-  SiteDistrictListModel siteDistrictListModel;
+  SiteDistrictListModel? siteDistrictListModel;
 
   FilterWidget({this.siteDistrictListModel});
   @override
@@ -25,7 +27,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   SplashController _splashController = Get.find();
 
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   @override
   Widget build(BuildContext context) {
@@ -415,7 +417,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             () => Radio(
               value: stageValue,
               groupValue: _leadsFilterController.selectedLeadStage as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadStage ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -467,7 +469,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             () => Radio(
               value: statusValue,
               groupValue: _leadsFilterController.selectedLeadStatus as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadStatus ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -530,7 +532,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 () => Radio(
               value: option,
               groupValue: _leadsFilterController.selectedDeliveryPointsValue as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedDeliveryPointsValue ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -558,7 +560,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               value: potentialValue,
               groupValue:
                   _leadsFilterController.selectedLeadPotential as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadPotential ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -580,7 +582,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     return Container(
       padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
       child: DropdownButtonFormField(
-        onChanged: (_) {
+        onChanged: (dynamic _) {
           //setState(() {
           if (_leadsFilterController.selectedLeadDistrict == StringConstants.empty) {
             _leadsFilterController.selectedFilterCount =
@@ -594,14 +596,14 @@ class _FilterWidgetState extends State<FilterWidget> {
           // });
         },
         items: (widget.siteDistrictListModel == null ||
-            widget.siteDistrictListModel.districtList == null)
+            widget.siteDistrictListModel!.districtList == null)
             ? []
-            : widget.siteDistrictListModel.districtList
+            : widget.siteDistrictListModel!.districtList!
             .map((e) => DropdownMenuItem(
           value: e.name,
           child: Container(
               width: MediaQuery.of(context).size.width / 2.5,
-              child: Text(e.name)),
+              child: Text(e.name!)),
         ))
             .toList(),
         style: FormFieldStyle.formFieldTextStyle,
@@ -620,7 +622,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
     (type == "to") ? selectedDate = fromDate : selectedDate = DateTime.now();
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,

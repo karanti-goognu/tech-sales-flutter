@@ -1,4 +1,7 @@
 // import 'package:data_connection_checker/data_connection_checker.dart';
+
+
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String employeeName = "empty";
 
   // notification section start here
-  MoEngageInbox _moEngageInbox;
+  late MoEngageInbox _moEngageInbox;
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
@@ -135,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //  print("notification section starts here");
     //   notification section starts here
     _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {
+    WidgetsBinding.instance!.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
           //  print(":::-- $value"),
                 setState(() {
@@ -182,17 +185,17 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: SizeConfig.screenHeight * .12,
+            toolbarHeight: SizeConfig.screenHeight! * .12,
             title: Image.asset(
               "assets/images/Logo(Bluebg).png",
-              height: (SizeConfig.screenHeight * .12) * .45,
+              height: (SizeConfig.screenHeight! * .12) * .45,
             ),
             automaticallyImplyLeading: false,
             actions: [
               Padding(
                 padding: EdgeInsets.only(
-                    right: SizeConfig.screenWidth * .1,
-                    top: (SizeConfig.screenHeight * .12) * .2),
+                    right: SizeConfig.screenWidth! * .1,
+                    top: (SizeConfig.screenHeight! * .12) * .2),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -219,8 +222,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                       child: Container(
-                        height: (SizeConfig.screenHeight * .12) * .43,
-                        width: (SizeConfig.screenHeight * .12) * .43,
+                        height: (SizeConfig.screenHeight! * .12) * .43,
+                        width: (SizeConfig.screenHeight! * .12) * .43,
                         padding: EdgeInsets.all(4),
                         // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                         decoration: new BoxDecoration(
@@ -232,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Icon(
                           Icons.calendar_today_sharp,
                           color: HexColor("#FFCD00"),
-                          size: (SizeConfig.screenHeight * .12) * .2,
+                          size: (SizeConfig.screenHeight! * .12) * .2,
                         ),
                       ),
                     ),
@@ -250,8 +253,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    right: SizeConfig.screenWidth * .1,
-                    top: (SizeConfig.screenHeight * .12) * .2),
+                    right: SizeConfig.screenWidth! * .1,
+                    top: (SizeConfig.screenHeight! * .12) * .2),
                 child: Column(
                   children: [
                     Stack(
@@ -263,8 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Get.toNamed(Routes.NOTIFICATION);
                             },
                             child: Container(
-                              height: (SizeConfig.screenHeight * .12) * .43,
-                              width: (SizeConfig.screenHeight * .12) * .43,
+                              height: (SizeConfig.screenHeight! * .12) * .43,
+                              width: (SizeConfig.screenHeight! * .12) * .43,
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                                 border:
@@ -275,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Icon(
                                 Icons.notifications_none_outlined,
                                 color: HexColor("#FFCD00"),
-                                size: (SizeConfig.screenHeight * .12) * .3,
+                                size: (SizeConfig.screenHeight! * .12) * .3,
                               ),
                             ),
                           ),
@@ -968,8 +971,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Image.asset(
                         list[index].imgURL,
-                        width: SizeConfig.screenWidth * .08,
-                        height: SizeConfig.screenWidth * .08,
+                        width: SizeConfig.screenWidth! * .08,
+                        height: SizeConfig.screenWidth! * .08,
                       ),
                     ),
                     SizedBox(

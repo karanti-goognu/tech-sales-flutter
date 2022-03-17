@@ -764,7 +764,7 @@ class CustomDialogs {
   }
 
   Widget showExistingLeadDialog(String message, BuildContext context,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+      SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -864,7 +864,7 @@ class CustomDialogs {
   }
 
   Widget showExistingTSODialog(String respMsg, BuildContext context,
-      SaveLeadRequestModel saveLeadRequestModel, List<File> imageList) {
+      SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -943,7 +943,7 @@ class CustomDialogs {
             TextFormField(
               controller: _commentController,
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'Please enter Comment ';
                 }
 
@@ -1072,7 +1072,7 @@ class CustomDialogs {
   }
 
   _getCurrentLocation(int eventId, String eventComment) async {
-    Position position;
+    Position? position;
     AllEventController _eventController = Get.find();
     var date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -1089,19 +1089,17 @@ class CustomDialogs {
     //       .then((Position position) {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-
-    if (result != null) {
-      position = result.position;
+     position = result.position;
 
         _eventController
             .submitEndEventDetail(eventId, eventComment, currentDateString,
-                position.latitude, position.longitude)
+                position!.latitude, position.longitude)
             .then((value) => {
-                  if (value.respCode == "DM1002")
+                  if (value!.respCode == "DM1002")
                     {
                       Get.dialog(
                           CustomDialogs()
-                              .showMessage1(value.respMsg, 0, eventId),
+                              .showMessage1(value.respMsg!, 0, eventId),
                           barrierDismissible: false)
                     }
                   else
@@ -1109,7 +1107,7 @@ class CustomDialogs {
                       Get.back(),
                       Get.dialog(
                           CustomDialogs()
-                              .showMessage1(value.respMsg, 1, eventId),
+                              .showMessage1(value.respMsg!, 1, eventId),
                           barrierDismissible: false)
                     }
                 });
@@ -1118,10 +1116,9 @@ class CustomDialogs {
       //   Get.dialog(CustomDialogs().errorDialog(
       //       "Access to location data denied "));
       // });
-    }
   }
 
-  Widget showMessage1(String message, int from, int eventId) {
+  Widget showMessage1(String message, int from, int? eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1196,7 +1193,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appUpdateDialog(String message, String appId, String platform) {
+  Widget appUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1258,7 +1255,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appForceUpdateDialog(String message, String appId, String platform) {
+  Widget appForceUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1495,13 +1492,13 @@ class CustomDialogs {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: _kittyBagsListModel.response.kittyPointsList.length,
+                itemCount: _kittyBagsListModel.response!.kittyPointsList!.length,
                 itemBuilder:(context, index) {
                   return Row(
                     children: [
                       Expanded(
                         child: Text(
-                          _kittyBagsListModel.response.kittyPointsList[index].productName,
+                          _kittyBagsListModel.response!.kittyPointsList![index].productName!,
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,
@@ -1512,7 +1509,7 @@ class CustomDialogs {
                       ),
                       Expanded(
                         child: Text(
-                          '${_kittyBagsListModel.response.reservePoolList[index].kittyBags}',
+                          '${_kittyBagsListModel.response!.reservePoolList![index].kittyBags}',
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,
@@ -1523,7 +1520,7 @@ class CustomDialogs {
                       ),
                       Expanded(
                         child: Text(
-                          '${_kittyBagsListModel.response.kittyPointsList[index].kittyBags}',
+                          '${_kittyBagsListModel.response!.kittyPointsList![index].kittyBags}',
                           style: GoogleFonts.roboto(
                               fontSize: 16,
                               height: 1.4,

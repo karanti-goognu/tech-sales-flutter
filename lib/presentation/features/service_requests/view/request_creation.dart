@@ -1,3 +1,7 @@
+
+
+import 'dart:async';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,15 +34,15 @@ class RequestCreation extends StatefulWidget {
 }
 
 class _RequestCreationState extends State<RequestCreation> {
-  SrComplaintModel srComplaintModel;
-  RequestorDetailsModel requestorDetailsModel;
+  SrComplaintModel? srComplaintModel;
+  RequestorDetailsModel? requestorDetailsModel;
   SrFormDataController srFormDataController = Get.find();
   SaveServiceRequestController saveRequest = Get.find();
-  SaveServiceRequest saveServiceRequest;
+  SaveServiceRequest? saveServiceRequest;
   UpdateServiceRequestController updateRequest = Get.find();
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -49,7 +53,7 @@ class _RequestCreationState extends State<RequestCreation> {
   getDropdownData() async {
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getSrComplaintFormData(value.accessKey)
+          .getSrComplaintFormData(value!.accessKey)
           .then((data) {
         setState(() {
           srComplaintModel = data;
@@ -58,26 +62,26 @@ class _RequestCreationState extends State<RequestCreation> {
     });
   }
 
-  getRequestorData(String requestorType, String siteId) async {
+  getRequestorData(String? requestorType, String siteId) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getRequestorDetails(value.accessKey, requestorType, siteId)
+          .getRequestorDetails(value!.accessKey, requestorType, siteId)
           .then((data) {
         if (data != null) {
           setState(() {
             requestorDetailsModel = data;
           });
           for (int i = 0;
-              i < requestorDetailsModel.srComplaintRequesterList.length;
+              i < requestorDetailsModel!.srComplaintRequesterList!.length;
               i++) {
             setState(() {
-              suggestions.add(requestorDetailsModel
-                      .srComplaintRequesterList[i].requesterName +
-                  " (${requestorDetailsModel.srComplaintRequesterList[i].requesterCode})");
+              suggestions.add(requestorDetailsModel!
+                      .srComplaintRequesterList![i].requesterName! +
+                  " (${requestorDetailsModel!.srComplaintRequesterList![i].requesterCode})");
             });
           }
         }
@@ -100,12 +104,12 @@ class _RequestCreationState extends State<RequestCreation> {
   TextEditingController _district = TextEditingController();
   TextEditingController _taluk = TextEditingController();
   TextEditingController _pin = TextEditingController();
-  int requestDepartmentId;
-  int requestId;
-  String creatorType;
-  bool isComplaint;
-  int siteId;
-  String selectedValue;
+  int? requestDepartmentId;
+  int? requestId;
+  String? creatorType;
+  bool? isComplaint;
+  int? siteId;
+  String? selectedValue;
 
 
   @override
@@ -186,29 +190,29 @@ class _RequestCreationState extends State<RequestCreation> {
                               child: Column(
                                 children: [
                                   DropdownButtonFormField(
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         requestDepartmentId = value;
                                       });
                                     },
-                                    items: srComplaintModel
-                                        .serviceRequestComplaintDepartmentEntity
+                                    items: srComplaintModel!
+                                        .serviceRequestComplaintDepartmentEntity!
                                         .map((e) => DropdownMenuItem(
                                               value: e.id,
-                                              child: Text(e.departmentText),
+                                              child: Text(e.departmentText!),
                                             ))
                                         .toList(),
                                     style: FormFieldStyle.formFieldTextStyle,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Department*"),
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select the Department'
                                         : null,
                                   ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         selectedRequestSubtypeSeverity = [];
                                         selectedRequestSubtypeObjectList = [];
@@ -220,18 +224,18 @@ class _RequestCreationState extends State<RequestCreation> {
                                             : isComplaint = false;
                                       });
                                     },
-                                    items: srComplaintModel
-                                        .serviceRequestComplaintRequestEntity
+                                    items: srComplaintModel!
+                                        .serviceRequestComplaintRequestEntity!
                                         .map((e) => DropdownMenuItem(
                                               value: e.id,
-                                              child: Text(e.requestText),
+                                              child: Text(e.requestText!),
                                             ))
                                         .toList(),
                                     style: FormFieldStyle.formFieldTextStyle,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Request Type*"),
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select the Request Type'
                                         : null,
                                   ),
@@ -246,7 +250,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                           )
                                         : getBottomSheet(),
                                     child: FormField(
-                                      validator: (value) => value,
+                                      validator: (dynamic value) => value,
                                       builder: (state) {
                                         return InputDecorator(
                                           decoration: FormFieldStyle
@@ -285,7 +289,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                                               Chip(
                                                                             label:
                                                                                 Text(
-                                                                              e.serviceRequestTypeText,
+                                                                              e.serviceRequestTypeText!,
                                                                               style: TextStyle(fontSize: 10),
                                                                             ),
                                                                             backgroundColor:
@@ -313,17 +317,17 @@ class _RequestCreationState extends State<RequestCreation> {
                                   DropdownSearch<ActiveSiteTSOListsEntity>(
 
                                     mode: Mode.BOTTOM_SHEET,
-                                    items: srComplaintModel.activeSiteTSOLists,
-                                    itemAsString: (ActiveSiteTSOListsEntity
+                                    items: srComplaintModel!.activeSiteTSOLists,
+                                    itemAsString: (ActiveSiteTSOListsEntity?
                                             u) =>
-                                        '${toBeginningOfSentenceCase(u.contactName)} (${u.siteId})',
+                                        '${toBeginningOfSentenceCase(u!.contactName)} (${u.siteId})',
                                     maxHeight: 240,
                                     label: "Site Id *",
                                     validator: (value) => value == null
                                         ? "Site id is required "
                                         : null,
                                     onChanged: (value) async {
-                                      siteId = value.siteId;
+                                      siteId = value!.siteId;
                                       SiteAreaModel siteDetails =
                                           await srFormDataController
                                               .getSiteAreaDetails(
@@ -331,17 +335,17 @@ class _RequestCreationState extends State<RequestCreation> {
                                       siteDetails.siteAreaDetailsModel != null
                                           ? setState(() {
                                               _pin.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .sitePincode;
+                                                  .siteAreaDetailsModel!
+                                                  .sitePincode!;
                                               _state.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteState;
+                                                  .siteAreaDetailsModel!
+                                                  .siteState!;
                                               _taluk.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteTaluk;
+                                                  .siteAreaDetailsModel!
+                                                  .siteTaluk!;
                                               _district.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteDistrict;
+                                                  .siteAreaDetailsModel!
+                                                  .siteDistrict!;
                                             })
                                           : Get.rawSnackbar(
                                               title: "Message",
@@ -351,10 +355,10 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select Customer Type'
                                         : null,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         FocusScope.of(context)
                                             .requestFocus(new FocusNode());
@@ -386,7 +390,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                   SizedBox(height: 16),
                                   TextFormField(
-                                    validator: (value) => value.isEmpty
+                                    validator: (value) => value!.isEmpty
                                         ? 'Please select the Customer ID'
                                         : null,
                                     controller: _customerID,
@@ -427,7 +431,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     maxLength: 10,
-                                    validator: (value) => value.isEmpty ||
+                                    validator: (value) => value!.isEmpty ||
                                             value.length != 10 ||
                                             (!Validations.isValidPhoneNumber(
                                                 value))
@@ -506,7 +510,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                           int index) {
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        return showDialog(
+                                                         showDialog(
                                                             context: context,
                                                             builder:
                                                                 (BuildContext
@@ -636,7 +640,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       primary: HexColor("#1C99D4"),
                                     ),
                                     onPressed: () async {
-                                      if (!_srCreationFormKey.currentState
+                                      if (!_srCreationFormKey.currentState!
                                           .validate())
                                         Get.dialog(CustomDialogs().errorDialog(
                                             'Please enter the mandatory details'));
@@ -646,7 +650,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                             middleText:
                                                 "Request Sub-type and Severity cannot be empty");
                                       else {
-                                        String empId = await getEmpId();
+                                        String? empId = await (getEmpId() as FutureOr<String?>);
                                         List imageDetails =
                                             List.empty(growable: true);
                                         List subTypeDetails =
@@ -740,23 +744,23 @@ class _RequestCreationState extends State<RequestCreation> {
     );
   }
 
-  List<bool> checkedValues;
-  List<String> selectedRequestSubtype = [];
-  List<String> selectedRequestSubtypeSeverity = [];
+  late List<bool?> checkedValues;
+  List<String?> selectedRequestSubtype = [];
+  List<String?> selectedRequestSubtypeSeverity = [];
   List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList = [];
   // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
   // ServiceRequestComplaintTypeEntity dataToBeSentBack;
   TextEditingController _query = TextEditingController();
 
   requestSubTypeBottomSheetWidget() {
-    List<ServiceRequestComplaintTypeEntity> requestSubtype =
-        srComplaintModel.serviceRequestComplaintTypeEntity;
+    List<ServiceRequestComplaintTypeEntity>? requestSubtype =
+        srComplaintModel!.serviceRequestComplaintTypeEntity;
     checkedValues = List.generate(
-        srComplaintModel.serviceRequestComplaintTypeEntity.length,
+        srComplaintModel!.serviceRequestComplaintTypeEntity!.length,
         (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -804,8 +808,8 @@ class _RequestCreationState extends State<RequestCreation> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    requestSubtype = srComplaintModel
-                        .serviceRequestComplaintTypeEntity
+                    requestSubtype = srComplaintModel!
+                        .serviceRequestComplaintTypeEntity!
                         .where((element) {
                       return element.serviceRequestTypeText
                           .toString()
@@ -825,16 +829,16 @@ class _RequestCreationState extends State<RequestCreation> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: requestSubtype.length,
+                itemCount: requestSubtype!.length,
                 itemBuilder: (context, index) {
-                  return requestId == requestSubtype[index].requestId
+                  return requestId == requestSubtype![index].requestId
                       ? CheckboxListTile(
                           activeColor: Colors.black,
                           dense: true,
                           title: Text(
-                              requestSubtype[index].serviceRequestTypeText),
+                              requestSubtype![index].serviceRequestTypeText!),
                           value: selectedRequestSubtype.contains(
-                              requestSubtype[index].serviceRequestTypeText),
+                              requestSubtype![index].serviceRequestTypeText),
                           onChanged: (newValue) {
                             // if (!checkedValues.contains(true) ||
                             //     checkedValues[index] == true) {
@@ -846,21 +850,21 @@ class _RequestCreationState extends State<RequestCreation> {
                               //   // checkedValues=[];
                               // }
                               selectedRequestSubtype.contains(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText)
                                   ? selectedRequestSubtype.remove(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText)
                                   : selectedRequestSubtype.add(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText);
 
                               selectedRequestSubtypeObjectList
-                                      .contains(requestSubtype[index])
+                                      .contains(requestSubtype![index])
                                   ? selectedRequestSubtypeObjectList
-                                      .remove(requestSubtype[index])
+                                      .remove(requestSubtype![index])
                                   : selectedRequestSubtypeObjectList
-                                      .add(requestSubtype[index]);
+                                      .add(requestSubtype![index]);
 
                               selectedRequestSubtypeSeverity = [];
                               selectedRequestSubtypeObjectList
@@ -880,7 +884,7 @@ class _RequestCreationState extends State<RequestCreation> {
                       : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return requestId == requestSubtype[index].requestId
+                  return requestId == requestSubtype![index].requestId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -940,13 +944,13 @@ class _RequestCreationState extends State<RequestCreation> {
     ).then((value) => setState(() {}));
   }
 
-  int serviceRequestComplaintTypeId;
-  ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
+  int? serviceRequestComplaintTypeId;
+  late ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
   customFunction(dataFromOtherClass) {
     setState(() {
       serviceRequestComplaintType = dataFromOtherClass;
-      _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText;
-      _severity.text = serviceRequestComplaintType.complaintSeverity;
+      _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText!;
+      _severity.text = serviceRequestComplaintType.complaintSeverity!;
       serviceRequestComplaintTypeId = serviceRequestComplaintType.id;
     });
   }
@@ -970,20 +974,20 @@ class _RequestCreationState extends State<RequestCreation> {
               height: 15,
             ),
             Divider(),
-            requestorDetailsModel.srComplaintRequesterList == null
+            requestorDetailsModel!.srComplaintRequesterList == null
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : Expanded(
                     child: ListView(
-                      children: requestorDetailsModel.srComplaintRequesterList
+                      children: requestorDetailsModel!.srComplaintRequesterList!
                           .map(
                             (e) => RadioListTile(
                                 value: e,
                                 title: Text(
                                     '${e.requesterName} (${e.requesterCode})'),
                                 groupValue: customer,
-                                onChanged: (text) {
+                                onChanged: (dynamic text) {
                                   setState(() {
                                     _requestorName.text = text.requesterName;
                                     _customerID.text = text.requesterCode;

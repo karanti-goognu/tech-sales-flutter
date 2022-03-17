@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
@@ -38,14 +37,12 @@ class LeadsFilterController extends GetxController {
 
   final MyRepositoryLeads repository;
 
-  LeadsFilterController({@required this.repository})
-      : assert(repository != null);
-
+  LeadsFilterController({required this.repository});
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
   final _filterDataResponse = LeadsFilterModel().obs;
-  final _leadsListResponse = LeadsListModel().obs;
-  final _leadDistResponse = SiteDistrictListModel().obs;
+  final Rx<LeadsListModel?> _leadsListResponse = LeadsListModel().obs;
+  final Rx<SiteDistrictListModel?> _leadDistResponse = SiteDistrictListModel().obs;
 
   final _phoneNumber = "8860080067".obs;
   final _offset = 0.obs;
@@ -160,7 +157,7 @@ class LeadsFilterController extends GetxController {
 
   set leadsListResponse(value) => this._leadsListResponse.value = value;
 
-  String accessKeyNew;
+  String? accessKeyNew;
 
   getSecretKey(int requestId) {
     Future.delayed(
@@ -260,7 +257,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  getLeadsData(String accessKey) {
+  getLeadsData(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -268,8 +265,6 @@ class LeadsFilterController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&assignDateTo=${this.assignToDate}";
@@ -344,10 +339,10 @@ class LeadsFilterController extends GetxController {
           }else{
 
             LeadsListModel leadListResponseServer = data;
-            if(leadListResponseServer.leadsEntity.isNotEmpty){
-              leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
+            if(leadListResponseServer.leadsEntity!.isNotEmpty){
+              leadListResponseServer.leadsEntity!.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
+              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn!.compareTo(a.createdOn!));
 
               ///filter issue
               if(this.isFilterApplied==true){
@@ -392,7 +387,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  Future<LeadsListModel>searchLeads(String accessKey) {
+  Future<LeadsListModel>?searchLeads(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -400,8 +395,6 @@ class LeadsFilterController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
       String url = "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
@@ -438,12 +431,12 @@ class LeadsFilterController extends GetxController {
 
 
   Future srSearch(String searchText) async {
-    String userSecurityKey = "";
-    String empID = "";
+    String? userSecurityKey = "";
+    String? empID = "";
 
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -453,15 +446,15 @@ class LeadsFilterController extends GetxController {
   }
 
 
-  Future<SiteDistrictListModel> getLeadDistList() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<SiteDistrictListModel?> getLeadDistList() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew() as FutureOr<String?>);
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      leadDistResponse = await repository.getLeadDistList(accessKey, userSecurityKey, empID);
+      leadDistResponse = await repository.getLeadDistList(accessKey, userSecurityKey, empID!);
     });
     return leadDistResponse;
   }

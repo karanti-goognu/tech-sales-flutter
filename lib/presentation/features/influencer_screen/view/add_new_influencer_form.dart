@@ -1,7 +1,12 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerRequestModel.dart';
@@ -36,8 +41,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   InfController _infController = Get.find();
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-  InfluencerTypeModel _influencerTypeModel;
-  StateDistrictListModel _stateDistrictListModel;
+  InfluencerTypeModel? _influencerTypeModel;
+  late StateDistrictListModel _stateDistrictListModel;
 
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -61,7 +66,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   // If Engineer Type
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
-  int _preferredBrandId;
+  int? _preferredBrandId;
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
 
@@ -69,15 +74,15 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
 
   bool _isVisible = true;
   bool _isSecondVisible = false;
-  bool checkedValue = false;
+  bool? checkedValue = false;
   bool _qualificationVisible = false;
   bool _enrollVisible = false;
 
   String _selectedEnrollValue = "N";
-  int _memberType;
-  int _influencerCategory;
-  int _source;
-  String _primaryCounterName;
+  int? _memberType;
+  int? _influencerCategory;
+  int? _source;
+  late String _primaryCounterName;
 
   @override
   void initState() {
@@ -90,7 +95,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -177,7 +182,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final mobileNumber = TextFormField(
       controller: _contactNumberController,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter mobile number ';
         } else if (value.length != 10) {
           return 'Mobile number must be of 10 digit';
@@ -205,7 +210,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 if (data.respCode == "NUM404") {
                   _contactNumberController.text = value;
                 } else if (data.respCode == "DM1002") {
-                  Get.dialog(CustomDialogs().showDialogInfPresent(data.respMsg),
+                  Get.dialog(CustomDialogs().showDialogInfPresent(data.respMsg!),
                       barrierDismissible: false);
                   _contactNumberController.text = "";
                 }
@@ -219,7 +224,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final email = TextFormField(
       controller: _emailController,
       validator: (value) {
-        if (value.isNotEmpty && !Validations.isEmail(value)) {
+        if (value!.isNotEmpty && !Validations.isEmail(value)) {
           return 'Enter valid email ';
         }
         return null;
@@ -234,9 +239,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final name = TextFormField(
       controller: _nameController,
       validator: (value) {
-        if (value.isEmpty ||
+        if (value!.isEmpty ||
             value.length <= 0 ||
-            value == null ||
             value == " " ||
             value.trim().isEmpty) {
           return 'Please enter name';
@@ -292,7 +296,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final pincode = TextFormField(
       controller: _pincodeController,
       validator: (value) {
-        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
+        if (value!.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -347,26 +351,26 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             .dealerList
             .map<
             DropdownMenuItem<
-                dynamic>>((val) {
-          return DropdownMenuItem(
+                DealerModel>>((DealerModel val) {
+          return DropdownMenuItem<DealerModel>(
             value: val,
             child: SizedBox(
                 width: SizeConfig
-                    .screenWidth -
+                    .screenWidth! -
                     100,
                 child: Text(
                     '${val.dealerName} (${val.dealerId})')),
           );
         }).toList(),
-        onChanged: (val) {
-          _primaryCounterName = val.dealerId;
+        onChanged: (_) {
+          _primaryCounterName = (_ as DealerModel).dealerId;
         },
         validator: (value) => value == null ? 'Please select Primary counter name' : null,
         );
 
 
     final district = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select District' : null,
+      validator: (value) => value!.isEmpty ? 'Please select District' : null,
       controller: _districtController,
       readOnly: true,
       onTap: () {
@@ -391,12 +395,12 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    final memberDropDwn = DropdownButtonFormField(
+    final memberDropDwn = DropdownButtonFormField<Object>(
       onChanged: (value) {
         setState(() {
-          _memberType = value;
-          if (_influencerTypeModel
-                  .response.influencerTypeList[value - 1].infRegFlag ==
+          _memberType = value as int;
+          if (_influencerTypeModel!
+                  .response!.influencerTypeList![value - 1].infRegFlag ==
               "Y") {
             _enrollVisible = true;
           } else {
@@ -412,14 +416,14 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         });
       },
       items: (_influencerTypeModel == null ||
-              _influencerTypeModel.response.influencerTypeList == null)
+              _influencerTypeModel!.response!.influencerTypeList == null)
           ? []
-          : _influencerTypeModel.response.influencerTypeList
+          : _influencerTypeModel!.response!.influencerTypeList!
               .map((e) => DropdownMenuItem(
                     value: e.inflTypeId,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeDesc)),
+                        child: Text(e.inflTypeDesc!)),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -453,22 +457,22 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 ),
                 SizedBox(height: _height),
                 DropdownButtonFormField(
-                  onChanged: (value) {
+                  onChanged: (dynamic value) {
                     setState(() {
                       _preferredBrandId = value;
                     });
                   },
                   items: (_influencerTypeModel == null ||
-                          _influencerTypeModel.response.siteBrandList == null)
+                          _influencerTypeModel!.response!.siteBrandList == null)
                       ? []
-                      : _influencerTypeModel.response.siteBrandList
+                      : _influencerTypeModel!.response!.siteBrandList!
                           .map((e) => DropdownMenuItem(
                                 value: e.id,
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width / 1.5,
                                     child: Text(
-                                        e.brandName + " - " + e.productName)),
+                                        e.brandName! + " - " + e.productName!)),
                               ))
                           .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
@@ -523,7 +527,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => (checkedValue == true && value.isEmpty)
+      validator: (value) => (checkedValue == true && value!.isEmpty)
           ? 'Please select Birth date'
           : null,
       controller: _dateController,
@@ -578,7 +582,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           onPressed: () {
             setState(() {
-              if (_addInfluencerFormKey.currentState.validate()) {
+              if (_addInfluencerFormKey.currentState!.validate()) {
                 _isVisible = false;
                 _isSecondVisible = true;
               }
@@ -600,7 +604,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       validator: (value) {
-        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
+        if (value!.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -664,38 +668,38 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-    final sourceDropDwn = DropdownButtonFormField(
+    final sourceDropDwn = DropdownButtonFormField<Object>(
       onChanged: (value) {
         setState(() {
-          _source = value;
+          _source = value as int;
         });
       },
       items: (_influencerTypeModel == null ||
-              _influencerTypeModel.response.influencerSourceList == null)
+              _influencerTypeModel!.response!.influencerSourceList == null)
           ? []
-          : _influencerTypeModel.response.influencerSourceList
+          : _influencerTypeModel!.response!.influencerSourceList!
               .map((e) => DropdownMenuItem(
                     value: e.inflSourceId,
-                    child: Text(e.inflSourceText),
+                    child: Text(e.inflSourceText!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Source"),
     );
 
-    final influencerCategoryDropDwn = DropdownButtonFormField(
+    final influencerCategoryDropDwn = DropdownButtonFormField<Object>(
       onChanged: (value) {
         setState(() {
-          _influencerCategory = value;
+          _influencerCategory = value as int;
         });
       },
       items: (_influencerTypeModel == null ||
-              _influencerTypeModel.response.influencerCategoryList == null)
+              _influencerTypeModel!.response!.influencerCategoryList == null)
           ? []
-          : _influencerTypeModel.response.influencerCategoryList
+          : _influencerTypeModel!.response!.influencerCategoryList!
               .map((e) => DropdownMenuItem(
                     value: e.inflCatId,
-                    child: Text(e.inflCatDesc),
+                    child: Text(e.inflCatDesc!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -726,8 +730,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           onPressed: () {
             setState(() {
-              if (_addInfluencerFormKeyNext.currentState.validate()) {
-                _addInfluencerFormKeyNext.currentState.save();
+              if (_addInfluencerFormKeyNext.currentState!.validate()) {
+                _addInfluencerFormKeyNext.currentState!.save();
                 _isVisible = false;
                 _isSecondVisible = true;
                 btnSubmitPressed();
@@ -870,36 +874,36 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   }
 
   Future _selectBirthDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1950),
         lastDate: new DateTime.now());
     setState(() {
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked!);
       _dateController.text = _date;
     });
   }
 
   Future _selectMarriageAnniversaryDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1950),
         lastDate: new DateTime.now());
     setState(() {
       var _date;
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked!);
       _dateMarriageAnnController.text = _date;
     });
   }
 
-  String stateName;
-  int stateId, districtId;
+  String? stateName;
+  int? stateId, districtId;
 
   districtList() {
-    List<StateDistrictList> dist =
-        _stateDistrictListModel.response.stateDistrictList;
+    List<StateDistrictList>? dist =
+        _stateDistrictListModel.response!.stateDistrictList;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) => Container(
         color: Colors.white,
@@ -923,7 +927,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dist = _stateDistrictListModel.response.stateDistrictList
+                    dist = _stateDistrictListModel.response!.stateDistrictList!
                         .where((element) {
                       return element.districtName
                           .toString()
@@ -941,20 +945,21 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               ),
             ),
             Divider(),
-            _stateDistrictListModel.response.stateDistrictList == null ||
-                    _stateDistrictListModel.response.stateDistrictList.isEmpty
+            _stateDistrictListModel.response!.stateDistrictList == null ||
+                    _stateDistrictListModel.response!.stateDistrictList!.isEmpty
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : Expanded(
                     child: ListView(
-                      children: dist
+                      children: dist!
                           .map(
                             (e) => RadioListTile(
+                              groupValue: [],
                                 value: e,
                                 title:
                                     Text('${e.districtName} (${e.stateName})'),
-                                onChanged: (text) {
+                                onChanged: (dynamic text) {
                                   setState(() {
                                     _districtController.text =
                                         text.districtName;
@@ -976,7 +981,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   }
 
   btnSubmitPressed() async {
-    String empId = await getEmpId();
+    String? empId = await (getEmpId() as FutureOr<String?>);
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
       "membershipId": null,

@@ -1,3 +1,5 @@
+
+
 class CommentsDetail {
   CommentsDetail({
     this.createdBy,
@@ -6,10 +8,10 @@ class CommentsDetail {
     this.creatorName,
   });
 
-  String createdBy;
-  String commentText;
-  String commentedAt;
-  String creatorName;
+  String? createdBy;
+  String? commentText;
+  String? commentedAt;
+  String? creatorName;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

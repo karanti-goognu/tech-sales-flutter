@@ -1,9 +1,11 @@
+
+
 class AddEventModel {
-  String respCode;
-  String respMsg;
-  List<EventTypeModels> eventTypeModels;
-  List<DealersModels> dealersModels;
-  List<StatusEntitieList> statusEntitieList;
+  String? respCode;
+  String? respMsg;
+  List<EventTypeModels>? eventTypeModels;
+  List<DealersModels>? dealersModels;
+  List<StatusEntitieList>? statusEntitieList;
 
   AddEventModel(
       {this.respCode,
@@ -18,19 +20,19 @@ class AddEventModel {
     if (json['eventTypeModels'] != null) {
       eventTypeModels = new List<EventTypeModels>.empty(growable: true);
       json['eventTypeModels'].forEach((v) {
-        eventTypeModels.add(new EventTypeModels.fromJson(v));
+        eventTypeModels!.add(new EventTypeModels.fromJson(v));
       });
     }
     if (json['dealersModels'] != null) {
       dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {
-        dealersModels.add(new DealersModels.fromJson(v));
+        dealersModels!.add(new DealersModels.fromJson(v));
       });
     }
     if (json['statusEntitieList'] != null) {
       statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
       json['statusEntitieList'].forEach((v) {
-        statusEntitieList.add(new StatusEntitieList.fromJson(v));
+        statusEntitieList!.add(new StatusEntitieList.fromJson(v));
       });
     }
   }
@@ -41,23 +43,23 @@ class AddEventModel {
     data['respMsg'] = this.respMsg;
     if (this.eventTypeModels != null) {
       data['eventTypeModels'] =
-          this.eventTypeModels.map((v) => v.toJson()).toList();
+          this.eventTypeModels!.map((v) => v.toJson()).toList();
     }
     if (this.dealersModels != null) {
       data['dealersModels'] =
-          this.dealersModels.map((v) => v.toJson()).toList();
+          this.dealersModels!.map((v) => v.toJson()).toList();
     }
     if (this.statusEntitieList != null) {
       data['statusEntitieList'] =
-          this.statusEntitieList.map((v) => v.toJson()).toList();
+          this.statusEntitieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class EventTypeModels {
-  int eventTypeId;
-  String eventTypeText;
+  int? eventTypeId;
+  String? eventTypeText;
 
   EventTypeModels({this.eventTypeId, this.eventTypeText});
 
@@ -75,8 +77,8 @@ class EventTypeModels {
 }
 
 class DealersModels {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
 
   DealersModels({this.dealerId, this.dealerName});
 
@@ -94,8 +96,8 @@ class DealersModels {
 }
 
 class StatusEntitieList {
-  int eventStatusId;
-  String eventStatusText;
+  int? eventStatusId;
+  String? eventStatusText;
 
   StatusEntitieList({this.eventStatusId, this.eventStatusText});
 

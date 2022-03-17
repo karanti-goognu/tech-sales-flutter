@@ -29,14 +29,14 @@ class CheckInternet{
   static Future<AddressCheckResult> isHostReachable(
       AddressCheckOptions options,
       ) async {
-    Socket sock;
+    Socket? sock;
     try {
       sock = await Socket.connect(
         options.address,
         options.port,
         timeout: options.timeout,
       );
-      sock?.destroy();
+      sock.destroy();
       return AddressCheckResult(options, true);
     } catch (e) {
       sock?.destroy();

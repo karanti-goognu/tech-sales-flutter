@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/month_to_date.dart';
@@ -9,9 +11,9 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class DspColumnChild extends StatelessWidget {
   const DspColumnChild({
-    Key key,
-    @required bool currentMothDspSlabVolume,
-    @required DashboardController dashboardController,
+    Key? key,
+    required bool currentMothDspSlabVolume,
+    required DashboardController dashboardController,
   })  : _currentMothDspSlabVolume = currentMothDspSlabVolume,
         _dashboardController = dashboardController,
         super(key: key);
@@ -44,13 +46,13 @@ class DspColumnChild extends StatelessWidget {
                         text:
                         "${(int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString())).isNaN ? 0 : ((int.parse(_dashboardController.dspSlabConvertedCount.toString()) / int.parse(_dashboardController.dspTotalOpperCount.toString()))*100).round()}%\n",
                         style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal*6,
+                            fontSize: SizeConfig.blockSizeHorizontal!*6,
                             color: HexColor('#002A64'),
                             fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
                             text: "Site conversion efficiency on Count",
-                            style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*2),
+                            style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal!*2),
                           )
                         ]),
                     textAlign: TextAlign.center,

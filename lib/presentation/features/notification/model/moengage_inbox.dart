@@ -1,3 +1,5 @@
+
+
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/notification/model/constants.dart';
@@ -7,9 +9,9 @@ import 'package:flutter_tech_sales/presentation/features/notification/model/moe_
 import 'package:moengage_inbox/inbox_message.dart';
 
 class MoEngageInboxX {
-  MethodChannel _channel;
-  MoEAndroidInbox _androidInbox;
-  MoEiOSInbox _iOSInbox;
+  MethodChannel? _channel;
+  late MoEAndroidInbox _androidInbox;
+  late MoEiOSInbox _iOSInbox;
 
   moEngageInbox() {
     _channel = MethodChannel(CHANNEL_NAME);

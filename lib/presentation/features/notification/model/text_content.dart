@@ -1,3 +1,5 @@
+
+
 class TextContent {
   /// Title string for the inbox message.
   String title;

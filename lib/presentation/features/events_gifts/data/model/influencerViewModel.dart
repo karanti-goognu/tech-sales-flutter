@@ -1,9 +1,11 @@
+
+
 class InfluencerViewModel {
-  String respCode;
-  String respMsg;
-  InfluencerModel influencerModel;
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
-  List<CategoryEntitiesList> categoryEntitiesList;
+  String? respCode;
+  String? respMsg;
+  InfluencerModel? influencerModel;
+  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList;
+  List<CategoryEntitiesList>? categoryEntitiesList;
 
   InfluencerViewModel(
       {this.respCode,
@@ -21,14 +23,14 @@ class InfluencerViewModel {
     if (json['influencerTypeEntitiesList'] != null) {
       influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencerTypeEntitiesList'].forEach((v) {
-        influencerTypeEntitiesList
+        influencerTypeEntitiesList!
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
     if (json['categoryEntitiesList'] != null) {
       categoryEntitiesList = new List<CategoryEntitiesList>.empty(growable: true);
       json['categoryEntitiesList'].forEach((v) {
-        categoryEntitiesList.add(new CategoryEntitiesList.fromJson(v));
+        categoryEntitiesList!.add(new CategoryEntitiesList.fromJson(v));
       });
     }
   }
@@ -38,24 +40,24 @@ class InfluencerViewModel {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
     if (this.influencerModel != null) {
-      data['influencerModel'] = this.influencerModel.toJson();
+      data['influencerModel'] = this.influencerModel!.toJson();
     }
     if (this.influencerTypeEntitiesList != null) {
       data['influencerTypeEntitiesList'] =
-          this.influencerTypeEntitiesList.map((v) => v.toJson()).toList();
+          this.influencerTypeEntitiesList!.map((v) => v.toJson()).toList();
     }
     if (this.categoryEntitiesList != null) {
       data['categoryEntitiesList'] =
-          this.categoryEntitiesList.map((v) => v.toJson()).toList();
+          this.categoryEntitiesList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class InfluencerModel {
-  String inflName;
-  int inflTypeId;
-  String mobileNumber;
+  String? inflName;
+  int? inflTypeId;
+  String? mobileNumber;
 
   InfluencerModel({this.inflName, this.inflTypeId, this.mobileNumber});
 
@@ -75,8 +77,8 @@ class InfluencerModel {
 }
 
 class InfluencerTypeEntitiesList {
-  int inflTypeId;
-  String inflTypeDesc;
+  int? inflTypeId;
+  String? inflTypeDesc;
 
   InfluencerTypeEntitiesList({this.inflTypeId, this.inflTypeDesc});
 
@@ -94,8 +96,8 @@ class InfluencerTypeEntitiesList {
 }
 
 class CategoryEntitiesList {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   CategoryEntitiesList({this.inflCatId, this.inflCatDesc});
 

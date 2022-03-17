@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ConstructionStageEntityDBHelper extends ChangeNotifier{
   static final ConstructionStageEntityDBHelper _instance = ConstructionStageEntityDBHelper._();
-  static Database _database;
+  static Database? _database;
 
   ConstructionStageEntityDBHelper._();
 
@@ -12,7 +14,7 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }
@@ -36,14 +38,14 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 
 
   Future<int> addConstructAstageInDraft(ConstructStageEntityForDB constructStageEntityForDB) async {
-    var client = await db;
+    var client = await( db as FutureOr<Database>);
     print(constructStageEntityForDB.constructStageEntity);
     return client.insert('constructStage', constructStageEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<ConstructStageEntityForDB> fetchConstructStageForDBInDraft(int id) async {
-    var client = await db;
+  Future<ConstructStageEntityForDB?> fetchConstructStageForDBInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     final Future<List<Map<String, dynamic>>> futureMaps =
     client.query('constructStage', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
@@ -57,20 +59,20 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 
   Future<int> updateConstructStageForDBInDraft(ConstructStageEntityForDB constructStageEntityForDB) async {
     print(constructStageEntityForDB.id);
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.update('constructStage', constructStageEntityForDB.toMapForDb(),
         where: 'id = ?',
         whereArgs: [constructStageEntityForDB.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> removeConstructStageInDraft(int id) async {
-    var client = await db;
+  Future<Future<int>> removeConstructStageInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     return client.delete('constructStage', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<ConstructStageEntityForDB>> fetchAll() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.query('constructStage');
 
     if (res.isNotEmpty) {
@@ -84,9 +86,9 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
 }
 
 class ConstructStageEntityForDB {
-  final int id;
+  final int? id;
   @required
-  final String constructStageEntity;
+  final String? constructStageEntity;
 
   ConstructStageEntityForDB(this.id, this.constructStageEntity);
 

@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +14,16 @@ import 'package:meta/meta.dart';
 class MyApiClient {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClient({@required this.httpClient});
+  MyApiClient({required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
-    AccessKeyModel accessKeyModel;
+  Future<AccessKeyModel?> getAccessKey() async {
+    AccessKeyModel? accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -34,15 +36,15 @@ class MyApiClient {
     return accessKeyModel;
   }
 
-  Future<TargetVsActualModel> getTargetVsActualData(
-      String accessKey, String userSecretKey, String empID) async {
-    TargetVsActualModel actualModel;
+  Future<TargetVsActualModel?> getTargetVsActualData(
+      String accessKey, String? userSecretKey, String empID) async {
+    TargetVsActualModel? actualModel;
     try {
       version = VersionClass.getVersion();
       var response = await http.get(
           Uri.parse(UrlConstants.getTargetVsActualData + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey, version));
+              accessKey, userSecretKey, version) as Map<String, String>?);
       actualModel = TargetVsActualModel.fromJson(json.decode(response.body));
       // print(response.body);
     } catch (e) {

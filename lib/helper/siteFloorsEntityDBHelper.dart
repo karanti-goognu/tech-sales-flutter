@@ -1,11 +1,13 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SiteFloorsEntityDBHelper extends ChangeNotifier{
   static final SiteFloorsEntityDBHelper _instance = SiteFloorsEntityDBHelper._();
-  static Database _database;
+  static Database? _database;
 
   SiteFloorsEntityDBHelper._();
 
@@ -13,7 +15,7 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }
@@ -37,14 +39,14 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
 
 
   Future<int> addSiteFloorEntityInDraft(SiteFloorEntityForDB siteFloorEntityForDB) async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     print(siteFloorEntityForDB.siteFloorEntity);
     return client.insert('siteFloor', siteFloorEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<SiteFloorEntityForDB> fetchSiteFloorEntityInDraft(int id) async {
-    var client = await db;
+  Future<SiteFloorEntityForDB?> fetchSiteFloorEntityInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     final Future<List<Map<String, dynamic>>> futureMaps =
     client.query('siteFloor', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
@@ -56,20 +58,20 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
 
   Future<int> updateSiteFloorEntityInDraft(SiteFloorEntityForDB siteFloorEntityForDB) async {
     print(siteFloorEntityForDB.id);
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.update('siteFloor', siteFloorEntityForDB.toMapForDb(),
         where: 'id = ?',
         whereArgs: [siteFloorEntityForDB.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> removeSiteFloorEntityInDraft(int id) async {
-    var client = await db;
+  Future<int> removeSiteFloorEntityInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     return client.delete('siteFloor', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<SiteFloorEntityForDB>> fetchAll() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.query('siteFloor');
 
     if (res.isNotEmpty) {
@@ -84,9 +86,9 @@ class SiteFloorsEntityDBHelper extends ChangeNotifier{
 
 class SiteFloorEntityForDB {
   // @required
-  final int id;
+  final int? id;
   @required
-  final String siteFloorEntity;
+  final String? siteFloorEntity;
 
   SiteFloorEntityForDB(this.id, this.siteFloorEntity);
 

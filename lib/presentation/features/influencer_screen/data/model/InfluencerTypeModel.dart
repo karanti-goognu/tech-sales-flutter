@@ -1,5 +1,7 @@
+
+
 class InfluencerTypeModel {
-  Response response;
+  Response? response;
 
   InfluencerTypeModel({this.response});
 
@@ -12,19 +14,19 @@ class InfluencerTypeModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.response != null) {
-      data['response'] = this.response.toJson();
+      data['response'] = this.response!.toJson();
     }
     return data;
   }
 }
 
 class Response {
-  String respCode;
-  String respMsg;
-  List<InfluencerTypeList> influencerTypeList;
-  List<InfluencerCategoryList> influencerCategoryList;
-  List<InfluencerSourceList> influencerSourceList;
-  List<SiteBrandList> siteBrandList;
+  String? respCode;
+  String? respMsg;
+  List<InfluencerTypeList>? influencerTypeList;
+  List<InfluencerCategoryList>? influencerCategoryList;
+  List<InfluencerSourceList>? influencerSourceList;
+  List<SiteBrandList>? siteBrandList;
 
   Response(
       {this.respCode,
@@ -40,26 +42,26 @@ class Response {
     if (json['influencerTypeList'] != null) {
       influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
       json['influencerTypeList'].forEach((v) {
-        influencerTypeList.add(new InfluencerTypeList.fromJson(v));
+        influencerTypeList!.add(new InfluencerTypeList.fromJson(v));
       });
     }
     if (json['influencerCategoryList'] != null) {
       influencerCategoryList = new List<InfluencerCategoryList>.empty(growable: true);
       json['influencerCategoryList'].forEach((v) {
-        influencerCategoryList.add(new InfluencerCategoryList.fromJson(v));
+        influencerCategoryList!.add(new InfluencerCategoryList.fromJson(v));
       });
     }
     if (json['influencerSourceList'] != null) {
       influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
       json['influencerSourceList'].forEach((v) {
-        influencerSourceList.add(new InfluencerSourceList.fromJson(v));
+        influencerSourceList!.add(new InfluencerSourceList.fromJson(v));
       });
     }
 
     if (json['siteBrandList'] != null) {
       siteBrandList = new List<SiteBrandList>.empty(growable: true);
       json['siteBrandList'].forEach((v) {
-        siteBrandList.add(new SiteBrandList.fromJson(v));
+        siteBrandList!.add(new SiteBrandList.fromJson(v));
       });
     }
   }
@@ -70,21 +72,21 @@ class Response {
     data['respMsg'] = this.respMsg;
     if (this.influencerTypeList != null) {
       data['influencerTypeList'] =
-          this.influencerTypeList.map((v) => v.toJson()).toList();
+          this.influencerTypeList!.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryList != null) {
       data['influencerCategoryList'] =
-          this.influencerCategoryList.map((v) => v.toJson()).toList();
+          this.influencerCategoryList!.map((v) => v.toJson()).toList();
     }
 
     if (this.influencerSourceList != null) {
       data['influencerSourceList'] =
-          this.influencerSourceList.map((v) => v.toJson()).toList();
+          this.influencerSourceList!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteBrandList != null) {
       data['siteBrandList'] =
-          this.siteBrandList.map((v) => v.toJson()).toList();
+          this.siteBrandList!.map((v) => v.toJson()).toList();
     }
 
     return data;
@@ -92,9 +94,9 @@ class Response {
 }
 
 class InfluencerTypeList {
-  int inflTypeId;
-  String inflTypeDesc;
-  String infRegFlag;
+  int? inflTypeId;
+  String? inflTypeDesc;
+  String? infRegFlag;
 
   InfluencerTypeList({this.inflTypeId, this.inflTypeDesc, this.infRegFlag});
 
@@ -114,8 +116,8 @@ class InfluencerTypeList {
 }
 
 class InfluencerCategoryList {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   InfluencerCategoryList({this.inflCatId, this.inflCatDesc});
 
@@ -133,8 +135,8 @@ class InfluencerCategoryList {
 }
 
 class InfluencerSourceList {
-  int inflSourceId;
-  String inflSourceText;
+  int? inflSourceId;
+  String? inflSourceText;
 
   InfluencerSourceList({this.inflSourceId, this.inflSourceText});
 
@@ -152,10 +154,10 @@ class InfluencerSourceList {
 }
 
 class SiteBrandList {
-  int id;
-  String brandName;
-  String productName;
-  String isPrimary;
+  int? id;
+  String? brandName;
+  String? productName;
+  String? isPrimary;
 
   SiteBrandList({this.id, this.brandName,this.productName,this.isPrimary});
 

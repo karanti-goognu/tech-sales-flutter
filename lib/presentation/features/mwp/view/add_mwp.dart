@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
   AppController _appController = Get.find();
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       print(json.encode(_mwpPlanController.getMWPResponse));
       print(1);
       final DateTime now = DateTime.now();
@@ -117,7 +119,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                       child: Obx(
                                         () => DropdownButton<String>(
                                           value: _mwpPlanController.selectedMonth,
-                                          onChanged: (String newValue) {
+                                          onChanged: (String? newValue) {
                                             _mwpPlanController.selectedMonth =
                                                 newValue;
                                             _appController.getAccessKey(

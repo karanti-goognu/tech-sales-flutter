@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
@@ -19,11 +21,11 @@ class AddEventInfluencerMeet extends StatefulWidget {
 
 class AddEventInfluencerMeetScreenPageState
     extends State<AddEventInfluencerMeet> {
-  String dropdownValue = 'Event type';
+  String? dropdownValue = 'Event type';
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
-  int _value = 0;
+  String? selectedDateString;
+  int? _value = 0;
   TextEditingController dalmiaInfluencers = TextEditingController();
   TextEditingController nonDalmiaInfluencers = TextEditingController();
   TextEditingController meetInitiatorName = TextEditingController();
@@ -66,7 +68,7 @@ class AddEventInfluencerMeetScreenPageState
                     child: DropdownButtonHideUnderline(
                       child: Obx(() => DropdownButton<String>(
                             value: _addEventController.selectedEventTypeMeet,
-                            onChanged: (String newValue) {
+                            onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue;
                                 _addEventController.selectedEventTypeMeet =
@@ -139,7 +141,7 @@ class AddEventInfluencerMeetScreenPageState
                       TextFormField(
                         controller: dalmiaInfluencers,
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return "Dalmia Influencers can't be empty";
                           }
                           return null;
@@ -156,7 +158,7 @@ class AddEventInfluencerMeetScreenPageState
                       TextFormField(
                         controller: nonDalmiaInfluencers,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               print('called validator');
                               return "Non-Dalmia Influencers can't be empty ";
                             }
@@ -179,7 +181,7 @@ class AddEventInfluencerMeetScreenPageState
                           controller: meetInitiatorName,
                           validator: (value) {
                             if(_addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET") {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 print('called validator');
                                 return "Meet Initiator Name can't be empty ";
                               }
@@ -237,7 +239,7 @@ class AddEventInfluencerMeetScreenPageState
                               child: Obx(
                             () => DropdownButton<String>(
                               value: _addEventController.selectedVenueTypeMeet,
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 setState(() {
                                   FocusScope.of(context).requestFocus(new FocusNode());
                                   dropdownValue = newValue;
@@ -326,7 +328,7 @@ class AddEventInfluencerMeetScreenPageState
                       _spaceBetweenFields(),
                       TextFormField(
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return "Expected leads can't be empty ";
                             }
                             return null;
@@ -342,7 +344,7 @@ class AddEventInfluencerMeetScreenPageState
                       _spaceBetweenFields(),
                       TextFormField(
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return "Gift distribution can't be empty ";
                             }
                             return null;
@@ -359,7 +361,7 @@ class AddEventInfluencerMeetScreenPageState
                       TextFormField(
                           validator: (value) {
                             if((_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET" || _addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET" || _addEventController.selectedEventTypeMeet=="CONSUMER MEET" || _addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET")) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 String addressType;
                                 (_addEventController.selectedEventTypeMeet ==
                                     "TECHNOCRAT MEET" ||
@@ -400,7 +402,7 @@ class AddEventInfluencerMeetScreenPageState
                             onPressed: () {
                               // Validate returns true if the form is valid, or false
                               // otherwise.
-                              if (_formKey.currentState.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "D";
                                 _appController
@@ -422,7 +424,7 @@ class AddEventInfluencerMeetScreenPageState
                             onPressed: () {
                               // Validate returns true if the form is valid, or false
                               // otherwise.
-                              if (_formKey.currentState.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "S";
                                 _appController
@@ -491,7 +493,7 @@ class AddEventInfluencerMeetScreenPageState
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),

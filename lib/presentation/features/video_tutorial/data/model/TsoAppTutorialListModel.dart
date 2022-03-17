@@ -1,8 +1,10 @@
+
+
 class TsoAppTutorialListModel{
-  int totalCount;
-  List<TsoAppTutorial> tsoAppTutorial;
-  String respCode;
-  String respMsg;
+  int? totalCount;
+  List<TsoAppTutorial>? tsoAppTutorial;
+  String? respCode;
+  String? respMsg;
 
   TsoAppTutorialListModel({
       this.totalCount, this.tsoAppTutorial, this.respCode, this.respMsg});
@@ -12,7 +14,7 @@ class TsoAppTutorialListModel{
     if (json['tsoAppTutorial'] != null) {
       tsoAppTutorial = new List<TsoAppTutorial>.empty(growable: true);
       json['tsoAppTutorial'].forEach((v) {
-        tsoAppTutorial.add(new TsoAppTutorial.fromJson(v));
+        tsoAppTutorial!.add(new TsoAppTutorial.fromJson(v));
       });
     }
     respCode = json['resp-code'];
@@ -24,7 +26,7 @@ class TsoAppTutorialListModel{
     data['total-count'] = this.totalCount;
     if (this.tsoAppTutorial != null) {
       data['tsoAppTutorial'] =
-          this.tsoAppTutorial.map((v) => v.toJson()).toList();
+          this.tsoAppTutorial!.map((v) => v.toJson()).toList();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -33,14 +35,14 @@ class TsoAppTutorialListModel{
 }
 
 class TsoAppTutorial{
-int id;
-String category;
-String type;
-String description;
-String url;
-String thumbnailUrl;
-int createdOn;
-String createdBy;
+int? id;
+String? category;
+String? type;
+String? description;
+String? url;
+String? thumbnailUrl;
+int? createdOn;
+String? createdBy;
 
 TsoAppTutorial({this.id, this.category, this.type, this.description,
       this.url, this.thumbnailUrl, this.createdOn, this.createdBy});

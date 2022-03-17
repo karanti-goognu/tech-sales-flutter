@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_date.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
@@ -7,9 +9,9 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/controller/da
 
 class BarGraphForYTD extends StatefulWidget {
   const BarGraphForYTD({
-    Key key,
-    @required this.chartData,
-    @required this.chartData2,
+    Key? key,
+    required this.chartData,
+    required this.chartData2,
   }) : super(key: key);
 
   final List<ChartDataForYTD> chartData;

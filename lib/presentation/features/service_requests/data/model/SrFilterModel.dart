@@ -1,9 +1,11 @@
+
+
 class SrFilterModel {
-  List<LeadStatusEntity> leadStatusEntity;
-  List<LeadStageEntity> leadStageEntity;
-  List<SrComplainResolutionEntity> srComplainResolutionEntity;
-  List<SrComplaintTypeEntity> srComplaintTypeEntity;
-  List<String> severity;
+  List<LeadStatusEntity>? leadStatusEntity;
+  List<LeadStageEntity>? leadStageEntity;
+  List<SrComplainResolutionEntity>? srComplainResolutionEntity;
+  List<SrComplaintTypeEntity>? srComplaintTypeEntity;
+  List<String>? severity;
 
   SrFilterModel(
       {this.leadStatusEntity,
@@ -16,26 +18,26 @@ class SrFilterModel {
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
-        leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
+        leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
-        leadStageEntity.add(new LeadStageEntity.fromJson(v));
+        leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
     if (json['srComplainResolutionEntity'] != null) {
       srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
       json['srComplainResolutionEntity'].forEach((v) {
-        srComplainResolutionEntity
+        srComplainResolutionEntity!
             .add(new SrComplainResolutionEntity.fromJson(v));
       });
     }
     if (json['srComplaintTypeEntity'] != null) {
       srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty();
       json['srComplaintTypeEntity'].forEach((v) {
-        srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
+        srComplaintTypeEntity!.add(new SrComplaintTypeEntity.fromJson(v));
       });
     }
     severity = json['Severity'].cast<String>();
@@ -45,19 +47,19 @@ class SrFilterModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.leadStatusEntity != null) {
       data['leadStatusEntity'] =
-          this.leadStatusEntity.map((v) => v.toJson()).toList();
+          this.leadStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadStageEntity != null) {
       data['leadStageEntity'] =
-          this.leadStageEntity.map((v) => v.toJson()).toList();
+          this.leadStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplainResolutionEntity != null) {
       data['srComplainResolutionEntity'] =
-          this.srComplainResolutionEntity.map((v) => v.toJson()).toList();
+          this.srComplainResolutionEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplaintTypeEntity != null) {
       data['srComplaintTypeEntity'] =
-          this.srComplaintTypeEntity.map((v) => v.toJson()).toList();
+          this.srComplaintTypeEntity!.map((v) => v.toJson()).toList();
     }
     data['Severity'] = this.severity;
     return data;
@@ -65,8 +67,8 @@ class SrFilterModel {
 }
 
 class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
+  int? id;
+  String? leadStatusDesc;
 
   LeadStatusEntity({this.id, this.leadStatusDesc});
 
@@ -84,8 +86,8 @@ class LeadStatusEntity {
 }
 
 class LeadStageEntity {
-  int id;
-  String leadStageDesc;
+  int? id;
+  String? leadStageDesc;
 
   LeadStageEntity({this.id, this.leadStageDesc});
 
@@ -103,8 +105,8 @@ class LeadStageEntity {
 }
 
 class SrComplainResolutionEntity {
-  int id;
-  String resolutionText;
+  int? id;
+  String? resolutionText;
 
   SrComplainResolutionEntity({this.id, this.resolutionText});
 
@@ -122,9 +124,9 @@ class SrComplainResolutionEntity {
 }
 
 class SrComplaintTypeEntity {
-  int id;
-  int requestId;
-  String serviceRequestTypeText;
+  int? id;
+  int? requestId;
+  String? serviceRequestTypeText;
   Null complaintSeverity;
 
   SrComplaintTypeEntity(

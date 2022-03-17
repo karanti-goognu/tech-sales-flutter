@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
@@ -25,7 +27,7 @@ class LeadScreen extends StatefulWidget {
 }
 
 //final GlobalKey<ScaffoldState> _leadScreenFormKey = GlobalKey<ScaffoldState>();
-PersistentBottomSheetController controller;
+PersistentBottomSheetController? controller;
 
 class _LeadScreenState extends State<LeadScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
@@ -35,15 +37,15 @@ class _LeadScreenState extends State<LeadScreen> {
   //LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   int selectedPosition = 0;
 
   int currentTab = 0;
 
   var bottomSheetController;
-  ScrollController _scrollController;
-  SiteDistrictListModel _siteDistrictListModel;
+  ScrollController? _scrollController;
+  SiteDistrictListModel? _siteDistrictListModel;
 
   @override
   void initState() {
@@ -69,13 +71,13 @@ class _LeadScreenState extends State<LeadScreen> {
       _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
     });
 
-    _scrollController = ScrollController();
+    late final _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
   }
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       print('hello');
       _leadsFilterController.offset += 10;
       print(_leadsFilterController.offset);
@@ -94,7 +96,7 @@ class _LeadScreenState extends State<LeadScreen> {
   void disposeController(BuildContext context) {
 //or what you want to dispose/clear
     _leadsFilterController.offset = 0;
-    _leadsFilterController?.dispose();
+    _leadsFilterController.dispose();
 
     // print(_leadsFilterController.offset);
   }
@@ -144,7 +146,7 @@ class _LeadScreenState extends State<LeadScreen> {
             // titleSpacing: 50,
             // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: SizeConfig.screenHeight * .14,
+            toolbarHeight: SizeConfig.screenHeight! * .14,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -703,13 +705,7 @@ class _LeadScreenState extends State<LeadScreen> {
 
   Widget leadsDetailWidget() {
     return Obx(
-      () => (_leadsFilterController == null)
-          ? Container(
-              child: Center(
-                child: Text("Leads controller  is empty!!"),
-              ),
-            )
-          : (_leadsFilterController.leadsListResponse == null)
+      () => (_leadsFilterController.leadsListResponse == null)
               ? Container(
                   child: Center(
                     child: Text("Leads list response  is empty!!"),
@@ -1084,7 +1080,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       ),
                                                     ),
                                                     onTap: () {
-                                                      String num =
+                                                      String? num =
                                                           _leadsFilterController
                                                               .leadsListResponse
                                                               .leadsEntity[
@@ -1118,30 +1114,6 @@ class _LeadScreenState extends State<LeadScreen> {
         });
   }
 
-  //Below section causes multiple GlobalKey error. This was fixed earlier, however, it has started occurring again
-
-//  void _settingModalBottomSheet(context) {
-//    _leadScreenFormKey.currentState
-//        .showBottomSheet<Null>((BuildContext context) {
-//      /*return  showModalBottomSheet(
-//        backgroundColor: Colors.transparent,
-//        context: context,
-//        isScrollControlled: true,
-//        builder: (BuildContext bc) {*/
-//      return FilterWidget();
-//    })
-//        .closed
-//        .then((value) => () {
-//      print('Closed');
-//    });
-//  }
-
-  void _closeModalBottomSheet() {
-    if (controller != null) {
-      controller.close();
-      controller = null;
-    }
-  }
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(

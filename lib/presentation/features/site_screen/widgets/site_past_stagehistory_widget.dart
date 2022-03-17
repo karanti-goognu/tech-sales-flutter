@@ -1,3 +1,5 @@
+
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +14,7 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class SitePastStageHistoryWidget extends StatefulWidget {
-  ViewSiteDataResponse viewSiteDataResponse;
+  ViewSiteDataResponse? viewSiteDataResponse;
 
   SitePastStageHistoryWidget({this.viewSiteDataResponse});
 
@@ -23,41 +25,41 @@ class SitePastStageHistoryWidget extends StatefulWidget {
 class _SitePastStageHistoryWidgetState
     extends State<SitePastStageHistoryWidget> {
   final db = BrandNameDBHelper();
-  List<SiteStageHistory> siteStageHistories = new List.empty(growable: true);
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-  List<CounterListModel> counterListModel = new List.empty(growable: true);
+  List<SiteStageHistory>? siteStageHistories = new List.empty(growable: true);
+  ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
+  List<CounterListModel>? counterListModel = new List.empty(growable: true);
   List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
-  List<SiteBrandEntity> siteBrandEntity = new List.empty(growable: true);
-  List<SiteFloorsEntity> siteFloorsEntity = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
+  List<SiteBrandEntity>? siteBrandEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
+  List<ConstructionStageEntity>? constructionStageEntity = new List.empty(growable: true);
 
   setSitePastStageHistoryData() async {
     setState(() {
       viewSiteDataResponse = widget.viewSiteDataResponse;
-      if (viewSiteDataResponse.siteStageHistorys != null) {
-        siteStageHistories = viewSiteDataResponse.siteStageHistorys;
+      if (viewSiteDataResponse!.siteStageHistorys != null) {
+        siteStageHistories = viewSiteDataResponse!.siteStageHistorys;
       } else {
         siteStageHistories = [];
       }
       siteBrandEntity = viewSiteDataResponse != null
-          ? viewSiteDataResponse.siteBrandEntity
+          ? viewSiteDataResponse!.siteBrandEntity
           : new List.empty(growable: true);
-      counterListModel = viewSiteDataResponse.counterListModel;
-      siteFloorsEntity = viewSiteDataResponse.siteFloorsEntity;
-      constructionStageEntity = viewSiteDataResponse.constructionStageEntity;
+      counterListModel = viewSiteDataResponse!.counterListModel;
+      siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
+      constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
     });
     await db.clearTable();
 
-    for (int i = 0; i < siteBrandEntity.length; i++) {
-      await db.addBrandName(new BrandModelforDB(siteBrandEntity[i].id,
-          siteBrandEntity[i].brandName, siteBrandEntity[i].productName));
+    for (int i = 0; i < siteBrandEntity!.length; i++) {
+      await db.addBrandName(new BrandModelforDB(siteBrandEntity![i].id,
+          siteBrandEntity![i].brandName, siteBrandEntity![i].productName));
     }
 
-    for (int i = 0; i < counterListModel.length; i++) {
+    for (int i = 0; i < counterListModel!.length; i++) {
       // int id =
       await db.addDealer(DealerForDb(
-          counterListModel[i].soldToParty,
-          counterListModel[i].soldToPartyName));
+          counterListModel![i].soldToParty,
+          counterListModel![i].soldToPartyName));
     }
 
     dealerEntityForDb = await db.fetchAllDistinctDealers();
@@ -103,15 +105,15 @@ class _SitePastStageHistoryWidgetState
                       ? ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: siteStageHistories.length,
+                          itemCount: siteStageHistories!.length,
                           itemBuilder: (BuildContext context, int index) {
                             final DateFormat formatter =
                                 DateFormat('dd-MMM-yyyy');
                             String selectedDateString = formatter.format(
                                 DateTime.fromMillisecondsSinceEpoch(
-                                    siteStageHistories[index].createdOn));
+                                    siteStageHistories![index].createdOn!));
 
-                            if (!siteStageHistories[index].isExpanded) {
+                            if (!siteStageHistories![index].isExpanded!) {
                               return Column(
                                 children: [
                                   Row(
@@ -123,7 +125,7 @@ class _SitePastStageHistoryWidgetState
                                         style: TextStyle(
                                             fontSize: 16),
                                       ),
-                                      siteStageHistories[index].isExpanded
+                                      siteStageHistories![index].isExpanded!
                                           ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
@@ -139,10 +141,10 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistories[index]
+                                                  siteStageHistories![index]
                                                           .isExpanded =
-                                                      !siteStageHistories[index]
-                                                          .isExpanded;
+                                                      !siteStageHistories![index]
+                                                          .isExpanded!;
                                                 });
                                               },
                                             )
@@ -161,10 +163,10 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistories[index]
+                                                  siteStageHistories![index]
                                                           .isExpanded =
-                                                      !siteStageHistories[index]
-                                                          .isExpanded;
+                                                      !siteStageHistories![index]
+                                                          .isExpanded!;
                                                 });
                                               },
                                             ),
@@ -184,7 +186,7 @@ class _SitePastStageHistoryWidgetState
                                         style: TextStyle(
                                             fontSize: 16),
                                       ),
-                                      siteStageHistories[index].isExpanded
+                                      siteStageHistories![index].isExpanded!
                                           ? TextButton.icon(
                                               icon: Icon(
                                                 Icons.remove,
@@ -200,10 +202,10 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistories[index]
+                                                  siteStageHistories![index]
                                                           .isExpanded =
-                                                      !siteStageHistories[index]
-                                                          .isExpanded;
+                                                      !siteStageHistories![index]
+                                                          .isExpanded!;
                                                 });
                                               },
                                             )
@@ -222,10 +224,10 @@ class _SitePastStageHistoryWidgetState
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  siteStageHistories[index]
+                                                  siteStageHistories![index]
                                                           .isExpanded =
-                                                      !siteStageHistories[index]
-                                                          .isExpanded;
+                                                      !siteStageHistories![index]
+                                                          .isExpanded!;
                                                 });
                                               },
                                             ),
@@ -237,7 +239,7 @@ class _SitePastStageHistoryWidgetState
                                     initialValue:
                                         GlobalMethods.selectedFloorText(
                                             siteFloorsEntity,
-                                            siteStageHistories[index].floorId),
+                                            siteStageHistories![index].floorId),
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -253,8 +255,8 @@ class _SitePastStageHistoryWidgetState
                                     readOnly: true,
                                     initialValue:
                                         GlobalMethods.constructionStageDesc(
-                                            constructionStageEntity,
-                                            siteStageHistories[index]
+                                            constructionStageEntity!,
+                                            siteStageHistories![index]
                                                 .constructionStageId),
                                     style: TextStyle(
                                         fontSize: 18,
@@ -270,7 +272,7 @@ class _SitePastStageHistoryWidgetState
                                   TextFormField(
                                     readOnly: true,
                                     initialValue:
-                                        siteStageHistories[index].stagePotential,
+                                        siteStageHistories![index].stagePotential,
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -284,13 +286,13 @@ class _SitePastStageHistoryWidgetState
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue: (siteStageHistories[index]
+                                    initialValue: (siteStageHistories![index]
                                                     .stageStatus !=
                                                 null &&
-                                            siteStageHistories[index]
+                                            siteStageHistories![index]
                                                     .stageStatus !=
                                                 "null")
-                                        ? siteStageHistories[index].stageStatus
+                                        ? siteStageHistories![index].stageStatus
                                         : "",
                                     style: TextStyle(
                                         fontSize: 18,
@@ -305,13 +307,13 @@ class _SitePastStageHistoryWidgetState
                                   SizedBox(height: 16),
                                   TextFormField(
                                     readOnly: true,
-                                    initialValue:  (siteStageHistories[index]
+                                    initialValue:  (siteStageHistories![index]
                                 .constructionDate !=
                             null &&
-                            siteStageHistories[index]
+                            siteStageHistories![index]
                                 .constructionDate !=
                             "null")
-                            ? siteStageHistories[index].constructionDate
+                            ? siteStageHistories![index].constructionDate
                                 : "",
                                     style: TextStyle(
                                         fontSize: 18,
@@ -376,14 +378,14 @@ class _SitePastStageHistoryWidgetState
   List<Widget> _getPastHistoryProductList(int index) {
     List<Widget> productAddedList = [];
     for (int i = 0;
-        i < siteStageHistories[index].siteSupplyHistorys.length;
+        i < siteStageHistories![index].siteSupplyHistorys!.length;
         i++) {
       productAddedList.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
           children: [
             getPastHistoryProductDetails(
-                siteStageHistories[index].siteSupplyHistorys[i], i),
+                siteStageHistories![index].siteSupplyHistorys![i], i),
           ],
         ),
       ));
@@ -431,7 +433,7 @@ class _SitePastStageHistoryWidgetState
                 TextFormField(
                   readOnly: true,
                   initialValue:
-                      siteSupplyHistory.isAuthorised.toLowerCase() == 'y'
+                      siteSupplyHistory.isAuthorised!.toLowerCase() == 'y'
                           ? "Yes"
                           : "No",
                   style: TextStyle(
@@ -447,7 +449,7 @@ class _SitePastStageHistoryWidgetState
                 TextFormField(
                   readOnly: true,
                   initialValue: GlobalMethods.brandValue(
-                      siteBrandEntity, siteSupplyHistory.brandId),
+                      siteBrandEntity!, siteSupplyHistory.brandId),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -475,7 +477,7 @@ class _SitePastStageHistoryWidgetState
                 TextFormField(
                   readOnly: true,
                   initialValue: GlobalMethods.brandProductValue(
-                      siteBrandEntity, siteSupplyHistory.brandId),
+                      siteBrandEntity!, siteSupplyHistory.brandId),
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -489,7 +491,7 @@ class _SitePastStageHistoryWidgetState
                   TextFormField(
                     readOnly: true,
                     initialValue: GlobalMethods.subDealerValue(
-                        counterListModel, siteSupplyHistory.shipToParty),
+                        counterListModel!, siteSupplyHistory.shipToParty),
                     style: TextStyle(
                         fontSize: 18,
                         color: ColorConstants.inputBoxHintColor,
@@ -538,7 +540,7 @@ class _SitePastStageHistoryWidgetState
                 siteSupplyHistory.brandId == -1
                     ? "Fill product Details"
                     : GlobalMethods.brandProductValue(
-                            siteBrandEntity, siteSupplyHistory.brandId) +
+                            siteBrandEntity!, siteSupplyHistory.brandId) +
                         ",  Qty:" +
                         siteSupplyHistory.supplyQty +
                         ", Price:" +

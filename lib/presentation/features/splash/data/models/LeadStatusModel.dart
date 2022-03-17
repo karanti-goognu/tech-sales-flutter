@@ -1,6 +1,8 @@
+
+
 class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
+  int? id;
+  String? leadStatusDesc;
 
   LeadStatusEntity({this.id, this.leadStatusDesc});
 

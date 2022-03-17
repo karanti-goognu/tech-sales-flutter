@@ -12,23 +12,23 @@ import 'package:geocoding/geocoding.dart';
 
 
 class CustomMap extends StatefulWidget {
-  final List latLong;
+  final List? latLong;
   CustomMap({this.latLong});
   @override
   _CustomMapState createState() => _CustomMapState();
 }
 
 class _CustomMapState extends State<CustomMap> {
-  GoogleMapController controller;
-  LatLng _markerPosition;
+  late GoogleMapController controller;
+  LatLng? _markerPosition;
   TextEditingController _locationController = TextEditingController();
 
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _markerPosition.latitude, _markerPosition.longitude);
+          _markerPosition!.latitude, _markerPosition!.longitude);
       Placemark place = p[0];
-      _locationController.text = place.name + "${place.thoroughfare}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.locality}, ${place.postalCode}";
+      _locationController.text = place.name! + "${place.thoroughfare}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.locality}, ${place.postalCode}";
     } catch (e) {
       print(e);
     }
@@ -80,11 +80,11 @@ class _CustomMapState extends State<CustomMap> {
             :
         GoogleMap(
           initialCameraPosition:
-              CameraPosition(target: _markerPosition, zoom: 14),
+              CameraPosition(target: _markerPosition!, zoom: 14),
           circles: {
             Circle(
                 circleId: CircleId('1'),
-                center: _markerPosition,
+                center: _markerPosition!,
                 radius: 250,
                 fillColor: Colors.blue.withOpacity(0.4),
                 strokeColor: Colors.blueAccent,
@@ -94,7 +94,7 @@ class _CustomMapState extends State<CustomMap> {
             Marker(
               draggable: true,
               markerId: MarkerId('1'),
-              position: _markerPosition,
+              position: _markerPosition!,
               infoWindow: InfoWindow(
                 title: _locationController.text,
               ),
@@ -120,7 +120,7 @@ class _CustomMapState extends State<CustomMap> {
               ),
               onPressed: () {
                 Navigator.pop(context,
-                    [_markerPosition.latitude, _markerPosition.longitude]);
+                    [_markerPosition!.latitude, _markerPosition!.longitude]);
                 },
             )),
         Positioned(
@@ -173,23 +173,22 @@ class _CustomMapState extends State<CustomMap> {
                 child: GestureDetector(
                   onTap: () async {
                     final sessionToken = Uuid().v4();
-                    final Suggestion result = await showSearch(
+                    final Suggestion? result = await showSearch(
                       context: context,
                       delegate: AddressSearch(sessionToken),
                     );
 
                     if (result != null) {
-                      final placeDetails = await PlaceApiProvider(sessionToken)
-                          .getLatLong(result.placeId);
+                      final placeDetails = await PlaceApiProvider(sessionToken).getLatLong(result.placeId) ;
                       // setState(() {
-                      _locationController.text = result.description;
-                      double lat = placeDetails.lat;
-                      double long = placeDetails.lng;
+                      _locationController.text = result.description!;
+                      double? lat = placeDetails?.lat;
+                      double? long = placeDetails?.lng;
                       setState(() {
-                        _markerPosition = LatLng(lat, long);
+                        _markerPosition = LatLng(lat!, long!);
                       });
                       controller.animateCamera(
-                          CameraUpdate.newLatLng(_markerPosition));
+                          CameraUpdate.newLatLng(_markerPosition!));
                     }
                   },
                   child: Text('Change', style: TextStyles.mulliBoldYellow18),
@@ -207,7 +206,7 @@ class _CustomMapState extends State<CustomMap> {
                 onPressed: () {
                   Get.back();
                   Navigator.pop(context,
-                      [_markerPosition.latitude, _markerPosition.longitude]);
+                      [_markerPosition!.latitude, _markerPosition!.longitude]);
                 },
                 child: Text(
                   "Confirm Location and Proceed".toUpperCase(),

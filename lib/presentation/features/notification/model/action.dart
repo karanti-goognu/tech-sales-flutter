@@ -1,3 +1,5 @@
+
+
 import 'package:moengage_inbox/action_type.dart';
 
 class Action {

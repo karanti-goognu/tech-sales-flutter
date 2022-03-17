@@ -1,9 +1,11 @@
+
+
 class ServiceRequestComplaintListModel {
-  double totalCount;
-  double totalPotential;
-  List<SrComplaintListModal> srComplaintListModal;
-  String respCode;
-  String respMsg;
+  double? totalCount;
+  double? totalPotential;
+  List<SrComplaintListModal>? srComplaintListModal;
+  String? respCode;
+  String? respMsg;
 
   ServiceRequestComplaintListModel(
       {this.totalCount,
@@ -18,7 +20,7 @@ class ServiceRequestComplaintListModel {
     if (json['srComplaintListModal'] != null) {
       srComplaintListModal = new List<SrComplaintListModal>.empty(growable: true);
       json['srComplaintListModal'].forEach((v) {
-        srComplaintListModal.add(new SrComplaintListModal.fromJson(v));
+        srComplaintListModal!.add(new SrComplaintListModal.fromJson(v));
       });
     }
     respCode = json['resp-code'];
@@ -31,7 +33,7 @@ class ServiceRequestComplaintListModel {
     data['totalPotential'] = this.totalPotential;
     if (this.srComplaintListModal != null) {
       data['srComplaintListModal'] =
-          this.srComplaintListModal.map((v) => v.toJson()).toList();
+          this.srComplaintListModal!.map((v) => v.toJson()).toList();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -40,21 +42,21 @@ class ServiceRequestComplaintListModel {
 }
 
 class SrComplaintListModal {
-  int siteId;
-  String createdOn;
-  String district;
-  double sitePotential;
-  int srComplaintId;
-  String request;
-  String srComplaintRequestType;
-  String severity;
-  int slaRemaining;
-  String status;
-  String escalationLevel;
-  String creatorContact;
-  String siteContact;
-  String summarySrOfSite;
-  String requesterName;
+  int? siteId;
+  String? createdOn;
+  String? district;
+  double? sitePotential;
+  int? srComplaintId;
+  String? request;
+  String? srComplaintRequestType;
+  String? severity;
+  int? slaRemaining;
+  String? status;
+  String? escalationLevel;
+  String? creatorContact;
+  String? siteContact;
+  String? summarySrOfSite;
+  String? requesterName;
 
   SrComplaintListModal(
       {this.siteId,

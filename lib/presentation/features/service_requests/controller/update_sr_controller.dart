@@ -1,3 +1,5 @@
+
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/home_binding.dart';
@@ -14,8 +16,8 @@ class UpdateServiceRequestController extends GetxController {
 
   List<File> imageList = List<File>.empty(growable: true);
 
-  String id;
-  ComplaintViewModel complaintViewModel;
+  late String id;
+  ComplaintViewModel? complaintViewModel;
   int option = 1;
   String dropdownValue = 'Select visit sub-types';
 
@@ -24,7 +26,7 @@ class UpdateServiceRequestController extends GetxController {
     update();
   }
 
-   updateImageList(File value) {
+   updateImageList(File? value) {
     if(value!=null) {
       imageList.add(value);
       update();
@@ -49,7 +51,7 @@ class UpdateServiceRequestController extends GetxController {
     super.dispose();
   }
 
-  final _complaintListData = ComplaintViewModel().obs;
+  final Rx<ComplaintViewModel?> _complaintListData = ComplaintViewModel().obs;
   get complaintListData => _complaintListData.value;
   set complaintListData(value) {
     _complaintListData.value = value;
@@ -80,21 +82,20 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController formwarkRemovalDate = TextEditingController();
 
 
-  UpdateServiceRequestController({@required this.repository})
+  UpdateServiceRequestController({required this.repository})
       : assert(repository != null);
   final _updateRequestData = UpdateSRModel().obs;
   get updateRequestData => _updateRequestData.value;
   set updateRequestData(value) => _updateRequestData.value = value;
   bool responseReceived = false;
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
   getAccessKeyAndUpdateRequest(
-      List<File> imageList, UpdateSRModel updateRequestModel) {
-    String userSecurityKey = "";
-    String empID = "";
+      List<File> imageList, UpdateSRModel? updateRequestModel) {
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     Future.delayed(
         Duration.zero,
@@ -104,12 +105,12 @@ class UpdateServiceRequestController extends GetxController {
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         updateServiceRequest(
-                imageList, data.accessKey, userSecurityKey, updateRequestModel)
+                imageList, data!.accessKey, userSecurityKey, updateRequestModel)
             .then((value) {
           Get.back();
           Get.defaultDialog(
             title: "Message",
-            middleText: value['resp-msg'].toString(),
+            middleText: value!['resp-msg'].toString(),
             barrierDismissible: false,
             confirm: MaterialButton(
               onPressed: () {
@@ -126,20 +127,20 @@ class UpdateServiceRequestController extends GetxController {
   }
 
 
-  Future<Map> updateServiceRequest(List<File> imageList, String accessKey,
-      String userSecurityKey, UpdateSRModel updateRequestModel) {
+  Future<Map?> updateServiceRequest(List<File> imageList, String? accessKey,
+      String? userSecurityKey, UpdateSRModel? updateRequestModel) {
     return repository.updateServiceRequest(imageList, accessKey, userSecurityKey, updateRequestModel).whenComplete(() => responseReceived = true);
   }
 
 
-  Future getRequestUpdateDetailsData(String accessKey) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future getRequestUpdateDetailsData(String? accessKey) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID, this.id);
+      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID!, this.id);
       update();
     });
 

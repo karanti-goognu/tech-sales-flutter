@@ -1,8 +1,10 @@
 
+
+
 class SaveEventFormModel {
-  List<EventDealersModelList> eventDealersModelList;
+  List<EventDealersModelList>? eventDealersModelList;
   //List<EventDealerRequestsList> eventDealerRequestsList;
-  MwpeventFormRequest mwpeventFormRequest;
+  MwpeventFormRequest? mwpeventFormRequest;
 
   SaveEventFormModel({this.eventDealersModelList, this.mwpeventFormRequest});
 
@@ -10,7 +12,7 @@ class SaveEventFormModel {
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
-        eventDealersModelList.add(new EventDealersModelList.fromJson(v));
+        eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
     mwpeventFormRequest = json['mwpeventFormRequest'] != null
@@ -22,22 +24,22 @@ class SaveEventFormModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.eventDealersModelList != null) {
       data['eventDealersModelList'] =
-          this.eventDealersModelList.map((v) => v.toJson()).toList();
+          this.eventDealersModelList!.map((v) => v.toJson()).toList();
     }
     if (this.mwpeventFormRequest != null) {
-      data['mwpeventFormRequest'] = this.mwpeventFormRequest.toJson();
+      data['mwpeventFormRequest'] = this.mwpeventFormRequest!.toJson();
     }
     return data;
   }
 }
 
 class EventDealersModelList {
-  int eventDealerId;
-  int eventId;
-  String dealerId;
-  String dealerName;
-  String eventStage;
-  String isActive;
+  int? eventDealerId;
+  int? eventId;
+  String? dealerId;
+  String? dealerName;
+  String? eventStage;
+  String? isActive;
 
   EventDealersModelList(
       {this.eventDealerId,
@@ -69,25 +71,25 @@ class EventDealersModelList {
 }
 
 class MwpeventFormRequest {
-  int dalmiaInflCount;
-  String eventComment;
-  String eventDate;
-  int eventId;
-  String eventLocation;
-  double eventLocationLat;
-  double eventLocationLong;
-  int eventStatusId;
-  String eventTime;
-  int eventTypeId;
-  int expectedLeadsCount;
-  int giftDistributionCount;
-  int nondalmiaInflCount;
-  String referenceId;
-  String venue;
-  String venueAddress;
-  int eventCancelReasonId;
-  String eventCancelComment;
-  String isEventStarted;
+  int? dalmiaInflCount;
+  String? eventComment;
+  String? eventDate;
+  int? eventId;
+  String? eventLocation;
+  double? eventLocationLat;
+  double? eventLocationLong;
+  int? eventStatusId;
+  String? eventTime;
+  int? eventTypeId;
+  int? expectedLeadsCount;
+  int? giftDistributionCount;
+  int? nondalmiaInflCount;
+  String? referenceId;
+  String? venue;
+  String? venueAddress;
+  int? eventCancelReasonId;
+  String? eventCancelComment;
+  String? isEventStarted;
 
   MwpeventFormRequest(
       {this.dalmiaInflCount,

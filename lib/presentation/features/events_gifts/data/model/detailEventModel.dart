@@ -1,11 +1,13 @@
+
+
 class DetailEventModel {
-  String respCode;
-  String respMsg;
-  MwpEventModel mwpEventModel;
-  List<EventDealersModelList> eventDealersModelList;
-  List<Null> eventInfluencerModelsList;
-  List<CancelReasonList> cancelReasonList;
-  List<DealersModels> dealersModels;
+  String? respCode;
+  String? respMsg;
+  MwpEventModel? mwpEventModel;
+  List<EventDealersModelList>? eventDealersModelList;
+  List<Null>? eventInfluencerModelsList;
+  List<CancelReasonList>? cancelReasonList;
+  List<DealersModels>? dealersModels;
 
   DetailEventModel(
       {this.respCode,
@@ -25,7 +27,7 @@ class DetailEventModel {
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
-        eventDealersModelList.add(new EventDealersModelList.fromJson(v));
+        eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
     if (json['eventInfluencerModelsList'] != null) {
@@ -37,13 +39,13 @@ class DetailEventModel {
     if (json['cancelReasonList'] != null) {
       cancelReasonList = new List<CancelReasonList>.empty(growable: true);
       json['cancelReasonList'].forEach((v) {
-        cancelReasonList.add(new CancelReasonList.fromJson(v));
+        cancelReasonList!.add(new CancelReasonList.fromJson(v));
       });
     }
     if (json['dealersModels'] != null) {
       dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {
-        dealersModels.add(new DealersModels.fromJson(v));
+        dealersModels!.add(new DealersModels.fromJson(v));
       });
     }
   }
@@ -53,11 +55,11 @@ class DetailEventModel {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
     if (this.mwpEventModel != null) {
-      data['mwpEventModel'] = this.mwpEventModel.toJson();
+      data['mwpEventModel'] = this.mwpEventModel!.toJson();
     }
     if (this.eventDealersModelList != null) {
       data['eventDealersModelList'] =
-          this.eventDealersModelList.map((v) => v.toJson()).toList();
+          this.eventDealersModelList!.map((v) => v.toJson()).toList();
     }
     if (this.eventInfluencerModelsList != null) {
       // data['eventInfluencerModelsList'] =
@@ -65,70 +67,70 @@ class DetailEventModel {
     }
     if (this.cancelReasonList != null) {
       data['cancelReasonList'] =
-          this.cancelReasonList.map((v) => v.toJson()).toList();
+          this.cancelReasonList!.map((v) => v.toJson()).toList();
     }
     if (this.dealersModels != null) {
       data['dealersModels'] =
-          this.dealersModels.map((v) => v.toJson()).toList();
+          this.dealersModels!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpEventModel {
-  int eventId;
-  int tsoId;
-  String techOfferName;
-  String referenceId;
-  int eventTypeId;
-  String eventTypeText;
-  String eventDate;
-  String eventTime;
-  int dalmiaInflCount;
-  int nonDalmiaInflCount;
-  int actualDalmiaInflCount;
-  int actualNonDalmiaInflCount;
-  String venue;
-  String venueAddress;
-  String actualVenue;
-  String actualVenueAddress;
-  int expectedLeadsCount;
-  int giftDistributionCount;
-  int actualGiftDistributionCount;
-  String eventLocation;
-  String eventLocationLat;
-  String eventLocationLong;
-  String actualEventLocation;
-  String actualEventLocationLat;
-  String actualEventLocationLong;
-  String eventComment;
-  int eventStatusId;
-  String eventStatusText;
-  String eventStage;
-  String eventCreatedBy;
-  String eventCreatedOn;
-  String eventSubmittedOn;
-  String eventApprovedBy;
-  String eventApprovedOn;
-  String eventRejectedOn;
-  String eventRejectedBy;
-  String eventCancelledOn;
-  int eventCancelReasonId;
-  String eventCancelReasonText;
-  String eventCancelComment;
-  String eventCompletedOn;
-  String eventCompleteRejectedBy;
-  String eventCompleteRejectedOn;
-  String eventStartOn;
-  String eventEndOn;
-  String eventEmailUniqueId;
-  String eventStartUserLat;
-  String eventStartUserLong;
-  String eventEndUserLat;
-  String eventEndUserLong;
-  String isEventStarted;
+  late int eventId;
+  int? tsoId;
+  String? techOfferName;
+  String? referenceId;
+  int? eventTypeId;
+  String? eventTypeText;
+  String? eventDate;
+  String? eventTime;
+  int? dalmiaInflCount;
+  int? nonDalmiaInflCount;
+  int? actualDalmiaInflCount;
+  int? actualNonDalmiaInflCount;
+  String? venue;
+  String? venueAddress;
+  String? actualVenue;
+  String? actualVenueAddress;
+  int? expectedLeadsCount;
+  int? giftDistributionCount;
+  int? actualGiftDistributionCount;
+  String? eventLocation;
+  String? eventLocationLat;
+  String? eventLocationLong;
+  String? actualEventLocation;
+  String? actualEventLocationLat;
+  String? actualEventLocationLong;
+  String? eventComment;
+  int? eventStatusId;
+  String? eventStatusText;
+  String? eventStage;
+  String? eventCreatedBy;
+  String? eventCreatedOn;
+  String? eventSubmittedOn;
+  String? eventApprovedBy;
+  String? eventApprovedOn;
+  String? eventRejectedOn;
+  String? eventRejectedBy;
+  String? eventCancelledOn;
+  int? eventCancelReasonId;
+  String? eventCancelReasonText;
+  String? eventCancelComment;
+  String? eventCompletedOn;
+  String? eventCompleteRejectedBy;
+  String? eventCompleteRejectedOn;
+  String? eventStartOn;
+  String? eventEndOn;
+  String? eventEmailUniqueId;
+  String? eventStartUserLat;
+  String? eventStartUserLong;
+  String? eventEndUserLat;
+  String? eventEndUserLong;
+  String? isEventStarted;
   MwpEventModel(
-      {this.eventId,
+      {required this.eventId,
         this.tsoId,
         this.techOfferName,
         this.referenceId,
@@ -294,12 +296,12 @@ class MwpEventModel {
 }
 
 class EventDealersModelList {
-    int eventDealerId;
-  int eventId;
-  String dealerId;
-  String dealerName;
-  String eventStage;
-  String isActive;
+    int? eventDealerId;
+  int? eventId;
+  String? dealerId;
+  String? dealerName;
+  String? eventStage;
+  String? isActive;
 
   EventDealersModelList(
       {this.eventDealerId,
@@ -331,8 +333,8 @@ class EventDealersModelList {
 }
 
 class CancelReasonList {
-  int eventCancelReasonId;
-  String eventCancelReason;
+  int? eventCancelReasonId;
+  String? eventCancelReason;
 
   CancelReasonList({this.eventCancelReasonId, this.eventCancelReason});
 
@@ -350,8 +352,8 @@ class CancelReasonList {
 }
 
 class DealersModels {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
 
   DealersModels({this.dealerId, this.dealerName});
 

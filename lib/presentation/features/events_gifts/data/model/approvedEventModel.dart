@@ -1,8 +1,10 @@
+
+
 class ApprovedEventsModel {
-  String respCode;
-  String respMsg;
-  List<EventListModels> eventListModels;
-  List<EventStatusEntities> eventStatusEntities;
+  String? respCode;
+  String? respMsg;
+  List<EventListModels>? eventListModels;
+  List<EventStatusEntities>? eventStatusEntities;
 
   ApprovedEventsModel(
       {this.respCode,
@@ -16,13 +18,13 @@ class ApprovedEventsModel {
     if (json['eventListModels'] != null) {
       eventListModels = new List<EventListModels>.empty(growable: true);
       json['eventListModels'].forEach((v) {
-        eventListModels.add(new EventListModels.fromJson(v));
+        eventListModels!.add(new EventListModels.fromJson(v));
       });
     }
     if (json['eventStatusEntities'] != null) {
       eventStatusEntities = new List<EventStatusEntities>.empty(growable: true);
       json['eventStatusEntities'].forEach((v) {
-        eventStatusEntities.add(new EventStatusEntities.fromJson(v));
+        eventStatusEntities!.add(new EventStatusEntities.fromJson(v));
       });
     }
   }
@@ -33,33 +35,33 @@ class ApprovedEventsModel {
     data['respMsg'] = this.respMsg;
     if (this.eventListModels != null) {
       data['eventListModels'] =
-          this.eventListModels.map((v) => v.toJson()).toList();
+          this.eventListModels!.map((v) => v.toJson()).toList();
     }
     if (this.eventStatusEntities != null) {
       data['eventStatusEntities'] =
-          this.eventStatusEntities.map((v) => v.toJson()).toList();
+          this.eventStatusEntities!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class EventListModels {
-  int eventId;
-  String eventDate;
-  int eventTypeId;
-  int eventStatusId;
-  String eventStatusText;
-  String eventVenue;
-  String actualEventVenue;
-  int eventInflCount;
-  int actualEventInflCount;
-  int expectedLeadsCount;
-  String dealerName;
-  int count;
-  String eventTypeText;
+  late int eventId;
+  String? eventDate;
+  int? eventTypeId;
+  int? eventStatusId;
+  String? eventStatusText;
+  String? eventVenue;
+  String? actualEventVenue;
+  int? eventInflCount;
+  int? actualEventInflCount;
+  int? expectedLeadsCount;
+  String? dealerName;
+  int? count;
+  String? eventTypeText;
 
   EventListModels(
-      {this.eventId,
+      {required this.eventId,
         this.eventDate,
         this.eventTypeId,
         this.eventStatusId,
@@ -109,8 +111,8 @@ class EventListModels {
 }
 
 class EventStatusEntities {
-  int eventStatusId;
-  String eventStatusText;
+  int? eventStatusId;
+  String? eventStatusText;
 
   EventStatusEntities({this.eventStatusId, this.eventStatusText});
 

@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class MWPPlanController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  MWPPlanController({@required this.repository}) : assert(repository != null);
+  MWPPlanController({required this.repository}) : assert(repository != null);
 
   final _saveMWPResponse = new SaveMWPResponse().obs;
   final  _getMWPResponse = new GetMWPResponse().obs;
@@ -249,8 +251,8 @@ class MWPPlanController extends GetxController {
   getMWPPlan(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getMWPData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";

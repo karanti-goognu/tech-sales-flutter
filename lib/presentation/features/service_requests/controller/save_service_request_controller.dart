@@ -1,3 +1,5 @@
+
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -18,22 +20,22 @@ class SaveServiceRequestController extends GetxController {
 
   final SrRepository repository;
 
-  SaveServiceRequestController({@required this.repository})
+  SaveServiceRequestController({required this.repository})
       : assert(repository != null);
   final _saveRequestData = SrComplaintModel().obs;
   get saveRequestData => _saveRequestData.value;
   set saveRequestData(value) => _saveRequestData.value = value;
   String responseForDialog = '';
 
-  List<File> imageList;
+  List<File>? imageList;
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
   getAccessKeyAndSaveRequest(
       List<File> imageList, SaveServiceRequest saveRequestModel) {
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     Future.delayed(
@@ -44,10 +46,10 @@ class SaveServiceRequestController extends GetxController {
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveServiceRequest(
-                imageList, data.accessKey, userSecurityKey, saveRequestModel)
+                imageList, data!.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
           Get.back();
-          if (value['resp-code'] == 'SRC2035') {
+          if (value!['resp-code'] == 'SRC2035') {
             Get.defaultDialog(
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
@@ -69,8 +71,8 @@ class SaveServiceRequestController extends GetxController {
     });
   }
 
-  Future<Map> saveServiceRequest(List<File> imageList, String accessKey,
-      String userSecurityKey, SaveServiceRequest saveRequestModel) {
+  Future<Map?> saveServiceRequest(List<File> imageList, String? accessKey,
+      String? userSecurityKey, SaveServiceRequest saveRequestModel) {
     return repository
         .saveServiceRequest(
             imageList, accessKey, userSecurityKey, saveRequestModel)

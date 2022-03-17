@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -15,8 +17,8 @@ class ApprovedEvents extends StatefulWidget {
 }
 
 class _ApprovedEventsState extends State<ApprovedEvents> {
-  ApprovedEventsModel approvedEventsModel;
-  ScrollController _scrollController;
+  ApprovedEventsModel? approvedEventsModel;
+  ScrollController? _scrollController;
   EventsFilterController eventsFilterController = Get.find();
 
   List<EventListModels> current = [];
@@ -44,15 +46,14 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
 
 
   getSortedData() {
-    DateTime now = DateTime.now();
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     int day = DateTime.now().day;
 
-    if (approvedEventsModel != null && approvedEventsModel.eventListModels != null) {
+    if (approvedEventsModel != null && approvedEventsModel!.eventListModels != null) {
 
-      for (int i = 0; i < approvedEventsModel.eventListModels.length; i++) {
-        String date = approvedEventsModel.eventListModels[i].eventDate;
+      for (int i = 0; i < approvedEventsModel!.eventListModels!.length; i++) {
+        String date = approvedEventsModel!.eventListModels![i].eventDate!;
         DateTime eventDt = DateTime.parse(date);
         int yearEvent = eventDt.year;
         int monthEvent = eventDt.month;
@@ -60,14 +61,14 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
 
        if((year == yearEvent && month == monthEvent && day == dayEvent) ||
            (year == yearEvent && month == monthEvent && dayEvent - day == 1)){
-         current.add(approvedEventsModel.eventListModels[i]);
+         current.add(approvedEventsModel!.eventListModels![i]);
 
        }else if((year == yearEvent && (month == monthEvent) && (dayEvent - day > 1)) ||
            (year - yearEvent > 0 && (month - monthEvent > 0 ))){
-         upcoming.add(approvedEventsModel.eventListModels[i]);
+         upcoming.add(approvedEventsModel!.eventListModels![i]);
 
        }else if(year == yearEvent && (month == monthEvent || monthEvent - month < 0)){
-         past.add(approvedEventsModel.eventListModels[i]);
+         past.add(approvedEventsModel!.eventListModels![i]);
        }
       }
     }
@@ -134,7 +135,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                 ],
               ),
               children: [
-                (upcoming != null && upcoming.length > 0)?
+                (upcoming.length > 0)?
                 getList(upcoming):Container(
                   child: Center(child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -163,7 +164,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                 ],
               ),
               children: [
-                (past != null && past.length > 0)?
+                (past.length > 0)?
                 getList(past):Container(
                   child: Center(child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -181,8 +182,8 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
 
   Widget getList(List<EventListModels> list) {
     return (approvedEventsModel != null &&
-            approvedEventsModel.eventListModels != null &&
-            approvedEventsModel.eventListModels.length > 0 )
+            approvedEventsModel!.eventListModels != null &&
+            approvedEventsModel!.eventListModels!.length > 0 )
 
         ? ListView.builder(
             shrinkWrap: true,
@@ -224,7 +225,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                list[index].eventDate,
+                                list[index].eventDate!,
                                 //"24-Mar-21",
                                 style: TextStyle(
                                     fontSize: 15,
@@ -253,7 +254,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                 // () =>
 
                                 Text(
-                                  list[index].eventTypeText,
+                                  list[index].eventTypeText!,
                                   // "Mason Meet",
                                   style: TextStyle(
                                       fontSize: 15,
@@ -281,7 +282,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                 Flexible(
                                   flex: 2,
                                   child: Text(
-                                    list[index].eventVenue,
+                                    list[index].eventVenue!,
                                     //"Venue:",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

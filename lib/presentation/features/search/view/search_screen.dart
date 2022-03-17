@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
@@ -14,7 +16,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FocusNode inputFieldNode;
+  FocusNode? inputFieldNode;
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();

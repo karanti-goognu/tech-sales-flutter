@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
@@ -17,7 +19,7 @@ class DraftLeadListScreen extends StatefulWidget {
 class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
   final db = DraftLeadDBHelper();
   List<SaveLeadRequestDraftModel> draftList = new List.empty(growable: true);
-  List<int> draftIdList = new List.empty(growable: true);
+  List<int?> draftIdList = new List.empty(growable: true);
 
   @override
   void initState() {
@@ -32,10 +34,10 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     db.fetchAll().then((value) {
       for (int i = 0; i < value.length; i++) {
         setState(() {
-          print(json.decode(value[i].leadModel));
+          print(json.decode(value[i].leadModel!));
           draftIdList.add(value[i].id);
           draftList.add(SaveLeadRequestDraftModel.fromJson(
-              json.decode(value[i].leadModel)));
+              json.decode(value[i].leadModel!)));
         });
       }
     });
@@ -174,8 +176,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                               ),
                               Text(
                                 "District : " +
-                                        draftList[index].leadDistrictName ??
-                                    "",
+                                        draftList[index].leadDistrictName!,
                                 style: TextStyle(
                                   fontSize: 13,
                                 ),
@@ -207,7 +208,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                                   Text(
                                     (draftList[index].leadSalesPotentialMt !=
                                             "")
-                                        ? draftList[index].leadSalesPotentialMt
+                                        ? draftList[index].leadSalesPotentialMt!
                                         : "0",
                                     style: TextStyle(
                                         fontSize: 15,
@@ -239,7 +240,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
     for (int i = 0; i < draftList.length; i++) {
       if (draftList[i].leadSalesPotentialMt != null &&
           draftList[i].leadSalesPotentialMt != "") {
-        sum = sum + double.parse(draftList[i].leadSalesPotentialMt);
+        sum = sum + double.parse(draftList[i].leadSalesPotentialMt!);
       }
     }
     return sum.toString();

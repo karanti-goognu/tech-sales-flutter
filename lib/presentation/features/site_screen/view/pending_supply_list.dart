@@ -1,8 +1,9 @@
+
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_detail.dart';
@@ -28,17 +29,17 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   SiteController _siteController = Get.find();
   SplashController _splashController = Get.find();
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       _siteController.offset += 10;
       _siteController.pendingSupplyList();
     }
   }
 
-  PendingSupplyDataResponse pendingSupplyDataResponse;
+  PendingSupplyDataResponse? pendingSupplyDataResponse;
 
   getPendingSupplyData() async {
     var data = await _siteController.pendingSupplyList();
@@ -94,8 +95,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   }
 
   void disposeController(BuildContext context) {
-//or what you wnat to dispose/clear
-    _siteController?.dispose();
+    _siteController.dispose();
     _siteController.offset = 0;
   }
 
@@ -545,7 +545,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num = _siteController
+                                                        String? num = _siteController
                                                             .pendingSupplyListResponse
                                                             .pendingSuppliesModel[
                                                                 index]

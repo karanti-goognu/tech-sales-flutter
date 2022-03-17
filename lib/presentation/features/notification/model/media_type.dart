@@ -1,3 +1,5 @@
+
+
 enum MediaType { image, audio, video }
 
 extension MediaTypeExt on MediaType {

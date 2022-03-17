@@ -1,14 +1,16 @@
+
+
 class SaveNewInfluencerResponse {
-  String ilpInterested;
-  int influencerCategoryId;
-  String influencerCategoryText;
-  String influencerName;
-  int influencerTypeId;
-  String influencerTypeText;
-  String mobileNumber;
-  String respCode;
-  String respMsg;
-  int inflId;
+  String? ilpInterested;
+  int? influencerCategoryId;
+  String? influencerCategoryText;
+  String? influencerName;
+  int? influencerTypeId;
+  String? influencerTypeText;
+  String? mobileNumber;
+  String? respCode;
+  String? respMsg;
+  int? inflId;
 
   SaveNewInfluencerResponse(
       {this.ilpInterested,

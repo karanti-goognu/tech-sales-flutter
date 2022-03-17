@@ -1,9 +1,11 @@
+
+
 class SitesListModel {
-  List<SitesEntity> sitesEntity;
-  String respCode;
-  String respMsg;
-  String totalSitePotential;
-  String totalSiteCount;
+  List<SitesEntity>? sitesEntity;
+  String? respCode;
+  String? respMsg;
+  String? totalSitePotential;
+  String? totalSiteCount;
 
   SitesListModel(
       {this.sitesEntity,
@@ -16,7 +18,7 @@ class SitesListModel {
     if (json['sitesEntity'] != null) {
       sitesEntity = new List<SitesEntity>.empty(growable: true);
       json['sitesEntity'].forEach((v) {
-        sitesEntity.add(new SitesEntity.fromJson(v));
+        sitesEntity!.add(new SitesEntity.fromJson(v));
       });
     }
     respCode = json['resp_code'];
@@ -28,7 +30,7 @@ class SitesListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.sitesEntity != null) {
-      data['sitesEntity'] = this.sitesEntity.map((v) => v.toJson()).toList();
+      data['sitesEntity'] = this.sitesEntity!.map((v) => v.toJson()).toList();
     }
     data['resp_code'] = this.respCode;
     data['resp_msg'] = this.respMsg;
@@ -39,41 +41,41 @@ class SitesListModel {
 }
 
 class SitesEntity {
-  int siteId;
-  int leadId;
-  String siteSegment;
-  String assignedTo;
-  int siteStatusId;
-  int siteOppertunityId;
-  int siteProbabilityWinningId;
-  int siteStageId;
-  String contactName;
-  String contactNumber;
-  String siteCreationDate;
-  String siteGeotag;
-  String siteGeotagLat;
-  String siteGeotagLong;
-  String sitePincode;
-  String siteState;
-  String siteDistrict;
-  String siteTaluk;
-  double siteScore;
-  String sitePotentialMt;
-  String reraNumber;
-  String dealerId;
-  String siteBuiltArea;
-  int noOfFloors;
-  String productDemo;
-  String productOralBriefing;
-  String soCode;
-  String plotNumber;
-  String inactiveReasonText;
-  String nextVisitDate;
-  String closureReasonText;
-  String createdBy;
-  int createdOn;
-  String updatedBy;
-  int updatedOn;
+  int? siteId;
+  int? leadId;
+  String? siteSegment;
+  String? assignedTo;
+  int? siteStatusId;
+  int? siteOppertunityId;
+  int? siteProbabilityWinningId;
+  int? siteStageId;
+  String? contactName;
+  String? contactNumber;
+  String? siteCreationDate;
+  String? siteGeotag;
+  String? siteGeotagLat;
+  String? siteGeotagLong;
+  String? sitePincode;
+  String? siteState;
+  String? siteDistrict;
+  String? siteTaluk;
+  double? siteScore;
+  String? sitePotentialMt;
+  String? reraNumber;
+  String? dealerId;
+  String? siteBuiltArea;
+  int? noOfFloors;
+  String? productDemo;
+  String? productOralBriefing;
+  String? soCode;
+  String? plotNumber;
+  String? inactiveReasonText;
+  String? nextVisitDate;
+  String? closureReasonText;
+  String? createdBy;
+  int? createdOn;
+  String? updatedBy;
+  int? updatedOn;
 
   SitesEntity(
       {this.siteId,

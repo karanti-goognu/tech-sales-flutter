@@ -1,10 +1,12 @@
+
+
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/provider/home_provider.dart';
 import 'package:meta/meta.dart';
 
 class MyRepositoryHome {
   final MyApiClientHome apiClient;
 
-  MyRepositoryHome({@required this.apiClient}) : assert(apiClient != null);
+  MyRepositoryHome({required this.apiClient}) : assert(apiClient != null);
 
   getAccessKey() {
     return apiClient.getAccessKey();
@@ -12,16 +14,16 @@ class MyRepositoryHome {
 
   getCheckInDetails(
       String url,
-      String accessKey,
+      String? accessKey,
       String secretKey,
       String referenceId,
-      String journeyDate,
-      String journeyStartTime,
-      String journeyStartLat,
-      String journeyStartLong,
-      String journeyEndTime,
-      String journeyEndLat,
-      String journeyEndLong) {
+      String? journeyDate,
+      String? journeyStartTime,
+      String? journeyStartLat,
+      String? journeyStartLong,
+      String? journeyEndTime,
+      String? journeyEndLat,
+      String? journeyEndLong) {
     return apiClient.getCheckInDetails(
         url,
         accessKey,
@@ -35,7 +37,7 @@ class MyRepositoryHome {
         journeyEndLat,
         journeyEndLong);
   }
-    getHomeDashboardDetails(String accessKey, String secretKey, String empId) {
+    getHomeDashboardDetails(String? accessKey, String secretKey, String empId) {
     return apiClient.getHomePageDashboardDetails(accessKey,secretKey, empId);
   }
 }

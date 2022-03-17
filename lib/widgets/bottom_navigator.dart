@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class BottomNavigator extends StatelessWidget {
   final searchType;
   const BottomNavigator({
-    Key key,
+    Key? key,
     this.searchType
   }) : super(key: key);
 
@@ -118,7 +118,7 @@ class BottomNavigator extends StatelessWidget {
 
 class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
   const BottomNavigatorWithoutDraftsAndSearch({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -165,7 +165,7 @@ class BottomNavigatorWithoutDraftsAndSearch extends StatelessWidget {
 
 class BottomNavigatorWithoutTabs extends StatelessWidget {
   const BottomNavigatorWithoutTabs({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -1,4 +1,6 @@
-import 'dart:convert';
+
+
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -13,7 +15,6 @@ import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,14 +23,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class SiteVisitWidget extends StatefulWidget {
-  int siteId;
-  ViewSiteDataResponse viewSiteDataResponse;
-  MwpVisitModel mwpVisitModel;
-  String siteDate;
-  int visitSubTypeId;
-  SiteOpportunityStatusEntity selectedOpportunitStatusEnity;
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
-  String visitRemarks;
+  int? siteId;
+  ViewSiteDataResponse? viewSiteDataResponse;
+  MwpVisitModel? mwpVisitModel;
+  String? siteDate;
+  int? visitSubTypeId;
+  SiteOpportunityStatusEntity? selectedOpportunitStatusEnity;
+  List<SiteOpportunityStatusEntity>? siteOpportunityStatusEntity;
+  String? visitRemarks;
   SiteVisitWidget(
       {this.mwpVisitModel,
        this.siteId,
@@ -45,21 +46,20 @@ class SiteVisitWidget extends StatefulWidget {
 
 class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
-  LatLng _currentPosition;
+  LatLng? _currentPosition;
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
-  String _remark, visitSubType;
-  String selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
+  String? _remark, visitSubType;
+  String? selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   SiteController _siteController = Get.find();
-  SiteOpportunityStatusEntity _siteOpportunitStatusEnity;
   TextEditingController _siteTypeController = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
   String selectedDateString = DateFormat("yyyy-MM-dd").format(DateTime.now());
-  bool _isStartButtonDisabled;
-  bool _isEndButtonDisabled;
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+  late bool _isStartButtonDisabled;
+  late bool _isEndButtonDisabled;
+  List<SiteOpportunityStatusEntity>? siteOpportunityStatusEntity =
   new List.empty(growable: true);
-  ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+  ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
 
   @override
   void initState() {
@@ -72,34 +72,32 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   setData() {
     setState(() {
     viewSiteDataResponse = widget.viewSiteDataResponse;
-    siteOpportunityStatusEntity = viewSiteDataResponse.siteOpportunityStatusEntity;
-    if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
-      for (int i = 0; i < siteOpportunityStatusEntity.length; i++) {
-        if (viewSiteDataResponse.sitesModal.siteOppertunityId.toString() ==
-            siteOpportunityStatusEntity[i].id.toString()) {
-          _siteOpportunitStatusEnity = siteOpportunityStatusEntity[i];
+    siteOpportunityStatusEntity = viewSiteDataResponse!.siteOpportunityStatusEntity;
+    if (viewSiteDataResponse!.sitesModal!.siteOppertunityId != null) {
+      for (int i = 0; i < siteOpportunityStatusEntity!.length; i++) {
+        if (viewSiteDataResponse!.sitesModal!.siteOppertunityId.toString() ==
+            siteOpportunityStatusEntity![i].id.toString()) {
           _siteTypeController.text =
-              siteOpportunityStatusEntity[i].opportunityStatus;
+              siteOpportunityStatusEntity![i].opportunityStatus!;
         }
       }
     } else {
-      _siteOpportunitStatusEnity = siteOpportunityStatusEntity[0];
       _siteTypeController.text =
-          siteOpportunityStatusEntity[0].opportunityStatus;
+          siteOpportunityStatusEntity![0].opportunityStatus!;
     }
 
     if (widget.mwpVisitModel != null) {
-      if (widget.mwpVisitModel.nextVisitDate != null) {
+      if (widget.mwpVisitModel!.nextVisitDate != null) {
         var date = DateTime.fromMillisecondsSinceEpoch(
-            widget.mwpVisitModel.nextVisitDate);
+            widget.mwpVisitModel!.nextVisitDate!);
         var formattedDate = DateFormat("yyyy-MM-dd").format(date);
         selectedDateStringNext = "$formattedDate";
       } else {
         selectedDateStringNext = "Next visit date";
       }
-      _siteTypeController.text = widget.mwpVisitModel.visitSubType;
-      _selectedVisitType.text = widget.mwpVisitModel.visitType;
-      selectedDateString = "${widget.mwpVisitModel.visitDate}";
+      _siteTypeController.text = widget.mwpVisitModel!.visitSubType!;
+      _selectedVisitType.text = widget.mwpVisitModel!.visitType!;
+      selectedDateString = "${widget.mwpVisitModel!.visitDate}";
     } else {
      // _siteTypeController.text = "";
     }
@@ -117,44 +115,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
 
-    final visitType = (widget.selectedOpportunitStatusEnity == null)
-        ? DropdownButtonFormField(
-            items: widget.siteOpportunityStatusEntity
-                .map((label) => DropdownMenuItem(
-                      child: Text(
-                        label.opportunityStatus,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      value: label.opportunityStatus,
-                    ))
-                .toList(),
-            onChanged: (value) {},
-            decoration: FormFieldStyle.buildInputDecoration(
-              labelText: "Opportunity Status",
-            ),
-          )
-        : DropdownButtonFormField<SiteOpportunityStatusEntity>(
-            value: widget.selectedOpportunitStatusEnity,
-            items: [widget.selectedOpportunitStatusEnity]
-                .map((label) => DropdownMenuItem(
-                      child: Text(
-                        label == null ? "" : label.opportunityStatus,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      value: label,
-                    ))
-                .toList(),
-            onChanged: (value) {},
-            decoration: FormFieldStyle.buildInputDecoration(
-              labelText: "Opportunity Status",
-            ),
-          );
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -168,8 +128,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             if (!_isStartButtonDisabled) {
               _isStartButtonDisabled = true;
               _isEndButtonDisabled = false;
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 _getCurrentLocationStart();
               }
             }
@@ -196,8 +156,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           onPressed: () {
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 _getCurrentLocationEnd();
               }
             }
@@ -259,7 +219,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: typeValue,
-                                    onChanged: (String newValue) {
+                                    onChanged: (String? newValue) {
                                       setState(() {
                                         typeValue = newValue;
                                       });
@@ -325,7 +285,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             ),
                             TextFormField(
                                 onSaved: (val) {
-                                  print('saved' + val);
+                                  print('saved' + val!);
                                   _remark = val;
                                 },
                                 onChanged: (_) {
@@ -349,8 +309,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                     primary: ColorConstants.buttonNormalColor,
                                   ),
                                   onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
                                       _getCurrentLocation(0);
                                     }
                                   },
@@ -383,12 +343,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                   fontFamily: "Muli"),
                             ),
                             SizedBox(height: 16),
-                            ((widget.mwpVisitModel.visitStartTime != null &&
-                                        widget.mwpVisitModel.visitEndTime ==
+                            ((widget.mwpVisitModel!.visitStartTime != null &&
+                                        widget.mwpVisitModel!.visitEndTime ==
                                             null) ||
-                                    (widget.mwpVisitModel.visitStartTime !=
+                                    (widget.mwpVisitModel!.visitStartTime !=
                                             null &&
-                                        widget.mwpVisitModel.visitEndTime !=
+                                        widget.mwpVisitModel!.visitEndTime !=
                                             null))
                                 ? TextFormField(
                                     controller: _selectedVisitType,
@@ -411,7 +371,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton<String>(
                                         value: typeValue,
-                                        onChanged: (String newValue) {
+                                        onChanged: (String? newValue) {
                                           setState(() {
                                             typeValue = newValue;
                                           });
@@ -479,8 +439,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             // SizedBox(
                             //   height: 16,
                             // ),
-                            (widget.mwpVisitModel.visitStartTime != null &&
-                                    widget.mwpVisitModel.visitEndTime != null)
+                            (widget.mwpVisitModel!.visitStartTime != null &&
+                                    widget.mwpVisitModel!.visitEndTime != null)
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -505,7 +465,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                               width: 1.0), // Set border width
                                         ),
                                         child: Text(
-                                          widget.mwpVisitModel.remark,
+                                          widget.mwpVisitModel!.remark!,
                                           maxLines: null,
                                         ),
                                       ),
@@ -513,15 +473,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                   )
                                 : TextFormField(
                                     initialValue:
-                                        widget.mwpVisitModel.remark == 'null'
+                                        widget.mwpVisitModel!.remark == 'null'
                                             ? ''
-                                            : widget.mwpVisitModel.remark,
+                                            : widget.mwpVisitModel!.remark,
                                     onSaved: (val) {
-                                      print('saved' + val);
-                                      widget.mwpVisitModel.remark = val;
+                                      print('saved' + val!);
+                                      widget.mwpVisitModel!.remark = val;
                                     },
                                     onChanged: (_) {
-                                      widget.mwpVisitModel.remark =
+                                      widget.mwpVisitModel!.remark =
                                           _.toString();
                                     },
                                     style: TextStyle(
@@ -534,12 +494,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            (widget.mwpVisitModel.visitStartTime == null &&
-                                    widget.mwpVisitModel.visitEndTime == null)
+                            (widget.mwpVisitModel!.visitStartTime == null &&
+                                    widget.mwpVisitModel!.visitEndTime == null)
                                 ? btnStart
-                                : (widget.mwpVisitModel.visitStartTime !=
+                                : (widget.mwpVisitModel!.visitStartTime !=
                                             null &&
-                                        widget.mwpVisitModel.visitEndTime ==
+                                        widget.mwpVisitModel!.visitEndTime ==
                                             null)
                                     ? btnEnd
                                     : Container(),
@@ -565,7 +525,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                selectedDateStringNext,
+                selectedDateStringNext!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 14,
@@ -589,7 +549,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -601,24 +561,22 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   _getCurrentLocation(int id) async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-    if (result != null) {
       setState(() {
         _currentPosition = result.latLng;
         btnCreatePressed(id);
       });
-    }
   }
 
-  SiteVisitResponseModel _siteVisitResponseModel;
+  SiteVisitResponseModel? _siteVisitResponseModel;
   btnCreatePressed(int id) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
-    String empId = await getEmpId();
+    String? empId = await (getEmpId() as FutureOr<String?>);
 
     if (widget.selectedOpportunitStatusEnity == null) {
       visitSubType = visitSubType;
     } else {
-      visitSubType = widget.selectedOpportunitStatusEnity.opportunityStatus;
+      visitSubType = widget.selectedOpportunitStatusEnity!.opportunityStatus;
     }
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
@@ -639,8 +597,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitEndLong": "",
       "visitEndTime": "",
       "visitOutcomes": "",
-      "visitStartLat": '${_currentPosition.latitude}',
-      "visitStartLong": '${_currentPosition.longitude}',
+      "visitStartLat": '${_currentPosition!.latitude}',
+      "visitStartLong": '${_currentPosition!.longitude}',
       "visitStartTime": visitStartTime,
       "visitSubType": visitSubType,
       "visitType": typeValue,
@@ -680,41 +638,39 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   _getCurrentLocationStart() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-    if (result != null) {
       setState(() {
         _currentPosition = result.latLng;
         btnStartPressed();
       });
-    }
   }
 
   btnStartPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
-    String empId = await getEmpId();
+    String? empId = await (getEmpId() as FutureOr<String?>);
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
-      selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
+      selectedDateStringNext = '${widget.mwpVisitModel!.nextVisitDate}';
     }
     SiteVisitRequestModel _siteVisitRequestModel =
         SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
       "dspAvailableQty": "",
       "eventType": "",
-      "id": widget.mwpVisitModel.id,
+      "id": widget.mwpVisitModel!.id,
       "isDspAvailable": "",
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
-      "remark": widget.mwpVisitModel.remark,
+      "remark": widget.mwpVisitModel!.remark,
       "visitDate": selectedDateString,
       "visitEndLat": "",
       "visitEndLong": "",
       "visitEndTime": "",
       "visitOutcomes": "",
-      "visitStartLat": '${_currentPosition.latitude}',
-      "visitStartLong": '${_currentPosition.longitude}',
+      "visitStartLat": '${_currentPosition!.latitude}',
+      "visitStartLong": '${_currentPosition!.longitude}',
       "visitStartTime": visitStartTime,
-      "visitSubType": widget.mwpVisitModel.visitSubType,
+      "visitSubType": widget.mwpVisitModel!.visitSubType,
       "visitType": typeValue,
     });
 
@@ -754,22 +710,20 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   _getCurrentLocationEnd() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-    if (result != null) {
       setState(() {
         _currentPosition = result.latLng;
         btnEndPressed();
       });
-    }
   }
 
 
   btnEndPressed() async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String currentTime = dateFormat.format(DateTime.now());
-    String empId = await getEmpId();
+    String? empId = await (getEmpId() as FutureOr<String?>);
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
-      selectedDateStringNext = '${widget.mwpVisitModel.nextVisitDate}';
+      selectedDateStringNext = '${widget.mwpVisitModel!.nextVisitDate}';
     }
 
     SiteVisitRequestModel _siteVisitRequestModel =
@@ -777,21 +731,21 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "docId": widget.siteId,
       "dspAvailableQty": "",
       "eventType": "",
-      "id": widget.mwpVisitModel.id,
+      "id": widget.mwpVisitModel!.id,
       "isDspAvailable": "",
       "nextVisitDate": selectedDateStringNext,
       "referenceId": empId,
-      "remark": widget.mwpVisitModel.remark,
+      "remark": widget.mwpVisitModel!.remark,
       "visitDate": selectedDateString,
-      "visitEndLat": '${_currentPosition.latitude}',
-      "visitEndLong": '${_currentPosition.longitude}',
+      "visitEndLat": '${_currentPosition!.latitude}',
+      "visitEndLong": '${_currentPosition!.longitude}',
       "visitEndTime": currentTime,
       "visitOutcomes": "",
-      "visitStartLat": widget.mwpVisitModel.visitStartLat,
-      "visitStartLong": widget.mwpVisitModel.visitStartLong,
-      "visitStartTime": widget.mwpVisitModel.visitStartTime,
-      "visitSubType": widget.mwpVisitModel.visitSubType,
-      "visitType": widget.mwpVisitModel.visitType,
+      "visitStartLat": widget.mwpVisitModel!.visitStartLat,
+      "visitStartLong": widget.mwpVisitModel!.visitStartLong,
+      "visitStartTime": widget.mwpVisitModel!.visitStartTime,
+      "visitSubType": widget.mwpVisitModel!.visitSubType,
+      "visitType": widget.mwpVisitModel!.visitType,
     });
 
     internetChecking().then((result) => {
@@ -860,7 +814,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -874,7 +828,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   Future<void> _selectDateNextVisit(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -898,27 +852,27 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           (data) async {
             viewSiteDataResponse = data;
             setState(() {
-              widget.mwpVisitModel = viewSiteDataResponse.mwpVisitModel;
+              widget.mwpVisitModel = viewSiteDataResponse!.mwpVisitModel;
               widget.siteDate =
-                  viewSiteDataResponse.sitesModal.siteCreationDate;
+                  viewSiteDataResponse!.sitesModal!.siteCreationDate;
               widget.visitSubTypeId =
-                  viewSiteDataResponse.sitesModal.siteOppertunityId;
+                  viewSiteDataResponse!.sitesModal!.siteOppertunityId;
 
               widget.siteOpportunityStatusEntity =
-                  viewSiteDataResponse.siteOpportunityStatusEntity;
+                  viewSiteDataResponse!.siteOpportunityStatusEntity;
               widget.visitRemarks =
-                  viewSiteDataResponse.sitesModal.siteClosureReasonText;
+                  viewSiteDataResponse!.sitesModal!.siteClosureReasonText;
 
-              if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+              if (viewSiteDataResponse!.sitesModal!.siteOppertunityId != null) {
                 for (int i = 0;
-                    i < viewSiteDataResponse.siteOpportunityStatusEntity.length;
+                    i < viewSiteDataResponse!.siteOpportunityStatusEntity!.length;
                     i++) {
-                  if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                  if (viewSiteDataResponse!.sitesModal!.siteOppertunityId
                           .toString() ==
-                      viewSiteDataResponse.siteOpportunityStatusEntity[i].id
+                      viewSiteDataResponse!.siteOpportunityStatusEntity![i].id
                           .toString()) {
                     widget.selectedOpportunitStatusEnity =
-                        viewSiteDataResponse.siteOpportunityStatusEntity[i];
+                        viewSiteDataResponse!.siteOpportunityStatusEntity![i];
                   }
                 }
               } else {

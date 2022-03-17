@@ -1,5 +1,6 @@
+
+
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -8,29 +9,28 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 class MyApiClientSplash {
   final http.Client httpClient;
-  String version;
+  String? version;
 
-  MyApiClientSplash({@required this.httpClient});
+  MyApiClientSplash({required this.httpClient});
 
-  getAccessKey() async {
+  Future<AccessKeyModel> getAccessKey() async {
+    late AccessKeyModel accessKeyModel;
     try {
       version = VersionClass.getVersion();
       Uri uri = Uri.parse(UrlConstants.getAccessKey);
-      var response = await httpClient.get(uri,
-          headers: requestHeaders(version));
+      var response = await httpClient.get(uri, headers: requestHeaders(version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel;
+        accessKeyModel = AccessKeyModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception ${_.toString()}');
     }
+    return accessKeyModel;
   }
 
   getSecretKey(String empId, String mobile) async {
@@ -39,7 +39,7 @@ class MyApiClientSplash {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': version,
+        'app-version': version!,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -65,7 +65,7 @@ class MyApiClientSplash {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': version,
+        'app-version': version!,
         'access-key': accessKey,
         'user-security-key': securityKey,
       };

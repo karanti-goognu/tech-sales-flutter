@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -18,8 +20,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class InfluencerNameList extends StatefulWidget {
-  String influencerName;
-  String influencerID;
+  String? influencerName;
+  String? influencerID;
   InfluencerNameList({this.influencerID, this.influencerName});
 
   @override
@@ -28,7 +30,7 @@ class InfluencerNameList extends StatefulWidget {
 }
 
 
-PersistentBottomSheetController controller;
+PersistentBottomSheetController? controller;
 
 class _InfluencerNameListState extends State<InfluencerNameList> {
   SiteController _siteController = Get.find();
@@ -36,7 +38,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
 
   
   
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   getData() async {
     Future.delayed(Duration.zero,
@@ -61,12 +63,12 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     });
 
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       _siteController.offset += 10;
       // _siteController.getAccessKey().then((value) async {
       //   _siteController.getSitesData(value.accessKey,widget.influencerID);
@@ -82,7 +84,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   @override
   void dispose() {
     super.dispose();
-    _siteController?.dispose();
+    _siteController.dispose();
     _siteController.offset = 0;
   }
 
@@ -100,7 +102,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: SizeConfig.screenHeight*.14,
+            toolbarHeight: SizeConfig.screenHeight!*.14,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -172,13 +174,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
 
   Widget leadsDetailWidget() {
     return Obx(
-          () => (_siteController == null)
-          ? Container(
-        child: Center(
-          child: Text("Site controller  is empty!!"),
-        ),
-      )
-          : (_siteController.sitesListResponse == null)
+          () => (_siteController.sitesListResponse == null)
           ? Container(
         child: Center(
           child: Text("Site list response  is empty!!"),
@@ -475,7 +471,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                               ),
                             ),
                             onTap: () {
-                              String num =
+                              String? num =
                                   _siteController
                                       .sitesListResponse
                                       .sitesEntity[
@@ -536,7 +532,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
   }
 
 
-  String printSiteStage(int value) {
+  String printSiteStage(int? value) {
     List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
@@ -547,7 +543,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     }
   }
 
-  String printOpportunityStatus(int value) {
+  String printOpportunityStatus(int? value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
@@ -558,7 +554,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     }
   }
 
-  String printProbabilityOfWinning(int value) {
+  String printProbabilityOfWinning(int? value) {
     List<SiteProbabilityWinningEntity> data = List<SiteProbabilityWinningEntity>.from(_splashController
         .splashDataModel.siteProbabilityWinningEntity
         .where((i) => i.id == value));

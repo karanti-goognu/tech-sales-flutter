@@ -1,7 +1,9 @@
+
+
 class TotalPotentialModel {
-  String respCode;
-  String respMsg;
-  int totalSitePotential;
+  String? respCode;
+  String? respMsg;
+  int? totalSitePotential;
 
   TotalPotentialModel({this.respCode, this.respMsg, this.totalSitePotential});
 

@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +32,7 @@ class AddEventController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  AddEventController({@required this.repository}) : assert(repository != null);
+  AddEventController({required this.repository});
   final _accessKeyResponse = AccessKeyModel().obs;
   get accessKeyResponse => this._accessKeyResponse.value;
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
@@ -270,7 +271,7 @@ class AddEventController extends GetxController {
   get isVisibleContact => this._isVisibleContact.value;
 
   set isVisibleContact(value) => this._isVisibleContact.value = value;
-  LatLng _currentPosition;
+  LatLng? _currentPosition;
  // bool isVisibleContact = false;
 
   saveVisit(String accessKey) {
@@ -396,8 +397,8 @@ class AddEventController extends GetxController {
     // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getDealersList + "$empId";
       print('$url');
       repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
@@ -437,8 +438,8 @@ class AddEventController extends GetxController {
     //this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=VISIT&id=${this.visitId}";
       print('$url');
@@ -513,8 +514,8 @@ class AddEventController extends GetxController {
     this.isLoadingVisitView = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=MEET&id=${this.visitId}";
       print('$url');
@@ -652,8 +653,8 @@ class AddEventController extends GetxController {
               _currentPosition = result.latLng;
 
               print('start');
-              var journeyStartLat = _currentPosition.latitude;
-              var journeyStartLong = _currentPosition.longitude;
+              var journeyStartLat = _currentPosition!.latitude;
+              var journeyStartLong = _currentPosition!.longitude;
               // var journeyStartLat = position.latitude;
               // var journeyStartLong = position.longitude;
               print('$journeyStartLong   $journeyStartLat');
@@ -749,8 +750,8 @@ class AddEventController extends GetxController {
               _currentPosition = result.latLng;
 
               print('start');
-              var journeyEndLat = _currentPosition.latitude;
-              var journeyEndLong = _currentPosition.longitude;
+              var journeyEndLat = _currentPosition!.latitude;
+              var journeyEndLong = _currentPosition!.longitude;
             DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
             mwpVisitModelUpdate = new MwpVisitModelUpdate(
                 this.visitId,

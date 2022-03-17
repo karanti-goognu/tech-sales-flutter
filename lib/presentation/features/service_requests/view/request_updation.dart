@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
@@ -19,19 +21,19 @@ class RequestUpdation extends StatefulWidget {
 
 class _RequestUpdationState extends State<RequestUpdation>{
   UpdateServiceRequestController updateServiceRequestController = Get.find();
-  Future<ComplaintViewModel> _complaintViewModel;
-  ComplaintViewModel complaintViewModel = new ComplaintViewModel();
+  Future<ComplaintViewModel?>? _complaintViewModel;
+  ComplaintViewModel? complaintViewModel = new ComplaintViewModel();
 
 
-  Future<ComplaintViewModel> getComplaintViewData() async {
-    AccessKeyModel accessKeyModel = new AccessKeyModel();
+  Future<ComplaintViewModel?> getComplaintViewData() async {
+    AccessKeyModel? accessKeyModel = new AccessKeyModel();
     var data = await updateServiceRequestController.getAccessKey();
       accessKeyModel = data;
       updateServiceRequestController.id = widget.id.toString();
       updateServiceRequestController.coverBlockProvidedNo.clear();
       updateServiceRequestController.formwarkRemovalDate.clear();
       updateServiceRequestController.setTabOption(1);
-      await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel.accessKey).then((value) => {
+      await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel!.accessKey).then((value) => {
       setState(() {
         complaintViewModel = value;
       }),
@@ -71,7 +73,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
       bottomNavigationBar: BottomNavigator(),
       body: FutureBuilder(
           future: _complaintViewModel,
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return  Align(
                   alignment: Alignment.center,

@@ -1,7 +1,9 @@
+
+
 class JourneyModel {
-  JourneyEntity journeyEntity;
-  String respCode;
-  String respMsg;
+  JourneyEntity? journeyEntity;
+  String? respCode;
+  String? respMsg;
 
   JourneyModel({this.journeyEntity, this.respCode, this.respMsg});
 
@@ -16,7 +18,7 @@ class JourneyModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.journeyEntity != null) {
-      data['journeyEntity'] = this.journeyEntity.toJson();
+      data['journeyEntity'] = this.journeyEntity!.toJson();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -25,15 +27,15 @@ class JourneyModel {
 }
 
 class JourneyEntity {
-  int id;
-  String referenceId;
-  String journeyDate;
-  String journeyStartTime;
-  String journeyStartLat;
-  String journeyStartLong;
-  String journeyEndTime;
-  String journeyEndLat;
-  String journeyEndLong;
+  int? id;
+  String? referenceId;
+  String? journeyDate;
+  String? journeyStartTime;
+  String? journeyStartLat;
+  String? journeyStartLong;
+  String? journeyEndTime;
+  String? journeyEndLat;
+  String? journeyEndLong;
 
   JourneyEntity(
       {this.id,

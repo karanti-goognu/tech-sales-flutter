@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gifts.dart';
@@ -26,7 +28,7 @@ class _LogsViewState extends State<ViewLogs> {
   List _giftsCategoriesValueList = [];
   List _giftCategoriesList = [];
   var _currentMonth;
-  List<GiftStockModelList> _giftStockModelList;
+  List<GiftStockModelList>? _giftStockModelList;
 
   addDateForGiftsView() async {
     _giftsCategoriesValueList = [];
@@ -157,13 +159,13 @@ class _LogsViewState extends State<ViewLogs> {
 
                                   builder:(cc)=>
                                 DropdownButton(
-                                  onChanged: (newValue) {
+                                  onChanged: (dynamic newValue) {
                                     giftController.selectedDropdown = newValue;
                                     cc.update();
                                     giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                                   },
                                   value: giftController.selectedDropdown,
-                                  items: _giftStockModelList
+                                  items: _giftStockModelList!
                                       .map<DropdownMenuItem>((value) {
                                     return DropdownMenuItem(
                                       value: value.giftTypeId,
@@ -242,7 +244,7 @@ class _LogsViewState extends State<ViewLogs> {
                                                    index==1?
                                                    giftController.dataForViewLog[i].giftOpeningStockQty.toString():
                                                    index==2?giftController.dataForViewLog[i].stockAddedQty.toString():
-                                                   index==3?giftController.dataForViewLog[i].giftUtilisedQty.toString():null,
+                                                   index==3?giftController.dataForViewLog[i].giftUtilisedQty.toString():"",
                                                    style: TextStyle(
                                                      fontWeight: FontWeight.bold,
                                                    ),

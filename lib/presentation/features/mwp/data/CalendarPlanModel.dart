@@ -1,10 +1,12 @@
+
+
 import 'package:flutter_tech_sales/presentation/features/mwp/data/ListOfEventDetails.dart';
 
 class CalendarPlanModel {
-  String respCode;
-  String respMsg;
-  List<String> listOfEventDates;
-  List<ListOfEventDetails> listOfEventDetails;
+  String? respCode;
+  String? respMsg;
+  List<String>? listOfEventDates;
+  List<ListOfEventDetails>? listOfEventDetails;
 
   CalendarPlanModel(
       {this.respCode,
@@ -19,7 +21,7 @@ class CalendarPlanModel {
     if (json['listOfEventDetails'] != null) {
       listOfEventDetails = new List<ListOfEventDetails>.empty(growable: true);
       json['listOfEventDetails'].forEach((v) {
-        listOfEventDetails.add(new ListOfEventDetails.fromJson(v));
+        listOfEventDetails!.add(new ListOfEventDetails.fromJson(v));
       });
     }
   }
@@ -31,7 +33,7 @@ class CalendarPlanModel {
     data['listOfEventDates'] = this.listOfEventDates;
     if (this.listOfEventDetails != null) {
       data['listOfEventDetails'] =
-          this.listOfEventDetails.map((v) => v.toJson()).toList();
+          this.listOfEventDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }

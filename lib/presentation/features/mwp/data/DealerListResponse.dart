@@ -1,7 +1,9 @@
+
+
 class DealerListResponse {
-  String respCode;
-  String respMsg;
-  List<DealerList> dealerList;
+  String? respCode;
+  String? respMsg;
+  List<DealerList>? dealerList;
 
   DealerListResponse({this.respCode, this.respMsg, this.dealerList});
 
@@ -11,7 +13,7 @@ class DealerListResponse {
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {
-        dealerList.add(new DealerList.fromJson(v));
+        dealerList!.add(new DealerList.fromJson(v));
       });
     }
   }
@@ -21,15 +23,15 @@ class DealerListResponse {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
     if (this.dealerList != null) {
-      data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
+      data['dealerList'] = this.dealerList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class DealerList {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
   bool dealerSelected = false;
 
   DealerList({this.dealerId, this.dealerName});

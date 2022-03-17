@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -28,15 +30,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MyApiClientSites {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClientSites({@required this.httpClient});
+  MyApiClientSites({required this.httpClient});
 
   getAccessKey() async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -52,7 +54,7 @@ class MyApiClientSites {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -70,7 +72,7 @@ class MyApiClientSites {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': version,
+        'app-version': version!,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -101,7 +103,7 @@ class MyApiClientSites {
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey, version));
+                accessKey, userSecurityKey, version) as Map<String, String>?);
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -116,12 +118,12 @@ class MyApiClientSites {
     }
   }
 
-  getSitesData(String accessKey, String securityKey, String url) async {
+  getSitesData(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
+              accessKey, securityKey, version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -138,7 +140,7 @@ class MyApiClientSites {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
+              accessKey, securityKey, version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -150,14 +152,14 @@ class MyApiClientSites {
     }
   }
 
-  getSiteDetailsData(String accessKey, String userSecurityKey, int siteId,
-      String empID) async {
+  getSiteDetailsData(String? accessKey, String? userSecurityKey, int? siteId,
+      String? empID) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(
         Uri.parse(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
-            accessKey, userSecurityKey, version),
+            accessKey, userSecurityKey, version) as Map<String, String>?,
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -170,7 +172,7 @@ class MyApiClientSites {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
           Get.back();
-          Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
+          Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg!));
         }
         else {
           Get.back();
@@ -191,7 +193,7 @@ class MyApiClientSites {
         'POST', Uri.parse(UrlConstants.updateSiteData));
     request.headers.addAll(
         headersWithAccessAndSecretWithoutContent(
-            accessKey, userSecurityKey, version));
+            accessKey, userSecurityKey, version) as Map<String, String>);
 
     for (var file in list) {
       String fileName = file.path.split("/").last;
@@ -205,14 +207,9 @@ class MyApiClientSites {
     }
 
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
-
       gv.currentId = empId;
 
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
@@ -228,10 +225,10 @@ class MyApiClientSites {
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs()
-                  .showDialog(updateLeadResponseModel.respMsg));
+                  .showDialog(updateLeadResponseModel.respMsg!));
             } else {
               Get.dialog(CustomDialogs()
-                  .showDialog(updateLeadResponseModel.respMsg));
+                  .showDialog(updateLeadResponseModel.respMsg!));
             }
           });
         })
@@ -243,14 +240,14 @@ class MyApiClientSites {
     });
   }
 
-  updateVersion2SiteData(accessKey, String userSecurityKey, updateDataRequest,
-      List<File> list, BuildContext context, int siteId) async {
+  updateVersion2SiteData(accessKey, String? userSecurityKey, updateDataRequest,
+      List<File> list, BuildContext context, int? siteId) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
     request.headers.addAll(
         headersWithAccessAndSecretWithoutContent(
-            accessKey, userSecurityKey, version));
+            accessKey, userSecurityKey, version) as Map<String, String>);
 
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
 
@@ -268,13 +265,9 @@ class MyApiClientSites {
     }
 
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
 
@@ -295,11 +288,11 @@ class MyApiClientSites {
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs()
-                  .showDialog(updateLeadResponseModel.respMsg));
+                  .showDialog(updateLeadResponseModel.respMsg!));
             }
             else {
               Get.dialog(CustomDialogs()
-                  .showDialog(updateLeadResponseModel.respMsg));
+                  .showDialog(updateLeadResponseModel.respMsg!));
             }
           }
           });
@@ -313,16 +306,16 @@ class MyApiClientSites {
   }
 
 
-  Future<SitesListModel> getSearchDataNew(String accessKey,
-      String userSecurityKey, String empID, String searchText) async {
-    SitesListModel sitesListModel;
+  Future<SitesListModel?> getSearchDataNew(String? accessKey,
+      String? userSecurityKey, String? empID, String searchText) async {
+    SitesListModel? sitesListModel;
     try {
       version = VersionClass.getVersion();
       String url =
           "${UrlConstants.getSiteSearchData}searchText=$searchText&referenceID=$empID";
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey, version));
+              accessKey, userSecurityKey, version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         sitesListModel = SitesListModel.fromJson(data);
@@ -334,13 +327,13 @@ class MyApiClientSites {
     return sitesListModel;
   }
 
-  Future<SiteVisitResponseModel>siteVisitSave(String accessKey, String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-    SiteVisitResponseModel siteVisitResponseModel;
+  Future<SiteVisitResponseModel?>siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+    SiteVisitResponseModel? siteVisitResponseModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveUpdateSiteVisit),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) as Map<String, String>?,
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
@@ -362,16 +355,16 @@ class MyApiClientSites {
     return siteVisitResponseModel;
   }
 
-  getPendingSupplyData(String accessKey, String securityKey, String url) async {
+  getPendingSupplyData(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
+              accessKey, securityKey, version) as Map<String, String>?);
       if(response.statusCode==200) {
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
-        PendingSupplyDataResponse pendingSupplyDataResponse = pendingSupplyData.response;
+        PendingSupplyDataResponse? pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
       }else
         print('error');
@@ -380,16 +373,16 @@ class MyApiClientSites {
     }
   }
 
-  getPendingSupplyDetails(String accessKey, String securityKey, String url) async {
+  getPendingSupplyDetails(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
+              accessKey, securityKey, version) as Map<String, String>?);
       if(response.statusCode==200) {
         var data = json.decode(response.body);
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
-        PendingSupplyDetailsEntity pendingSupplyDataResponse = pendingSupplyData.response;
+        PendingSupplyDetailsEntity? pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
       }else
         print('error');
@@ -398,14 +391,14 @@ class MyApiClientSites {
     }
   }
 
-  Future<PendingSuppliesDetailsModel> getPendingSupplyDetailsNew(String accessKey,
-      String userSecretKey, String url) async {
-    PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
+  Future<PendingSuppliesDetailsModel?> getPendingSupplyDetailsNew(String? accessKey,
+      String? userSecretKey, String url) async {
+    PendingSuppliesDetailsModel? _pendingSuppliesDetailsModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) as Map<String, String>?);
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
@@ -415,7 +408,7 @@ class MyApiClientSites {
         }
         else {
           PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
-          PendingSupplyDetailsEntity pendingSupplyDetailsEntity = pendingSupplyData.response;
+          PendingSupplyDetailsEntity pendingSupplyDetailsEntity = pendingSupplyData.response!;
           _pendingSuppliesDetailsModel = pendingSupplyDetailsEntity.pendingSuppliesDetailsModel;
         }} else {
         print('error');
@@ -428,12 +421,12 @@ class MyApiClientSites {
     return _pendingSuppliesDetailsModel;
   }
 
-  updatePendingSupplyDetails(String accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
+  updatePendingSupplyDetails(String? accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
     try {
       version = VersionClass.getVersion();
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version),
+              accessKey, securityKey, version) as Map<String, String>?,
           body: json.encode(jsonData));
        log(""+json.encode(jsonData));
       if(response.statusCode==200) {
@@ -447,14 +440,14 @@ class MyApiClientSites {
 
 
   ///district list for filter
-  Future<SiteDistrictListModel> getSiteDistList(String accessKey, String userSecretKey, String empID) async {
-    SiteDistrictListModel siteDistrictListModel;
+  Future<SiteDistrictListModel?> getSiteDistList(String? accessKey, String? userSecretKey, String empID) async {
+    SiteDistrictListModel? siteDistrictListModel;
     try {
       version = VersionClass.getVersion();
 
       var response = await http.get(Uri.parse(UrlConstants.siteDistList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version));
+              accessKey, userSecretKey,version) as Map<String, String>?);
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(
@@ -469,14 +462,14 @@ class MyApiClientSites {
     return siteDistrictListModel;
   }
 
-  Future<KittyBagsListModel> getKittyBagsList(String accessKey, String partyCode, String userSecretKey,) async {
-    KittyBagsListModel kittyBagsListModel;
+  Future<KittyBagsListModel?> getKittyBagsList(String? accessKey, String? partyCode, String? userSecretKey,) async {
+    KittyBagsListModel? kittyBagsListModel;
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.siteKittyPoints + "$partyCode";
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version));
+              accessKey, userSecretKey,version) as Map<String, String>?);
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs().appUserInactiveDialog(

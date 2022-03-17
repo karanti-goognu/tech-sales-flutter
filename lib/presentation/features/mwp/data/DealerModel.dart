@@ -1,3 +1,5 @@
+
+
 class DealerModel {
   String dealerId;
   String dealerName;

@@ -1,3 +1,5 @@
+
+
 import 'package:moengage_inbox/media_type.dart';
 
 class Media {

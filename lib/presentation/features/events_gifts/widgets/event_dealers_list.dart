@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -14,7 +16,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
   DetailEventController _detailEventController = Get.find();
   TextEditingController controller = new TextEditingController();
 
-  final _searchList = List<DealerModel>.empty(growable: true);
+  final _searchList = List<DealerModel?>.empty(growable: true);
 
   @override
   void initState() {
@@ -142,13 +144,13 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
                     child: new Column(
                       children: <Widget>[
                         new CheckboxListTile(
-                            value: _searchList[index].isSelected,
+                            value: _searchList[index]!.isSelected,
                             title: new Text(
-                                '${_searchList[index].dealerName}'),
+                                '${_searchList[index]!.dealerName}'),
                             controlAffinity:
                             ListTileControlAffinity.leading,
-                            onChanged: (bool val) {
-                              itemChange1(val, _searchList[index].dealerName,index);
+                            onChanged: (bool? val) {
+                              itemChange1(val, _searchList[index]!.dealerName,index);
                             })
                       ],
                     ),
@@ -178,7 +180,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
                             //     '${_detailEventController.dealerList[index].dealerName}'),
                             controlAffinity:
                             ListTileControlAffinity.leading,
-                            onChanged: (bool val) {
+                            onChanged: (bool? val) {
                               itemChange(val, index);
                             })
                       ],
@@ -252,13 +254,13 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
 
   }
 
-  void itemChange(bool val, int index) {
+  void itemChange(bool? val, int index) {
     /*else{
       _addEventController.dealerListSelected.remove(index);
     }*/
     setState(() {
       _detailEventController.dealerList[index].isSelected = val;
-      if (val) {
+      if (val!) {
       //  print('true');
         _detailEventController.dealerListSelected.add(new DealerModelSelected(
             _detailEventController.dealerList[index].dealerId,
@@ -272,7 +274,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
     );
   }
 
-  void itemChange1(bool val, String dealerName,int index1) {
+  void itemChange1(bool? val, String? dealerName,int index1) {
     /*else{
       _addEventController.dealerListSelected.remove(index);
     }*/
@@ -285,13 +287,13 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
 
     setState(() {
       _detailEventController.dealerList[index].isSelected = val;
-      if (val) {
-        _searchList[index1].isSelected = true;
+      if (val!) {
+        _searchList[index1]!.isSelected = true;
         _detailEventController.dealerListSelected.add(new DealerModelSelected(
             _detailEventController.dealerList[index].dealerId,
             _detailEventController.dealerList[index].dealerName));
       } else {
-        _searchList[index1].isSelected = false;
+        _searchList[index1]!.isSelected = false;
         _detailEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _detailEventController.dealerList[index].dealerId);
       }

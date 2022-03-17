@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -24,19 +26,19 @@ class _SiteScreenState extends State<SiteScreen> {
   // String formatter = new DateFormat("yyyy-mm-dd");
   // Instantiate your class using Get.put() to make it available for all "child" routes there.
   SiteController _siteController = Get.find();
-  SiteDistrictListModel _siteDistrictListModel;
+  SiteDistrictListModel? _siteDistrictListModel;
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   int selectedPosition = 0;
   int currentTab = 0;
   int _tabNumber = 0;
-  double toolbarHeight;
+  double? toolbarHeight;
 
   @override
   void initState() {
     super.initState();
     getDropdownData();
-    toolbarHeight = SizeConfig.screenHeight * .18;
+    toolbarHeight = SizeConfig.screenHeight! * .18;
     _siteController.sitesListResponse.sitesEntity = null;
     clearFilterSelection();
   }
@@ -60,13 +62,12 @@ class _SiteScreenState extends State<SiteScreen> {
     super.dispose();
     //_appController?.dispose();
     _siteController.offset = 0;
-    _siteController?.dispose();
+    _siteController.dispose();
   }
 
   void disposeController(BuildContext context) {
-//or what you want to dispose/clear
     _siteController.offset = 0;
-    _siteController?.dispose();
+    _siteController.dispose();
   }
 
   getDropdownData() {
@@ -468,8 +469,8 @@ class _SiteScreenState extends State<SiteScreen> {
         }).whenComplete(() {
       setState(() {
         toolbarHeight = _siteController.selectedFilterCount == 0
-            ? SizeConfig.screenHeight * .18
-            : SizeConfig.screenHeight * .24;
+            ? SizeConfig.screenHeight! * .18
+            : SizeConfig.screenHeight! * .24;
       });
     });
   }

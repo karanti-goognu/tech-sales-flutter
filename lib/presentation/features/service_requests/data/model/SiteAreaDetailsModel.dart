@@ -1,7 +1,9 @@
+
+
 class SiteAreaModel {
-  SiteAreaDetailsModel siteAreaDetailsModel;
-  String respCode;
-  String respMsg;
+  SiteAreaDetailsModel? siteAreaDetailsModel;
+  String? respCode;
+  String? respMsg;
 
   SiteAreaModel({this.siteAreaDetailsModel, this.respCode, this.respMsg});
 
@@ -16,7 +18,7 @@ class SiteAreaModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.siteAreaDetailsModel != null) {
-      data['siteAreaDetailsModel'] = this.siteAreaDetailsModel.toJson();
+      data['siteAreaDetailsModel'] = this.siteAreaDetailsModel!.toJson();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -25,10 +27,10 @@ class SiteAreaModel {
 }
 
 class SiteAreaDetailsModel {
-  String siteState;
-  String siteDistrict;
-  String siteTaluk;
-  String sitePincode;
+  String? siteState;
+  String? siteDistrict;
+  String? siteTaluk;
+  String? sitePincode;
 
   SiteAreaDetailsModel(
       {this.siteState, this.siteDistrict, this.siteTaluk, this.sitePincode});

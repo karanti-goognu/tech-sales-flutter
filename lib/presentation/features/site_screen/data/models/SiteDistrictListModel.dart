@@ -1,7 +1,9 @@
+
+
 class SiteDistrictListModel {
-  String respCode;
-  String respMsg;
-  List<DistrictList> districtList;
+  String? respCode;
+  String? respMsg;
+  List<DistrictList>? districtList;
 
   SiteDistrictListModel({this.respCode, this.respMsg, this.districtList});
 
@@ -11,7 +13,7 @@ class SiteDistrictListModel {
     if (json['districtList'] != null) {
       districtList = new List<DistrictList>.empty(growable: true);
       json['districtList'].forEach((v) {
-        districtList.add(new DistrictList.fromJson(v));
+        districtList!.add(new DistrictList.fromJson(v));
       });
     }
   }
@@ -21,14 +23,14 @@ class SiteDistrictListModel {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
     if (this.districtList != null) {
-      data['districtList'] = this.districtList.map((v) => v.toJson()).toList();
+      data['districtList'] = this.districtList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class DistrictList {
-  String name;
+  String? name;
 
   DistrictList({this.name});
 

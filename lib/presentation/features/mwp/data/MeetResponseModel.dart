@@ -1,9 +1,11 @@
+
+
 class MeetResponseModelView {
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
   Null mwpVisitModel;
-  MwpMeetModelView mwpMeetModel;
-  List<DealerModelView> dealerModel;
+  MwpMeetModelView? mwpMeetModel;
+  List<DealerModelView>? dealerModel;
 
   MeetResponseModelView(
       {this.respCode,
@@ -22,7 +24,7 @@ class MeetResponseModelView {
     if (json['dealerModel'] != null) {
       dealerModel = new List<DealerModelView>.empty(growable: true);
       json['dealerModel'].forEach((v) {
-        dealerModel.add(new DealerModelView.fromJson(v));
+        dealerModel!.add(new DealerModelView.fromJson(v));
       });
     }
   }
@@ -33,27 +35,27 @@ class MeetResponseModelView {
     data['respMsg'] = this.respMsg;
     data['mwpVisitModel'] = this.mwpVisitModel;
     if (this.mwpMeetModel != null) {
-      data['mwpMeetModel'] = this.mwpMeetModel.toJson();
+      data['mwpMeetModel'] = this.mwpMeetModel!.toJson();
     }
     if (this.dealerModel != null) {
-      data['dealerModel'] = this.dealerModel.map((v) => v.toJson()).toList();
+      data['dealerModel'] = this.dealerModel!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpMeetModelView {
-  int id;
-  String meetType;
-  String meetDate;
-  int dalmiaInflCount;
-  int nonDalmiaInflCount;
-  String venue;
-  int expectedLeadsCount;
-  int giftsDistributedCount;
-  String eventLocation;
-  String isSaveDraft;
-  List<MwpMeetDealersView> mwpMeetDealers;
+  int? id;
+  String? meetType;
+  String? meetDate;
+  int? dalmiaInflCount;
+  int? nonDalmiaInflCount;
+  String? venue;
+  int? expectedLeadsCount;
+  int? giftsDistributedCount;
+  String? eventLocation;
+  String? isSaveDraft;
+  List<MwpMeetDealersView>? mwpMeetDealers;
 
   MwpMeetModelView(
       {this.id,
@@ -82,7 +84,7 @@ class MwpMeetModelView {
     if (json['mwpMeetDealers'] != null) {
       mwpMeetDealers = new List<MwpMeetDealersView>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
-        mwpMeetDealers.add(new MwpMeetDealersView.fromJson(v));
+        mwpMeetDealers!.add(new MwpMeetDealersView.fromJson(v));
       });
     }
   }
@@ -101,17 +103,17 @@ class MwpMeetModelView {
     data['isSaveDraft'] = this.isSaveDraft;
     if (this.mwpMeetDealers != null) {
       data['mwpMeetDealers'] =
-          this.mwpMeetDealers.map((v) => v.toJson()).toList();
+          this.mwpMeetDealers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpMeetDealersView {
-  int id;
-  int mwpMeetId;
-  String dealerId;
-  String dealerName;
+  int? id;
+  int? mwpMeetId;
+  String? dealerId;
+  String? dealerName;
 
   MwpMeetDealersView({this.id, this.mwpMeetId, this.dealerId, this.dealerName});
 
@@ -133,8 +135,8 @@ class MwpMeetDealersView {
 }
 
 class DealerModelView {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
 
   DealerModelView({this.dealerId, this.dealerName});
 

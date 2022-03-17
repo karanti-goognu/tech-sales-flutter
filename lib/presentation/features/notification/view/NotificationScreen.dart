@@ -1,3 +1,5 @@
+
+
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -16,8 +18,8 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  MoEngageInbox _moEngageInbox;
-  Future<InboxData> inboxData;
+  late MoEngageInbox _moEngageInbox;
+  Future<InboxData>? inboxData;
   int unReadMessageCount = 0;
 
   Future<int> unReadMessageCoun() async {
@@ -35,7 +37,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {
+    WidgetsBinding.instance!.addPostFrameCallback((_) => {
       unReadMessageCoun().then((value) => {
         setState(() {
           unReadMessageCount = value;
@@ -138,16 +140,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget notificationWidget() {
-    return FutureBuilder<InboxData>(
+    return FutureBuilder<InboxData?>(
       future: _moEngageInbox.fetchAllMessages(),
-      builder: (BuildContext context, AsyncSnapshot<InboxData> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<InboxData?> snapshot) {
         if (snapshot.hasData) {
-          if(snapshot.data.messages.length > 0){
+          if(snapshot.data!.messages.length > 0){
           return ListView.builder(
-              itemCount: snapshot.data.messages.length,
+              itemCount: snapshot.data!.messages.length,
               padding: const EdgeInsets.only(left: 6.0, right: 6.0, bottom: 10,top: 8),
               itemBuilder: (context, index) {
-                InboxMessage inboxMessage = snapshot.data.messages[index];
+                InboxMessage inboxMessage = snapshot.data!.messages[index];
                 return GestureDetector(
                   onTap: () {
                     _moEngageInbox.trackMessageClicked(inboxMessage);

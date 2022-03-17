@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
@@ -101,7 +103,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                           child: Obx(
                                 () => DropdownButton<String>(
                               value: _addEventController.selectedView,
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 _addEventController.selectedView = newValue;
                                 if(_addEventController.selectedView=='Service Requests'){
                                   Get.offNamed(Routes.SERVICE_REQUEST_CREATION);

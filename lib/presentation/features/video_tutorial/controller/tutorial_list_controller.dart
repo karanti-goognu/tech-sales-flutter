@@ -1,4 +1,6 @@
 
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/repository/TutorialRepository.dart';
@@ -15,14 +17,14 @@ class TutorialListController extends GetxController{
   }
 
   final TutorialRepository repository;
-  TutorialListController({@required this.repository}) : assert(repository != null);
+  TutorialListController({required this.repository}) : assert(repository != null);
 
-  final _tutorialListData = TsoAppTutorialListModel().obs;
+  final Rx<TsoAppTutorialListModel?> _tutorialListData = TsoAppTutorialListModel().obs;
   get tutorialListData => _tutorialListData.value;
   set tutorialListData(value) =>
       _tutorialListData.value = value;
 
-  Future<AccessKeyModel> getAccessKey(){
+  Future<AccessKeyModel?> getAccessKey(){
     return repository.getAccessKey();
 
   }
@@ -36,8 +38,8 @@ class TutorialListController extends GetxController{
   }
 
 
-  Future<TsoAppTutorialListModel> getAppTutorialListData(String accessKey) async {
-    String userSecurityKey = "";
+  Future<TsoAppTutorialListModel?> getAppTutorialListData(String? accessKey) async {
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);

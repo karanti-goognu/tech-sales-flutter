@@ -1,3 +1,5 @@
+
+
 enum NavigationType { deepLink, richLanding, screenName }
 
 extension NavigationTypeExt on NavigationType {

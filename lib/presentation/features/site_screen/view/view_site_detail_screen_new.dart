@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class ViewSiteScreenNew extends StatefulWidget {
-  int siteId;
+  int? siteId;
   final tabIndex;
 
   ViewSiteScreenNew({this.siteId, this.tabIndex});
@@ -40,25 +38,25 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     with SingleTickerProviderStateMixin {
   SiteController _siteController = Get.find();
   ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-  TabController _tabController;
-  int selectedTabIndex;
+  TabController? _tabController;
+  int? selectedTabIndex;
   int _initialIndex = 0;
-  double siteScore = 0.0;
-  SiteStageEntity _siteStage;
-  List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
-  String labelText;
-  int labelId;
+  double? siteScore = 0.0;
+  SiteStageEntity? _siteStage;
+  List<SiteStageEntity>? siteStageEntity = new List.empty(growable: true);
+  String? labelText;
+  int? labelId;
   var closureReasonText = new TextEditingController();
   bool fromDropDown = false;
   var _nextVisitDate = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
-  SiteOpportunityStatusEntity _siteOpportunitStatusEnityVisit;
+  SiteOpportunityStatusEntity? _siteOpportunitStatusEnityVisit;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  String empCode, name;
+  String? empCode, name;
   List<File> _imageList = new List.empty(growable: true);
   List<ProductListModel> prdduct = new List.empty(growable: true);
   List<CounterListModel> subDealerList = new List.empty(growable: true);
-  Future<ViewSiteDataResponse> _getSiteData;
+  Future<ViewSiteDataResponse>? _getSiteData;
 
   @override
   void initState() {
@@ -111,29 +109,29 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
             viewSiteDataResponse = data;
             setState(
               () {
-                siteScore = viewSiteDataResponse.sitesModal.siteScore;
+                siteScore = viewSiteDataResponse.sitesModal!.siteScore;
                 siteStageEntity = viewSiteDataResponse.siteStageEntity;
-                for (int i = 0; i < siteStageEntity.length; i++) {
-                  if (viewSiteDataResponse.sitesModal.siteStageId.toString() ==
-                      siteStageEntity[i].id.toString()) {
-                    labelText = siteStageEntity[i].siteStageDesc;
-                    labelId = siteStageEntity[i].id;
+                for (int i = 0; i < siteStageEntity!.length; i++) {
+                  if (viewSiteDataResponse.sitesModal!.siteStageId.toString() ==
+                      siteStageEntity![i].id.toString()) {
+                    labelText = siteStageEntity![i].siteStageDesc;
+                    labelId = siteStageEntity![i].id;
                     UpdatedValues.setSiteStageId(labelId);
                   }
                 }
-                if (viewSiteDataResponse.sitesModal.siteOppertunityId != null) {
+                if (viewSiteDataResponse.sitesModal!.siteOppertunityId != null) {
                   for (int i = 0;
-                      i < viewSiteDataResponse.siteOpportunityStatusEntity.length; i++) {
-                    if (viewSiteDataResponse.sitesModal.siteOppertunityId
+                      i < viewSiteDataResponse.siteOpportunityStatusEntity!.length; i++) {
+                    if (viewSiteDataResponse.sitesModal!.siteOppertunityId
                             .toString() ==
-                        viewSiteDataResponse.siteOpportunityStatusEntity[i].id
+                        viewSiteDataResponse.siteOpportunityStatusEntity![i].id
                             .toString()) {
                       _siteOpportunitStatusEnityVisit =
-                          viewSiteDataResponse.siteOpportunityStatusEntity[i];
+                          viewSiteDataResponse.siteOpportunityStatusEntity![i];
                     }
                   }
                 } else {
-                  _siteOpportunitStatusEnityVisit = viewSiteDataResponse.siteOpportunityStatusEntity[0];
+                  _siteOpportunitStatusEnityVisit = viewSiteDataResponse.siteOpportunityStatusEntity![0];
                   //_siteOpportunitStatusEnityVisit = null;
                 }
               },
@@ -278,7 +276,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                   color: Colors.white,
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[500]!,
                                         offset: Offset(5.0, 5.0),
                                         blurRadius: 10.0,
                                         spreadRadius: 4.0)
@@ -287,13 +285,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                 child: DropdownButton(
                                   // elevation: 100,
                                   value: _siteStage,
-                                  items: siteStageEntity
+                                  items: siteStageEntity!
                                       .map((label) => DropdownMenuItem(
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 7.0),
                                               child: Text(
-                                                label.siteStageDesc,
+                                                label.siteStageDesc!,
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     color: ColorConstants
@@ -308,11 +306,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                   hint: Padding(
                                     padding: const EdgeInsets.only(left: 6.0),
                                     child: (labelText != null)
-                                        ? Text(labelText)
+                                        ? Text(labelText!)
                                         : Text(""),
                                   ),
 
-                                  onChanged: (value) {
+                                  onChanged: (dynamic value) {
                                     setState(
                                       () {
                                         _siteStage = value;
@@ -402,10 +400,10 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                                 ),
                                                                                 child: Padding(padding: const EdgeInsets.only(bottom: 10, top: 10), child: Text("SUBMIT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 17))),
                                                                                 onPressed: () async {
-                                                                                  if (closureReasonText.text != null && closureReasonText.text != "") {
+                                                                                  if (closureReasonText.text != "") {
                                                                                     _siteStage = value;
-                                                                                    labelId = _siteStage.id;
-                                                                                    labelText = _siteStage.siteStageDesc;
+                                                                                    labelId = _siteStage!.id;
+                                                                                    labelText = _siteStage!.siteStageDesc;
                                                                                     setState(() {
                                                                                       fromDropDown = true;
                                                                                       UpdatedValues.setFromDropDown(fromDropDown);
@@ -564,7 +562,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                             () async {
                                                                           print(
                                                                               "here");
-                                                                          final DateTime
+                                                                          final DateTime?
                                                                               picked =
                                                                               await showDatePicker(
                                                                             context:
@@ -690,15 +688,13 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                     onPressed:
                                                                         () async {
                                                                       if (_inactiveReasonText.text !=
-                                                                              null &&
-                                                                          _inactiveReasonText.text !=
                                                                               "") {
                                                                         _siteStage =
                                                                             value;
                                                                         labelId =
-                                                                            _siteStage.id;
+                                                                            _siteStage!.id;
                                                                         labelText =
-                                                                            _siteStage.siteStageDesc;
+                                                                            _siteStage!.siteStageDesc;
                                                                         setState(
                                                                             () {
                                                                           fromDropDown =
@@ -779,7 +775,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
           ),
           body: FutureBuilder(
             future: _getSiteData,
-            builder: (context, snapshot) {
+            builder: (context,AsyncSnapshot<ViewSiteDataResponse> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return simmerWidget(context);
               } else {
@@ -801,17 +797,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                         SitePastStageHistoryWidget(
                           viewSiteDataResponse: snapshot.data),
                       SiteVisitWidget(
-                        mwpVisitModel: snapshot.data.mwpVisitModel,
+                        mwpVisitModel: snapshot.data?.mwpVisitModel,
                         siteId: widget.siteId,
                         visitSubTypeId:
-                            snapshot.data.sitesModal.siteOppertunityId,
+                            snapshot.data?.sitesModal?.siteOppertunityId,
                         siteOpportunityStatusEntity:
-                            snapshot.data.siteOpportunityStatusEntity,
-                        siteDate: snapshot.data.sitesModal.siteCreationDate,
+                            snapshot.data?.siteOpportunityStatusEntity,
+                        siteDate: snapshot.data?.sitesModal?.siteCreationDate,
                         selectedOpportunitStatusEnity:
                             _siteOpportunitStatusEnityVisit,
                         visitRemarks:
-                            snapshot.data.sitesModal.siteClosureReasonText,
+                            snapshot.data?.sitesModal?.siteClosureReasonText,
                           viewSiteDataResponse: snapshot.data
                       )
                     ],
@@ -884,7 +880,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 }

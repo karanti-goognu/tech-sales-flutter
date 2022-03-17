@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DraftLeadDBHelper extends ChangeNotifier{
   static final DraftLeadDBHelper _instance = DraftLeadDBHelper._();
-  static Database _database;
+  static Database? _database;
 
 
 
@@ -14,7 +16,7 @@ class DraftLeadDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }
@@ -38,14 +40,14 @@ class DraftLeadDBHelper extends ChangeNotifier{
 
 
   Future<int> addLeadInDraft(DraftLeadModelforDB draftLeadModelforDB) async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     print(draftLeadModelforDB.leadModel);
     return client.insert('draftLead', draftLeadModelforDB.toMapForDb(),
        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<DraftLeadModelforDB> fetchLeadInDraft(int id) async {
-    var client = await db;
+  Future<DraftLeadModelforDB?> fetchLeadInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     final Future<List<Map<String, dynamic>>> futureMaps =
         client.query('draftLead', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
@@ -59,21 +61,21 @@ class DraftLeadDBHelper extends ChangeNotifier{
 
   Future<int> updateLeadInDraft(DraftLeadModelforDB draftLeadModelforDB) async {
     print(draftLeadModelforDB.id);
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.update('draftLead', draftLeadModelforDB.toMapForDb(),
         where: 'id = ?',
         whereArgs: [draftLeadModelforDB.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> removeLeadInDraft(int id) async {
+  Future<Future<int>> removeLeadInDraft(int? id) async {
     print('Draft id $id');
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.delete('draftLead', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<DraftLeadModelforDB>> fetchAll() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.query('draftLead');
 
     if (res.isNotEmpty) {
@@ -88,9 +90,9 @@ class DraftLeadDBHelper extends ChangeNotifier{
 
 class DraftLeadModelforDB {
   // @required
-  final int id;
+  final int? id;
   @required
-  final String leadModel;
+  final String? leadModel;
 
   DraftLeadModelforDB(this.id, this.leadModel);
 

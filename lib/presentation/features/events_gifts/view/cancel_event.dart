@@ -1,3 +1,7 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
@@ -23,12 +27,12 @@ class CancelEvent extends StatefulWidget {
 }
 
 class _CancelEventState extends State<CancelEvent> {
-  DetailEventModel detailEventModel;
+  DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
   SaveEventController saveEventController = Get.find();
-  List<DealersModels> selectedDealersModels = [];
+  List<DealersModels>? selectedDealersModels = [];
   final _cancelEventFormKey = GlobalKey<FormState>();
-  int _reasonId;
+  int? _reasonId;
   TextEditingController _commentController = TextEditingController();
 
   @override
@@ -38,7 +42,7 @@ class _CancelEventState extends State<CancelEvent> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -54,7 +58,7 @@ class _CancelEventState extends State<CancelEvent> {
           .then((data) {
         setState(() {
           detailEventModel = data;
-          selectedDealersModels = detailEventModel.dealersModels;
+          selectedDealersModels = detailEventModel!.dealersModels;
         });
       //  print('DDDD: $data');
       });
@@ -72,18 +76,18 @@ class _CancelEventState extends State<CancelEvent> {
         minTextAdapt: true,
         orientation: Orientation.portrait);
 
-    final dropDwnReason = DropdownButtonFormField(
+    final dropDwnReason = DropdownButtonFormField<Object>(
       onChanged: (value) {
         setState(() {
-          _reasonId = value;
+          _reasonId = value as int;
         });
       },
       items: detailEventModel == null
           ? []
-          : detailEventModel.cancelReasonList
+          : detailEventModel!.cancelReasonList!
               .map((e) => DropdownMenuItem(
                     value: e.eventCancelReasonId,
-                    child: Text(e.eventCancelReason),
+                    child: Text(e.eventCancelReason!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -98,7 +102,7 @@ class _CancelEventState extends State<CancelEvent> {
         child: TextFormField(
           controller: _commentController,
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return "Please add comment";
             }
             return null;
@@ -226,11 +230,11 @@ class _CancelEventState extends State<CancelEvent> {
   }
 
   btnPresssed() async {
-    if (_cancelEventFormKey.currentState.validate()) {
-      _cancelEventFormKey.currentState.save();
-      String empId = await getEmpId();
+    if (_cancelEventFormKey.currentState!.validate()) {
+      _cancelEventFormKey.currentState!.save();
+      String? empId = await (getEmpId() as FutureOr<String?>);
       List dealersList = List.empty(growable: true);
-      selectedDealersModels.forEach((e) {
+      selectedDealersModels!.forEach((e) {
         setState(() {
           dealersList.add({
             'eventStage': 'PLAN',
@@ -245,23 +249,23 @@ class _CancelEventState extends State<CancelEvent> {
       });
     //  print('DEALERS: $dealersList');
       MwpeventFormRequest _mwpeventFormRequest = MwpeventFormRequest.fromJson({
-        'dalmiaInflCount': detailEventModel.mwpEventModel.dalmiaInflCount,
-        'eventComment': detailEventModel.mwpEventModel.eventComment,
-        'eventDate': detailEventModel.mwpEventModel.eventDate,
-        'eventId': detailEventModel.mwpEventModel.eventId,
-        'eventLocation': detailEventModel.mwpEventModel.eventLocation,
-        'eventLocationLat': double.tryParse('${detailEventModel.mwpEventModel.eventLocationLat}'),
-        'eventLocationLong': double.tryParse('${detailEventModel.mwpEventModel.eventLocationLong}'),
+        'dalmiaInflCount': detailEventModel!.mwpEventModel!.dalmiaInflCount,
+        'eventComment': detailEventModel!.mwpEventModel!.eventComment,
+        'eventDate': detailEventModel!.mwpEventModel!.eventDate,
+        'eventId': detailEventModel!.mwpEventModel!.eventId,
+        'eventLocation': detailEventModel!.mwpEventModel!.eventLocation,
+        'eventLocationLat': double.tryParse('${detailEventModel!.mwpEventModel!.eventLocationLat}'),
+        'eventLocationLong': double.tryParse('${detailEventModel!.mwpEventModel!.eventLocationLong}'),
         'eventStatusId': 5,
-        'eventTime': detailEventModel.mwpEventModel.eventTime,
-        'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
-        'expectedLeadsCount': detailEventModel.mwpEventModel.expectedLeadsCount,
+        'eventTime': detailEventModel!.mwpEventModel!.eventTime,
+        'eventTypeId': detailEventModel!.mwpEventModel!.eventTypeId,
+        'expectedLeadsCount': detailEventModel!.mwpEventModel!.expectedLeadsCount,
         'giftDistributionCount':
-            detailEventModel.mwpEventModel.giftDistributionCount,
-        'nondalmiaInflCount': detailEventModel.mwpEventModel.nonDalmiaInflCount,
+            detailEventModel!.mwpEventModel!.giftDistributionCount,
+        'nondalmiaInflCount': detailEventModel!.mwpEventModel!.nonDalmiaInflCount,
         'referenceId': empId,
-        'venue': detailEventModel.mwpEventModel.venue,
-        'venueAddress': detailEventModel.mwpEventModel.venueAddress,
+        'venue': detailEventModel!.mwpEventModel!.venue,
+        'venueAddress': detailEventModel!.mwpEventModel!.venueAddress,
         'eventCancelReasonId': _reasonId,
         'eventCancelComment': _commentController.text,
         'isEventStarted': 'N',

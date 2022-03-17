@@ -1,7 +1,7 @@
 class Validations{
   Validations._();
 
-  static bool isValidPhoneNumber(String string) {
+  static bool isValidPhoneNumber(String? string) {
     if (string == null || string.isEmpty || string.length != 10) {
       return false;
     }

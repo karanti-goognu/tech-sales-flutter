@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
@@ -20,7 +22,7 @@ class _EventSearchState extends State<EventSearch> {
   TextEditingController controller = new TextEditingController();
   AllEventController _eventController = Get.find();
 
-   _color(int id){
+   _color(int? id){
     switch(id){
       case 1:return HexColor('#F9A61A');
       case 2:return HexColor('#39B54A');

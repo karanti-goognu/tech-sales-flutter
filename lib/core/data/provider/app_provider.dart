@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarDataByDay.dart';
@@ -25,19 +24,18 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 class MyApiClientApp {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
-  MyApiClientApp({@required this.httpClient});
+  String? version;
+  MyApiClientApp({required this.httpClient});
 
   getAccessKey() async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -73,14 +71,14 @@ class MyApiClientApp {
     }
   }
 
-  saveMWPData(String accessKey, String userSecurityKey, String url,
+  saveMWPData(String? accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) async {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMWPModel);
       var response = await httpClient.post(Uri.parse(UrlConstants.saveMWPData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version),
+              accessKey, userSecurityKey,version) as Map<String, String>?,
           body: body,
           // encoding: Encoding.getByName("utf-8")
       );
@@ -102,14 +100,14 @@ class MyApiClientApp {
     }
   }
 
-  saveVisitRequest(String accessKey, String userSecurityKey, String url,
+  saveVisitRequest(String? accessKey, String userSecurityKey, String url,
       SaveVisitRequest saveVisitRequest) async {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
       var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version),
+              accessKey, userSecurityKey,version) as Map<String, String>?,
           body: body,
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -130,14 +128,14 @@ class MyApiClientApp {
     }
   }
 
-  saveMeetRequest(String accessKey, String userSecurityKey, String url,
+  saveMeetRequest(String? accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) async {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
       var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version),
+              accessKey, userSecurityKey,version) as Map<String, String>?,
           body: body,
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -158,13 +156,13 @@ class MyApiClientApp {
     }
   }
 
-  updateVisitPlan(String accessKey, String userSecurityKey, String url,
+  updateVisitPlan(String? accessKey, String userSecurityKey, String url,
       UpdateVisitResponseModel updateVisitRequest) async {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
 
-      var response = await httpClient.post(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
+      var response = await httpClient.post(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version) as Map<String, String>?,
           body: body,
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -185,14 +183,14 @@ class MyApiClientApp {
     }
   }
 
-  updateMeetPlan(String accessKey, String userSecurityKey, String url,
+  updateMeetPlan(String? accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) async {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveMeetRequest);
       var response = await httpClient.post(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version),
+              accessKey, userSecurityKey,version) as Map<String, String>?,
           body: body,
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -207,12 +205,12 @@ class MyApiClientApp {
     }
   }
 
-  getMWPData(String accessKey, String userSecurityKey, String url) async {
+  getMWPData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -229,12 +227,12 @@ class MyApiClientApp {
     }
   }
 
-  getDealerList(String accessKey, String userSecurityKey, String url) async {
+  getDealerList(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
 //       if (response.statusCode == 200) {
          var data = json.decode(response.body);
 //         if(data["resp_code"] == "DM1005"){
@@ -252,12 +250,12 @@ class MyApiClientApp {
     }
   }
 
-  getVisitData(String accessKey, String userSecurityKey, String url) async {
+  getVisitData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return VisitResponseModel.fromJson(data);
@@ -269,12 +267,12 @@ class MyApiClientApp {
     }
   }
 
-  getMeetData(String accessKey, String userSecurityKey, String url) async {
+  getMeetData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         return MeetResponseModelView.fromJson(data);
@@ -286,13 +284,13 @@ class MyApiClientApp {
     }
   }
 
-  Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
+  Future<CalendarPlanModel> getCalendarPlan(String? accessKey, String? userSecurityKey, String url) async {
     var data;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         data = json.decode(response.body);
 
@@ -311,12 +309,12 @@ class MyApiClientApp {
   }
 
   getCalenderPlanByDay(
-      String accessKey, String userSecurityKey, String url) async {
+      String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
@@ -333,12 +331,12 @@ class MyApiClientApp {
   }
 
   getTargetSsActualPlan(
-      String accessKey, String userSecurityKey, String url) async {
+      String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

@@ -1,3 +1,5 @@
+
+
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -31,7 +33,7 @@ final _kShouldTestAsyncErrorOnInit = false;
 // Toggle this for testing Crashlytics in your app locally.
 final _kTestingCrashlytics = true;
 
-Future<void> _initializeFlutterFireFuture;
+Future<void>? _initializeFlutterFireFuture;
 
 Future<void> _testAsyncErrorOnInit() async {
   Future<void>.delayed(const Duration(seconds: 2), () {
@@ -57,11 +59,11 @@ Future<void> _initializeFlutterFire() async {
 
   // Pass all uncaught errors to Crashlytics.
   try{
-    Function originalOnError = FlutterError.onError;
+    Function? originalOnError = FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails errorDetails) async {
       await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
       // Forward to original handler.
-      originalOnError(errorDetails);
+      originalOnError!(errorDetails);
     };
   }catch(ex){}
 

@@ -1,8 +1,10 @@
+
+
 class UpdateSiteModel {
-  String respCode;
-  String respMsg;
-  String siteId;
-  String assignedTo;
+  String? respCode;
+  String? respMsg;
+  String? siteId;
+  String? assignedTo;
 
   UpdateSiteModel({this.respCode, this.respMsg, this.siteId, this.assignedTo});
 

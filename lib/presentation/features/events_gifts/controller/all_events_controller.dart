@@ -1,3 +1,7 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
@@ -16,12 +20,11 @@ class AllEventController extends GetxController {
 
   final EgRepository repository;
 
-  AllEventController({@required this.repository})
-      : assert(repository != null);
-  final _egAllEventData = AllEventsModel().obs;
+  AllEventController({required this.repository});
+  final Rx<AllEventsModel?> _egAllEventData = AllEventsModel().obs;
   get egAllEventData => this._egAllEventData.value;
   set egAllEventData(value) => this._egAllEventData.value = value;
-  final _endEventModel = EndEventModel().obs;
+  final Rx<EndEventModel?> _endEventModel = EndEventModel().obs;
 
   get endEventModel => _endEventModel.value;
 
@@ -36,7 +39,7 @@ class AllEventController extends GetxController {
   final _selectedPosition = 0.obs;
   final _isFilterApplied = false.obs;
 
-  final _dataForSearchResult = AllEventsModel().obs;
+  final Rx<AllEventsModel?> _dataForSearchResult = AllEventsModel().obs;
 
   get dataForSearchResult => _dataForSearchResult.value;
   set dataForSearchResult(value) {
@@ -174,24 +177,24 @@ class AllEventController extends GetxController {
 
 
   Future eventSearch(String searchText) async{
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
-    dataForSearchResult = await repository.eventSearch(accessKey, userSecurityKey, empID, searchText);
+    dataForSearchResult = await repository.eventSearch(accessKey, userSecurityKey, empID!, searchText);
   }
 
-  Future<AllEventsModel> getAllEventData() async {
+  Future<AllEventsModel?> getAllEventData() async {
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
 
     await _prefs.then((SharedPreferences prefs) async {
@@ -227,11 +230,11 @@ class AllEventController extends GetxController {
     return egAllEventData;
   }
 
-  Future<EndEventModel> getEndEventDetail( String eventId)async{
+  Future<EndEventModel?> getEndEventDetail( String eventId)async{
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
 
     await _prefs.then((SharedPreferences prefs) async {
@@ -239,7 +242,7 @@ class AllEventController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
     });
 
-    endEventModel = await repository.getEndEventDetail(accessKey, userSecurityKey, empID, eventId);
+    endEventModel = await repository.getEndEventDetail(accessKey, userSecurityKey, empID!, eventId);
 
     Get.back();
     return endEventModel;
@@ -247,11 +250,11 @@ class AllEventController extends GetxController {
 
   }
 
-  Future<EventResponse> submitEndEventDetail(int eventId,
+  Future<EventResponse?> submitEndEventDetail(int eventId,
       String eventComment,String eventDate,double eventEndLat,double eventEndLong)async{
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKey();
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKey() as FutureOr<String?>);
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
     // Future.delayed(
     //     Duration.zero,
@@ -262,7 +265,7 @@ class AllEventController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
     });
 
-    EventResponse endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
+    EventResponse? endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
    // Get.back();
     return endEventModel;
   }

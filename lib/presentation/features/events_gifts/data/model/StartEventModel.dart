@@ -1,10 +1,12 @@
+
+
 class StartEventModel {
-  int eventID;
-  String eventStartOn;
-  double eventStartUserLat;
-  double eventStartUserLong;
-  String isEventStarted;
-  String referenceID;
+  int? eventID;
+  String? eventStartOn;
+  double? eventStartUserLat;
+  double? eventStartUserLong;
+  String? isEventStarted;
+  String? referenceID;
 
   StartEventModel(
       {this.eventID,

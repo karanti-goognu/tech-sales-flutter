@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +19,15 @@ import 'dart:io';
 class MyApiClient {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClient({@required this.httpClient});
+  MyApiClient({required this.httpClient});
 
   getAccessKey() async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) as Map<String, String>?);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -37,7 +39,7 @@ class MyApiClient {
     }
   }
 
-  checkLoginStatus(String empId, String mobileNumber, String accessKey) async {
+  checkLoginStatus(String empId, String mobileNumber, String? accessKey) async {
     try {
       version = VersionClass.getVersion();
       String encryptedEmpId =
@@ -73,7 +75,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.loginCheck),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(bodyEncrypted),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -87,8 +89,8 @@ class MyApiClient {
     }
   }
 
-  retryOtp(String empId, String mobileNumber, String accessKey,
-      String otpTokenId) async {
+  retryOtp(String empId, String mobileNumber, String? accessKey,
+      String? otpTokenId) async {
     try {
       version = VersionClass.getVersion();
       String encryptedEmpId =
@@ -117,7 +119,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.retryOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {
@@ -131,7 +133,7 @@ class MyApiClient {
     }
   }
 
-  validateOtp(String empId, String mobileNumber, String accessKey,
+  validateOtp(String empId, String mobileNumber, String? accessKey,
       String otpCode) async {
     String encryptedEmpId =
         encryptString(empId, StringConstants.encryptedKey).toString();
@@ -164,7 +166,7 @@ class MyApiClient {
       };
 
       final response = await post(Uri.parse(UrlConstants.validateOtp),
-          headers: requestHeadersWithAccessKey(accessKey,version),
+          headers: requestHeadersWithAccessKey(accessKey,version) as Map<String, String>?,
           body: json.encode(body),
           encoding: Encoding.getByName("utf-8"));
       if (response.statusCode == 200) {

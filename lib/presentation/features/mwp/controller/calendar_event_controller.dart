@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -23,15 +21,14 @@ class CalendarEventController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  CalendarEventController({@required this.repository})
-      : assert(repository != null);
+  CalendarEventController({required this.repository});
 
   final _calendarPlanResponse = CalendarPlanModel().obs;
   final _calendarDataByDay = CalendarDataByDay().obs;
   final _targetVsActual = TargetVsActualModel().obs;
   final _listOfEvents = List<ListOfEventDetails>.empty(growable: true).obs;
 
-  var _markedDateMap = EventList<Event>().obs;
+  var _markedDateMap = EventList<Event>(events: {}).obs;
   final _dateList = List<String>.empty(growable: true).obs;
   final _testMap = Map<DateTime, List<Event>>().obs;
 
@@ -110,8 +107,8 @@ class CalendarEventController extends GetxController {
     this.isCalenderLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";
@@ -126,7 +123,7 @@ class CalendarEventController extends GetxController {
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
           if (this.calendarPlanResponse.listOfEventDates.length > 0) {
-            var temp = EventList<Event>();
+            var temp = EventList<Event>(events: {});
             for (int i = 0;
             i < this.calendarPlanResponse.listOfEventDates.length;
             i++) {
@@ -165,8 +162,8 @@ class CalendarEventController extends GetxController {
   getCalendarEventOfDay(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventDataByDay + "referenceID=$empId&" + "&date=${this.selectedDate}";
       repository
           .getCalenderPlanByDay(accessKey, userSecurityKey, url)
@@ -191,8 +188,8 @@ class CalendarEventController extends GetxController {
   getTargetVsActualEvent(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getTargetVsActualData + "$empId";
       print('$url');
       repository

@@ -1,10 +1,12 @@
+
+
 class SaveVisitRequest {
-  String referenceId;
-  String eventType;
-  String visitMeetType;
-  String docId;
-  String visitMeetDate;
-  String remarks;
+  String? referenceId;
+  String? eventType;
+  String? visitMeetType;
+  String? docId;
+  String? visitMeetDate;
+  String? remarks;
 
   SaveVisitRequest(
       this.referenceId,

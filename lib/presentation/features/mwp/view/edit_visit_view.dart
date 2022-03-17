@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -26,7 +28,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   String dropdownValue = 'RETENTION SITE';
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
 
@@ -128,7 +130,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           child: DropdownButton<String>(
                                             value: _addEventController
                                                 .visitSubType,
-                                            onChanged: (String newValue) {
+                                            onChanged: (String? newValue) {
                                               if (_addEventController
                                                       .visitSubType ==
                                                   "RETENTION SITE") {
@@ -209,7 +211,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         _addEventController.visitSiteId,
                                     enabled: false,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return "Site ID can't be empty";
                                       }
                                       return null;
@@ -387,7 +389,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               ],
                                                               validator:
                                                                   (value) {
-                                                                if (value
+                                                                if (value!
                                                                     .isEmpty) {
                                                                   return 'Please enter Bags ';
                                                                 }
@@ -452,7 +454,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               },
                                                               validator:
                                                                   (value) {
-                                                                if (value
+                                                                if (value!
                                                                     .isEmpty) {
                                                                   return 'Please enter MT ';
                                                                 }
@@ -525,7 +527,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                 child: DropdownButton<String>(
                                                   value: _addEventController
                                                       .visitType,
-                                                  onChanged: (String newValue) {
+                                                  onChanged: (String? newValue) {
                                                     setState(() {
                                                       _addEventController
                                                           .visitType = newValue;
@@ -681,12 +683,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                       .visitEndTime ==
                                                   null)
                                           ? DropdownButtonFormField(
-                                              validator: (value) => value ==
+                                              validator: (dynamic value) => value ==
                                                       null
                                                   ? 'Please select Visit Outcome Type'
                                                   : null,
 
-                                              onChanged: (value) {
+                                              onChanged: (dynamic value) {
                                                 print(value);
                                                 _addEventController
                                                     .visitOutcomes = value;
@@ -746,7 +748,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   : _addEventController
                                                       .visitRemarks,
                                           onSaved: (val) {
-                                            print('saved' + val);
+                                            print('saved' + val!);
                                             _addEventController.visitRemarks =
                                                 val;
                                           },
@@ -767,7 +769,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               key: Key(_addEventController.visitRemarks),
                                               initialValue: _addEventController.visitRemarks,
                                               onSaved: (val) {
-                                                print('saved' + val);
+                                                print('saved' + val!);
                                                 _addEventController
                                                     .visitRemarks = val;
                                               },
@@ -783,14 +785,14 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               key: Key(_addEventController.visitRemarks),
                                               readOnly: true,
                                               validator: (value) {
-                                                if (value.isEmpty) {
+                                                if (value!.isEmpty) {
                                                   return 'Please enter remarks ';
                                                 }
                                                 return null;
                                               },
                                               initialValue: _addEventController.visitRemarks,
                                               onSaved: (val) {
-                                                print('saved' + val);
+                                                print('saved' + val!);
                                                 _addEventController
                                                     .visitRemarks = val;
                                               },
@@ -859,9 +861,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
           onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState!.validate()) {
               //afterRequestLayout(empId, mobileNumber);
-              _formKey.currentState.save();
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "UPDATE";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
@@ -880,9 +882,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
           onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState!.validate()) {
               //afterRequestLayout(empId, mobileNumber);
-              _formKey.currentState.save();
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "START";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
@@ -908,8 +910,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     ),          onPressed: () {
             // Validate returns true if the form is valid, or false
             // otherwise.
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "END";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT);
             }
@@ -978,7 +980,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -993,7 +995,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   }
 
   Future<void> _selectDateNextVisit(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime.now(),

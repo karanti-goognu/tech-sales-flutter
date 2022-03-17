@@ -1,3 +1,5 @@
+
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -19,7 +21,7 @@ class DashboardController extends GetxController {
 
   final DashboardRepository repository;
 
-  DashboardController({@required this.repository}) : assert(repository != null);
+  DashboardController({required this.repository});
   final _accessKeyResponse = AccessKeyModel().obs;
   final _mtdGeneratedVolumeSiteList = SitesListModel().obs;
   final _mtdConvertedVolumeList = DashboardMtdConvertedVolumeList().obs;
@@ -94,7 +96,7 @@ class DashboardController extends GetxController {
     });
   }
 
-  Future<bool> getYearlyViewDetails(String empID) async {
+  Future<bool> getYearlyViewDetails(String? empID) async {
     print("called");
     bool isProcessComplete = false;
     Future.delayed(
@@ -104,7 +106,7 @@ class DashboardController extends GetxController {
               child: CircularProgressIndicator(),
             ),
             barrierDismissible: false));
-    String userSecurityCode;
+    String? userSecurityCode;
     var value= await repository.getAccessKey();
       this.accessKeyResponse = value;
      var prefs = await SharedPreferences.getInstance();
@@ -115,7 +117,7 @@ class DashboardController extends GetxController {
     empID=empID=='_empty'?prefs.getString(StringConstants.employeeId):empID;
     print(empID);
 
-    var data= await repository.getYearlyViewDetails(empID, this.accessKeyResponse.accessKey,userSecurityCode );
+    var data= await repository.getYearlyViewDetails(empID!, this.accessKeyResponse.accessKey,userSecurityCode );
           this.dashboardYearlyViewModel = data;
          // print(":::: ${json.decode(data)} ::::");
           List tempMonthList = this.dashboardYearlyViewModel.dashboardYearlyModels
@@ -144,8 +146,8 @@ class DashboardController extends GetxController {
               child: CircularProgressIndicator(),
             ));
     print(image.path);
-    String userSecurityCode;
-    String empID;
+    String? userSecurityCode;
+    String? empID;
     repository.getAccessKey().then((value) {
       print(value.accessKey);
       this.accessKeyResponse = value;
@@ -154,13 +156,13 @@ class DashboardController extends GetxController {
         userSecurityCode = prefs.getString(StringConstants.userSecurityKey);
         empID = prefs.getString(StringConstants.employeeId);
         shareReport(
-            image, userSecurityCode, this.accessKeyResponse.accessKey, empID);
+            image, userSecurityCode, this.accessKeyResponse.accessKey, empID!);
       });
     });
   }
 
   shareReport(
-      File image, String userSecurityKey, String accessKey, String empID) {
+      File image, String? userSecurityKey, String? accessKey, String empID) {
     print(' path$image.path');
     repository
         .shareReport(image, userSecurityKey, accessKey, empID)
@@ -169,7 +171,7 @@ class DashboardController extends GetxController {
     });
   }
 
-  Future<bool> getMonthViewDetails({String empID, String yearMonth}) async {
+  Future<bool> getMonthViewDetails({String? empID, String? yearMonth}) async {
     bool isProcessComplete = false;
     Future.delayed(
         Duration.zero,
@@ -194,12 +196,11 @@ class DashboardController extends GetxController {
       this.empId = empId;
       print('Controller empID after month details: ${this.empId}');
       isProcessComplete = true;
-      repository.getMonthViewDetails(empId, yearMonth,this.accessKeyResponse.accessKey,userSecurityKey ).then((_) {
+      repository.getMonthViewDetails(empId, yearMonth!,this.accessKeyResponse.accessKey,userSecurityKey ).then((_) {
         print(_);
 
         DashboardMonthlyViewModel data = _;
 
-        if(data!=null){
           this.convTargetCount = data.convTargetCount;
           this.convTargetVolume = data.convTargetVolume;
           this.convertedCount = data.convertedCount;
@@ -215,14 +216,15 @@ class DashboardController extends GetxController {
           this.mwpPlanApproveStatus = data.mwpPlanApproveStatus;
           this.remainingTargetCount = data.remainingTargetCount;
           this.remainingTargetVolume = data.remainingTargetVolume;
-        }
+
+
         Get.back();
       });
     }).catchError((e) => print(e));
     return isProcessComplete;
   }
 
-  getDashboardMtdGeneratedVolumeSiteList({String empID}) {
+  getDashboardMtdGeneratedVolumeSiteList({String? empID}) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -251,7 +253,7 @@ class DashboardController extends GetxController {
     }).catchError((e) => print(e));
   }
 
-  getDashboardMtdConvertedVolumeList({String empID}) {
+  getDashboardMtdConvertedVolumeList({String? empID}) {
     String empId = empID ?? "empty";
     String userSecurityKey = "empty";
 

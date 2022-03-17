@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:get/get.dart';
@@ -8,7 +10,7 @@ import 'package:moengage_inbox/inbox_message.dart';
 class NotificationController extends GetxController {
   MoEngageInbox _moEngageInbox = MoEngageInbox();
   final MyRepositoryApp repository;
-  NotificationController({@required this.repository})
+  NotificationController({required this.repository})
       : assert(repository != null);
   final _counterNotification = 0.obs;
   get counterNotification => _counterNotification.value;

@@ -1,11 +1,13 @@
+
+
 class EndEventModel {
-  List<EventCcommentsList> eventCcommentsList;
-  List<EventDealersModelList> eventDealersModelList;
-  List<EventInfluencerModelsList> eventInfluencerModelsList;
-  MwpEndEventModel mwpEndEventModel;
-  String respCode;
-  String respMsg;
-  bool showUpdateButton;
+  List<EventCcommentsList>? eventCcommentsList;
+  List<EventDealersModelList>? eventDealersModelList;
+  List<EventInfluencerModelsList>? eventInfluencerModelsList;
+  MwpEndEventModel? mwpEndEventModel;
+  String? respCode;
+  String? respMsg;
+  bool? showUpdateButton;
 
   EndEventModel(
       {this.eventCcommentsList,
@@ -20,19 +22,19 @@ class EndEventModel {
     if (json['eventCcommentsList'] != null) {
       eventCcommentsList = new List<EventCcommentsList>.empty(growable: true);
       json['eventCcommentsList'].forEach((v) {
-        eventCcommentsList.add(new EventCcommentsList.fromJson(v));
+        eventCcommentsList!.add(new EventCcommentsList.fromJson(v));
       });
     }
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
-        eventDealersModelList.add(new EventDealersModelList.fromJson(v));
+        eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
     if (json['eventInfluencerModelsList'] != null) {
       eventInfluencerModelsList = new List<EventInfluencerModelsList>.empty(growable: true);
       json['eventInfluencerModelsList'].forEach((v) {
-        eventInfluencerModelsList
+        eventInfluencerModelsList!
             .add(new EventInfluencerModelsList.fromJson(v));
       });
     }
@@ -48,20 +50,20 @@ class EndEventModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.eventCcommentsList != null) {
       data['eventCcommentsList'] =
-          this.eventCcommentsList.map((v) => v.toJson()).toList();
+          this.eventCcommentsList!.map((v) => v.toJson()).toList();
     }
 
     if (this.eventDealersModelList != null) {
       data['eventDealersModelList'] =
-          this.eventDealersModelList.map((v) => v.toJson()).toList();
+          this.eventDealersModelList!.map((v) => v.toJson()).toList();
     }
 
     if (this.eventInfluencerModelsList != null) {
       data['eventInfluencerModelsList'] =
-          this.eventInfluencerModelsList.map((v) => v.toJson()).toList();
+          this.eventInfluencerModelsList!.map((v) => v.toJson()).toList();
     }
     if (this.mwpEndEventModel != null) {
-      data['mwpEndEventModel'] = this.mwpEndEventModel.toJson();
+      data['mwpEndEventModel'] = this.mwpEndEventModel!.toJson();
     }
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
@@ -71,11 +73,11 @@ class EndEventModel {
 }
 
 class EventCcommentsList {
-  String comments;
-  String createdOn;
-  String eventDate;
-  int eventId;
-  String referenceId;
+  String? comments;
+  String? createdOn;
+  String? eventDate;
+  int? eventId;
+  String? referenceId;
 
   EventCcommentsList(
       {this.comments,
@@ -104,16 +106,16 @@ class EventCcommentsList {
 }
 
 class EventDealersModelList {
-  String createdBy;
-  String createdOn;
-  String dealerId;
-  String dealerName;
-  int eventDealerId;
-  int eventId;
-  String eventStage;
-  String isActive;
-  String modifiedBy;
-  String modifiedOn;
+  String? createdBy;
+  String? createdOn;
+  String? dealerId;
+  String? dealerName;
+  int? eventDealerId;
+  int? eventId;
+  String? eventStage;
+  String? isActive;
+  String? modifiedBy;
+  String? modifiedOn;
 
   EventDealersModelList(
       {this.createdBy,
@@ -157,13 +159,13 @@ class EventDealersModelList {
 }
 
 class EventInfluencerModelsList {
-  int eventId;
-  int eventInflId;
-  String inflContact;
-  int inflId;
-  String inflName;
-  int inflTypeId;
-  String isActive;
+  int? eventId;
+  int? eventInflId;
+  String? inflContact;
+  int? inflId;
+  String? inflName;
+  int? inflTypeId;
+  String? isActive;
 
   EventInfluencerModelsList(
       {this.eventId,
@@ -198,60 +200,60 @@ class EventInfluencerModelsList {
 }
 
 class MwpEndEventModel {
-  int actualDalmiaInflCount;
-  String actualEventLocation;
-  String actualEventLocationLat;
-  String actualEventLocationLong;
-  int actualGiftDistributionCount;
-  int actualLeadsCount;
-  int actualNonDalmiaInflCount;
-  int actualTotalParticipantsCount;
-  String actualVenue;
-  String actualVenueAddress;
-  int dalmiaInflCount;
-  String eventApprovedBy;
-  String eventApprovedOn;
-  String eventCancelComment;
-  int eventCancelReasonId;
-  String eventCancelReasonText;
-  String eventCancelledOn;
-  String eventComment;
-  String eventCompleteRejectedBy;
-  String eventCompleteRejectedOn;
-  String eventCompletedOn;
-  String eventCreatedBy;
-  String eventCreatedOn;
-  String eventDate;
-  String eventEmailUniqueId;
-  String eventEndOn;
-  String eventEndUserLat;
-  String eventEndUserLong;
-  int eventId;
-  String eventLocation;
-  String eventLocationLat;
-  String eventLocationLong;
-  String eventRejectedBy;
-  String eventRejectedOn;
-  String eventStage;
-  String eventStartOn;
-  String eventStartUserLat;
-  String eventStartUserLong;
-  int eventStatusId;
-  String eventStatusText;
-  String eventSubmittedOn;
-  String eventTime;
-  int eventTypeId;
-  String eventTypeText;
-  int expectedLeadsCount;
-  int giftDistributionCount;
-  String isEventStarted;
-  int nonDalmiaInflCount;
-  String referenceId;
-  String techOfferName;
-  int totalParticipantsCount;
-  int tsoId;
-  String venue;
-  String venueAddress;
+  int? actualDalmiaInflCount;
+  String? actualEventLocation;
+  String? actualEventLocationLat;
+  String? actualEventLocationLong;
+  int? actualGiftDistributionCount;
+  int? actualLeadsCount;
+  int? actualNonDalmiaInflCount;
+  int? actualTotalParticipantsCount;
+  String? actualVenue;
+  String? actualVenueAddress;
+  int? dalmiaInflCount;
+  String? eventApprovedBy;
+  String? eventApprovedOn;
+  String? eventCancelComment;
+  int? eventCancelReasonId;
+  String? eventCancelReasonText;
+  String? eventCancelledOn;
+  String? eventComment;
+  String? eventCompleteRejectedBy;
+  String? eventCompleteRejectedOn;
+  String? eventCompletedOn;
+  String? eventCreatedBy;
+  String? eventCreatedOn;
+  String? eventDate;
+  String? eventEmailUniqueId;
+  String? eventEndOn;
+  String? eventEndUserLat;
+  String? eventEndUserLong;
+  int? eventId;
+  String? eventLocation;
+  String? eventLocationLat;
+  String? eventLocationLong;
+  String? eventRejectedBy;
+  String? eventRejectedOn;
+  String? eventStage;
+  String? eventStartOn;
+  String? eventStartUserLat;
+  String? eventStartUserLong;
+  int? eventStatusId;
+  String? eventStatusText;
+  String? eventSubmittedOn;
+  String? eventTime;
+  int? eventTypeId;
+  String? eventTypeText;
+  int? expectedLeadsCount;
+  int? giftDistributionCount;
+  String? isEventStarted;
+  int? nonDalmiaInflCount;
+  String? referenceId;
+  String? techOfferName;
+  int? totalParticipantsCount;
+  int? tsoId;
+  String? venue;
+  String? venueAddress;
 
   MwpEndEventModel(
       {this.actualDalmiaInflCount,
@@ -428,12 +430,12 @@ class MwpEndEventModel {
 }
 
 class EndEventDetailModel{
-  String eventComment;
-  String eventDate;
-  double eventEndLat;
-  double eventEndLong;
-  int eventId;
-  String referenceId;
+  String? eventComment;
+  String? eventDate;
+  double? eventEndLat;
+  double? eventEndLong;
+  int? eventId;
+  String? referenceId;
 
   EndEventDetailModel(this.eventComment, this.eventDate, this.eventEndLat, this.eventEndLong, this.eventId, this.referenceId);
 

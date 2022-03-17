@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -16,13 +18,13 @@ class SrFormDataController extends GetxController {
 
   final SrRepository repository;
 
-  SrFormDataController({@required this.repository})
+  SrFormDataController({required this.repository})
       : assert(repository != null);
-  final _srFormData = SrComplaintModel().obs;
+  final Rx<SrComplaintModel?> _srFormData = SrComplaintModel().obs;
   get srFormDaa => _srFormData.value;
   set srFormDaa(value) => _srFormData.value = value;
 
-  final _requestorData = RequestorDetailsModel().obs;
+  final Rx<RequestorDetailsModel?> _requestorData = RequestorDetailsModel().obs;
   get requestorData => _requestorData.value;
   set requestorData(value) => _requestorData.value = value;
 
@@ -35,50 +37,50 @@ class SrFormDataController extends GetxController {
   }
 
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
-  Future<SrComplaintModel> getSrComplaintFormData(String accessKey) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<SrComplaintModel?> getSrComplaintFormData(String? accessKey) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      srFormDaa = await repository.getSrFormData(accessKey, userSecurityKey,empID);
+      srFormDaa = await repository.getSrFormData(accessKey, userSecurityKey,empID!);
     });
     return srFormDaa;
   }
 
-  Future<RequestorDetailsModel> getRequestorDetails(
-      String accessKey, String requestorType,String siteId) async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<RequestorDetailsModel?> getRequestorDetails(
+      String? accessKey, String? requestorType,String siteId) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       requestorData = await repository.getRequestorDetails(
-          accessKey, userSecurityKey, empID, requestorType,siteId);
+          accessKey, userSecurityKey, empID!, requestorType!,siteId);
     });
     return requestorData;
   }
 
   Future<SiteAreaModel> getSiteAreaDetails(String siteId) async {
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = "";
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = "";
     await getAccessKey().then((value) async {
-      accessKey = value.accessKey;
+      accessKey = value!.accessKey;
     });
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       siteLocationData = await repository.getSiteAreaDetails(
-          accessKey, userSecurityKey, empID, siteId);
+          accessKey, userSecurityKey, empID!, siteId);
     });
     return siteLocationData;
   }

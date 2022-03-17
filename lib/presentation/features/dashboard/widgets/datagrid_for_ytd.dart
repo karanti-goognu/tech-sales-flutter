@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
@@ -7,8 +9,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DataGridForYTD extends StatefulWidget {
   const DataGridForYTD({
-    Key key,
-    @required DataGridController controller,
+    Key? key,
+    required DataGridController controller,
   }) : _controller = controller, super(key: key);
 
   final DataGridController _controller;
@@ -28,7 +30,7 @@ class _DataGridForYTDState extends State<DataGridForYTD> {
         Column(
           children: [
             Container(
-              height: SizeConfig.screenHeight/20,
+              height: SizeConfig.screenHeight!/20,
               color: HexColor('707070'),
               child: Row(
               children: [

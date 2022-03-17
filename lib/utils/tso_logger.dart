@@ -4,8 +4,8 @@ class TsoLogger {
   TsoLogger._();
 
   /// This method is used to print the message passed to it in the logcat.
-  static void printLog(String msg) {
-    debugPrint(msg);
+  static void printLog(Object msg) {
+    debugPrint(msg.toString());
   }
 
 }

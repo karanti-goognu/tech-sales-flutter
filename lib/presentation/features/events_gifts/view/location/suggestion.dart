@@ -1,9 +1,11 @@
+
+
 import 'dart:convert';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:http/http.dart';
 
 class Geometry {
-  Location location;
+  Location? location;
 
   Geometry({this.location});
 
@@ -17,15 +19,15 @@ class Geometry {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.location != null) {
-      data['location'] = this.location.toJson();
+      data['location'] = this.location!.toJson();
     }
     return data;
   }
 }
 
 class Location {
-  double lat;
-  double lng;
+  double? lat;
+  double? lng;
 
   Location({this.lat, this.lng});
 
@@ -45,8 +47,8 @@ class Location {
 }
 
 class Suggestion {
-  final String placeId;
-  final String description;
+  final String? placeId;
+  final String? description;
 
   Suggestion(this.placeId, this.description);
 
@@ -68,7 +70,7 @@ class PlaceApiProvider {
   final apiKey = StringConstants.API_Key;
   //Platform.isAndroid ? androidKey : iosKey;
 
-  Future<List<Suggestion>> fetchSuggestions(String input, String lang) async {
+  Future<List<Suggestion>?> fetchSuggestions(String input, String lang) async {
     input = input.replaceAll(" ", "+");
     final request =
     //    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=$lang&components=country:IN&key=$apiKey&sessiontoken=$sessionToken';
@@ -99,7 +101,7 @@ class PlaceApiProvider {
     }
   }
 
-  Future<Location> getLatLong(String placeId) async {
+  Future<Location?> getLatLong(String? placeId) async {
     final latLongRequest =
         'https://maps.googleapis.com/maps/api/place/details/json?input=bar&placeid=$placeId&key=$apiKey';
 
