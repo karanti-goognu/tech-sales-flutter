@@ -26,7 +26,7 @@ class LoginController extends GetxController {
 
   final MyRepository repository;
 
-  LoginController({required this.repository}) : assert(repository != null);
+  LoginController({required this.repository});
 
   final _loginResponse = LoginModel().obs;
   final _retryOtpResponse = RetryOtpModel().obs;
@@ -127,7 +127,7 @@ class LoginController extends GetxController {
 
   //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
   checkLoginStatus() async{
-    String userSecurityKey = "empty";
+    // String userSecurityKey = "empty";
     // Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     // await  _prefs.then((SharedPreferences prefs) async {
     // userSecurityKey =

@@ -134,7 +134,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
             (int.parse(_siteTotalBalanceBags.text) / 20).toString();
       }
 
-      _plotNumber.text = sitesModal!.sitePlotNumber!;
+      _plotNumber.text = sitesModal!.sitePlotNumber??"";
       _siteAddress.text = sitesModal!.siteAddress!;
       _pincode.text = sitesModal!.sitePincode!;
       _state.text = sitesModal!.siteState!;
@@ -164,8 +164,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
           sitesModal!.siteGeotagLongitude != "null" &&
           sitesModal!.siteGeotagLatitude != "" &&
           sitesModal!.siteGeotagLongitude != "") {
-        TsoLogger.printLog(":::::::::Set Site Data::::::::: current position");
-
         _currentPosition = new LatLng(
             double.parse(sitesModal!.siteGeotagLatitude!),
             double.parse(sitesModal!.siteGeotagLongitude!));
@@ -762,7 +760,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22,
-                                  // color: HexColor("#000000DE"),
                                   fontFamily: "Muli"),
                             ),
                           ),
@@ -772,11 +769,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
                                   child: TextFormField(
-                                    // initialValue: _totalBags.toString(),
                                     controller: _siteTotalBalanceBags,
                                     onChanged: (value) {
                                       setState(() {
-                                        // _totalBags.text = value ;
                                         if (_siteTotalBalanceBags.text == "") {
                                           _siteTotalBalancePt.clear();
                                         } else {
@@ -808,7 +803,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
                                         fontFamily: "Muli"),
-                                    // keyboardType: TextInputType.text,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                       labelText: "Bags",
@@ -823,7 +817,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                     controller: _siteTotalBalancePt,
                                     onChanged: (value) {
                                       setState(() {
-                                        // _totalBags.text = value ;
                                         if (_siteTotalBalancePt.text == "") {
                                           _siteTotalBalanceBags.clear();
                                         } else {
@@ -914,17 +907,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Probability of winning",
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
+
                           TextStyles.mandatoryText,
                           SizedBox(
                             height: 20,
@@ -941,55 +924,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 color: ColorConstants.inputBoxHintColor,
                                 fontFamily: "Muli"),
                           ),
-                          /*
-                          DropdownButtonFormField<SiteCompetitionStatusEntity>(
-                            value: _siteCompetitionStatusEntity,
-                            items: viewSiteDataResponse.sitesModal != null &&
-                                    viewSiteDataResponse
-                                            .sitesModal.siteCompetitionId !=
-                                        null
-                                ? [_siteCompetitionStatusEntity]
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.competitionStatus,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList()
-                                : siteCompetitionStatusEntity
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.competitionStatus,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList(),
-                            // onChanged: (value) {
-                            //   setState(() {
-                            //     _siteCompetitionStatusEntity = value;
-                            //     UpdatedValues.setSiteCompetitionId(
-                            //         _siteCompetitionStatusEntity);
-                            //   });
-                            // },
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Competition Status",
-                            ),
-                          ),
-                          */
                           SizedBox(
                             height: 20,
                           ),
@@ -1005,56 +939,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 color: ColorConstants.inputBoxHintColor,
                                 fontFamily: "Muli"),
                           ),
-                          /*
-                          DropdownButtonFormField<SiteOpportunityStatusEntity>(
-                            value: _siteOpportunitStatusEnity,
-                            items: viewSiteDataResponse.sitesModal != null &&
-                                    viewSiteDataResponse
-                                            .sitesModal.siteOppertunityId !=
-                                        null
-                                ? [_siteOpportunitStatusEnity]
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.opportunityStatus,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList()
-                                : siteOpportunityStatusEntity
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.opportunityStatus,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList(),
-                            // onChanged: (value) {
-                            //   setState(() {
-                            //     _siteOpportunitStatusEnity = value;
-                            //     UpdatedValues.setSiteOppertunityId(
-                            //         _siteOpportunitStatusEnity);
-                            //   });
-                            // },
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Opportunity Status",
-                            ),
-                          ),
-
-                           */
                           SizedBox(height: 25),
                           TextFormField(
                             controller: _ownerName,
@@ -1080,17 +964,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Owner Name"),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
                           TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           TextFormField(
@@ -1126,17 +999,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             ),
                           ),
                           TextStyles.mandatoryText,
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15),
-                          //   child: Text(
-                          //     "Mandatory",
-                          //     style: TextStyle(
-                          //       fontFamily: "Muli",
-                          //       color: ColorConstants.inputBoxHintColorDark,
-                          //       fontWeight: FontWeight.normal,
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 10.0, bottom: 20, left: 5),
@@ -1145,10 +1007,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
+                                  fontFamily: "Muli"))),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -1245,13 +1104,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                             onChanged: (String data) {
                               UpdatedValues.setPlotNumber(_plotNumber.text);
                             },
-                            // validator: (value) {
-                            //   if (value.isEmpty) {
-                            //     return 'Please enter Address ';
-                            //   }
-                            //
-                            //   return null;
-                            // },
                             style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.inputBoxHintColor,
@@ -1289,10 +1141,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               if (value!.isEmpty) {
                                 return 'Please enter Pincode ';
                               }
-                              // if (value.length <= 6) {
-                              //   return 'Pincode is incorrect';
-                              // }
-
                               return null;
                             },
                             onChanged: (String data) {
@@ -1563,6 +1411,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   ),
                                 ),
                                 onPressed: () async {
+                                  print("1");
+                                  print(_updateFormKey.currentState!.validate());
                                   if (_updateFormKey.currentState!.validate()) {
                                     UpdatedValues updateRequest =
                                         new UpdatedValues();

@@ -97,13 +97,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_siteController == null)
-        ? Container(
-            child: Center(
-              child: Text("Leads controller  is empty!!"),
-            ),
-          )
-        : (_siteController.sitesListResponse == null)
+    return Obx(() =>  (_siteController.sitesListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Leads list response  is empty!!"),

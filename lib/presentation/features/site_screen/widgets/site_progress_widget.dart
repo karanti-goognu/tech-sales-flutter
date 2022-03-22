@@ -58,7 +58,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   BrandModelforDB? _siteBrandFromLocalDB;
   BrandModelforDB? _siteBrandFromLocalDBNextStage;
   BrandModelforDB? _siteProductFromLocalDBNextStage;
-  List<DropdownMenuItem<String>> productSoldVisitSite = new List.empty(growable: true);
+  List<DropdownMenuItem<String>> productSoldVisitSite =
+      new List.empty(growable: true);
   var _stagePotentialVisit = new TextEditingController();
   var _stagePotentialVisitNextStage = new TextEditingController();
   var _selectedBrand = new TextEditingController();
@@ -69,40 +70,51 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   var _siteCurrentTotalBagsNextStage = new TextEditingController();
   var _comments = new TextEditingController();
   var closureReasonText = new TextEditingController();
-
   var _stageStatus = new TextEditingController();
   var _stageStatusNextStage = new TextEditingController();
   var _dealerName = new TextEditingController();
   int? visitSubTypeId;
   String? geoTagType;
-
   String? siteCreationDate, visitRemarks;
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
   SitesModal? sitesModal;
   MwpVisitModel? mwpVisitModel;
   List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
   List<SiteFloorsEntity>? siteFloorsEntityNew = new List.empty(growable: true);
-  List<SiteFloorsEntity>? siteFloorsEntityNewNextStage = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntityNewNextStage =
+      new List.empty(growable: true);
   List<SitephotosEntity>? sitephotosEntity = new List.empty(growable: true);
   List<SiteStageHistory>? siteStageHistorys = new List.empty(growable: true);
   List<SiteSupplyHistorys> siteSupplyHistorys = new List.empty(growable: true);
-  List<ConstructionStageEntity> constructionStageEntity = new List.empty(growable: true);
-  List<ConstructionStageEntity>? constructionStageEntityNew = new List.empty(growable: true);
+  List<ConstructionStageEntity> constructionStageEntity =
+      new List.empty(growable: true);
+  List<ConstructionStageEntity>? constructionStageEntityNew =
+      new List.empty(growable: true);
   List<ConstructionStageEntity>? constructionStageEntityNewNextStage =
       new List.empty(growable: true);
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity = new List.empty(growable: true);
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity = new List.empty(growable: true);
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity = new List.empty(growable: true);
+  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity =
+      new List.empty(growable: true);
+  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity =
+      new List.empty(growable: true);
+  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity =
+      new List.empty(growable: true);
   List<SiteBrandEntity>? siteBrandEntity = new List.empty(growable: true);
-  List<BrandModelforDB> siteBrandEntityfromLoaclDB = new List.empty(growable: true);
-  List<BrandModelforDB>? siteProductEntityfromLoaclDB = new List.empty(growable: true);
-  List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
-  List<SiteInfluencerEntity> siteInfluencerEntity = new List.empty(growable: true);
-  List<InfluencerTypeEntity> influencerTypeEntity = new List.empty(growable: true);
-  List<InfluencerCategoryEntity> influencerCategoryEntity = new List.empty(growable: true);
+  List<BrandModelforDB> siteBrandEntityfromLoaclDB =
+      new List.empty(growable: true);
+  List<BrandModelforDB>? siteProductEntityfromLoaclDB =
+      new List.empty(growable: true);
+  List<BrandModelforDB> siteProductEntityfromLoaclDBNextStage =
+      new List.empty(growable: true);
+  List<SiteInfluencerEntity> siteInfluencerEntity =
+      new List.empty(growable: true);
+  List<InfluencerTypeEntity> influencerTypeEntity =
+      new List.empty(growable: true);
+  List<InfluencerCategoryEntity> influencerCategoryEntity =
+      new List.empty(growable: true);
   List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
   List<InfluencerEntity> influencerEntity = new List.empty(growable: true);
-  List<SiteNextStageEntity> siteNextStageEntity = new List.empty(growable: true);
+  List<SiteNextStageEntity> siteNextStageEntity =
+      new List.empty(growable: true);
   List<SiteCommentsEntity>? siteCommentsEntity = new List.empty(growable: true);
   List<CounterListModel>? counterListModel = new List.empty(growable: true);
   List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
@@ -172,9 +184,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         "Product " + (index + 1).toString(),
         softWrap: true,
         style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            fontFamily: "Muli"),
+            fontWeight: FontWeight.bold, fontSize: 16, fontFamily: "Muli"),
       ),
       expanded: Container(
         margin: EdgeInsets.only(left: 0.0, right: 0.0),
@@ -202,15 +212,17 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                       value: label,
                                     ))
                                 .toList(),
-                   onChanged: (value) async {
+                            onChanged: (value) async {
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
-                              siteProductEntityfromLoaclDB = new List.empty(growable:true);
+                              siteProductEntityfromLoaclDB =
+                                  new List.empty(growable: true);
                               productDynamicList![index].brandModelForDB = null;
                               _dealerEntityForDb = null;
                               List<BrandModelforDB>
-                                  _siteProductEntityfromLoaclDB = await db
-                                      .fetchAllDistinctProduct(value!.brandName);
+                                  _siteProductEntityfromLoaclDB =
+                                  await db.fetchAllDistinctProduct(
+                                      value!.brandName);
                               setState(() {
                                 _siteBrandFromLocalDB = value;
                                 siteProductEntityfromLoaclDB =
@@ -226,7 +238,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 } else {
                                   _stageStatus.text = "LOST";
                                   visitDataDealer = "";
-
                                 }
                                 UpdatedValues.setSiteProgressStageStatus(
                                     _stageStatus.text);
@@ -254,7 +265,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                       value: label,
                                     ))
                                 .toList(),
-                   onChanged: (value) async {
+                            onChanged: (value) async {
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
                             },
@@ -275,181 +286,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       ),
                 TextStyles.mandatoryText,
                 SizedBox(height: 12),
-
-/*
-                (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                            "dalmia")
-                    ? GestureDetector(
-                        onTap: () {},
-                        child: (index == 0)
-                            ? (productDynamicList[index]
-                                    .dealerName
-                                    .text
-                                    .isEmpty)
-                                ? DropdownButtonFormField<DealerForDb>(
-                                    value: _dealerEntityForDb,
-                                    items: dealerEntityForDb
-                                        .map((label) => DropdownMenuItem(
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    100,
-                                                child: Text(
-                                                    '${label.dealerName} (${label.id})',
-                                                    style: TextStyle(
-                                                        fontSize: 14)),
-                                              ),
-                                              value: label,
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      selectedSubDealer = null;
-                                      setState(() {
-                                        _dealerEntityForDb = value;
-                                        subDealerList = new List();
-                                        visitDataDealer = value.id;
-                                        subDealerList = counterListModel
-                                            .where((e) =>
-                                                e.soldToParty ==
-                                                visitDataDealer)
-                                            .toList();
-                                        selectedSubDealer = subDealerList[0];
-                                        visitDataSubDealer =
-                                            subDealerList[0].shipToParty;
-                                        _dealerName.text = value.dealerName;
-                                        UpdatedValues.setDealerEntityForDb(
-                                            _dealerEntityForDb);
-                                        UpdatedValues.setSelectedSubDealer(
-                                            selectedSubDealer);
-                                        UpdatedValues.setSubDealerList(
-                                            subDealerList);
-                                      });
-                                    },
-                                    style: FormFieldStyle.formFieldTextStyle,
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Dealer"),
-                                    validator: (value) => value == null
-                                        ? 'Please select Dealer'
-                                        : null,
-                                  )
-                                : DropdownButtonFormField<DealerForDb>(
-                                    value: _dealerEntityForDb,
-                                    items: [_dealerEntityForDb]
-                                        .map((label) => DropdownMenuItem(
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    100,
-                                                child: Text(
-                                                    '${label.dealerName} (${label.id})',
-                                                    style: TextStyle(
-                                                        fontSize: 14)),
-                                              ),
-                                              value: label,
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      selectedSubDealer = null;
-                                      setState(() {
-                                        _dealerEntityForDb = value;
-                                        subDealerList = new List();
-                                        visitDataDealer = value.id;
-                                        subDealerList = counterListModel
-                                            .where((e) =>
-                                                e.soldToParty ==
-                                                visitDataDealer)
-                                            .toList();
-                                        selectedSubDealer = subDealerList[0];
-                                        visitDataSubDealer =
-                                            subDealerList[0].shipToParty;
-                                        _dealerName.text = value.dealerName;
-                                        availableKittyPoint = subDealerList[0]
-                                            .availableKittyPoint;
-                                      });
-                                    },
-                                    style: FormFieldStyle.formFieldTextStyle,
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Dealer"),
-                                    validator: (value) => value == null
-                                        ? 'Please select Dealer'
-                                        : null,
-                                  )
-                            : TextFormField(
-                                controller: _dealerName,
-                                readOnly: true,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: ColorConstants.inputBoxHintColor,
-                                    fontFamily: "Muli"),
-                                keyboardType: TextInputType.number,
-                                decoration: FormFieldStyle.buildInputDecoration(
-                                    labelText: "Dealer"),
-                              ),
-                      )
-                    : Container(),
-                    (_siteBrandFromLocalDB != null &&
-                        _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                            "dalmia")
-                    ? SizedBox(height: 15)
-                    : SizedBox(),
-                subDealerList.isEmpty
-                    ? Container()
-                    : (_siteBrandFromLocalDB != null &&
-                            _siteBrandFromLocalDB.brandName.toLowerCase() ==
-                                "dalmia")
-                        ? DropdownButtonFormField(
-                            items: subDealerList.isNotEmpty
-                                ? subDealerList
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                100,
-                                            child: Text(
-                                              '${e.shipToPartyName} (${e.shipToParty})',
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                        ))
-                                    .toList()
-                                : [
-                                    DropdownMenuItem(
-                                        child: Text("No Sub Dealer"),
-                                        value: "0")
-                                  ],
-                            value: selectedSubDealer,
-                            validator: (value) => value == null || value.isEmpty
-                                ? 'Please select Sub-Dealer'
-                                : null,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedSubDealer = value;
-                                visitDataSubDealer =
-                                    value.shipToParty.toString();
-                                availableKittyPoint =
-                                    selectedSubDealer.availableKittyPoint;
-                                UpdatedValues.setSelectedSubDealer(
-                                    selectedSubDealer);
-                              });
-                            },
-                            style: FormFieldStyle.formFieldTextStyle,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Sub-Dealer"),
-                          )
-                        : Container(),
-
-
-                dealerList.isEmpty
-                    ? Container()
-                    :
-                */
 
                 ///Changes for Instead of two drop downs for dealer and subdealer only one dropdown as counter
                 (_siteBrandFromLocalDB != null &&
@@ -522,14 +358,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                         for (int i = 0;
                                             i < counterListModel!.length;
                                             i++) {
-                                          if (counterListModel![i].shipToParty ==
+                                          if (counterListModel![i]
+                                                  .shipToParty ==
                                               value.id) {
                                             availableKittyPoint =
                                                 counterListModel![i]
                                                     .availableKittyPoint;
                                           }
                                         }
-
                                       });
                                     },
                                     style: FormFieldStyle.formFieldTextStyle,
@@ -565,7 +401,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             "dalmia")
                     ? Container(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
@@ -585,17 +421,22 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   children: [
                                     Radio(
                                       value: 'Y',
-                                      groupValue: productDynamicList![index].awardLoyaltyPoint,
+                                      groupValue: productDynamicList![index]
+                                          .awardLoyaltyPoint,
                                       onChanged: (dynamic value) {
                                         setState(() {
-                                            productDynamicList![index].awardLoyaltyPoint = value;
+                                          productDynamicList![index]
+                                              .awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
-                                    Text("Yes",style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        fontFamily: "Muli"),)
+                                    Text(
+                                      "Yes",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          fontFamily: "Muli"),
+                                    )
                                   ],
                                 ),
                               ),
@@ -604,18 +445,22 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   children: [
                                     Radio(
                                       value: 'N',
-                                      groupValue: productDynamicList![index].awardLoyaltyPoint,
-                                      //_selectedRadioValue,
+                                      groupValue: productDynamicList![index]
+                                          .awardLoyaltyPoint,
                                       onChanged: (dynamic value) {
                                         setState(() {
-                                          productDynamicList![index].awardLoyaltyPoint = value;
+                                          productDynamicList![index]
+                                              .awardLoyaltyPoint = value;
                                         });
                                       },
                                     ),
-                                    Text("No",style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        fontFamily: "Muli"),)
+                                    Text(
+                                      "No",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          fontFamily: "Muli"),
+                                    )
                                   ],
                                 ),
                               )
@@ -779,8 +624,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         child: TextFormField(
                           controller: productDynamicList![index].supplyDate,
                           readOnly: true,
-                          onChanged: (data) {
-                          },
+                          onChanged: (data) {},
                           style: TextStyle(
                               fontSize: 18,
                               color: ColorConstants.inputBoxHintColor,
@@ -812,7 +656,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 color: ColorConstants.clearAllTextColor,
                               ),
                               onPressed: () async {
-
                                 final DateTime? picked = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
@@ -828,8 +671,9 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   if (picked != null) {
                                     final String formattedDate =
                                         formatter.format(picked);
-                                    productDynamicList![index].supplyDate!.text =
-                                        formattedDate;
+                                    productDynamicList![index]
+                                        .supplyDate!
+                                        .text = formattedDate;
                                   }
                                 });
                               },
@@ -852,8 +696,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                         padding: const EdgeInsets.only(left: 10.0),
                         child: TextFormField(
                           controller: productDynamicList![index].supplyQty,
-                          onChanged: (v) {
-                          },
+                          onChanged: (v) {},
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter Bags ';
@@ -899,7 +742,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       ),
                     ),
                     onPressed: () async {
-
                       if (_siteBrandFromLocalDB != null &&
                           _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                               "dalmia") {
@@ -913,7 +755,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       if (_siteBrandFromLocalDB != null &&
                           _siteBrandFromLocalDB!.brandName!.toLowerCase() !=
                               "dalmia") {
-                           productDynamicList![index].awardLoyaltyPoint = null;
+                        productDynamicList![index].awardLoyaltyPoint = null;
                       }
 
                       if (productDynamicList![index].brandModelForDB == null) {
@@ -952,7 +794,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                             brandModelForDB:
                                 productDynamicList![index].brandModelForDB,
                             dealerName: _dealerName,
-                        awardLoyaltyPoint: productDynamicList![index].awardLoyaltyPoint);
+                            awardLoyaltyPoint:
+                                productDynamicList![index].awardLoyaltyPoint);
                         sumNoOfBagsSupplied();
                         updateSiteSupplyHistory();
                       });
@@ -967,26 +810,26 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       collapsed: Row(
         children: [
           Expanded(
-              flex: 7,
-              child: Text(
-                productDynamicList![index].supplyDate!.text.isEmpty ||
-                        productDynamicList![index].supplyQty!.text.isEmpty ||
-                        productDynamicList![index].brandPrice!.text.isEmpty ||
-                        productDynamicList![index].brandId == -1
-                    ? "Fill product Details"
-                    : productDynamicList![index].brandModelForDB!.productName! +
-                        ",  Qty:" +
-                        productDynamicList![index].supplyQty!.text +
-                        ", Price:" +
-                        productDynamicList![index].brandPrice!.text,
-                softWrap: true,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                    fontFamily: "Muli"),
-              ),
+            flex: 7,
+            child: Text(
+              productDynamicList![index].supplyDate!.text.isEmpty ||
+                      productDynamicList![index].supplyQty!.text.isEmpty ||
+                      productDynamicList![index].brandPrice!.text.isEmpty ||
+                      productDynamicList![index].brandId == -1
+                  ? "Fill product Details"
+                  : productDynamicList![index].brandModelForDB!.productName! +
+                      ",  Qty:" +
+                      productDynamicList![index].supplyQty!.text +
+                      ", Price:" +
+                      productDynamicList![index].brandPrice!.text,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  fontFamily: "Muli"),
+            ),
           ),
           Expanded(
             flex: 1,
@@ -1024,8 +867,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           widget.viewSiteDataResponse!.siteBrandEntity![i].productName));
     }
 
-
-///Added shipToParty to dealers
+    ///Added shipToParty to dealers
     for (int i = 0;
         i < widget.viewSiteDataResponse!.counterListModel!.length;
         i++) {
@@ -1172,642 +1014,688 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
     return ListView(children: [
       Container(
           child: Form(
-            key: _updateFormKey,
+              key: _updateFormKey,
               child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Current Stage",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          fontFamily: "Muli"),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          widget.tabIndex = 3;
-                          widget.tabController!.animateTo(3);
-                        });
-                      },
-                      child: Text(
-                        "View previous detail",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: HexColor("#F9A61A"),
-                            fontFamily: "Muli"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              DropdownButtonFormField<ConstructionStageEntity>(
-                value: _selectedConstructionTypeVisit,
-                items: constructionStageEntityNew!
-                    .map((label) => DropdownMenuItem(
-                          child: Text(
-                            label.constructionStageText!,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          value: label,
-                        ))
-                    .toList(),
-
-                onChanged: (value) {
-                  setState(() {
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    _selectedConstructionTypeVisit = value;
-                    siteFloorsEntityNew = new List.empty(growable: true);
-                    _selectedSiteVisitFloor = null;
-                    if (_selectedConstructionTypeVisit!.id == 1 ||
-                        _selectedConstructionTypeVisit!.id == 2 ||
-                        _selectedConstructionTypeVisit!.id == 3) {
-                      siteFloorsEntityNew!.add(new SiteFloorsEntity(
-                          id: siteFloorsEntity![0].id,
-                          siteFloorTxt: siteFloorsEntity![0].siteFloorTxt));
-                    } else {
-                      for (int i = 0; i < siteFloorsEntity!.length; i++) {
-                        siteFloorsEntityNew!.add(new SiteFloorsEntity(
-                            id: siteFloorsEntity![i].id,
-                            siteFloorTxt: siteFloorsEntity![i].siteFloorTxt));
-                      }
-                    }
-                    _stagePotentialVisit.clear();
-                    UpdatedValues.setSiteProgressConstructionId(
-                        _selectedConstructionTypeVisit);
-                  });
-                },
-                decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Stage of Construction",
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  "Mandatory",
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              DropdownButtonFormField<SiteFloorsEntity>(
-                value: _selectedSiteVisitFloor,
-                items: siteFloorsEntityNew!
-                    .map((label) => DropdownMenuItem(
-                          child: Text(
-                            label.siteFloorTxt!,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          value: label,
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedSiteVisitFloor = value;
-                    UpdatedValues.setSiteProgressNoOfFloors(
-                        _selectedSiteVisitFloor);
-                    if (viewSiteDataResponse!.siteStagePotentialEntity != null &&
-                        viewSiteDataResponse!.siteStagePotentialEntity!.length >
-                            0) {
-                      double siteTotalSitePotential = viewSiteDataResponse!
-                                  .sitesModal!.siteTotalSitePotential !=
-                              null
-                          ? double.parse(viewSiteDataResponse!
-                              .sitesModal!.siteTotalSitePotential!)
-                          : 0;
-                      _stagePotentialVisit.clear();
-                      if ((!siteTotalSitePotential.isBlank!) &&
-                          (_selectedConstructionTypeVisit != null &&
-                              (_selectedConstructionTypeVisit!.id != null ||
-                                  !_selectedConstructionTypeVisit!
-                                      .id.isBlank!)) &&
-                          (_selectedSiteVisitFloor != null &&
-                              (_selectedSiteVisitFloor!.id != null ||
-                                  !_selectedSiteVisitFloor!.id.isBlank!))) {
-                        _stagePotentialVisit.text = calculateStagePotential(
-                                siteTotalSitePotential,
-                                viewSiteDataResponse!.siteStagePotentialEntity,
-                                _selectedConstructionTypeVisit!.id,
-                                _selectedSiteVisitFloor!.id)
-                            .toString();
-                      }
-                    }
-                  });
-                },
-                decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Floor",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  "Mandatory",
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _stagePotentialVisit,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Site Built-Up Area ';
-                  }
-                  return null;
-                },
-                onChanged: (String data) {
-                  UpdatedValues.setSiteProgressStagePotential(data);
-                },
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
-                  TextInputFormatter.withFunction((oldValue, newValue) {
-                    try {
-                      final text = newValue.text;
-                      if (text.isNotEmpty) double.parse(text);
-                      return newValue;
-                    } catch (e) {}
-                    return oldValue;
-                  }),
-                ],
-                decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Stage Potential (Bags)",
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  "Mandatory",
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-
-              ..._getProductList(),
-              sumNoOfBagsSupplied() > 0
-                  ? Container(
-                      child: Text(
-                        "MULTIPLE - ${sumNoOfBagsSupplied()} >",
-                        style: TextStyle(
-                            color: Colors.amber[700],
-                            fontWeight: FontWeight.bold,
-                            // letterSpacing: 2,
-                            fontSize: 15),
-                      ),
-                    )
-                  : Container(),
-              Center(
-                child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextButton(
-                    style: TextButton.styleFrom(
-
-    shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          side: BorderSide(color: Colors.black26)),
-                      backgroundColor: Colors.transparent,),
-                      child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.only(
-                            right: 5, bottom: 10, top: 10),
-                        child: Text(
-                          "ADD MORE PRODUCT",
-                          style: TextStyle(
-                              color: HexColor("#1C99D4"),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17),
+                            top: 10.0, bottom: 20, left: 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Current Stage",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  fontFamily: "Muli"),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  widget.tabIndex = 3;
+                                  widget.tabController!.animateTo(3);
+                                });
+                              },
+                              child: Text(
+                                "View previous detail",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: HexColor("#F9A61A"),
+                                    fontFamily: "Muli"),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      onPressed: () async {
-                        int index;
-                        if (productDynamicList!.length == 0) {
-                          index = 0;
-                        } else {
-                          index = productDynamicList!.length;
-                        }
-                        if (index == 0) {
+                      DropdownButtonFormField<ConstructionStageEntity>(
+                        value: _selectedConstructionTypeVisit,
+                        items: constructionStageEntityNew!
+                            .map((label) => DropdownMenuItem(
+                                  child: Text(
+                                    label.constructionStageText!,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                  ),
+                                  value: label,
+                                ))
+                            .toList(),
+                        onChanged: (value) {
                           setState(() {
-                            BrandModelforDB? brand;
-                            ProductListModel product11 = new ProductListModel(
-                                brandId: -1,
-                                brandPrice: new TextEditingController(),
-                                supplyDate: new TextEditingController(),
-                                supplyQty: new TextEditingController(),
-                                isExpanded: new ExpandableController(
-                                    initialExpanded: true),
-                                brandModelForDB: brand,
-                                dealerName: new TextEditingController(),
-                              awardLoyaltyPoint: "Y",
-                            );
-                            productDynamicList!.insert(index, product11);
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                            _selectedConstructionTypeVisit = value;
+                            siteFloorsEntityNew =
+                                new List.empty(growable: true);
+                            _selectedSiteVisitFloor = null;
+                            if (_selectedConstructionTypeVisit!.id == 1 ||
+                                _selectedConstructionTypeVisit!.id == 2 ||
+                                _selectedConstructionTypeVisit!.id == 3) {
+                              siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                                  id: siteFloorsEntity![0].id,
+                                  siteFloorTxt:
+                                      siteFloorsEntity![0].siteFloorTxt));
+                            } else {
+                              for (int i = 0;
+                                  i < siteFloorsEntity!.length;
+                                  i++) {
+                                siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                                    id: siteFloorsEntity![i].id,
+                                    siteFloorTxt:
+                                        siteFloorsEntity![i].siteFloorTxt));
+                              }
+                            }
+                            _stagePotentialVisit.clear();
+                            UpdatedValues.setSiteProgressConstructionId(
+                                _selectedConstructionTypeVisit);
                           });
-                        } else {
-                          if (productDynamicList![index - 1].brandId != -1) {
-                            setState(() {
-                              BrandModelforDB? brand;
-                              ProductListModel product11 = new ProductListModel(
-                                  brandId: -1,
-                                  brandPrice: new TextEditingController(),
-                                  supplyDate: new TextEditingController(),
-                                  supplyQty: new TextEditingController(),
-                                  isExpanded: new ExpandableController(
-                                      initialExpanded: true),
-                                  brandModelForDB: brand,
-                                  dealerName: new TextEditingController(),
-                              awardLoyaltyPoint: "Y");
-                              productDynamicList!.insert(index, product11);
-                            });
-                          } else {
-                            Get.dialog(CustomDialogs().errorDialog(
-                                "Please enter product $index details !"));
-                          }
-                        }
-                      },
-                    )),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _stageStatus,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Site Built-Up Area ';
-                  }
-
-                  return null;
-                },
-                onChanged: (String text) {
-                  UpdatedValues.setSiteProgressStageStatus(text);
-                },
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.text,
-                readOnly: true,
-                decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Stage Status",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  "Mandatory",
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    color: ColorConstants.inputBoxHintColorDark,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _dateofConstruction,
-                readOnly: true,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.text,
-                decoration: FormFieldStyle.buildInputDecoration(
-                  labelText: "Date of construction",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.date_range_rounded,
-                      size: 22,
-                      color: ColorConstants.clearAllTextColor,
-                    ),
-                    onPressed: () async {
-                      final DateTime? picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2001),
-                        lastDate: DateTime.now().add(Duration(
-                            days:
-                                widget.viewSiteDataResponse!.constructionDays!)),
-                      );
-
-                      setState(() {
-                        final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                        if (picked != null) {
-                          final String formattedDate = formatter.format(picked);
-                          _dateofConstruction.text = formattedDate;
-                          UpdatedValues.setSiteProgressDateOfConstruction(
-                              _dateofConstruction.text);
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: !addNextButtonDisable!
-                      ? TextButton(
-    style: TextButton.styleFrom(
-
-    shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.black26)),
-                          backgroundColor: Colors.transparent,),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 5, bottom: 10, top: 10),
-                            child: Text(
-                              "ADD NEXT STAGE",
-                              style: TextStyle(
-                                  color: HexColor("#1C99D4"),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              addNextButtonDisable = !addNextButtonDisable!;
-                              UpdatedValues.setAddNextButtonDisable(
-                                  addNextButtonDisable);
-                            });
-                          },
-                        )
-                      : TextButton(
-    style: TextButton.styleFrom(
-    shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.black26)),
-                          backgroundColor: Colors.transparent,),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 5, bottom: 10, top: 10),
-                            child: Text(
-                              "HIDE NEXT STAGE",
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              addNextButtonDisable = !addNextButtonDisable!;
-                              UpdatedValues.setAddNextButtonDisable(
-                                  addNextButtonDisable);
-                            });
-                          },
+                        },
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Stage of Construction",
                         ),
-                ),
-              ),
+                      ),
 
-              ///Add Next Stage Container
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      DropdownButtonFormField<SiteFloorsEntity>(
+                        value: _selectedSiteVisitFloor,
+                        items: siteFloorsEntityNew!
+                            .map((label) => DropdownMenuItem(
+                                  child: Text(
+                                    label.siteFloorTxt!,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: ColorConstants.inputBoxHintColor,
+                                        fontFamily: "Muli"),
+                                  ),
+                                  value: label,
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedSiteVisitFloor = value;
+                            UpdatedValues.setSiteProgressNoOfFloors(
+                                _selectedSiteVisitFloor);
+                            if (viewSiteDataResponse!
+                                        .siteStagePotentialEntity !=
+                                    null &&
+                                viewSiteDataResponse!
+                                        .siteStagePotentialEntity!.length >
+                                    0) {
+                              double siteTotalSitePotential =
+                                  viewSiteDataResponse!.sitesModal!
+                                              .siteTotalSitePotential !=
+                                          null
+                                      ? double.parse(viewSiteDataResponse!
+                                          .sitesModal!.siteTotalSitePotential!)
+                                      : 0;
+                              _stagePotentialVisit.clear();
+                              if ((!siteTotalSitePotential.isBlank!) &&
+                                  (_selectedConstructionTypeVisit != null &&
+                                      (_selectedConstructionTypeVisit!.id !=
+                                              null ||
+                                          !_selectedConstructionTypeVisit!
+                                              .id.isBlank!)) &&
+                                  (_selectedSiteVisitFloor != null &&
+                                      (_selectedSiteVisitFloor!.id != null ||
+                                          !_selectedSiteVisitFloor!
+                                              .id.isBlank!))) {
+                                _stagePotentialVisit.text =
+                                    calculateStagePotential(
+                                            siteTotalSitePotential,
+                                            viewSiteDataResponse!
+                                                .siteStagePotentialEntity,
+                                            _selectedConstructionTypeVisit!.id,
+                                            _selectedSiteVisitFloor!.id)
+                                        .toString();
+                              }
+                            }
+                          });
+                        },
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Floor",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        controller: _stagePotentialVisit,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Site Built-Up Area ';
+                          }
+                          return null;
+                        },
+                        onChanged: (String data) {
+                          UpdatedValues.setSiteProgressStagePotential(data);
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            try {
+                              final text = newValue.text;
+                              if (text.isNotEmpty) double.parse(text);
+                              return newValue;
+                            } catch (e) {}
+                            return oldValue;
+                          }),
+                        ],
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Stage Potential (Bags)",
+                        ),
+                      ),
 
-              addNextButtonDisable! ? addNextStageContainer() : Container(),
-              SizedBox(
-                height: 20,
-              ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
 
-              TextFormField(
-                maxLines: 4,
-                maxLength: 500,
-                controller: _comments,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.inputBoxHintColor,
-                    fontFamily: "Muli"),
-                keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  UpdatedValues.setSiteCommentsEntity(_comments.text);
-                },
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: const Color(0xFF000000).withOpacity(0.4),
-                        width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Comment",
-                  filled: false,
-                  focusColor: Colors.black,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
-              ),
-              SizedBox(height: 16),
+                      ..._getProductList(),
+                      sumNoOfBagsSupplied() > 0
+                          ? Container(
+                              child: Text(
+                                "MULTIPLE - ${sumNoOfBagsSupplied()} >",
+                                style: TextStyle(
+                                    color: Colors.amber[700],
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            )
+                          : Container(),
+                      Center(
+                        child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                    side: BorderSide(color: Colors.black26)),
+                                backgroundColor: Colors.transparent,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 5, bottom: 10, top: 10),
+                                child: Text(
+                                  "ADD MORE PRODUCT",
+                                  style: TextStyle(
+                                      color: HexColor("#1C99D4"),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17),
+                                ),
+                              ),
+                              onPressed: () async {
+                                int index;
+                                if (productDynamicList!.length == 0) {
+                                  index = 0;
+                                } else {
+                                  index = productDynamicList!.length;
+                                }
+                                if (index == 0) {
+                                  setState(() {
+                                    BrandModelforDB? brand;
+                                    ProductListModel product11 =
+                                        new ProductListModel(
+                                      brandId: -1,
+                                      brandPrice: new TextEditingController(),
+                                      supplyDate: new TextEditingController(),
+                                      supplyQty: new TextEditingController(),
+                                      isExpanded: new ExpandableController(
+                                          initialExpanded: true),
+                                      brandModelForDB: brand,
+                                      dealerName: new TextEditingController(),
+                                      awardLoyaltyPoint: "Y",
+                                    );
+                                    productDynamicList!
+                                        .insert(index, product11);
+                                  });
+                                } else {
+                                  if (productDynamicList![index - 1].brandId !=
+                                      -1) {
+                                    setState(() {
+                                      BrandModelforDB? brand;
+                                      ProductListModel product11 =
+                                          new ProductListModel(
+                                              brandId: -1,
+                                              brandPrice:
+                                                  new TextEditingController(),
+                                              supplyDate:
+                                                  new TextEditingController(),
+                                              supplyQty:
+                                                  new TextEditingController(),
+                                              isExpanded:
+                                                  new ExpandableController(
+                                                      initialExpanded: true),
+                                              brandModelForDB: brand,
+                                              dealerName:
+                                                  new TextEditingController(),
+                                              awardLoyaltyPoint: "Y");
+                                      productDynamicList!
+                                          .insert(index, product11);
+                                    });
+                                  } else {
+                                    Get.dialog(CustomDialogs().errorDialog(
+                                        "Please enter product $index details !"));
+                                  }
+                                }
+                              },
+                            )),
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        controller: _stageStatus,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Site Built-Up Area ';
+                          }
 
-              siteCommentsEntity != null && siteCommentsEntity!.length != 0
-                  ? viewMoreActive
-                      ? Row(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  reverse: true,
-                                  shrinkWrap: true,
-                                  itemCount: siteCommentsEntity!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                          return null;
+                        },
+                        onChanged: (String text) {
+                          UpdatedValues.setSiteProgressStageStatus(text);
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        readOnly: true,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Stage Status",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Mandatory",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            color: ColorConstants.inputBoxHintColorDark,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        controller: _dateofConstruction,
+                        readOnly: true,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Date of construction",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.date_range_rounded,
+                              size: 22,
+                              color: ColorConstants.clearAllTextColor,
+                            ),
+                            onPressed: () async {
+                              final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2001),
+                                lastDate: DateTime.now().add(Duration(
+                                    days: widget.viewSiteDataResponse!
+                                        .constructionDays!)),
+                              );
+
+                              setState(() {
+                                final DateFormat formatter =
+                                    DateFormat("yyyy-MM-dd");
+                                if (picked != null) {
+                                  final String formattedDate =
+                                      formatter.format(picked);
+                                  _dateofConstruction.text = formattedDate;
+                                  UpdatedValues
+                                      .setSiteProgressDateOfConstruction(
+                                          _dateofConstruction.text);
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: !addNextButtonDisable!
+                              ? TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        side:
+                                            BorderSide(color: Colors.black26)),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 5, bottom: 10, top: 10),
+                                    child: Text(
+                                      "ADD NEXT STAGE",
+                                      style: TextStyle(
+                                          color: HexColor("#1C99D4"),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      addNextButtonDisable =
+                                          !addNextButtonDisable!;
+                                      UpdatedValues.setAddNextButtonDisable(
+                                          addNextButtonDisable);
+                                    });
+                                  },
+                                )
+                              : TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        side:
+                                            BorderSide(color: Colors.black26)),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 5, bottom: 10, top: 10),
+                                    child: Text(
+                                      "HIDE NEXT STAGE",
+                                      style: TextStyle(
+                                          color: Colors.redAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      addNextButtonDisable =
+                                          !addNextButtonDisable!;
+                                      UpdatedValues.setAddNextButtonDisable(
+                                          addNextButtonDisable);
+                                    });
+                                  },
+                                ),
+                        ),
+                      ),
+
+                      ///Add Next Stage Container
+
+                      addNextButtonDisable!
+                          ? addNextStageContainer()
+                          : Container(),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      TextFormField(
+                        maxLines: 4,
+                        maxLength: 500,
+                        controller: _comments,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          UpdatedValues.setSiteCommentsEntity(_comments.text);
+                        },
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: ColorConstants.backgroundColorBlue,
+                                width: 1.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: const Color(0xFF000000).withOpacity(0.4),
+                                width: 1.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.red, width: 1.0),
+                          ),
+                          labelText: "Comment",
+                          filled: false,
+                          focusColor: Colors.black,
+                          labelStyle: TextStyle(
+                              fontFamily: "Muli",
+                              color: ColorConstants.inputBoxHintColorDark,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.0),
+                          fillColor: ColorConstants.backgroundColor,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+
+                      siteCommentsEntity != null &&
+                              siteCommentsEntity!.length != 0
+                          ? viewMoreActive
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          reverse: true,
+                                          shrinkWrap: true,
+                                          itemCount: siteCommentsEntity!.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      siteCommentsEntity![index]
+                                                              .creatorName ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25),
+                                                    ),
+                                                    Text(
+                                                      siteCommentsEntity![index]
+                                                              .siteCommentText ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 25),
+                                                    ),
+                                                    Text(
+                                                      formatter.format(DateTime
+                                                          .fromMillisecondsSinceEpoch(
+                                                              siteCommentsEntity![
+                                                                      siteCommentsEntity!
+                                                                              .length -
+                                                                          1]
+                                                                  .createdOn!)),
+                                                      style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                )
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              siteCommentsEntity![index]
-                                                      .creatorName ??
-                                                  "",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              siteCommentsEntity![index]
-                                                      .siteCommentText ??
-                                                  "",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 25),
-                                            ),
-                                            Text(
-                                              formatter.format(DateTime
-                                                      .fromMillisecondsSinceEpoch(
-                                                          siteCommentsEntity![
-                                                                  siteCommentsEntity!
-                                                                          .length -
-                                                                      1]
-                                                              .createdOn!)) ,
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
                                         SizedBox(
                                           height: 20,
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  siteCommentsEntity![
-                                          siteCommentsEntity!.length - 1]
-                                      .creatorName!,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                ),
-                                Text(
-                                  siteCommentsEntity![
-                                          siteCommentsEntity!.length - 1]
-                                      .siteCommentText!,
-                                  style: TextStyle(
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontSize: 25),
-                                ),
-                                Text(
-                                  formatter.format(
-                                      DateTime.fromMillisecondsSinceEpoch(
+                                        ),
+                                        Text(
                                           siteCommentsEntity![
-                                                  siteCommentsEntity!.length - 1]
-                                              .createdOn!)),
-                                  style: TextStyle(
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontSize: 15),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        )
-                  : Container(),
+                                                  siteCommentsEntity!.length -
+                                                      1]
+                                              .creatorName!,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                        Text(
+                                          siteCommentsEntity![
+                                                  siteCommentsEntity!.length -
+                                                      1]
+                                              .siteCommentText!,
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              fontSize: 25),
+                                        ),
+                                        Text(
+                                          formatter.format(DateTime
+                                              .fromMillisecondsSinceEpoch(
+                                                  siteCommentsEntity![
+                                                          siteCommentsEntity!
+                                                                  .length -
+                                                              1]
+                                                      .createdOn!)),
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    )
+                                  ],
+                                )
+                          : Container(),
 
-              Center(
-                child: TextButton(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-                    child: !viewMoreActive
-                        ? Text(
-                            "VIEW MORE COMMENT (" +
-                                siteCommentsEntity!.length.toString() +
-                                ")",
-                            style: TextStyle(
-                                color: HexColor("##F9A61A"),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          )
-                        : Text(
-                            "VIEW LESS COMMENT (" +
-                                siteCommentsEntity!.length.toString() +
-                                ")",
-                            style: TextStyle(
-                                color: HexColor("##F9A61A"),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
+                      Center(
+                        child: TextButton(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, bottom: 8, top: 5),
+                            child: !viewMoreActive
+                                ? Text(
+                                    "VIEW MORE COMMENT (" +
+                                        siteCommentsEntity!.length.toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  )
+                                : Text(
+                                    "VIEW LESS COMMENT (" +
+                                        siteCommentsEntity!.length.toString() +
+                                        ")",
+                                    style: TextStyle(
+                                        color: HexColor("##F9A61A"),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
                           ),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      viewMoreActive = !viewMoreActive;
-                    });
-                  },
-                ),
-              ),
-
-              SizedBox(height: 35),
-
-              Center(
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: HexColor("#1C99D4"),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                          onPressed: () async {
+                            setState(() {
+                              viewMoreActive = !viewMoreActive;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                    child: Text(
-                      "UPDATE",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1,
-                          fontSize: 17),
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (_updateFormKey.currentState!.validate()) {
-                      UpdatedValues updateRequest = new UpdatedValues();
-                      updateRequest.updateRequest(context);
-                    }
 
-                  }
-                ),
-              ),
-              SizedBox(height: 40),
-            ]),
-      )))
+                      SizedBox(height: 35),
+
+                      Center(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: HexColor("#1C99D4"),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 5, bottom: 10, top: 10),
+                              child: Text(
+                                "UPDATE",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                    fontSize: 17),
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (_updateFormKey.currentState!.validate()) {
+                                UpdatedValues updateRequest =
+                                    new UpdatedValues();
+                                updateRequest.updateRequest(context);
+                              }
+                            }),
+                      ),
+                      SizedBox(height: 40),
+                    ]),
+              )))
     ]);
   }
 
@@ -1818,13 +1706,12 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         if (productDynamicList![i].supplyQty != null &&
             (productDynamicList![i].supplyQty!.text.isNotEmpty)) {
           totalSumBagsSupplied = totalSumBagsSupplied +
-                  int.tryParse(productDynamicList![i].supplyQty!.text)!;
+              int.tryParse(productDynamicList![i].supplyQty!.text)!;
         }
       }
     }
     return totalSumBagsSupplied;
   }
-
 
   Widget addNextStageContainer() {
     return Container(
@@ -1853,7 +1740,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     value: label,
                   ))
               .toList(),
-
           onChanged: (value) {
             setState(() {
               _selectedConstructionTypeVisitNextStage = value;
@@ -1915,8 +1801,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: ColorConstants.backgroundColorBlue,
-                  width: 1.0),
+                  color: ColorConstants.backgroundColorBlue, width: 1.0),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black26, width: 1.0),
@@ -2006,7 +1891,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                   ))
               .toList(),
           onChanged: (value) async {
-            siteProductEntityfromLoaclDBNextStage = new List.empty(growable: true);
+            siteProductEntityfromLoaclDBNextStage =
+                new List.empty(growable: true);
             _siteProductFromLocalDBNextStage = null;
             List<BrandModelforDB> _siteProductEntityfromLoaclDB =
                 await db.fetchAllDistinctProduct(value!.brandName);
@@ -2101,7 +1987,6 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                     value: label,
                   ))
               .toList(),
-
           onChanged: (value) {
             setState(() {
               _siteProductFromLocalDBNextStage = value;
@@ -2128,9 +2013,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
           child: Text(
             "No. of Bags Supplied",
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                fontFamily: "Muli"),
+                fontWeight: FontWeight.bold, fontSize: 18, fontFamily: "Muli"),
           ),
         ),
         Row(
@@ -2141,9 +2024,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                 child: TextFormField(
                   controller: _dateOfBagSuppliedNextStage,
                   readOnly: true,
-                  onChanged: (data) {
-
-                  },
+                  onChanged: (data) {},
                   style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.inputBoxHintColor,
@@ -2286,8 +2167,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         TextFormField(
           controller: _dateofConstructionNextStage,
           readOnly: true,
-          onChanged: (data) {
-          },
+          onChanged: (data) {},
           style: TextStyle(
               fontSize: 18,
               color: ColorConstants.inputBoxHintColor,
@@ -2331,15 +2211,14 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
       int? selectedConstructionStageId,
       int? selectedFloorId) {
     String stagePt = "";
-    if (( !siteTotalSitePotential.isBlank!) &&
+    if ((!siteTotalSitePotential.isBlank!) &&
         (selectedConstructionStageId != null ||
             !selectedConstructionStageId.isBlank!) &&
         (selectedFloorId != null || !selectedFloorId.isBlank!)) {
       SiteStagePotentialEntity? siteStagePotentialEntity1 =
-          siteStagePotentialEntity!.firstWhereOrNull(
-              (item) =>
-                  (item.constructionStageId == selectedConstructionStageId &&
-                      item.nosFloors == selectedFloorId));
+          siteStagePotentialEntity!.firstWhereOrNull((item) =>
+              (item.constructionStageId == selectedConstructionStageId &&
+                  item.nosFloors == selectedFloorId));
 
       if (siteStagePotentialEntity1 != null) {
         double potentialPercentage =

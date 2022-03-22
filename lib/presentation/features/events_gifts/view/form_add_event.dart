@@ -704,11 +704,9 @@ class _FormAddEventState extends State<FormAddEvent> {
   String total = '0';
   calculateTotal(String dalmia, String nonDalmia) {
     total = '';
-    int dal = int.parse(dalmia);
-    int non = int.parse(nonDalmia);
-
+    int dal = int.parse(dalmia.isEmpty?"0":dalmia);
+    int non = int.parse(nonDalmia.isEmpty?"0":nonDalmia);
     int tot = dal + non;
-
     total = tot.toString();
     setState(() {
       _totalParticipantsController.text = total;
@@ -727,14 +725,12 @@ class _FormAddEventState extends State<FormAddEvent> {
       _addEventFormKey.currentState!.save();
 
       if (_date == 'Select Date') {
-        Get.snackbar("", "Select Date",
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
+        Get.rawSnackbar(message: "Select Date",
+            // colorText: Colors.black,
+            // backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else if (timeString == null) {
-        Get.snackbar("", "Select Time",
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
+        Get.rawSnackbar(message:  "Select Time",
             snackPosition: SnackPosition.BOTTOM);
       } else {
         String? empId = await (getEmpId() );
@@ -758,9 +754,7 @@ class _FormAddEventState extends State<FormAddEvent> {
 
         if (dealersList == [] ||
             dealersList.length == 0) {
-          Get.snackbar("", "Select Counter",
-              colorText: Colors.black,
-              backgroundColor: Colors.white,
+          Get.rawSnackbar( message: "Select Counter",
               snackPosition: SnackPosition.BOTTOM);
         } else {
           MwpeventFormRequest _mwpeventFormRequest =

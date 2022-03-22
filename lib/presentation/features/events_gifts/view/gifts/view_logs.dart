@@ -22,7 +22,7 @@ class _LogsViewState extends State<ViewLogs> {
     'Utilized'
   ];
   List _giftsCategoriesValueList = [];
-  List _giftCategoriesList = [];
+  List<GiftsCategories> _giftCategoriesList = [];
   var _currentMonth;
   List<GiftStockModelList>? _giftStockModelList;
 

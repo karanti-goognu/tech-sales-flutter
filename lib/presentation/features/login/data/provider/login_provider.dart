@@ -1,8 +1,5 @@
-
-
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
@@ -44,14 +41,8 @@ class MyApiClient {
       version = VersionClass.getVersion();
       String encryptedEmpId =
           encryptString(empId, StringConstants.encryptedKey).toString();
-      String decryptedEmpId =
-          decryptString(encryptedEmpId, StringConstants.encryptedKey)
-              .toString();
       String encryptedMobileNumber =
           encryptString(mobileNumber, StringConstants.encryptedKey).toString();
-      String decryptedMobileNumber =
-          decryptString(encryptedMobileNumber, StringConstants.encryptedKey)
-              .toString();
 
       var deviceId, deviceType;
 

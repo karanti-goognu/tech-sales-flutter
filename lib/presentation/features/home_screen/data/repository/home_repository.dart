@@ -3,7 +3,7 @@ import 'package:flutter_tech_sales/presentation/features/home_screen/data/provid
 class MyRepositoryHome {
   final MyApiClientHome apiClient;
 
-  MyRepositoryHome({required this.apiClient}) : assert(apiClient != null);
+  MyRepositoryHome({required this.apiClient});
 
   getAccessKey() {
     return apiClient.getAccessKey();

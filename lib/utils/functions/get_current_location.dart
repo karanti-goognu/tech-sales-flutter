@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GetCurrentLocation{
   GetCurrentLocation._();
+
   static Position? _currentPosition;
   static LatLng? latLng;
   static GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
@@ -14,26 +15,29 @@ class GetCurrentLocation{
     return _;
   }
 
-
   static Future<LocationDetails> getCurrentLocation() async {
       bool serviceEnabled;
       LocationPermission permission;
       List<String> loc;
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Get.rawSnackbar(title: "Message", message:'Location services are disabled.');
+        print(".");
+        Get.rawSnackbar(message:'Location services are disabled.');
       }
-
       permission = await Geolocator.checkPermission();
+      print("..");
       if (permission == LocationPermission.denied) {
+        print("...");
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          Get.rawSnackbar(title: "Message", message:'Location permissions are denied');
+          print("....");
+          Get.rawSnackbar(message:'Location permissions are denied');
         }
       }
-
       if (permission == LocationPermission.deniedForever) {
-        Get.rawSnackbar(title: "Message", message:'Location permissions are permanently denied, we cannot request permissions.');
+        print(".....");
+        Future.error("location denied forever");
+        Get.rawSnackbar(message:'Location permissions are permanently denied, we cannot request permissions.');
       }
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentPosition = position;
@@ -60,5 +64,4 @@ class LocationDetails{
   LatLng? latLng;
 
   LocationDetails(this.loc,this.position,this.latLng);
-
 }

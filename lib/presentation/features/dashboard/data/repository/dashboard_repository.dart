@@ -4,7 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/data/provider
 class DashboardRepository {
   final MyApiClientDashboard apiClient;
 
-  DashboardRepository({required this.apiClient}) : assert(apiClient != null);
+  DashboardRepository({required this.apiClient});
 
   Future getAccessKey() {
     return apiClient.getAccessKey();

@@ -170,8 +170,7 @@ class _AllEventsState extends State<AllEvents> {
   Widget getList(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
             allEventsModel!.eventListModels != null &&
-            allEventsModel!.eventListModels!.length > 0 &&
-            list != null)
+            allEventsModel!.eventListModels!.length > 0)
         ? ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -238,8 +237,7 @@ class _AllEventsState extends State<AllEvents> {
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
             allEventsModel!.eventListModels != null &&
-            allEventsModel!.eventListModels!.length > 0 &&
-            list != null)
+            allEventsModel!.eventListModels!.length > 0)
         ?
         ListView.builder(
             shrinkWrap: true,
@@ -267,8 +265,7 @@ class _AllEventsState extends State<AllEvents> {
   Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
         allEventsModel!.eventListModels != null &&
-        allEventsModel!.eventListModels!.length > 0 &&
-        list != null)
+        allEventsModel!.eventListModels!.length > 0 )
         ?
     ListView.builder(
         shrinkWrap: true,

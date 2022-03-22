@@ -231,9 +231,7 @@ class MyApiClientSites {
                   .showDialog(updateLeadResponseModel.respMsg!));
             }
           });
-        })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+        });
       } catch (_) {
         print('exception ${_.toString()}');
       }
@@ -296,9 +294,7 @@ class MyApiClientSites {
             }
           }
           });
-        })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+        });
       } catch (_) {
         print('exception ${_.toString()}');
       }

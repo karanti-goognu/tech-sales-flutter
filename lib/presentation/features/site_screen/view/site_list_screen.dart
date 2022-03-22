@@ -253,7 +253,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                   if(_siteController
                                       .sitesListResponse
                                       .sitesEntity==null){
-                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.transparent);
+                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.white);
                                   }
                                   else {
                                     Navigator.push(

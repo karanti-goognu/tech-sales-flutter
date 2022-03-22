@@ -165,8 +165,8 @@ class AddLeadsController extends GetxController {
     return viewLeadDataResponse;
   }
 
-  Future<ViewLeadDataResponse?>getLeadDataNew(int? leadId) async {
-    ViewLeadDataResponse? viewLeadDataResponse;
+  Future<ViewLeadDataResponse>getLeadDataNew(int? leadId) async {
+    late ViewLeadDataResponse viewLeadDataResponse;
     String? userSecurityKey = "";
     String? empID = "";
     String? accessKey = await (repository.getAccessKeyNew() );

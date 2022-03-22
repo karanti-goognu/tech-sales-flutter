@@ -106,7 +106,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                 ],
               ),
               children: [
-                (current != null && current.length > 0)?
+                (current.length > 0)?
                 getList(current):Container(
                   child: Center(child: Padding(
                     padding: const EdgeInsets.all(8.0),

@@ -44,7 +44,6 @@ class _GiftsViewState extends State<GiftsView> {
     for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
       _giftCategoriesList.add(GiftsCategories(
           _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
-     // print("print ->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
     }
     _giftInHandQtyNew.text=_giftCategoriesList[1].count.toString();
     _giftInHandQty=_giftCategoriesList[1].count.toString();
@@ -67,15 +66,9 @@ class _GiftsViewState extends State<GiftsView> {
     DateTime date = DateTime.now();
     var currentMonth = formatter.format(date);
     _giftController.monthYear='$currentMonth-${date.year.toString().substring(2)}';
-//    _giftController.getViewLogsData("${_giftController.monthYear}");
     super.initState();
   }
 
-  @override
-  void dispose() {
-    // _giftController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +215,6 @@ class _GiftsViewState extends State<GiftsView> {
                 color: Colors.white,
                     child: TextFormField(
                         controller: _comments,
-//                        maxLength: 100,
                         onChanged: (value) async {},
                         style: TextStyle(
                             fontSize: 18,
@@ -238,25 +230,6 @@ class _GiftsViewState extends State<GiftsView> {
             SizedBox(
               height: 14,
             ),
-            // RaisedButton(
-            //   onPressed: () => _giftController.selectedDropdown == 0
-            //       ? Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController),)
-            //       : _giftController.addGiftStock(
-            //           comment: _comments.text,
-            //           giftTypeId: _giftController.selectedDropdown.toString(),
-            //           giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
-            //
-            //   ),
-            //   color: HexColor("#1C99D4"),
-            //   child: Text(
-            //     "Update Inventory",
-            //     style: TextStyle(
-            //         color: Colors.white,
-            //         fontWeight: FontWeight.bold,
-            //         // letterSpacing: 2,
-            //         fontSize: 17),
-            //   ),
-            // ),
             buildBody(context),
             SizedBox(
               height: 24,
@@ -285,7 +258,6 @@ class _GiftsViewState extends State<GiftsView> {
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
                 fontSize: 17),
           ),
         );

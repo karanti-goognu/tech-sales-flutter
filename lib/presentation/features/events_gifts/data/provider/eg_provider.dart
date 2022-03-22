@@ -308,14 +308,14 @@ class MyApiClientEvent {
     version = VersionClass.getVersion();
     EndEventDetailModel endEventDetailModel = new EndEventDetailModel(eventComment, eventDate, eventEndLat, eventEndLong, eventId, empId);
     try{
-      var body = {
-          "eventComment": "$eventComment",
-          "eventDate": eventDate,
-          "eventEndLat": eventEndLat,
-          "eventEndLong": eventEndLong,
-          "eventId": eventId,
-          "referenceId": empId
-      };
+      // var body = {
+      //     "eventComment": "$eventComment",
+      //     "eventDate": eventDate,
+      //     "eventEndLat": eventEndLat,
+      //     "eventEndLong": eventEndLong,
+      //     "eventId": eventId,
+      //     "referenceId": empId
+      // };
       var response = await http.post(Uri.parse(UrlConstants.submitEndEvent),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
         body: json.encode(endEventDetailModel)

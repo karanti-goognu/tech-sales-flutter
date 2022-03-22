@@ -256,10 +256,8 @@ class MWPPlanController extends GetxController {
       String url = UrlConstants.getMWPData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";
-      print('######$url');
       repository.getMWPPlan(accessKey, userSecurityKey, url).then((data) {
         this.isLoading = false;
-        print('JJJJJJ'+data.toString());
         if(data == null){
        // if (data.mwpplanModel == null) {
           this.getMWPResponse = data;

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_tech_sales/presentation/features/splash/data/provider/splash_provider.dart';
 
 class MyRepositorySplash {

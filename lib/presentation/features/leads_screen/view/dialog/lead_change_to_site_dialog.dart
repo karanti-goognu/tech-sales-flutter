@@ -569,7 +569,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                               ),
                               onPressed: () {
 
-                                if (_lapPotentialController.text == null || _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
+                                if ( _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
                                   Get.dialog(
                                       CustomDialogs().errorDialog("Please enter Lapse Potential"));
                                 } else {

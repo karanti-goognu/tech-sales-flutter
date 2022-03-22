@@ -193,19 +193,10 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                             widget.viewLeadDataResponse;
 
                         String empId;
-                        String mobileNumber;
-                        String name;
                         Future<SharedPreferences> _prefs =
                             SharedPreferences.getInstance();
                         _prefs.then((SharedPreferences prefs) async {
-                          empId = prefs.getString(StringConstants.employeeId) ??
-                              "empty";
-                          mobileNumber =
-                              prefs.getString(StringConstants.mobileNumber) ??
-                                  "empty";
-                          name =
-                              prefs.getString(StringConstants.employeeName) ??
-                                  "empty";
+                          empId = prefs.getString(StringConstants.employeeId) ?? "empty";
 
                           var updateRequestModel = {
                             'leadId': viewLeadDataResponse.leadsEntity!.leadId,

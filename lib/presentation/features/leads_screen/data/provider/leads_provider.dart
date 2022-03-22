@@ -245,7 +245,7 @@ class MyApiClientLeads {
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
     request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>);
+        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
 
     for (var file in imageList) {
       String fileName = file!.path.split("/").last;
@@ -258,14 +258,9 @@ class MyApiClientLeads {
     }
 
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
-
       gv.currentId = empId;
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
@@ -357,9 +352,7 @@ class MyApiClientLeads {
             }
           }
               });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+            });
       } catch (_) {
         print('exception ${_.toString()}');
       }
@@ -422,8 +415,7 @@ class MyApiClientLeads {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
-    request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) as Map<String, String>);
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
     for (var file in imageList) {
       String fileName = file!.path.split("/").last;
       var stream = new http.ByteStream(file.openRead());
@@ -485,9 +477,7 @@ class MyApiClientLeads {
                 }
               }
               });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+            });
       } catch (_) {
         print('exception ${_.toString()}');
       }

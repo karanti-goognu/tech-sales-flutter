@@ -103,8 +103,9 @@ Action? actionFromMap(Map<String, dynamic> actionMap) {
   switch (actionType) {
     case ActionType.navigation:
       return navigationActionFromMap(actionType, actionMap);
+    default:
+      return null;
   }
-  return null;
 }
 
 NavigationAction navigationActionFromMap(
@@ -144,8 +145,9 @@ Map<String, dynamic>? actionToMap(Action action) {
   switch (action.actionType) {
     case ActionType.navigation:
       return navigationActionToMap(action as NavigationAction);
+    default:
+      return null;
   }
-  return null;
 }
 
 Map<String, dynamic> navigationActionToMap(NavigationAction navigationAction) {

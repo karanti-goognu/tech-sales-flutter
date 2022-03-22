@@ -63,13 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_leadsFilterController == null)
-        ? Container(
-            child: Center(
-              child: Text("Leads controller  is empty!!"),
-            ),
-          )
-        : (_leadsFilterController.leadsListResponse == null)
+    return Obx(() =>  (_leadsFilterController.leadsListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Leads list response  is empty!!"),

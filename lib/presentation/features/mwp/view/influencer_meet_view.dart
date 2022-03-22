@@ -529,8 +529,7 @@ class AddEventInfluencerMeetScreenPageState
         isScrollControlled: true,
         builder: (BuildContext bc) {
           return Container(
-            color: Colors.transparent, //could change this to Color(0xFF737373),
-            //so you don't have to change MaterialApp canvasColor
+            color: Colors.transparent,
             child: (_addEventController.dealerListResponse == null)
                 ? Container()
                 : DealersListWidget(),

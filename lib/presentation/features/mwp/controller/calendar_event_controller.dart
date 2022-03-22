@@ -40,22 +40,13 @@ class CalendarEventController extends GetxController {
   final _selectedDate = StringConstants.empty.obs;
 
   get testMap => this._testMap.value;
-
   set testMap(value) => this._testMap.value = value;
-
-
   set isLoading(value) => this._isLoading.value = value;
-
   set isDayEventLoading(value) => this._isDayEventLoading.value = value;
-
   get isDayEventLoading => this._isDayEventLoading.value;
-
   set isCalenderLoading(value) => this._isCalenderLoading.value = value;
-
   get isCalenderLoading => this._isCalenderLoading.value;
-
   set listOfEvents(value) => this._listOfEvents.value = value;
-
   get listOfEvents => this._listOfEvents;
 
   set selectedDate(value) => this._selectedDate.value = value;

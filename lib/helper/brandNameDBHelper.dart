@@ -40,8 +40,8 @@ class BrandNameDBHelper extends ChangeNotifier{
 
 
   Future<int> addBrandName(BrandModelforDB brandModelforDB) async {
-    var client = await (db as FutureOr<Database>);
-    return client.insert('brandName', brandModelforDB.toMapForDb(),
+    Database? client = await db;
+    return client!.insert('brandName', brandModelforDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -52,16 +52,16 @@ class BrandNameDBHelper extends ChangeNotifier{
   }
 
   Future<void> clearTable() async{
-    var client = await (db as FutureOr<Database>);
-    client.delete("brandName");
+    Database? client = await (db);
+    client!.delete("brandName");
     client.delete('counterListDealers');
   }
 
 
 
   Future<List<BrandModelforDB>> fetchAllDistinctBrand() async {
-    var client = await (db as FutureOr<Database>);
-    var res = await client.rawQuery('SELECT DISTINCT brandName FROM brandName');
+    Database? client = await db;
+    var res = await client!.rawQuery('SELECT DISTINCT brandName FROM brandName');
 
     if (res.isNotEmpty) {
       var brandNames = res.map((leadMap) => BrandModelforDB.fromDb(leadMap)).toList();
@@ -71,8 +71,8 @@ class BrandNameDBHelper extends ChangeNotifier{
   }
 
   Future<List<DealerForDb>> fetchAllDistinctDealers() async {
-    var client = await (db as FutureOr<Database>);
-    var res = await client.rawQuery('SELECT DISTINCT id,dealerName FROM counterListDealers');
+    Database? client = await db;
+    var res = await client!.rawQuery('SELECT DISTINCT id,dealerName FROM counterListDealers');
 
     if (res.isNotEmpty) {
       var dealerNames = res.map((dealerMap) => DealerForDb.fromDb(dealerMap)).toList();
@@ -82,8 +82,8 @@ class BrandNameDBHelper extends ChangeNotifier{
   }
 
   Future<List<BrandModelforDB>> fetchAllDistinctProduct(String? brandName) async {
-    var client = await (db as FutureOr<Database>);
-    var res = await client.rawQuery('SELECT * FROM brandName WHERE brandName=?', [brandName]);
+    Database? client = await db;
+    var res = await client!.rawQuery('SELECT * FROM brandName WHERE brandName=?', [brandName]);
 
     if (res.isNotEmpty) {
       var productName = res.map((leadMap) => BrandModelforDB.fromDb(leadMap)).toList();

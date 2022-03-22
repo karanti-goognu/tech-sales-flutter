@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
-    as updateRequest;
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart' as updateRequest;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_data_widget.dart';
@@ -64,14 +61,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     internetChecking().then((result) => {
           if (result == true)
             {
-              _addLeadsController.getLeadDataNew(widget.leadId).then((data) {
-                setState(() {
-                  if (data != null) {
-                    viewLeadDataResponse = data;
-                    print(viewLeadDataResponse.nextStageConstructionEntity);
-                    setData();
-                  }
-                });
+              _addLeadsController.getLeadDataNew(widget.leadId).then((ViewLeadDataResponse data) {
+                setState(()=> viewLeadDataResponse = data);
+                setData();
               })
             }
           else
@@ -88,7 +80,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<LeadInfluencerEntity> influencerListForConvertToSite =
       List.empty(growable: true);
   setData() {
-      _addLeadsController.imageList!.clear();
+    print(viewLeadDataResponse.respMsg);
+    print(viewLeadDataResponse.leadsEntity!.leadSource);
+
+    _addLeadsController.imageList!.clear();
       checkStatus();
       _contactName.text = viewLeadDataResponse.leadsEntity!.contactName!;
       _contactNumber.text = viewLeadDataResponse.leadsEntity!.contactNumber!;

@@ -145,7 +145,7 @@ class HomeController extends GetxController {
         this.volumeConverted = data.dashBoardViewModal!.volumeConverted;
         this.newInfl = data.dashBoardViewModal!.newInfl;
       });
-    }).catchError((e) => print(e));
+    });
   }
 
   getCheckInDetails(String? accessKey) {

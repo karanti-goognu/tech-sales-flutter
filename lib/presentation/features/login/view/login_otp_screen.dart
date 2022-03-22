@@ -41,7 +41,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
   late bool _isButtonDisabled;
 
   void startTimer() {
-    if (_loginController != null) {
       LoginModel loginModel = _loginController.loginResponse;
       try {
         _startInitial = int.parse(loginModel.otpRetrySmsTime!);
@@ -65,7 +64,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
           },
         ),
       );
-    }
   }
 
   @override
@@ -258,28 +256,6 @@ class LoginOtpScreenPageState extends State<LoginOtpScreen> {
                   SizedBox(
                     height: 40,
                   ),
-                  /* Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(
-                            child: new Text(
-                          "Didn't received the sms?",
-                          style: TextStyles.resendOtpTextStyleNormal,
-                        )),
-                        flex: 2,
-                      ),
-                      Expanded(
-                        child: Container(
-                            alignment: Alignment.topLeft,
-                            child: new Text(
-                              "Request OTP via call",
-                              style: TextStyles.resendOtpTextStyleEnabled,
-                            )),
-                        flex: 2,
-                      ),
-                    ],
-                  ),*/
                 ],
               ),
             ),

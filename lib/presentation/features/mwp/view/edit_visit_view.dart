@@ -443,7 +443,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
-                                                                  if (value == null || value == "") {
+                                                                  if ( value == "") {
                                                                     _addEventController.bagsController.clear();
                                                                     _addEventController.dspAvailableQty = "";
                                                                   } else {

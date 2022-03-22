@@ -11,7 +11,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 class MyRepositoryLeads {
   final MyApiClientLeads apiClient;
 
-  MyRepositoryLeads({required this.apiClient}) : assert(apiClient != null);
+  MyRepositoryLeads({required this.apiClient});
 
   Future getAccessKeyNew() {
     return apiClient.getAccessKeyNew();

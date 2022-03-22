@@ -1,6 +1,3 @@
-
-
-import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -440,8 +437,6 @@ getYearlyData()async{
                 SizedBox(
                   height: 20,
                 ),
-//              DataGridForYTD(controller: _controller),
-
               _dashboardController.dashboardYearlyViewModel==null?Container():
               _dashboardController.dashboardYearlyViewModel.mtdVolume==null?Center(child: CircularProgressIndicator(),):
               _ytdIsVolume? _returnDataGridForVolume(_dashboardController.dashboardYearlyViewModel.mtdVolume):_returnDataGridForCount(_dashboardController.dashboardYearlyViewModel.mtdCount),
@@ -455,32 +450,14 @@ getYearlyData()async{
     );
   }
 
-//  Future<Uint8List> _capturePng() async {
-//    RenderRepaintBoundary boundary =
-//        previewContainer.currentContext.findRenderObject();
-//
-//    if (boundary.debugNeedsPaint) {
-//      await Future.delayed(const Duration(milliseconds: 20));
-//      return _capturePng();
-//    }
-//
-//    var image = await boundary.toImage();
-//    var byteData = await image.toByteData(format: ImageByteFormat.png);
-//    return byteData.buffer.asUint8List();
-//  }
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-//    print(_dashboardController.empId);
-//    var pngBytes = await _capturePng();
-    var pngBytes = await  (screenshotController.capture(pixelRatio: 5) as FutureOr<Uint8List>);
- //   print(pngBytes);
+    Uint8List? pngBytes = await  (screenshotController.capture(pixelRatio: 5) );
     final directory = (await getExternalStorageDirectory())!.path;
-//    imgFile = new File('$directory/$empID-$yearMonthForFileName.png');
     imgFile = new File('$directory/$empIdForFileName-YTD-${DateTime.now().millisecondsSinceEpoch}.png');
-    imgFile.writeAsBytes(pngBytes);
-//    print('Screenshot Path:' + imgFile.path);
+    imgFile.writeAsBytes(pngBytes!);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }

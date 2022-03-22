@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -41,11 +39,10 @@ class MonthToDateState extends State<MonthToDate> {
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-    var pngBytes = await  (screenshotController.capture(pixelRatio: 5) as FutureOr<Uint8List>);
+    Uint8List? pngBytes = await  (screenshotController.capture(pixelRatio: 5) );
     final directory = (await getApplicationDocumentsDirectory()).path;
-
     imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
-    imgFile.writeAsBytes(pngBytes);
+    imgFile.writeAsBytes(pngBytes!);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }

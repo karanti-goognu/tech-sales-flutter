@@ -1,4 +1,4 @@
-
+//ToDo: Test the functionality and remove unnecessary commented code blocks
 
 import 'dart:async';
 import 'dart:io';
@@ -64,7 +64,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   var _bestBeforeDate = new TextEditingController();
   var _mtController = new TextEditingController();
   String? _selectedSampleCollected;
-  String? _gropuSampleCollected;
+  String? _groupSampleCollected;
   String? _groupDemoConducted;
   String? _selectedDemoConducted;
 
@@ -208,8 +208,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     // });
                   }),
             ),
-            controller.imageList != null
-                ? Row(
+            // controller.imageList != null ?
+            Row(
                     children: [
                       Expanded(
                         child: ListView.builder(
@@ -272,10 +272,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       ),
                     ],
                   )
-                : Container(
-                    color: Colors.blue,
-                    height: 10,
-                  ),
+                // : Container(
+                //     color: Colors.blue,
+                //     height: 10,
+                //   )
+            ,
             widget.requestType == "Complaint".toUpperCase()
                 ? Column(
                     children: [
@@ -638,10 +639,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
-                                        groupValue: _gropuSampleCollected,
+                                        groupValue: _groupSampleCollected,
                                         onChanged: (dynamic value) {
                                           setState(() {
-                                            _gropuSampleCollected = value;
+                                            _groupSampleCollected = value;
                                             _selectedSampleCollected = "Y";
                                           });
                                         }),
@@ -657,10 +658,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'No'.toUpperCase(),
-                                        groupValue: _gropuSampleCollected,
+                                        groupValue: _groupSampleCollected,
                                         onChanged: (dynamic value) {
                                           setState(() {
-                                            _gropuSampleCollected = value;
+                                            _groupSampleCollected = value;
                                             _selectedSampleCollected = "N";
                                           });
                                         }),

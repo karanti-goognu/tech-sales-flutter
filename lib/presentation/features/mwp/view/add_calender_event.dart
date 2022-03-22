@@ -51,10 +51,14 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     internetChecking().then((result) => {
       if (result == true)
         {
+          print(1),
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS),
-        _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL),
+          print(2),
+
+          _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL),
           _calendarEventController.selectedDate = "${_currentDate2.year}-${_currentDate2.month}-${_currentDate2.day}",
-          // print('${_calendarEventController.selectedDate}');
+          print(3),
+
           _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY),
         }else{
         Get.snackbar(

@@ -6,8 +6,7 @@ import 'package:moengage_inbox/inbox_message.dart';
 class NotificationController extends GetxController {
   MoEngageInbox _moEngageInbox = MoEngageInbox();
   final MyRepositoryApp repository;
-  NotificationController({required this.repository})
-      : assert(repository != null);
+  NotificationController({required this.repository});
   final _counterNotification = 0.obs;
   get counterNotification => _counterNotification.value;
   set counterNotification(value) => _counterNotification.value = value;

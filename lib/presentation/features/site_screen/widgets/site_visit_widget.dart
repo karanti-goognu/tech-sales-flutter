@@ -20,7 +20,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+//ToDo:  _siteVisitResponseModel comments should be removed if some problem is encountered
 // ignore: must_be_immutable
 class SiteVisitWidget extends StatefulWidget {
   int? siteId;
@@ -567,7 +567,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       });
   }
 
-  SiteVisitResponseModel? _siteVisitResponseModel;
+  // SiteVisitResponseModel? _siteVisitResponseModel;
   btnCreatePressed(int id) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
@@ -611,7 +611,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                   .then((data) {
                 if (data != null) {
                   setState(() {
-                    _siteVisitResponseModel = data;
+                    // _siteVisitResponseModel = data;
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
                     else {
@@ -683,7 +683,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                   .then((data) {
                 if (data != null) {
                   setState(() {
-                    _siteVisitResponseModel = data;
+                    // _siteVisitResponseModel = data;
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
                     else {
@@ -756,7 +756,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                   .then((data) {
                 if (data != null) {
                   setState(() {
-                    _siteVisitResponseModel = data;
+                    // _siteVisitResponseModel = data;
 
                     if (data.respCode == "MWP2028")
                       Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
