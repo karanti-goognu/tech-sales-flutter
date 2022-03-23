@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
@@ -52,6 +55,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   bool isExpanded = true;
   String _selectedRadioValue = 'Y';
   DealerModel _selectedDealer;
+  TextEditingController counterController = TextEditingController();
 
   List<SiteFloorlist> siteFloorsEntity = new List.empty(growable: true);
   List<ConstStage> constStageEntity = new List.empty(growable: true);
@@ -60,19 +64,37 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
 
   getPendingSupplyData() {
-    _siteController.pendingSupplyDetails(widget.supplyHistoryId, widget.siteId);
-    setState(() {
-      setData();
-    });
+    internetChecking().then((result) => {
+          if (result == true)
+            {
+              _siteController.pendingSupplyDetails(
+                  widget.supplyHistoryId, widget.siteId),
+
+              setState(() {
+                setData();
+              }),
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   setData() {
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+
     _siteController
         .pendingSupplyDetailsNew(widget.supplyHistoryId, widget.siteId)
         .then((data) {
       if (data != null) {
         setState(() {
           _pendingSuppliesDetailsModel = data;
+          dealerList = _addEventController.dealerList;
           siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
           constStageEntity = _pendingSuppliesDetailsModel.constStage;
           if (_pendingSuppliesDetailsModel.floorId != null) {
@@ -98,8 +120,17 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                   dealerList[i].dealerId.toString()) {
                 _selectedDealer = dealerList[i];
                 _siteController.counterId = dealerList[i].dealerId;
+                getKittyBags(_siteController.counterId);
               }
             }
+          }
+          if (_pendingSuppliesDetailsModel.requestInitiatedBy == "Counter") {
+            if (_siteController.counterId.toString().isEmpty ||
+                _siteController.counterId.toString() == "") {
+              _siteController.counterId =
+                  _pendingSuppliesDetailsModel.shipToParty;
+            }
+            getKittyBags(_siteController.counterId);
           }
         });
       }
@@ -143,23 +174,11 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _appController.getAccessKey(RequestIds.GET_DEALERS_LIST),
-              dealerList = _addEventController.dealerList,
-              getPendingSupplyData(),
 
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
+    setState(() {
+      getPendingSupplyData();
+      setData();
+    });
   }
 
   @override
@@ -473,7 +492,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .sitePotentialMt,
                                         validator: (value) {
                                           if (value.isEmpty) {
-                                            return 'Please enter Site Built-Up Area ';
+                                            return 'Please enter Stage Potential ';
                                           }
                                           return null;
                                         },
@@ -553,8 +572,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .buildInputDecoration(
                                                         labelText: "Counter"),
                                                 value: _selectedDealer,
-                                                items: dealerList
-                                                    .map((val) {
+                                                items: dealerList.map((val) {
                                                   return DropdownMenuItem(
                                                     value: val,
                                                     child: SizedBox(
@@ -586,7 +604,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             ),
                                           ],
                                         )
-                                      : TextFormField(
+                                      : Obx(
+                                          () => TextFormField(
                                             controller: _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
@@ -602,7 +621,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .inputBoxHintColor,
                                                 fontFamily: "Muli"),
                                           ),
-
+                                        ),
                                   _siteController.counterId.toString().isEmpty
                                       ? Container()
                                       : Padding(
@@ -970,7 +989,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           elevation: 5,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(5.0),
+                                                BorderRadius.circular(5.0),
                                           ),
                                           primary: Colors.white,
                                         ),
@@ -999,6 +1018,18 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 "Please select a Construction Stage !"));
                                             return;
                                           }
+
+                                          if (_siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .sitePotentialMt
+                                              .text
+                                              .isEmpty) {
+                                            Get.dialog(CustomDialogs().showMessage(
+                                                "Please enter Stage Potential !"));
+                                            return;
+                                          }
+
                                           if (_siteController
                                                   .pendingSupplyDetailsResponse
                                                   .pendingSuppliesDetailsModel
@@ -1100,6 +1131,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "awardLoyaltyPoint":
                                                 _selectedRadioValue,
                                           };
+                                          TsoLogger.printLog(
+                                              "REquest: ${json.encode(jsonData)}");
                                           _siteController
                                               .updatePendingSupplyDetails(
                                                   jsonData);
@@ -1110,10 +1143,10 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           elevation: 5,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(5.0),
+                                                BorderRadius.circular(5.0),
                                           ),
                                           primary: HexColor("#1C99D4"),
-                                      ),
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               right: 5, bottom: 5, top: 5),
@@ -1144,7 +1177,18 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 "Please select a Construction Stage !"));
                                             return;
                                           }
-                                          // }
+
+                                          if (_siteController
+                                              .pendingSupplyDetailsResponse
+                                              .pendingSuppliesDetailsModel
+                                              .sitePotentialMt
+                                              .text
+                                              .isEmpty) {
+                                            Get.dialog(CustomDialogs().showMessage(
+                                                "Please enter Stage Potential !"));
+                                            return;
+                                          }
+
                                           if (_siteController
                                                   .pendingSupplyDetailsResponse
                                                   .pendingSuppliesDetailsModel
@@ -1245,6 +1289,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             "awardLoyaltyPoint":
                                                 _selectedRadioValue
                                           };
+                                          TsoLogger.printLog(
+                                              "REquest: ${json.encode(jsonData)}");
                                           _siteController
                                               .updatePendingSupplyDetails(
                                                   jsonData);

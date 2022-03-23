@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_name_list.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -112,6 +114,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                       InfluencerDetailView(_infController.infListResponse.response.ilpInfluencerEntity[index].membershipId))
               );
             },
+
             child: Card(
               clipBehavior: Clip.antiAlias,
               borderOnForeground: true,
@@ -143,8 +146,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     children: [
                                       Expanded(
                                           flex: 2,
-                                          child: Obx(()=>
-                                          Text(
+                                          child: Text(
                                               _infController.infListResponse
                                                   .response
                                                   .ilpInfluencerEntity[
@@ -152,13 +154,16 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                   .joiningDate ??
                                                   "",
                                               style: TextStyles
-                                                  .formfieldLabelText)),),
+                                                  .formfieldLabelText)),
                                       Expanded(
                                         flex: 3,
-                                        child:  Obx(()=>Text(
-                                            "Avg.Monthly Vol.:${_infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
-                                            style: TextStyles
-                                                .formfieldLabelText),),
+                                        child: Text(
+                                          "Avg.Monthly Vol.:${_infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+                                          style: TextStyles
+                                              .formfieldLabelText,
+                                          textAlign:
+                                          TextAlign.end,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -170,20 +175,24 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
-
                                     children: [
-                                      Text(
-                                        "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflName == null ? " " : _infController.infListResponse.response.ilpInfluencerEntity[index].inflName}",
-                                        style: TextStyles
-                                            .mulliBold18,
+                                      Flexible(
+                                        child: Container(
+                                          padding:
+                                          new EdgeInsets
+                                              .only(
+                                              right: 5.0),
+                                          child: Text(
+                                            "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflName == null ? " " : _infController.infListResponse.response.ilpInfluencerEntity[index].inflName}",
+                                            style: TextStyles
+                                                .mulliBold18,
+                                            overflow:
+                                            TextOverflow
+                                                .ellipsis,
+                                          ),
+                                        ),
                                       ),
-                                      Container(
-                                        width: MediaQuery.of(
-                                            context)
-                                            .size
-                                            .width /
-                                            2 -
-                                            10,
+                                      Flexible(
                                         child: Chip(
                                           shape: StadiumBorder(
                                               side: BorderSide(
@@ -196,7 +205,9 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                               0.1),
                                           label: Text(
                                             "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].inflTypeText}",
-                                            softWrap: true,
+                                            overflow:
+                                            TextOverflow
+                                                .ellipsis,
                                             style: TextStyle(
                                                 color: HexColor(
                                                     "#6200EE"),
@@ -205,14 +216,15 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                                 "Muli",
                                                 fontWeight:
                                                 FontWeight
-                                                    .bold
-                                            ),
+                                                    .bold),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
+
+
 
                                 Padding(
                                   padding:
@@ -221,11 +233,10 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
-
                                     children: [
 
                                       Text(
-                                          "${_infController.infListResponse.response.ilpInfluencerEntity[index].baseCity == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].baseCity}" ,
+                                          "${(_infController.infListResponse.response.ilpInfluencerEntity[index].baseCity == null || _infController.infListResponse.response.ilpInfluencerEntity[index].baseCity == "") ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].baseCity}",
                                           style: TextStyles
                                               .formfieldLabelText),
                                       Chip(
@@ -243,56 +254,78 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                                     ],
                                   ),
                                 ),
+
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      left: 2.sp,
-                                      right: 2.sp),
+                                      left: 2.sp, right: 2.sp),
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment
                                         .spaceBetween,
                                     children: [
-                                      Chip(
-                                        shape: StadiumBorder(
-                                            side: BorderSide(
-                                                color: HexColor(
-                                                    "#007CBF"))),
-                                        backgroundColor:
-                                        HexColor("#007CBF"),
-                                        label: Container(
-                                          width: MediaQuery.of(
-                                              context)
-                                              .size
-                                              .width /
-                                              3,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "A. SITE - ${_infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount}",
-                                                style: TextStyle(
+                                      GestureDetector(
+                                          onTap: () {
+                                            Get.to(
+                                                    () => InfluencerNameList(
+                                                    influencerID:
+                                                    '${_infController.infListResponse.response.ilpInfluencerEntity[index].membershipId}',
+                                                    influencerName: _infController.infListResponse
+                                                        .response
+                                                        .ilpInfluencerEntity[
+                                                    index]
+                                                        .inflName),
+                                                binding:
+                                                InfBinding());
+                                          },
+                                          child: Chip(
+                                            shape: StadiumBorder(
+                                                side: BorderSide(
                                                     color: HexColor(
-                                                        "#FFFFFFDE"),
-                                                    fontSize: 11.sp,
-                                                    fontFamily:
-                                                    "Muli",
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .bold
-                                                ),
+                                                        "#007CBF"))),
+                                            backgroundColor:
+                                            HexColor(
+                                                "#007CBF"),
+                                            label: Container(
+                                              width: MediaQuery.of(
+                                                  context)
+                                                  .size
+                                                  .width /
+                                                  3,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "A. SITE - ${_infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount}",
+                                                    style: TextStyle(
+                                                        color: HexColor(
+                                                            "#FFFFFFDE"),
+                                                        fontSize: 11
+                                                            .sp,
+                                                        fontFamily:
+                                                        "Muli",
+                                                        fontWeight:
+                                                        FontWeight.bold
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                      Icons
+                                                          .arrow_forward_ios,
+                                                      color: HexColor(
+                                                          "#FFFFFFDE"),
+                                                      size:
+                                                      11.sp)
+                                                ],
                                               ),
-                                              Icon(Icons.arrow_forward_ios, color: HexColor(
-                                                  "#FFFFFFDE"),size: 11.sp,)
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                            ),
+                                          )),
                                       GestureDetector(
                                         onTap: () {
                                           Get.dialog(showContactDialog(
                                               'Info',
                                               '${_infController.infListResponse.response.ilpInfluencerEntity[index].mobileNumber}',
-                                              '${_infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress == null ? "-mobileNumbermobileNumbermobileNumber" : _infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress}',
+                                              '${_infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress}',
                                               '${_infController.infListResponse.response.ilpInfluencerEntity[index].email == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].email}',
                                               context));
                                         },
@@ -315,6 +348,220 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
                 ),
               ),
             ),
+            // child: Card(
+            //   clipBehavior: Clip.antiAlias,
+            //   borderOnForeground: true,
+            //   elevation: 6,
+            //   margin: EdgeInsets.all(5.0),
+            //   color: Colors.white,
+            //   child: Container(
+            //     padding: EdgeInsets.all(8),
+            //     child: Column(
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment:
+            //           MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Expanded(
+            //               child: Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     left: 5.0),
+            //                 child: Column(
+            //                   mainAxisAlignment:
+            //                   MainAxisAlignment.start,
+            //                   crossAxisAlignment:
+            //                   CrossAxisAlignment.start,
+            //                   children: [
+            //                     Padding(
+            //                       padding:
+            //                       const EdgeInsets.all(0.0),
+            //                       child: Row(
+            //                         children: [
+            //                           Expanded(
+            //                               flex: 2,
+            //                               child: Obx(()=>
+            //                               Text(
+            //                                   _infController.infListResponse
+            //                                       .response
+            //                                       .ilpInfluencerEntity[
+            //                                   index]
+            //                                       .joiningDate ??
+            //                                       "",
+            //                                   style: TextStyles
+            //                                       .formfieldLabelText)),),
+            //                           Expanded(
+            //                             flex: 3,
+            //                             child:  Obx(()=>Text(
+            //                                 "Avg.Monthly Vol.:${_infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].monthlyPotentialVolMt}MT",
+            //                                 style: TextStyles
+            //                                     .formfieldLabelText),),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                     Padding(
+            //                       padding:
+            //                       const EdgeInsets.all(0.0),
+            //                       child: Row(
+            //                         mainAxisAlignment:
+            //                         MainAxisAlignment
+            //                             .spaceBetween,
+            //
+            //                         children: [
+            //                           Text(
+            //                             "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflName == null ? " " : _infController.infListResponse.response.ilpInfluencerEntity[index].inflName}",
+            //                             style: TextStyles
+            //                                 .mulliBold18,
+            //                           ),
+            //                           Container(
+            //                             width: MediaQuery.of(
+            //                                 context)
+            //                                 .size
+            //                                 .width /
+            //                                 2 -
+            //                                 10,
+            //                             child: Chip(
+            //                               shape: StadiumBorder(
+            //                                   side: BorderSide(
+            //                                       color: HexColor(
+            //                                           "#6200EE"))),
+            //                               backgroundColor:
+            //                               HexColor(
+            //                                   "#6200EE")
+            //                                   .withOpacity(
+            //                                   0.1),
+            //                               label: Text(
+            //                                 "${_infController.infListResponse.response.ilpInfluencerEntity[index].inflTypeText == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].inflTypeText}",
+            //                                 softWrap: true,
+            //                                 style: TextStyle(
+            //                                     color: HexColor(
+            //                                         "#6200EE"),
+            //                                     fontSize: 11,
+            //                                     fontFamily:
+            //                                     "Muli",
+            //                                     fontWeight:
+            //                                     FontWeight
+            //                                         .bold
+            //                                 ),
+            //                               ),
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //
+            //                     Padding(
+            //                       padding:
+            //                       const EdgeInsets.all(0.0),
+            //                       child: Row(
+            //                         mainAxisAlignment:
+            //                         MainAxisAlignment
+            //                             .spaceBetween,
+            //
+            //                         children: [
+            //
+            //                           Text(
+            //                               "${_infController.infListResponse.response.ilpInfluencerEntity[index].baseCity == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].baseCity}" ,
+            //                               style: TextStyles
+            //                                   .formfieldLabelText),
+            //                           Chip(
+            //                             shape: StadiumBorder(
+            //                                 side: BorderSide(
+            //                                     color: HexColor(
+            //                                         "#39B54A"))),
+            //                             backgroundColor:
+            //                             HexColor("#39B54A"),
+            //                             label: Text(
+            //                                 "${_infController.infListResponse.response.ilpInfluencerEntity[index].membershipId == null ? "" : _infController.infListResponse.response.ilpInfluencerEntity[index].membershipId}",
+            //                                 style: TextStyles
+            //                                     .btnWhite),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                     Padding(
+            //                       padding: EdgeInsets.only(
+            //                           left: 2.sp,
+            //                           right: 2.sp),
+            //                       child: Row(
+            //                         mainAxisAlignment:
+            //                         MainAxisAlignment
+            //                             .spaceBetween,
+            //                         children: [
+            //                           GestureDetector(
+            //                             onTap: () {
+            //                               Get.to(
+            //                                       () => InfluencerNameList(
+            //                                       influencerID:
+            //                                       '${_infController.infListResponse.response.ilpInfluencerEntity[index].membershipId}',
+            //                                       influencerName: _infController.infListResponse.response.ilpInfluencerEntity[index].inflName),
+            //                                   binding:
+            //                                   InfBinding());
+            //                             },
+            //                             child: Chip(
+            //                               shape: StadiumBorder(
+            //                                   side: BorderSide(
+            //                                       color: HexColor(
+            //                                           "#007CBF"))),
+            //                               backgroundColor:
+            //                               HexColor("#007CBF"),
+            //                               label: Container(
+            //                                 width: MediaQuery.of(
+            //                                     context)
+            //                                     .size
+            //                                     .width /
+            //                                     3,
+            //                                 child: Row(
+            //                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                                   children: [
+            //                                     Text(
+            //                                       "A. SITE - ${_infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount == null ? "00" : _infController.infListResponse.response.ilpInfluencerEntity[index].activeSitesCount}",
+            //                                       style: TextStyle(
+            //                                           color: HexColor(
+            //                                               "#FFFFFFDE"),
+            //                                           fontSize: 11.sp,
+            //                                           fontFamily:
+            //                                           "Muli",
+            //                                           fontWeight:
+            //                                           FontWeight
+            //                                               .bold
+            //                                       ),
+            //                                     ),
+            //                                     Icon(Icons.arrow_forward_ios, color: HexColor(
+            //                                         "#FFFFFFDE"),size: 11.sp,)
+            //                                   ],
+            //                                 ),
+            //                               ),
+            //                             ),
+            //                           ),
+            //                           GestureDetector(
+            //                             onTap: () {
+            //                               Get.dialog(showContactDialog(
+            //                                   'Info',
+            //                                   '${_infController.infListResponse.response.ilpInfluencerEntity[index].mobileNumber}',
+            //                                   '${_infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress == null ? "-mobileNumbermobileNumbermobileNumber" : _infController.infListResponse.response.ilpInfluencerEntity[index].giftAddress}',
+            //                                   '${_infController.infListResponse.response.ilpInfluencerEntity[index].email == null ? "-" : _infController.infListResponse.response.ilpInfluencerEntity[index].email}',
+            //                                   context));
+            //                             },
+            //                             child: Text(
+            //                                 "Contact Info",
+            //
+            //                                 style: TextStyles
+            //                                     .contactTextStyle),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           );
         }),
     );
@@ -377,7 +624,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              //crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
                 Text(
                   "Address:",
@@ -395,7 +642,7 @@ class _InfluencerSearchState extends State<InfluencerSearch> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              //crossAxisAlignment: CrossAxisAlignment.baseline,
               children: [
                 Text(
                   "Email:",

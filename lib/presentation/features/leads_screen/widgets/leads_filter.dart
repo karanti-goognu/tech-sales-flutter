@@ -37,7 +37,7 @@ class _FilterWidgetState extends State<FilterWidget> {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-    _leadsFilterController.getSecretKey(10);
+    _leadsFilterController.getSecretKey(10, context);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
@@ -207,7 +207,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       _leadsFilterController.leadsListResponse.leadsEntity =
                           null;
                       _leadsFilterController
-                          .getAccessKey(RequestIds.GET_LEADS_LIST);
+                          .getAccessKey(RequestIds.GET_LEADS_LIST, context);
                       Navigator.pop(context);
                     });
                   },
@@ -227,7 +227,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     // _leadsFilterController.leadsListResponse = [];
                     _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
-                        .getAccessKey(RequestIds.GET_LEADS_LIST);
+                        .getAccessKey(RequestIds.GET_LEADS_LIST, context);
                   },
 
                   child: Text(
@@ -425,7 +425,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedLeadStageValue = leadStageValue;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
 
                 ///filter issue
                 // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
@@ -479,7 +479,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     leadStatusValue;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
               },
             ),
           )),
@@ -539,7 +539,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.selectedDeliveryPointsValue = value;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
               }
             ),
           )),
@@ -569,7 +569,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     leadPotentialValue;
                 _leadsFilterController.offset = 0;
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
-                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
               },
             ),
           )),
@@ -590,7 +590,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           _leadsFilterController.isFilterApplied = true;
           _leadsFilterController.offset = 0;
           _leadsFilterController.leadsListResponse.leadsEntity = null;
-          _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+          _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
           // });
         },
         items: (widget.siteDistrictListModel == null ||

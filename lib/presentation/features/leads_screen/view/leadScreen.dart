@@ -55,7 +55,7 @@ class _LeadScreenState extends State<LeadScreen> {
     getDropdownDistData();
     internetChecking().then((result) {
       if (result) _leadsFilterController.offset = 0;
-      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     });
 
     _scrollController = ScrollController();
@@ -68,23 +68,23 @@ class _LeadScreenState extends State<LeadScreen> {
       print('hello');
       _leadsFilterController.offset += 10;
       print(_leadsFilterController.offset);
-      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     }
   }
 
-  // @override
-  // void dispose() {
-  //   //_connectivity.disposeStream();
-  //   super.dispose();
-  //   _leadsFilterController.offset = 0;
-  //   _leadsFilterController?.dispose();
-  //   // Route.dispose();
-  // }
+  @override
+  void dispose() {
+    //_connectivity.disposeStream();
+    super.dispose();
+    _leadsFilterController.offset = 0;
+    _leadsFilterController?.dispose();
+    // Route.dispose();
+  }
+
   void disposeController(BuildContext context) {
 //or what you want to dispose/clear
     _leadsFilterController.offset = 0;
     _leadsFilterController?.dispose();
-
     // print(_leadsFilterController.offset);
   }
 
@@ -242,7 +242,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                   _leadsFilterController
                                       .leadsListResponse.leadsEntity = null;
                                   _leadsFilterController
-                                      .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                      .getAccessKey(RequestIds.GET_LEADS_LIST, context);
                                 });
                               },
                             ),
@@ -733,7 +733,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                   onPressed: () {
                                     _leadsFilterController.offset = 0;
                                     _leadsFilterController.getAccessKey(
-                                        RequestIds.GET_LEADS_LIST);
+                                        RequestIds.GET_LEADS_LIST, context);
                                   },
                                   child: Text(
                                     "TRY AGAIN",

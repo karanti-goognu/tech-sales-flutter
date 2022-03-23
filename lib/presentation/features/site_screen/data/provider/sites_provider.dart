@@ -393,6 +393,7 @@ class MyApiClientSites {
               accessKey, securityKey, version));
       if(response.statusCode==200) {
         var data = json.decode(response.body);
+        log("Data: ${json.encode(data)}");
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
         PendingSupplyDetailsEntity pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;

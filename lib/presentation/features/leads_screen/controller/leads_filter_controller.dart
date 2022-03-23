@@ -162,7 +162,7 @@ class LeadsFilterController extends GetxController {
 
   String accessKeyNew;
 
-  getSecretKey(int requestId) {
+  getSecretKey(int requestId, BuildContext context) {
     // Future.delayed(
     //     Duration.zero,
     //     () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -185,7 +185,7 @@ class LeadsFilterController extends GetxController {
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
+          getAccessKey(requestId, context);
         } else {
           print('Secret key response is null');
         }
@@ -193,7 +193,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  getAccessKey(int requestId) {
+  getAccessKey(int requestId, BuildContext context) {
 
     // Future.delayed(
     //     Duration.zero,
@@ -222,14 +222,14 @@ class LeadsFilterController extends GetxController {
           //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            getSecretKey(requestId);
+            getSecretKey(requestId, context);
           } else {
             switch (requestId) {
               case RequestIds.LEADS_FILTER_DATA_REQUEST:
                 getFilterData();
                 break;
               case RequestIds.GET_LEADS_LIST:
-                getLeadsData(this.accessKeyResponse.accessKey);
+                getLeadsData(this.accessKeyResponse.accessKey, context);
                 break;
               case RequestIds.SEARCH_LEADS:
                 searchLeads(this.accessKeyResponse.accessKey);
@@ -260,7 +260,7 @@ class LeadsFilterController extends GetxController {
     });
   }
 
-  getLeadsData(String accessKey) {
+  getLeadsData(String accessKey, BuildContext context) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -353,28 +353,45 @@ class LeadsFilterController extends GetxController {
               if(this.isFilterApplied==true){
 
                 this.leadsListResponse = leadListResponseServer;
-                Get.rawSnackbar(
-                  titleText: Text("Note"),
-                  messageText: Text(
-                      "Loading more .."),
+                // Get.rawSnackbar(
+                //   titleText: Text("Note"),
+                //   messageText: Text(
+                //       "Loading more .."),
+                //   backgroundColor: Colors.white,
+                // );
+
+                final snackBar = SnackBar(
+                  content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
                   backgroundColor: Colors.white,
-                  duration: Duration(milliseconds: 5)
                 );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text(
-                    "Loading more .."),
+              // Get.rawSnackbar(
+              //   titleText: Text("Note"),
+              //   messageText: Text(
+              //       "Loading more .."),
+              //   backgroundColor: Colors.white,
+              //   isDismissible: false
+              // );
+
+              final snackBar = SnackBar(
+                content: const Text("Loading more ..", style: TextStyle(color: Colors.black)),
                 backgroundColor: Colors.white,
               );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
               else{
-                Get.rawSnackbar(
-                  titleText: Text("Note"),
-                  messageText: Text(
-                      "No more leads .."),
-                  backgroundColor: Colors.white,
-                );
+              final snackBar = SnackBar(
+                content: const Text("No more leads ..", style: TextStyle(color: Colors.black)),
+                backgroundColor: Colors.white,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                // Get.rawSnackbar(
+                //   titleText: Text("Note"),
+                //   messageText: Text(
+                //       "No more leads .."),
+                //   backgroundColor: Colors.white,
+                // );
               }
 
 
