@@ -86,7 +86,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   }
 
   setData() {
-    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
 
     _siteController
         .pendingSupplyDetailsNew(widget.supplyHistoryId, widget.siteId)

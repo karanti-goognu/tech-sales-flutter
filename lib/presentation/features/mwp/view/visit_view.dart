@@ -44,7 +44,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   void initState() {
     _addEventController.visitRemarks=null;
-    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
     // setState(() {
     //   dropdownValue = 'RETENTION SITE';
     // });
@@ -380,7 +380,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             if (result == true)
                               {
                                 _appController
-                                    .getAccessKey(RequestIds.SAVE_VISIT),
+                                    .getAccessKey(RequestIds.SAVE_VISIT, context),
                                 _addEventController.isLoading = true,
                                 _addEventController.isVisibleContact = false
                               }

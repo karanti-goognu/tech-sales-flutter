@@ -43,7 +43,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
             () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     await _siteController.getAccessKey().then((value) async {
-      await _siteController.getSitesData(value.accessKey, widget.influencerID);
+      await _siteController.getSitesData(context, value.accessKey, widget.influencerID);
     });
   }
 

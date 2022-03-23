@@ -47,7 +47,7 @@ class SRListController extends GetxController {
 
 
   Future<ServiceRequestComplaintListModel> getSrListData(
-      String accessKey, int offset) async {
+      String accessKey, int offset, BuildContext context) async {
     String userSecurityKey = "";
     String empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -67,17 +67,33 @@ class SRListController extends GetxController {
                requestComplaintListModel.srComplaintListModal.addAll(srListData.srComplaintListModal);
                this.srListData = requestComplaintListModel;
                this.srListData.srComplaintListModal.sort((SrComplaintListModal a, SrComplaintListModal b) => b.createdOn.compareTo(a.createdOn));
-               Get.rawSnackbar(
-                 titleText: Text("Note"),
-                 messageText: Text("Loading more .."),
+               // Get.rawSnackbar(
+               //   titleText: Text("Note"),
+               //   messageText: Text("Loading more .."),
+               //   backgroundColor: Colors.white,
+               // );
+               final snackBar = SnackBar(
+                 content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
                  backgroundColor: Colors.white,
+                 behavior: SnackBarBehavior.floating,
+                 duration: Duration(milliseconds: 700),
+                 dismissDirection: DismissDirection.down,
                );
+               ScaffoldMessenger.of(context).showSnackBar(snackBar);
              } else {
-               Get.rawSnackbar(
-                 titleText: Text("Note"),
-                 messageText: Text("No more SR Data..."),
+               // Get.rawSnackbar(
+               //   titleText: Text("Note"),
+               //   messageText: Text("No more SR Data..."),
+               //   backgroundColor: Colors.white,
+               // );
+               final snackBar = SnackBar(
+                 content: const Text("No more SR Data...", style: TextStyle(color: Colors.black),),
                  backgroundColor: Colors.white,
+                 behavior: SnackBarBehavior.floating,
+                 duration: Duration(milliseconds: 700),
+                 dismissDirection: DismissDirection.down,
                );
+               ScaffoldMessenger.of(context).showSnackBar(snackBar);
              }
            }
          }

@@ -163,10 +163,10 @@ class LeadsFilterController extends GetxController {
   String accessKeyNew;
 
   getSecretKey(int requestId, BuildContext context) {
-    // Future.delayed(
-    //     Duration.zero,
-    //     () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     String empId = "empty";
     String mobileNumber = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -180,7 +180,7 @@ class LeadsFilterController extends GetxController {
       repository
           .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
-       // Get.back();
+        Get.back();
         this.secretKeyResponse = data;
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
@@ -195,12 +195,12 @@ class LeadsFilterController extends GetxController {
 
   getAccessKey(int requestId, BuildContext context) {
 
-    // Future.delayed(
-    //     Duration.zero,
-    //     () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     repository.getAccessKey().then((data) {
-     // Get.back();
+      Get.back();
       this.accessKeyResponse = data;
 
       if (this.accessKeyResponse.respCode == 'DM1005') {
@@ -363,6 +363,9 @@ class LeadsFilterController extends GetxController {
                 final snackBar = SnackBar(
                   content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
                   backgroundColor: Colors.white,
+                  behavior: SnackBarBehavior.floating,
+                  duration: Duration(milliseconds: 700),
+                  dismissDirection: DismissDirection.down,
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
@@ -377,13 +380,18 @@ class LeadsFilterController extends GetxController {
               final snackBar = SnackBar(
                 content: const Text("Loading more ..", style: TextStyle(color: Colors.black)),
                 backgroundColor: Colors.white,
-              );
+                  behavior: SnackBarBehavior.floating,
+              duration: Duration(milliseconds: 700),
+              dismissDirection: DismissDirection.down,);
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
               else{
               final snackBar = SnackBar(
                 content: const Text("No more leads ..", style: TextStyle(color: Colors.black)),
                 backgroundColor: Colors.white,
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(milliseconds: 700),
+                dismissDirection: DismissDirection.down,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 // Get.rawSnackbar(

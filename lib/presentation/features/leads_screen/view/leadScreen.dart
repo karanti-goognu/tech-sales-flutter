@@ -706,14 +706,16 @@ class _LeadScreenState extends State<LeadScreen> {
                 )
               : (_leadsFilterController.leadsListResponse.leadsEntity == null)
                   ? Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          Text("Leads list is empty!!"),
-                        ],
-                      ))
+        child:
+                      // child: Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     CircularProgressIndicator(),
+                          Center(child: Text("Leads list is empty!!")),
+                       // ],
+                    //  )
+    )
                   : (_leadsFilterController
                               .leadsListResponse.leadsEntity.length ==
                           0)

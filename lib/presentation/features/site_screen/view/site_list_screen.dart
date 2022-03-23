@@ -44,7 +44,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
       _siteController.offset += 10;
       //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
 
-      _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+      _appController.getAccessKey(RequestIds.GET_SITES_LIST, context);
       // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
       // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
     }
@@ -59,7 +59,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
   storeOfflineSiteData() async {
     final db = SiteListDBHelper();
     await db.clearTable();
-    _appController.getAccessKey(RequestIds.GET_SITES_LIST);
+    _appController.getAccessKey(RequestIds.GET_SITES_LIST, context);
     if (_siteController.sitesListResponse.sitesEntity != null) {
       for (int i = 0;
           i < _siteController.sitesListResponse.sitesEntity.length;
@@ -95,7 +95,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     _siteController.offset = 0;
     // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     await _siteController.getAccessKey().then((value) async {
-      await _siteController.getSitesData(value.accessKey, "");
+      await _siteController.getSitesData(context, value.accessKey, "");
     });
     // _siteController.offset = 0;
   }
@@ -111,7 +111,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
             {
               // _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               _siteController.getAccessKey().then((value) async {
-                _siteController.getSitesData(value.accessKey, "");
+                _siteController.getSitesData(context, value.accessKey, "");
               }),
               //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
 
@@ -240,17 +240,9 @@ class _SiteListScreenState extends State<SiteListScreen> {
                     : (_siteController.sitesListResponse.sitesEntity.length ==
                             0)
                         ? Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            Text("No Sites records available!!"),
-          ],
-        )
-                            // child: Center(
-                            //   child: Text("No Sites records available!!"),
-                            // ),
+                            child: Center(
+                              child: Text("No Sites records available!!"),
+                            ),
                           )
                         : ListView.builder(
                             controller: _scrollController,

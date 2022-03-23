@@ -49,11 +49,11 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
     internetChecking().then((result) => {
       if (result == true)
         {
-        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS),
-        _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL),
+        _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS, context),
+        _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL, context),
           _calendarEventController.selectedDate = "${_currentDate2.year}-${_currentDate2.month}-${_currentDate2.day}",
           // print('${_calendarEventController.selectedDate}');
-          _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY),
+          _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY, context),
         }else{
         Get.snackbar(
             "No internet connection.", "Make sure that your wifi or mobile data is turned on.",
@@ -253,7 +253,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           "${date.year}-${date.month}-${date.day}";
                           // print('${_calendarEventController.selectedDate}');
                           _appController.getAccessKey(
-                              RequestIds.GET_CALENDER_EVENTS_OF_DAY);
+                              RequestIds.GET_CALENDER_EVENTS_OF_DAY, context);
                           _calendarEventController.isDayEventLoading =
                           true;
                           /*this.setState(() => _currentDate2 = date);*/
@@ -283,7 +283,7 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           _calendarEventController.selectedMonth =
                               formatted;
                           _appController.getAccessKey(
-                              RequestIds.GET_CALENDER_EVENTS);
+                              RequestIds.GET_CALENDER_EVENTS, context);
                           //_calendarEventController.isLoading = true;
 
                           this.setState(() {
