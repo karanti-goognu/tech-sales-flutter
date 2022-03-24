@@ -327,8 +327,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-      child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
-
+      child: Text(
+      serviceRequestComplaintListModel.totalCount != null
+        ? "Total Count : ${ eventController.srListData.totalCount}"
+        : "Total Count : 0",
         style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
