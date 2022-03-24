@@ -387,14 +387,13 @@ class MyApiClientSites {
     }
   }
 
-  Future<PendingSuppliesDetailsModel?> getPendingSupplyDetailsNew(String? accessKey,
+  Future<PendingSuppliesDetailsModel?> getPendingSupplyDetailsNew(String accessKey,
       String? userSecretKey, String url) async {
     PendingSuppliesDetailsModel? _pendingSuppliesDetailsModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
-      var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();

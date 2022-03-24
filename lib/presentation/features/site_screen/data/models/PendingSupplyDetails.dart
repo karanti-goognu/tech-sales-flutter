@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 
 class PendingSupplyDetails {
@@ -78,12 +76,10 @@ class PendingSuppliesDetailsModel {
   String? influencerName;
   List<ConstStage>? constStage;
   List<SiteFloorlist>? siteFloorlist;
-
   String? siteOwnerName;
   String? siteOwnerNumber;
   String? influencerContactNumber;
   String? requestInitiatedBy;
-
 
   PendingSuppliesDetailsModel(
       {this.siteId,
@@ -110,31 +106,29 @@ class PendingSuppliesDetailsModel {
       this.supplyCreatedOn,
       this.influencerName,
       this.counter,
-
-        this.siteOwnerName,
-        this.siteOwnerNumber,
-        this.influencerContactNumber,
-        this.requestInitiatedBy,
-
+      this.siteOwnerName,
+      this.siteOwnerNumber,
+      this.influencerContactNumber,
+      this.requestInitiatedBy,
       this.constStage,
-        this.siteFloorlist});
+      this.siteFloorlist});
 
   PendingSuppliesDetailsModel.fromJson(Map<String, dynamic> json) {
     siteId = json['siteId'];
     assignedTo = json['assignedTo'];
     siteSupplyHistoryId = json['siteSupplyHistoryId'];
-    siteStageHistoryId = json['siteStageHistoryId'];
-    referenceId = json['referenceId'];
+    siteStageHistoryId = json['siteStageHistoryId']; //null
+    referenceId = json['referenceId']; //null
     floorId = json['floorId'];
     floorText!.text = json['floorText'];
     stageConstructionId = json['stageConstructionId'];
-    stageConstructionDesc!.text = json['stageConstructionDesc'];
-    sitePotentialMt!.text = json['sitePotentialMt'];
-    counter!.text = json['shipToPartyName'];
+    stageConstructionDesc!.text = json['stageConstructionDesc'] ?? "";
+    sitePotentialMt!.text = json['sitePotentialMt'] ?? "";
+    counter!.text = json['shipToPartyName'] ?? "";
     brandId = json['brandId'];
     brandName!.text = json['brandName'];
     productName!.text = json['productName'];
-    brandPrice!.text = json['brandPrice'];
+    brandPrice!.text = json['brandPrice'] ?? "";
     supplyQty!.text = json['supplyQty'];
     supplyDate!.text = json['supplyDate'];
     soldToParty = json['soldToParty'];
@@ -144,7 +138,6 @@ class PendingSuppliesDetailsModel {
     isAuthorised = json['isAuthorised'];
     supplyCreatedOn = json['supplyCreatedOn'];
     influencerName = json['influencerName'];
-
     siteOwnerName = json['siteOwnerName'];
     siteOwnerNumber = json['siteOwnerNumber'];
     influencerContactNumber = json['influencerContactNumber'];
@@ -225,7 +218,6 @@ class ConstStage {
     return data;
   }
 }
-
 
 class SiteFloorlist {
   int? id;

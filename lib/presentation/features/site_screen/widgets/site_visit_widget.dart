@@ -435,10 +435,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             SizedBox(
                               height: 16,
                             ),
-                            // nextDate(),
-                            // SizedBox(
-                            //   height: 16,
-                            // ),
                             (widget.mwpVisitModel!.visitStartTime != null &&
                                     widget.mwpVisitModel!.visitEndTime != null)
                                 ? Column(

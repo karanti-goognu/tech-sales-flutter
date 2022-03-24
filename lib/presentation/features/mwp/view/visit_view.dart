@@ -29,7 +29,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   String? selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-
   var _nameController = TextEditingController();
   var _typeController = TextEditingController();
   var _categoryController = TextEditingController();
@@ -150,21 +149,12 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                               fontSize: 16.0),
                         ),
                         onTap: () {
-                          print(value);
                           setState(() {
                             switch (value) {
-                              case "RETENTION SITE":
-                                _addEventController.siteIdText = "Site ID";
-                                break;
                               case "LEADS":
                                 _addEventController.isVisibleContact = false;
                                 // _isVisibleContact = false;
                                 _addEventController.siteIdText = "Lead ID";
-                                break;
-                              case "CONVERSION OPPORTUNITY":
-                              //_isVisibleContact = false;
-                                _addEventController.isVisibleContact = false;
-                                _addEventController.siteIdText = "Site ID";
                                 break;
                               case "COUNTER":
                               //_isVisibleContact = false;
@@ -213,7 +203,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                       );
                     }).toList(),
                     onChanged: (dynamic val) {
-                      print(val.dealerName);
                       _addEventController.visitSiteId = val.dealerId;
                     })
                     : TextFormField(
@@ -290,10 +279,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                     ),
                     readOnly: true,
                     validator: (value) {
-                      print(this._addEventController.visitDateTime);
                       if (this._addEventController.visitDateTime ==
                           "Visit Date") {
-                        print(value);
                         return "Visit Date can't be empty";
                       }
                       return null;

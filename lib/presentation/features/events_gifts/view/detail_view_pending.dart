@@ -218,7 +218,7 @@ class _DetailPendingState extends State<DetailPending> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date!)),
+                Expanded(child: Text(_date!, style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -246,7 +246,7 @@ class _DetailPendingState extends State<DetailPending> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(displayTime!)),
+                Expanded(child: Text(displayTime!, style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,

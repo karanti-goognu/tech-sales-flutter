@@ -46,8 +46,8 @@ class BrandNameDBHelper extends ChangeNotifier{
   }
 
   Future<int> addDealer(DealerForDb dealerForDb) async {
-    var client = await (db as FutureOr<Database>);
-    return client.insert('counterListDealers', dealerForDb.toMapForDb(),
+    Database? client = await db;
+    return client!.insert('counterListDealers', dealerForDb.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 

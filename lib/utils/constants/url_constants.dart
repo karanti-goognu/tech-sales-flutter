@@ -6,26 +6,27 @@ final client = Client();
 abstract class UrlConstants {
  UrlConstants._();
 
- //PROD
+ ///PROD
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
  // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
  // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+
  //Base Url
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech-sales-server';
 
 
- // QA
+ /// QA
  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
- //Development
+ ///Development
  // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
  // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
  // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
- //End points
+ /// API End points
  static const String loginCheck = '$baseUrl/login/login-otp';
  static const String getAccessKey = '$baseUrl/validation/generate-access-key';
  static const String getSecretKey = '$baseUrl/validation/generate-secret-key';
@@ -33,14 +34,12 @@ abstract class UrlConstants {
  static const String validateOtp = '$baseUrl/login/login-otp-validate';
  static const String getFilterData = '$baseUrl/leads/lead-filter-data';
  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
- //static const String addLeadsData = '$baseUrl/leads/lead-new';
  static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
  static const String getInflData = '$baseUrl/influencer/getDetails';
  static const String saveLeadsData = '$baseUrl/leads/v2/lead-save';
  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
-// static const String updateLeadsData = '$baseUrl/leads/lead-update';
  static const String updateLeadsData = '$baseUrl/leads/v2/lead-update';
  static const String updateSiteData = '$baseUrl/sites/site-update';
  static const String updateVersion2SiteData = '$baseUrl/sites/v2/site-update';
@@ -48,14 +47,11 @@ abstract class UrlConstants {
  static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
  static const String getCheckInDetails = '$baseUrl/journey/details';
  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
- //static const String saveMWPData = '$baseUrl/mwp/mwp-save';
  static const String saveMWPData = '$baseUrl/mwp/v2/mwp-save';
  static const String getMWPData = '$baseUrl/mwp/view-mwp?';
  static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';
  static const String getCalendarEventDataByDay = '$baseUrl/mwp/visit-view?';
  static const String getTargetVsActualData = '$baseUrl/mwp/targetVsActual?referenceID=';
- //static const String saveVisit = '$baseUrl/mwp/save-visit';
-
  static const String saveVisit = '$baseUrl/mwp/v2/save-visit';
  static const String updateVisit = '$baseUrl/mwp/v2/update-visit';
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
@@ -79,10 +75,8 @@ abstract class UrlConstants {
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
- //static const String updateVersion4SiteData = '$baseUrl/sites/v4/site-update';
  static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
  static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
-
  static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
  static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
 
@@ -119,7 +113,7 @@ abstract class UrlConstants {
 
 
 
- // pending supply
+ /// pending supply
  static const String getPendingSupplyList = '$baseUrl/sites/get-pending-supplies?referenceID=';
  static const String getPendingSupplyDetails = '$baseUrl/sites/get-pending-supplies-details?referenceID=';
  static const String updatePendingSupply = '$baseUrl/sites/update-pending-supply';

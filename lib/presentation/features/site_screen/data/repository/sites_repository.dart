@@ -85,7 +85,7 @@ class MyRepositorySites {
   }
 
   Future<PendingSuppliesDetailsModel?> getPendingSupplyDetailsNew(
-      String? accessKey, String? userSecretKey, String url) async {
+      String accessKey, String? userSecretKey, String url) async {
     return apiClient.getPendingSupplyDetailsNew(accessKey, userSecretKey, url);
   }
 
