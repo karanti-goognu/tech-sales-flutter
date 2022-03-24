@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -396,7 +397,7 @@ class _InfluencerViewState extends State<InfluencerView> {
 
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 2.sp, right: 2.sp),
+                                                      left: 2, right: 2),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -440,8 +441,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                     style: TextStyle(
                                                                         color: HexColor(
                                                                             "#FFFFFFDE"),
-                                                                        fontSize: 11
-                                                                            .sp,
+                                                                        fontSize: 11,
                                                                         fontFamily:
                                                                             "Muli",
                                                                         fontWeight:
@@ -454,18 +454,31 @@ class _InfluencerViewState extends State<InfluencerView> {
                                                                       color: HexColor(
                                                                           "#FFFFFFDE"),
                                                                       size:
-                                                                          11.sp)
+                                                                          11)
                                                                 ],
                                                               ),
                                                             ),
                                                           )),
                                                       GestureDetector(
                                                         onTap: () {
+                                                          String address = "-";
+                                                          if(_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null || _influencerListModel.response.ilpInfluencerEntity[index].giftAddress == "" ) {
+                                                            address = "-";
+                                                          }else{
+                                                            address = '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress}';
+                                                          }
+
+                                                          String email = "-";
+                                                          if(_influencerListModel.response.ilpInfluencerEntity[index].email == null || _influencerListModel.response.ilpInfluencerEntity[index].email == "" ) {
+                                                            email = "-";
+                                                          }else{
+                                                            email = '${_influencerListModel.response.ilpInfluencerEntity[index].email}';
+                                                          }
                                                           Get.dialog(showContactDialog(
                                                               'Info',
                                                               '${_influencerListModel.response.ilpInfluencerEntity[index].mobileNumber}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].giftAddress == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].giftAddress}',
-                                                              '${_influencerListModel.response.ilpInfluencerEntity[index].email == null ? "-" : _influencerListModel.response.ilpInfluencerEntity[index].email}',
+                                                              address,
+                                                              email,
                                                               context));
                                                         },
                                                         child: Text(
@@ -511,7 +524,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                     })
               ],
             ),
-            SizedBox(height: 8.sp),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -519,7 +532,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   "Contact No:",
                   style: TextStyles.formfieldLabelText,
                 ),
-                SizedBox(width: 0.sp),
+                SizedBox(width: 0),
                 GestureDetector(
                   child: FittedBox(
                     child: Row(
@@ -549,7 +562,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   "Address:",
                   style: TextStyles.formfieldLabelText,
                 ),
-                SizedBox(width: 40.sp),
+                SizedBox(width: 40),
                 Expanded(
                     child: Text(
                   address,
@@ -567,7 +580,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                   "Email:",
                   style: TextStyles.formfieldLabelText,
                 ),
-                SizedBox(width: 40.sp),
+                SizedBox(width: 40),
                 Expanded(
                     child: Text(
                   email,

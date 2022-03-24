@@ -801,18 +801,17 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                         SitePastStageHistoryWidget(
                           viewSiteDataResponse: snapshot.data),
                       SiteVisitWidget(
-                        mwpVisitModel: snapshot.data.mwpVisitModel,
+                        //mwpVisitModel: snapshot.data.mwpVisitModel,
                         siteId: widget.siteId,
-                        visitSubTypeId:
-                            snapshot.data.sitesModal.siteOppertunityId,
-                        siteOpportunityStatusEntity:
-                            snapshot.data.siteOpportunityStatusEntity,
-                        siteDate: snapshot.data.sitesModal.siteCreationDate,
-                        selectedOpportunitStatusEnity:
-                            _siteOpportunitStatusEnityVisit,
-                        visitRemarks:
-                            snapshot.data.sitesModal.siteClosureReasonText,
-                          viewSiteDataResponse: snapshot.data
+                       //  visitSubTypeId:
+                       //      snapshot.data.sitesModal.siteOppertunityId,
+                       //  siteOpportunityStatusEntity:
+                       //      snapshot.data.siteOpportunityStatusEntity,
+                       //  siteDate: snapshot.data.sitesModal.siteCreationDate,
+                       //  selectedOpportunitStatusEnity:
+                       //      _siteOpportunitStatusEnityVisit,
+                       // // visitRemarks: snapshot.data.sitesModal.siteClosureReasonText,
+                       //    viewSiteDataResponse: snapshot.data
                       )
                     ],
                   ); // snapshot.data  :- get your object which is pass from your downloadData() function
