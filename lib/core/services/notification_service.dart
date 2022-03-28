@@ -20,7 +20,6 @@ class MoengageService {
   }
 
   static void getInstance() {
-    print("MoEngage Get instance");
     MoengageService._();
   }
 
@@ -35,12 +34,10 @@ class MoengageService {
 
 
   void _onPushClick(PushCampaign pushCampaign) {
-    print("On Push Click");
     isPushClickCall= true;
     Map<String, dynamic> payload = pushCampaign.payload;
     String? gcmWebUrl = payload["gcm_webUrl"];
     if (gcmWebUrl != null) {
-      print("GCM not null");
       String screenName= gcmWebUrl.split('/').last;
       handleDynamicLink(navigationScreenName:screenName,payloadData: payload);
     }
@@ -49,7 +46,6 @@ class MoengageService {
 
 
   handleDynamicLink({String? navigationScreenName, Map<String, dynamic>?  payloadData}) {
-    print("Handle Dynamic Link");
     NotificationRoutes.navigateAfterResponse(screenName: navigationScreenName, payloadData: payloadData);
 
   }
