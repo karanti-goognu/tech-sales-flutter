@@ -47,6 +47,7 @@ class MyApiClient {
       var deviceId, deviceType;
 
 
+
       if (Platform.isAndroid) {
         AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
         deviceId = build.androidId;

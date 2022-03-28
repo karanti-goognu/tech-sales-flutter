@@ -17,18 +17,18 @@ PODS:
   - Firebase/Messaging (8.11.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 8.11.0)
-  - firebase_analytics (9.1.0):
+  - firebase_analytics (9.1.1):
     - Firebase/Analytics (= 8.11.0)
     - firebase_core
     - Flutter
   - firebase_core (1.12.0):
     - Firebase/CoreOnly (= 8.11.0)
     - Flutter
-  - firebase_crashlytics (2.5.0):
+  - firebase_crashlytics (2.5.2):
     - Firebase/Crashlytics (= 8.11.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (11.2.6):
+  - firebase_messaging (11.2.7):
     - Firebase/Messaging (= 8.11.0)
     - firebase_core
     - Flutter
@@ -164,13 +164,11 @@ PODS:
     - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
-  - "permission_handler (5.1.0+2)":
+  - permission_handler_apple (9.0.2):
     - Flutter
   - PromisesObjC (2.0.0)
   - Reachability (3.2)
   - shared_preferences_ios (0.0.1):
-    - Flutter
-  - sms_autofill (0.0.1):
     - Flutter
   - sqflite (0.0.2):
     - Flutter
@@ -179,7 +177,7 @@ PODS:
     - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
-  - vibration (1.7.3):
+  - vibration (1.7.4-nullsafety.0):
     - Flutter
   - video_player_avfoundation (0.0.1):
     - Flutter
@@ -203,9 +201,8 @@ DEPENDENCIES:
   - MORichNotification
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
-  - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - store_redirect (from `.symlinks/plugins/store_redirect/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -266,12 +263,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
-  sms_autofill:
-    :path: ".symlinks/plugins/sms_autofill/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   store_redirect:
@@ -289,10 +284,10 @@ SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
-  firebase_analytics: b267e923ba3cdc892bdcadc01efab50f3b8b7441
+  firebase_analytics: 44279c13994b4dcd373c3282636b0f366bc97cff
   firebase_core: 443bccfd6aa6b42f07be365b500773dc69db2d87
-  firebase_crashlytics: 824c5100677bbc8dbc4cc2b264dab21c0ffa3279
-  firebase_messaging: 8dc3a6f069774a0bf4dac04dd79fdaffcb62e145
+  firebase_crashlytics: e014a1f740fdbff98e096646c64779f47f34dd37
+  firebase_messaging: ad581310adcd3c9ab493d6f394c935af45a8f07b
   FirebaseAnalytics: 4e4b13031034e6561ed3bd1d47b6fdabbd6487c6
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: 64d9709d804a6c25bd77841371c1fcfd909d5601
@@ -303,12 +298,12 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  google_maps_flutter: abdb8dee6c52d4be36ad131ee6ebfacd14417c5a
+  google_maps_flutter: fe98b02bbb6717c7297c7747b84c4ead2bc5fc3b
   GoogleAppMeasurement: aa3cb422fab2b05d2efac543a5720d1a85b9dea5
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleMaps: eb03e327edfd70b06de1e6e321653f73712df7ad
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  image_picker: 0d37d1cb66231c2473a0e3ccb8d062d0c2b3d297
+  image_picker: 541dcbb3b9cf32d87eacbd957845d8651d6c62c3
   MoEngage-iOS-SDK: c30f1882faffe1a744755ee7eec7747bf915279c
   moengage_flutter: 1a19eb15e29ef6ca22aa56ad5b57bc6d6c999ce0
   moengage_inbox: 9ae371803f5fa37c7df2b84dcdb18b9f1e9d5dc4
@@ -317,16 +312,15 @@ SPEC CHECKSUMS:
   MORichNotification: e8430b938b2ace300d95ae38af5cfff9594cdef6
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
-  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  permission_handler_apple: d21b38e1a4b2e041c63af9568f9165e114e507a6
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
-  sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   store_redirect: 2977747cf81689a39bd62c248c2deacb7a0d131e
-  url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
-  vibration: b5a33e764c3f609a975b9dca73dce20fdde627dc
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  vibration: 1ec279c4a1a7a646627b54039d812334b3f1114a
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 

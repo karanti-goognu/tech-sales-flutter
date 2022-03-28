@@ -33,11 +33,13 @@ class _ServiceRequestsState extends State<ServiceRequests> {
 
   ServiceRequestComplaintListModel? serviceRequestComplaintListModel;
   SRListController eventController = Get.find();
+
   int? totalFilters;
+  bool isFilterApplied = false;
 
   getSRListData() async {
     await eventController.getAccessKey().then((value) async {
-      await eventController.getSrListData(value!.accessKey, 0).then((data){
+      await eventController.getSrListData(value!.accessKey, 0, context).then((data){
         setState(() {
           serviceRequestComplaintListModel = data;
         });
@@ -49,13 +51,16 @@ class _ServiceRequestsState extends State<ServiceRequests> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       eventController.offset += 10;
-      await eventController.getAccessKey().then((value) async {
-        await eventController.getSrListData(value!.accessKey, eventController.offset).then((data) {
-          setState(() {
-            serviceRequestComplaintListModel = data;
+      if (isFilterApplied == false){
+        await eventController.getAccessKey().then((value) async {
+          await eventController.getSrListData(
+              value!.accessKey, eventController!.offset, context).then((data) {
+            setState(() {
+              serviceRequestComplaintListModel = data;
+            });
           });
         });
-      });
+    }
     }
   }
 
@@ -69,11 +74,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   void initState() {
     super.initState();
     eventController.srListData.srComplaintListModal = null;
+    eventController.offset = 0;
     getSRListData();
     _scrollController = ScrollController();
     _scrollController..addListener(_scrollListener);
-
-
   }
 
   @override
@@ -124,6 +128,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         setState(() {
                           totalFilters = value[3];
                         });
+                        isFilterApplied = true;
                         eventController.getAccessKey().then((accessKeyModel) {
                           eventController
                               .getSrListDataWithFilters(accessKeyModel!.accessKey,
@@ -325,8 +330,10 @@ class _ServiceRequestsState extends State<ServiceRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-      child: Text("Total Count : ${(eventController.srListData.totalCount == null) ? 0 : eventController.srListData.totalCount}",
-
+      child: Text(
+      serviceRequestComplaintListModel!.totalCount != null
+        ? "Total Count : ${ eventController.srListData.totalCount}"
+        : "Total Count : 0",
         style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
@@ -594,12 +601,11 @@ class _ServiceRequestsState extends State<ServiceRequests> {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Get.to(
-                    SiteDetails(
-                      siteId: serviceRequestComplaintListModel!
-                          .srComplaintListModal![index].siteId
-                          .toString(),
-                    ),
+                Get.to(()=> SiteDetails(
+                  siteId: serviceRequestComplaintListModel!
+                      .srComplaintListModal![index].siteId
+                      .toString(),
+                ),
                     transition: Transition.rightToLeft);
               },
               child: Text(

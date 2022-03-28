@@ -477,33 +477,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
               startEvent();
       });
 
-    // if (!(await GetCurrentLocation.checkLocationPermission())) {
-    //   Get.back();
-    //   Get.dialog(CustomDialogs().errorDialog(
-    //       "Please enable your location service from device settings"));
-    // } else {
-    //   Get.dialog(Center(
-    //     child: CircularProgressIndicator(),
-    //   ));
-    //   Geolocator
-    //       .getCurrentPosition(
-    //     desiredAccuracy: LocationAccuracy.best,
-    //     // locationPermissionLevel: GeolocationPermission.locationWhenInUse,
-    //   )
-    //       .then((Position position) {
-    //     setState(() {
-    //       _currentPosition = position;
-    //       startEvent();
-    //     });
-    //    Get.back();
+    }
 
-      // }).catchError((e) {
-      //   Get.back();
-      //   Get.dialog(
-      //       CustomDialogs().errorDialog("Access to location data denied "));
-      //   print(e);
-      // });
-  }
 
   startEvent() async {
     StartEventResponse? _startEventResponse;

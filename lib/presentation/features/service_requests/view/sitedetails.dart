@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -184,13 +185,12 @@ class _SiteDetailsState extends State<SiteDetails> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: (){
-                                Get.to(
-                                  RequestUpdation(
-                                      id: siteListModel!
-                                          .srComplaintListModal![index]
-                                          .srComplaintId),
-                                  transition: Transition.rightToLeft,
-                                );
+
+                                Get.to(()=> RequestUpdation(
+                                    id: siteListModel!
+                                        .srComplaintListModal![index]
+                                        .srComplaintId),binding: SRBinding(),
+                                  transition: Transition.rightToLeft,);
                               },
                               child: Card(
                                 clipBehavior: Clip.antiAlias,

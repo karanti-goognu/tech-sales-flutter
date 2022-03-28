@@ -216,7 +216,8 @@ class SiteController extends GetxController {
     return repository.getAccessKey();
   }
 
-  getSitesData(String? accessKey, String? influencerId) {
+
+  getSitesData(BuildContext context, String? accessKey,String? influencerId) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -308,17 +309,24 @@ class SiteController extends GetxController {
               if (this.isFilterApplied == true) {
                 this.sitesListResponse = sitesListModel;
               }
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text("Loading more .."),
+
+              final snackBar = SnackBar(
+                content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
                 backgroundColor: Colors.white,
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(milliseconds: 700),
+                dismissDirection: DismissDirection.down,
               );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
-              Get.rawSnackbar(
-                titleText: Text("Note"),
-                messageText: Text("No more leads .."),
+              final snackBar = SnackBar(
+                content: const Text("No more sites ..", style: TextStyle(color: Colors.black),),
                 backgroundColor: Colors.white,
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(milliseconds: 700),
+                dismissDirection: DismissDirection.down,
               );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
             if (sitesListResponse.respCode == "ST2006") {
             } else {

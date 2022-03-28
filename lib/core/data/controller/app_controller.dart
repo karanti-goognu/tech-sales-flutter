@@ -48,7 +48,7 @@ class AppController extends GetxController {
 
   set phoneNumber(value) => this._phoneNumber.value = value;
 
-  getSecretKey(int requestId) {
+  getSecretKey(int requestId, BuildContext context) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -71,7 +71,7 @@ class AppController extends GetxController {
         if (data != null) {
           prefs.setString(StringConstants.userSecurityKey,
               this.secretKeyResponse.secretKey);
-          getAccessKey(requestId);
+          getAccessKey(requestId, context);
         } else {
          // print('Secret key response is null');
         }
@@ -79,7 +79,7 @@ class AppController extends GetxController {
     });
   }
 
-   getAccessKey(int requestId) {
+   getAccessKey(int requestId, BuildContext context) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -92,13 +92,13 @@ class AppController extends GetxController {
         if (userSecurityKey != "empty") {
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
-            getSecretKey(requestId);
+            getSecretKey(requestId, context);
           } else {
             Get.back();
             if(this.accessKeyResponse!=null)
             switch (requestId) {
               case RequestIds.GET_SITES_LIST:
-                _siteController.getSitesData(this.accessKeyResponse.accessKey,"");
+                _siteController.getSitesData(context,this.accessKeyResponse.accessKey,"");
                 break;
               case RequestIds.SEARCH_SITES:
                 _siteController.searchSites(this.accessKeyResponse.accessKey);

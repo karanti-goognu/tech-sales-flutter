@@ -40,7 +40,10 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   void initState() {
     _addEventController.visitRemarks=null;
-    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
+    // setState(() {
+    //   dropdownValue = 'RETENTION SITE';
+    // });
     super.initState();
   }
 
@@ -317,22 +320,24 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
                     if (_formKey.currentState!.validate()) {
                       internetChecking().then((result) => {
-                        if (result == true)
-                          {
-                            _appController
-                                .getAccessKey(RequestIds.SAVE_VISIT),
-                            _addEventController.isLoading = true,
-                            _addEventController.isVisibleContact = false
-                          }
-                        else
-                          {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
-                                colorText: Colors.white,
-                                backgroundColor: Colors.red,
-                                snackPosition: SnackPosition.BOTTOM),
-                          }
-                      });
+
+                            if (result == true)
+                              {
+                                _appController
+                                    .getAccessKey(RequestIds.SAVE_VISIT, context),
+                                _addEventController.isLoading = true,
+                                _addEventController.isVisibleContact = false
+                              }
+                            else
+                              {
+                                Get.snackbar("No internet connection.",
+                                    "Make sure that your wifi or mobile data is turned on.",
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.red,
+                                    snackPosition: SnackPosition.BOTTOM),
+                                // fetchSiteList()
+                              }
+                          });
                     }
                   },
                   child: Padding(

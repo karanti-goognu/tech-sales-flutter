@@ -163,6 +163,8 @@ class MyApiClientSites {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        log('Data:${json.encode(data)}');
+        log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs().appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -333,6 +335,9 @@ class MyApiClientSites {
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
+      log("data:${json.encode(data)}");
+      log('Url:${UrlConstants.saveUpdateSiteVisit}');
+
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
@@ -377,6 +382,7 @@ class MyApiClientSites {
               accessKey, securityKey, version) );
       if(response.statusCode==200) {
         var data = json.decode(response.body);
+        log("Data: ${json.encode(data)}");
         PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
         PendingSupplyDetailsEntity? pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;

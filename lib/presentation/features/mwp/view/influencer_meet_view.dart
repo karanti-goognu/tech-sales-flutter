@@ -36,7 +36,7 @@ class AddEventInfluencerMeetScreenPageState
   @override
   void initState() {
     _addEventController.dealerList.clear();
-    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST);
+    _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
     _addEventController.isLoading = true;
     _addEventController.visitDateTime = "Visit Date";
     _addEventController.selectedEventTypeMeet = "MASON MEET";
@@ -406,7 +406,7 @@ class AddEventInfluencerMeetScreenPageState
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "D";
                                 _appController
-                                    .getAccessKey(RequestIds.SAVE_MEET);
+                                    .getAccessKey(RequestIds.SAVE_MEET, context);
                               }
                             },
                             child: Padding(
@@ -428,7 +428,7 @@ class AddEventInfluencerMeetScreenPageState
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "S";
                                 _appController
-                                    .getAccessKey(RequestIds.SAVE_MEET);
+                                    .getAccessKey(RequestIds.SAVE_MEET, context);
                               }
                             },
                             child: Padding(

@@ -52,23 +52,12 @@ class _LeadScreenState extends State<LeadScreen> {
     print("Leads init state called");
 
     super.initState();
-
-    /* try {
-      if (_loginController.validateOtpResponse.leadStatusEntity != null) {
-        if (_loginController.validateOtpResponse.leadStatusEntity.length != 0) {
-          _splashController.splashDataModel.leadStatusEntity =
-              _loginController.validateOtpResponse.leadStatusEntity;
-        }
-      }
-    } catch (_) {
-      print('${_.toString()}');
-    }*/
     _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
     getDropdownDistData();
     internetChecking().then((result) {
       if (result) _leadsFilterController.offset = 0;
-      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     });
 
     late final _scrollController = ScrollController();
@@ -81,23 +70,23 @@ class _LeadScreenState extends State<LeadScreen> {
       print('hello');
       _leadsFilterController.offset += 10;
       print(_leadsFilterController.offset);
-      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
+      _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     }
   }
 
-  // @override
-  // void dispose() {
-  //   //_connectivity.disposeStream();
-  //   super.dispose();
-  //   _leadsFilterController.offset = 0;
-  //   _leadsFilterController?.dispose();
-  //   // Route.dispose();
-  // }
+  @override
+  void dispose() {
+    //_connectivity.disposeStream();
+    super.dispose();
+    _leadsFilterController.offset = 0;
+    _leadsFilterController?.dispose();
+    // Route.dispose();
+  }
+
   void disposeController(BuildContext context) {
 //or what you want to dispose/clear
     _leadsFilterController.offset = 0;
-    _leadsFilterController.dispose();
-
+    _leadsFilterController?.dispose();
     // print(_leadsFilterController.offset);
   }
 
@@ -255,7 +244,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                   _leadsFilterController
                                       .leadsListResponse.leadsEntity = null;
                                   _leadsFilterController
-                                      .getAccessKey(RequestIds.GET_LEADS_LIST);
+                                      .getAccessKey(RequestIds.GET_LEADS_LIST, context);
                                 });
                               },
                             ),
@@ -713,10 +702,16 @@ class _LeadScreenState extends State<LeadScreen> {
                 )
               : (_leadsFilterController.leadsListResponse.leadsEntity == null)
                   ? Container(
-                      child: Center(
-                        child: Text("Leads list is empty!!"),
-                      ),
-                    )
+        child:
+                      // child: Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     CircularProgressIndicator(),
+                          Center(child: Text("Leads list is empty!!")),
+                       // ],
+                    //  )
+    )
                   : (_leadsFilterController
                               .leadsListResponse.leadsEntity.length ==
                           0)
@@ -736,7 +731,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                   onPressed: () {
                                     _leadsFilterController.offset = 0;
                                     _leadsFilterController.getAccessKey(
-                                        RequestIds.GET_LEADS_LIST);
+                                        RequestIds.GET_LEADS_LIST, context);
                                   },
                                   child: Text(
                                     "TRY AGAIN",

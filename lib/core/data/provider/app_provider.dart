@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -56,6 +57,8 @@ class MyApiClientApp {
         'reference-id': empId,
         'mobile-number': mobile,
       };
+
+      log("requestHeadersEmpIdAndNo: ${requestHeadersEmpIdAndNo}");
 
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
@@ -310,6 +313,7 @@ class MyApiClientApp {
 
   getCalenderPlanByDay(
       String? accessKey, String? userSecurityKey, String url) async {
+
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),

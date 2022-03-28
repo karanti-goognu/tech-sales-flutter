@@ -40,7 +40,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
   @override
   void initState() {
-    _appController.getAccessKey(RequestIds.VIEW_VISIT);
+    _appController.getAccessKey(RequestIds.VIEW_VISIT, context);
     super.initState();
   }
 
@@ -865,7 +865,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
               //afterRequestLayout(empId, mobileNumber);
               _formKey.currentState!.save();
               _addEventController.visitActionType = "UPDATE";
-              _appController.getAccessKey(RequestIds.UPDATE_VISIT);
+              _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
           },
           child: Padding(
@@ -886,7 +886,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
               //afterRequestLayout(empId, mobileNumber);
               _formKey.currentState!.save();
               _addEventController.visitActionType = "START";
-              _appController.getAccessKey(RequestIds.UPDATE_VISIT);
+              _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
           },
           child: Padding(
@@ -913,7 +913,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               _addEventController.visitActionType = "END";
-              _appController.getAccessKey(RequestIds.UPDATE_VISIT);
+              _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
           },
           child: Padding(
