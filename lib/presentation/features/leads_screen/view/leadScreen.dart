@@ -79,14 +79,14 @@ class _LeadScreenState extends State<LeadScreen> {
     //_connectivity.disposeStream();
     super.dispose();
     _leadsFilterController.offset = 0;
-    _leadsFilterController?.dispose();
+    _leadsFilterController.dispose();
     // Route.dispose();
   }
 
   void disposeController(BuildContext context) {
 //or what you want to dispose/clear
     _leadsFilterController.offset = 0;
-    _leadsFilterController?.dispose();
+    _leadsFilterController.dispose();
     // print(_leadsFilterController.offset);
   }
 

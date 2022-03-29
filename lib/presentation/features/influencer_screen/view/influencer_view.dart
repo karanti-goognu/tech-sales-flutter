@@ -253,7 +253,7 @@ class _InfluencerViewState extends State<InfluencerView> {
                                               _influencerListModel!
                                                   .response!
                                                   .ilpInfluencerEntity![index]
-                                                  .membershipId)));
+                                                  .membershipId!)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,

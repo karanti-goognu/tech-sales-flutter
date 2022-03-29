@@ -912,7 +912,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 List<double> data = await (Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CustomMap())) as FutureOr<List<double>>);
+                                        builder: (context) => CustomMap())));
                                 setState(() {
                                   geoTagType = "M";
                                 });

@@ -54,7 +54,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       if (isFilterApplied == false){
         await eventController.getAccessKey().then((value) async {
           await eventController.getSrListData(
-              value!.accessKey, eventController!.offset, context).then((data) {
+              value!.accessKey, eventController.offset, context).then((data) {
             setState(() {
               serviceRequestComplaintListModel = data;
             });

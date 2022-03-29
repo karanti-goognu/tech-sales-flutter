@@ -190,9 +190,9 @@ class MyApiClientInf {
 
 
 
-  Future<InfluencerDetailDataModel?> getInfDetaildata(String? accessKey,
+  Future<InfluencerDetailDataModel> getInfDetaildata(String? accessKey,
       String? userSecretKey, String membershipId) async {
-    InfluencerDetailDataModel? influencerDetailDataModel;
+    late InfluencerDetailDataModel influencerDetailDataModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();

@@ -176,8 +176,8 @@ class InfController extends GetxController {
   }
 
 
-  Future<InfluencerDetailDataModel?> getInfDetailData(String membershipId) async {
-    InfluencerDetailDataModel? _influencerDetailDataModel;
+  Future<InfluencerDetailDataModel> getInfDetailData(String membershipId) async {
+    late InfluencerDetailDataModel _influencerDetailDataModel;
     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
     //It is working fine without the progress indicator
     //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
@@ -202,7 +202,6 @@ class InfController extends GetxController {
       empID = prefs.getString(StringConstants.employeeId);
     });
     infListResponse = await repository.infSearch(accessKey, userSecurityKey, empID, searchText);
-   // print(_infListResponse.respCode);
   }
 
 
