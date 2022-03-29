@@ -636,7 +636,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   onChanged: (value) {
                     setState(() {
                       _siteBrandList = value;
-                      _preferredBrandId = _siteBrandList!.id;
+                      // _preferredBrandId = _siteBrandList!.id;
                     });
                   },
                   items: siteBrandList!
