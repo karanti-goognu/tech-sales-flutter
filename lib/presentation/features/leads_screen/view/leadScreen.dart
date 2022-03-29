@@ -59,9 +59,11 @@ class _LeadScreenState extends State<LeadScreen> {
       if (result) _leadsFilterController.offset = 0;
       _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     });
+    _scrollController = ScrollController();
+    _scrollController?..addListener(_scrollListener);
 
-    late final _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    // late final _scrollController = ScrollController();
+    // _scrollController..addListener(_scrollListener);
   }
 
   _scrollListener() {
