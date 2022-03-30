@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -141,22 +139,12 @@ class _AllEventsState extends State<AllEvents> {
                         setState(() {
                           option = allEventsModel!
                               .eventStatusEntities![index].eventStatusText;
-
-                          //allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
                         });
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
                       label: Text(allEventsModel!
                           .eventStatusEntities![index].eventStatusText!),
-                      // backgroundColor: option == 1
-                      //     ? Colors.blue.withOpacity(0.2)
-                      //     : Colors.white,
-                      // shape: StadiumBorder(
-                      //   side: BorderSide(
-                      //       color: option == 5 ? Colors.blue : Colors.black12),
-                      // ),
                     ),
-                    //),
                   );
                 }),
           )
@@ -276,8 +264,6 @@ class _AllEventsState extends State<AllEvents> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // Get.to(() => DetailPending(list[index].eventId, borderColor),
-              //     binding: EGBinding());
               Get.to(() => EndEvent(list[index].eventId,1));
             },
             child: eventCard(index, list, borderColor),
@@ -317,63 +303,41 @@ class _AllEventsState extends State<AllEvents> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Obx(
-                  //   () =>
                   Text(
                     list[index].eventDate!,
-                    //"24-Mar-21",
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Muli",
-                        //fontWeight:
-                        // FontWeight.bold
                         fontWeight: FontWeight.normal),
                   ),
-                  // ),
-                  // Obx(
-                  //   () =>
                   Chip(
                     shape: StadiumBorder(side: BorderSide(color: borderColor)),
                     backgroundColor: borderColor.withOpacity(0.1),
                     label: Text('Status: ${list[index].eventStatusText}'),
                   ),
-                  // )
                 ],
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Text(
                   list[index].eventTypeText!,
-                  //allEventController.egAllEventData.eventListModels[index].eventTypeText,
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.bold),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Text(
                   "Inf. Planned : ${list[index].actualEventInflCount}",
-                  // "Inf. Planned : ${allEventController.egAllEventData.eventListModels[index].actualEventInflCount}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.normal),
                 ),
-                //),
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Flexible(
                   flex: 2,
                   child: Text(
                     "Venue: ${list[index].eventVenue}",
-                    //"Venue: ${allEventController.egAllEventData.eventListModels[index].eventVenue}",
-
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -381,15 +345,11 @@ class _AllEventsState extends State<AllEvents> {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Flexible(
                   flex: 3,
                   child: ( list[index].dealerName != null)?
                   Text(
                     "Dealer(s) : ${list[index].dealerName}",
-                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -397,7 +357,6 @@ class _AllEventsState extends State<AllEvents> {
                         fontWeight: FontWeight.normal),
                   ):Text(
                     "Dealer(s) : -",
-                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -415,24 +374,15 @@ class _AllEventsState extends State<AllEvents> {
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Text(
                   "EVENT ID: ${list[index].eventId}",
-                  //"EVENT ID: ${allEventController.egAllEventData.eventListModels[index].eventId}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.normal),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Text(
                   "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
-                  //"LEADS EXPECTED : ${allEventController.egAllEventData.eventListModels[index].expectedLeadsCount}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
