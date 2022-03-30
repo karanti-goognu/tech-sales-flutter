@@ -20,7 +20,7 @@ public class MainApplication extends FlutterApplication {
         super.onCreate();
 
         ///dev
-/*
+
         MoEngage.Builder moEngage1 = new MoEngage.Builder(this, "BUXZWEVMQCDYOX748PC4WB7J")
                 .configureNotificationMetaData(new NotificationConfig(R.drawable.ic_notification, R.mipmap.ic_launcher, -1, null, true,false, true))
                 .configureLogs(new LogConfig(LogLevel.VERBOSE, true))
@@ -28,15 +28,15 @@ public class MainApplication extends FlutterApplication {
                 .configurePushKit(new PushKitConfig(true))
                 .configureMiPush(new MiPushConfig("2882303761518042309", "5601804211309", true));
 
- */
-        ///prod
 
-        MoEngage.Builder moEngage1 = new MoEngage.Builder(this, "ZDXR0OQ3GAV6US1P2LPNOPJT")
+
+        ///prod
+     /*   MoEngage.Builder moEngage1 = new MoEngage.Builder(this, "ZDXR0OQ3GAV6US1P2LPNOPJT")
                 .configureNotificationMetaData(new NotificationConfig(R.drawable.ic_notification, R.mipmap.ic_launcher, -1, null, true,false, true))
                 .configureLogs(new LogConfig(LogLevel.VERBOSE, true))
                 .configureFcm(new FcmConfig(true))
                 .configurePushKit(new PushKitConfig(true))
-                .configureMiPush(new MiPushConfig("2882303761518042309", "5601804211309", true));
+                .configureMiPush(new MiPushConfig("2882303761518042309", "5601804211309", true));*/
 
 
           MoEInitializer.initialize(getApplicationContext(), moEngage1);

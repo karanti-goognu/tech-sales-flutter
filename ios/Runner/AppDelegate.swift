@@ -18,8 +18,8 @@ import MoEngage
   GeneratedPluginRegistrant.register(with: self)
       
     var sdkConfig : MOSDKConfig
-   // let yourAppID = "BUXZWEVMQCDYOX748PC4WB7J"// dev
-    let yourAppID = "ZDXR0OQ3GAV6US1P2LPNOPJT"
+    let yourAppID = "BUXZWEVMQCDYOX748PC4WB7J"  // dev
+   // let yourAppID = "ZDXR0OQ3GAV6US1P2LPNOPJT"   //prod
     
     if let config = MoEngage.sharedInstance().getDefaultSDKConfiguration() {
         sdkConfig = config
