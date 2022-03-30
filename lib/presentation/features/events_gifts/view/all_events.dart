@@ -90,7 +90,7 @@ class _AllEventsState extends State<AllEvents> {
     return Scaffold(
       body: ListView(
         children: [
-          Obx(()=>!allEventController.isFilterApplied  ?getStatusList():Container()),
+          Obx(()=>!allEventController.isFilterApplied ?getStatusList():Container()),
           Obx(
               ()=>
               allEventController.isFilterApplied  ?getFilteredList():

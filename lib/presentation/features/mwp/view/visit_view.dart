@@ -39,14 +39,10 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   @override
   void initState() {
-    _addEventController.visitRemarks=null;
+    _addEventController.visitRemarks = null;
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
-    // setState(() {
-    //   dropdownValue = 'RETENTION SITE';
-    // });
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +60,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Influencer Name  "),
+      decoration:
+          FormFieldStyle.buildInputDecoration(labelText: "Influencer Name  "),
     );
 
     final type = TextFormField(
@@ -80,7 +77,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Influencer category"),
+      decoration:
+          FormFieldStyle.buildInputDecoration(labelText: "Influencer category"),
     );
 
     final iplMember = TextFormField(
@@ -96,7 +94,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "No. of active sites "),
+      decoration: FormFieldStyle.buildInputDecoration(
+          labelText: "No. of active sites "),
     );
 
     final mPotential = TextFormField(
@@ -104,7 +103,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Monthly potential"),
+      decoration:
+          FormFieldStyle.buildInputDecoration(labelText: "Monthly potential"),
     );
 
     final mLifting = TextFormField(
@@ -112,7 +112,8 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
-      decoration: FormFieldStyle.buildInputDecoration(labelText: "Monthly Lifting"),
+      decoration:
+          FormFieldStyle.buildInputDecoration(labelText: "Monthly Lifting"),
     );
 
     return Column(
@@ -128,7 +129,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   border: Border.all(
                       color: ColorConstants.inputBoxBorderSideColor)),
               child: Obx(
-                    () => DropdownButtonHideUnderline(
+                () => DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: _addEventController.visitSubType,
                     onChanged: (String? newValue) {
@@ -156,23 +157,19 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                             switch (value) {
                               case "LEADS":
                                 _addEventController.isVisibleContact = false;
-                                // _isVisibleContact = false;
                                 _addEventController.siteIdText = "Lead ID";
                                 break;
                               case "COUNTER":
-                              //_isVisibleContact = false;
                                 _addEventController.isVisibleContact = false;
                                 _addEventController.siteIdText = "Counter Code";
                                 break;
                               case "CONTRACTOR":
-                              // _addEventController.siteIdText = "Technocrat ID";
                                 _addEventController.siteIdText =
-                                "Influencer Contact";
+                                    "Influencer Contact";
                                 break;
                               case "TECHNOCRAT":
-                              // _addEventController.siteIdText = "Technocrat ID";
                                 _addEventController.siteIdText =
-                                "Influencer Contact";
+                                    "Influencer Contact";
                                 break;
                             }
                           });
@@ -193,86 +190,88 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
               children: <Widget>[
                 _addEventController.siteIdText == "Counter Code"
                     ? DropdownButtonFormField(
-                    decoration: FormFieldStyle.buildInputDecoration(
-                        labelText: "Counters"),
-                    items: _addEventController.dealerList
-                        .map<DropdownMenuItem<dynamic>>((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: SizedBox(
-                            width: SizeConfig.screenWidth! - 100,
-                            child: Text(
-                                '${val.dealerName} (${val.dealerId})')),
-                      );
-                    }).toList(),
-                    onChanged: (dynamic val) {
-                      _addEventController.visitSiteId = val.dealerId;
-                    })
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Counters"),
+                        items: _addEventController.dealerList
+                            .map<DropdownMenuItem<dynamic>>((val) {
+                          return DropdownMenuItem(
+                            value: val,
+                            child: SizedBox(
+                                width: SizeConfig.screenWidth! - 100,
+                                child: Text(
+                                    '${val.dealerName} (${val.dealerId})')),
+                          );
+                        }).toList(),
+                        onChanged: (dynamic val) {
+                          _addEventController.visitSiteId = val.dealerId;
+                        })
                     : TextFormField(
-                  //controller: _contactController,
-                  controller: _addEventController.contactController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "${_addEventController.siteIdText} can't be empty";
-                    }
-                    if (_addEventController.siteIdText ==
-                        "Influencer Contact") {
-                      if (value.isEmpty) {
-                        return "Enter valid Contact number";
-                      }
-                    }
-                    return null;
-                  },
-                  onChanged: (_) {
-                    _addEventController.visitSiteId = _.toString();
-                    apiCallForGetInf(_);
-
-                  },
-                  maxLength: _addEventController.siteIdText ==
-                      "Influencer Contact"
-                      ? 10
-                      : null,
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.inputBoxHintColor,
-                      fontFamily: "Muli"),
-                  keyboardType: _addEventController.siteIdText ==
-                      "Influencer Contact"
-                      ? TextInputType.numberWithOptions(signed: true)
-                      : TextInputType.text,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  decoration: _inputDecoration(
-                      "${_addEventController.siteIdText}", false),
-                ),
+                        controller: _addEventController.contactController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "${_addEventController.siteIdText} can't be empty";
+                          }
+                          if (_addEventController.siteIdText ==
+                              "Influencer Contact") {
+                            if (value.isEmpty) {
+                              return "Enter valid Contact number";
+                            }
+                          }
+                          return null;
+                        },
+                        onChanged: (_) {
+                          _addEventController.visitSiteId = _.toString();
+                          if (_addEventController.siteIdText ==
+                              "Influencer Contact") {
+                            apiCallForGetInf(_);
+                          }
+                        },
+                        maxLength: _addEventController.siteIdText ==
+                                "Influencer Contact"
+                            ? 10
+                            : _addEventController.siteIdText == "Lead ID"
+                                ? 6
+                                : null,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: _addEventController.siteIdText ==
+                                "Influencer Contact"
+                            ? TextInputType.numberWithOptions(signed: true)
+                            : TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: _inputDecoration(
+                            "${_addEventController.siteIdText}", false),
+                      ),
                 SizedBox(height: 16),
                 Obx(
-                      () =>
-                      Visibility(
-                        visible: _addEventController.isVisibleContact,
-                        child: Column(
-                          children: [
-                            name,
-                            SizedBox(height: 16),
-                            category,
-                            SizedBox(height: 16),
-                            iplMember,
-                            SizedBox(height: 16),
-                            type,
-                            SizedBox(height: 16),
-                            sitesCount,
-                            SizedBox(height: 16),
-                            mPotential,
-                            SizedBox(height: 16),
-                            mLifting,
-                            SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
+                  () => Visibility(
+                    visible: _addEventController.isVisibleContact,
+                    child: Column(
+                      children: [
+                        name,
+                        SizedBox(height: 16),
+                        category,
+                        SizedBox(height: 16),
+                        iplMember,
+                        SizedBox(height: 16),
+                        type,
+                        SizedBox(height: 16),
+                        sitesCount,
+                        SizedBox(height: 16),
+                        mPotential,
+                        SizedBox(height: 16),
+                        mLifting,
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
                 ),
                 Obx(
-                      () => TextFormField(
+                  () => TextFormField(
                     decoration: FormFieldStyle.buildInputDecoration(
                       hintText: "${this._addEventController.visitDateTime}",
                       suffixIcon: Icon(
@@ -315,16 +314,15 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary:              ColorConstants.buttonNormalColor,),
+                    primary: ColorConstants.buttonNormalColor,
+                  ),
                   onPressed: () {
-
                     if (_formKey.currentState!.validate()) {
                       internetChecking().then((result) => {
-
                             if (result == true)
                               {
-                                _appController
-                                    .getAccessKey(RequestIds.SAVE_VISIT, context),
+                                _appController.getAccessKey(
+                                    RequestIds.SAVE_VISIT, context),
                                 _addEventController.isLoading = true,
                                 _addEventController.isVisibleContact = false
                               }
@@ -335,7 +333,6 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                                     colorText: Colors.white,
                                     backgroundColor: Colors.red,
                                     snackPosition: SnackPosition.BOTTOM),
-                                // fetchSiteList()
                               }
                           });
                     }
@@ -356,7 +353,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
 
   apiCallForGetInf(String value) async {
     InfController _infController = Get.find();
-    if(value.length < 10){
+    if (value.length < 10) {
       _nameController.text = "";
       _typeController.text = "";
       _categoryController.text = "";
@@ -365,26 +362,30 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       _mPotentialController.text = "";
       _mLiftingController.text = "";
       _addEventController.isVisibleContact = false;
-    }
-    else if (value.length == 10) {
+    } else if (value.length == 10) {
       _infController.getInfData(value).then((data) {
         setState(() {
           if (data != null) {
             if (data.respCode == "NUM404") {
               _addEventController.visitSiteId = "";
               _addEventController.contactController.text = "";
-              Get.dialog(CustomDialogs().showDialogInfNotPresent("register this influencer to proceed"),
+              Get.dialog(
+                  CustomDialogs().showDialogInfNotPresent(
+                      "register this influencer to proceed"),
                   barrierDismissible: false);
-
             } else if (data.respCode == "DM1002") {
-              _addEventController.visitSiteId = data.influencerModel!.inflContact;
+              _addEventController.visitSiteId =
+                  data.influencerModel!.inflContact;
               _nameController.text = data.influencerModel!.inflName!;
               _typeController.text = data.influencerModel!.influencerTypeText!;
-              _categoryController.text = data.influencerModel!.influencerCategoryText!;
+              _categoryController.text =
+                  data.influencerModel!.influencerCategoryText!;
               _ilpController.text = data.influencerModel!.ilpMember!;
               _siteCountController.text = '${data.influencerModel!.sitesCount}';
-              _mPotentialController.text = '${data.influencerModel!.monthlyPotential}';
-              _mLiftingController.text = '${data.influencerModel!.monthlyLifting}';
+              _mPotentialController.text =
+                  '${data.influencerModel!.monthlyPotential}';
+              _mLiftingController.text =
+                  '${data.influencerModel!.monthlyLifting}';
               _addEventController.isVisibleContact = true;
             }
           }
@@ -412,11 +413,11 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
       filled: true,
       suffixIcon: (suffixStatus == true)
           ? GestureDetector(
-          onTap: () {
-            _selectDate(context);
-          },
-          child: Icon(Icons.calendar_today_rounded,
-              color: Colors.deepOrangeAccent))
+              onTap: () {
+                _selectDate(context);
+              },
+              child: Icon(Icons.calendar_today_rounded,
+                  color: Colors.deepOrangeAccent))
           : null,
       focusColor: Colors.black,
       labelStyle: GoogleFonts.roboto(

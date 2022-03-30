@@ -125,8 +125,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
             ),
             automaticallyImplyLeading: false,
           ),
-          floatingActionButton:
-          SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+          floatingActionButton: BackFloatingButton(),
           floatingActionButtonLocation:
           FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),

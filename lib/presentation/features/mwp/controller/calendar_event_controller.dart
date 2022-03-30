@@ -109,7 +109,6 @@ class CalendarEventController extends GetxController {
         if (data == null) {
           debugPrint('MWP Data Response is null');
         } else {
-          debugPrint('MWP Data Response is not null');
           this.calendarPlanResponse = data;
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
@@ -171,7 +170,6 @@ class CalendarEventController extends GetxController {
             Get.dialog(CustomDialogs().errorDialog(calendarDataByDay.respMsg));
           }
         }
-        //}
       });
     });
   }
@@ -190,13 +188,10 @@ class CalendarEventController extends GetxController {
         if (data == null) {
           debugPrint('Target vs Actual Response is null');
         } else {
-          debugPrint('Target vs Actual Response is not null');
           this.targetVsActual = data;
           this.isLoading = false;
           if (targetVsActual.respCode == "MWP2023") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${targetVsActual.respMsg}');
-            //SitesDetailWidget();
           } else {
             Get.dialog(
                 CustomDialogs().errorDialog(calendarPlanResponse.respMsg));
