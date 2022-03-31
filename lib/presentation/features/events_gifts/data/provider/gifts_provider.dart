@@ -43,7 +43,7 @@ String? version;
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           GetGiftStockModel getGiftStockModel;
@@ -68,7 +68,7 @@ String? version;
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           LogsModel logsModel;
@@ -104,7 +104,7 @@ String? version;
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse addGiftResponse;

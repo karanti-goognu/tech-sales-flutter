@@ -17,7 +17,7 @@ class MWPPlanController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  MWPPlanController({required this.repository}) : assert(repository != null);
+  MWPPlanController({required this.repository});
 
   final _saveMWPResponse = new SaveMWPResponse().obs;
   final  _getMWPResponse = new GetMWPResponse().obs;
@@ -87,12 +87,12 @@ class MWPPlanController extends GetxController {
         if (data != null) {
           this.saveMWPResponse = data;
           if (saveMWPResponse.respCode == "MWP2007") {
-            Get.dialog(CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
+            Get.dialog(CustomDialogs.messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
           } else if (saveMWPResponse.respCode == "MWP2011") {
-            Get.dialog(CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
+            Get.dialog(CustomDialogs.messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
           } else if (saveMWPResponse.respCode == "MWP2016") {
-            Get.dialog(CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
-          } else {Get.dialog(CustomDialogs().messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
+            Get.dialog(CustomDialogs.messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
+          } else {Get.dialog(CustomDialogs.messageDialogMWP(saveMWPResponse.respMsg),barrierDismissible: false);
           }
         } else {
           debugPrint('MWP Data Response is null');
@@ -120,7 +120,7 @@ class MWPPlanController extends GetxController {
           if (getMWPResponse.respCode == "MWP2013") {
             this.mwpPlannigList = this.getMWPResponse.mwpPlannigList;
            } else {
-            Get.dialog(CustomDialogs().errorDialog(saveMWPResponse.respMsg),barrierDismissible: false);
+            Get.dialog(CustomDialogs.showMessage(saveMWPResponse.respMsg),barrierDismissible: false);
           }
         }
       });

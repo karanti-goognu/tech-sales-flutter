@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
+import 'package:flutter_tech_sales/widgets/photo_controller.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();
   static File? image;
+  static PhotoController photoController = Get.put(PhotoController());
 
   static Future<File?> showPicker(context) async {
     await showModalBottomSheet(
@@ -43,12 +45,11 @@ class UploadImageBottomSheet{
                      }
                      catch(e){
                        TsoLogger.printLog(e);
-                       // var request = await Permission.camera.request();
                        Get.snackbar(
                            "Permission Denied.", "Make sure that you have enabled camera permission.",
                            colorText: Colors.white,
                            backgroundColor: Colors.red,
-                           snackPosition: SnackPosition.BOTTOM);                 }
+                           snackPosition: SnackPosition.BOTTOM);}
                     },
                   ),
                 ],
@@ -67,9 +68,10 @@ class UploadImageBottomSheet{
         imageQuality: 10,
         maxWidth: 480,
         maxHeight: 600);
-    if (img != null)
+    if (img != null){
       image= File(img.path);
-      // imageList.add(image);
+      photoController.imageList.add(image);
+    }
   }
 
 
@@ -77,10 +79,10 @@ class UploadImageBottomSheet{
     ImagePicker _picker = ImagePicker();
     XFile? img = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
-    if (img != null)
+    if (img != null){
       image= File(img.path);
-    // else image = File("");
-    // imageList.add(image);
+      photoController.imageList.add(image);
+    }
   }
 
 }

@@ -50,7 +50,7 @@ class MyApiClientSR {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
      var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         complaintModel = SrComplaintModel.fromJson(json.decode(response.body));
@@ -85,7 +85,7 @@ class MyApiClientSR {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         serviceRequestComplaintListModel = ServiceRequestComplaintListModel.fromJson(json.decode(response.body));
@@ -116,7 +116,7 @@ class MyApiClientSR {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         serviceRequestComplaintListModel =
@@ -212,7 +212,7 @@ class MyApiClientSR {
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey, version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       complaintViewModel =  ComplaintViewModel.fromJson(data);

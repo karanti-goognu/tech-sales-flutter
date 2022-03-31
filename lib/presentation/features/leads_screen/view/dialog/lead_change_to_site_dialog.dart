@@ -15,7 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ChangeLeadToSiteDialog extends StatefulWidget {
-  NextStageConstructionEntity? selectedNextStageConstructionEntity;
+ final NextStageConstructionEntity? selectedNextStageConstructionEntity;
   final List<DealerForDb>? dealerEntityForDb;
   final List<CounterListModel>? counterListModel;
   final List<SiteFloorsEntity>? siteFloorsEntity;
@@ -57,12 +57,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   int? _totalPotential;
   int? _siteCompitationId;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("delearIdListLength     ${widget.dealerEntityForDb!.length}");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +111,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         value: label,
       ))
           .toList(),
-      //hint: Text('Select competition status'),
       onChanged: (value) {
         setState(() {
           _siteCompetitionStatusEntity = value;
@@ -144,7 +137,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
           _selectedNextStageConstructionEntity = value;
@@ -167,7 +159,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
               color: ColorConstants.backgroundColorBlue,
-              //color: HexColor("#0000001F"),
               width: 1.0),
         ),
         disabledBorder: OutlineInputBorder(
@@ -228,7 +219,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
           _selectedLeadFloorEntity = value;
@@ -253,25 +243,13 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
-          // if(_selectedLeadFloorEntity.id < value.id){
-          //   Get.dialog(CustomDialogs().errorDialog(
-          //       "Next Floor Level can’t be greater than Total No. of Floors."));
-          // }else {
             _selectedLeadFloorLevelEntity = value;
-         // }
         });
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Next Floor Level*"),
-    //   validator: (value){
-    //     if(_selectedLeadFloorEntity.id < value.id){
-    //       return "Next Floor Level can’t be greater than Total No. of Floors.";
-    //     }
-    //       return null;
-    // },
     );
 
     final noOfBagsSupplied = TextFormField(
@@ -287,7 +265,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             color: ColorConstants.inputBoxHintColor,
             fontFamily: "Muli"),
         keyboardType: TextInputType.numberWithOptions(signed: true),
-        //TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
           TextInputFormatter.withFunction((oldValue, newValue) {
@@ -311,11 +288,9 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               fontSize: 17,
               letterSpacing: 1.25,
               fontStyle: FontStyle.normal,
-              // fontWeight: FontWeight.bold,
               color: ColorConstants.buttonNormalColor),
         ),
         onPressed: () {
-          //print("widget.selectedNextStageConstructionEntity.nextStageConsId    ${_selectedNextStageConstructionEntity}");
           if (_selectedNextStageConstructionEntity == null ||
               nextStageConstructionPickedDate == null ||
               _selectedLeadFloorEntity == null ||
@@ -323,10 +298,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               _selectedLeadFloorLevelEntity == null ||
               _siteCompetitionStatusEntity == null) {
             Get.dialog(
-                CustomDialogs().errorDialog("Please fill the details first"));
+                CustomDialogs.showMessage("Please fill the details first"));
           } else
             if(_selectedLeadFloorEntity!.id! < _selectedLeadFloorLevelEntity!.id!){
-              Get.dialog(CustomDialogs().errorDialog(
+              Get.dialog(CustomDialogs.showMessage(
                   "Next Floor Level can’t be greater than Total No. of Floors."));
 
           }
@@ -368,8 +343,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                 color: ColorConstants.buttonNormalColor),
                           ),
                           onPressed: () {
-                            //  updateStatusforNextStage(context,5);
-
                             widget.mListener!.updateStatusForNextStageAllow(
                                 context,
                                 5,
@@ -459,7 +432,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   } else {
                     Get.back();
                     Get.dialog(
-                        CustomDialogs()
+                        CustomDialogs
                             .messageDialogMWP(data.respMsg.toString()),
                         barrierDismissible: false);
                   }
@@ -479,8 +452,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
   Widget successDialog() {
     return
-        //AlertDialog(
-        //   content:
         Material(
             color: Colors.transparent,
             child: Center(
@@ -522,7 +493,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                   balance = bal.toString();
                                   if(bal < 0){
                                     _lapPotentialController.text = "";
-                                    Get.dialog(errorDialogLaps(
+                                    Get.dialog(showMessageLaps(
                                         "Lapse Potential can’t be greater than Total Site Potential"));
                                   }else {
                                     _balancePotentialController.text = balance;
@@ -571,7 +542,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
                                 if ( _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
                                   Get.dialog(
-                                      CustomDialogs().errorDialog("Please enter Lapse Potential"));
+                                      CustomDialogs.showMessage("Please enter Lapse Potential"));
                                 } else {
                                   //updateStatusforNextStage(context, 3);
                                   widget.mListener!
@@ -603,7 +574,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             ));
   }
 
-  Widget errorDialogLaps(String message) {
+  Widget showMessageLaps(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

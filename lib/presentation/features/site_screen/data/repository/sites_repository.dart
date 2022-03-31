@@ -38,13 +38,6 @@ class MyRepositorySites {
     return apiClient.getAccessKeyNew();
   }
 
-  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId, String empID) {
-  // return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
-  //}
-//r, String empIDeturn apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId, empID);
-  // getSitedetailsData(String accessKey, String userSecurityKey, int siteId) {
-  //   return apiClient.getSiteDetailsData(accessKey, userSecurityKey, siteId);
-  // }
 
   getSitedetailsData(
       String? accessKey, String? userSecurityKey, int? siteId, String? empID) {
@@ -52,11 +45,6 @@ class MyRepositorySites {
         accessKey, userSecurityKey, siteId, empID);
   }
 
-  // updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
-  //     List<File> list, BuildContext context, int siteId) {
-  //   return apiClient.updateSiteData(
-  //       accessKey, userSecurityKey, updateDataRequest, list, context, siteId);
-  // }
 
   updateSiteData(accessKey, String? userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int? siteId) {
@@ -93,7 +81,6 @@ class MyRepositorySites {
     return apiClient.updatePendingSupplyDetails(accessKey, securityKey, url,jsonData);
   }
 
-  ////district list for filter
   Future<SiteDistrictListModel?> getSiteDistList(String? accessKey, String? userSecretKey, String empID) async {
     return apiClient.getSiteDistList(accessKey, userSecretKey, empID);
   }
@@ -103,6 +90,5 @@ class MyRepositorySites {
     return apiClient.getKittyBagsList(accessKey, partyCode, userSecretKey);
   }
 
-//getSiteData(String accessKey, String userSecurityKey, int leadId) {}
 
 }

@@ -121,17 +121,17 @@ class InfController extends GetxController {
         //Get.back();
         if (value!.response!.respCode == 'INF2001') {
           Get.dialog(
-              CustomDialogs().showDialogSubmitInfluencer(value.response!.respMsg.toString()),
+              CustomDialogs.showDialogSubmitInfluencer(value.response!.respMsg.toString()),
               barrierDismissible: false);
         }else if (value.response!.respCode == 'INF2002') {
           Get.dialog(
-              CustomDialogs().showDialogSubmitInfluencer(value.response!.respMsg.toString()),
+              CustomDialogs.showDialogSubmitInfluencer(value.response!.respMsg.toString()),
               barrierDismissible: false);
         }
         else {
           // Get.back();
           Get.dialog(
-              CustomDialogs().messageDialogMWP(value.response!.respMsg.toString()),
+              CustomDialogs.messageDialogMWP(value.response!.respMsg.toString()),
               barrierDismissible: false);
         }
       });

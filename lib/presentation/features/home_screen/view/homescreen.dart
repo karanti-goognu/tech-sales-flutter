@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SizeConfig().init(context);
     return WillPopScope(
       onWillPop: () async {
-        Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
+        Get.dialog(CustomDialogs.appExitDialog("Do you want to exit?"));
         return true;
       },
       child: Scaffold(

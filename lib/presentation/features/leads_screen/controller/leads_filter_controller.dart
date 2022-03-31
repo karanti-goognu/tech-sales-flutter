@@ -216,7 +216,6 @@ class LeadsFilterController extends GetxController {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
         if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
             getSecretKey(requestId, context);
@@ -245,13 +244,12 @@ class LeadsFilterController extends GetxController {
       } else {
         this.filterDataResponse = data;
         if (filterDataResponse.respCode == "DM1011") {
-          //Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
         } else if(this.filterDataResponse.respCode == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               filterDataResponse.respMsg), barrierDismissible: false);
         }
         else {
-          Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
+          Get.dialog(CustomDialogs.showMessage(filterDataResponse.respMsg));
         }
       }
     });
@@ -325,7 +323,6 @@ class LeadsFilterController extends GetxController {
         districtName = "&districtName=${this.selectedLeadDistrict}";
       }
 
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints$districtName&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
@@ -349,12 +346,6 @@ class LeadsFilterController extends GetxController {
               if(this.isFilterApplied==true){
 
                 this.leadsListResponse = leadListResponseServer;
-                // Get.rawSnackbar(
-                //   titleText: Text("Note"),
-                //   messageText: Text(
-                //       "Loading more .."),
-                //   backgroundColor: Colors.white,
-                // );
 
                 final snackBar = SnackBar(
                   content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
@@ -365,13 +356,6 @@ class LeadsFilterController extends GetxController {
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
-              // Get.rawSnackbar(
-              //   titleText: Text("Note"),
-              //   messageText: Text(
-              //       "Loading more .."),
-              //   backgroundColor: Colors.white,
-              //   isDismissible: false
-              // );
 
               final snackBar = SnackBar(
                 content: const Text("Loading more ..", style: TextStyle(color: Colors.black)),
@@ -390,12 +374,6 @@ class LeadsFilterController extends GetxController {
                 dismissDirection: DismissDirection.down,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                // Get.rawSnackbar(
-                //   titleText: Text("Note"),
-                //   messageText: Text(
-                //       "No more leads .."),
-                //   backgroundColor: Colors.white,
-                // );
               }
 
 
@@ -403,11 +381,11 @@ class LeadsFilterController extends GetxController {
 
           if (leadsListResponse.respCode == "LD2006") {
           }else if(this.leadsListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
+            Get.dialog(CustomDialogs.appUserInactiveDialog(
                 leadsListResponse.respMsg), barrierDismissible: false);
           }
           else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
           }
         }
       });
@@ -429,14 +407,14 @@ class LeadsFilterController extends GetxController {
         } else {
           this.leadsListResponse = data;
           if (leadsListResponse.respCode == "LD2004") {
-            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            //Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
             //leadsDetailWidget();
           } else if(leadsListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
+            Get.dialog(CustomDialogs.appUserInactiveDialog(
                 leadsListResponse.respMsg), barrierDismissible: false);
           }
           else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
           }
         }
       });

@@ -167,7 +167,7 @@ class CalendarEventController extends GetxController {
           if (calendarDataByDay.respCode == "MWP2019") {
           } else {
             this.isLoading = false;
-            Get.dialog(CustomDialogs().errorDialog(calendarDataByDay.respMsg));
+            Get.dialog(CustomDialogs.showMessage(calendarDataByDay.respMsg));
           }
         }
       });
@@ -194,7 +194,7 @@ class CalendarEventController extends GetxController {
             print('${targetVsActual.respMsg}');
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog(calendarPlanResponse.respMsg));
+                CustomDialogs.showMessage(calendarPlanResponse.respMsg));
           }
         }
       });

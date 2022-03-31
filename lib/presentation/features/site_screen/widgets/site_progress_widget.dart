@@ -494,7 +494,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 GestureDetector(
                                   onTap: () {
                                     Get.dialog(
-                                        CustomDialogs()
+                                        CustomDialogs
                                             .showDialogForKittiPoints(
                                                 _kittyBagsListModel, context),
                                         barrierDismissible: false);
@@ -525,7 +525,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 GestureDetector(
                                   onTap: () {
                                     Get.dialog(
-                                        CustomDialogs()
+                                        CustomDialogs
                                             .showDialogForKittiPoints(
                                                 _kittyBagsListModel, context),
                                         barrierDismissible: false);
@@ -746,7 +746,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                               "dalmia") {
                         if (_dealerEntityForDb == null) {
-                          Get.dialog(CustomDialogs()
+                          Get.dialog(CustomDialogs
                               .showMessage("Please Select Dealer name !"));
                           return;
                         }
@@ -759,25 +759,25 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       }
 
                       if (productDynamicList![index].brandModelForDB == null) {
-                        Get.dialog(CustomDialogs()
+                        Get.dialog(CustomDialogs
                             .showMessage("Please select product sold !"));
                         return;
                       }
 
                       if (productDynamicList![index].brandPrice!.text.isEmpty) {
-                        Get.dialog(CustomDialogs()
+                        Get.dialog(CustomDialogs
                             .showMessage("Please enter brand price !"));
                         return;
                       }
 
                       if (productDynamicList![index].supplyDate!.text.isEmpty) {
-                        Get.dialog(CustomDialogs()
+                        Get.dialog(CustomDialogs
                             .showMessage("Please Select Date !"));
                         return;
                       }
 
                       if (productDynamicList![index].supplyQty!.text.isEmpty) {
-                        Get.dialog(CustomDialogs()
+                        Get.dialog(CustomDialogs
                             .showMessage("Please Enter Supply Quantity !"));
                         return;
                       }
@@ -1313,7 +1313,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                           .insert(index, product11);
                                     });
                                   } else {
-                                    Get.dialog(CustomDialogs().errorDialog(
+                                    Get.dialog(CustomDialogs.showMessage(
                                         "Please enter product $index details !"));
                                   }
                                 }

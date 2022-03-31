@@ -370,7 +370,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
               _addEventController.visitSiteId = "";
               _addEventController.contactController.text = "";
               Get.dialog(
-                  CustomDialogs().showDialogInfNotPresent(
+                  CustomDialogs.showDialogInfNotPresent(
                       "register this influencer to proceed"),
                   barrierDismissible: false);
             } else if (data.respCode == "DM1002") {

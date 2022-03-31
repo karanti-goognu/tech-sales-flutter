@@ -132,11 +132,11 @@ class GiftController extends GetxController {
       logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
       Get.back();
       if(logsModel.respCode=="DM1006"){
-        Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
+        Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
         dataForViewLog=<GiftStockList>[];
       }
       else{
-        Get.dialog(CustomDialogs().showMessage(logsModel.respMsg));
+        Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
         dataForViewLog=logsModel.giftStockModelList;
       }
 

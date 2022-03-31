@@ -11,7 +11,8 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/controller
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/CommentDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SaveLeadRequestModel.dart';
-import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart' as updateRequest;
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadRequestModel.dart'
+    as updateRequest;
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/site_data_widget.dart';
@@ -56,13 +57,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     getData();
   }
 
-
   getData() {
     internetChecking().then((result) => {
           if (result == true)
             {
-              _addLeadsController.getLeadDataNew(widget.leadId).then((ViewLeadDataResponse data) {
-                setState(()=> viewLeadDataResponse = data);
+              _addLeadsController
+                  .getLeadDataNew(widget.leadId)
+                  .then((ViewLeadDataResponse data) {
+                setState(() => viewLeadDataResponse = data);
                 setData();
               })
             }
@@ -84,135 +86,144 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     print(viewLeadDataResponse.leadsEntity!.leadSource);
 
     _addLeadsController.imageList!.clear();
-      checkStatus();
-      _contactName.text = viewLeadDataResponse.leadsEntity!.contactName!;
-      _contactNumber.text = viewLeadDataResponse.leadsEntity!.contactNumber!;
-      geoTagType.text = viewLeadDataResponse.leadsEntity!.geotagType!;
-      _siteAddress.text = viewLeadDataResponse.leadsEntity!.leadAddress!;
-      _pincode.text = viewLeadDataResponse.leadsEntity!.leadPincode!;
-      _state.text = viewLeadDataResponse.leadsEntity!.leadStateName!;
-      _district.text = viewLeadDataResponse.leadsEntity!.leadDistrictName!;
-      _taluk.text = viewLeadDataResponse.leadsEntity!.leadTalukName!;
-      _leadSource.text = viewLeadDataResponse.leadsEntity!.leadSource!;
-      _leadSourceUser.text = viewLeadDataResponse.leadsEntity!.leadSourceUser!;
-      leadCreatedBy = viewLeadDataResponse.leadsEntity!.createdBy;
-      leadStageEntity = viewLeadDataResponse.leadStageEntity;
-      for (int i = 0; i < leadStageEntity!.length; i++) {
-        if (viewLeadDataResponse.leadsEntity!.leadStageId.toString() ==
-            leadStageEntity![i].id.toString()) {
-          leadStageVal.id = leadStageEntity![i].id;
-          leadStageVal.leadStageDesc = leadStageEntity![i].leadStageDesc;
+    checkStatus();
+    _contactName.text = viewLeadDataResponse.leadsEntity!.contactName!;
+    _contactNumber.text = viewLeadDataResponse.leadsEntity!.contactNumber!;
+    geoTagType.text = viewLeadDataResponse.leadsEntity!.geotagType!;
+    _siteAddress.text = viewLeadDataResponse.leadsEntity!.leadAddress!;
+    _pincode.text = viewLeadDataResponse.leadsEntity!.leadPincode!;
+    _state.text = viewLeadDataResponse.leadsEntity!.leadStateName!;
+    _district.text = viewLeadDataResponse.leadsEntity!.leadDistrictName!;
+    _taluk.text = viewLeadDataResponse.leadsEntity!.leadTalukName!;
+    _leadSource.text = viewLeadDataResponse.leadsEntity!.leadSource!;
+    _leadSourceUser.text = viewLeadDataResponse.leadsEntity!.leadSourceUser!;
+    leadCreatedBy = viewLeadDataResponse.leadsEntity!.createdBy;
+    leadStageEntity = viewLeadDataResponse.leadStageEntity;
+    for (int i = 0; i < leadStageEntity!.length; i++) {
+      if (viewLeadDataResponse.leadsEntity!.leadStageId.toString() ==
+          leadStageEntity![i].id.toString()) {
+        leadStageVal.id = leadStageEntity![i].id;
+        leadStageVal.leadStageDesc = leadStageEntity![i].leadStageDesc;
+      }
+    }
+    leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
+    gv.leadRejectReasonEntity = leadRejectReasonEntity;
+    nextStageConstructionEntity =
+        viewLeadDataResponse.nextStageConstructionEntity;
+    gv.nextStageConstructionEntity = nextStageConstructionEntity;
+    dealerList = viewLeadDataResponse.dealerList;
+    _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
+    _siteCompetitionStatusEntity =
+        viewLeadDataResponse.siteCompetitionStatusEntity;
+    gv.dealerList = dealerList;
+    influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+    influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+    _currentPosition = new LatLng(
+        double.parse(viewLeadDataResponse.leadsEntity!.leadLatitude!),
+        double.parse(viewLeadDataResponse.leadsEntity!.leadLongitude!));
+    listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+
+    for (int i = 0; i < listLeadImagePhoto!.length; i++) {
+      String imageUrl = UrlConstants.baseUrlforImages +
+          "/" +
+          listLeadImagePhoto![i].photoName!;
+      _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
+        _imgDetails.add(new ImageDetails("Network", imageFile));
+        _addLeadsController.updateImageList(imageFile, serverImageStatus);
+      });
+    }
+    initialImagelistLength = _addLeadsController.imageList!.length;
+    influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+    influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+    _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+    _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
+    if (_listInfluencerEntity!.length != null) {
+      for (int i = 0; i < _listInfluencerEntity!.length; i++) {
+        int? originalId;
+        for (int j = 0; j < _listLeadInfluencerEntity!.length; j++) {
+          if (_listInfluencerEntity![i].id ==
+              _listLeadInfluencerEntity![j].inflId) {
+            influencerListForConvertToSite.add(_listLeadInfluencerEntity![j]);
+            _listInfluencerEntity![i].isPrimary =
+                _listLeadInfluencerEntity![j].isPrimary;
+            originalId = _listLeadInfluencerEntity![j].id;
+            break;
+          }
         }
-      }
-      leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
-      gv.leadRejectReasonEntity = leadRejectReasonEntity;
-      nextStageConstructionEntity =
-          viewLeadDataResponse.nextStageConstructionEntity;
-      gv.nextStageConstructionEntity = nextStageConstructionEntity;
-      dealerList = viewLeadDataResponse.dealerList;
-      _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
-      _siteCompetitionStatusEntity = viewLeadDataResponse.siteCompetitionStatusEntity;
-      gv.dealerList = dealerList;
-      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-      _currentPosition = new LatLng(
-          double.parse(viewLeadDataResponse.leadsEntity!.leadLatitude!),
-          double.parse(viewLeadDataResponse.leadsEntity!.leadLongitude!));
-      listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
 
-      for (int i = 0; i < listLeadImagePhoto!.length; i++) {
-        String imageUrl = UrlConstants.baseUrlforImages + "/" + listLeadImagePhoto![i].photoName!;
-        _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
-          _imgDetails.add(new ImageDetails("Network", imageFile));
-          _addLeadsController.updateImageList(imageFile, serverImageStatus);
-        });
-      }
-      initialImagelistLength = _addLeadsController.imageList!.length;
-      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-      _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
-      _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
-      if (_listInfluencerEntity!.length != null) {
-        for (int i = 0; i < _listInfluencerEntity!.length; i++) {
-          int? originalId;
-          for (int j = 0; j < _listLeadInfluencerEntity!.length; j++) {
-            if (_listInfluencerEntity![i].id ==
-                _listLeadInfluencerEntity![j].inflId) {
-              influencerListForConvertToSite.add(_listLeadInfluencerEntity![j]);
-              _listInfluencerEntity![i].isPrimary =
-                  _listLeadInfluencerEntity![j].isPrimary;
-              originalId = _listLeadInfluencerEntity![j].id;
-              break;
-            }
+        InfluencerDetail inflDetail = new InfluencerDetail(
+          originalId: originalId,
+          isPrimary: _listInfluencerEntity![i].isPrimary,
+          isPrimarybool:
+              _listInfluencerEntity![i].isPrimary == "Y" ? true : false,
+          id: new TextEditingController(
+              text: _listInfluencerEntity![i].id.toString()),
+          inflName: new TextEditingController(
+              text: _listInfluencerEntity![i].inflName.toString()),
+          inflContact: new TextEditingController(
+              text: _listInfluencerEntity![i].inflContact.toString()),
+          inflTypeId: new TextEditingController(
+              text: _listInfluencerEntity![i].inflTypeId.toString()),
+          inflCatId: new TextEditingController(
+              text: _listInfluencerEntity![i].inflCatId.toString()),
+          ilpIntrested: new TextEditingController(
+              text: _listInfluencerEntity![i].ilpIntrested.toString()),
+          createdOn: new TextEditingController(
+              text: _listInfluencerEntity![i].createdOn.toString()),
+          isExpanded: false,
+        );
+        for (int j = 0; j < influencerTypeEntity!.length; j++) {
+          if (influencerTypeEntity![j].inflTypeId.toString() ==
+              inflDetail.inflTypeId!.text.toString()) {
+            inflDetail.inflTypeValue = new TextEditingController(
+                text: influencerTypeEntity![j].inflTypeDesc);
+            break;
           }
-
-          InfluencerDetail inflDetail = new InfluencerDetail(
-            originalId: originalId,
-            isPrimary: _listInfluencerEntity![i].isPrimary,
-            isPrimarybool:
-                _listInfluencerEntity![i].isPrimary == "Y" ? true : false,
-            id: new TextEditingController(
-                text: _listInfluencerEntity![i].id.toString()),
-            inflName: new TextEditingController(
-                text: _listInfluencerEntity![i].inflName.toString()),
-            inflContact: new TextEditingController(
-                text: _listInfluencerEntity![i].inflContact.toString()),
-            inflTypeId: new TextEditingController(
-                text: _listInfluencerEntity![i].inflTypeId.toString()),
-            inflCatId: new TextEditingController(
-                text: _listInfluencerEntity![i].inflCatId.toString()),
-            ilpIntrested: new TextEditingController(
-                text: _listInfluencerEntity![i].ilpIntrested.toString()),
-            createdOn: new TextEditingController(
-                text: _listInfluencerEntity![i].createdOn.toString()),
-            isExpanded: false,
-          );
-          for (int j = 0; j < influencerTypeEntity!.length; j++) {
-            if (influencerTypeEntity![j].inflTypeId.toString() ==
-                inflDetail.inflTypeId!.text.toString()) {
-              inflDetail.inflTypeValue = new TextEditingController(
-                  text: influencerTypeEntity![j].inflTypeDesc);
-              break;
-            }
-          }
-          for (int j = 0; j < influencerCategoryEntity!.length; j++) {
-            if (influencerCategoryEntity![j].inflCatId.toString() ==
-                inflDetail.inflCatId!.text.toString()) {
-              inflDetail.inflCatValue = new TextEditingController(
-                  text: influencerCategoryEntity![j].inflCatDesc);
-              break;
-            }
-          }
-
-          _listInfluencerDetail.add(inflDetail);
         }
-      } else {
-        _listInfluencerDetail
-            .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
-      }
-      initialInfluencerListLength = _listInfluencerDetail.length;
+        for (int j = 0; j < influencerCategoryEntity!.length; j++) {
+          if (influencerCategoryEntity![j].inflCatId.toString() ==
+              inflDetail.inflCatId!.text.toString()) {
+            inflDetail.inflCatValue = new TextEditingController(
+                text: influencerCategoryEntity![j].inflCatDesc);
+            break;
+          }
+        }
 
-      _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
-      final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-      for (int i = 0; i < _commentsListEntity!.length; i++) {
-        _commentsList.add(new CommentsDetail(
-          creatorName: _commentsListEntity![i].creatorName,
-          commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
-              _commentsListEntity![i].createdOn!)),
-          createdBy: _commentsListEntity![i].createdBy,
-          commentText: _commentsListEntity![i].commentText,
-        ));
+        _listInfluencerDetail.add(inflDetail);
       }
-      _totalMT.text = viewLeadDataResponse.leadsEntity!.leadSitePotentialMt!;
-      _rera.text = viewLeadDataResponse.leadsEntity!.leadReraNumber!;
-      _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
-      myFocusNode = FocusNode();
-      myFocusNode!.requestFocus();
+    } else {
+      _listInfluencerDetail
+          .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
+    }
+    initialInfluencerListLength = _listInfluencerDetail.length;
+
+    _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+    final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
+    for (int i = 0; i < _commentsListEntity!.length; i++) {
+      _commentsList.add(new CommentsDetail(
+        creatorName: _commentsListEntity![i].creatorName,
+        commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
+            _commentsListEntity![i].createdOn!)),
+        createdBy: _commentsListEntity![i].createdBy,
+        commentText: _commentsListEntity![i].commentText,
+      ));
+    }
+    _totalMT.text = viewLeadDataResponse.leadsEntity!.leadSitePotentialMt!;
+    _rera.text = viewLeadDataResponse.leadsEntity!.leadReraNumber!;
+    _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
+    myFocusNode = FocusNode();
+    myFocusNode!.requestFocus();
   }
 
   updateStatusForNextStage(BuildContext context, int statusId,
-      {String? dealerId, String? subDealerId,int? floorId,
-        String? noOfBagSupplied, String? isIhbCommercial, int? lapsePotential, int? nextFloorLevel, int? totalSitePotential}) {
+      {String? dealerId,
+      String? subDealerId,
+      int? floorId,
+      String? noOfBagSupplied,
+      String? isIhbCommercial,
+      int? lapsePotential,
+      int? nextFloorLevel,
+      int? totalSitePotential}) {
     String empId;
     String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -319,14 +330,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
         'leadSource': _leadSource.text,
         'leadSourceUser': _leadSourceUser.text,
-        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity!.leadSourcePlatform,
-        'nosFloors':_floorId,
-        'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
+        'leadSourcePlatform':
+            viewLeadDataResponse.leadsEntity!.leadSourcePlatform,
+        'nosFloors': _floorId,
+        'totalFloorSqftArea': int.tryParse(_noOfBagSupplied),
         'isIhbCommercial': _isIhbCommercial,
-        'lapsePotential' : _lapsePotential,
-        'nextFloorLevel' : _floorLevelId,
-        'totalSitePotential' : _totalSitePotential,
-        'siteCompitationId' : _siteCompitationId
+        'lapsePotential': _lapsePotential,
+        'nextFloorLevel': _floorLevelId,
+        'totalSitePotential': _totalSitePotential,
+        'siteCompitationId': _siteCompitationId
       };
 
       _addLeadsController.updateLeadData(updateRequestModel, [], context,
@@ -402,13 +414,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               if ((viewLeadDataResponse.leadsEntity!.leadStageId == 2 ||
                   viewLeadDataResponse.leadsEntity!.leadStageId == 3)) {
                 if (_selectedValuedummy!.id == 2) {
-                  Get.dialog(CustomDialogs().showRejectionConfirmationDialog(
+                  Get.dialog(CustomDialogs.showRejectionConfirmationDialog(
                       "Are you sure, You want to reject a site",
                       context,
                       viewLeadDataResponse));
                 } else if (_selectedValuedummy!.id == 3) {
                   showDialog(
-                     // barrierDismissible: false,
+                      // barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) =>
                           new ChangeLeadToSiteDialog(
@@ -417,7 +429,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
                             siteFloorsEntity: _siteFloorsEntity,
-                            siteCompetitionStatusEntity: _siteCompetitionStatusEntity,
+                            siteCompetitionStatusEntity:
+                                _siteCompetitionStatusEntity,
                             mListener: this,
                           ));
                 } else if (_selectedValuedummy!.id == 4) {
@@ -499,7 +512,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   Get.dialog(showFutureDialog(context));
                 }
               } else {
-                Get.dialog(CustomDialogs().errorDialog(
+                Get.dialog(CustomDialogs.showMessage(
                     "Lead Stage must be either phy-verified or Tele-verified"));
               }
             });
@@ -596,7 +609,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _state.text = "${loc[1]}";
             _pincode.text = "${loc[5]}";
             _taluk.text = "${loc[3]}";
-            _currentAddress = "${loc[3]}, ${loc[5]}, ${loc[1]}";
           },
         ),
         Text(
@@ -749,20 +761,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             style: TextStyle(
                 color: HexColor("#1C99D4"),
                 fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
                 fontSize: 17),
           ),
         ),
         onPressed: () async {
-          print(
-              "_addLeadsController.imageList.length  ${_addLeadsController.imageList!.length}");
           if (_addLeadsController.imageList!.length < 5) {
             _addLeadsController.updateImageList(
-                await UploadImageBottomSheet.showPicker(context),
-                userSelectedImageStatus);
+                await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog("You can add only up to 5 photos"));
+                CustomDialogs.showMessage("You can add only up to 5 photos"));
           }
         },
       ),
@@ -783,7 +791,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#1C99D4"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
@@ -798,12 +805,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           child: Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: TextFormField(
-              // initialValue: _totalBags.toString(),
               controller: _totalBags,
               onChanged: (value) {
                 setState(() {
-                  // _totalBags.text = value ;
-                  if ( _totalBags.text == "") {
+                  if (_totalBags.text == "") {
                     _totalMT.clear();
                   } else {
                     _totalMT.text =
@@ -835,7 +840,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               controller: _totalMT,
               onChanged: (value) {
                 setState(() {
-                  // _totalBags.text = value ;
                   if (_totalMT.text == "") {
                     _totalBags.clear();
                   } else {
@@ -890,11 +894,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final btnMoveToNextStage = Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          primary: HexColor("#1C99D4"),
         ),
-        primary: HexColor("#1C99D4"),),
         child: Padding(
           padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
           child: Text(
@@ -907,12 +912,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          // print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
+          nextStageModalBottomSheet(context );
 
-          nextStageModalBottomSheet(
-              context /*, _addLeadsController.imageList*/);
-
-          //nextStageModalBottomSheet(context);
         },
       ),
     );
@@ -1004,7 +1005,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
                                 ),
@@ -1027,7 +1027,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 btnUploadPhoto,
                                 SizedBox(height: _height),
                                 controller.imageList != null
-                                    //    _imageList != null
                                     ? Row(
                                         children: [
                                           Expanded(
@@ -1035,48 +1034,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
-                                                itemCount:
-                                                    //_imageList.length,
-                                                    controller.imageList!.length,
+                                                itemCount: controller.imageList!.length,
                                                 itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
+                                                    (BuildContext context, int index) {
                                                   return GestureDetector(
                                                     onTap: () {
-                                                       showDialog(
+                                                      showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
-                                                            // return AlertDialog(
-                                                            //   content:
-                                                            //   new Container(
-                                                            //     // width: 500,
-                                                            //     // height: 500,
-                                                            //     child: _imgDetails[
-                                                            //     index]
-                                                            //         .from
-                                                            //         .toLowerCase() ==
-                                                            //         "network"
-                                                            //         ? Image.network(
-                                                            //         _imgDetails[
-                                                            //         index]
-                                                            //             .file
-                                                            //             .path)
-                                                            //         : Image.file(
-                                                            //         _imgDetails[
-                                                            //         index]
-                                                            //             .file),
-                                                            //   ),
-                                                            // );
-                                                            print(controller
-                                                                .imageList![
-                                                                    index]
-                                                                .toString());
                                                             return AlertDialog(
                                                               content:
                                                                   new Container(
-                                                                // width: 500,
-                                                                // height: 500,
                                                                 child: Image.file(
                                                                     controller
                                                                             .imageList![
@@ -1117,12 +1086,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                           ),
                                                           onTap: () {
                                                             setState(() {
-                                                              //controller.imageList.removeAt(index);
                                                               controller
                                                                   .updateImageAfterDelete(
                                                                       index);
-                                                              UploadImageBottomSheet
-                                                                  .image = null;
+                                                              UploadImageBottomSheet.image = null;
                                                             });
                                                           },
                                                         )
@@ -1195,8 +1162,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs()
-                                                                  .errorDialog(
+                                                              Get.dialog(CustomDialogs.showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1289,7 +1255,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                   index]
                                                               .isExpanded!
                                                           ? TextButton.icon(
-
                                                               icon: Icon(
                                                                 Icons.remove,
                                                                 color: ColorConstants
@@ -1378,8 +1343,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs()
-                                                                  .errorDialog(
+                                                              Get.dialog(CustomDialogs.showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1444,7 +1408,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         }
                                                       } else if (value.length ==
                                                           10) {
-
                                                         for (int i = 0;
                                                             i <
                                                                 _listInfluencerDetail
@@ -1462,8 +1425,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         }
 
                                                         if (match) {
-                                                          Get.dialog(CustomDialogs()
-                                                              .errorDialog(
+                                                          Get.dialog(CustomDialogs.showMessage(
                                                                   "Already added influencer : " +
                                                                       value));
                                                         } else {
@@ -1595,7 +1557,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 SizedBox(height: _height),
                                 comment,
                                 SizedBox(height: _height),
-                                        _commentsList.length != 0
+                                _commentsList.length != 0
                                     ? viewMoreActive
                                         ? Row(
                                             children: [
@@ -1857,12 +1819,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   FocusNode? myFocusNode;
   bool viewMoreActive = false;
 
-
   List<InfluencerDetail> _listInfluencerDetail = [];
   List<InfluencerEntity>? _listInfluencerEntity = [];
   List<LeadInfluencerEntity>? _listLeadInfluencerEntity = [];
   LatLng? _currentPosition;
-  String? _currentAddress;
   List<LeadStatusEntity>? leadStatusEntity = [];
   ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
 
@@ -1950,7 +1910,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
               _listInfluencerDetail[index].inflContact!.text =
                   inflDetail.inflContact!;
-              _listInfluencerDetail[index].inflName!.text = inflDetail.inflName!;
+              _listInfluencerDetail[index].inflName!.text =
+                  inflDetail.inflName!;
               _listInfluencerDetail[index].id!.text =
                   inflDetail.inflId.toString();
               _listInfluencerDetail[index].ilpIntrested!.text =
@@ -2000,7 +1961,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 _listInfluencerDetail[index].inflName!.clear();
               });
             }
-            return Get.dialog(CustomDialogs()
+            return Get.dialog(CustomDialogs
                 .showDialog("No influencer registered with this number"));
           }
         } else {
@@ -2009,7 +1970,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _listInfluencerDetail[index].inflName!.clear();
           }
           return Get.dialog(
-              CustomDialogs()
+              CustomDialogs
                   .showDialogRestrictSystemBack(_infDetailModel.respMsg!),
               barrierDismissible: false);
         }
@@ -2025,7 +1986,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
       });
     } else {
-      if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
+      if (_listInfluencerDetail[
+                      _listInfluencerDetail.length - 1]
+                  .inflName !=
               null &&
           _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
               null &&
@@ -2041,8 +2004,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           _listInfluencerDetail.add(infl);
         });
       } else {
-        Get.dialog(CustomDialogs()
-            .errorDialog("Please fill previous influencer first"));
+        Get.dialog(CustomDialogs.showMessage("Please fill previous influencer first"));
       }
     }
   }
@@ -2060,7 +2022,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         _state.text = place.administrativeArea!;
         _pincode.text = place.postalCode!;
         _taluk.text = place.locality!;
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
@@ -2127,7 +2088,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                               onPressed: () async {
                                 if (leadStageVal.id !=
                                     leadStageEntity![index].id) {
-
                                   if (!(leadStageEntity![index].id == 2 ||
                                       (leadStageEntity![index].id == 3 &&
                                           _siteAddress.text != "" &&
@@ -2136,7 +2096,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           _district.text != "" &&
                                           _taluk.text != ""))) {
                                     if (leadStageEntity![index].id != 1) {
-                                      Get.dialog(CustomDialogs().showDialog(
+                                      Get.dialog(CustomDialogs.showDialog(
                                           "Please Fill Geo tag Details "));
                                     }
                                   } else {
@@ -2179,7 +2139,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               commentsDetails[i].commentText,
                                           creatorName: name,
                                           createdBy: empId,
-                                        ));                                     }
+                                        ));
+                                      }
 
                                       List<updateRequest.ListLeadImage>
                                           selectedImageListDetails = [];
@@ -2196,7 +2157,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             leadId: widget.leadId,
                                             photoName: leadModel.photoName,
                                             createdBy: empId,
-                                          ));                                        userSelectedImageFile
+                                          ));
+                                        userSelectedImageFile
                                             .add(leadModel.imageFilePath);
                                       });
 
@@ -2408,7 +2370,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   'contactNumber':
                       viewLeadDataResponse.leadsEntity!.contactNumber,
                   'geotagType': viewLeadDataResponse.leadsEntity!.geotagType,
-                  'leadLatitude': viewLeadDataResponse.leadsEntity!.leadLatitude,
+                  'leadLatitude':
+                      viewLeadDataResponse.leadsEntity!.leadLatitude,
                   'leadLongitude':
                       viewLeadDataResponse.leadsEntity!.leadLongitude,
                   'leadAddress': viewLeadDataResponse.leadsEntity!.leadAddress,
@@ -2433,7 +2396,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       viewLeadDataResponse.leadsEntity!.nextDateCconstruction,
                   'nextStageConstruction':
                       viewLeadDataResponse.leadsEntity!.nextStageConstruction,
-                  'siteDealerId': viewLeadDataResponse.leadsEntity!.siteDealerId,
+                  'siteDealerId':
+                      viewLeadDataResponse.leadsEntity!.siteDealerId,
                   // 'listLeadcomments':
                   //     [],
                   // 'listLeadImage':
@@ -2602,11 +2566,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           onPressed: () {
             if (!(_selectedNextStageConstructionEntity!.nextStageConsId !=
                     null &&
-                _selectedNextStageConstructionEntity!.nextStageConsId.toString() != "" &&
+                _selectedNextStageConstructionEntity!.nextStageConsId
+                        .toString() !=
+                    "" &&
                 _selectedNextStageConstructionEntity!.nextStageConsId != null &&
-                _selectedNextStageConstructionEntity!.nextStageConsId.toString() != "")) {
+                _selectedNextStageConstructionEntity!.nextStageConsId
+                        .toString() !=
+                    "")) {
               Get.dialog(
-                  CustomDialogs().errorDialog("Please fill the details first"));
+                  CustomDialogs.showMessage("Please fill the details first"));
             } else {
               updateStatusForNextStage(context, 5);
             }
@@ -2647,8 +2615,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       int? nextFloorLevel,
       int? lapsePotential,
       int? totalSitePotential,
-      int? siteCompitationId
-      ) {
+      int? siteCompitationId) {
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
     _selectedNextStageConstructionEntity = selectedNextStageConstructionEntity;

@@ -101,7 +101,7 @@ class SplashController extends GetxController {
         if (data != null) {
           if (this.secretKeyResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs()
+                CustomDialogs
                     .appUserInactiveDialog(this.secretKeyResponse.respMsg),
                 barrierDismissible: false);
           }
@@ -147,7 +147,7 @@ class SplashController extends GetxController {
                     versionUpdateModel![i].newVersion &&
                     versionUpdateModel![i].updateType == "SOFT") {
                   Get.dialog(
-                      CustomDialogs().appUpdateDialog(
+                      CustomDialogs.appUpdateDialog(
                           versionUpdateModel![i].versionUpdateText!,
                           versionUpdateModel![i].appId,
                           "ANDROID"),
@@ -157,7 +157,7 @@ class SplashController extends GetxController {
                     versionUpdateModel![i].newVersion &&
                     versionUpdateModel![i].updateType == "HARD") {
                   Get.dialog(
-                      CustomDialogs().appForceUpdateDialog(
+                      CustomDialogs.appForceUpdateDialog(
                           versionUpdateModel![i].versionUpdateText!,
                           versionUpdateModel![i].appId,
                           "ANDROID"),
@@ -169,7 +169,7 @@ class SplashController extends GetxController {
                     versionUpdateModel![i].newVersion &&
                     versionUpdateModel![i].updateType == "SOFT") {
                   Get.dialog(
-                      CustomDialogs().appUpdateDialog(
+                      CustomDialogs.appUpdateDialog(
                           versionUpdateModel![i].versionUpdateText!,
                           versionUpdateModel![i].appId,
                           "IOS"),
@@ -179,7 +179,7 @@ class SplashController extends GetxController {
                     versionUpdateModel![i].newVersion &&
                     versionUpdateModel![i].updateType == "HARD") {
                   Get.dialog(
-                      CustomDialogs().appForceUpdateDialog(
+                      CustomDialogs.appForceUpdateDialog(
                           versionUpdateModel![i].versionUpdateText!,
                           versionUpdateModel![i].appId,
                           "IOS"),

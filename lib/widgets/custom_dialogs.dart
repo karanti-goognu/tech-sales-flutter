@@ -28,7 +28,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 class CustomDialogs {
-  Widget errorDialog(String message) {
+
+
+  static Widget showMessage(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -63,42 +65,10 @@ class CustomDialogs {
     );
   }
 
-  Widget errorDialogForEvent(String message) {
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              message,
-              style: GoogleFonts.roboto(
-                  fontSize: 16,
-                  height: 1.4,
-                  letterSpacing: .25,
-                  fontStyle: FontStyle.normal,
-                  color: ColorConstants.inputBoxHintColorDark),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            'OK',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    );
-  }
 
-  Widget messageDialogMWP(String message) {
+
+
+  static Widget messageDialogMWP(String message) {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -137,7 +107,7 @@ class CustomDialogs {
     );
   }
 
-  Widget messageDialogMWPInf(String message) {
+  static Widget messageDialogMWPInf(String message) {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -176,7 +146,7 @@ class CustomDialogs {
   }
 
 
-  Widget messageDialogMWPCreate(String message) {
+  static Widget messageDialogMWPCreate(String message) {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -215,7 +185,7 @@ class CustomDialogs {
     );
   }
 
-  Widget messageDialogSRC(String message) {
+  static  Widget messageDialogSRC(String message) {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -254,7 +224,7 @@ class CustomDialogs {
     );
   }
 
-  Widget redirectToLoginDialog(String message) {
+  static Widget redirectToLoginDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -290,7 +260,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitEvent(String message) {
+  static  Widget showDialogSubmitEvent(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -326,7 +296,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitSite(String message) {
+  static  Widget showDialogSubmitSite(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -361,7 +331,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitInfluencer(String message) {
+  static  Widget showDialogSubmitInfluencer(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -397,7 +367,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appExitDialog(String message) {
+  static  Widget appExitDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -445,7 +415,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialog(String message) {
+  static  Widget showDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -482,7 +452,7 @@ class CustomDialogs {
   }
 
 
-  Widget showDialogRestrictSystemBack(String message) {
+  static  Widget showDialogRestrictSystemBack(String message) {
     return WillPopScope(
         onWillPop: () async => false,
      child: AlertDialog(
@@ -521,42 +491,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogInfPresent(String message) {
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              message,
-              style: GoogleFonts.roboto(
-                  fontSize: 16,
-                  height: 1.4,
-                  letterSpacing: .25,
-                  fontStyle: FontStyle.normal,
-                  color: ColorConstants.inputBoxHintColorDark),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            'OK',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget showDialogInfNotPresent(String message) {
+  static  Widget showDialogInfNotPresent(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -606,7 +541,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showDialogSubmitLead(String message,int from,BuildContext context) {
+  static Widget showDialogSubmitLead(String message,int from,BuildContext context) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -656,7 +591,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showSaveChangesDialog(String message) {
+  static  Widget showSaveChangesDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -763,7 +698,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showExistingLeadDialog(String message, BuildContext context,
+  static  Widget showExistingLeadDialog(String message, BuildContext context,
       SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -809,7 +744,7 @@ class CustomDialogs {
     Get.toNamed(Routes.VIEW_OLD_LEAD_SCREEN);
   }
 
-  Widget showRejectionConfirmationDialog(String message, BuildContext context,
+  static Widget showRejectionConfirmationDialog(String message, BuildContext context,
       ViewLeadDataResponse viewLeadDataResponse) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -863,7 +798,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showExistingTSODialog(String respMsg, BuildContext context,
+  static Widget showExistingTSODialog(String respMsg, BuildContext context,
       SaveLeadRequestModel saveLeadRequestModel, List<File?> imageList) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -924,7 +859,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showCommentDialog(String respMsg, BuildContext context, int eventId) {
+  static  Widget showCommentDialog(String respMsg, BuildContext context, int eventId) {
     var _commentController = TextEditingController();
     return AlertDialog(
       content: SingleChildScrollView(
@@ -996,7 +931,7 @@ class CustomDialogs {
           onPressed: () {
             Get.back();
             Get.dialog(
-                CustomDialogs().showCommentConfirmDialog(
+                CustomDialogs.showCommentConfirmDialog(
                     "Are you sure ? Once you end the event, you can not modify it.",
                     eventId,
                     _commentController.text),
@@ -1021,7 +956,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showCommentConfirmDialog(
+  static  Widget showCommentConfirmDialog(
       String message, int eventId, String eventComment) {
     return AlertDialog(
       content: SingleChildScrollView(
@@ -1071,7 +1006,7 @@ class CustomDialogs {
     );
   }
 
-  _getCurrentLocation(int eventId, String eventComment) async {
+  static _getCurrentLocation(int eventId, String eventComment) async {
     Position? position;
     AllEventController _eventController = Get.find();
     var date = DateTime.now();
@@ -1079,7 +1014,7 @@ class CustomDialogs {
     String currentDateString = formatter.format(date);
     // if (!(await GetCurrentLocation.checkLocationPermission())) {
     //   Get.back();
-    //   Get.dialog(CustomDialogs().errorDialog(
+    //   Get.dialog(CustomDialogs.showMessage(
     //       "Please enable your location service from device settings"));
     // } else {
     //   Get.dialog(Center(
@@ -1098,7 +1033,7 @@ class CustomDialogs {
                   if (value!.respCode == "DM1002")
                     {
                       Get.dialog(
-                          CustomDialogs()
+                          CustomDialogs
                               .showMessage1(value.respMsg!, 0, eventId),
                           barrierDismissible: false)
                     }
@@ -1106,19 +1041,19 @@ class CustomDialogs {
                     {
                       Get.back(),
                       Get.dialog(
-                          CustomDialogs()
+                          CustomDialogs
                               .showMessage1(value.respMsg!, 1, eventId),
                           barrierDismissible: false)
                     }
                 });
       // }).catchError((e) {
       //   Get.back();
-      //   Get.dialog(CustomDialogs().errorDialog(
+      //   Get.dialog(CustomDialogs.showMessage(
       //       "Access to location data denied "));
       // });
   }
 
-  Widget showMessage1(String message, int from, int? eventId) {
+  static Widget showMessage1(String message, int from, int? eventId) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1158,42 +1093,8 @@ class CustomDialogs {
     );
   }
 
-  Widget showMessage(String message) {
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              message,
-              style: GoogleFonts.roboto(
-                  fontSize: 16,
-                  height: 1.4,
-                  letterSpacing: .25,
-                  fontStyle: FontStyle.normal,
-                  color: ColorConstants.inputBoxHintColorDark),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            'OK',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    );
-  }
 
-  Widget appUpdateDialog(String message, String? appId, String platform) {
+  static Widget appUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1255,7 +1156,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appForceUpdateDialog(String message, String? appId, String platform) {
+  static Widget appForceUpdateDialog(String message, String? appId, String platform) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1303,7 +1204,7 @@ class CustomDialogs {
     );
   }
 
-  Widget appUserInactiveDialog(String message) {
+  static Widget appUserInactiveDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1341,7 +1242,7 @@ class CustomDialogs {
     );
   }
 
-  Widget showPendingSupplyData(String message) {
+  static Widget showPendingSupplyData(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1378,7 +1279,7 @@ class CustomDialogs {
   }
 
 
-  Widget showCancelEventDialog(int eventId,String heading, String message) {
+  static  Widget showCancelEventDialog(int eventId,String heading, String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -1437,7 +1338,7 @@ class CustomDialogs {
   }
 
 
-  Widget showDialogForKittiPoints(KittyBagsListModel _kittyBagsListModel, BuildContext context) {
+  static Widget showDialogForKittiPoints(KittyBagsListModel _kittyBagsListModel, BuildContext context) {
     return AlertDialog(
       content: Container(
         width: MediaQuery.of(context).size.width*0.75,
@@ -1553,7 +1454,7 @@ class CustomDialogs {
     );
   }
 
-  Widget redirectToSamePg(String message) {
+  static Widget redirectToSamePg(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(

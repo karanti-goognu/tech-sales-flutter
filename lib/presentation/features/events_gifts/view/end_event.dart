@@ -46,9 +46,6 @@ class _EndEventState extends State<EndEvent> {
 
   @override
   void initState() {
-    // _eventController.getEndEventDetail(widget.eventId.toString()).then((value) => {
-    //
-    // });
     super.initState();
     getDetailEventsData();
   }

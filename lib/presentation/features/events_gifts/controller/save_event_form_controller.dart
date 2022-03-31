@@ -43,13 +43,13 @@ class SaveEventController extends GetxController {
             .then((value) {
            if (value!.respCode == 'DM1002') {
             Get.dialog(
-                CustomDialogs().showDialogSubmitEvent(value.respMsg.toString()),
+                CustomDialogs.showDialogSubmitEvent(value.respMsg.toString()),
                 barrierDismissible: false);
           }
            else {
            // Get.back();
             Get.dialog(
-                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+                CustomDialogs.messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);
           }
          });

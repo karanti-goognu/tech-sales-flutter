@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -61,7 +60,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _potentialSiteController = TextEditingController();
   TextEditingController _enrollmentDateController = TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
-  TextEditingController _query = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _baseCityController = TextEditingController();
   TextEditingController _talukaController = TextEditingController();

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -58,7 +56,6 @@ class MyApiClientApp {
         'mobile-number': mobile,
       };
 
-      log("requestHeadersEmpIdAndNo: ${requestHeadersEmpIdAndNo}");
 
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
@@ -88,7 +85,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
@@ -116,7 +113,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -144,7 +141,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -171,7 +168,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -217,7 +214,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           return GetMWPResponse.fromJson(data);
@@ -239,7 +236,7 @@ class MyApiClientApp {
 //       if (response.statusCode == 200) {
          var data = json.decode(response.body);
 //         if(data["resp_code"] == "DM1005"){
-//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//           Get.dialog(CustomDialogs.appUserInactiveDialog(
 //               data["resp_msg"]), barrierDismissible: false);
 //         }
 // else {
@@ -298,7 +295,7 @@ class MyApiClientApp {
         data = json.decode(response.body);
 
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
       } else {
@@ -322,7 +319,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         return CalendarDataByDay.fromJson(data);
@@ -344,7 +341,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         return TargetVsActualModel.fromJson(data);

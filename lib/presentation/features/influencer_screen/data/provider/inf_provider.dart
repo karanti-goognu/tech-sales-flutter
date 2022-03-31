@@ -55,7 +55,7 @@ class MyApiClientInf {
      // print("URL-------${UrlConstants.addIlpInfluencer + empID}");
      // print("-------$data");
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerTypeModel = InfluencerTypeModel.fromJson(json.decode(response.body));
@@ -79,7 +79,7 @@ class MyApiClientInf {
               accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         stateDistrictListModel = StateDistrictListModel.fromJson(json.decode(response.body));
@@ -109,7 +109,7 @@ class MyApiClientInf {
        // print("======$data");
 
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -142,7 +142,7 @@ class MyApiClientInf {
       if (response.statusCode == 200) {
         Get.back();
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -174,7 +174,7 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       Get.back();
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
@@ -203,7 +203,7 @@ class MyApiClientInf {
         Get.back();
        // print("======$data");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -252,7 +252,7 @@ class MyApiClientInf {
         Get.back();
       //  print("======$data");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
