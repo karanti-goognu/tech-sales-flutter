@@ -124,7 +124,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isSubmitButtonDisabled = false;
     _isSaveButtonDisabled = false;
@@ -577,7 +576,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   .then((data) {
                 if (data!.respCode == "NUM404") {
                   sourceMobile.text = "";
-                  Get.dialog(CustomDialogs()
+                  Get.dialog(CustomDialogs
                       .showDialog("No influencer registered with this number"));
                 } else if (data.respCode == "DM1002") {
                   sourceMobile.text = value;
@@ -848,12 +847,11 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             TextButton.icon(
                               style: TextButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
                                     side: BorderSide(color: Colors.black26)),
                                 backgroundColor: Colors.transparent,
                               ),
                               icon: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding: const EdgeInsets.all(4.0),
                                 child: Icon(
                                   Icons.location_searching,
                                   color: ColorConstants.btnOrange,
@@ -862,7 +860,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                               ),
                               label: Padding(
                                 padding: const EdgeInsets.only(
-                                    right: 5, bottom: 8, top: 5),
+                                    right: 5,),
                                 child: Text(
                                   "DETECT",
                                   style: TextStyles.btnOrange,
@@ -885,7 +883,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   _state.text = "${loc[1]}";
                                   _pincode.text = "${loc[5]}";
                                   _taluk.text = "${loc[3]}";
-
                               },
                             ),
                             Text(
@@ -896,13 +893,12 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                             TextButton(
                               style: TextButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
                                     side: BorderSide(color: Colors.black26)),
                                 backgroundColor: Colors.transparent,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    right: 5, bottom: 8, top: 5),
+                                    right: 5,),
                                 child: Text(
                                   "MANUAL",
                                   style: TextStyles.btnOrange,
@@ -912,7 +908,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 List<double> data = await (Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CustomMap())) as FutureOr<List<double>>);
+                                        builder: (context) => CustomMap())));
                                 setState(() {
                                   geoTagType = "M";
                                 });
@@ -927,7 +923,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                         SizedBox(height: _height),
                         pincode,
                         TextStyles.mandatoryText,
-                        //txtMandatory,
                         SizedBox(height: _height),
                         state,
                         TextStyles.mandatoryText,
@@ -944,20 +939,15 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           child: TextButton(
                             style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
                                   side: BorderSide(color: Colors.black26)),
                               backgroundColor: Colors.transparent,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 5, bottom: 10, top: 10),
-                              child: Text(
-                                "UPLOAD PHOTOS",
-                                style: TextStyle(
-                                    color: HexColor("#1C99D4"),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
+                            child: Text(
+                              "UPLOAD PHOTOS",
+                              style: TextStyle(
+                                  color: HexColor("#1C99D4"),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                             onPressed: () async {
                               if (controller.imageList!.length < 5) {
@@ -966,7 +956,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         context),
                                     userSelectedImageStatus);
                               } else {
-                                Get.dialog(CustomDialogs().errorDialog(
+                                Get.dialog(CustomDialogs.showMessage(
                                     "You can add only upto 5 photos"));
                               }
                             },
@@ -979,6 +969,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                   Expanded(
                                     child: ListView.builder(
                                         shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
                                         itemCount: controller.imageList!.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
@@ -1176,9 +1167,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-                            // setState(() {
-                            //   _comments.text = value;
-                            // });
                           },
                         ),
                         SizedBox(height: 16),
@@ -1545,7 +1533,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                       });
                                     });
                                   } else {
-                                    Get.dialog(CustomDialogs().errorDialog(
+                                    Get.dialog(CustomDialogs.showMessage(
                                         "Please provide a contact number"));
                                   }
                                 }
@@ -1726,7 +1714,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                     });
                                   } else {
                                     _isSubmitButtonDisabled = false;
-                                    Get.dialog(CustomDialogs().errorDialog(
+                                    Get.dialog(CustomDialogs.showMessage(
                                         "Please fill the mandatory fields. i.e. Contact Number , Address  . "));
                                   }
                                 }
@@ -1781,8 +1769,8 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                     }
 
                     if (match) {
-                      Get.dialog(CustomDialogs()
-                          .errorDialog("Already added influencer : " + value));
+                      Get.dialog(CustomDialogs
+                          .showMessage("Already added influencer : " + value));
                     } else {
                       apiCallForGetInf(value, index, context);
                     }
@@ -1842,7 +1830,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               ),
             ],
           );
-          // }
         });
   }
 
@@ -1890,13 +1877,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                   inflDetail.influencerTypeText!;
               _listInfluencerDetail[index].id!.text =
                   inflDetail.inflId.toString();
-              _listInfluencerDetail[index].ilpIntrested!.text =
-                  inflDetail.ilpRegFlag!;
-              // _listInfluencerDetail[
-              //             index]
-              //         .createdOn =
-              //     inflDetail.createdOn;
-
+              _listInfluencerDetail[index].ilpIntrested!.text = inflDetail.ilpRegFlag!;
               _listInfluencerDetail[index].inflCatValue!.text =
                   inflDetail.influencerCategoryText!;
               _listInfluencerDetail[index].createdBy = empId;
@@ -1938,7 +1919,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                 _listInfluencerDetail[index].inflName!.clear();
               });
             }
-            return Get.dialog(CustomDialogs()
+            return Get.dialog(CustomDialogs
                 .showDialog("No influencer registered with this number"));
           }
         } else {
@@ -1947,7 +1928,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
             _listInfluencerDetail[index].inflName!.clear();
           }
           return Get.dialog(
-              CustomDialogs().showDialog(_infDetailModel.respMsg!));
+              CustomDialogs.showDialog(_infDetailModel.respMsg!));
         }
         Get.back();
       });

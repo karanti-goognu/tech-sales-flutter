@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -650,7 +648,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   GestureDetector(
                                                     onTap: () {
                                                       Get.dialog(
-                                                          CustomDialogs()
+                                                          CustomDialogs
                                                               .showDialogForKittiPoints(
                                                                   _kittyBagsListModel,
                                                                   context),
@@ -691,7 +689,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   GestureDetector(
                                                     onTap: () {
                                                       Get.dialog(
-                                                          CustomDialogs()
+                                                          CustomDialogs
                                                               .showDialogForKittiPoints(
                                                                   _kittyBagsListModel,
                                                                   context),
@@ -860,9 +858,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .supplyDate,
                                                 readOnly: true,
                                                 onChanged: (data) {
-                                                  // setState(() {
-                                                  //   _contactName.text = data;
-                                                  // });
                                                 },
                                                 style: TextStyle(
                                                     fontSize: 16,
@@ -1005,14 +1000,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         onPressed: () async {
                                           String? empId = await (getEmpId() );
                                           if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs()
+                                            Get.dialog(CustomDialogs
                                                 .showMessage(
                                                     "Please select Floor !"));
                                             return;
                                           }
                                           if (_selectedConstructionType ==
                                               null) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please select a Construction Stage !"));
                                             return;
                                           }
@@ -1023,7 +1018,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .sitePotentialMt
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter Stage Potential !"));
                                             return;
                                           }
@@ -1036,7 +1031,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             if (_siteController.counterId
                                                 .toString()
                                                 .isEmpty) {
-                                              Get.dialog(CustomDialogs()
+                                              Get.dialog(CustomDialogs
                                                   .showMessage(
                                                       "Please select a Counter !"));
                                               return;
@@ -1049,7 +1044,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .brandPrice
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter brand price !"));
                                             return;
                                           }
@@ -1060,26 +1055,26 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .supplyQty
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs()
+                                            Get.dialog(CustomDialogs
                                                 .showMessage(
                                                     "Please enter supply qty !"));
                                             return;
                                           }
 
                                           if (empId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter reference Id!"));
                                             return;
                                           }
 
                                           if (widget.siteId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Site id can't be null or empty!"));
                                             return;
                                           }
 
                                           if (widget.supplyHistoryId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "supplyHistory id can't be null or empty!"));
                                             return;
                                           }
@@ -1164,14 +1159,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           //         .shipToPartyName ==
                                           //     null) {
                                           if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs()
+                                            Get.dialog(CustomDialogs
                                                 .showMessage(
                                                     "Please select Floor !"));
                                             return;
                                           }
                                           if (_selectedConstructionType ==
                                               null) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please select a Construction Stage !"));
                                             return;
                                           }
@@ -1182,7 +1177,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .sitePotentialMt
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter Stage Potential !"));
                                             return;
                                           }
@@ -1195,7 +1190,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             if (_siteController.counterId
                                                 .toString()
                                                 .isEmpty) {
-                                              Get.dialog(CustomDialogs()
+                                              Get.dialog(CustomDialogs
                                                   .showMessage(
                                                       "Please select a Counter !"));
                                               return;
@@ -1208,7 +1203,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .brandPrice
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter brand price !"));
                                             return;
                                           }
@@ -1219,37 +1214,32 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               .supplyQty
                                               .text
                                               .isEmpty) {
-                                            Get.dialog(CustomDialogs()
+                                            Get.dialog(CustomDialogs
                                                 .showMessage(
                                                     "Please enter supply qty !"));
                                             return;
                                           }
 
                                           if (empId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Please enter reference Id!"));
                                             return;
                                           }
 
                                           if (widget.siteId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "Site id can't be null or empty!"));
                                             return;
                                           }
 
                                           if (widget.supplyHistoryId!.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
+                                            Get.dialog(CustomDialogs.showMessage(
                                                 "supplyHistory id can't be null or empty!"));
                                             return;
                                           }
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "A",
-                                            // "floor": _siteController
-                                            //     .pendingSupplyDetailsResponse
-                                            //     .pendingSuppliesDetailsModel
-                                            //     .floorText
-                                            //     .text,
                                             "floor":
                                                 _selectedFloorType!.siteFloorTxt,
                                             "floorId":

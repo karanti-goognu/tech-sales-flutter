@@ -23,11 +23,9 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     fetchDraftList();
-    // var _cars = await db.fetchAll();
   }
 
   fetchDraftList() async {
@@ -41,7 +39,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
         });
       }
     });
-    //await db.removeLeadInDraft(2);
   }
 
   @override
@@ -55,8 +52,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
           extendBody: true,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
-            // titleSpacing: 50,
-            // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
             toolbarHeight: 120,
             centerTitle: false,
@@ -64,8 +59,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-                  // mainAxisSize: MainAxisSize.max,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -87,12 +80,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
           body:
-              /*(connectionString == 'Offline')
-          ? Container(
-              color: Colors.black12,
-              child: Center(child: Text("No Internet Connection found.")),
-            )
-          :*/
               Container(
             child: Column(
               children: [
@@ -107,7 +94,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                         style: TextStyle(
                           fontFamily: "Muli",
                           fontSize: 15,
-                          // color: HexColor("#FFFFFF99"),
                         ),
                       ),
                       Text(
@@ -115,7 +101,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                         style: TextStyle(
                           fontFamily: "Muli",
                           fontSize: 15,
-                          // color: HexColor("#FFFFFF99"),
                         ),
                       ),
                     ],
@@ -140,7 +125,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             shrinkWrap: true,
             itemCount: draftList.length,
             padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
-            // itemExtent: 125.0,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
@@ -153,7 +137,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                 child: Card(
                     clipBehavior: Clip.antiAlias,
                     borderOnForeground: true,
-                    //shadowColor: colornew,
                     elevation: 6,
                     margin: EdgeInsets.all(10.0),
                     color: Colors.white,
@@ -202,7 +185,6 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                                     "Site Pt : ",
                                     style: TextStyle(
                                       fontSize: 15,
-                                      //fontWeight: FontWeight.bold
                                     ),
                                   ),
                                   Text(

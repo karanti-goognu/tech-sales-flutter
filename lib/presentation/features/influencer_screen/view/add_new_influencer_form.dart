@@ -210,7 +210,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                 if (data.respCode == "NUM404") {
                   _contactNumberController.text = value;
                 } else if (data.respCode == "DM1002") {
-                  Get.dialog(CustomDialogs().showDialogInfPresent(data.respMsg!),
+                  Get.dialog(CustomDialogs.showMessage(data.respMsg!),
                       barrierDismissible: false);
                   _contactNumberController.text = "";
                 }

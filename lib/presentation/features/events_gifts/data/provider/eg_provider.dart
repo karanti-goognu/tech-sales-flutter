@@ -80,7 +80,7 @@ class MyApiClientEvent {
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         addEventModel = AddEventModel.fromJson(json.decode(response.body));
@@ -124,7 +124,7 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.back();
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         allEventsModel = AllEventsModel.fromJson(json.decode(response.body));
@@ -150,7 +150,7 @@ class MyApiClientEvent {
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
         Get.back();
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else
@@ -177,7 +177,7 @@ class MyApiClientEvent {
         Get.back();
         var data = json.decode(response.body);
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -205,7 +205,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
@@ -234,7 +234,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
       if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
@@ -265,7 +265,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -289,7 +289,7 @@ class MyApiClientEvent {
       var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) );
       var data = json.decode(response.body);
       if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
@@ -324,7 +324,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -354,7 +354,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else
@@ -383,7 +383,7 @@ class MyApiClientEvent {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -411,7 +411,7 @@ class MyApiClientEvent {
     if (response.statusCode == 200) {
       Get.back();
       if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
@@ -441,7 +441,7 @@ Future<SaveNewInfluencerResponse?>saveNewInfluencer(String? accessKey, String? u
     if (response.statusCode == 200) {
       Get.back();
       if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }
       else {
@@ -476,7 +476,7 @@ Future<SaveNewInfluencerResponse?>saveNewInfluencer(String? accessKey, String? u
 //         Get.back();
 //         print("======$data");
 //         if (data["resp_code"] == "DM1005") {
-//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//           Get.dialog(CustomDialogs.appUserInactiveDialog(
 //               data["resp_msg"]), barrierDismissible: false);
 //         }
 //         else {

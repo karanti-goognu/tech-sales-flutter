@@ -1259,7 +1259,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                 if (_imgDetails.length < 5) {
                                   _showPicker(context);
                                 } else {
-                                  Get.dialog(CustomDialogs().showMessage(
+                                  Get.dialog(CustomDialogs.showMessage(
                                       "You can add only upto 5 photos"));
                                 }
                               },
@@ -1461,7 +1461,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   _getCurrentLocation() async {
     if (!(await GetCurrentLocation.checkLocationPermission())) {
       Get.back();
-      Get.dialog(CustomDialogs().showMessage(
+      Get.dialog(CustomDialogs.showMessage(
           "Please enable your location service from device settings"));
     } else {
       LocationDetails result;
@@ -1528,8 +1528,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromGallery() async {
     ImagePicker _picker = ImagePicker();
-    XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       if (image != null) {

@@ -251,7 +251,7 @@ class _GiftsViewState extends State<GiftsView> {
               ?
           _settingModalBottomSheet(context,setstates)
               : _giftInHandQtyNew.text.isEmpty?
-          Get.dialog(CustomDialogs().showMessage("Please enter value"))
+          Get.dialog(CustomDialogs.showMessage("Please enter value"))
           :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),
           child: Text(
             "Update Inventory",

@@ -44,7 +44,7 @@ class _CustomMapState extends State<CustomMap> {
   _getCurrentLocation() async {
     if (!await GetCurrentLocation.checkLocationPermission()) {
       Get.back();
-      Get.dialog(CustomDialogs().errorDialog(
+      Get.dialog(CustomDialogs.showMessage(
           "Please enable your location service from device settings"));
     } else {
       Geolocator
@@ -60,7 +60,7 @@ class _CustomMapState extends State<CustomMap> {
       ).catchError((e) {
         Get.back();
         Get.dialog(
-            CustomDialogs().errorDialog("Access to location data denied "));
+            CustomDialogs.showMessage("Access to location data denied "));
         print(e);
        });
     }

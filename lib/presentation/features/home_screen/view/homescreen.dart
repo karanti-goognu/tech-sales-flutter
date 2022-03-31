@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SizeConfig().init(context);
     return WillPopScope(
       onWillPop: () async {
-        Get.dialog(CustomDialogs().appExitDialog("Do you want to exit?"));
+        Get.dialog(CustomDialogs.appExitDialog("Do you want to exit?"));
         return true;
       },
       child: Scaffold(
@@ -199,13 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print("Tap");
                         internetChecking().then(
                           (result) => {
-                            print("Internet"),
                             if (result == true)
                               {
-                                print("Result"),
                                 Get.toNamed(Routes.ADD_CALENDER_SCREEN),
                               }
                             else

@@ -1,12 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -19,7 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerDetailView extends StatefulWidget {
-  int? membershipId;
+  final int membershipId;
 
   InfluencerDetailView(this.membershipId);
 
@@ -31,24 +28,25 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   InfController _infController = Get.find();
   InfluencerDetailDataModel? _influencerDetailDataModel;
   final _addInfluencerFormKey = GlobalKey<FormState>();
-  StateDistrictListModel? _stateDistrictListModel;
 
-  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList = new List.empty(growable: true);
+  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList =
+      new List.empty(growable: true);
   InfluencerTypeEntitiesList? _influencerTypeEntitiesList;
 
   List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList =
       new List.empty(growable: true);
   InfluencerCategoryEntitiesList? _influencerCategoryEntitiesList;
 
-  List<InfluencerSourceList>? influencerSourceList = new List.empty(growable: true);
+  List<InfluencerSourceList>? influencerSourceList =
+      new List.empty(growable: true);
   InfluencerSourceList? _influencerSourceList;
   List<SiteBrandList>? siteBrandList = new List.empty(growable: true);
   SiteBrandList? _siteBrandList;
   bool _qualificationVisible = false;
-  int? _influencerCategory;
-  int? _source;
+  // int? _influencerCategory;
+  // int? _source;
   int? _memberType, memberShipId;
-  String? _selectedEnrollValue;
+  // String? _selectedEnrollValue;
   bool checkedValue = false;
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -62,7 +60,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _potentialSiteController = TextEditingController();
   TextEditingController _enrollmentDateController = TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
-  TextEditingController _query = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _baseCityController = TextEditingController();
   TextEditingController _talukaController = TextEditingController();
@@ -72,7 +69,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   FocusNode? myFocusNode;
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
-  int? _preferredBrandId;
+  // int? _preferredBrandId;
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
 
@@ -83,7 +80,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     myFocusNode = FocusNode();
     getEmpId();
     getData();
-
   }
 
   Future getEmpId() async {
@@ -103,10 +99,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   .getInfDetailData('${widget.membershipId}')
                   .then((data) {
                 setState(() {
-                  if (data != null) {
-                    _influencerDetailDataModel = data;
-                    setData();
-                  }
+                  _influencerDetailDataModel = data;
+                  setData();
                 });
               })
             }
@@ -120,6 +114,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
+
   setData() {
     if (_influencerDetailDataModel != null ||
         _influencerDetailDataModel!.response != null ||
@@ -148,23 +143,20 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _baseCityController.text = _data.baseCity!;
       _talukaController.text = _data.taluka!;
       _pincodeController.text = _data.pinCode!;
-      _source = _data.inflEnrollmentSourceId;
+      // _source = _data.inflEnrollmentSourceId;
       _memberType = _data.inflTypeId;
-      _influencerCategory = _data.inflCategoryId;
-      //_date = '${_data.inflDob}';
+      // _influencerCategory = _data.inflCategoryId;
       _primaryCounterController.text = _data.primaryCounterName!;
-
-
 
       _dateController.text =
           '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
 
       if (_data.ilpregFlag == "Y") {
         checkedValue = true;
-        _selectedEnrollValue = "Y";
+        // _selectedEnrollValue = "Y";
       } else {
         checkedValue = false;
-        _selectedEnrollValue = "N";
+        // _selectedEnrollValue = "N";
       }
 
       influencerTypeEntitiesList =
@@ -172,14 +164,14 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       if (_influencerDetailDataModel!.response!.influencerDetails!.inflTypeId !=
           null) {
         for (int i = 0; i < influencerTypeEntitiesList!.length; i++) {
-          if (_influencerDetailDataModel!.response!.influencerDetails!.inflTypeId
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflTypeId
                   .toString() ==
               influencerTypeEntitiesList![i].inflTypeId.toString()) {
             _influencerTypeEntitiesList = influencerTypeEntitiesList![i];
           }
         }
-      }
-      else {}
+      } else {}
 
       influencerSourceList =
           _influencerDetailDataModel!.response!.influencerSourceList;
@@ -206,31 +198,36 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   .response!.influencerDetails!.inflCategoryId
                   .toString() ==
               influencerCategoryEntitiesList![i].inflCatId.toString()) {
-            _influencerCategoryEntitiesList = influencerCategoryEntitiesList![i];
+            _influencerCategoryEntitiesList =
+                influencerCategoryEntitiesList![i];
           }
         }
       } else {}
 
       siteBrandList = _influencerDetailDataModel!.response!.siteBrandList;
-      if (_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId !=
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.preferredBrandId !=
           null) {
         for (int i = 0; i < siteBrandList!.length; i++) {
-          if (_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId
-              .toString() ==
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.preferredBrandId
+                  .toString() ==
               siteBrandList![i].id.toString()) {
             _siteBrandList = siteBrandList![i];
           }
         }
       } else {}
-
-      _designationController.text = _data.designation!;
-      _departmentNameController.text = _data.departmentName!;
-      _preferredBrandId=_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId;
-      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary!;
-      _firmNameController.text = _data.firmName!;
+      _designationController.text =
+          _data.designation == null ? "" : _data.designation!;
+      _departmentNameController.text =
+          _data.departmentName == null ? "" : _data.departmentName!;
+      // _preferredBrandId=_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId;
+      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary == null
+          ? ""
+          : _data.dateOfMarriageAnniversary!;
+      _firmNameController.text = _data.firmName == null ? "" : _data.firmName!;
       myFocusNode = FocusNode();
       myFocusNode!.requestFocus();
-
     }
   }
 
@@ -372,12 +369,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-              ),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: CheckboxListTile(
-          onChanged: (_){},
+          onChanged: (_) {},
           title: Text(
             "Enroll for Dalmia Masters",
             style: TextStyles.formfieldLabelText,
@@ -394,7 +389,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           //       _selectedEnrollValue = "N";
           //     }
           //   });
-         // },
+          // },
           controlAffinity:
               ListTileControlAffinity.leading, //  <-- leading Checkbox
         ));
@@ -430,7 +425,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final memberDropDwn = DropdownButtonFormField<InfluencerTypeEntitiesList>(
-        onChanged: (_){},
+      onChanged: (_) {},
       value: _influencerTypeEntitiesList,
       items: (_influencerDetailDataModel == null ||
               _influencerTypeEntitiesList == null)
@@ -440,13 +435,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                     value: e,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeDesc!, style: TextStyle(color: Colors.black),)),
+                        child: Text(
+                          e.inflTypeDesc!,
+                          style: TextStyle(color: Colors.black),
+                        )),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
-     // validator: (value) => value == null ? 'Please select member type' : null,
+      // validator: (value) => value == null ? 'Please select member type' : null,
     );
 
     final qualification = TextFormField(
@@ -568,7 +566,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final sourceDropDwn = DropdownButtonFormField<InfluencerSourceList>(
-    onChanged: (_){},
+      onChanged: (_) {},
       value: _influencerSourceList,
       items:
           (_influencerDetailDataModel == null || influencerSourceList == null)
@@ -576,7 +574,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
               : influencerSourceList!
                   .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.inflSourceText!, style: TextStyle(color: Colors.black),),
+                        child: Text(
+                          e.inflSourceText!,
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ))
                   .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -585,7 +586,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final influencerCategoryDropDwn =
         DropdownButtonFormField<InfluencerCategoryEntitiesList>(
-    onChanged: (_){},
+      onChanged: (_) {},
       value: _influencerCategoryEntitiesList,
       items: (_influencerDetailDataModel == null ||
               influencerCategoryEntitiesList == null)
@@ -593,7 +594,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           : influencerCategoryEntitiesList!
               .map((e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e.inflCatDesc!, style: TextStyle(color: Colors.black),),
+                    child: Text(
+                      e.inflCatDesc!,
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -630,18 +634,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   onChanged: (value) {
                     setState(() {
                       _siteBrandList = value;
-                      _preferredBrandId = _siteBrandList!.id;
+                      // _preferredBrandId = _siteBrandList!.id;
                     });
                   },
                   items: siteBrandList!
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.5,
-                                    child: Text(e.brandName!+" - "+e.productName!)),
-                              ))
-                          .toList(),
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: Text(
+                                    e.brandName! + " - " + e.productName!)),
+                          ))
+                      .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
                   decoration: FormFieldStyle.buildInputDecoration(
                       labelText: "Preferred Brand"),
@@ -675,7 +679,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           : Container();
     }
 
-
     final firmName = TextFormField(
       controller: _firmNameController,
       readOnly: true,
@@ -695,7 +698,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         children: [
           BackgroundContainerImage(),
           (_influencerDetailDataModel != null &&
-                  _influencerDetailDataModel!.response!.influencerDetails != null)
+                  _influencerDetailDataModel!.response!.influencerDetails !=
+                      null)
               ? ListView(children: [
                   Container(
                     padding: EdgeInsets.all(12.sp),
@@ -710,7 +714,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: 8.sp),
                   Divider(
                     height: 1.sp,
@@ -815,5 +818,4 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _dateMarriageAnnController.text = _date;
     });
   }
-
 }

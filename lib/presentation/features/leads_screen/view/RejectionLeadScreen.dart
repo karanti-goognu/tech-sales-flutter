@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
@@ -13,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RejectionLeadScreen extends StatefulWidget {
-  ViewLeadDataResponse viewLeadDataResponse;
+  final ViewLeadDataResponse viewLeadDataResponse;
 
   RejectionLeadScreen(this.viewLeadDataResponse);
 
@@ -31,7 +29,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _addLeadsController = Get.find();
     leadRejectReasonEntity = gv.leadRejectReasonEntity;
@@ -73,8 +70,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15,
-
-                        //color: HexColor("#B00020")
                       ),
                     ),
                   ),
@@ -94,8 +89,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                 value: label,
                               ))
                           .toList(),
-
-                      // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
@@ -105,7 +98,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
                               width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -263,13 +255,11 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                       },
                     ),
                   ),
-                  // Image.asset('assets/images/rejected.png'),
                 ],
               ),
             ),
           ],
         ),
-        // ]),
       ),
     );
   }

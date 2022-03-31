@@ -290,7 +290,7 @@ class SiteController extends GetxController {
         } else {
           if (sitesListResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs()
+                CustomDialogs
                     .appUserInactiveDialog(sitesListResponse.respMsg),
                 barrierDismissible: false);
           }
@@ -331,7 +331,7 @@ class SiteController extends GetxController {
             if (sitesListResponse.respCode == "ST2006") {
             } else {
               Get.dialog(
-                  CustomDialogs().errorDialog(sitesListResponse.respMsg));
+                  CustomDialogs.showMessage(sitesListResponse.respMsg));
             }
           }
         }
@@ -357,11 +357,11 @@ class SiteController extends GetxController {
           if (sitesListResponse.respCode == "ST2004") {
           } else if (sitesListResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs()
+                CustomDialogs
                     .appUserInactiveDialog(sitesListResponse.respMsg),
                 barrierDismissible: false);
           } else {
-            Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+            Get.dialog(CustomDialogs.showMessage(sitesListResponse.respMsg));
           }
         }
       });
@@ -590,11 +590,11 @@ class SiteController extends GetxController {
         } else {
           var dataValue = data;
           if (dataValue['response']['respCode'] == "DM1002") {
-            Get.dialog(CustomDialogs()
+            Get.dialog(CustomDialogs
                 .showPendingSupplyData(dataValue['response']['respMsg']));
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog(dataValue['response']['respMsg']));
+                CustomDialogs.showMessage(dataValue['response']['respMsg']));
           }
         }
       });

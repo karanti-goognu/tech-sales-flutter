@@ -288,19 +288,19 @@ class AddEventController extends GetxController {
           this.visitRemarks = "";
           if (saveVisitResponse.respCode == "MWP2022") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           } else if (saveVisitResponse.respCode == "DM2144") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           } else if (saveVisitResponse.respCode == "INF2004") {
             this.isVisibleContact = false;
             contactController.text = "";
-            Get.dialog(CustomDialogs().messageDialogMWPInf(
+            Get.dialog(CustomDialogs.messageDialogMWPInf(
               saveVisitResponse.respMsg,
             ));
           } else {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           }
         }
       });
@@ -348,7 +348,7 @@ class AddEventController extends GetxController {
           this.saveVisitResponse = data;
           if (saveVisitResponse.respCode == "MWP2021") {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           }
         }
       });
@@ -388,11 +388,11 @@ class AddEventController extends GetxController {
           }
           Get.back();
           if (dealerListResponse.respCode == "MWP2013") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+            //Get.dialog(CustomDialogs.showMessage(SitesListResponse.respMsg));
             print('${dealerListResponse.respMsg}');
             //SitesDetailWidget();
           } else {
-            // Get.dialog(CustomDialogs().errorDialog(dealerListResponse.respMsg));
+            // Get.dialog(CustomDialogs.showMessage(dealerListResponse.respMsg));
           }
         }
       });
@@ -561,10 +561,10 @@ class AddEventController extends GetxController {
             this.saveVisitResponse = data;
             if (saveVisitResponse.respCode == "MWP2028") {
               Get.dialog(
-                  CustomDialogs().redirectToSamePg(saveVisitResponse.respMsg));
+                  CustomDialogs.redirectToSamePg(saveVisitResponse.respMsg));
             } else {
               Get.dialog(
-                  CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                  CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
               print('${saveVisitResponse.respMsg}');
             }
           }
@@ -612,9 +612,9 @@ class AddEventController extends GetxController {
               debugPrint('Save Visit Response is not null');
               this.saveVisitResponse = data;
               if (saveVisitResponse.respCode == "MWP2028") {
-                Get.dialog(CustomDialogs().redirectToSamePg(saveVisitResponse.respMsg));
+                Get.dialog(CustomDialogs.redirectToSamePg(saveVisitResponse.respMsg));
               } else {
-                Get.dialog(CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+                Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
               }
             }
           });
@@ -666,11 +666,11 @@ class AddEventController extends GetxController {
               debugPrint('Save Visit Response is not null');
               this.saveVisitResponse = data;
               if (saveVisitResponse.respCode == "MWP2028") {
-                Get.dialog(CustomDialogs()
+                Get.dialog(CustomDialogs
                     .redirectToSamePg(saveVisitResponse.respMsg));
                 print('${saveVisitResponse.respMsg}');
               } else {
-                Get.dialog(CustomDialogs()
+                Get.dialog(CustomDialogs
                     .messageDialogMWP(saveVisitResponse.respMsg));
               }
             }
@@ -742,7 +742,7 @@ class AddEventController extends GetxController {
           this.saveVisitResponse = data;
 
           Get.dialog(
-              CustomDialogs().messageDialogMWP(saveVisitResponse.respMsg));
+              CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           print('${saveVisitResponse.respMsg}');
           //SitesDetailWidget();
         }

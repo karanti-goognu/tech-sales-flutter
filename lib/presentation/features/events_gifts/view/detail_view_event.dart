@@ -92,7 +92,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     final btnStartEvent = TextButton(
       onPressed: () {
         _getCurrentLocation();
-        // Get.dialog(CustomDialogs().showStartEventDialog(
+        // Get.dialog(CustomDialogs.showStartEventDialog(
         //     'Confirmation', "Do you want to start event?"));
       },
       style: TextButton.styleFrom(
@@ -135,7 +135,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           children: [
             TextButton(
                 onPressed: () {
-                  Get.dialog(CustomDialogs().showCancelEventDialog(
+                  Get.dialog(CustomDialogs.showCancelEventDialog(
                       widget.eventId,
                       'Confirmation',
                       "You will not be able to undo this action, are you sure you want to Cancel this event?"));
@@ -193,7 +193,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             TextButton(
               onPressed: () {
                 Get.dialog(
-                    CustomDialogs().showCommentDialog("Please Enter Comment",
+                    CustomDialogs.showCommentDialog("Please Enter Comment",
                         context, detailEventModel!.mwpEventModel!.eventId),
                     barrierDismissible: false);
                 // Get.toNamed(Routes.END_EVENT);
@@ -507,12 +507,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                       barrierDismissible: false);
                 } else if (_startEventResponse!.respCode == "DM2043") {
                   Get.dialog(
-                      CustomDialogs()
-                          .errorDialogForEvent(data!.respMsg.toString()),
+                      CustomDialogs.showMessage(data!.respMsg.toString()),
                       barrierDismissible: false);
                 } else {
                   Get.dialog(
-                      CustomDialogs().messageDialogMWP(data!.respMsg.toString()),
+                      CustomDialogs.messageDialogMWP(data!.respMsg.toString()),
                       barrierDismissible: false);
                 }
               })

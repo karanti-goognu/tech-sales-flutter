@@ -151,12 +151,12 @@ class AppPages {
      GetPage(
        name: Routes.DASHBOARD_SITE_LIST,
        page: () => VolumeGeneratedSiteList(),
-       binding: SRBinding(),
+       bindings: [SRBinding(), SiteBinding()],
      ),
     GetPage(
       name: Routes.DASHBOARD_VOLUME_CONVERTED,
       page: () => VolumeConvertedTable(),
-      binding: SRBinding(),
+      bindings: [SRBinding(),SiteBinding()],
     ),
 
     GetPage(

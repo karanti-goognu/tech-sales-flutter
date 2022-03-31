@@ -22,12 +22,6 @@ class _StartEventState extends State<StartEvent> {
   bool _isVisible = false;
 
   @override
-  void initState() {
-    super.initState();
-    //_isVisible = false;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -308,7 +302,6 @@ class _StartEventState extends State<StartEvent> {
             Visibility(
               visible: _isVisible,
               child: Container(
-                //height: 50,
                 color: ColorConstants.backgroundColorGrey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

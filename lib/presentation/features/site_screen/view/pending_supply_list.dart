@@ -1,7 +1,3 @@
-
-
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -576,7 +572,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     if (data.length >= 1) {
       return "${data[0].opportunityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -587,11 +582,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
             .splashDataModel.siteProbabilityWinningEntity
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -601,10 +593,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
       return "${data[0].siteStageDesc}";
     } else {
-      print("size is 0");
       return "";
     }
   }

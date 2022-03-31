@@ -288,7 +288,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         icon: Icon(Icons.close),
                         onPressed: () {
                           if (_isUpdate == true) {
-                            Get.dialog(CustomDialogs().showSaveChangesDialog(
+                            Get.dialog(CustomDialogs.showSaveChangesDialog(
                                 "Do you want to save changes?"));
                           } else {
                             Get.back();
@@ -1093,7 +1093,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   } else {
                     Get.back();
                     Get.dialog(
-                        CustomDialogs()
+                        CustomDialogs
                             .messageDialogMWP(data.respMsg.toString()),
                         barrierDismissible: false);
                   }

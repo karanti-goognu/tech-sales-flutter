@@ -58,7 +58,7 @@ class MyApiClientDashboard {
         http.Response.fromStream(result).then((response) {
           data = json.decode(response.body);
           if (data["resp_code"] == "DM1005") {
-            Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
+            Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
                 barrierDismissible: false);
           }
           Get.snackbar('Note', data['resp-msg'].toString(),
@@ -90,7 +90,7 @@ class MyApiClientDashboard {
         var data = json.decode(response.body);
         //      print("Monthly data ${response.body}");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
+          Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
         } else {
           DashboardMonthlyViewModel dashboardMonthlyViewModel;
@@ -129,7 +129,7 @@ class MyApiClientDashboard {
         if (data["resp_code"] == "DM1005") {
           //Get.back();
           //    print("User Inactive");
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
+          Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
         } else {
           SitesListModel dashboardMtdGeneratedVolumeSiteList;
@@ -165,7 +165,7 @@ class MyApiClientDashboard {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
+          Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
         } else {
           DashboardMtdConvertedVolumeList dashboardMtdConvertedVolumeList;
@@ -198,7 +198,7 @@ class MyApiClientDashboard {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
+          Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
         } else {
           DashboardYearlyViewModel dashboardYearlyViewModel;

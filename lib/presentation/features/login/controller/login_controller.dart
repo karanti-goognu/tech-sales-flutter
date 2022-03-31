@@ -142,7 +142,7 @@ class LoginController extends GetxController {
         if (loginResponse.respCode == "DM1011") {
           openOtpVerificationPage(this.phoneNumber);
         } else {
-          Get.dialog(CustomDialogs().errorDialog(loginResponse.respMsg));
+          Get.dialog(CustomDialogs.showMessage(loginResponse.respMsg));
         }
       }
     });
@@ -162,11 +162,11 @@ class LoginController extends GetxController {
         if (retryOtpResponse.respCode == "DM1015") {
           this.retryOtpActive = false;
         } else if (retryOtpResponse.respCode == "DM1016") {
-          Get.dialog(CustomDialogs()
+          Get.dialog(CustomDialogs
               .redirectToLoginDialog('${retryOtpResponse.respMsg}'));
         } else {
           Get.dialog(
-              CustomDialogs().errorDialog('${retryOtpResponse.respMsg}'));
+              CustomDialogs.showMessage('${retryOtpResponse.respMsg}'));
         }
       }
     });
@@ -185,7 +185,7 @@ class LoginController extends GetxController {
         if (validateOtpResponse.respCode == "DM1011") {
           debugPrint(
               'Otp Validation Response is :: ${json.encode(this.validateOtpResponse)}');
-          //Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg));
+          //Get.dialog(CustomDialogs.showMessage(validateOtpResponse.respMsg));
           Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
           _prefs.then((SharedPreferences prefs) {
             prefs.setString(StringConstants.userSecurityKey,
@@ -242,7 +242,7 @@ class LoginController extends GetxController {
             );
           }
           else{
-            Get.dialog(CustomDialogs().errorDialog(validateOtpResponse.respMsg),barrierDismissible: false);
+            Get.dialog(CustomDialogs.showMessage(validateOtpResponse.respMsg),barrierDismissible: false);
           }
         }
       }

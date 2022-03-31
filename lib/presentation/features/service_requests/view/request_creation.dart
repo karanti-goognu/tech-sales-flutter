@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:dropdown_search/dropdown_search.dart';
@@ -110,7 +108,6 @@ class _RequestCreationState extends State<RequestCreation> {
   bool? isComplaint;
   int? siteId;
   String? selectedValue;
-
 
   @override
   void initState() {
@@ -315,7 +312,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                   SizedBox(height: 16),
                                   DropdownSearch<ActiveSiteTSOListsEntity>(
-
                                     mode: Mode.BOTTOM_SHEET,
                                     items: srComplaintModel!.activeSiteTSOLists,
                                     itemAsString: (ActiveSiteTSOListsEntity?
@@ -491,100 +487,88 @@ class _RequestCreationState extends State<RequestCreation> {
                                                   .showPicker(context));
                                           // _imageList= await UploadImageBottomSheet.showPicker(context);
                                         } else {
-                                          Get.dialog(CustomDialogs().errorDialog(
+                                          Get.dialog(CustomDialogs.showMessage(
                                               "You can add only upto 5 photos"));
                                         }
                                       },
                                     ),
                                   ),
-                                  controller.imageList != null
-                                      ? Row(
-                                          children: [
-                                            Expanded(
-                                              child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: controller
-                                                      .imageList.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                         showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                content:
-                                                                    new Container(
-                                                                  // width: 500,
-                                                                  // height: 500,
-                                                                  child: Image.file(
-                                                                      controller
-                                                                              .imageList[
-                                                                          index]),
-                                                                ),
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "Picture ${(index + 1)}. ",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Text(
-                                                                "Image_${(index + 1)}.jpg",
-                                                                style: TextStyle(
-                                                                    color: HexColor(
-                                                                        "#007CBF"),
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          GestureDetector(
-                                                            child: Icon(
-                                                              Icons.delete,
-                                                              color: HexColor(
-                                                                  "#FFCD00"),
-                                                            ),
-                                                            onTap: () {
-                                                              setState(() {
-                                                                UploadImageBottomSheet
-                                                                        .image =
-                                                                    null;
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                controller.imageList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          content:
+                                                              new Container(
+                                                            child: Image.file(
                                                                 controller
-                                                                    .updateImageAfterDelete(
-                                                                        index);
-                                                                // controller.imageList
-                                                                //     .removeAt(
-                                                                //         index);
-                                                              });
-                                                            },
-                                                          )
-                                                        ],
+                                                                        .imageList[
+                                                                    index]),
+                                                          ),
+                                                        );
+                                                      });
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Picture ${(index + 1)}. ",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15),
+                                                        ),
+                                                        Text(
+                                                          "Image_${(index + 1)}.jpg",
+                                                          style: TextStyle(
+                                                              color: HexColor(
+                                                                  "#007CBF"),
+                                                              fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    GestureDetector(
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color:
+                                                            HexColor("#FFCD00"),
                                                       ),
-                                                    );
-                                                  }),
-                                            ),
-                                          ],
-                                        )
-                                      : Container(
-                                          color: Colors.blue,
-                                          height: 10,
-                                        ),
+                                                      onTap: () {
+                                                        setState(() {
+                                                          UploadImageBottomSheet
+                                                              .image = null;
+                                                          controller
+                                                              .updateImageAfterDelete(
+                                                                  index);
+                                                          // controller.imageList
+                                                          //     .removeAt(
+                                                          //         index);
+                                                        });
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 16,
                                   ),
@@ -642,7 +626,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     onPressed: () async {
                                       if (!_srCreationFormKey.currentState!
                                           .validate())
-                                        Get.dialog(CustomDialogs().errorDialog(
+                                        Get.dialog(CustomDialogs.showMessage(
                                             'Please enter the mandatory details'));
                                       else if (_severity.text == "")
                                         Get.defaultDialog(
@@ -650,7 +634,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                             middleText:
                                                 "Request Sub-type and Severity cannot be empty");
                                       else {
-                                        String? empId = await (getEmpId() );
+                                        String? empId = await (getEmpId());
                                         List imageDetails =
                                             List.empty(growable: true);
                                         List subTypeDetails =
@@ -949,7 +933,8 @@ class _RequestCreationState extends State<RequestCreation> {
   customFunction(dataFromOtherClass) {
     setState(() {
       serviceRequestComplaintType = dataFromOtherClass;
-      _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText!;
+      _requestSubType.text =
+          serviceRequestComplaintType.serviceRequestTypeText!;
       _severity.text = serviceRequestComplaintType.complaintSeverity!;
       serviceRequestComplaintTypeId = serviceRequestComplaintType.id;
     });

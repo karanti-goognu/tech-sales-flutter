@@ -43,7 +43,6 @@ class _FilterWidgetState extends State<FilterWidget> {
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
@@ -183,8 +182,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 GestureDetector(
                   onTap: () {
                     _leadsFilterController.isFilterApplied = false;
-
-                    //Navigator.pop(context);
                     setState(() {
                       _leadsFilterController.selectedLeadStage =
                           StringConstants.empty;
@@ -226,7 +223,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied = true;
                     _leadsFilterController.offset = 0;
-                    // _leadsFilterController.leadsListResponse = [];
                     _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST, context);
@@ -247,7 +243,6 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-          // height: 50,
           color: (_leadsFilterController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,
@@ -316,7 +311,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -351,7 +345,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -583,7 +576,6 @@ class _FilterWidgetState extends State<FilterWidget> {
       padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
       child: DropdownButtonFormField(
         onChanged: (dynamic _) {
-          //setState(() {
           if (_leadsFilterController.selectedLeadDistrict == StringConstants.empty) {
             _leadsFilterController.selectedFilterCount =
                 _leadsFilterController.selectedFilterCount + 1;
@@ -608,7 +600,6 @@ class _FilterWidgetState extends State<FilterWidget> {
             .toList(),
         style: FormFieldStyle.formFieldTextStyle,
         decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
-        //validator: (value) => value == null ? 'Please select member type' : null,
       ),
     );
   }
@@ -628,7 +619,6 @@ class _FilterWidgetState extends State<FilterWidget> {
         firstDate: fromDate,
         lastDate: DateTime(2101));
     if (picked != null )
-        //&& picked != selectedDate)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);

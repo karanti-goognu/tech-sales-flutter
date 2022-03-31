@@ -12,6 +12,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/datepicker.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:geolocator/geolocator.dart';
@@ -131,152 +132,126 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             ),
             SizedBox(height: 16),
             TextButton.icon(
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(color: Colors.black26)),
-                backgroundColor: Colors.transparent,
-              ),
-              icon: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.location_searching,
-                  color: HexColor("#F9A61A"),
-                  size: 18,
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black26)),
+                  backgroundColor: Colors.transparent,
                 ),
-              ),
-              label: Padding(
-                padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-                child: Text(
-                  "DETECT",
-                  style: TextStyle(
-                      color: HexColor("#F9A61A"),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17),
+                icon: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Icon(
+                    Icons.location_searching,
+                    color: HexColor("#F9A61A"),
+                    size: 18,
+                  ),
                 ),
-              ),
-              onPressed: () async {
-                // showDialog(
-                //     context: context,
-                //     barrierDismissible: false,
-                //     builder: (BuildContext context) {
-                //       return new WillPopScope(
-                //           onWillPop: (() => null) as Future<bool> Function()?,
-                //           child: Center(
-                //             child: CircularProgressIndicator(),
-                //           ));
-                //     });
-                Get.rawSnackbar(title: "Message",message: StringConstants.ACCESS_LOCATION);
-                LocationDetails result;
-                result = await GetCurrentLocation.getCurrentLocation();
-                  // Get.back();
+                label: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Text(
+                    "DETECT",
+                    style: TextStyle(
+                        color: HexColor("#F9A61A"),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  Get.rawSnackbar(
+                      title: "Message",
+                      message: StringConstants.ACCESS_LOCATION);
+                  LocationDetails result;
+                  result = await GetCurrentLocation.getCurrentLocation();
                   _currentPosition = result.position;
                   List<String> loc = result.loc;
                   _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
-              }
-            ),
+                }),
             SizedBox(
               height: 16,
-              child: Divider(),
+              child: Divider(color: Colors.black26),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.white)),
+                        side: BorderSide(color: Colors.black26)),
                   ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                    child: Text(
-                      "UPLOAD PHOTOS",
-                      style: TextStyle(
-                          color: HexColor("#1C99D4"),
-                          fontWeight: FontWeight.bold,
-                          // letterSpacing: 2,
-                          fontSize: 17),
-                    ),
+                  child: Text(
+                    "UPLOAD PHOTOS",
+                    style: TextStyle(
+                        color: HexColor("#1C99D4"),
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        fontSize: 17),
                   ),
                   onPressed: () async {
+                    if(controller.imageList.length<6)
                     controller.updateImageList(
                         await UploadImageBottomSheet.showPicker(context));
-
-                    // setState(() {
-                    //   _imageList = UploadImageBottomSheet.showPicker(context);
-                    // });
+                    else
+                      Get.dialog(CustomDialogs.showMessage(
+                          "You can add only upto 5 photos"));
                   }),
             ),
-            // controller.imageList != null ?
             Row(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.imageList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                   showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: new Container(
-                                            // width: 500,
-                                            // height: 500,
-                                            child: Image.file(
-                                                controller.imageList[index]),
-                                          ),
-                                        );
-                                      });
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Picture ${(index + 1)}. ",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
-                                          "Image_${(index + 1)}.jpg",
-                                          style: TextStyle(
-                                              color: HexColor("#007CBF"),
-                                              fontSize: 15),
-                                        ),
-                                      ],
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.imageList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: new Container(
+                                      child: Image.file(
+                                          controller.imageList[index]),
                                     ),
-                                    GestureDetector(
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: HexColor("#FFCD00"),
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          controller
-                                              .updateImageAfterDelete(index);
-                                          UploadImageBottomSheet.image = null;
-                                          // controller.imageList.removeAt(index);
-                                        });
-                                      },
-                                    )
-                                  ],
+                                  );
+                                });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Picture ${(index + 1)}. ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                  Text(
+                                    "Image_${(index + 1)}.jpg",
+                                    style: TextStyle(
+                                        color: HexColor("#007CBF"),
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                              GestureDetector(
+                                child: Icon(
+                                  Icons.delete,
+                                  color: HexColor("#FFCD00"),
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  )
-                // : Container(
-                //     color: Colors.blue,
-                //     height: 10,
-                //   )
-            ,
+                                onTap: () {
+                                  setState(() {
+                                    controller.updateImageAfterDelete(index);
+                                    UploadImageBottomSheet.image = null;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
             widget.requestType == "Complaint".toUpperCase()
                 ? Column(
                     children: [
@@ -430,8 +405,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _balanceQuantity,
                                     onChanged: (_) {
                                       setState(() {
-                                        if (
-                                            _balanceQuantity.text == "") {
+                                        if (_balanceQuantity.text == "") {
                                           _mtController.clear();
                                         } else {
                                           _mtController.text = (int.parse(
@@ -471,8 +445,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _mtController,
                                     onChanged: (value) {
                                       setState(() {
-                                        if (
-                                            _mtController.text == "") {
+                                        if (_mtController.text == "") {
                                           _balanceQuantity.clear();
                                         } else {
                                           _balanceQuantity.text = (double.parse(
@@ -554,8 +527,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       TextFormField(
                         controller: _bestBeforeDate,
                         readOnly: true,
-                        onChanged: (data) {
-                                              },
+                        onChanged: (data) {},
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
@@ -826,7 +798,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         onTap: () => PickDate.selectDate(
                                 context: context, lastDate: DateTime.now())
                             .then(
-                          (value) => value==null
+                          (value) => value == null
                               ? null
                               : setState(
                                   () {
@@ -911,7 +883,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               controller: _nextVisitDate,
               onTap: () => PickDate.selectDate(
                       context: context, firstDate: DateTime.now())
-                  .then((value) => value==null
+                  .then((value) => value == null
                       ? null
                       : setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");
@@ -933,7 +905,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       title: 'Warning:',
                       backgroundColor: Colors.red);
                 } else {
-                  String? empId = await (getEmpId() );
+                  String? empId = await (getEmpId());
                   List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {
@@ -993,7 +965,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 }
               },
               style: ElevatedButton.styleFrom(
-              primary: HexColor("#1C99D4"),),
+                primary: HexColor("#1C99D4"),
+              ),
               child: Text(
                 "UPDATE",
                 style: TextStyle(

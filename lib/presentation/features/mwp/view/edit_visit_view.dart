@@ -371,7 +371,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                   controller: _addEventController.bagsController,
                                                               onChanged: (_) {
                                                                 setState(() {
-                                                                  if (_addEventController.bagsController.text == null || _addEventController.bagsController.text == "") {
+                                                                  if ( _addEventController.bagsController.text == "") {
                                                                     _addEventController.mtController.clear();
                                                                   } else {
                                                                     _addEventController.mtController.text = (int.parse(_addEventController.bagsController.text) / 20).toString();

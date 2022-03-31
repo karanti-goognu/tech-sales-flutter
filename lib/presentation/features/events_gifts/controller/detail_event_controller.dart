@@ -137,11 +137,11 @@ class DetailEventController extends GetxController {
 
           Get.back();
           if (dealerListResponse.respCode == "DM1002") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
+            //Get.dialog(CustomDialogs.showMessage(SitesListResponse.respMsg));
             print('${dealerListResponse.respMsg}');
             //SitesDetailWidget();
           } else {
-            // Get.dialog(CustomDialogs().errorDialog(dealerListResponse.respMsg));
+            // Get.dialog(CustomDialogs.showMessage(dealerListResponse.respMsg));
           }
         }
       });
@@ -171,7 +171,7 @@ class DetailEventController extends GetxController {
                 barrierDismissible: false);
           } else {
             Get.dialog(
-                CustomDialogs().messageDialogMWP(value.respMsg.toString()),
+                CustomDialogs.messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);
           }
         });

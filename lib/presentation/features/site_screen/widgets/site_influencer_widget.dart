@@ -169,7 +169,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                             }
                                           }
                                         } else {
-                                          Get.dialog(CustomDialogs().showMessage(
+                                          Get.dialog(CustomDialogs.showMessage(
                                               "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
@@ -328,7 +328,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           }
                                         } else {
                                           Get.dialog(
-                                              CustomDialogs().showMessage(
+                                              CustomDialogs.showMessage(
                                                   "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                         }
                                       });
@@ -387,7 +387,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                     }
 
                                     if (match) {
-                                      Get.dialog(CustomDialogs().showMessage(
+                                      Get.dialog(CustomDialogs.showMessage(
                                           "Already added influencer : " +
                                               value));
                                     } else {
@@ -586,7 +586,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                       .clear();
                                                 }
                                                  Get.dialog(
-                                                    CustomDialogs().showDialog(
+                                                    CustomDialogs.showDialog(
                                                         "No influencer registered with this number"));
                                               }
                                             });
@@ -601,7 +601,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                   .inflName!
                                                   .clear();
                                             }
-                                            return Get.dialog(CustomDialogs()
+                                            return Get.dialog(CustomDialogs
                                                 .showDialog(
                                                 _infDetailModel.respMsg!));
                                           }
@@ -882,7 +882,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                     });
                   } else {
                     print("Error : Please fill previous influencer first");
-                    Get.dialog(CustomDialogs()
+                    Get.dialog(CustomDialogs
                         .showMessage("Please fill previous influencer first"));
                   }
                 },

@@ -411,7 +411,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                                     UpdatedValues updateRequest = new UpdatedValues();
                                                                                     updateRequest.updateRequest(context);
                                                                                   } else {
-                                                                                    Get.dialog(CustomDialogs().showMessage("Please fill all details !!!"));
+                                                                                    Get.dialog(CustomDialogs.showMessage("Please fill all details !!!"));
                                                                                   }
                                                                                 })),
                                                                         SizedBox(
@@ -710,7 +710,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                                                                         // UpdateRequest();
                                                                       } else {
                                                                         Get.dialog(
-                                                                            CustomDialogs().showMessage("Please fill all details !!!"));
+                                                                            CustomDialogs.showMessage("Please fill all details !!!"));
                                                                       }
                                                                     },
                                                                   ),

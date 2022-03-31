@@ -979,7 +979,7 @@ class UpdatedValues {
       if (UpdatedValues.siteBuiltArea == "" ||
           UpdatedValues.siteBuiltArea == null ||
           UpdatedValues.siteBuiltArea == "null") {
-        Get.dialog(CustomDialogs()
+        Get.dialog(CustomDialogs
             .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
       } else {
         isNoOfBagsSuppliedEntered(responseBody, context);
@@ -988,7 +988,7 @@ class UpdatedValues {
     } else if (UpdatedValues.siteBuiltArea == "" ||
         UpdatedValues.siteBuiltArea == null ||
         UpdatedValues.siteBuiltArea == "null") {
-      Get.dialog(CustomDialogs()
+      Get.dialog(CustomDialogs
           .showMessage("Please fill mandatory fields in \"Site Data\" TAb"));
     } else if (UpdatedValues.getAddNextButtonDisable()! &&
         (UpdatedValues.getConstructionTypeVisitNextStage() == null ||
@@ -1001,7 +1001,7 @@ class UpdatedValues {
             UpdatedValues.getDateOfBagSuppliedNextStage() == null ||
             UpdatedValues.getSiteCurrentTotalBagsNextStage() == null ||
             UpdatedValues.getSiteCurrentTotalBagsNextStage() == "")) {
-      Get.dialog(CustomDialogs().showMessage(
+      Get.dialog(CustomDialogs.showMessage(
           "Please fill mandatory fields in \"Add Next Stage\" or hide next stage"));
     } else {
       isNoOfBagsSuppliedEntered(responseBody, context);
@@ -1026,35 +1026,35 @@ class UpdatedValues {
             (productDynamicList![index].supplyDate!.text.isEmpty ||
                 productDynamicList![index].brandPrice!.text.isEmpty ||
                 productDynamicList![index].brandId == -1)) {
-          Get.dialog(CustomDialogs()
+          Get.dialog(CustomDialogs
               .showMessage("You have to click on Add Product to proceed !"));
           return;
         } else {
           if ((getSitePotentialMt() != null || getSitePotentialMt() != "") &&
               double.parse(getSitePotentialMt()!) < 0.0) {
-            Get.dialog(CustomDialogs()
+            Get.dialog(CustomDialogs
                 .showMessage("Site Total Potential can't be negative!"));
             return;
           } else {
             if ((getTotalBalancePotential() != null ||
                     getTotalBalancePotential() != "") &&
                 double.parse(getTotalBalancePotential()!) < 0.0) {
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showMessage("Total Balance Potential can't be negative!"));
               return;
             } else if (balancePT > stagePT) {
-              Get.dialog(CustomDialogs().showMessage(
+              Get.dialog(CustomDialogs.showMessage(
                   "Total  Balance Potential can't be greater than Total Site Potential"));
               return;
             } else if (UpdatedValues.getNoOfFloors() == null &&
                 UpdatedValues.getSiteProgressNoOfFloors() != null) {
-              Get.dialog(CustomDialogs().showMessage(
+              Get.dialog(CustomDialogs.showMessage(
                   "Site Progress floor can't be greater than Site Floor"));
               return;
             } else if (UpdatedValues.getSiteProgressNoOfFloors() != null &&
                 (UpdatedValues.getSiteProgressNoOfFloors()!.id! >
                     UpdatedValues.getNoOfFloors()!.id!)) {
-              Get.dialog(CustomDialogs().showMessage(
+              Get.dialog(CustomDialogs.showMessage(
                   "Site Progress floor can't be greater than Site Floor"));
               return;
             } else {
@@ -1067,29 +1067,29 @@ class UpdatedValues {
         if ((getSiteTotalPotential() != null ||
                 getSiteTotalPotential() != "") &&
             double.parse(getSitePotentialMt()!) < 0.0) {
-          Get.dialog(CustomDialogs()
+          Get.dialog(CustomDialogs
               .showMessage("Site Total Potential can't be negative!"));
           return;
         } else {
           if ((getTotalBalancePotential() != null ||
                   getTotalBalancePotential() != "") &&
               double.parse(getTotalBalancePotential()!) < 0.0) {
-            Get.dialog(CustomDialogs()
+            Get.dialog(CustomDialogs
                 .showMessage("Total Balance Potential can't be negative!"));
             return;
           } else if (balancePT > stagePT) {
-            Get.dialog(CustomDialogs().showMessage(
+            Get.dialog(CustomDialogs.showMessage(
                 "Total  Balance Potential can't be greater than Total Site Potential"));
             return;
           } else if (UpdatedValues.getNoOfFloors() == null &&
               UpdatedValues.getSiteProgressNoOfFloors() != null) {
-            Get.dialog(CustomDialogs().showMessage(
+            Get.dialog(CustomDialogs.showMessage(
                 "Site Progress floor can't be greater than Site Floor"));
             return;
           } else if (UpdatedValues.getSiteProgressNoOfFloors() != null &&
               (UpdatedValues.getSiteProgressNoOfFloors()!.id! >
                   UpdatedValues.getNoOfFloors()!.id!)) {
-            Get.dialog(CustomDialogs().showMessage(
+            Get.dialog(CustomDialogs.showMessage(
                 "Site Progress floor can't be greater than Site Floor"));
             return;
           } else {

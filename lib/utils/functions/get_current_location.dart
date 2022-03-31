@@ -21,21 +21,16 @@ class GetCurrentLocation{
       List<String> loc;
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        print(".");
         Get.rawSnackbar(message:'Location services are disabled.');
       }
       permission = await Geolocator.checkPermission();
-      print("..");
       if (permission == LocationPermission.denied) {
-        print("...");
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          print("....");
           Get.rawSnackbar(message:'Location permissions are denied');
         }
       }
       if (permission == LocationPermission.deniedForever) {
-        print(".....");
         Future.error("location denied forever");
         Get.rawSnackbar(message:'Location permissions are permanently denied, we cannot request permissions.');
       }

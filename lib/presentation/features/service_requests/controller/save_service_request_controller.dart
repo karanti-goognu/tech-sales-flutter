@@ -62,7 +62,7 @@ class SaveServiceRequestController extends GetxController {
                 barrierDismissible: false);
           } else {
             Get.dialog(
-                CustomDialogs().messageDialogSRC(value['resp-msg'].toString()),
+                CustomDialogs.messageDialogSRC(value['resp-msg'].toString()),
                 barrierDismissible: false);
           }
         });

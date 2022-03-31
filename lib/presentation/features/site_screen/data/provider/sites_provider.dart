@@ -166,7 +166,7 @@ class MyApiClientSites {
         log('Data:${json.encode(data)}');
         log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else{
         ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
@@ -174,11 +174,11 @@ class MyApiClientSites {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
           Get.back();
-          Get.dialog(CustomDialogs().showDialog(viewSiteDataResponse.respMsg!));
+          Get.dialog(CustomDialogs.showDialog(viewSiteDataResponse.respMsg!));
         }
         else {
           Get.back();
-          Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
+          Get.dialog(CustomDialogs.showDialog("Some Error Occured !!! "));
         }
       }
       } else
@@ -226,10 +226,10 @@ class MyApiClientSites {
             UpdateLeadResponseModel.fromJson(data);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showDialog(updateLeadResponseModel.respMsg!));
             } else {
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showDialog(updateLeadResponseModel.respMsg!));
             }
           });
@@ -280,18 +280,18 @@ class MyApiClientSites {
           http.Response.fromStream(result).then((response) {
             var data = json.decode(response.body);
             if(data["resp_code"] == "DM1005"){
-              Get.dialog(CustomDialogs().appUserInactiveDialog(
+              Get.dialog(CustomDialogs.appUserInactiveDialog(
                   data["resp_msg"]), barrierDismissible: false);
             }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showDialog(updateLeadResponseModel.respMsg!));
             }
             else {
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showDialog(updateLeadResponseModel.respMsg!));
             }
           }
@@ -341,7 +341,7 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -404,7 +404,7 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -451,7 +451,7 @@ class MyApiClientSites {
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
@@ -473,7 +473,7 @@ class MyApiClientSites {
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         kittyBagsListModel = KittyBagsListModel.fromJson(json.decode(response.body));
