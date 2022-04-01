@@ -52,7 +52,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   TextEditingController _totalSitePotential = TextEditingController();
   TextEditingController _lapPotentialController = TextEditingController();
   TextEditingController _balancePotentialController = TextEditingController();
-
   String? _selectedRadioValue = 'I';
   int? _totalPotential;
   int? _siteCompitationId;
@@ -366,8 +365,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             } else {
               apiCallForProcced();
             }
-
-            //});
           }
         },
       ),

@@ -27,14 +27,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
 
   ScrollController? _scrollController;
 
-  _scrollListener() {
-    if (_scrollController!.position.pixels ==
-        _scrollController!.position.maxScrollExtent) {
-      _siteController.offset += 10;
-      _siteController.pendingSupplyList();
-    }
-  }
-
   PendingSupplyDataResponse? pendingSupplyDataResponse;
 
   getPendingSupplyData() async {
@@ -61,12 +53,9 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
             }
         });
 
-    // _scrollController = ScrollController();
-    // _scrollController..addListener(_scrollListener);
   }
 
   clearFilterSelection() {
