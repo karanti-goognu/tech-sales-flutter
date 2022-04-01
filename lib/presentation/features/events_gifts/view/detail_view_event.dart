@@ -26,7 +26,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailViewEvent extends StatefulWidget {
-  int eventId;
+  final int eventId;
   DetailViewEvent(this.eventId);
 
   @override

@@ -40,7 +40,6 @@ class _DetailPendingState extends State<DetailPending> {
   SaveEventController saveEventController = Get.find();
   DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
-  DeleteEventModel? _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   List<DealersModels> selectedDealersModels = [];
@@ -574,12 +573,7 @@ class _DetailPendingState extends State<DetailPending> {
                                 ),
                                 onPressed: () async {
                                   await detailEventController
-                                      .deleteEvent(widget.eventId)
-                                      .then((data) {
-                                    setState(() {
-                                      _deleteEventModel = data;
-                                    });
-                                  });
+                                      .deleteEvent(widget.eventId);
                                 },
                               ),
                             ],

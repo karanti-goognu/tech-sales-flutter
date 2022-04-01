@@ -20,7 +20,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CancelEvent extends StatefulWidget {
-  int eventId;
+  final int eventId;
   CancelEvent(this.eventId);
   @override
   _CancelEventState createState() => _CancelEventState();

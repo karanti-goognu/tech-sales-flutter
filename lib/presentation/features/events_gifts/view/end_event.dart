@@ -12,8 +12,8 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:get/get.dart';
 
 class EndEvent extends StatefulWidget {
-  int? eventId;
-  int fromPage;
+  final int? eventId;
+  final int fromPage;
   EndEvent(this.eventId, this.fromPage);
 
   @override
