@@ -65,8 +65,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
             }
         });
 
-    // _scrollController = ScrollController();
-    // _scrollController..addListener(_scrollListener);
+    _scrollController = ScrollController();
+    _scrollController?..addListener(_scrollListener);
   }
 
   clearFilterSelection() {
@@ -87,7 +87,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     super.dispose();
     //_appController?.dispose();
     // _siteController?.dispose();
-    // _siteController.offset = 0;
+     _siteController.offset = 0;
   }
 
   void disposeController(BuildContext context) {

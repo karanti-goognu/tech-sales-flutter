@@ -318,7 +318,10 @@ class _RequestCreationState extends State<RequestCreation> {
                                             u) =>
                                         '${toBeginningOfSentenceCase(u!.contactName)} (${u.siteId})',
                                     maxHeight: 240,
-                                    label: "Site Id *",
+                                    //label: "Site Id *",
+                                    dropdownSearchDecoration: FormFieldStyle.buildInputDecoration(
+                                        labelText: "Department*"),
+                                   // dropdownSearchDecoration: InputDecoration(labelText: "Site Id *"),
                                     validator: (value) => value == null
                                         ? "Site id is required "
                                         : null,

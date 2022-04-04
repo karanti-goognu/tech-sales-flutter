@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -26,12 +24,12 @@ class DataBaseProvider extends Model {
     initDatabase();
   }
 
-  deleteDB() async {
-
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'database.db');
-
-  }
+  // deleteDB() async {
+  //
+  //   Directory documentsDirectory = await getApplicationDocumentsDirectory();
+  //   String path = join(documentsDirectory.path, 'database.db');
+  //
+  // }
 
   initDatabase() async {
     Database? database;
