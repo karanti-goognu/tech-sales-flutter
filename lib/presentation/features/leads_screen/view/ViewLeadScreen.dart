@@ -1471,14 +1471,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail[
                                                                 index]
                                                             .inflName,
-
-                                                    // validator: (value) {
-                                                    //   if (value.isEmpty) {
-                                                    //     return 'Please enter Influencer Number ';
-                                                    //   }
-                                                    //
-                                                    //   return null;
-                                                    // },
                                                     style: FormFieldStyle
                                                         .formFieldTextStyle,
                                                     keyboardType:

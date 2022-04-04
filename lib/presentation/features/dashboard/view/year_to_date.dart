@@ -24,13 +24,11 @@ class YearToDate extends StatefulWidget {
 
 
 class _YearToDateState extends State<YearToDate> {
-//  final DataGridController _controller = DataGridController();
   DashboardController _dashboardController = Get.find();
   String? actualOrAverage = 'Actual';
   bool _ytdIsVolume = false;
   String? yearMonth;
   List<dynamic>? _yearMonthList = [];
-//  static GlobalKey previewContainer = new GlobalKey();
   late File imgFile;
   Random random = Random();
   List<DashboardYearlyModels>? _thisYearData;
@@ -58,7 +56,6 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getVolumeAndActualDataForBarGraph() {
-//    print("Volume and Actual $_thisYearData");
     _barGraphGeneratedField = [];
     _barGraphFieldConverted = [];
     _dashboardController.barGraphLegend1 = 'Volume Generated';
@@ -75,7 +72,6 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getVolumeAndAverageDataForLineChart() {
-//    print("Volume and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Generated Volume ';
@@ -92,7 +88,6 @@ class _YearToDateState extends State<YearToDate> {
   }
 
   getCountAndAverageDataForLineChart() {
-//    print("Count and Average $_thisYearData");
     _lineChartGenerated = [];
     _lineChartConverted = [];
     _dashboardController.lineChartLegend1 = 'Avg Lead Generated ';
@@ -109,10 +104,7 @@ class _YearToDateState extends State<YearToDate> {
   }
 
 getYearlyData()async{
-//    print(widget.empID);
   await _dashboardController.getYearlyViewDetails(widget.empID).then((value) {
-  //  print("::::::$value ::::::");
-  //  print("IN VIEW");
     _yearMonthList =
         _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels==null?[]:
         _dashboardController.dashboardYearlyViewModel.dashboardYearlyModels
@@ -137,7 +129,6 @@ getYearlyData()async{
 
   @override
   void initState() {
-  //  print("Initstate Called");
     getYearlyData();
     super.initState();
   }
@@ -147,14 +138,12 @@ getYearlyData()async{
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-  //  print("Build Called");
     return SingleChildScrollView(
       child: Screenshot(
         controller: screenshotController,
         child: Container(
           color: ThemeData.light().scaffoldBackgroundColor,
           padding: const EdgeInsets.all(16.0),
-//          padding: const EdgeInsets.all(36.0),
           child: Column(
             children: [
               Row(

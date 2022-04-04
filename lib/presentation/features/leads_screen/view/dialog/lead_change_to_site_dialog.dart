@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
@@ -52,7 +50,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   TextEditingController _totalSitePotential = TextEditingController();
   TextEditingController _lapPotentialController = TextEditingController();
   TextEditingController _balancePotentialController = TextEditingController();
-
   String? _selectedRadioValue = 'I';
   int? _totalPotential;
   int? _siteCompitationId;
@@ -366,8 +363,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             } else {
               apiCallForProcced();
             }
-
-            //});
           }
         },
       ),
