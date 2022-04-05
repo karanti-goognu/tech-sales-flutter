@@ -1,5 +1,7 @@
 
 
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
+
 class InfluencerViewModel {
   String? respCode;
   String? respMsg;
@@ -72,25 +74,6 @@ class InfluencerModel {
     data['inflName'] = this.inflName;
     data['inflTypeId'] = this.inflTypeId;
     data['mobileNumber'] = this.mobileNumber;
-    return data;
-  }
-}
-
-class InfluencerTypeEntitiesList {
-  int? inflTypeId;
-  String? inflTypeDesc;
-
-  InfluencerTypeEntitiesList({this.inflTypeId, this.inflTypeDesc});
-
-  InfluencerTypeEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflTypeId'] = this.inflTypeId;
-    data['inflTypeDesc'] = this.inflTypeDesc;
     return data;
   }
 }
