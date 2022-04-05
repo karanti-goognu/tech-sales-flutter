@@ -44,7 +44,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   late bool _isEndButtonDisabled;
   SiteOpportunityStatusEntity? selectedOpportunitStatusEnity;
   List<SiteOpportunityStatusEntity>? siteOpportunityStatusEntity =
-  new List.empty(growable: true);
+      new List.empty(growable: true);
   ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
 
   @override
@@ -62,7 +62,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     });
     return empID;
   }
-
 
   getSiteData() async {
     AccessKeyModel accessKeyModel = new AccessKeyModel();
@@ -89,7 +88,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
           viewSiteDataResponse!.siteOpportunityStatusEntity;
       if (viewSiteDataResponse!.sitesModal!.siteOppertunityId != null) {
         for (int i = 0; i < siteOpportunityStatusEntity!.length; i++) {
-        if (viewSiteDataResponse!.sitesModal!.siteOppertunityId.toString() ==
+          if (viewSiteDataResponse!.sitesModal!.siteOppertunityId.toString() ==
               siteOpportunityStatusEntity![i].id.toString()) {
             _siteTypeController.text =
                 siteOpportunityStatusEntity![i].opportunityStatus!;
@@ -118,14 +117,15 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         }
         _siteTypeController.text =
             viewSiteDataResponse!.mwpVisitModel!.visitSubType!;
-        _selectedVisitType.text = viewSiteDataResponse!.mwpVisitModel!.visitType!;
-        selectedDateString = "${viewSiteDataResponse!.mwpVisitModel!.visitDate!}";
+        _selectedVisitType.text =
+            viewSiteDataResponse!.mwpVisitModel!.visitType!;
+        selectedDateString =
+            "${viewSiteDataResponse!.mwpVisitModel!.visitDate!}";
       } else {
         // _siteTypeController.text = "";
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +137,88 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
+
+    final opportunityTxt = TextFormField(
+      controller: _siteTypeController,
+      readOnly: true,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Opportunity Status",
+      ),
+      style: TextStyle(
+          fontSize: 18,
+          color: ColorConstants.inputBoxHintColor,
+          fontFamily: "Muli"),
+    );
+
+    final remarkTxt = TextFormField(
+      controller: _remarkController,
+      style: FormFieldStyle.formFieldTextStyle,
+      decoration: FormFieldStyle.buildInputDecoration(
+        labelText: "Remark",
+      ),
+    );
+
+    final visitType = Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Colors.white,
+            border: Border.all(color: ColorConstants.inputBoxBorderSideColor)),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: typeValue,
+            onChanged: (String? newValue) {
+              setState(() {
+                typeValue = newValue;
+              });
+            },
+            items: <String>[
+              'PHYSICAL',
+              'VIRTUAL',
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: GoogleFonts.roboto(
+                      color: ColorConstants.inputBoxHintColorDark,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16.0),
+                ),
+              );
+            }).toList(),
+          ),
+        ));
+
+    final date = Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          color: Colors.white,
+          border: Border.all(width: 1, color: ColorConstants.lineColorFilter)),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                selectedDateString,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: ColorConstants.blackColor,
+                    fontFamily: "Muli"),
+              ),
+              Icon(
+                Icons.calendar_today_sharp,
+                color: Colors.orange,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
 
     final btnStart = Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -211,281 +293,112 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                   key: _formKey,
                   child: (viewSiteDataResponse!.mwpVisitModel == null)
                       ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _siteTypeController,
-                        readOnly: true,
-                        decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Opportunity Status",
-                        ),
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: ColorConstants
-                                      .inputBoxBorderSideColor)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: typeValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  typeValue = newValue;
-                                });
-                              },
-                              items: <String>[
-                                'PHYSICAL',
-                                'VIRTUAL',
-                              ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.roboto(
-                                            color: ColorConstants
-                                                .inputBoxHintColorDark,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16.0),
-                                      ),
-                                    );
-                                  }).toList(),
-                            ),
-                          )),
-                      SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2),
-                            color: Colors.white,
-                            border: Border.all(
-                                width: 1,
-                                color: ColorConstants.lineColorFilter)),
-                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  selectedDateString,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: ColorConstants.blackColor,
-                                      fontFamily: "Muli"),
-                                ),
-                                Icon(
-                                  Icons.calendar_today_sharp,
-                                  color: Colors.orange,
-                                ),
-                              ],
+                            opportunityTxt,
+                            SizedBox(height: 16),
+                            visitType,
+                            SizedBox(height: 16),
+                            date,
+                            SizedBox(
+                              height: 16,
                             ),
+                            remarkTxt,
+                            SizedBox(
+                              height: 16,
+                            ),
+                            btnStart,
+                            SizedBox(height: 50),
                           ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      TextFormField(
-                        controller: _remarkController,
-                        style: FormFieldStyle.formFieldTextStyle,
-                        decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Remark",
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      btnStart,
-                      SizedBox(height: 50),
-                    ],
-                  )
+                        )
                       : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _siteTypeController,
-                        readOnly: true,
-                        decoration: FormFieldStyle.buildInputDecoration(
-                          labelText: "Opportunity Status",
-                        ),
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                      ),
-                      SizedBox(height: 16),
-                      ((viewSiteDataResponse!
-                          .mwpVisitModel!.visitStartTime !=
-                          null &&
-                          viewSiteDataResponse!
-                              .mwpVisitModel!.visitEndTime ==
-                              null) ||
-                          (viewSiteDataResponse!
-                              .mwpVisitModel!.visitStartTime !=
-                              null &&
-                              viewSiteDataResponse!
-                                  .mwpVisitModel!.visitEndTime !=
-                                  null))
-                          ? TextFormField(
-                        controller: _selectedVisitType,
-                        style: FormFieldStyle.formFieldTextStyle,
-                        keyboardType: TextInputType.number,
-                        readOnly: true,
-                        enableInteractiveSelection: false,
-                        decoration:
-                        FormFieldStyle.buildInputDecoration(),
-                      )
-                          : Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: ColorConstants
-                                      .inputBoxBorderSideColor)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: typeValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  typeValue = newValue;
-                                });
-                              },
-                              items: <String>[
-                                'PHYSICAL',
-                                'VIRTUAL',
-                              ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.roboto(
-                                            color: ColorConstants
-                                                .inputBoxHintColorDark,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16.0),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            opportunityTxt,
+                            SizedBox(height: 16),
+                            ((viewSiteDataResponse!.mwpVisitModel!
+                                                .visitStartTime !=
+                                            null &&
+                                        viewSiteDataResponse!
+                                                .mwpVisitModel!.visitEndTime ==
+                                            null) ||
+                                    (viewSiteDataResponse!.mwpVisitModel!
+                                                .visitStartTime !=
+                                            null &&
+                                        viewSiteDataResponse!
+                                                .mwpVisitModel!.visitEndTime !=
+                                            null))
+                                ? TextFormField(
+                                    controller: _selectedVisitType,
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    keyboardType: TextInputType.number,
+                                    readOnly: true,
+                                    enableInteractiveSelection: false,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(),
+                                  )
+                                : visitType,
+                            SizedBox(height: 16),
+                            date,
+                            SizedBox(
+                              height: 16,
+                            ),
+                            (viewSiteDataResponse!
+                                            .mwpVisitModel!.visitStartTime !=
+                                        null &&
+                                    viewSiteDataResponse!
+                                            .mwpVisitModel!.visitEndTime !=
+                                        null)
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Remark',
+                                        style:
+                                            TextStyles.formfieldLabelTextDark,
                                       ),
-                                    );
-                                  }).toList(),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 8,
+                                            right: 8),
+                                        alignment: Alignment.centerLeft,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors
+                                                  .grey, // Set border color
+                                              width: 1.0), // Set border width
+                                        ),
+                                        child: Text(
+                                          _remarkController.text,
+                                          maxLines: null,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : remarkTxt,
+                            SizedBox(
+                              height: 16,
                             ),
-                          )),
-                      SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2),
-                            color: Colors.white,
-                            border: Border.all(
-                                width: 1,
-                                color: ColorConstants.lineColorFilter)),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  selectedDateString,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: ColorConstants.blackColor,
-                                      fontFamily: "Muli"),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    // _selectDate(context);
-                                  },
-                                  child: Icon(
-                                    Icons.calendar_today_sharp,
-                                    color: Colors.orange,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            (viewSiteDataResponse!
+                                            .mwpVisitModel!.visitStartTime !=
+                                        null &&
+                                    viewSiteDataResponse!
+                                            .mwpVisitModel!.visitEndTime ==
+                                        null)
+                                ? btnEnd
+                                : Container(),
+                            SizedBox(height: 100),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      (viewSiteDataResponse!
-                          .mwpVisitModel!.visitStartTime !=
-                          null &&
-                          viewSiteDataResponse!
-                              .mwpVisitModel!.visitEndTime !=
-                              null)
-                          ? Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Remark',
-                            style:
-                            TextStyles.formfieldLabelTextDark,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 8,
-                                right: 8),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors
-                                      .grey, // Set border color
-                                  width: 1.0), // Set border width
-                            ),
-                            child: Text(
-                              _remarkController.text,
-                              maxLines: null,
-                            ),
-                          ),
-                        ],
-                      )
-                          : TextFormField(
-                        controller: _remarkController,
-                        style: FormFieldStyle.formFieldTextStyle,
-                        decoration:
-                        FormFieldStyle.buildInputDecoration(
-                          labelText: "Remark",
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      (viewSiteDataResponse!
-                          .mwpVisitModel!.visitStartTime !=
-                          null &&
-                          viewSiteDataResponse!
-                              .mwpVisitModel!.visitEndTime ==
-                              null)
-                          ? btnEnd
-                          : Container(),
-                      SizedBox(height: 100),
-                    ],
-                  ),
                 )
               ],
             )));
-
   }
 
   _getCurrentLocation(int id) async {
@@ -509,7 +422,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       selectedDateStringNext = "";
     }
     SiteVisitRequestModel _siteVisitRequestModel =
-    SiteVisitRequestModel.fromJson({
+        SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
       "dspAvailableQty": "",
       "eventType": "",
@@ -530,34 +443,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitType": typeValue,
     });
     TsoLogger.printLog("Create: ${json.encode(_siteVisitRequestModel)}");
-    internetChecking().then((result) => {
-      if (result == true)
-        {
-          _siteController
-              .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
-              .then((data) {
-            if (data != null) {
-              setState(() {
-                if (data.respCode == "MWP2028")
-                  Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
-                else {
-                  Get.dialog(
-                      CustomDialogs.showMessage(data.respMsg.toString()),
-                      barrierDismissible: false);
-                }
-              });
-            }
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+    apiCall(_siteVisitRequestModel);
   }
 
   _getCurrentLocationEnd() async {
@@ -578,11 +464,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     if (selectedDateStringNext == null ||
         selectedDateStringNext == "Next visit date") {
       selectedDateStringNext =
-      '${viewSiteDataResponse!.mwpVisitModel!.nextVisitDate}';
+          '${viewSiteDataResponse!.mwpVisitModel!.nextVisitDate}';
     }
 
     SiteVisitRequestModel _siteVisitRequestModel =
-    SiteVisitRequestModel.fromJson({
+        SiteVisitRequestModel.fromJson({
       "docId": widget.siteId,
       "dspAvailableQty": "",
       "eventType": "",
@@ -603,34 +489,38 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       "visitType": viewSiteDataResponse!.mwpVisitModel!.visitType,
     });
     TsoLogger.printLog("End: ${json.encode(_siteVisitRequestModel)}");
+    apiCall(_siteVisitRequestModel);
+  }
+
+  apiCall(SiteVisitRequestModel _siteVisitRequestModel) {
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _siteController
-              .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
-              .then((data) {
-            if (data != null) {
-              setState(() {
-                if (data.respCode == "MWP2028")
-                  Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
-                else {
-                  Get.dialog(
-                      CustomDialogs.showMessage(data.respMsg.toString()),
-                      barrierDismissible: false);
+          if (result == true)
+            {
+              _siteController
+                  .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
+                  .then((data) {
+                if (data != null) {
+                  setState(() {
+                    if (data.respCode == "MWP2028")
+                      Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
+                    else {
+                      Get.dialog(
+                          CustomDialogs.showMessage(data.respMsg.toString()),
+                          barrierDismissible: false);
+                    }
+                  });
                 }
-              });
+              })
             }
-          })
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   Widget showDialogSubmitSite(String message) {
@@ -671,4 +561,3 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     );
   }
 }
-
