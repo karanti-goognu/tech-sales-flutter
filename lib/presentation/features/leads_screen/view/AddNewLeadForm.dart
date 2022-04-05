@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/view/ViewLeadScreen.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
@@ -1953,18 +1954,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
     }
   }
 
-}
-
-class Item {
-  Item({
-    this.expandedValue,
-    this.headerValue,
-    this.isExpanded = false,
-  });
-
-  String? expandedValue;
-  String? headerValue;
-  bool isExpanded;
 }
 
 List<Item> generateItems(int numberOfItems) {

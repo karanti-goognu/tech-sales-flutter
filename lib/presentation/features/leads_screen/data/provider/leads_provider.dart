@@ -82,8 +82,6 @@ class MyApiClientLeads {
         'reference-id': empId,
         'mobile-number': mobile,
       };
-
-
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
       if (response.statusCode == 200) {

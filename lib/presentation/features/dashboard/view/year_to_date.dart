@@ -170,12 +170,10 @@ getYearlyData()async{
                             if (_ytdIsVolume == true)
                               {
                                 getVolumeAndActualDataForBarGraph();
-//                                print("Actual and Volume");
                               }
                             else
                               {
                                 getCountAndActualDataForBarGraph();
-//                                print("Actual and Count");
                               }
 
                           } else {
@@ -241,7 +239,6 @@ getYearlyData()async{
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Transform.scale(
-//                    scale: 0.7,
                   scale: 1,
                     child: Container(
                       height: 28,
@@ -270,11 +267,7 @@ getYearlyData()async{
                                         value: e,
                                       ))
                                       .toList(),
-                                  onTap: () {
-                                  //  print("On Tap called");
-                                  },
                                   onChanged: (dynamic _) {
-                                  //  print("On changed called");
                                     if(mounted)
                                     setState(() {
                                       yearMonth = _;
@@ -284,9 +277,7 @@ getYearlyData()async{
                                           .where((DashboardYearlyModels i) =>
                                       i.showYear == yearMonth)
                                           .toList();
-//                                      print("This year data length${_thisYearData.length} yearMonth $yearMonth");
                                     });
-//                                    print(yearMonth);
                                     if (_ytdIsVolume == true) {
                                       getVolumeAndActualDataForBarGraph();
                                       getVolumeAndAverageDataForLineChart();
@@ -308,7 +299,6 @@ getYearlyData()async{
                     scale: 1,
                     child: Container(
                       height: 28,
-//                      width: 100,
                       padding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                       decoration: BoxDecoration(
@@ -336,13 +326,11 @@ getYearlyData()async{
                                 actualOrAverage = _;
                               });
                               if (actualOrAverage == 'Actual') {
-//                                print("Actual");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndActualDataForBarGraph();
                                 else
                                   getCountAndActualDataForBarGraph();
                               } else {
-//                                print("Average");
                                 if (_ytdIsVolume == true)
                                   getVolumeAndAverageDataForLineChart();
                                 else
@@ -454,44 +442,9 @@ getYearlyData()async{
   Widget _returnDataGridForCount(MtdCount data) {
     return Column(
       children: [
-        Container(
-          height: SizeConfig.screenHeight! / 20,
-          color: HexColor('707070'),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "MTD",
-                  style: TextStyle(color: HexColor('FFFFFF')),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Text("Tgt",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Pro. Rata",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Act",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Act%",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              )
-            ],
-          ),
-        ),
+        tableHeader(),
         Container(
           color: Colors.black.withOpacity(0.12),
-//              height: SizeConfig.screenHeight/11,
           child: Column(
             children: [
               Padding(
@@ -554,44 +507,9 @@ getYearlyData()async{
   Widget _returnDataGridForVolume(MtdVolume data) {
     return Column(
       children: [
-        Container(
-          height: SizeConfig.screenHeight! / 20,
-          color: HexColor('707070'),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "MTD",
-                  style: TextStyle(color: HexColor('FFFFFF')),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Text("Tgt",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Pro. Rata",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Act",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              ),
-              Expanded(
-                child: Text("Act%",
-                    style: TextStyle(color: HexColor('FFFFFF')),
-                    textAlign: TextAlign.center),
-              )
-            ],
-          ),
-        ),
+        tableHeader(),
         Container(
           color: Colors.black.withOpacity(0.12),
-//              height: SizeConfig.screenHeight/11,
           child: Column(
             children: [
               Padding(
@@ -649,6 +567,44 @@ getYearlyData()async{
         )
       ],
     );
+  }
+
+  Container tableHeader() {
+    return Container(
+        height: SizeConfig.screenHeight! / 20,
+        color: HexColor('707070'),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "MTD",
+                style: TextStyle(color: HexColor('FFFFFF')),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(
+              child: Text("Tgt",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center),
+            ),
+            Expanded(
+              child: Text("Pro. Rata",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center),
+            ),
+            Expanded(
+              child: Text("Act",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center),
+            ),
+            Expanded(
+              child: Text("Act%",
+                  style: TextStyle(color: HexColor('FFFFFF')),
+                  textAlign: TextAlign.center),
+            )
+          ],
+        ),
+      );
   }
 }
 

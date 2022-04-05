@@ -174,8 +174,7 @@ class LeadsFilterController extends GetxController {
           encryptString(empId, StringConstants.encryptedKey);
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
