@@ -50,7 +50,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
   bool fromDropDown = false;
   var _nextVisitDate = new TextEditingController();
   var _inactiveReasonText = new TextEditingController();
-  SiteOpportunityStatusEntity? _siteOpportunitStatusEnityVisit;
+  //SiteOpportunityStatusEntity? _siteOpportunitStatusEnityVisit;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String? empCode, name;
   List<File> _imageList = new List.empty(growable: true);
@@ -119,7 +119,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                     UpdatedValues.setSiteStageId(labelId);
                   }
                 }
-                if (viewSiteDataResponse.sitesModal!.siteOppertunityId != null) {
+              /*  if (viewSiteDataResponse.sitesModal!.siteOppertunityId != null) {
                   for (int i = 0;
                       i < viewSiteDataResponse.siteOpportunityStatusEntity!.length; i++) {
                     if (viewSiteDataResponse.sitesModal!.siteOppertunityId
@@ -134,6 +134,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                   _siteOpportunitStatusEnityVisit = viewSiteDataResponse.siteOpportunityStatusEntity![0];
                   //_siteOpportunitStatusEnityVisit = null;
                 }
+                */
               },
             );
           },

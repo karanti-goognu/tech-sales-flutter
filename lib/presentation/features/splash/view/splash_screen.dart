@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -23,7 +20,7 @@ class SplashScreen extends StatefulWidget {
     return SplashScreenPageState();
   }
 }
-
+/*
 final _kShouldTestAsyncErrorOnInit = false;
 final _kTestingCrashlytics = true;
 
@@ -33,6 +30,7 @@ Future<void> _testAsyncErrorOnInit() async {
     print(list[100]);
   });
 }
+
 
 Future<void> _initializeFlutterFire() async {
   await Firebase.initializeApp();
@@ -55,7 +53,7 @@ Future<void> _initializeFlutterFire() async {
     await _testAsyncErrorOnInit();
   }
 }
-
+*/
 class SplashScreenPageState extends State<SplashScreen> {
   SplashController _splashController = Get.find();
 

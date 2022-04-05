@@ -163,8 +163,8 @@ class MyApiClientSites {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        log('Data:${json.encode(data)}');
-        log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
+        // log('Data:${json.encode(data)}');
+        // log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

@@ -17,8 +17,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteProgressWidget extends StatefulWidget {
-  ViewSiteDataResponse? viewSiteDataResponse;
-  TabController? tabController;
+  final ViewSiteDataResponse? viewSiteDataResponse;
+  final TabController? tabController;
   int? tabIndex;
 
   SiteProgressWidget(
