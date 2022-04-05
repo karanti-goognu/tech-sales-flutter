@@ -18,7 +18,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SiteFilterWidget extends StatefulWidget {
-  SiteDistrictListModel? siteDistrictListModel;
+  final SiteDistrictListModel? siteDistrictListModel;
 
   SiteFilterWidget({this.siteDistrictListModel});
   @override
