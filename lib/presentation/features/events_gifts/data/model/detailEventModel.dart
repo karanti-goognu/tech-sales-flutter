@@ -1,5 +1,7 @@
 
 
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventDealersModelList.dart';
+
 class DetailEventModel {
   String? respCode;
   String? respMsg;
@@ -295,42 +297,6 @@ class MwpEventModel {
   }
 }
 
-class EventDealersModelList {
-    int? eventDealerId;
-  int? eventId;
-  String? dealerId;
-  String? dealerName;
-  String? eventStage;
-  String? isActive;
-
-  EventDealersModelList(
-      {this.eventDealerId,
-        this.eventId,
-        this.dealerId,
-        this.dealerName,
-        this.eventStage,
-        this.isActive});
-
-  EventDealersModelList.fromJson(Map<String, dynamic> json) {
-    eventDealerId = json['eventDealerId'];
-    eventId = json['eventId'];
-    dealerId = json['dealerId'];
-    dealerName = json['dealerName'];
-    eventStage = json['eventStage'];
-    isActive = json['isActive'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventDealerId'] = this.eventDealerId;
-    data['eventId'] = this.eventId;
-    data['dealerId'] = this.dealerId;
-    data['dealerName'] = this.dealerName;
-    data['eventStage'] = this.eventStage;
-    data['isActive'] = this.isActive;
-    return data;
-  }
-}
 
 class CancelReasonList {
   int? eventCancelReasonId;

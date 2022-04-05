@@ -1,4 +1,5 @@
-
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerSourceListModel.dart';
 
 class InfluencerDetailDataModel {
   Response? response;
@@ -269,28 +270,6 @@ class InfluencerDetails {
   }
 }
 
-class InfluencerTypeEntitiesList {
-  int? inflTypeId;
-  String? inflTypeDesc;
-  String? infRegFlag;
-
-  InfluencerTypeEntitiesList(
-      {this.inflTypeId, this.inflTypeDesc, this.infRegFlag});
-
-  InfluencerTypeEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
-    infRegFlag = json['infRegFlag'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflTypeId'] = this.inflTypeId;
-    data['inflTypeDesc'] = this.inflTypeDesc;
-    data['infRegFlag'] = this.infRegFlag;
-    return data;
-  }
-}
 
 class InfluencerCategoryEntitiesList {
   int? inflCatId;
@@ -311,24 +290,6 @@ class InfluencerCategoryEntitiesList {
   }
 }
 
-class InfluencerSourceList {
-  int? inflSourceId;
-  String? inflSourceText;
-
-  InfluencerSourceList({this.inflSourceId, this.inflSourceText});
-
-  InfluencerSourceList.fromJson(Map<String, dynamic> json) {
-    inflSourceId = json['inflSourceId'];
-    inflSourceText = json['inflSourceText'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflSourceId'] = this.inflSourceId;
-    data['inflSourceText'] = this.inflSourceText;
-    return data;
-  }
-}
 
 class SiteBrandList {
   int? id;

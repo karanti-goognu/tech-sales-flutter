@@ -1,5 +1,8 @@
 
 
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventDealersModelList.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventInfluencerModelList.dart';
+
 class DealerInfModel {
   String? respCode;
   String? respMsg;
@@ -56,84 +59,6 @@ class DealerInfModel {
   }
 }
 
-class EventDealersModelList {
-  int? eventDealerId;
-  int? eventId;
-  String? dealerId;
-  String? dealerName;
-  String? eventStage;
-  String? isActive;
-
-  EventDealersModelList(
-      {this.eventDealerId,
-        this.eventId,
-        this.dealerId,
-        this.dealerName,
-        this.eventStage,
-        this.isActive});
-
-  EventDealersModelList.fromJson(Map<String, dynamic> json) {
-    eventDealerId = json['eventDealerId'];
-    eventId = json['eventId'];
-    dealerId = json['dealerId'];
-    dealerName = json['dealerName'];
-    eventStage = json['eventStage'];
-    isActive = json['isActive'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventDealerId'] = this.eventDealerId;
-    data['eventId'] = this.eventId;
-    data['dealerId'] = this.dealerId;
-    data['dealerName'] = this.dealerName;
-    data['eventStage'] = this.eventStage;
-    data['isActive'] = this.isActive;
-    return data;
-  }
-}
-
-class EventInfluencerModelList {
-  int? eventId;
-  int? eventInflId;
-  String? inflContact;
-  int? inflId;
-  String? inflName;
-  int? inflTypeId;
-  String? isActive;
-
-
-  EventInfluencerModelList(
-      {this.eventId,
-        this.eventInflId,
-        this.inflContact,
-        this.inflId,
-        this.inflName,
-        this.inflTypeId,
-        this.isActive});
-
-  EventInfluencerModelList.fromJson(Map<String, dynamic> json) {
-    eventId = json['eventId'];
-    eventInflId = json['eventInflId'];
-    inflContact = json['inflContact'];
-    inflId = json['inflId'];
-    inflName = json['inflName'];
-    inflTypeId = json['inflTypeId'];
-    isActive = json['isActive'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['eventId'] = this.eventId;
-    data['eventInflId'] = this.eventInflId;
-    data['inflContact'] = this.inflContact;
-    data['inflId'] = this.inflId;
-    data['inflName'] = this.inflName;
-    data['inflTypeId'] = this.inflTypeId;
-    data['isActive'] = this.isActive;
-    return data;
-  }
-}
 
 class DealersModel {
   String? dealerId;

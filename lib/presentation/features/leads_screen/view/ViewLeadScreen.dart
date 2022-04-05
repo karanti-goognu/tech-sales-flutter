@@ -401,13 +401,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     value: label,
                   ))
               .toList(),
-          //  elevation: 0,
           iconSize: 35,
           hint: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: (labelText != null) ? Text(labelText!) : Text(""),
           ),
-          // hint: Text('Rating'),
           onChanged: (dynamic value) {
             setState(() {
               _selectedValuedummy = value;
@@ -420,7 +418,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       viewLeadDataResponse));
                 } else if (_selectedValuedummy!.id == 3) {
                   showDialog(
-                      // barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) =>
                           new ChangeLeadToSiteDialog(
@@ -517,15 +514,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               }
             });
           },
-
-          //
         ),
       ),
     );
 
     final name = TextFormField(
       controller: _contactName,
-      //autofocus: true,
       focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
@@ -543,8 +537,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final leadSource = TextFormField(
       controller: _leadSource,
-      //autofocus: true,
-      //focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
@@ -553,7 +545,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final leadSourceUser = TextFormField(
       controller: _leadSourceUser,
-      //autofocus: true,
       focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
@@ -589,7 +580,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#F9A61A"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
@@ -629,7 +619,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#F9A61A"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
@@ -1230,7 +1219,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             ),
                                                     ],
@@ -1239,8 +1227,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               );
                                             } else {
                                               return Column(
-                                                // mainAxisAlignment:
-                                                // MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Row(
                                                     mainAxisAlignment:
@@ -1274,7 +1260,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             )
                                                           : TextButton.icon(
@@ -1300,7 +1285,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             ),
                                                     ],
@@ -1317,7 +1301,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 18,
-                                                            // color: HexColor("#000000DE"),
                                                             fontFamily: "Muli"),
                                                       ),
                                                       Switch(
@@ -1375,7 +1358,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 ? HexColor(
                                                                     "#009688")
                                                                 : Colors.black,
-                                                            // color: HexColor("#000000DE"),
                                                             fontFamily: "Muli"),
                                                       ),
                                                     ],
@@ -1486,13 +1468,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail[
                                                                 index]
                                                             .inflTypeValue,
-                                                    // validator: (value) {
-                                                    //   if (value.isEmpty) {
-                                                    //     return 'Please enter Influencer Number ';
-                                                    //   }
-                                                    //
-                                                    //   return null;
-                                                    // },
                                                     style: FormFieldStyle
                                                         .formFieldTextStyle,
                                                     keyboardType:
@@ -1697,7 +1672,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             "##F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
                                                         fontSize: 17),
                                                   )
                                                 : Text(
@@ -1761,7 +1735,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   String? labelText;
   int? labelId;
 
-  ///TextEditingControllers
   var _contactName = TextEditingController();
   var _contactNumber = TextEditingController();
   var txt = TextEditingController();
@@ -1845,7 +1818,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     "Status of this lead is $labelText . You cannot edit or update it.",
                   ),
                   actions: <Widget>[
-                    // usually buttons at the bottom of the dialog
                     new TextButton(
                       child: new Text("Close"),
                       onPressed: () {
@@ -2115,7 +2087,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         new CommentsDetail(
                                             createdBy: empId,
                                             commentText: _comments.text,
-                                            // commentedAt: DateTime.now(),
                                             creatorName: name)
                                       ];
                                       List<updateRequest.ListLeadcomments>
@@ -2264,8 +2235,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
-                                          //  _imageList,
-                                          //  _imageListFromController,
                                           userSelectedImageFile,
                                           context,
                                           viewLeadDataResponse
@@ -2298,44 +2267,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             child: Column(children: [
               TextFormField(
                 controller: _originalLeadID,
-                onChanged: (data) {
-                  // setState(() {
-                  //   _contactName.text = data;
-                  // });
-                },
                 maxLength: 6,
                 style: TextStyle(
                     fontSize: 18,
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Original Lead Id",
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
+                decoration:
+                FormFieldStyle.buildInputDecoration(labelText:"Original Lead Id" ),
               ),
             ]),
           )),
@@ -2440,37 +2379,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                           value: label,
                         ))
                     .toList(),
-
-                // hint: Text('Rating'),
                 onChanged: (value) {
                   setState(() {
                     _selectedNextStageConstructionEntity = value;
                   });
                 },
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Next Stage of Construction",
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
+                decoration:
+
+                FormFieldStyle.buildInputDecoration(labelText: "Next Stage of Construction")
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
@@ -2488,54 +2404,28 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
+                decoration:
+                FormFieldStyle.buildInputDecoration(labelText: "Next date of Construction",suffixIcon:IconButton(
+                  icon: Icon(
+                    Icons.date_range_rounded,
+                    size: 22,
+                    color: ColorConstants.clearAllTextColor,
                   ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Next date of construction",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.date_range_rounded,
-                      size: 22,
-                      color: ColorConstants.clearAllTextColor,
-                    ),
-                    onPressed: () async {
-                      final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101));
+                  onPressed: () async {
+                    final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101));
 
-                      setState(() {
-                        final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                        final String formattedDate = formatter.format(picked!);
-                        nextStageConstructionPickedDate = picked;
-                        _nextDateofConstruction.text = formattedDate;
-                      });
-                    },
-                  ),
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
+                    setState(() {
+                      final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                      final String formattedDate = formatter.format(picked!);
+                      nextStageConstructionPickedDate = picked;
+                      _nextDateofConstruction.text = formattedDate;
+                    });
+                  },
+                ) ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
@@ -2552,7 +2442,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                // fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
@@ -2578,7 +2467,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   userChangeDealerId() {
-    // TODO: implement userChangeDealerId
     if (mounted) setState(() {});
   }
 

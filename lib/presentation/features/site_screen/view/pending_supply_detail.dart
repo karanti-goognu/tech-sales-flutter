@@ -998,87 +998,8 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String? empId = await (getEmpId() );
-                                          if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs
-                                                .showMessage(
-                                                    "Please select Floor !"));
-                                            return;
-                                          }
-                                          if (_selectedConstructionType ==
-                                              null) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please select a Construction Stage !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .sitePotentialMt
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter Stage Potential !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .requestInitiatedBy ==
-                                              "Influencer") {
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
-                                            }
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .brandPrice
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter brand price !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .supplyQty
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs
-                                                .showMessage(
-                                                    "Please enter supply qty !"));
-                                            return;
-                                          }
-
-                                          if (empId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter reference Id!"));
-                                            return;
-                                          }
-
-                                          if (widget.siteId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Site id can't be null or empty!"));
-                                            return;
-                                          }
-
-                                          if (widget.supplyHistoryId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "supplyHistory id can't be null or empty!"));
-                                            return;
-                                          }
-
+                                          String? empId = await getEmpId();
+                                          checkPendingSupplyValidations(empId);
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
@@ -1153,90 +1074,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                         ),
                                         onPressed: () async {
                                           String? empId = await (getEmpId() );
-                                          // if (_siteController
-                                          //         .pendingSupplyDetailsResponse
-                                          //         .pendingSuppliesDetailsModel
-                                          //         .shipToPartyName ==
-                                          //     null) {
-                                          if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs
-                                                .showMessage(
-                                                    "Please select Floor !"));
-                                            return;
-                                          }
-                                          if (_selectedConstructionType ==
-                                              null) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please select a Construction Stage !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .sitePotentialMt
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter Stage Potential !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .requestInitiatedBy ==
-                                              "Influencer") {
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
-                                            }
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .brandPrice
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter brand price !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .supplyQty
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs
-                                                .showMessage(
-                                                    "Please enter supply qty !"));
-                                            return;
-                                          }
-
-                                          if (empId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Please enter reference Id!"));
-                                            return;
-                                          }
-
-                                          if (widget.siteId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "Site id can't be null or empty!"));
-                                            return;
-                                          }
-
-                                          if (widget.supplyHistoryId!.isEmpty) {
-                                            Get.dialog(CustomDialogs.showMessage(
-                                                "supplyHistory id can't be null or empty!"));
-                                            return;
-                                          }
+                                          checkPendingSupplyValidations(empId);
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "A",
@@ -1293,6 +1131,80 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                       ),
                     ),
     );
+  }
+
+  checkPendingSupplyValidations(String? empId) async {
+    if (_selectedFloorType == null) {
+      Get.dialog(CustomDialogs
+          .showMessage(
+          "Please select Floor !"));
+      return;
+    }
+    if (_selectedConstructionType == null) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please select a Construction Stage !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .sitePotentialMt
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter Stage Potential !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .requestInitiatedBy ==
+        "Influencer") {
+      if (_siteController.counterId
+          .toString()
+          .isEmpty) {
+        Get.dialog(CustomDialogs
+            .showMessage(
+            "Please select a Counter !"));
+        return;
+      }
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .brandPrice
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter brand price !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .supplyQty
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs
+          .showMessage(
+          "Please enter supply qty !"));
+      return;
+    }
+    if (empId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter reference Id!"));
+      return;
+    }
+    if (widget.siteId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Site id can't be null or empty!"));
+      return;
+    }
+    if (widget.supplyHistoryId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "supplyHistory id can't be null or empty!"));
+      return;
+    }
   }
 
   Future getEmpId() async {

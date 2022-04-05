@@ -1,4 +1,4 @@
-
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 
 class InfDetailModel {
   String? respCode;
@@ -102,24 +102,6 @@ class InfluencerModel {
   }
 }
 
-class InfluencerTypeEntitiesList {
-  int? inflTypeId;
-  String? inflTypeDesc;
-
-  InfluencerTypeEntitiesList({this.inflTypeId, this.inflTypeDesc});
-
-  InfluencerTypeEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflTypeId'] = this.inflTypeId;
-    data['inflTypeDesc'] = this.inflTypeDesc;
-    return data;
-  }
-}
 
 class InfluencerCategoryEntitiesList {
   int? inflCatId;
