@@ -226,42 +226,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                             fontFamily: "Muli"),
                       ),
                       SizedBox(height: 16),
-                      Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: ColorConstants
-                                      .inputBoxBorderSideColor)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: typeValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  typeValue = newValue;
-                                });
-                              },
-                              items: <String>[
-                                'PHYSICAL',
-                                'VIRTUAL',
-                              ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.roboto(
-                                            color: ColorConstants
-                                                .inputBoxHintColorDark,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16.0),
-                                      ),
-                                    );
-                                  }).toList(),
-                            ),
-                          )),
+                      getVisitTypeDropdown(),
                       SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -348,42 +313,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                         decoration:
                         FormFieldStyle.buildInputDecoration(),
                       )
-                          : Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: ColorConstants
-                                      .inputBoxBorderSideColor)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: typeValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  typeValue = newValue;
-                                });
-                              },
-                              items: <String>[
-                                'PHYSICAL',
-                                'VIRTUAL',
-                              ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: GoogleFonts.roboto(
-                                            color: ColorConstants
-                                                .inputBoxHintColorDark,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16.0),
-                                      ),
-                                    );
-                                  }).toList(),
-                            ),
-                          )),
+                          : getVisitTypeDropdown(),
                       SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -486,6 +416,45 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
               ],
             )));
 
+  }
+
+  Container getVisitTypeDropdown() {
+    return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.white,
+                            border: Border.all(
+                                color: ColorConstants
+                                    .inputBoxBorderSideColor)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: typeValue,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                typeValue = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'PHYSICAL',
+                              'VIRTUAL',
+                            ].map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: GoogleFonts.roboto(
+                                          color: ColorConstants
+                                              .inputBoxHintColorDark,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16.0),
+                                    ),
+                                  );
+                                }).toList(),
+                          ),
+                        ));
   }
 
   _getCurrentLocation(int id) async {
