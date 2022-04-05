@@ -33,6 +33,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_v
 import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/presentation/features/notification/view/NotificationScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
@@ -112,7 +113,7 @@ class AppPages {
         binding: AppBinding()),
     GetPage(
         name: Routes.DEALER_LIST_VIEW,
-        page: () => DealersListViewWidget(),
+        page: () => DealersListWidget(),
         binding: AppBinding()),
     GetPage(
       name: Routes.SERVICE_REQUESTS,

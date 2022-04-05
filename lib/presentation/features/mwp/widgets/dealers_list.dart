@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -15,13 +13,8 @@ class DealersListWidget extends StatefulWidget {
 class _DealersListWidgetState extends State<DealersListWidget> {
   AddEventController _addEventController = Get.find();
   TextEditingController controller = new TextEditingController();
-
   final _searchList = List<DealerModel?>.empty(growable: true);
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +84,6 @@ class _DealersListWidgetState extends State<DealersListWidget> {
 
   Widget showDealerListBody() {
     return Container(
-      /*height: SizeConfig.safeBlockVertical * 50,
-      width: SizeConfig.screenWidth,*/
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -192,7 +183,6 @@ class _DealersListWidgetState extends State<DealersListWidget> {
       setState(() {});
       return;
     }
-      print('Hello'+text);
       for(int i=0;i<_addEventController.dealerList.length;i++){
         if(_addEventController.dealerList[i].dealerName.toUpperCase().contains(text)||_addEventController.dealerList[i].dealerName.toLowerCase().contains(text)||
             _addEventController.dealerList[i].dealerName.contains(text)){
@@ -200,7 +190,6 @@ class _DealersListWidgetState extends State<DealersListWidget> {
           setState(() {
             _searchList.add(_addEventController.dealerList[i]);
           });
-          print("FilterList-->"+_searchList.length.toString());
         }
       }
 
@@ -209,18 +198,13 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   }
 
   void itemChange(bool? val, int index) {
-    /*else{
-      _addEventController.dealerListSelected.remove(index);
-    }*/
     setState(() {
       _addEventController.dealerList[index].isSelected = val;
       if (val!) {
-        print('true');
         _addEventController.dealerListSelected.add(new DealerModelSelected(
             _addEventController.dealerList[index].dealerId,
             _addEventController.dealerList[index].dealerName));
       } else {
-        print('false');
         _addEventController.dealerListSelected.removeWhere((item) =>
             item.dealerId == _addEventController.dealerList[index].dealerId);
       }
@@ -228,16 +212,12 @@ class _DealersListWidgetState extends State<DealersListWidget> {
   }
 
   void itemChange1(bool? val, String? dealerName,int index1) {
-    /*else{
-      _addEventController.dealerListSelected.remove(index);
-    }*/
     var index;
     for(int i=0;i<_addEventController.dealerList.length;i++){
       if(_addEventController.dealerList[i].dealerName==dealerName) {
          index = i;
       }
     }
-
     setState(() {
       _addEventController.dealerList[index].isSelected = val;
       if (val!) {

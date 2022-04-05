@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
@@ -40,7 +38,8 @@ class AddEventInfluencerMeetScreenPageState
     _addEventController.isLoading = true;
     _addEventController.visitDateTime = "Visit Date";
     _addEventController.selectedEventTypeMeet = "MASON MEET";
-    _addEventController.dealerListSelected = List<DealerModelSelected>.empty(growable: true);
+    _addEventController.dealerListSelected =
+        List<DealerModelSelected>.empty(growable: true);
 
     super.initState();
   }
@@ -156,10 +155,9 @@ class AddEventInfluencerMeetScreenPageState
                       ),
                       _spaceBetweenFields(),
                       TextFormField(
-                        controller: nonDalmiaInfluencers,
+                          controller: nonDalmiaInfluencers,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              print('called validator');
                               return "Non-Dalmia Influencers can't be empty ";
                             }
                             return null;
@@ -168,10 +166,9 @@ class AddEventInfluencerMeetScreenPageState
                             _addEventController.nonDalmiaInflCount =
                                 int.parse(_);
                           },
-                          onEditingComplete: (){
+                          onEditingComplete: () {
                             print("Edit");
                           },
-
                           style: _myFormFont(),
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(
@@ -180,31 +177,31 @@ class AddEventInfluencerMeetScreenPageState
                       TextFormField(
                           controller: meetInitiatorName,
                           validator: (value) {
-                            if(_addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET") {
+                            if (_addEventController.selectedEventTypeMeet ==
+                                "MINI CONTRACTOR MEET") {
                               if (value!.isEmpty) {
                                 print('called validator');
                                 return "Meet Initiator Name can't be empty ";
                               }
                               return null;
-                            }else{
+                            } else {
                               return null;
                             }
                           },
                           onChanged: (_) {
                             _addEventController.meetInitiatorName = _.toString();
                           },
-                          onEditingComplete: (){
+                          onEditingComplete: () {
                             print("Edit");
                           },
-
                           style: _myFormFont(),
                           keyboardType: TextInputType.text,
-                          decoration: _inputDecoration(
-                              "Meet Initiator Name", false)),
+                          decoration:
+                              _inputDecoration("Meet Initiator Name", false)),
                       _spaceBetweenFields(),
                       Text('Total Participants'),
-                      Obx(() =>
-                          Container(
+                      Obx(
+                        () => Container(
                           margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
@@ -215,13 +212,16 @@ class AddEventInfluencerMeetScreenPageState
                                   color:
                                       ColorConstants.inputBoxBorderSideColor)),
                           child: Text(
-                            // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${dalmiaInfluencers.text.length} " +
+                              // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${dalmiaInfluencers.text.length} " +
                               // dalmiaInfluencers.text.length.toString()
-                            // (int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0")).toString()
-                            // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"
-                            "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0"))}".substring("${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0"))}".lastIndexOf(',')+1)
-                          ),
-                      ),
+                              // (int.parse(dalmiaInfluencers.text.length!=0?dalmiaInfluencers.text:"0")+int.parse(nonDalmiaInfluencers.text.length!=0?nonDalmiaInfluencers.text:"0")).toString()
+                              // "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}"
+                              "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length != 0 ? dalmiaInfluencers.text : "0") + int.parse(nonDalmiaInfluencers.text.length != 0 ? nonDalmiaInfluencers.text : "0"))}"
+                                  .substring(
+                                      "${_addEventController.dalmiaInflCount + _addEventController.nonDalmiaInflCount}  ,${(int.parse(dalmiaInfluencers.text.length != 0 ? dalmiaInfluencers.text : "0") + int.parse(nonDalmiaInfluencers.text.length != 0 ? nonDalmiaInfluencers.text : "0"))}"
+                                              .lastIndexOf(',') +
+                                          1)),
+                        ),
                       ),
                       // Text("${dalmiaInfluencers.text.length} dalmia"),
                       // Text("${nonDalmiaInfluencers.text.length} nondalmia"),
@@ -241,7 +241,8 @@ class AddEventInfluencerMeetScreenPageState
                               value: _addEventController.selectedVenueTypeMeet,
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  FocusScope.of(context).requestFocus(new FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
                                   dropdownValue = newValue;
                                   _addEventController.selectedVenueTypeMeet =
                                       newValue;
@@ -360,44 +361,55 @@ class AddEventInfluencerMeetScreenPageState
                       _spaceBetweenFields(),
                       TextFormField(
                           validator: (value) {
-                            if((_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET" || _addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET" || _addEventController.selectedEventTypeMeet=="CONSUMER MEET" || _addEventController.selectedEventTypeMeet=="MINI CONTRACTOR MEET")) {
+                            if ((_addEventController.selectedEventTypeMeet == "TECHNOCRAT MEET" ||
+                                _addEventController.selectedEventTypeMeet ==
+                                    "BLOCK LEVEL MEET" ||
+                                _addEventController.selectedEventTypeMeet ==
+                                    "CONSUMER MEET" ||
+                                _addEventController.selectedEventTypeMeet ==
+                                    "MINI CONTRACTOR MEET")) {
                               if (value!.isEmpty) {
                                 String addressType;
                                 (_addEventController.selectedEventTypeMeet ==
-                                    "TECHNOCRAT MEET" ||
-                                    _addEventController.selectedEventTypeMeet ==
-                                        "BLOCK LEVEL MEET") ?
-                                addressType = "Address can't be empty "
+                                            "TECHNOCRAT MEET" ||
+                                        _addEventController
+                                                .selectedEventTypeMeet ==
+                                            "BLOCK LEVEL MEET")
+                                    ? addressType = "Address can't be empty "
                                     : addressType =
-                                "Event location can't be empty ";
+                                        "Event location can't be empty ";
                                 return addressType;
                               }
-                            }else {
+                            } else {
                               return null;
                             }
-                              return null;
+                            return null;
                           },
                           onChanged: (_) {
                             _addEventController.eventLocation = _.toString();
                           },
                           style: _myFormFont(),
                           keyboardType: TextInputType.text,
-                          decoration:(_addEventController.selectedEventTypeMeet=="TECHNOCRAT MEET"||_addEventController.selectedEventTypeMeet=="BLOCK LEVEL MEET")?
-                          _inputDecoration("Address", false):_inputDecoration("Event location", false)
-                      ),
+                          decoration: (_addEventController
+                                          .selectedEventTypeMeet ==
+                                      "TECHNOCRAT MEET" ||
+                                  _addEventController.selectedEventTypeMeet ==
+                                      "BLOCK LEVEL MEET")
+                              ? _inputDecoration("Address", false)
+                              : _inputDecoration("Event location", false)),
                       _spaceBetweenFields(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextButton(
                             style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0.0),
-                                side: BorderSide(
-                                    color: ColorConstants
-                                        .inputBoxBorderSideColor)),
-                            // color: Colors.transparent,
-                            // highlightColor: ColorConstants.buttonPressedColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                  side: BorderSide(
+                                      color: ColorConstants
+                                          .inputBoxBorderSideColor)),
+                              // color: Colors.transparent,
+                              // highlightColor: ColorConstants.buttonPressedColor,
                             ),
                             onPressed: () {
                               // Validate returns true if the form is valid, or false
@@ -405,8 +417,8 @@ class AddEventInfluencerMeetScreenPageState
                               if (_formKey.currentState!.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "D";
-                                _appController
-                                    .getAccessKey(RequestIds.SAVE_MEET, context);
+                                _appController.getAccessKey(
+                                    RequestIds.SAVE_MEET, context);
                               }
                             },
                             child: Padding(
@@ -417,9 +429,9 @@ class AddEventInfluencerMeetScreenPageState
                               ),
                             ),
                           ),
-    ElevatedButton(
-    style: ElevatedButton.styleFrom(
-                            primary: ColorConstants.buttonNormalColor,
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: ColorConstants.buttonNormalColor,
                             ),
                             onPressed: () {
                               // Validate returns true if the form is valid, or false
@@ -427,8 +439,8 @@ class AddEventInfluencerMeetScreenPageState
                               if (_formKey.currentState!.validate()) {
                                 //afterRequestLayout(empId, mobileNumber);
                                 _addEventController.meetAction = "S";
-                                _appController
-                                    .getAccessKey(RequestIds.SAVE_MEET, context);
+                                _appController.getAccessKey(
+                                    RequestIds.SAVE_MEET, context);
                               }
                             },
                             child: Padding(
@@ -506,21 +518,6 @@ class AddEventInfluencerMeetScreenPageState
         _addEventController.visitDateTime = selectedDateString;
       });
   }
-
-  /*void _settingModalBottomSheetDealers(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return new Container(
-            height: 350.0,
-            color: Colors.transparent, //could change this to Color(0xFF737373),
-            //so you don't have to change MaterialApp canvasColor
-            child: (_addEventController.dealerListResponse == null)
-                ? Container()
-                : showDealerListBody(),
-          );
-        });
-  }*/
 
   void _settingModalBottomSheetDealers(context) {
     showModalBottomSheet(
