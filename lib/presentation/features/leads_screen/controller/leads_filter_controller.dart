@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsEntity.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
