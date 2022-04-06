@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,8 +9,7 @@ import 'CommentDetailModel.dart';
 class SaveLeadRequestModel {
   SaveLeadRequestModel(
       {
-      //this.leadSegmane,
-        this.eventId,
+      this.eventId,
       this.siteSubTypeId,
       this.assignedTo,
       this.leadStatusId,
@@ -41,7 +38,6 @@ class SaveLeadRequestModel {
       this.leadSourcePlatform,
       this.isIhbCommercial});
 
-  // String leadSegmane;
   int? eventId;
   String? siteSubTypeId;
   String? assignedTo;
