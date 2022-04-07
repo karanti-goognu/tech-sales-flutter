@@ -34,7 +34,6 @@ import 'package:flutter_tech_sales/presentation/features/mwp/view/edit_visit_vie
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list.dart';
-import 'package:flutter_tech_sales/presentation/features/mwp/widgets/dealers_list_view.dart';
 import 'package:flutter_tech_sales/presentation/features/notification/view/NotificationScreen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/search_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/search/view/site_search_screen.dart';
