@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/InfDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/StartEventModel.dart';
@@ -43,7 +42,7 @@ class EventsFilterController extends GetxController {
 
   set egApprovedEventDaa(value) => _egApprovedEventData.value = value;
 
-  final _infDetailModel = InfDetailModel().obs;
+  final _infDetailModel = InfluencerDetailModel().obs;
   get infDetailModel => _infDetailModel.value;
   set infDetailModel(value) => _infDetailModel.value = value;
   String responseForDialog = '';
@@ -97,11 +96,6 @@ class EventsFilterController extends GetxController {
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     var accessKey = await repository.getAccessKey();
-    // Future.delayed(
-    //     Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
-
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -122,7 +116,6 @@ class EventsFilterController extends GetxController {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         _updateDealerInfResponse = await repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel);
     });
-    //Get.back();
     return _updateDealerInfResponse;
   }
 
@@ -148,48 +141,15 @@ class EventsFilterController extends GetxController {
     SaveNewInfluencerResponse? saveNewInfluencerResponse;
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-    // Future.delayed(
-    //     Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
       String? accessKey = await (repository.getAccessKey() );
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveNewInfluencerResponse = await repository.saveNewInfluencer(
             accessKey, userSecurityKey, saveNewInfluencerModel);
-
-
       });
-      //Get.back();
       return saveNewInfluencerResponse;
-   // });
   }
 
-
-
-
-
-
-
-
-  //////////test
-  // Future<InfDetailModel> getInfData1(String contact) async {
-  //   InfDetailModel _infDetailModel;
-  //   //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-  //   //It is working fine without the progress indicator
-  //   //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-  //   String userSecurityKey = "";
-  //   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //   String accessKey = await repository.getAccessKey();
-  //
-  //   await _prefs.then((SharedPreferences prefs) async {
-  //     userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-  //     _infDetailModel = await repository.getInfData1(accessKey, userSecurityKey, contact);
-  //   });
-  //   //Get.back();
-  //   return _infDetailModel;
-  // }
 }
 
 

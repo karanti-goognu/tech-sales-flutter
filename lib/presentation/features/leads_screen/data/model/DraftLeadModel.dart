@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'package:http/http.dart';
 
@@ -8,7 +6,6 @@ import 'CommentDetailModel.dart';
 class SaveLeadRequestDraftModel {
   SaveLeadRequestDraftModel(
       {
-      //this.leadSegmane,
       this.siteSubTypeId,
       this.assignedTo,
       this.leadStatusId,
@@ -38,7 +35,6 @@ class SaveLeadRequestDraftModel {
         this.isIhbCommercial,
       });
 
-  // String leadSegmane;
   String? siteSubTypeId;
   String? assignedTo;
   String? leadStatusId;
@@ -62,7 +58,6 @@ class SaveLeadRequestDraftModel {
   List<CommentsDetail>? comments;
   List<InfluencerDetailDraft>? influencerList;
   List<ListLeadImageDraft>? listLeadImage;
-
   String? leadSource;
   String? leadSourceUser;
   String? leadSourcePlatform;
