@@ -35,6 +35,7 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
 }
 
 class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
+  //final _formKey = GlobalKey<FormState>();
   AddLeadsController _addLeadsController = Get.find();
   var _nextDateofConstruction = TextEditingController();
   DateTime? nextStageConstructionPickedDate;
@@ -116,6 +117,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
       FormFieldStyle.buildInputDecoration(labelText: "Please Select Competition Status*"),
+     // validator: (value) => value == null ? 'Please Select Competition Status' : null,
+
     );
 
     final nextStageOfConstuction =
@@ -139,12 +142,19 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           _selectedNextStageConstructionEntity = value;
         });
       },
+      //    validator: (value) => value == null ? 'Please select Next Stage of Construction' : null,
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Next Stage of Construction*"),
     );
 
     final nxtDtOfConstuction = TextFormField(
       controller: _nextDateofConstruction,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please select Next date of construction';
+        }
+        return null;
+      },
       readOnly: true,
       onChanged: (data) {},
       style: TextStyle(
@@ -223,6 +233,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Total No. of Floors*"),
+    //  validator: (value) => value == null ? 'Please select Total No. of Floors' : null,
+
     );
 
     final nxtFloorLevel = DropdownButtonFormField<SiteFloorsEntity>(
@@ -247,6 +259,9 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Next Floor Level*"),
+    //  validator: (value) => value == null ? 'Please select Next Floor Level' : null,
+
+
     );
 
     final noOfBagsSupplied = TextFormField(
@@ -296,15 +311,17 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               _siteCompetitionStatusEntity == null) {
             Get.dialog(
                 CustomDialogs.showMessage("Please fill the details first"));
-          } else
-            if(_selectedLeadFloorEntity!.id! < _selectedLeadFloorLevelEntity!.id!){
-              Get.dialog(CustomDialogs.showMessage(
-                  "Next Floor Level can’t be greater than Total No. of Floors."));
+    //if(_formKey.currentState!.validate()) {
+       } else
+      if (_selectedLeadFloorEntity!.id! < _selectedLeadFloorLevelEntity!.id!) {
+        Get.dialog(CustomDialogs.showMessage(
+            "Next Floor Level can’t be greater than Total No. of Floors."));
+      }
+     // apiCallForProcced();
+   // }
 
-          }
           else {
-            if (nextStageConstructionPickedDate!
-                    .difference(DateTime.now())
+            if (nextStageConstructionPickedDate!.difference(DateTime.now())
                     .inDays >
                 31) {
               showDialog(
@@ -360,7 +377,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                       ],
                     );
                   });
-            } else {
+            }
+            else {
               apiCallForProcced();
             }
           }
@@ -376,26 +394,29 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ihbRadio,
-                  competitionStatus,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  totalNoOfFloors,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  noOfBagsSupplied,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nextStageOfConstuction,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nxtFloorLevel,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nxtDtOfConstuction,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  btnProceed
-                ],
-              ),
+             // child: Form(
+              //  key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ihbRadio,
+                    competitionStatus,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    totalNoOfFloors,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    noOfBagsSupplied,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nextStageOfConstuction,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nxtFloorLevel,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nxtDtOfConstuction,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    btnProceed
+                  ],
+                ),
+            //  ),
             ),
           ),
         ),
@@ -408,6 +429,8 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       'noOfFloors': _selectedLeadFloorEntity!.id,
       'totalFloorSqftArea': _noOfBagsSupplied.text
     };
+
+    print("updateRequestModel: ${updateRequestModel}");
 
     internetChecking().then((result) => {
           if (result == true)

@@ -320,7 +320,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     maxHeight: 240,
                                     //label: "Site Id *",
                                     dropdownSearchDecoration: FormFieldStyle.buildInputDecoration(
-                                        labelText: "Department*"),
+                                        labelText: "Site Id *"),
                                    // dropdownSearchDecoration: InputDecoration(labelText: "Site Id *"),
                                     validator: (value) => value == null
                                         ? "Site id is required "

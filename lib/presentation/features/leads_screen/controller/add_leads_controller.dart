@@ -203,8 +203,9 @@ class AddLeadsController extends GetxController {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      if(this.accessKeyResponse!=null)
-      _totalPotentialModel = await repository.getTotalPotental(this.accessKeyResponse.accessKey, userSecurityKey, updateRequestModel);
+      String? accessKey = await (repository.getAccessKeyNew());
+      //if(this.accessKeyResponse!=null)
+      _totalPotentialModel = await repository.getTotalPotental(accessKey, userSecurityKey, updateRequestModel);
     });
     return _totalPotentialModel;
   }
