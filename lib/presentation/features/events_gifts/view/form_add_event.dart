@@ -629,12 +629,12 @@ class _FormAddEventState extends State<FormAddEvent> {
                         Text('( ${dealers[index].dealerId} )'),
                       ],
                     ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                    value: selectedDealer.contains(dealers[index].dealerId),
                     onChanged: (newValue) {
                       setState(() {
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                        selectedDealer.contains(dealers[index].dealerId)
+                            ? selectedDealer.remove(dealers[index].dealerId)
+                            : selectedDealer.add(dealers[index].dealerId);
 
                         selectedDealersModels.contains(dealers[index])
                             ? selectedDealersModels.remove(dealers[index])
