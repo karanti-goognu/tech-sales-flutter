@@ -97,7 +97,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             dealerId: _dealerInfModel!.eventDealersModelList![i].dealerId,
             dealerName: _dealerInfModel!.eventDealersModelList![i].dealerName));
 
-        selectedDealer.add(_dealerInfModel!.eventDealersModelList![i].dealerName);
+        selectedDealer.add(_dealerInfModel!.eventDealersModelList![i].dealerId);
       }
     }
 
@@ -907,8 +907,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       ],
                     ),
                     selected:
-                        selectedDealer.contains(dealers![index].dealerName),
-                    value: selectedDealer.contains(dealers![index].dealerName),
+                        selectedDealer.contains(dealers![index].dealerId),
+                    value: selectedDealer.contains(dealers![index].dealerId),
 
                     // onChanged: (newValue) {
                     //   setState(() {
@@ -927,7 +927,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       setState(() {
                      //   print('NEWVALUE : $newValue');
                         if (newValue == true) {
-                          selectedDealer.add(dealers![index].dealerName);
+                          selectedDealer.add(dealers![index].dealerId);
                           selectedDealersModels.add(dealers![index]);
                         }
                         if (newValue == false) {
@@ -936,7 +936,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           selectedDealersModels.removeWhere((item) =>
                               item.dealerId == dealers![index].dealerId);
                           selectedDealer.removeWhere(
-                              (item) => item == dealers![index].dealerName);
+                              (item) => item == dealers![index].dealerId);
                         }
                         checkedValues[index] = newValue;
                     //    print("checkedValues $checkedValues");
