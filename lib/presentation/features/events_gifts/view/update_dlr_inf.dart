@@ -38,6 +38,7 @@ class UpdateDlrInf extends StatefulWidget {
 }
 
 class _UpdateDlrInfState extends State<UpdateDlrInf> {
+  InfController _infController = Get.find();
   DealerInfModel? _dealerInfModel;
   InfluencerDetailModel? _influencerDetailModel;
   InfluencerResponseModel? _influencerResponseModel;
@@ -1111,7 +1112,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   addNewInfluencerBtnPressed() async {
-    InfController _infController = Get.find();
+  //  InfController _infController = Get.find();
 
     if (_newFormKey.currentState!.validate()) {
       String? empId = await (getEmpId() );

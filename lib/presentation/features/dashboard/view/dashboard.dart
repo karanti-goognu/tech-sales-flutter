@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
@@ -64,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Text('MY DASHBOARD'),
+            title: Text(StringConstants.dashboardTitle),
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
               preferredSize: _employeeDropDownData!.isEmpty
@@ -112,10 +113,10 @@ class _DashboardState extends State<Dashboard> {
                   TabBar(
                     tabs: [
                       Tab(
-                        text: "MONTH TO DATE",
+                        text: StringConstants.tabMonthToDate,
                       ),
                       Tab(
-                        text: "YEAR TO DATE",
+                        text: StringConstants.tabYearToDate,
                       ),
                     ],
                     indicatorColor: Colors.white,

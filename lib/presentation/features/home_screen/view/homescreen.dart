@@ -37,14 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   List<MenuDetailsModel> list = [
-    new MenuDetailsModel("Leads", "assets/images/img2.png"),
-    new MenuDetailsModel("Sites", "assets/images/img3.png"),
-    new MenuDetailsModel("Dashboard", "assets/images/speedometer.png"),
-    new MenuDetailsModel("MWP", "assets/images/mwp.png"),
-    new MenuDetailsModel("SR & Complaint", "assets/images/sr.png"),
-    new MenuDetailsModel("Influencer", "assets/images/influencer.png"),
-    new MenuDetailsModel("Video Tutorial", "assets/images/tutorial.png"),
-    new MenuDetailsModel("Events & Gifts", "assets/images/calendar.png")
+    new MenuDetailsModel(StringConstants.menuTitleLeads, StringConstants.menuTitleLeadsIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleSites, StringConstants.menuTitleSitesIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleDashboard, StringConstants.menuTitleDashboardIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleMWP, StringConstants.menuTitleMWPIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleSRComplaint, StringConstants.menuTitleSRIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleInfluencer, StringConstants.menuTitleInfluencerIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleVideoTutorial, StringConstants.menuTitleVideoIconPath),
+    new MenuDetailsModel(StringConstants.menuTitleEventsGifts, StringConstants.menuTitleEventsIconPath)
   ];
 
   String employeeName = "empty";
@@ -64,42 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return result;
   }
 
-  // Future<void> initPlatformState() async {
-  //   if (!mounted) return;
-  //   //Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-  // }
 
   @override
   void initState() {
-   // print("home screen.dart :::::: initState()");
-
     super.initState();
-    // initPlatformState();
-    /** Kp Changes*/
-    //_moengagePlugin.initialise();
-    // _moengagePlugin.setAppStatus(MoEAppStatus.update);
-    //_moengagePlugin.enableSDKLogs();
-    // _moengagePlugin.setUpPushCallbacks(_onPushClick);
-    // _moengagePlugin.setUniqueId("1");
-    // _moengagePlugin.setUserName("test");
-    // _moengagePlugin.setPhoneNumber("9315121614");
-    // _moengagePlugin.setEmail("test@test.com");
-    // _moengagePlugin.setBirthDate("xx-xx-xxxx");
-    //_moengagePlugin.setUpPushCallbacks(_onPushClick);
 
-    // if (_splashController.splashDataModel.journeyDetails.journeyDate == null) {
-    //   print('Check In');
-    //   _homeController.checkInStatus = StringConstants.checkIn;
-    // } else {
-    //   if (_splashController.splashDataModel.journeyDetails.journeyEndTime ==
-    //       null) {
-    //     print('Check Out');
-    //     _homeController.checkInStatus = StringConstants.checkOut;
-    //   } else {
-    //     print('Journey Ended');
-    //     _homeController.checkInStatus = StringConstants.journeyEnded;
-    //   }
-    // }
     _homeController.getAccessKey(RequestIds.HOME_DASHBOARD);
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then(
@@ -122,14 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         _homeController.employeeName =
             prefs.getString(StringConstants.employeeName);
-
-        // MoEngage implementation done here ....
-        // _moengagePlugin
-        //     .setUniqueId(prefs.getString(StringConstants.employeeId));
-        // _moengagePlugin
-        //     .setFirstName(prefs.getString(StringConstants.employeeName));
-        // _moengagePlugin
-        //     .setPhoneNumber(prefs.getString(StringConstants.mobileNumber));
 
         setMoengageData(prefs);
       },
@@ -207,8 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             else
                               {
-                                Get.snackbar("No internet connection.",
-                                    "Make sure that your wifi or mobile data is turned on.",
+                                Get.snackbar(StringConstants.noInternetHeading,
+                                    StringConstants.noInternetMsg,
                                     colorText: Colors.white,
                                     backgroundColor: Colors.red,
                                     snackPosition: SnackPosition.BOTTOM),
@@ -239,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 8,
                     ),
                     Text(
-                      "My Calendar",
+                      StringConstants.myCalendar,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: SizeConfig.safeBlockHorizontal * 3),
@@ -310,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 8,
                     ),
                     Text(
-                      "Notifications",
+                      StringConstants.notifications,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: SizeConfig.safeBlockHorizontal * 3),
@@ -404,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 4,
                               ),
                               Text(
-                                'Key Metrics',
+                                StringConstants.keyMetrics,
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     fontSize: 18,
@@ -462,7 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         Flexible(
                                             child: Text(
-                                          'Sites converted',
+                                              StringConstants.sitesConverted,
                                           style: TextStyle(
                                               fontSize: SizeConfig
                                                       .safeBlockHorizontal *
@@ -498,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         Flexible(
                                             child: Text(
-                                          'Volume Generated (MT)',
+                                                StringConstants.volumeGenerated,
                                           style: TextStyle(
                                               fontSize: SizeConfig
                                                       .safeBlockHorizontal *
@@ -533,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         Flexible(
                                             child: Text(
-                                          'New Influencers',
+                                              StringConstants.newInfluencers,
                                           style: TextStyle(
                                               fontSize: SizeConfig
                                                       .safeBlockHorizontal *
@@ -567,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         Flexible(
                                             child: Text(
-                                          'DSP Slabs Converted',
+                                              StringConstants.DSPSlabsConverted,
                                           style: TextStyle(
                                               fontSize: SizeConfig
                                                       .safeBlockHorizontal * 3.5,
@@ -664,8 +625,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   {_homeController.getAccessKey(RequestIds.CHECK_IN)}
                 else
                   {
-                    Get.snackbar("No internet connection.",
-                        "Make sure that your wifi or mobile data is turned on.",
+                    Get.snackbar(StringConstants.noInternetHeading,
+                        StringConstants.noInternetMsg,
                         colorText: Colors.white,
                         backgroundColor: Colors.red,
                         snackPosition: SnackPosition.BOTTOM),
@@ -679,7 +640,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Swipe to start your day",
+        StringConstants.btnSwipeStart,
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -716,8 +677,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   {_homeController.getAccessKey(RequestIds.CHECK_OUT)}
                 else
                   {
-                    Get.snackbar("No internet connection.",
-                        "Make sure that your wifi or mobile data is turned on.",
+                    Get.snackbar(StringConstants.noInternetHeading,
+                        StringConstants.noInternetMsg,
                         colorText: Colors.white,
                         backgroundColor: Colors.red,
                         snackPosition: SnackPosition.BOTTOM),
@@ -733,7 +694,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///Put label over here
       label: Text(
-        "Slide to Check-Out!",
+        StringConstants.btnSlideCheckOut,
         style: TextStyle(
             color: Color(0xff4a4a4a),
             fontWeight: FontWeight.w500,
@@ -768,7 +729,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 70,
         alignment: Alignment.center,
         color: Colors.grey,
-        child: Text("Journey-Ended",
+        child: Text(StringConstants.journeyEnd,
             style: TextStyle(
                 color: Colors.white, fontFamily: "Muli", fontSize: 18)),
       ),
@@ -795,8 +756,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -812,8 +773,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -829,8 +790,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -846,8 +807,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -863,8 +824,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -880,8 +841,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -896,8 +857,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -912,8 +873,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         else
                           {
-                            Get.snackbar("No internet connection.",
-                                "Make sure that your wifi or mobile data is turned on.",
+                            Get.snackbar(StringConstants.noInternetHeading,
+                                StringConstants.noInternetMsg,
                                 colorText: Colors.white,
                                 backgroundColor: Colors.red,
                                 snackPosition: SnackPosition.BOTTOM),
@@ -942,8 +903,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     else
                       {
-                        Get.snackbar("No internet connection.",
-                            "Make sure that your wifi or mobile data is turned on.",
+                        Get.snackbar(StringConstants.noInternetHeading,
+                            StringConstants.noInternetMsg,
                             colorText: Colors.white,
                             backgroundColor: Colors.red,
                             snackPosition: SnackPosition.BOTTOM),

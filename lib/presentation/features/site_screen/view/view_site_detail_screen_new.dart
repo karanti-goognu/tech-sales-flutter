@@ -257,7 +257,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                               ),
                               siteScore != 0.0
                                   ? Text(
-                                      "Site Score: " + siteScore.toString(),
+                                      StringConstants.siteScore + siteScore.toString(),
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#002A64"),
@@ -766,11 +766,11 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
                 });
               },
               tabs: [
-                Tab(text: "Site Data"),
-                Tab(text: "Site Progress"),
-                Tab(text: "Influencer"),
-                Tab(text: "Past Stage History"),
-                Tab(text: "Site Visit"),
+                Tab(text: StringConstants.tabSiteData),
+                Tab(text: StringConstants.tabSiteProgres),
+                Tab(text: StringConstants.tabInfluencer),
+                Tab(text: StringConstants.tabPastStageHistory),
+                Tab(text: StringConstants.tabSiteVisit),
               ],
             ),
           ),

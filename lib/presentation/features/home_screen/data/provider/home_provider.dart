@@ -82,6 +82,7 @@ class MyApiClientHome {
   }
 
   getHomePageDashboardDetails(String? accessKey,String secretKey, String empId) async {
+    //late DashboardModel dashboardModel;
     late DashboardModel dashboardModel;
     try {
       version = VersionClass.getVersion();

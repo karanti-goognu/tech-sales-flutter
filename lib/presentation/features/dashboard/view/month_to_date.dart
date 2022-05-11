@@ -6,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/controller/da
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/dsp_for_mtd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/top_row_for_mtd.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -145,7 +146,7 @@ class MonthToDateState extends State<MonthToDate> {
                               Row(
                                 children: [
                                   Text(
-                                    'All target achievement are shown on Pro rata basis',
+                                    StringConstants.dashSubTitle,
                                     style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*2.5),
                                   ),
                                   Expanded(child: Container())

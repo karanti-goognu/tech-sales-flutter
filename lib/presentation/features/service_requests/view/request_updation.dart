@@ -7,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/widget
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_details.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_history.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -191,7 +192,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(1);
                                             },
                                             child: Chip(
-                                              label: Text('Details'),
+                                              label: Text(StringConstants.tabDetails),
                                               backgroundColor: controller.option == 1
                                                   ? Colors.blue.withOpacity(0.2)
                                                   : Colors.white,
@@ -208,7 +209,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(2);
                                             },
                                             child: Chip(
-                                                label: Text('Action'),
+                                                label: Text(StringConstants.tabAction),
                                                 shape: StadiumBorder(
                                                   side: BorderSide(
                                                       color:controller. option == 2
@@ -224,7 +225,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(3);
                                             },
                                             child: Chip(
-                                              label: Text('History'),
+                                              label: Text(StringConstants.tabHistory),
                                               backgroundColor: controller. option == 3
                                                   ? Colors.blue.withOpacity(0.2)
                                                   : Colors.white,
