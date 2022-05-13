@@ -80,6 +80,11 @@ abstract class StringConstants {
   ///App screen Name
   static const String SPLASH = "Splash";
   static const String HOME = "home";
+  static const String LEAD = "OPEN LEADS";
+  static const String SITES = "OPEN SITES";
+  static const String PENDINGSUPPLY = "PENDING SUPPLY";
+  static const String dashboardTitle = "MY DASHBOARD";
+  static const String MWP = "MWP Planning";
 
   static const String noInternetHeading = "No internet connection.";
   static const String noInternetMsg = "Make sure that your wifi or mobile data is turned on.";
@@ -119,7 +124,7 @@ abstract class StringConstants {
 
 
   ///Dashboard module
-  static const String dashboardTitle = "MY DASHBOARD";
+
   static const String tabMonthToDate = "MONTH TO DATE";
   static const String tabYearToDate = "YEAR TO DATE";
 
@@ -140,5 +145,9 @@ abstract class StringConstants {
   static const String tabDetails = "Details";
   static const String tabAction = "Action";
   static const String tabHistory = "History";
+
+
+
+  ///Events
 
 }

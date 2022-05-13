@@ -8,6 +8,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
@@ -88,7 +89,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
                       Expanded(
                         flex: 2,
                         child: Text(
-                          "MWP Planning",
+                          StringConstants.MWP,
                           style: TextStyle(
                               color: ColorConstants.greenText,
                               fontFamily: "Muli-Semibold.ttf",

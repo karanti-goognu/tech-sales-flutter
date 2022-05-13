@@ -125,7 +125,7 @@ class _SiteScreenState extends State<SiteScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _tabNumber == 0 ? "OPEN SITES" : "PENDING SUPPLY",
+                          _tabNumber == 0 ? StringConstants.SITES : StringConstants.PENDINGSUPPLY,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 18,

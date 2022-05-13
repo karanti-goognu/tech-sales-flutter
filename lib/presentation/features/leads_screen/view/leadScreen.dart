@@ -120,7 +120,7 @@ class _LeadScreenState extends State<LeadScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "OPEN LEADS",
+                      StringConstants.LEAD,
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 22,

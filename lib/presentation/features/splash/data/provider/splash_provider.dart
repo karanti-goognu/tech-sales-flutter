@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -72,6 +73,7 @@ class MyApiClientSplash {
       var response = await httpClient.get(uri, headers: requestHeadersEmpIdAndNo);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        log("Data: ${data}");
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         return splashDataModel;
       } else {
