@@ -199,6 +199,8 @@ class SplashController extends GetxController {
             }
             if (journeyEndTime != null) {
               prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            } else {
+              prefs.setString(StringConstants.JOURNEY_END_DATE, "NA");
             }
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
               openNextPage(3);

@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //        print('Check In');
           _homeController.checkInStatus = StringConstants.checkIn;
         } else {
-          if (journeyEndDate == null) {
+          if (journeyEndDate == null || journeyEndDate == "NA") {
 //          print('Check Out');
             _homeController.checkInStatus = StringConstants.checkOut;
           } else {

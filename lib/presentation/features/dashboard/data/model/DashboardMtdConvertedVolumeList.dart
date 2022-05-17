@@ -11,6 +11,8 @@ class DashboardMtdConvertedVolumeList {
   DashboardMtdConvertedVolumeList.fromJson(Map<String, dynamic> json) {
     respCode = json['resp_code'];
     respMsg = json['resp_msg'];
+    // if(!json.containsKey('volume_entity'))
+    //   volumeEntity = new List<VolumeEntity>.empty(growable: true);
     if (json['volume_entity'] != null) {
       volumeEntity = new List<VolumeEntity>.empty(growable: true);
       json['volume_entity'].forEach((v) {

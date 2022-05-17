@@ -88,6 +88,7 @@ class MyApiClientHome {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
       var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
+      //print("data: ${response.body}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         dashboardModel = DashboardModel.fromJson(data);
