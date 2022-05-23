@@ -16,12 +16,17 @@ class AllEventsModel {
   AllEventsModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    if(!json.containsKey('eventListModels'))
+      eventListModels = new List<EventListModels>.empty(growable: true);
     if (json['eventListModels'] != null) {
       eventListModels = new List<EventListModels>.empty(growable: true);
       json['eventListModels'].forEach((v) {
         eventListModels!.add(new EventListModels.fromJson(v));
       });
     }
+
+    if(!json.containsKey('eventStatusEntities'))
+      eventStatusEntities = new List<EventStatusEntities>.empty(growable: true);
     if (json['eventStatusEntities'] != null) {
       eventStatusEntities = new List<EventStatusEntities>.empty(growable: true);
       json['eventStatusEntities'].forEach((v) {

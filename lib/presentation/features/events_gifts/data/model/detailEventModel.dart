@@ -23,9 +23,16 @@ class DetailEventModel {
   DetailEventModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if(!json.containsKey('mwpEventModel'))
+      mwpEventModel = null;
     mwpEventModel = json['mwpEventModel'] != null
         ? new MwpEventModel.fromJson(json['mwpEventModel'])
         : null;
+
+    if(!json.containsKey('eventDealersModelList'))
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
+
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
@@ -38,12 +45,22 @@ class DetailEventModel {
       //   eventInfluencerModelsList.add(new Null.fromJson(v));
       // });
     }
+
+    if(!json.containsKey('cancelReasonList'))
+      cancelReasonList = new List<CancelReasonList>.empty(growable: true);
+
     if (json['cancelReasonList'] != null) {
       cancelReasonList = new List<CancelReasonList>.empty(growable: true);
       json['cancelReasonList'].forEach((v) {
         cancelReasonList!.add(new CancelReasonList.fromJson(v));
       });
     }
+
+
+    if(!json.containsKey('dealersModels'))
+      dealersModels = new List<DealersModels>.empty(growable: true);
+
+
     if (json['dealersModels'] != null) {
       dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {

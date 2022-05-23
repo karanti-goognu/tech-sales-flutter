@@ -20,19 +20,32 @@ class DealerInfModel {
   DealerInfModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if(!json.containsKey('event-dealers-model-list'))
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
+
     if (json['event-dealers-model-list'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['event-dealers-model-list'].forEach((v) {
         eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
-    if (json['event-influencer-model-list'] != null) {
+
+    if(!json.containsKey('event-influencer-model-list'))
+      eventInfluencerModelList = new List<EventInfluencerModelList>.empty(growable: true);
+
+      if (json['event-influencer-model-list'] != null) {
       eventInfluencerModelList = new List<EventInfluencerModelList>.empty(growable: true);
       json['event-influencer-model-list'].forEach((v) {
         eventInfluencerModelList!.add(new EventInfluencerModelList.fromJson(v));
       });
     }
-    if (json['dealers-model'] != null) {
+
+
+    if(!json.containsKey('dealers-model'))
+      dealersModel = new List<DealersModel>.empty(growable: true);
+
+      if (json['dealers-model'] != null) {
       dealersModel = new List<DealersModel>.empty(growable: true);
       json['dealers-model'].forEach((v) {
         dealersModel!.add(new DealersModel.fromJson(v));

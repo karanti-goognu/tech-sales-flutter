@@ -17,18 +17,24 @@ class AddEventModel {
   AddEventModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    if(!json.containsKey('eventTypeModels'))
+      eventTypeModels = new List<EventTypeModels>.empty(growable: true);
     if (json['eventTypeModels'] != null) {
       eventTypeModels = new List<EventTypeModels>.empty(growable: true);
       json['eventTypeModels'].forEach((v) {
         eventTypeModels!.add(new EventTypeModels.fromJson(v));
       });
     }
+    if(!json.containsKey('dealersModels'))
+      dealersModels = new List<DealersModels>.empty(growable: true);
     if (json['dealersModels'] != null) {
       dealersModels = new List<DealersModels>.empty(growable: true);
       json['dealersModels'].forEach((v) {
         dealersModels!.add(new DealersModels.fromJson(v));
       });
     }
+    if(!json.containsKey('statusEntitieList'))
+      statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
     if (json['statusEntitieList'] != null) {
       statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
       json['statusEntitieList'].forEach((v) {

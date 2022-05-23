@@ -15,12 +15,19 @@ class LogsModel {
         this.respMsg});
 
   LogsModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey('giftStockModelList'))
+      giftStockModelList = new List<GiftStockList>.empty(growable: true);
+
     if (json['giftStockModelList'] != null) {
       giftStockModelList = new List<GiftStockList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
         giftStockModelList!.add(new GiftStockList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('giftTypeModelList'))
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
+
     if (json['giftTypeModelList'] != null) {
       giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {

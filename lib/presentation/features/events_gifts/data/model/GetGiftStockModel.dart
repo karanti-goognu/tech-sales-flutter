@@ -15,12 +15,20 @@ class GetGiftStockModel {
   GetGiftStockModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if(!json.containsKey('giftStockModelList'))
+      giftStockModelList = new List<GiftStockModelList>.empty(growable: true);
+
     if (json['giftStockModelList'] != null) {
       giftStockModelList = new List<GiftStockModelList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
         giftStockModelList!.add(new GiftStockModelList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('giftTypeModelList'))
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
+
     if (json['giftTypeModelList'] != null) {
       giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {

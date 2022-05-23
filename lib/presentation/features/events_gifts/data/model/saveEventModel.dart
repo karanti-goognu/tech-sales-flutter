@@ -8,13 +8,20 @@ class SaveEventFormModel {
   SaveEventFormModel({this.eventDealersModelList, this.mwpeventFormRequest});
 
   SaveEventFormModel.fromJson(Map<String, dynamic> json) {
+
+    if(!json.containsKey('eventDealersModelList'))
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
+
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
         eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
-    mwpeventFormRequest = json['mwpeventFormRequest'] != null
+
+    if(!json.containsKey('mwpeventFormRequest'))
+      mwpeventFormRequest = null;
+      mwpeventFormRequest = json['mwpeventFormRequest'] != null
         ? new MwpeventFormRequest.fromJson(json['mwpeventFormRequest'])
         : null;
   }

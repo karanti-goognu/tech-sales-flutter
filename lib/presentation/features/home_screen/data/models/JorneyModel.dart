@@ -8,6 +8,8 @@ class JourneyModel {
   JourneyModel({this.journeyEntity, this.respCode, this.respMsg});
 
   JourneyModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey('journeyEntity'))
+      journeyEntity = null;
     journeyEntity = json['journeyEntity'] != null
         ? new JourneyEntity.fromJson(json['journeyEntity'])
         : null;

@@ -15,15 +15,22 @@ class DashboardYearlyViewModel {
         this.respMsg});
 
   DashboardYearlyViewModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey('dashboardYearlyModels'))
+      dashboardYearlyModels = new List<DashboardYearlyModels>.empty(growable: true);
     if (json['dashboardYearlyModels'] != null) {
       dashboardYearlyModels = new List<DashboardYearlyModels>.empty(growable: true);
       json['dashboardYearlyModels'].forEach((v) {
         dashboardYearlyModels!.add(new DashboardYearlyModels.fromJson(v));
       });
     }
+    if(!json.containsKey('mtd_count'))
+      mtdCount = null;
     mtdCount = json['mtd_count'] != null
         ? new MtdCount.fromJson(json['mtd_count'])
         : null;
+
+    if(!json.containsKey('mtd_volume'))
+      mtdVolume = null;
     mtdVolume = json['mtd_volume'] != null
         ? new MtdVolume.fromJson(json['mtd_volume'])
         : null;

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 
 class InfluencerDetailModel {
@@ -10,27 +8,44 @@ class InfluencerDetailModel {
   List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList;
   List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList;
 
-  InfluencerDetailModel({this.respCode, this.respMsg, this.mobileNumber, this.influencerModel,this.influencerTypeEntitiesList,
-    this.influencerCategoryEntitiesList});
+  InfluencerDetailModel(
+      {this.respCode,
+      this.respMsg,
+      this.mobileNumber,
+      this.influencerModel,
+      this.influencerTypeEntitiesList,
+      this.influencerCategoryEntitiesList});
 
   InfluencerDetailModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     mobileNumber = json['mobile_number'];
+
+    if (!json.containsKey('influencer_model')) influencerModel = null;
+
     influencerModel = json['influencer_model'] != null
         ? new InfluencerModel.fromJson(json['influencer_model'])
         : null;
 
+    if (!json.containsKey('influencer_type_entities_list'))
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
+
     if (json['influencer_type_entities_list'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencer_type_entities_list'].forEach((v) {
         influencerTypeEntitiesList!
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencer_category_entities_list'))
+      influencerCategoryEntitiesList =
+          new List<InfluencerCategoryEntitiesList>.empty(growable: true);
     if (json['influencer_category_entities_list'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
+          new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencer_category_entities_list'].forEach((v) {
         influencerCategoryEntitiesList!
             .add(new InfluencerCategoryEntitiesList.fromJson(v));
@@ -75,14 +90,14 @@ class InfluencerModel {
 
   InfluencerModel(
       {this.ilpRegFlag,
-        this.inflId,
-        this.inflName,
-        this.inflContact,
-        this.inflTypeId,
-        this.influencerTypeText,
-        this.inflCatId,
-        this.influencerCategoryText,
-        this.ilpMember,
+      this.inflId,
+      this.inflName,
+      this.inflContact,
+      this.inflTypeId,
+      this.influencerTypeText,
+      this.inflCatId,
+      this.influencerCategoryText,
+      this.ilpMember,
       this.sitesCount,
       this.monthlyPotential,
       this.monthlyLifting});
@@ -120,7 +135,6 @@ class InfluencerModel {
   }
 }
 
-
 class InfluencerCategoryEntitiesList {
   int? inflCatId;
   String? inflCatDesc;
@@ -139,9 +153,3 @@ class InfluencerCategoryEntitiesList {
     return data;
   }
 }
-
-
-
-
-
-

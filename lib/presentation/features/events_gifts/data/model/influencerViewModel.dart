@@ -19,9 +19,17 @@ class InfluencerViewModel {
   InfluencerViewModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if(!json.containsKey('influencerModel'))
+      influencerModel = null;
+
     influencerModel = json['influencerModel'] != null
         ? new InfluencerModel.fromJson(json['influencerModel'])
         : null;
+
+    if(!json.containsKey('influencerTypeEntitiesList'))
+      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
+
     if (json['influencerTypeEntitiesList'] != null) {
       influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencerTypeEntitiesList'].forEach((v) {
@@ -29,6 +37,10 @@ class InfluencerViewModel {
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('categoryEntitiesList'))
+      categoryEntitiesList = new List<CategoryEntitiesList>.empty(growable: true);
+
     if (json['categoryEntitiesList'] != null) {
       categoryEntitiesList = new List<CategoryEntitiesList>.empty(growable: true);
       json['categoryEntitiesList'].forEach((v) {

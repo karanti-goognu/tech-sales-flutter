@@ -19,18 +19,30 @@ class EndEventModel {
         this.showUpdateButton});
 
   EndEventModel.fromJson(Map<String, dynamic> json) {
+
+    if(!json.containsKey('eventCcommentsList'))
+      eventCcommentsList = new List<EventCcommentsList>.empty(growable: true);
+
     if (json['eventCcommentsList'] != null) {
       eventCcommentsList = new List<EventCcommentsList>.empty(growable: true);
       json['eventCcommentsList'].forEach((v) {
         eventCcommentsList!.add(new EventCcommentsList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('eventDealersModelList'))
+      eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
+
     if (json['eventDealersModelList'] != null) {
       eventDealersModelList = new List<EventDealersModelList>.empty(growable: true);
       json['eventDealersModelList'].forEach((v) {
         eventDealersModelList!.add(new EventDealersModelList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('eventInfluencerModelsList'))
+      eventInfluencerModelsList = new List<EventInfluencerModelsList>.empty(growable: true);
+
     if (json['eventInfluencerModelsList'] != null) {
       eventInfluencerModelsList = new List<EventInfluencerModelsList>.empty(growable: true);
       json['eventInfluencerModelsList'].forEach((v) {
@@ -38,6 +50,9 @@ class EndEventModel {
             .add(new EventInfluencerModelsList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('mwpEndEventModel'))
+      mwpEndEventModel = null;
     mwpEndEventModel = json['mwpEndEventModel'] != null
         ? new MwpEndEventModel.fromJson(json['mwpEndEventModel'])
         : null;

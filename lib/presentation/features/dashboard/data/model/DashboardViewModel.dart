@@ -8,6 +8,8 @@ class DashboardModel {
   DashboardModel({this.dashBoardViewModal, this.respCode, this.respMsg});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey(['dashBoardViewModal']))
+      dashBoardViewModal = null;
     dashBoardViewModal = json['dashBoardViewModal'] != null
         ? new DashBoardViewModal.fromJson(json['dashBoardViewModal'])
         : null;

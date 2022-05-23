@@ -1,5 +1,3 @@
-
-
 class InfluencerListModel {
   Response? response;
 
@@ -29,20 +27,28 @@ class Response {
 
   Response(
       {this.respCode,
-        this.respMsg,
-        this.influencerTypeList,
-        this.ilpInfluencerEntity,
-        this.totalInfluencerCount});
+      this.respMsg,
+      this.influencerTypeList,
+      this.ilpInfluencerEntity,
+      this.totalInfluencerCount});
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('influencerTypeList'))
+      influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
+
     if (json['influencerTypeList'] != null) {
       influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
       json['influencerTypeList'].forEach((v) {
         influencerTypeList!.add(new InfluencerTypeList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('ilpInfluencerEntity'))
+      ilpInfluencerEntity = new List<IlpInfluencerEntity>.empty(growable: true);
+
     if (json['ilpInfluencerEntity'] != null) {
       ilpInfluencerEntity = new List<IlpInfluencerEntity>.empty(growable: true);
       json['ilpInfluencerEntity'].forEach((v) {
@@ -112,22 +118,22 @@ class IlpInfluencerEntity {
 
   IlpInfluencerEntity(
       {this.joiningDate,
-        this.membershipId,
-        this.mobileNumber,
-        this.inflName,
-        this.inflTypeId,
-        this.inflTypeText,
-        this.monthlyPotentialVolMt,
-        this.stateName,
-        this.districtName,
-        this.pinCode,
-        this.inflCategoryId,
-        this.inflCategoryText,
-        this.baseCity,
-        this.email,
-        this.giftAddress,
-        this.activeSitesCount,
-        this.averageMonthlyVol});
+      this.membershipId,
+      this.mobileNumber,
+      this.inflName,
+      this.inflTypeId,
+      this.inflTypeText,
+      this.monthlyPotentialVolMt,
+      this.stateName,
+      this.districtName,
+      this.pinCode,
+      this.inflCategoryId,
+      this.inflCategoryText,
+      this.baseCity,
+      this.email,
+      this.giftAddress,
+      this.activeSitesCount,
+      this.averageMonthlyVol});
 
   IlpInfluencerEntity.fromJson(Map<String, dynamic> json) {
     joiningDate = json['joiningDate'];
@@ -171,4 +177,3 @@ class IlpInfluencerEntity {
     return data;
   }
 }
-

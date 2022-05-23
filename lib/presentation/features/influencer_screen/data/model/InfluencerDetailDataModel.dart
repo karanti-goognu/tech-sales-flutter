@@ -32,40 +32,61 @@ class Response {
 
   Response(
       {this.respCode,
-        this.respMsg,
-        this.influencerDetails,
-        this.influencerTypeEntitiesList,
-        this.influencerCategoryEntitiesList,
-        this.influencerSourceList,
-        this.siteBrandList});
+      this.respMsg,
+      this.influencerDetails,
+      this.influencerTypeEntitiesList,
+      this.influencerCategoryEntitiesList,
+      this.influencerSourceList,
+      this.siteBrandList});
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('influencerDetails')) influencerDetails = null;
     influencerDetails = json['influencerDetails'] != null
         ? new InfluencerDetails.fromJson(json['influencerDetails'])
         : null;
+
+    if (!json.containsKey('influencerTypeEntitiesList'))
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
+
     if (json['influencerTypeEntitiesList'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencerTypeEntitiesList'].forEach((v) {
         influencerTypeEntitiesList!
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryEntitiesList'))
+      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
+
     if (json['influencerCategoryEntitiesList'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
+          new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencerCategoryEntitiesList'].forEach((v) {
         influencerCategoryEntitiesList!
             .add(new InfluencerCategoryEntitiesList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerSourceList'))
+      influencerSourceList =
+          new List<InfluencerSourceList>.empty(growable: true);
+
     if (json['influencerSourceList'] != null) {
-      influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
+      influencerSourceList =
+          new List<InfluencerSourceList>.empty(growable: true);
       json['influencerSourceList'].forEach((v) {
         influencerSourceList!.add(new InfluencerSourceList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteBrandList'))
+      siteBrandList = new List<SiteBrandList>.empty(growable: true);
 
     if (json['siteBrandList'] != null) {
       siteBrandList = new List<SiteBrandList>.empty(growable: true);
@@ -73,7 +94,6 @@ class Response {
         siteBrandList!.add(new SiteBrandList.fromJson(v));
       });
     }
-
   }
 
   Map<String, dynamic> toJson() {
@@ -147,43 +167,42 @@ class InfluencerDetails {
 
   InfluencerDetails(
       {this.id,
-        this.inflContactNumber,
-        this.inflName,
-        this.inflTypeId,
-        this.isActive,
-        this.monthlyPotentialBags,
-        this.monthlyPotentialVolumeMT,
-        this.pinCode,
-        this.taluka,
-        this.inflCategoryId,
-        this.loyaltyLinkage,
-        this.fatherName,
-        this.dealership,
-        this.createBy,
-        this.inflAddress,
-        this.inflJoiningDate,
-        this.inflDob,
-        this.siteAssignedCount,
-        this.stateId,
-        this.stateName,
-        this.districtId,
-        this.districtName,
-        this.inflQualification,
-        this.giftAddress,
-        this.giftAddressPincode,
-        this.giftAddressDistrict,
-        this.giftAddressState,
-        this.inflEnrollmentSourceId,
-        this.baseCity,
-        this.email,
-        this.ilpregFlag,
-
-        this.designation,
-        this.departmentName,
-        this.preferredBrandId,
-        this.dateOfMarriageAnniversary,
-        this.firmName,
-        this.primaryCounterName});
+      this.inflContactNumber,
+      this.inflName,
+      this.inflTypeId,
+      this.isActive,
+      this.monthlyPotentialBags,
+      this.monthlyPotentialVolumeMT,
+      this.pinCode,
+      this.taluka,
+      this.inflCategoryId,
+      this.loyaltyLinkage,
+      this.fatherName,
+      this.dealership,
+      this.createBy,
+      this.inflAddress,
+      this.inflJoiningDate,
+      this.inflDob,
+      this.siteAssignedCount,
+      this.stateId,
+      this.stateName,
+      this.districtId,
+      this.districtName,
+      this.inflQualification,
+      this.giftAddress,
+      this.giftAddressPincode,
+      this.giftAddressDistrict,
+      this.giftAddressState,
+      this.inflEnrollmentSourceId,
+      this.baseCity,
+      this.email,
+      this.ilpregFlag,
+      this.designation,
+      this.departmentName,
+      this.preferredBrandId,
+      this.dateOfMarriageAnniversary,
+      this.firmName,
+      this.primaryCounterName});
 
   InfluencerDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -270,7 +289,6 @@ class InfluencerDetails {
   }
 }
 
-
 class InfluencerCategoryEntitiesList {
   int? inflCatId;
   String? inflCatDesc;
@@ -290,14 +308,13 @@ class InfluencerCategoryEntitiesList {
   }
 }
 
-
 class SiteBrandList {
   int? id;
   String? brandName;
   String? productName;
   String? isPrimary;
 
-  SiteBrandList({this.id, this.brandName,this.productName,this.isPrimary});
+  SiteBrandList({this.id, this.brandName, this.productName, this.isPrimary});
 
   SiteBrandList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -315,4 +332,3 @@ class SiteBrandList {
     return data;
   }
 }
-
