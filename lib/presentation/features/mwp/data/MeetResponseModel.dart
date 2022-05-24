@@ -18,9 +18,17 @@ class MeetResponseModelView {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     mwpVisitModel = json['mwpVisitModel'];
+
+    if (!json.containsKey('mwpMeetModel'))
+      mwpMeetModel = null;
+
     mwpMeetModel = json['mwpMeetModel'] != null
         ? new MwpMeetModelView.fromJson(json['mwpMeetModel'])
         : null;
+
+    if (!json.containsKey('dealerModel'))
+      dealerModel = new List<DealerModelView>.empty(growable: true);
+
     if (json['dealerModel'] != null) {
       dealerModel = new List<DealerModelView>.empty(growable: true);
       json['dealerModel'].forEach((v) {

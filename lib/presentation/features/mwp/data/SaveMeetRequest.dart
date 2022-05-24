@@ -47,6 +47,10 @@ class SaveMeetRequest {
     isSaveDraft = json['isSaveDraft'];
     createdBy = json['createdBy'];
     meetInitiatorName = json['meetInitiatorName'];
+
+    if (!json.containsKey('mwpMeetDealers'))
+      mwpMeetDealers = new List<MwpMeetDealers>.empty(growable: true);
+
     if (json['mwpMeetDealers'] != null) {
       mwpMeetDealers = new List<MwpMeetDealers>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {

@@ -8,6 +8,9 @@ class SiteAreaModel {
   SiteAreaModel({this.siteAreaDetailsModel, this.respCode, this.respMsg});
 
   SiteAreaModel.fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey('siteAreaDetailsModel'))
+      siteAreaDetailsModel = null;
+
     siteAreaDetailsModel = json['siteAreaDetailsModel'] != null
         ? new SiteAreaDetailsModel.fromJson(json['siteAreaDetailsModel'])
         : null;

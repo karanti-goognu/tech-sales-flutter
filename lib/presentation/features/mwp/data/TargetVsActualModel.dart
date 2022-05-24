@@ -11,6 +11,10 @@ class TargetVsActualModel {
   TargetVsActualModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('mwpPlanTargetVsActualModel'))
+      mwpPlanTargetVsActualModel = null;
+
     mwpPlanTargetVsActualModel = json['mwpPlanTargetVsActualModel'] != null
         ? new MwpPlanTargetVsActualModel.fromJson(
             json['mwpPlanTargetVsActualModel'])

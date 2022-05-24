@@ -41,24 +41,40 @@ class Response {
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('influencerTypeList'))
+      influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
+
     if (json['influencerTypeList'] != null) {
       influencerTypeList = new List<InfluencerTypeList>.empty(growable: true);
       json['influencerTypeList'].forEach((v) {
         influencerTypeList!.add(new InfluencerTypeList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryList'))
+      influencerCategoryList = new List<InfluencerCategoryList>.empty(growable: true);
+
     if (json['influencerCategoryList'] != null) {
       influencerCategoryList = new List<InfluencerCategoryList>.empty(growable: true);
       json['influencerCategoryList'].forEach((v) {
         influencerCategoryList!.add(new InfluencerCategoryList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerSourceList'))
+      influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
+
     if (json['influencerSourceList'] != null) {
       influencerSourceList = new List<InfluencerSourceList>.empty(growable: true);
       json['influencerSourceList'].forEach((v) {
         influencerSourceList!.add(new InfluencerSourceList.fromJson(v));
       });
     }
+
+
+    if (!json.containsKey('siteBrandList'))
+      siteBrandList = new List<SiteBrandList>.empty(growable: true);
 
     if (json['siteBrandList'] != null) {
       siteBrandList = new List<SiteBrandList>.empty(growable: true);

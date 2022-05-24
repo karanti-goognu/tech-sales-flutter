@@ -10,6 +10,10 @@ class DealerListResponse {
   DealerListResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('dealerList'))
+      dealerList = new List<DealerList>.empty(growable: true);
+
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {

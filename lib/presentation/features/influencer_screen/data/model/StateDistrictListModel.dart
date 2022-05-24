@@ -30,6 +30,10 @@ class Response {
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('stateDistrictList'))
+      stateDistrictList = new List<StateDistrictList>.empty(growable: true);
+
     if (json['stateDistrictList'] != null) {
       stateDistrictList = new List<StateDistrictList>.empty(growable: true);
       json['stateDistrictList'].forEach((v) {

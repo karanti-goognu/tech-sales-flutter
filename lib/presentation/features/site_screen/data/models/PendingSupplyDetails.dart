@@ -31,6 +31,10 @@ class PendingSupplyDetailsEntity {
   PendingSupplyDetailsEntity.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('pendingSuppliesDetailsModel'))
+      pendingSuppliesDetailsModel = null;
+
     pendingSuppliesDetailsModel = json['pendingSuppliesDetailsModel'] != null
         ? new PendingSuppliesDetailsModel.fromJson(
             json['pendingSuppliesDetailsModel'])

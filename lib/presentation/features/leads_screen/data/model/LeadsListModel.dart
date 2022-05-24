@@ -15,6 +15,11 @@ class LeadsListModel {
       this.totalLeadCount});
 
   LeadsListModel.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('leadsEntity'))
+      leadsEntity = new List<LeadsEntity>.empty(growable: true);
+
+
     if (json['leadsEntity'] != null) {
       leadsEntity = new List<LeadsEntity>.empty(growable: true);
       json['leadsEntity'].forEach((v) {

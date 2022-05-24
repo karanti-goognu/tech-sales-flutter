@@ -15,18 +15,30 @@ class SrFilterModel {
         this.severity});
 
   SrFilterModel.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
         leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplainResolutionEntity'))
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
+
     if (json['srComplainResolutionEntity'] != null) {
       srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
       json['srComplainResolutionEntity'].forEach((v) {
@@ -34,6 +46,10 @@ class SrFilterModel {
             .add(new SrComplainResolutionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplaintTypeEntity'))
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty();
+
     if (json['srComplaintTypeEntity'] != null) {
       srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty();
       json['srComplaintTypeEntity'].forEach((v) {

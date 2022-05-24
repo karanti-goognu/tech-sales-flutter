@@ -9,6 +9,9 @@ class RequestorDetailsModel {
       {this.srComplaintRequesterList, this.respCode, this.respMsg});
 
   RequestorDetailsModel.fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey('srComplaintRequesterList'))
+      srComplaintRequesterList = new List<SrComplaintRequesterList>.empty(growable: true);
+
     if (json['srComplaintRequesterList'] != null) {
       srComplaintRequesterList = new List<SrComplaintRequesterList>.empty(growable: true);
       json['srComplaintRequesterList'].forEach((v) {

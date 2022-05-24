@@ -14,9 +14,16 @@ class GetMWPResponse {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     listOfMonthYear = json['listOfMonthYear'].cast<String>();
-    mwpplanModel = json['mwpplanModel'] != null
+
+    if (!json.containsKey('mwpplanModel'))
+      mwpplanModel = null;
+          mwpplanModel = json['mwpplanModel'] != null
         ? new MwpplanModel.fromJson(json['mwpplanModel'])
         : null;
+
+    if (!json.containsKey('mwpPlannigList'))
+      mwpPlannigList = <MwpPlannigList>[];
+
     if (json['mwpPlannigList'] != null) {
       mwpPlannigList = <MwpPlannigList>[];
       json['mwpPlannigList'].forEach((v) {

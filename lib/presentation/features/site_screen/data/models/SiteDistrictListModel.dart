@@ -10,6 +10,10 @@ class SiteDistrictListModel {
   SiteDistrictListModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('districtList'))
+      districtList = new List<DistrictList>.empty(growable: true);
+
     if (json['districtList'] != null) {
       districtList = new List<DistrictList>.empty(growable: true);
       json['districtList'].forEach((v) {

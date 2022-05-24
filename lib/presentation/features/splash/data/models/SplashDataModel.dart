@@ -58,24 +58,39 @@ class SplashDataModel {
       });
 
   SplashDataModel.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
         leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('eventTypeModels'))
+      eventTypeModels = new List<EventTypeModels>.empty(growable: true);
+
     if (json['eventTypeModels'] != null) {
       eventTypeModels = new List<EventTypeModels>.empty(growable: true);
       json['eventTypeModels'].forEach((v) {
         eventTypeModels!.add(new EventTypeModels.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteOpportunityStatusEntity'))
+      siteOpportunityStatusRepository = new List<SiteOpportuityStatus>.empty(growable: true);
 
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusRepository = new List<SiteOpportuityStatus>.empty(growable: true);
@@ -85,6 +100,9 @@ class SplashDataModel {
       });
     }
 
+    if (!json.containsKey('siteProbabilityWinningEntity'))
+      siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
+
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
       json['siteProbabilityWinningEntity'].forEach((v) {
@@ -92,24 +110,40 @@ class SplashDataModel {
             .add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStageEntity'))
+      siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
+
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
       json['siteStageEntity'].forEach((v) {
         siteStageEntity!.add(new SiteStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStatusEntity'))
+      siteStatusEntity = new List<SiteStatusEntity>.empty(growable: true);
+
     if (json['siteStatusEntity'] != null) {
       siteStatusEntity = new List<SiteStatusEntity>.empty(growable: true);
       json['siteStatusEntity'].forEach((v) {
         siteStatusEntity!.add(new SiteStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteSubTypeEntity'))
+      siteSubTypeEntity = new List<SiteSubTypeEntity>.empty(growable: true);
+
     if (json['siteSubTypeEntity'] != null) {
       siteSubTypeEntity = new List<SiteSubTypeEntity>.empty(growable: true);
       json['siteSubTypeEntity'].forEach((v) {
         siteSubTypeEntity!.add(new SiteSubTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplainResolutionEntity'))
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
+
     if (json['srComplainResolutionEntity'] != null) {
       srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
       json['srComplainResolutionEntity'].forEach((v) {
@@ -117,36 +151,60 @@ class SplashDataModel {
             .add(new SrComplainResolutionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplaintTypeEntity'))
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty(growable: true);
+
     if (json['srComplaintTypeEntity'] != null) {
       srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty(growable: true);
       json['srComplaintTypeEntity'].forEach((v) {
         srComplaintTypeEntity!.add(new SrComplaintTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srctRequestEntity'))
+      srctRequestEntity = new List<SrctRequestEntity>.empty(growable: true);
+
     if (json['srctRequestEntity'] != null) {
       srctRequestEntity = new List<SrctRequestEntity>.empty(growable: true);
       json['srctRequestEntity'].forEach((v) {
         srctRequestEntity!.add(new SrctRequestEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryEntity'))
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+
     if (json['influencerCategoryEntity'] != null) {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity!.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('reportingTsoListModel'))
+      reportingTsoListModel = new List<ReportingTsoListModel>.empty(growable: true);
+
     if (json['reportingTsoListModel'] != null) {
       reportingTsoListModel = new List<ReportingTsoListModel>.empty(growable: true);
       json['reportingTsoListModel'].forEach((v) {
         reportingTsoListModel!.add(new ReportingTsoListModel.fromJson(v));
       });
     }
+
+    if (!json.containsKey('statusEntitieList'))
+      statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
+
     if (json['statusEntitieList'] != null) {
       statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
       json['statusEntitieList'].forEach((v) {
         statusEntitieList!.add(new StatusEntitieList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('versionUpdateModel'))
+      versionUpdateModel = new List<VersionUpdateModel>.empty(growable: true);
+
     if (json['versionUpdateModel'] != null) {
       versionUpdateModel = new List<VersionUpdateModel>.empty(growable: true);
       json['versionUpdateModel'].forEach((v) {
@@ -158,15 +216,27 @@ class SplashDataModel {
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
+
+    if (!json.containsKey('employee-details'))
+      employeeDetails = null;
+
     employeeDetails = json['employee-details'] != null
         ? new EmployeeDetails.fromJson(json['employee-details'])
         : null;
+
+    if (!json.containsKey('user-menu'))
+      userMenu = new List<UserMenu>.empty(growable: true);
+
     if (json['user-menu'] != null) {
       userMenu = new List<UserMenu>.empty(growable: true);
       json['user-menu'].forEach((v) {
         userMenu!.add(new UserMenu.fromJson(v));
       });
     }
+
+    if (!json.containsKey('journey-details'))
+      journeyDetails = null;
+
     journeyDetails = json['journey-details'] != null
         ? new JourneyDetails.fromJson(json['journey-details'])
         : null;

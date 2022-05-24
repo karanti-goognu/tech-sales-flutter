@@ -21,6 +21,11 @@ class SrComplaintModel {
   SrComplaintModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('serviceRequestComplaintDepartmentEntity'))
+      serviceRequestComplaintDepartmentEntity =
+      new List<ServiceRequestComplaintDepartmentEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintDepartmentEntity'] != null) {
       serviceRequestComplaintDepartmentEntity =
           new List<ServiceRequestComplaintDepartmentEntity>.empty(growable: true);
@@ -29,6 +34,11 @@ class SrComplaintModel {
             .add(new ServiceRequestComplaintDepartmentEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('serviceRequestComplaintRequestEntity'))
+      serviceRequestComplaintRequestEntity =
+      new List<ServiceRequestComplaintRequestEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintRequestEntity'] != null) {
       serviceRequestComplaintRequestEntity =
           new List<ServiceRequestComplaintRequestEntity>.empty(growable: true);
@@ -37,6 +47,11 @@ class SrComplaintModel {
             .add(new ServiceRequestComplaintRequestEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('serviceRequestComplaintTypeEntity'))
+      serviceRequestComplaintTypeEntity =
+      new List<ServiceRequestComplaintTypeEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintTypeEntity'] != null) {
       serviceRequestComplaintTypeEntity =
           new List<ServiceRequestComplaintTypeEntity>.empty(growable: true);
@@ -45,6 +60,10 @@ class SrComplaintModel {
             .add(new ServiceRequestComplaintTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('activeSiteTSOLists'))
+      activeSiteTSOLists =
+      new List<ActiveSiteTSOListsEntity>.empty(growable: true);
 
     if (json['activeSiteTSOLists'] != null) {
       activeSiteTSOLists =

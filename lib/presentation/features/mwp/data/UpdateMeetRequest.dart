@@ -6,6 +6,10 @@ class UpdateMeetRequest {
   UpdateMeetRequest({this.mwpMeetModel});
 
   UpdateMeetRequest.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('mwpMeetModel'))
+      mwpMeetModel = null;
+
     mwpMeetModel = json['mwpMeetModel'] != null
         ? new MwpMeetModel.fromJson(json['mwpMeetModel'])
         : null;

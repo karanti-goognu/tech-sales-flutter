@@ -35,6 +35,10 @@ class PendingSupplyDataResponse {
   PendingSupplyDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('pendingSuppliesModel'))
+      pendingSuppliesModel = new List<PendingSuppliesModel>.empty(growable: true);
+
     if (json['pendingSuppliesModel'] != null) {
       pendingSuppliesModel = new List<PendingSuppliesModel>.empty(growable: true);
       json['pendingSuppliesModel'].forEach((v) {

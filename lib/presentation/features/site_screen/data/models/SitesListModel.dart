@@ -15,6 +15,11 @@ class SitesListModel {
         this.totalSiteCount});
 
   SitesListModel.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('sitesEntity'))
+      sitesEntity = new List<SitesEntity>.empty(growable: true);
+
+
     if (json['sitesEntity'] != null) {
       sitesEntity = new List<SitesEntity>.empty(growable: true);
       json['sitesEntity'].forEach((v) {

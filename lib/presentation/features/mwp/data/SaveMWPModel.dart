@@ -164,6 +164,10 @@ class SaveMWPModel {
     status = json['status'];
     createdBy = json['createdBy'];
     actionedBy = json['actionedBy'];
+
+    if (!json.containsKey('mwpPlannigList'))
+      mwpPlannigList = <MwpPlannigList>[];
+
     if (json['mwpPlannigList'] != null) {
       mwpPlannigList = <MwpPlannigList>[];
       json['mwpPlannigList'].forEach((v) {

@@ -1,5 +1,6 @@
 
 
+
 class UpdateSRModel {
   int? id;
   String? severity;
@@ -25,12 +26,20 @@ class UpdateSRModel {
     severity = json['severity'];
     resoulutionStatus = json['resoulutionStatus'];
     updatedBy = json['updatedBy'];
+
+    if (!json.containsKey('srComplaintAction'))
+      srComplaintAction = new List<SrComplaintAction>.empty(growable: true);
+
     if (json['srComplaintAction'] != null) {
       srComplaintAction = new List<SrComplaintAction>.empty(growable: true);
       json['srComplaintAction'].forEach((v) {
         srComplaintAction!.add(new SrComplaintAction.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srcActionPhotosEntity'))
+      srcActionPhotosEntity = new List<SrcActionPhotosEntity>.empty(growable: true);
+
     if (json['srcActionPhotosEntity'] != null) {
       srcActionPhotosEntity = new List<SrcActionPhotosEntity>.empty(growable: true);
       json['srcActionPhotosEntity'].forEach((v) {

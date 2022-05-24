@@ -12,6 +12,10 @@ class VisitResponseModel {
   VisitResponseModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('mwpVisitModel'))
+      mwpVisitModel = null;
+
     mwpVisitModel = json['mwpVisitModel'] != null
         ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;

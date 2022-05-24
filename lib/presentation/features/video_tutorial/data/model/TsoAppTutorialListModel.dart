@@ -11,6 +11,10 @@ class TsoAppTutorialListModel{
 
   TsoAppTutorialListModel.fromJson(Map<String, dynamic> json) {
     totalCount = json['total-count'];
+
+    if (!json.containsKey('tsoAppTutorial'))
+      tsoAppTutorial = new List<TsoAppTutorial>.empty(growable: true);
+
     if (json['tsoAppTutorial'] != null) {
       tsoAppTutorial = new List<TsoAppTutorial>.empty(growable: true);
       json['tsoAppTutorial'].forEach((v) {

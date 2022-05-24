@@ -140,12 +140,19 @@ class UpdateDataRequest {
     // soldToParty = json['soldToParty'];
     // shipToParty = json['shipToParty'];
 
+    if (!json.containsKey('siteCommentsEntity'))
+      siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
+
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
       json['siteCommentsEntity'].forEach((v) {
         siteCommentsEntity!.add(new SiteCommentsEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStageHistorys'))
+      siteStageHistory = new List<SiteStageHistory>.empty(growable: true);
+
     if (json['siteStageHistorys'] != null) {
       siteStageHistory = new List<SiteStageHistory>.empty(growable: true);
       json['siteStageHistorys'].forEach((v) {
@@ -153,18 +160,29 @@ class UpdateDataRequest {
       });
     }
 
+    if (!json.containsKey('siteNextStageEntity'))
+      siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
+
     if (json['siteNextStageEntity'] != null) {
       siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
       json['siteNextStageEntity'].forEach((v) {
         siteNextStageEntity!.add(new SiteNextStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('sitePhotosEntity'))
+      sitePhotosEntity = new List<SitePhotosEntity>.empty(growable: true);
+
     if (json['sitePhotosEntity'] != null) {
       sitePhotosEntity = new List<SitePhotosEntity>.empty(growable: true);
       json['sitePhotosEntity'].forEach((v) {
         sitePhotosEntity!.add(new SitePhotosEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteInfluencerEntity'))
+      siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
+
     if (json['siteInfluencerEntity'] != null) {
       siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
       json['siteInfluencerEntity'].forEach((v) {

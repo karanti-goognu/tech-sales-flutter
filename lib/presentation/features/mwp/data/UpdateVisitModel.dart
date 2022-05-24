@@ -8,6 +8,8 @@ class UpdateVisitResponseModel {
       {this.mwpVisitModel, this.mwpMeetModel});
 
   UpdateVisitResponseModel.fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey('mwpVisitModel'))
+      mwpVisitModel = null;
 
     mwpVisitModel = json['mwpVisitModel'] != null
         ? new MwpVisitModelUpdate.fromJson(json['mwpVisitModel'])

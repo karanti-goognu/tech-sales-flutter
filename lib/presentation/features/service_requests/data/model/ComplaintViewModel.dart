@@ -113,18 +113,30 @@ class ComplaintViewModel {
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
+
+    if (!json.containsKey('srcSubtypeMappingModal'))
+      srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>.empty(growable: true);
+
     if (json['srcSubtypeMappingModal'] != null) {
       srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>.empty(growable: true);
       json['srcSubtypeMappingModal'].forEach((v) {
         srcSubtypeMappingModal!.add(new SrcSubtypeMappingModal.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srcResolutionEntity'))
+      srcResolutionEntity = new List<SrcResolutionEntity>.empty(growable: true);
+
     if (json['srcResolutionEntity'] != null) {
       srcResolutionEntity = new List<SrcResolutionEntity>.empty(growable: true);
       json['srcResolutionEntity'].forEach((v) {
         srcResolutionEntity!.add(new SrcResolutionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplaintActionList'))
+      srComplaintActionList = new List<SrComplaintActionList>.empty(growable: true);
+
     if (json['srComplaintActionList'] != null) {
       srComplaintActionList = new List<SrComplaintActionList>.empty(growable: true);
       json['srComplaintActionList'].forEach((v) {

@@ -26,24 +26,44 @@ class ValidateOtpModel {
   ValidateOtpModel.fromJson(Map<String, dynamic> json) {
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
+
+    if (!json.containsKey('employee-details'))
+      employeeDetails = null;
+
     employeeDetails = json['employee-details'] != null
         ? new EmployeeDetails.fromJson(json['employee-details'])
         : null;
+
+    if (!json.containsKey('user-menu'))
+      userMenu = new List<UserMenu>.empty(growable: true);
+
     if (json['user-menu'] != null) {
       userMenu = new List<UserMenu>.empty(growable: true);
       json['user-menu'].forEach((v) {
         userMenu!.add(new UserMenu.fromJson(v));
       });
     }
+
+    if (!json.containsKey('journey-details'))
+      journeyDetails = null;
+
     journeyDetails = json['journey-details'] != null
         ? new JourneyDetails.fromJson(json['journey-details'])
         : null;
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
         leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
