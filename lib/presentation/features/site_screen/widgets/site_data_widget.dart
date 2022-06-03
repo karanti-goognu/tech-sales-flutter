@@ -92,7 +92,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       sitesModal = viewSiteDataResponse!.sitesModal;
       constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
-      siteBuiltupArea.text = sitesModal!.siteBuiltArea!;
+      //siteBuiltupArea.text = sitesModal!.siteBuiltArea!;
+      siteBuiltupArea.text = (sitesModal!.siteBuiltArea != null ? sitesModal!.siteBuiltArea : "")!;
       siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
       _totalKitchenCount!.text = sitesModal!.kitchenCount != null
           ? sitesModal!.kitchenCount.toString()

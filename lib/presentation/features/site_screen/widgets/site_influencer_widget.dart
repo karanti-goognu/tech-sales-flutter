@@ -34,6 +34,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
   List<SiteStageEntity> siteStageEntity = new List.empty(growable: true);
   List<InfluencerEntity>? influencerEntity = new List.empty(growable: true);
   List<InfluencerDetail>? _listInfluencerDetail = new List.empty(growable: true);
+
   ViewSiteDataResponse? viewSiteDataResponse = new ViewSiteDataResponse();
 
   setInfluencerData() {
@@ -153,6 +154,10 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17),
                                   ),
+
+
+
+                                  (widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "A")?
                                   Switch(
                                     onChanged: (value) {
                                       setState(() {
@@ -181,7 +186,38 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         HexColor("#009688").withOpacity(0.5),
                                     inactiveThumbColor: HexColor("#F1F1F1"),
                                     inactiveTrackColor: Colors.black26,
+                                  ):
+                                  Switch(
+                                    onChanged: (value) {
+                                      // setState(() {
+                                      //   if (value) {
+                                      //     for (int i = 0;
+                                      //     i < _listInfluencerDetail!.length;
+                                      //     i++) {
+                                      //       if (i == index) {
+                                      //         _listInfluencerDetail![i]
+                                      //             .isPrimarybool = value;
+                                      //       } else {
+                                      //         _listInfluencerDetail![i]
+                                      //             .isPrimarybool = !value;
+                                      //       }
+                                      //     }
+                                      //   } else {
+                                      //     Get.dialog(CustomDialogs.showMessage(
+                                      //         "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                      //   }
+                                      // });
+                                    },
+                                    value: _listInfluencerDetail![index]
+                                        .isPrimarybool!,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                    HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26,
                                   ),
+
+
                                   _listInfluencerDetail![index].isExpanded!
                                       ? TextButton.icon(
 
@@ -313,25 +349,25 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   ),
                                   Switch(
                                     onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          for (int i = 0;
-                                          i < _listInfluencerDetail!.length;
-                                          i++) {
-                                            if (i == index) {
-                                              _listInfluencerDetail![i]
-                                                  .isPrimarybool = value;
-                                            } else {
-                                              _listInfluencerDetail![i]
-                                                  .isPrimarybool = !value;
-                                            }
-                                          }
-                                        } else {
-                                          Get.dialog(
-                                              CustomDialogs.showMessage(
-                                                  "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                        }
-                                      });
+                                      //setState(() {
+                                      //   if (value) {
+                                      //     for (int i = 0;
+                                      //     i < _listInfluencerDetail!.length;
+                                      //     i++) {
+                                      //       if (i == index) {
+                                      //         _listInfluencerDetail![i]
+                                      //             .isPrimarybool = value;
+                                      //       } else {
+                                      //         _listInfluencerDetail![i]
+                                      //             .isPrimarybool = !value;
+                                      //       }
+                                      //     }
+                                      //   } else {
+                                      //     Get.dialog(
+                                      //         CustomDialogs.showMessage(
+                                      //             "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                      //   }
+                                      // });
                                     },
                                     value: _listInfluencerDetail![index]
                                         .isPrimarybool!,

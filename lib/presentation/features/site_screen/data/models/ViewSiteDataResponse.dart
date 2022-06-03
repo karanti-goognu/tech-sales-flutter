@@ -429,6 +429,7 @@ class SitesModal {
   String? totalBalancePotential;
   int? kitchenCount;
   int? bathroomCount;
+  String? isMemberAddded;
 
   SitesModal(
       {this.assignedTo,
@@ -477,7 +478,8 @@ class SitesModal {
         this.subdealerId,
         this.totalBalancePotential,
         this.kitchenCount,
-        this.bathroomCount
+        this.bathroomCount,
+        this.isMemberAddded
       });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
@@ -529,6 +531,7 @@ class SitesModal {
     totalBalancePotential = json['totalBalancePotential']!=null? json['totalBalancePotential'].toString():"";
     kitchenCount = json['kitchenCount'];
     bathroomCount = json['bathroomCount'];
+    isMemberAddded = json['isMemberAddded'];
 
   }
 
@@ -581,6 +584,7 @@ class SitesModal {
     data['totalBalancePotential'] = this.totalBalancePotential;
     data['kitchenCount'] = this.kitchenCount;
     data['bathroomCount'] = this.bathroomCount;
+    data['isMemberAddded'] = this.isMemberAddded;
     return data;
   }
 }
