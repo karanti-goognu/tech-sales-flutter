@@ -157,7 +157,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
 
 
 
-                                  (widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "A")?
+                                  (widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "N")?
                                   Switch(
                                     onChanged: (value) {
                                       setState(() {
