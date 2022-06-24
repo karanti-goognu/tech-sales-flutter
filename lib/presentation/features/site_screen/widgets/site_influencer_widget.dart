@@ -154,9 +154,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17),
                                   ),
-
-
-
+                                  // Text(widget.viewSiteDataResponse?.sitesModal!.isMemberAddded??""),
                                   (widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "N")?
                                   Switch(
                                     onChanged: (value) {
@@ -349,25 +347,28 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                   ),
                                   Switch(
                                     onChanged: (value) {
-                                      //setState(() {
-                                      //   if (value) {
-                                      //     for (int i = 0;
-                                      //     i < _listInfluencerDetail!.length;
-                                      //     i++) {
-                                      //       if (i == index) {
-                                      //         _listInfluencerDetail![i]
-                                      //             .isPrimarybool = value;
-                                      //       } else {
-                                      //         _listInfluencerDetail![i]
-                                      //             .isPrimarybool = !value;
-                                      //       }
-                                      //     }
-                                      //   } else {
-                                      //     Get.dialog(
-                                      //         CustomDialogs.showMessage(
-                                      //             "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
-                                      //   }
-                                      // });
+                                      if(widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "N"){
+                                        setState(() {
+                                          if (value) {
+                                            for (int i = 0;
+                                            i < _listInfluencerDetail!.length;
+                                            i++) {
+                                              if (i == index) {
+                                                _listInfluencerDetail![i]
+                                                    .isPrimarybool = value;
+                                              } else {
+                                                _listInfluencerDetail![i]
+                                                    .isPrimarybool = !value;
+                                              }
+                                            }
+                                          } else {
+                                            Get.dialog(
+                                                CustomDialogs.showMessage(
+                                                    "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
+                                          }
+                                        });
+                                      }
+
                                     },
                                     value: _listInfluencerDetail![index]
                                         .isPrimarybool!,
@@ -889,6 +890,7 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
                   if (_listInfluencerDetail!.length == 0) {
+                    print("_______");
                     setState(() {
                       _listInfluencerDetail!.add(new InfluencerDetail(
                           isExpanded: true, isPrimarybool: true));
@@ -907,11 +909,12 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                           .inflName!
                           .text
                           .isBlank!) {
+                    print("_+_");
                     InfluencerDetail infl = new InfluencerDetail(
                         isExpanded: true, isPrimarybool: false);
                     setState(() {
-                      _listInfluencerDetail![_listInfluencerDetail!.length - 1]
-                          .isExpanded = false;
+                      _listInfluencerDetail![_listInfluencerDetail!.length - 1].isExpanded = false;
+                      print(infl);
                       _listInfluencerDetail!.add(infl);
                       UpdatedValues.setSiteInfluencerDetails(
                           _listInfluencerDetail);

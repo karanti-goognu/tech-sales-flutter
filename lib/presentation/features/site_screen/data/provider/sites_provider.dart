@@ -163,8 +163,8 @@ class MyApiClientSites {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        // log('Data:${json.encode(data)}');
-        // log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
+        log('Data:${json.encode(data)}');
+        log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -243,6 +243,8 @@ class MyApiClientSites {
   updateVersion2SiteData(accessKey, String? userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int? siteId) async {
     version = VersionClass.getVersion();
+    print("::::::::::::::::::::::::");
+    print(UrlConstants.updateVersion4SiteData);
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
     request.headers.addAll(
@@ -285,6 +287,7 @@ class MyApiClientSites {
             }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
+            print(updateLeadResponseModel.respMsg);
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -253,7 +251,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                   if(_siteController
                                       .sitesListResponse
                                       .sitesEntity==null){
-                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.white);
+                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.red);
                                   }
                                   else {
                                     Navigator.push(
