@@ -144,6 +144,7 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
               Get.snackbar("No internet connection.",
                   "Make sure that your wifi or mobile data is turned on.",
                   colorText: Colors.white,
+
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
             }

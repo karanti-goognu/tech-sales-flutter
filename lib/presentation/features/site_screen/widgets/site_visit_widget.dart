@@ -1081,7 +1081,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       (data) async {
         accessKeyModel = data;
         await _siteController
-            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
+            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId, )
             .then(
           (data) async {
             viewSiteDataResponse = data;

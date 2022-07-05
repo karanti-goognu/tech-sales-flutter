@@ -105,7 +105,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
       (data) async {
         accessKeyModel = data;
         await _siteController
-            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId)
+            .getSitedetailsData(accessKeyModel.accessKey, widget.siteId, _siteStage.id)
             .then(
           (data) async {
             viewSiteDataResponse = data;

@@ -45,12 +45,16 @@ class MyRepositorySites {
   // }
 
   getSitedetailsData(
-      String accessKey, String userSecurityKey, int siteId, String empID) {
+      String accessKey, String userSecurityKey, int siteId, String empID, int stageId) {
     return apiClient.getSiteDetailsData(
-        accessKey, userSecurityKey, siteId, empID);
+        accessKey, userSecurityKey, siteId, empID,stageId);
   }
 
-  // updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
+  getFloorDetail(String accessKey, String userSecurityKey, int siteId, String empID) {
+    return apiClient.getFloorDetail(accessKey, userSecurityKey, siteId);
+  }
+
+    // updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
   //     List<File> list, BuildContext context, int siteId) {
   //   return apiClient.updateSiteData(
   //       accessKey, userSecurityKey, updateDataRequest, list, context, siteId);

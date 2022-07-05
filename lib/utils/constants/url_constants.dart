@@ -7,15 +7,15 @@ abstract class UrlConstants {
  UrlConstants._();
 
  //PROD
- static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
- static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
- static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+ // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
 
 
  // QA
- // static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
- // static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
- // static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
+ static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
+ static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
+ static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
  //Development
  // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
@@ -76,6 +76,10 @@ abstract class UrlConstants {
  static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
+ static const String getFloorDetail = '$baseUrl/sites/getFloorDetailbyStageId?stageId=';
+
+
+
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
  //static const String updateVersion4SiteData = '$baseUrl/sites/v4/site-update';
  static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';

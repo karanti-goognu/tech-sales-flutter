@@ -394,7 +394,7 @@ class SiteController extends GetxController {
     return repository.getAccessKey();
   }
 
-  getSitedetailsData(String accessKey, int siteId) async {
+  getSitedetailsData(String accessKey, int siteId, [int stageId]) async {
     String userSecurityKey = "";
     String empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
@@ -402,7 +402,7 @@ class SiteController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID =  prefs.getString(StringConstants.employeeId);
-      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
+      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID, stageId);
     });
     return viewSiteDataResponse;
   }

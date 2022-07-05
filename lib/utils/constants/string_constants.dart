@@ -1,14 +1,11 @@
 abstract class StringConstants {
   StringConstants._();
 
-
-  static String empIdAndNoNotMatch =
-      'Emp ID & Contact number is not registered. Please recheck your details or Contact your Regional TS Admin';
-
-  static String noInternetConnectionError =
-      'No active internet connection found.Please check your internet connectivity.';
+  static String empIdAndNoNotMatch = 'Emp ID & Contact number is not registered. Please recheck your details or Contact your Regional TS Admin';
+  static String noInternetConnectionError = 'No active internet connection found.Please check your internet connectivity.';
 
   ///Map Api Key
+  // static const String API_Key = "AIzaSyAWLu3t-ku7VvqpB-Sd72KzpF3ngsUK3qU"; // new key
   static const String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";
 
   ///Secret Key for encryption
@@ -72,5 +69,4 @@ abstract class StringConstants {
   ///App screen Name
   static const String SPLASH = "Splash";
   static const String HOME = "home";
-
 }
