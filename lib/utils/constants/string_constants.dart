@@ -11,13 +11,9 @@ abstract class StringConstants {
 
 
 
-
-
-
-
-
   ///Map Api Key
-  static const String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";
+  // static const String API_Key = "AIzaSyC8GcSwDzPq7gW_vKmsTNv9Xqr9WvwfA5E";//old key
+  static const String API_Key = "AIzaSyAWLu3t-ku7VvqpB-Sd72KzpF3ngsUK3qU"; // new key
 
   ///Secret Key for encryption
   static String encryptionKey = "dalmia@techexpert";

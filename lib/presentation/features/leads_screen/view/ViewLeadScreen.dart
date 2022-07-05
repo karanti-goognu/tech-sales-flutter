@@ -599,6 +599,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _state.text = "${loc[1]}";
             _pincode.text = "${loc[5]}";
             _taluk.text = "${loc[3]}";
+            Get.back();
           },
         ),
         Text(
