@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/custom_map.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateDataRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/widgets/updated_values.dart';
@@ -30,6 +31,7 @@ class SiteDataWidget extends StatefulWidget {
 }
 
 class SiteDataViewWidgetState extends State<SiteDataWidget> {
+  SiteController _siteController = Get.find();
   final _updateFormKey = GlobalKey<FormState>();
   FocusNode? myFocusNode;
   bool isSwitchedsiteProductDemo = false;
@@ -67,7 +69,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   var _district = TextEditingController();
   var _taluk = TextEditingController();
   TextEditingController? _totalBathroomCount = TextEditingController();
-  TextEditingController? _totalKitchenCount = TextEditingController();
+  late TextEditingController _totalKitchenCount = TextEditingController();
   LatLng? _currentPosition;
   String? geoTagType;
   List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
@@ -92,10 +94,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       sitesModal = viewSiteDataResponse!.sitesModal;
       constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
-      //siteBuiltupArea.text = sitesModal!.siteBuiltArea!;
       siteBuiltupArea.text = (sitesModal!.siteBuiltArea != null ? sitesModal!.siteBuiltArea : "")!;
+      //ToDo:
       siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
-      _totalKitchenCount!.text = sitesModal!.kitchenCount != null
+      _totalKitchenCount.text = sitesModal!.kitchenCount != null
           ? sitesModal!.kitchenCount.toString()
           : "";
       _totalBathroomCount!.text = sitesModal!.bathroomCount != null
@@ -374,11 +376,16 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       value: label,
                                     ))
                                 .toList(),
-                            onChanged: (_) => setState(() {
-                              _selectedConstructionType = _;
-                              UpdatedValues.setSiteConstructionId(
-                                  _selectedConstructionType);
-                            }),
+                            onChanged: (_)async{
+                                // siteFloorsEntity= await _siteController.getSiteFloorList(_?.id);
+                              setState(() {
+                                _selectedConstructionType = _;
+                                UpdatedValues.setSiteConstructionId(
+                                    _selectedConstructionType);
+                              });
+
+
+                            },
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
                           ),

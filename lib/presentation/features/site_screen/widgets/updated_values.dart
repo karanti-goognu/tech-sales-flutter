@@ -1,5 +1,6 @@
 
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class UpdatedValues {
   static String? dealerConfirmedChangedOn;
   static String? isDealerConfirmedChangedBySo;
   static String? subdealerId;
-  static TextEditingController? kitchenCount;
+  static late TextEditingController kitchenCount;
   static TextEditingController? bathroomCount;
   static List<SiteSupplyHistorys>? siteSupplyHistory;
 
@@ -575,7 +576,6 @@ class UpdatedValues {
         siteCommentsEntity == "") {
       siteCommentsEntity = "Site updated";
     }
-    // print('${widget.siteId}=============');
 
     List<SiteCommentsEntity> newSiteCommentsEntity = new List.empty(growable: true);
     newSiteCommentsEntity.add(new SiteCommentsEntity(
@@ -758,11 +758,11 @@ class UpdatedValues {
     UpdatedValues.subdealerId = subdealerId;
   }
 
-  static TextEditingController? getKitchenCount() {
+  static TextEditingController getKitchenCount() {
     return kitchenCount;
   }
 
-  static void setKitchenCount(TextEditingController? kitchenCount) {
+  static void setKitchenCount(TextEditingController kitchenCount) {
     UpdatedValues.kitchenCount = kitchenCount;
   }
 
@@ -965,16 +965,15 @@ class UpdatedValues {
       "dealerConfirmedChangedOn": "",
       "isDealerConfirmedChangedBySo": getIsDealerConfirmedChangedBySo(),
       "subdealerId": UpdatedValues.subdealerId,
-      "kitchenCount":
-              UpdatedValues.getKitchenCount()!.text.isNotEmpty
-          ? int.parse(UpdatedValues.getKitchenCount()!.text)
-          : null,
+      "kitchenCount": (UpdatedValues.getKitchenCount().text.isNotEmpty)
+          ? int.parse(UpdatedValues.getKitchenCount().text)
+          : null
+      ,
       "bathroomCount":
               UpdatedValues.getBathroomCount()!.text.isNotEmpty
           ? int.parse(UpdatedValues.getBathroomCount()!.text)
           : null,
     };
-
     if (UpdatedValues.getFromDropDown() == true) {
       if (UpdatedValues.siteBuiltArea == "" ||
           UpdatedValues.siteBuiltArea == null ||

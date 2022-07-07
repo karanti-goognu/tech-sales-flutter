@@ -73,7 +73,7 @@ class MyApiClientSplash {
       var response = await httpClient.get(uri, headers: requestHeadersEmpIdAndNo);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        log("Data: ${data}");
+        log("Data: $data");
         SplashDataModel splashDataModel = SplashDataModel.fromJson(data);
         return splashDataModel;
       } else {

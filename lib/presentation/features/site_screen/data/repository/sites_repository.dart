@@ -44,6 +44,9 @@ class MyRepositorySites {
     return apiClient.getSiteDetailsData(
         accessKey, userSecurityKey, siteId, empID);
   }
+  getSiteFloorList(String accessKey, String userSecurityKey, int stageId,dynamic siteId){
+    return apiClient.getSiteFloorList(accessKey, userSecurityKey, stageId, siteId);
+  }
 
 
   updateSiteData(accessKey, String? userSecurityKey, updateDataRequest,

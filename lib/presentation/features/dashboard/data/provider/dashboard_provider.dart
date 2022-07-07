@@ -126,7 +126,7 @@ class MyApiClientDashboard {
       //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        //   print("---$data");
+          log("---$data");
         if (data["resp_code"] == "DM1005") {
           //Get.back();
           //    print("User Inactive");

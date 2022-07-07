@@ -75,7 +75,7 @@ class _ViewSiteScreenState extends State<ViewSiteScreenNew>
     UpdatedValues.setNoOfFloors(null);
     UpdatedValues.setSiteBuiltArea(null);
     UpdatedValues.setBathroomCount(null);
-    UpdatedValues.setKitchenCount(null);
+    UpdatedValues.setKitchenCount(TextEditingController());
     UpdatedValues.setSiteTotalPotential(null);
     UpdatedValues.setTotalBalancePotential(null);
     UpdatedValues.setSiteSelectedDB(null);

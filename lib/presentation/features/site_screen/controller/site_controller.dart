@@ -400,6 +400,19 @@ class SiteController extends GetxController {
     return viewSiteDataResponse;
   }
 
+  getSiteFloorList(stageId, siteId) async{
+    print(siteId.runtimeType);
+    List<SiteFloorsEntity> siteList= List<SiteFloorsEntity>.empty(growable: true);
+    String? userSecurityKey = "";
+    AccessKeyModel accessKey= await getAccessKeyOnly();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    await _prefs.then((SharedPreferences prefs) async {
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      siteList = await repository.getSiteFloorList(accessKey.accessKey!, userSecurityKey!, stageId, siteId);
+    });
+    return siteList;
+  }
+
   showNoInternetSnack() {
     Get.snackbar(
         "No internet connection.", "Please check your internet connection.",

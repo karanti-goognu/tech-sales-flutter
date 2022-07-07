@@ -132,6 +132,7 @@ class SplashController extends GetxController {
       // encryptString(empId, StringConstants.encryptedKey).toString();
 
       String url = "${UrlConstants.refreshSplashData}$empId";
+      print(url);
       await repository
           .getRefreshData(url, accessKey!, userSecurityKey)
           .then((data) {
@@ -139,10 +140,16 @@ class SplashController extends GetxController {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
+          print(data);
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
+          print(versionUpdateModel);
+          print("-----------------version update model");
           if (versionUpdateModel != null && versionUpdateModel!.length > 0) {
+            print("YE");
             for (int i = 0; i < versionUpdateModel!.length; i++) {
-              if (versionUpdateModel![i].platform == "ANDROID") {
+              print("YES $i");
+              if (versionUpdateModel![i].platform?.toUpperCase() == "ANDROID") {
+                print("YES Android");
                 if (versionUpdateModel![i].oldVersion !=
                     versionUpdateModel![i].newVersion &&
                     versionUpdateModel![i].updateType == "SOFT") {
@@ -155,24 +162,17 @@ class SplashController extends GetxController {
                       .then((value) => openNextPage(1));
                 } else if (versionUpdateModel![i].oldVersion !=
                     versionUpdateModel![i].newVersion &&
-                    versionUpdateModel![i].updateType == "HARD") {
+                    versionUpdateModel![i].updateType?.toUpperCase() == "HARD") {
                   Get.dialog(
-                      CustomDialogs.appForceUpdateDialog(
-                          versionUpdateModel![i].versionUpdateText!,
-                          versionUpdateModel![i].appId,
-                          "ANDROID"),
-                      barrierDismissible: false);
+                      CustomDialogs.appForceUpdateDialog(versionUpdateModel![i].versionUpdateText!,versionUpdateModel![i].appId, "ANDROID"), barrierDismissible: false);
                 }
               }
-              if (versionUpdateModel![i].platform == "IOS") {
+              if (versionUpdateModel![i].platform?.toUpperCase() == "IOS") {
                 if (versionUpdateModel![i].oldVersion !=
                     versionUpdateModel![i].newVersion &&
-                    versionUpdateModel![i].updateType == "SOFT") {
+                    versionUpdateModel![i].updateType?.toUpperCase() == "SOFT") {
                   Get.dialog(
-                      CustomDialogs.appUpdateDialog(
-                          versionUpdateModel![i].versionUpdateText!,
-                          versionUpdateModel![i].appId,
-                          "IOS"),
+                      CustomDialogs.appUpdateDialog(versionUpdateModel![i].versionUpdateText!,versionUpdateModel![i].appId, "IOS"),
                       barrierDismissible: true)
                       .then((value) => openNextPage(2));
                 } else if (versionUpdateModel![i].oldVersion !=

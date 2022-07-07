@@ -68,6 +68,8 @@ abstract class UrlConstants {
  static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
+ static const String getFloorDetail = '$baseUrl/sites/getFloorDetailbyStageId?stageId=';
+
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
  static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
  static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';

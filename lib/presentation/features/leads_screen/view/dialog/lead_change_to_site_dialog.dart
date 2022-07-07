@@ -430,7 +430,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       'totalFloorSqftArea': _noOfBagsSupplied.text
     };
 
-    print("updateRequestModel: ${updateRequestModel}");
+    print("updateRequestModel: $updateRequestModel");
 
     internetChecking().then((result) => {
           if (result == true)

@@ -894,9 +894,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         constructionStageEntityNew =
             viewSiteDataResponse!.constructionStageEntity;
         addNextButtonDisable = false;
-        siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
-        siteFloorsEntityNew = viewSiteDataResponse!.siteFloorsEntity;
-        siteFloorsEntityNewNextStage = viewSiteDataResponse!.siteFloorsEntity;
+        //ToDo:
+        // siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
+        // siteFloorsEntityNew = viewSiteDataResponse!.siteFloorsEntity;
+        // siteFloorsEntityNewNextStage = viewSiteDataResponse!.siteFloorsEntity;
         siteCommentsEntity = viewSiteDataResponse!.siteCommentsEntity;
         sitephotosEntity = viewSiteDataResponse!.sitephotosEntity;
         if (viewSiteDataResponse!.siteStageHistorys != null) {
@@ -1068,31 +1069,35 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   value: label,
                                 ))
                             .toList(),
-                        onChanged: (value) {
+                        onChanged: (value) async{
+
+                          siteFloorsEntityNew= await _siteController.getSiteFloorList(value?.id,UpdatedValues.getSiteId());
+                          // siteFloorsEntityNew = siteFloorsEntity;
+                          // siteFloorsEntityNewNextStage = siteFloorsEntity;
+
                           setState(() {
                             FocusScope.of(context)
                                 .requestFocus(new FocusNode());
                             _selectedConstructionTypeVisit = value;
-                            siteFloorsEntityNew =
-                                new List.empty(growable: true);
-                            _selectedSiteVisitFloor = null;
-                            if (_selectedConstructionTypeVisit!.id == 1 ||
-                                _selectedConstructionTypeVisit!.id == 2 ||
-                                _selectedConstructionTypeVisit!.id == 3) {
-                              siteFloorsEntityNew!.add(new SiteFloorsEntity(
-                                  id: siteFloorsEntity![0].id,
-                                  siteFloorTxt:
-                                      siteFloorsEntity![0].siteFloorTxt));
-                            } else {
-                              for (int i = 0;
-                                  i < siteFloorsEntity!.length;
-                                  i++) {
-                                siteFloorsEntityNew!.add(new SiteFloorsEntity(
-                                    id: siteFloorsEntity![i].id,
-                                    siteFloorTxt:
-                                        siteFloorsEntity![i].siteFloorTxt));
-                              }
-                            }
+                            // siteFloorsEntityNew =
+                            //     new List.empty(growable: true);
+                            // _selectedSiteVisitFloor = null;
+                            // if (_selectedConstructionTypeVisit!.id == 1 ||
+                            //     _selectedConstructionTypeVisit!.id == 2 ||
+                            //     _selectedConstructionTypeVisit!.id == 3) {
+                            //   siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                            //       id: siteFloorsEntity![0].id,
+                            //       siteFloorTxt: siteFloorsEntity![0].siteFloorTxt));
+                            // } else {
+                            //   for (int i = 0;
+                            //       i < siteFloorsEntity!.length;
+                            //       i++) {
+                            //     siteFloorsEntityNew!.add(new SiteFloorsEntity(
+                            //         id: siteFloorsEntity![i].id,
+                            //         siteFloorTxt:
+                            //             siteFloorsEntity![i].siteFloorTxt));
+                            //   }
+                            // }
                             _stagePotentialVisit.clear();
                             UpdatedValues.setSiteProgressConstructionId(
                                 _selectedConstructionTypeVisit);

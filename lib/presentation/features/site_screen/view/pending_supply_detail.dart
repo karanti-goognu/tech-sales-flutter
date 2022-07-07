@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.da
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -51,14 +52,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   String claimableKittyBagsAvailable = "0";
   String reservedKittyBagsAvailable = "0";
   ConstStage? _selectedConstructionType;
-  SiteFloorlist? _selectedFloorType;
+  SiteFloorsEntity? _selectedFloorType;
   bool isExpanded = true;
   String? _selectedRadioValue = 'Y';
   DealerModel? _selectedDealer;
 
   TextEditingController counterController = TextEditingController();
 
-  List<SiteFloorlist>? siteFloorsEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
   List<ConstStage>? constStageEntity = new List.empty(growable: true);
   List<DealerModel> dealerList = new List.empty(growable: true);
 
@@ -96,13 +97,14 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
         setState(() {
           _pendingSuppliesDetailsModel = data;
           dealerList = _addEventController.dealerList;
-          siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
+          //ToDo:
+          // siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
           constStageEntity = _pendingSuppliesDetailsModel.constStage;
           if (_pendingSuppliesDetailsModel.floorId != null) {
             for (int i = 0; i < siteFloorsEntity!.length; i++) {
               if (_pendingSuppliesDetailsModel.floorId.toString() ==
                   siteFloorsEntity![i].id.toString()) {
-                _selectedFloorType = siteFloorsEntity![i];
+                // _selectedFloorType = siteFloorsEntity![i];
               }
             }
           }
@@ -173,7 +175,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     setState(() {
@@ -402,12 +403,12 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ],
                                   )),
                                   SizedBox(height: 16),
-                                  DropdownButtonFormField<SiteFloorlist>(
+                                  DropdownButtonFormField<SiteFloorsEntity>(
                                     value: _selectedFloorType,
                                     items: siteFloorsEntity!
-                                        .map<DropdownMenuItem<SiteFloorlist>>(
-                                            (SiteFloorlist label) =>
-                                                DropdownMenuItem<SiteFloorlist>(
+                                        .map<DropdownMenuItem<SiteFloorsEntity>>(
+                                            (SiteFloorsEntity label) =>
+                                                DropdownMenuItem<SiteFloorsEntity>(
                                                   child: Text(
                                                     label.siteFloorTxt!,
                                                     style: TextStyle(
@@ -458,7 +459,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               value: label,
                                             ))
                                         .toList(),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
+                                      siteFloorsEntity= await _siteController.getSiteFloorList(value?.id,widget.siteId);
+                                      print(siteFloorsEntity.runtimeType);
                                       setState(() {
                                         _selectedConstructionType = value;
                                       });

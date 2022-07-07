@@ -188,6 +188,33 @@ class MyApiClientSites {
     }
   }
 
+  Future<List<SiteFloorsEntity>> getSiteFloorList(String accessKey, String userSecurityKey, int stageId, dynamic siteId) async{
+    List<SiteFloorsEntity> siteList = List<SiteFloorsEntity>.empty(growable: true);
+    try {
+      version = VersionClass.getVersion();
+      print(UrlConstants.getFloorDetail+"$stageId"+"&siteId=$siteId");
+      final response = await get(
+        Uri.parse(UrlConstants.getFloorDetail+"$stageId"+"&siteId=$siteId"),
+        headers: requestHeadersWithAccessKeyAndSecretKey(
+            accessKey, userSecurityKey, version),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        print(data);
+        SiteFloorResponse siteFloorResponse = SiteFloorResponse.fromJson(data);
+        siteFloorResponse.sitesEntity.forEach((element) {
+          siteList.add(element);
+        });
+      } else {
+        print('error');
+      }
+    } catch (_) {
+      print('exception ${_.toString()}');
+    }
+    return siteList;
+  }
+
   updateSiteData(accessKey, String userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int siteId) async {
     version = VersionClass.getVersion();
@@ -288,6 +315,7 @@ class MyApiClientSites {
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
             print(updateLeadResponseModel.respMsg);
+            print(jsonEncode(updateLeadResponseModel));
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs

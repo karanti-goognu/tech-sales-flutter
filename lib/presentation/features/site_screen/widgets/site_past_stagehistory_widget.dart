@@ -45,6 +45,7 @@ class _SitePastStageHistoryWidgetState
           ? viewSiteDataResponse!.siteBrandEntity
           : new List.empty(growable: true);
       counterListModel = viewSiteDataResponse!.counterListModel;
+      //ToDo:
       siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
       constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
     });
@@ -74,7 +75,6 @@ class _SitePastStageHistoryWidgetState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

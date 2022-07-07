@@ -154,7 +154,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17),
                                   ),
-                                  // Text(widget.viewSiteDataResponse?.sitesModal!.isMemberAddded??""),
                                   (widget.viewSiteDataResponse?.sitesModal!.isMemberAddded == "N")?
                                   Switch(
                                     onChanged: (value) {
@@ -446,8 +445,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                           .getAccessKeyOnly()
                                           .then((data) async {
                                         accessKeyModel = data;
-                                        print("AccessKey :: " +
-                                            accessKeyModel.accessKey!);
                                         await _addLeadsController
                                             .getInfNewData(
                                             accessKeyModel.accessKey)
@@ -458,7 +455,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                               "DM1002") {
                                             InfluencerModel? inflDetail =
                                                 _infDetailModel.influencerModel;
-                                            // print(inflDetail.inflName);
                                             setState(() {
                                               if (inflDetail!.inflName !=
                                                   "null") {
@@ -470,7 +466,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                 new TextEditingController();
                                                 FocusScope.of(context)
                                                     .unfocus();
-                                                //  print(inflDetail.inflName.text);
                                                 _listInfluencerDetail![index]
                                                     .inflTypeId =
                                                 new TextEditingController();
@@ -490,7 +485,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                     .ilpIntrested =
                                                 new TextEditingController();
 
-                                                // print(inflDetail.inflName);
 
                                                 _listInfluencerDetail![index]
                                                     .inflContact!
@@ -524,9 +518,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                         .influencerCategoryText!;
                                                 _listInfluencerDetail![index]
                                                     .createdBy = empId;
-                                                print(
-                                                    _listInfluencerDetail![index]
-                                                        .inflName);
                                                 for (int i = 0;
                                                 i <
                                                     influencerTypeEntity!
@@ -542,7 +533,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                         .text =
                                                         inflDetail.inflTypeId
                                                             .toString();
-                                                    //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                     _listInfluencerDetail![index]
                                                         .inflTypeValue!
                                                         .text =
@@ -570,9 +560,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                         .clear();
                                                   }
                                                 }
-                                                print(
-                                                    _listInfluencerDetail![index]
-                                                        .inflName);
                                                 // _influencerType.text = influencerTypeEntity[inflDetail.inflTypeId].inflTypeDesc;
 
                                                 for (int i = 0;
@@ -591,7 +578,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                                                         .text =
                                                         inflDetail.inflCatId
                                                             .toString();
-                                                    //   print(influencerTypeEntity[influencerTypeEntity[i].inflTypeId].inflTypeDesc);
                                                     _listInfluencerDetail![index]
                                                         .inflCatValue!
                                                         .text =
@@ -890,7 +876,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                   //   _listInfluencerDetail.length - 1]
                   //       .inflName);
                   if (_listInfluencerDetail!.length == 0) {
-                    print("_______");
                     setState(() {
                       _listInfluencerDetail!.add(new InfluencerDetail(
                           isExpanded: true, isPrimarybool: true));
@@ -909,18 +894,15 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                           .inflName!
                           .text
                           .isBlank!) {
-                    print("_+_");
                     InfluencerDetail infl = new InfluencerDetail(
                         isExpanded: true, isPrimarybool: false);
                     setState(() {
                       _listInfluencerDetail![_listInfluencerDetail!.length - 1].isExpanded = false;
-                      print(infl);
                       _listInfluencerDetail!.add(infl);
                       UpdatedValues.setSiteInfluencerDetails(
                           _listInfluencerDetail);
                     });
                   } else {
-                    print("Error : Please fill previous influencer first");
                     Get.dialog(CustomDialogs
                         .showMessage("Please fill previous influencer first"));
                   }
@@ -954,7 +936,6 @@ class SiteInfluencerWidgetState extends State<SiteInfluencerWidget> {
                   ),
                 ),
                 onPressed: () async {
-
                   UpdatedValues updateRequest = new UpdatedValues();
                   updateRequest.updateRequest(context);
                 },
