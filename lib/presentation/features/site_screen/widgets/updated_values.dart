@@ -967,7 +967,7 @@ class UpdatedValues {
       "subdealerId": UpdatedValues.subdealerId,
       "kitchenCount": (UpdatedValues.getKitchenCount().text.isNotEmpty)
           ? int.parse(UpdatedValues.getKitchenCount().text)
-          : null
+          : 0
       ,
       "bathroomCount":
               UpdatedValues.getBathroomCount()!.text.isNotEmpty

@@ -9,6 +9,8 @@ Map<String, String> requestHeaders(String? version){
     'app-version': version!,
     'access-token': StringConstants.accessToken,
   };
+  print(requestHeaders);
+
   return requestHeaders;
 }
 
@@ -20,6 +22,7 @@ Map<String, String> requestHeadersWithAccessKey(String? accessKey, String? versi
     'app-version': version!,
     'access-key': accessKey!,
   };
+  print(requestHeaders);
 
   return requestHeaders;
 }
@@ -33,6 +36,8 @@ Map<String, String> requestHeadersWithAccessKeyAndSecretKey(String? accessKey , 
     'access-key': accessKey!,
     'user-security-key' : userSecurityKey!
   };
+  print(requestHeaders);
+
 
   return requestHeaders;
 }
@@ -46,6 +51,8 @@ Map<String, String> headersWithAccessAndSecretWithoutContent(String? accessKey ,
     'access-key': accessKey!,
     'user-security-key' : userSecurityKey!
   };
+  print(requestHeaders);
+  print("kkkk");
   return requestHeaders;
 }
 
@@ -59,6 +66,7 @@ Map<String, String> requestHeadersWithAccessSecretAndReferenceId(String accessKe
     'user-security-key' : userSecurityKey,
     'reference-id' : refernceId
   };
+  print(requestHeaders);
 
   return requestHeaders;
 }

@@ -270,29 +270,19 @@ class MyApiClientSites {
   updateVersion2SiteData(accessKey, String? userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int? siteId) async {
     version = VersionClass.getVersion();
-    print("::::::::::::::::::::::::");
     print(UrlConstants.updateVersion4SiteData);
-    http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
-    request.headers.addAll(
-        headersWithAccessAndSecretWithoutContent(
-            accessKey, userSecurityKey, version) );
-
+    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateVersion4SiteData));
+    request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey, version) );
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
-
     for (var file in list) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(file.openRead());
       stream.cast();
-
       var length = await file.length();
-
       var multipartFileSign =
       new http.MultipartFile('file', stream, length, filename: fileName);
-
       request.files.add(multipartFileSign);
     }
-
     String empId;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
@@ -302,6 +292,7 @@ class MyApiClientSites {
 
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
       log("Site Body--> "+json.encode(updateDataRequest));
+      log(request.files.toString());
       try {
         request
             .send()

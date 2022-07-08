@@ -403,46 +403,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ],
                                   )),
                                   SizedBox(height: 16),
-                                  DropdownButtonFormField<SiteFloorsEntity>(
-                                    value: _selectedFloorType,
-                                    items: siteFloorsEntity!
-                                        .map<DropdownMenuItem<SiteFloorsEntity>>(
-                                            (SiteFloorsEntity label) =>
-                                                DropdownMenuItem<SiteFloorsEntity>(
-                                                  child: Text(
-                                                    label.siteFloorTxt!,
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: ColorConstants
-                                                            .inputBoxHintColor,
-                                                        fontFamily: "Muli"),
-                                                  ),
-                                                  value: label,
-                                                ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _siteController.floorId = value!.id;
-                                        _selectedFloorType = value;
-                                      });
-                                    },
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Floor"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Mandatory",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: ColorConstants
-                                            .inputBoxHintColorDark,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
                                   DropdownButtonFormField<ConstStage>(
                                     value: _selectedConstructionType,
                                     items: constStageEntity!
@@ -469,6 +429,46 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Stage of Construction"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Text(
+                                      "Mandatory",
+                                      style: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: ColorConstants
+                                            .inputBoxHintColorDark,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  DropdownButtonFormField<SiteFloorsEntity>(
+                                    value: _selectedFloorType,
+                                    items: siteFloorsEntity!
+                                        .map<DropdownMenuItem<SiteFloorsEntity>>(
+                                            (SiteFloorsEntity label) =>
+                                            DropdownMenuItem<SiteFloorsEntity>(
+                                              child: Text(
+                                                label.siteFloorTxt!,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily: "Muli"),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _siteController.floorId = value!.id;
+                                        _selectedFloorType = value;
+                                      });
+                                    },
+                                    decoration:
+                                    FormFieldStyle.buildInputDecoration(
+                                        labelText: "Floor"),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
