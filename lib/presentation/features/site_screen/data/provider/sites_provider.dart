@@ -1,10 +1,12 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:device_info/device_info.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -12,6 +14,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteFloorResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
@@ -22,10 +25,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MyApiClientSites {
   final http.Client httpClient;
@@ -34,20 +34,21 @@ class MyApiClientSites {
 
   MyApiClientSites({required this.httpClient});
 
-  getAccessKey() async {
+  Future<AccessKeyModel> getAccessKey() async {
+    late AccessKeyModel accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel;
+         accessKeyModel = AccessKeyModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception ${_.toString()}');
     }
+    return accessKeyModel;
   }
 
   Future getAccessKeyNew() async {
@@ -173,7 +174,7 @@ class MyApiClientSites {
         if (viewSiteDataResponse.respCode == "ST2010") {
           return viewSiteDataResponse;
         } else if (viewSiteDataResponse.respCode == "ST2011") {
-          Get.back();
+          // Get.back();
           Get.dialog(CustomDialogs.showDialog(viewSiteDataResponse.respMsg!));
         }
         else {
@@ -451,7 +452,7 @@ class MyApiClientSites {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
           body: json.encode(jsonData));
-       log(""+json.encode(jsonData));
+       log("pending supply"+json.encode(jsonData));
       if(response.statusCode==200) {
         String data = response.body;
         return json.decode(data);

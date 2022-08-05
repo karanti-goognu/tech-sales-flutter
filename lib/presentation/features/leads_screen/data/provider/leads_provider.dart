@@ -1,9 +1,11 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
@@ -23,21 +25,14 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   final db = DraftLeadDBHelper();
   String? version;
-
-
   MyApiClientLeads({required this.httpClient});
-
-
 
   getAccessKey() async {
     try {
@@ -127,13 +122,8 @@ class MyApiClientLeads {
 
     try {
       version = VersionClass.getVersion();
-      final response = await get(Uri.parse(url),
-          headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
-
-
+      final response = await get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
       if (response.statusCode == 200) {
-
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
         return leadsListModel;
@@ -163,6 +153,7 @@ class MyApiClientLeads {
 
   getAddLeadsData(String? accessKey, String? userSecurityKey) async {
     try {
+      print(Uri.parse(UrlConstants.addLeadsData));
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -175,7 +166,6 @@ class MyApiClientLeads {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
-        print(addLeadInitialModel.siteSubTypeEntity![0]);
         return addLeadInitialModel;
       } else
         print('error');
@@ -429,8 +419,6 @@ class MyApiClientLeads {
                 else{
                 if (updateLeadResponseModel.respCode == "LD2009") {
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
-
-
                   Get.back();
                   Get.back();
                   Get.back();
@@ -560,5 +548,4 @@ class MyApiClientLeads {
     }
     return siteDistrictListModel;
   }
-
 }

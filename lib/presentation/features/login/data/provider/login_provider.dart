@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:device_info/device_info.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
@@ -9,9 +12,8 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'dart:io';
+
+
 
 class MyApiClient {
   final http.Client httpClient;

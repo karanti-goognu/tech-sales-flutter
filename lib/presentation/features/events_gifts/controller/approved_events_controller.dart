@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/SaveNewInfluencerResponse.dart';
@@ -10,8 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class EventsFilterController extends GetxController {
   @override
@@ -54,9 +55,6 @@ class EventsFilterController extends GetxController {
   }
 
   Future<ApprovedEventsModel?> getApprovedEventData() async {
-    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-    //It is working fine without the progress indicator
-//    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -64,13 +62,10 @@ class EventsFilterController extends GetxController {
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('EMP: $empID');
       egApprovedEventDaa =
       await repository.getApprovedEvents(accessKey, userSecurityKey, empID!);
     });
-//    Get.back();
     return egApprovedEventDaa;
   }
 
@@ -85,7 +80,6 @@ class EventsFilterController extends GetxController {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
          _startEventResponse = await repository.startEvent(accessKey, userSecurityKey, startEventModel);
     });
-      //Get.back();
       return _startEventResponse;
   }
 
@@ -103,7 +97,6 @@ class EventsFilterController extends GetxController {
       _dealerInfModel =
       await repository.getDealerInfList(accessKey, userSecurityKey, empID!, eventId);
     });
-   // Get.back();
     return _dealerInfModel;
   }
 
@@ -122,9 +115,6 @@ class EventsFilterController extends GetxController {
 
   Future<InfluencerDetailModel?> getInfData(String contact) async {
     InfluencerDetailModel? _infDetailModel;
-    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-    //It is working fine without the progress indicator
-    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String? accessKey = await (repository.getAccessKey() );
@@ -133,7 +123,6 @@ class EventsFilterController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       _infDetailModel = await repository.getInfData(accessKey, userSecurityKey, contact);
     });
-    //Get.back();
     return _infDetailModel;
   }
 

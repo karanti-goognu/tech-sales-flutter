@@ -1,7 +1,12 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/approved_events_controller.dart';
@@ -24,10 +29,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class UpdateDlrInf extends StatefulWidget {
   final int? eventId;
@@ -45,8 +47,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   EventsFilterController _eventsFilterController = Get.find();
   int? dealerId, _infTypeId, _infCatId;
   bool _isUpdate = false, _isButtonDisabled = false;
-  final _formKey = GlobalKey<FormState>();
-  final _newFormKey = GlobalKey<FormState>();
   BuildContext? _context;
   String _selectedEnrollValue = "N";
   bool? checkedValue = false;
@@ -54,14 +54,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   String? dateOfJoining;
   bool _enrollVisible = false;
   String? _primaryCounterName;
-
+  List<EventInfluencerModelList> selectedInfModels = [];
+  final _formKey = GlobalKey<FormState>();
+  final _newFormKey = GlobalKey<FormState>();
   TextEditingController _infTypeController = TextEditingController();
   TextEditingController _infNameController = TextEditingController();
   TextEditingController _newInfNameController = TextEditingController();
   TextEditingController _contactController = TextEditingController();
   TextEditingController _newContactController = TextEditingController();
-
-  List<EventInfluencerModelList> selectedInfModels = [];
 
   @override
   void initState() {
@@ -86,6 +86,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _dealerInfModel = data;
       });
+      print(jsonEncode(data));
       setData();
     });
   }
@@ -112,7 +113,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
             inflName: _dealerInfModel!.eventInfluencerModelList![i].inflName,
             inflContact:
                 _dealerInfModel!.eventInfluencerModelList![i].inflContact,
-            inflTypeId: _dealerInfModel!.eventInfluencerModelList![i].inflTypeId,
+            inflTypeId:
+                _dealerInfModel!.eventInfluencerModelList![i].inflTypeId,
             eventInflId:
                 _dealerInfModel!.eventInfluencerModelList![i].eventInflId,
             eventId: _dealerInfModel!.eventInfluencerModelList![i].eventId,
@@ -129,13 +131,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
 
     final influencer = GestureDetector(
       onTap: () => getBottomSheet(),
@@ -156,7 +155,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
             ),
             child: Container(
-              // height: 30,
               child: Wrap(
                 spacing: 6.0,
                 runSpacing: 6.0,
@@ -197,7 +195,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
               ),
             ),
             child: Container(
-              //height: 30,
               child: Wrap(
                 spacing: 6.0,
                 runSpacing: 6.0,
@@ -205,13 +202,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     (int index) {
                   return Chip(
                     label: Text(selectedDealersModels[index].dealerName!),
-                    // onDeleted: () {
-                    //   setState(() {
-                    //     selectedDealersModels.removeAt(index);
-                    //     selectedDealer.removeAt(index);
-                    //     checkedValues[index] = false;
-                    //   });
-                    // },
                   );
                 }),
               ),
@@ -224,33 +214,31 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     final btns = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-    ElevatedButton(
-    style: ElevatedButton.styleFrom(          primary: ColorConstants.btnBlue,),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "UPDATE",
-            style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: 15.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp),
           ),
           onPressed: () {
             updateBtnPressed();
           },
         ),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(          primary: ColorConstants.btnBlue,),
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.btnBlue,
+          ),
           child: Text(
             "ADD LEAD",
-            style:
-                //TextStyles.btnWhite,
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    // letterSpacing: 2,
-                    fontSize: 15.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp),
           ),
           onPressed: () {
             Get.to(
@@ -269,14 +257,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         children: [
           Positioned.fill(
               child:
-                  //srComplaintModel != null ?
-                  ListView(
+            ListView(
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    left: 16.sp,
-                    top: 16.sp,
-                    right: 16.sp),
+                padding: EdgeInsets.only(left: 16.sp, top: 16.sp, right: 16.sp),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -309,10 +293,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: btns,
               )
             ],
-          )
-              //     : Center(
-              //   child: CircularProgressIndicator(),
-              // ),
+          ),
               ),
         ],
       ),
@@ -390,17 +371,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly
                   ],
-                  // onEditingComplete: () {
-                  //   getInfluencerData(_contactController.text);
-                  //   //Get.back();
-                  // },
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Contact No. can't be empty";
                     }
-                    // if (value.length != 10) {
-                    //   return "Enter valid Contact number";
-                    // }
                     if (!Validations.isValidPhoneNumber(value)) {
                       return "Enter valid Contact number";
                     }
@@ -443,39 +417,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration:
                         FormFieldStyle.buildInputDecoration(hintText: 'Name'),
                   )),
-              /*
-          Container(
-            margin: EdgeInsets.only(right: 16, left: 16, bottom: 8),
-              padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.all(
-                    Radius.circular(5.0) //                 <--- border radius here
-                ),
-              ),
-              child: CheckboxListTile(
-                title: Text(
-                  "Enroll for Dalmia Masters *",
-                  style: TextStyles.formfieldLabelText,
-                ),
-                activeColor: Colors.black,
-                dense: true,
-                selected: checkedEnrollValue,
-                value: checkedEnrollValue,
-                onChanged: (newValue) {
-                   setState(() {
-                  //   checkedValue = newValue;
-                  //   if (checkedValue == true) {
-                  //     _selectedEnrollValue = "Y";
-                  //   } else {
-                  //     _selectedEnrollValue = "N";
-                  //   }
-                   });
-                },
-                controlAffinity:
-                ListTileControlAffinity.leading, //  <-- leading Checkbox
-              )),
-              */
               Padding(
                   padding:
                       const EdgeInsets.only(right: 16, left: 16, bottom: 8),
@@ -494,32 +435,42 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: HexColor('#1C99D4'),
-                ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: HexColor('#1C99D4'),
+                      ),
                       onPressed: () {
                         if (_isButtonDisabled == true) {
-                          setState(() {
-                            selectedInfModels.add(EventInfluencerModelList(
-                                eventId: widget.eventId,
-                                eventInflId: 0,
-                                inflContact: _influencerDetailModel!
-                                    .influencerModel!.inflContact,
-                                inflTypeId: _influencerDetailModel!
-                                    .influencerModel!.inflTypeId,
-                                inflId: _influencerDetailModel!
-                                    .influencerModel!.inflId,
-                                inflName: _influencerDetailModel!
-                                    .influencerModel!.inflName,
-                                isActive: "Y"));
-
-                            Get.back();
-                            _contactController.text = '';
-                            _infNameController.text = '';
-                            _infTypeController.text = '';
-                            checkedEnrollValue = false;
-                          });
+                          log(jsonEncode(selectedInfModels));
+                          List<String?> infCont = List.empty(growable: true);
+                          infCont = selectedInfModels
+                              .map((e) => e.inflContact)
+                              .toList();
+                          if (!infCont.contains(_influencerDetailModel!
+                              .influencerModel!.inflContact)) {
+                            setState(() {
+                              selectedInfModels.add(EventInfluencerModelList(
+                                  eventId: widget.eventId,
+                                  eventInflId: 0,
+                                  inflContact: _influencerDetailModel!
+                                      .influencerModel!.inflContact,
+                                  inflTypeId: _influencerDetailModel!
+                                      .influencerModel!.inflTypeId,
+                                  inflId: _influencerDetailModel!
+                                      .influencerModel!.inflId,
+                                  inflName: _influencerDetailModel!
+                                      .influencerModel!.inflName,
+                                  isActive: "Y"));
+                              Get.back();
+                              _contactController.text = '';
+                              _infNameController.text = '';
+                              _infTypeController.text = '';
+                              checkedEnrollValue = false;
+                            });
+                          } else {
+                            Get.rawSnackbar(
+                                message: "Influencer already added");
+                          }
                         } else {
                           return null;
                         }
@@ -623,14 +574,14 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                                 _influencerDetailModel!
                                         .influencerTypeEntitiesList !=
                                     null)
-                            ? _influencerDetailModel!.influencerTypeEntitiesList!
+                            ? _influencerDetailModel!
+                                .influencerTypeEntitiesList!
                                 .map((e) => DropdownMenuItem(
                                       value: e.inflTypeId,
                                       child: Container(
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 1.5,
-                                        //250,
                                         child: Text(
                                           '${e.inflTypeDesc}',
                                           maxLines: null,
@@ -656,7 +607,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.all(Radius.circular(
-                              5.0) //                 <--- border radius here
+                              5.0)
                           ),
                     ),
                     child: CheckboxListTile(
@@ -678,55 +629,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         });
                       },
                       controlAffinity: ListTileControlAffinity
-                          .leading, //  <-- leading Checkbox
+                          .leading,
                     )),
               ),
-              // Padding(
-              //     padding:
-              //         const EdgeInsets.only(right: 16, left: 16, bottom: 12),
-              //     child: DropdownButtonFormField(
-              //       onChanged: (value) {
-              //
-              //         setState(() {
-              //           _infTypeId = value;
-              //           print("infRegFlag: ${_influencerDetailModel.influencerTypeEntitiesList[_infTypeId].infRegFlag}");
-              //
-              //           if(_influencerDetailModel.influencerTypeEntitiesList[_infTypeId].infRegFlag == "Y"){
-              //             _enrollVisible = true;
-              //           }else{
-              //             _enrollVisible = false;
-              //           }
-              //
-              //         });
-              //       },
-              //       items: (_influencerDetailModel == null)?[]:
-              //       (_influencerDetailModel != null &&
-              //           _influencerDetailModel.influencerTypeEntitiesList != null)
-              //           ? _influencerDetailModel.influencerTypeEntitiesList
-              //               .map((e) => DropdownMenuItem(
-              //                     value: e.inflTypeId,
-              //                     child: Container(
-              //                       width:
-              //                           MediaQuery.of(context).size.width / 1.5,
-              //                       //250,
-              //                       child: Text(
-              //                         '${e.inflTypeDesc}',
-              //                         maxLines: null,
-              //                       ),
-              //                     ),
-              //                   ))
-              //               .toList()
-              //           : [],
-              //       style: FormFieldStyle.formFieldTextStyle,
-              //       decoration: FormFieldStyle.buildInputDecoration(
-              //           labelText: "Influencer Type*"),
-              //       validator: (value) => value == null
-              //           ? 'Please select the Influencer Type'
-              //           : null,
-              //     )),
               SizedBox(height: 12),
               Container(
-                //height: 50,
                 color: ColorConstants.backgroundColorGrey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -741,8 +648,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       ),
                     ),
                     Padding(
-                     padding: const EdgeInsets.only(
-                        right: 16, left: 16, bottom: 12),
+                      padding: const EdgeInsets.only(
+                          right: 16, left: 16, bottom: 12),
                       child: DropdownButtonFormField(
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Primary Counter Name*"),
@@ -752,8 +659,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                             value: val,
                             child: SizedBox(
                                 width: SizeConfig.screenWidth! - 100,
-                                child:
-                                    Text('${val.dealerName} (${val.dealerId})')),
+                                child: Text(
+                                    '${val.dealerName} (${val.dealerId})')),
                           );
                         }).toList(),
                         onChanged: (dynamic val) {
@@ -834,12 +741,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    // if (_dealerInfModel.eventDealersModelList != null &&
-    //     _dealerInfModel.eventDealersModelList.length != 0) {
-    //   for (int i = 0; i < _dealerInfModel.eventDealersModelList.length; i++) {
-    //     selectedDealer.add(_dealerInfModel.eventDealersModelList[i].dealerName);
-    //   }
-    // }
     List<DealersModel>? dealers = _dealerInfModel!.dealersModel;
     checkedValues =
         List.generate(_dealerInfModel!.dealersModel!.length, (index) => false);
@@ -894,10 +795,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: dealers!.length,
                 itemBuilder: (context, index) {
-                  return
-                      // dealerId == dealers[index].dealerId
-                      //   ?
-                      CheckboxListTile(
+                  return  CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
                     title: Column(
@@ -907,47 +805,25 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         Text('( ${dealers![index].dealerId} )'),
                       ],
                     ),
-                    selected:
-                        selectedDealer.contains(dealers![index].dealerId),
+                    selected: selectedDealer.contains(dealers![index].dealerId),
                     value: selectedDealer.contains(dealers![index].dealerId),
-
-                    // onChanged: (newValue) {
-                    //   setState(() {
-                    //     selectedDealer.contains(dealers[index].dealerName)
-                    //         ? selectedDealer.remove(dealers[index].dealerName)
-                    //         : selectedDealer.add(dealers[index].dealerName);
-                    //
-                    //     selectedDealersModels.contains(dealers[index])
-                    //         ? selectedDealersModels.remove(dealers[index])
-                    //         : selectedDealersModels.add(dealers[index]);
-                    //
-                    //     checkedValues[index] = newValue;
-                    //   });
-                    // },
                     onChanged: (newValue) {
                       setState(() {
-                     //   print('NEWVALUE : $newValue');
                         if (newValue == true) {
                           selectedDealer.add(dealers![index].dealerId);
                           selectedDealersModels.add(dealers![index]);
                         }
                         if (newValue == false) {
-                          // selectedDealer.remove(dealers[index].dealerName);
-                          // selectedDealersModels.remove(dealers[index]);
                           selectedDealersModels.removeWhere((item) =>
                               item.dealerId == dealers![index].dealerId);
                           selectedDealer.removeWhere(
                               (item) => item == dealers![index].dealerId);
                         }
                         checkedValues[index] = newValue;
-                    //    print("checkedValues $checkedValues");
-                        // print(
-                        //     'SELECTED: ${json.encode(selectedDealersModels)}');
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   );
-                  //  : Container();
                 },
                 separatorBuilder: (context, index) {
                   return dealerId.toString() == dealers![index].dealerId
@@ -1006,7 +882,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     if (_formKey.currentState!.validate()) {
       _eventsFilterController.getInfData(contact).then((data) {
         _influencerDetailModel = data;
-   //     print("0000$_influencerDetailModel");
         setState(() {
           if (data != null) {
             if (_influencerDetailModel!.respCode == "NUM404") {
@@ -1032,7 +907,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   updateBtnPressed() async {
     List<EventDealerRequestsList> _dealersList = new List.empty(growable: true);
     List<EventInfluencerRequestsList> _infList = new List.empty(growable: true);
-    String? empId = await (getEmpId() );
+    String? empId = await (getEmpId());
     selectedDealersModels.forEach((e) {
       setState(() {
         _dealersList.add(new EventDealerRequestsList(
@@ -1062,20 +937,11 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       });
     });
 
-    // UpdateDealerInfModel _update = UpdateDealerInfModel.fromJson({
-    //   'eventDealerRequestsList': _dealersList,
-    //   'eventInfluencerRequestsList': _infList,
-    //   'referenceID': empId
-    // });
-
     UpdateDealerInfModel _updateDealer = new UpdateDealerInfModel(
         eventDealerRequestsList: _dealersList,
         eventInfluencerRequestsList: _infList,
         referenceID: empId);
 
-   // print('DEALERS: $_dealersList');
-   // print('INF : $_infList');
-   // print('PARAMS: ${json.encode(_updateDealer)}');
 
     internetChecking().then((result) => {
           if (result == true)
@@ -1085,7 +951,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   .then((data) {
                 if (data != null) {
                   if (data.respCode == 'DM1002') {
-                    //Get.back();
                     Get.dialog(
                         successDialogAndReload(
                             _context, data.respMsg.toString()),
@@ -1093,8 +958,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                   } else {
                     Get.back();
                     Get.dialog(
-                        CustomDialogs
-                            .messageDialogMWP(data.respMsg.toString()),
+                        CustomDialogs.messageDialogMWP(data.respMsg.toString()),
                         barrierDismissible: false);
                   }
                 }
@@ -1112,10 +976,8 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
   }
 
   addNewInfluencerBtnPressed() async {
-  //  InfController _infController = Get.find();
-
     if (_newFormKey.currentState!.validate()) {
-      String? empId = await (getEmpId() );
+      String? empId = await (getEmpId());
       InfluencerRequestModel _influencerRequestModel =
           InfluencerRequestModel.fromJson({
         "membershipId": null,
@@ -1148,7 +1010,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
         "stateId": 0,
         "stateName": "",
         "taluka": "",
-          "primaryCounterName": _primaryCounterName
+        "primaryCounterName": _primaryCounterName
       });
 
       internetChecking().then((result) => {
@@ -1259,7 +1121,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
           ),
           onPressed: () async {
             Get.back();
-            //Navigator.pop(_context);
             Navigator.of(context).pop({'reload': true});
           },
         ),

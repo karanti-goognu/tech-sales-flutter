@@ -1,8 +1,7 @@
-
-
 import 'dart:async';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:device_info/device_info.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -12,7 +11,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
 
 class LoginOtpScreen extends StatefulWidget {
   final String? mobileNumber;

@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -7,8 +9,7 @@ import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class RejectionLeadScreen extends StatefulWidget {
   final ViewLeadDataResponse viewLeadDataResponse;
@@ -21,10 +22,8 @@ class RejectionLeadScreen extends StatefulWidget {
 
 class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
   List<LeadRejectReasonEntity>? leadRejectReasonEntity;
-
   LeadRejectReasonEntity? _selectedValue;
-
-  var _commentsController = new TextEditingController();
+  TextEditingController _commentsController = new TextEditingController();
   late AddLeadsController _addLeadsController;
 
   @override
@@ -136,7 +135,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
                               width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(

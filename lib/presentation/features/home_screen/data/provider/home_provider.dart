@@ -1,15 +1,12 @@
-
-
 import 'dart:convert';
-
 import 'package:device_info/device_info.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:http/http.dart' as http;
 
 class MyApiClientHome {
   final http.Client httpClient;
@@ -26,7 +23,6 @@ class MyApiClientHome {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -60,8 +56,6 @@ class MyApiClientHome {
         "journey-End-Long": journeyEndLong
       };
 
-//      print('Request Body is ${json.encode(requestBody)}');
-//      print('Request header is  ${requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey)}');
       version = VersionClass.getVersion();
       var response = await httpClient.post(Uri.parse(UrlConstants.getCheckInDetails),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, secretKey,version),
@@ -71,8 +65,6 @@ class MyApiClientHome {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         JourneyModel journeyModel = JourneyModel.fromJson(data);
-
-        //print('Access key Object is :: $accessKeyModel');
         return journeyModel;
       } else
         print('error');
@@ -82,13 +74,11 @@ class MyApiClientHome {
   }
 
   getHomePageDashboardDetails(String? accessKey,String secretKey, String empId) async {
-    //late DashboardModel dashboardModel;
     late DashboardModel dashboardModel;
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.homepageDashboardData + empId;
       var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
-      //print("data: ${response.body}");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         dashboardModel = DashboardModel.fromJson(data);

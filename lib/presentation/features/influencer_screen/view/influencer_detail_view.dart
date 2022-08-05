@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerSourceListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
@@ -13,9 +16,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class InfluencerDetailView extends StatefulWidget {
   final int membershipId;
@@ -45,10 +46,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   List<SiteBrandList>? siteBrandList = new List.empty(growable: true);
   SiteBrandList? _siteBrandList;
   bool _qualificationVisible = false;
-  // int? _influencerCategory;
-  // int? _source;
   int? _memberType, memberShipId;
-  // String? _selectedEnrollValue;
   bool checkedValue = false;
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -71,7 +69,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   FocusNode? myFocusNode;
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
-  // int? _preferredBrandId;
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
 
@@ -123,7 +120,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         _influencerDetailDataModel!.response!.influencerDetails != null) {
       InfluencerDetails _data =
           _influencerDetailDataModel!.response!.influencerDetails!;
-      // memberShipId = _data.id;
       _contactNumberController.text = _data.inflContactNumber!;
       _nameController.text = _data.inflName!;
       _fatherNameController.text = _data.fatherName!;
@@ -145,9 +141,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _baseCityController.text = _data.baseCity!;
       _talukaController.text = _data.taluka!;
       _pincodeController.text = _data.pinCode!;
-      // _source = _data.inflEnrollmentSourceId;
       _memberType = _data.inflTypeId;
-      // _influencerCategory = _data.inflCategoryId;
       _primaryCounterController.text = _data.primaryCounterName!;
 
       _dateController.text =
@@ -155,10 +149,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
       if (_data.ilpregFlag == "Y") {
         checkedValue = true;
-        // _selectedEnrollValue = "Y";
       } else {
         checkedValue = false;
-        // _selectedEnrollValue = "N";
       }
 
       influencerTypeEntitiesList =
@@ -242,13 +234,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     double _height = 16.sp;
 
     final mobileNumber = TextFormField(
@@ -347,21 +342,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final pincode = TextFormField(
       controller: _pincodeController,
       readOnly: true,
-      // validator: (value) {
-      //   // if (value.isEmpty) {
-      //   //   return 'Please enter name';
-      //   // }
-      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
-      //     return "Enter valid pincode";
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -382,18 +367,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           activeColor: Colors.black,
           dense: true,
           value: checkedValue,
-          // onChanged: (newValue) {
-          //   setState(() {
-          //     checkedValue = newValue;
-          //     if (checkedValue == true) {
-          //       _selectedEnrollValue = "Y";
-          //     } else {
-          //       _selectedEnrollValue = "N";
-          //     }
-          //   });
-          // },
           controlAffinity:
-              ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ListTileControlAffinity.leading,
         ));
 
     final primaryCounter = TextFormField(
@@ -409,9 +384,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       validator: (value) => value!.isEmpty ? 'Please select District' : null,
       controller: _districtController,
       readOnly: true,
-      // onTap: () {
-      //   Get.bottomSheet(districtList());
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District Name*",
@@ -446,18 +418,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
-      // validator: (value) => value == null ? 'Please select member type' : null,
     );
 
     final qualification = TextFormField(
       controller: _qualificationController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter qualification';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -469,11 +434,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       validator: (value) => value!.isEmpty ? 'Please select Birth date' : null,
       controller: _dateController,
       readOnly: true,
-      // onTap: () {
-      //   setState(() {
-      //     _selectBirthDate();
-      //   });
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Birth Date*",
@@ -510,18 +470,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       readOnly: true,
-      // validator: (value) {
-      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
-      //     return "Enter valid pincode";
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -636,7 +589,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   onChanged: (value) {
                     setState(() {
                       _siteBrandList = value;
-                      // _preferredBrandId = _siteBrandList!.id;
                     });
                   },
                   items: siteBrandList!

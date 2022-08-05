@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
@@ -13,9 +16,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'ViewLeadScreen.dart';
 
 class LeadScreen extends StatefulWidget {
@@ -332,8 +332,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                     ),
                                     backgroundColor: Colors.transparent,
                                     shape: StadiumBorder(side: BorderSide()),
-                                    onSelected: (bool value) {
-                                    },
+                                    onSelected: (bool value) {},
                                   )),
                         SizedBox(
                           width: 8,
@@ -358,8 +357,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 ),
                                 backgroundColor: Colors.transparent,
                                 shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                },
+                                onSelected: (bool value) {},
                               )),
                         SizedBox(
                           width: 8,
@@ -417,7 +415,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ),
                       ),
@@ -427,7 +424,6 @@ class _LeadScreenState extends State<LeadScreen> {
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                              // color: HexColor("#FFFFFF99"),
                             ),
                           )),
                     ],
@@ -571,8 +567,7 @@ class _LeadScreenState extends State<LeadScreen> {
             )
           : (_leadsFilterController.leadsListResponse.leadsEntity == null)
               ? Container(
-                  child:
-                      Center(child: Text("Leads list is empty!!")),
+                  child: Center(child: Text("Leads list is empty!!")),
                 )
               : (_leadsFilterController.leadsListResponse.leadsEntity.length ==
                       0)
@@ -609,7 +604,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           .leadsListResponse.leadsEntity.length,
                       padding: const EdgeInsets.only(
                           left: 6.0, right: 6, bottom: 10),
-                      // itemExtent: 125.0,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -691,8 +685,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             fontSize: 18,
                                                             fontFamily: "Muli",
                                                             fontWeight:
-                                                                FontWeight.bold
-                                                            ),
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ],
                                                   ),
@@ -708,8 +702,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                         fontSize: 14,
                                                         fontFamily: "Muli",
                                                         fontWeight:
-                                                            FontWeight.bold
-                                                        ),
+                                                            FontWeight.bold),
                                                   ),
                                                 )),
                                             Row(
@@ -753,8 +746,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                 1.9,
                                                             fontFamily: "Muli",
                                                             fontWeight:
-                                                                FontWeight.bold
-                                                            ),
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                   ),
@@ -815,8 +808,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             fontSize: 14,
                                                             fontFamily: "Muli",
                                                             fontWeight:
-                                                                FontWeight.bold
-                                                            ),
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                       Obx(
                                                         () => Text(
@@ -829,8 +822,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                                   "Muli",
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold
-                                                              ),
+                                                                      .bold),
                                                         ),
                                                       )
                                                     ],
@@ -849,9 +841,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontStyle:
-                                                          FontStyle.normal
-                                                      )),
-
+                                                          FontStyle.normal)),
                                               GestureDetector(
                                                 child: FittedBox(
                                                   child: Row(
@@ -869,9 +859,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontStyle:
-                                                                FontStyle.normal
-                                                            ),
+                                                            fontStyle: FontStyle
+                                                                .normal),
                                                       ),
                                                     ],
                                                   ),

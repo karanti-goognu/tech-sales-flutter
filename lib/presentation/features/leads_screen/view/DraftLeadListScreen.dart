@@ -1,14 +1,12 @@
-
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/DraftLeadModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 
 class DraftLeadListScreen extends StatefulWidget {
@@ -75,12 +73,14 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
             ),
             automaticallyImplyLeading: false,
           ),
-          floatingActionButton: SpeedDialFAB(customStyle: customStyle,speedDial: speedDial,),
+          floatingActionButton: SpeedDialFAB(
+            customStyle: customStyle,
+            speedDial: speedDial,
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
-          body:
-              Container(
+          body: Container(
             child: Column(
               children: [
                 Padding(
@@ -159,7 +159,7 @@ class _DraftLeadListScreenState extends State<DraftLeadListScreen> {
                               ),
                               Text(
                                 "District : " +
-                                        draftList[index].leadDistrictName!,
+                                    draftList[index].leadDistrictName!,
                                 style: TextStyle(
                                   fontSize: 13,
                                 ),

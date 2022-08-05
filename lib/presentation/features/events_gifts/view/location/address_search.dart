@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 import 'package:get/get.dart';
+
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
 
 class AddressSearch extends SearchDelegate<Suggestion> {
   AddressSearch(this.sessionToken) {
@@ -49,25 +48,26 @@ class AddressSearch extends SearchDelegate<Suggestion> {
       future: query == ""
           ? null
           : apiClient.fetchSuggestions(
-          query, Localizations.localeOf(context).languageCode),
+              query, Localizations.localeOf(context).languageCode),
       builder: (context, AsyncSnapshot snapshot) => query == ''
           ? Container(
-        padding: EdgeInsets.all(16.0),
-        child: Text('Enter your address'),
-      )
+              padding: EdgeInsets.all(16.0),
+              child: Text('Enter your address'),
+            )
           : snapshot.hasData
-          ? ListView.builder(
-        itemBuilder: (context, index) => ListTile(
-          title:
-          Text((snapshot.data[index] as Suggestion).description!),
-          onTap: () async{
-            await apiClient.getLatLong((snapshot.data[index] as Suggestion).placeId);
-            close(context, snapshot.data[index] as Suggestion);
-          },
-        ),
-        itemCount: snapshot.data.length,
-      )
-          : Container(child: Text('Loading...')),
+              ? ListView.builder(
+                  itemBuilder: (context, index) => ListTile(
+                    title:
+                        Text((snapshot.data[index] as Suggestion).description!),
+                    onTap: () async {
+                      await apiClient.getLatLong(
+                          (snapshot.data[index] as Suggestion).placeId);
+                      close(context, snapshot.data[index] as Suggestion);
+                    },
+                  ),
+                  itemCount: snapshot.data.length,
+                )
+              : Container(child: Text('Loading...')),
     );
   }
 }

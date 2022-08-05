@@ -1,8 +1,7 @@
-
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/add_mwp_plan_view.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:get/get.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 
@@ -29,7 +27,7 @@ class AddMWPScreenPageState extends State<AddMWP> {
   AppController _appController = Get.find();
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       print(json.encode(_mwpPlanController.getMWPResponse));
       print(1);
       final DateTime now = DateTime.now();
@@ -72,12 +70,9 @@ class AddMWPScreenPageState extends State<AddMWP> {
       child: SingleChildScrollView(
         child: GestureDetector(
           onTap: (){
-            //FocusScopeNode currentFocus = FocusScope.of(context);
           },
           child: Padding(
-              padding:
-              //EdgeInsets.all(16),
-              EdgeInsets.only(left: 16, right: 16, top: 16,
+              padding: EdgeInsets.only(left: 16, right: 16, top: 16,
               bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -146,7 +141,6 @@ class AddMWPScreenPageState extends State<AddMWP> {
                                       ),
                                     )),
                               ) : Container(
-//                        child: Text("Error"),
                         child: CupertinoActivityIndicator(),
                         ),
                       ),

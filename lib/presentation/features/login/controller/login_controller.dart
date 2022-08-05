@@ -1,8 +1,8 @@
-
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/LoginModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/RetryOtpModel.dart';
@@ -14,9 +14,7 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginController extends GetxController {
   @override
@@ -122,16 +120,8 @@ class LoginController extends GetxController {
     });
   }
 
-  //{"resp-code":"DM1011","resp-msg":"OTP generated successfully",
-  // "otp-sms-time":"900000","otp-retry-sms-time":"180000","otp-token-id":"8e711d59-8820-41ee-b11d-59882041ee09"}
 
-  //{"resp-code":null,"resp-msg":null,"otp-sms-time":null,"otp-retry-sms-time":null}
   checkLoginStatus() async{
-    // String userSecurityKey = "empty";
-    // Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    // await  _prefs.then((SharedPreferences prefs) async {
-    // userSecurityKey =
-    //     prefs.getString(StringConstants.userSecurityKey) ?? "empty";
     repository.checkLoginStatus(
             this.empId, this.phoneNumber, this.accessKeyResponse.accessKey)
         .then((data) {
@@ -146,7 +136,6 @@ class LoginController extends GetxController {
         }
       }
     });
-  //  }).catchError((e) => print(e));
   }
 
   retryOtp() {
@@ -185,7 +174,6 @@ class LoginController extends GetxController {
         if (validateOtpResponse.respCode == "DM1011") {
           debugPrint(
               'Otp Validation Response is :: ${json.encode(this.validateOtpResponse)}');
-          //Get.dialog(CustomDialogs.showMessage(validateOtpResponse.respMsg));
           Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
           _prefs.then((SharedPreferences prefs) {
             prefs.setString(StringConstants.userSecurityKey,

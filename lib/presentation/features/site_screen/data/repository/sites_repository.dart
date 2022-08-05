@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
@@ -8,6 +6,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/provider/sites_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 
 class MyRepositorySites {
   final MyApiClientSites apiClient;
@@ -26,7 +25,7 @@ class MyRepositorySites {
     return apiClient.getSearchData(accessKey, securityKey, url);
   }
 
-  getAccessKey() {
+  Future<AccessKeyModel> getAccessKey() {
     return apiClient.getAccessKey();
   }
 

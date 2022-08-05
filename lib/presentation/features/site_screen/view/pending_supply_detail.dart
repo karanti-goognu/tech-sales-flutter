@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
@@ -22,9 +25,7 @@ import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 // ignore: must_be_immutable
 class PendingSupplyDetailScreen extends StatefulWidget {
@@ -187,13 +188,10 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+        context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -501,7 +499,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .inputBoxHintColor,
                                             fontFamily: "Muli"),
                                         keyboardType: TextInputType.number,
-                                        //readOnly: true,
                                         decoration:
                                             FormFieldStyle.buildInputDecoration(
                                           labelText: "Stage Potential",
@@ -809,7 +806,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          // color: HexColor("#000000DE"),
                                           fontFamily: "Muli"),
                                     ),
                                   ),
@@ -860,8 +856,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .pendingSuppliesDetailsModel
                                                     .supplyDate,
                                                 readOnly: true,
-                                                onChanged: (data) {
-                                                },
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: ColorConstants
@@ -875,7 +869,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     borderSide: BorderSide(
                                                         color: ColorConstants
                                                             .backgroundColorBlue,
-                                                        //color: HexColor("#0000001F"),
                                                         width: 1.0),
                                                   ),
                                                   disabledBorder:
@@ -897,32 +890,12 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                         width: 1.0),
                                                   ),
                                                   labelText: "Date ",
-                                                  suffixIcon: IconButton(
-                                                    icon: Icon(
+                                                  suffixIcon: Icon(
                                                       Icons.date_range_rounded,
                                                       size: 22,
                                                       color: ColorConstants
                                                           .clearAllTextColor,
                                                     ),
-                                                    onPressed: () async {
-                                                      // final DateTime picked = await showDatePicker(
-                                                      //   context: context,
-                                                      //   initialDate: DateTime.now(),
-                                                      //   firstDate: DateTime(2001),
-                                                      //   lastDate: DateTime.now(),
-                                                      // );
-                                                      //
-                                                      // setState(() {
-                                                      //   final DateFormat formatter =
-                                                      //   DateFormat("yyyy-MM-dd");
-                                                      //   if (picked != null) {
-                                                      //     final String formattedDate =
-                                                      //     formatter.format(picked);
-                                                      //     // _supplyDate.text = formattedDate;
-                                                      //   }
-                                                      // });
-                                                    },
-                                                  ),
                                                   filled: false,
                                                   focusColor: Colors.black,
                                                   isDense: false,
@@ -1006,11 +979,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
-                                            // "floor": _siteController
-                                            //     .pendingSupplyDetailsResponse
-                                            //     .pendingSuppliesDetailsModel
-                                            //     .floorText
-                                            //     .text,
                                             "floor":
                                                 _selectedFloorType!.siteFloorTxt,
                                             "floorId":

@@ -1,16 +1,14 @@
-
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AllEventController extends GetxController {
   @override
@@ -45,67 +43,6 @@ class AllEventController extends GetxController {
   set dataForSearchResult(value) {
     _dataForSearchResult.value = value;
   }
-
-  /*
-  // final _eventListModels = EventListModels().obs;
-  // final _eventStatusEntities = EventStatusEntities().obs;
-
-  final _eventDate = StringConstants.empty.obs;
-  final _eventStatusText = StringConstants.empty.obs;
-  final _eventVenue = StringConstants.empty.obs;
-  final _eventInflCount = StringConstants.empty.obs;
-  final _expectedLeadsCount = StringConstants.empty.obs;
-  final _dealerName = StringConstants.empty.obs;
-  final _eventTypeText = StringConstants.empty.obs;
-
-
-  get eventDate => _eventDate.value;
-
-  set eventDate(value) {
-    _eventDate.value = value;
-  }
-
-  get eventStatusText => _eventStatusText.value;
-
-  set eventStatusText(value) {
-    _eventStatusText.value = value;
-  }
-
-  get eventVenue => _eventVenue.value;
-
-  set eventVenue(value) {
-    _eventVenue.value = value;
-  }
-
-  get eventInflCount => _eventInflCount.value;
-
-  set eventInflCount(value) {
-    _eventInflCount.value = value;
-  }
-
-  get expectedLeadsCount => _expectedLeadsCount.value;
-
-  set expectedLeadsCount(value) {
-    _expectedLeadsCount.value = value;
-  }
-
-  get dealerName => _dealerName.value;
-
-  set dealerName(value) {
-    _dealerName.value = value;
-  }
-
-  get eventTypeText => _eventTypeText.value;
-
-  set eventTypeText(value) {
-    _eventTypeText.value = value;
-  }
-*/
-//  final _searchKey=''.obs;
-//  get searchKey => _searchKey;
-//  set searchKey(value) {
-//    _searchKey.value = value;
-//  }
 
 
   get isFilterApplied => _isFilterApplied.value;
@@ -168,11 +105,6 @@ class AllEventController extends GetxController {
     _eventType.value = value;
   }
 
-  // get eventListModels => this._eventListModels.value;
-  // set eventListModels(value) => this._eventListModels.value = value;
-  //
-  // get eventStatusEntities => this._eventStatusEntities.value;
-  // set eventStatusEntities(value) => this._eventStatusEntities.value = value;
 
 
 
@@ -226,7 +158,6 @@ class AllEventController extends GetxController {
       egAllEventData = await repository.getAllEvents(accessKey, userSecurityKey, url);
 
     });
-    //Get.back();
     return egAllEventData;
   }
 
@@ -256,17 +187,12 @@ class AllEventController extends GetxController {
     String? empID = "";
     String? accessKey = await (repository.getAccessKey() );
     Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
-    // Future.delayed(
-    //     Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
 
     EventResponse? endEventModel = await repository.submitEndEventDetail(accessKey, userSecurityKey, empID, eventId,eventComment,eventDate,eventEndLat,eventEndLong);
-   // Get.back();
     return endEventModel;
   }
 

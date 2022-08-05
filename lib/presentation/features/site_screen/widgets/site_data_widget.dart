@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,8 +35,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   FocusNode? myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
-  String? labelProbabilityText;
-  int? labelProbabilityId;
   ConstructionStageEntity? _selectedConstructionType;
   SiteFloorsEntity? _selectedSiteFloor;
   SiteProbabilityWinningEntity? _siteProbabilityWinningEntity;
@@ -45,33 +42,32 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   SiteCompetitionStatusEntity? _siteCompetitionStatusEntity;
   List<ImageDetails> _imgDetails = new List.empty(growable: true);
   List<File> _imageList = new List.empty(growable: true);
-  var siteBuiltupArea = new TextEditingController();
-  var _siteProductDemo = new TextEditingController();
-  var _siteProductOralBriefing = new TextEditingController();
-
-  var _siteTotalBags = new TextEditingController();
-  var _siteTotalPt = new TextEditingController();
-  var _siteTotalBalanceBags = new TextEditingController();
-  var _siteTotalBalancePt = new TextEditingController();
-  var _ownerName = new TextEditingController();
-  var _contactNumber = new TextEditingController();
+  TextEditingController siteBuiltupArea = new TextEditingController();
+  TextEditingController _siteProductDemo = new TextEditingController();
+  TextEditingController _siteProductOralBriefing = new TextEditingController();
+  TextEditingController _siteTotalBags = new TextEditingController();
+  TextEditingController _siteTotalPt = new TextEditingController();
+  TextEditingController _siteTotalBalanceBags = new TextEditingController();
+  TextEditingController _siteTotalBalancePt = new TextEditingController();
+  TextEditingController _ownerName = new TextEditingController();
+  TextEditingController _contactNumber = new TextEditingController();
   TextEditingController _completionStatus = new TextEditingController();
   TextEditingController _opportunityStatus = new TextEditingController();
-
-  var _rera = new TextEditingController();
-  var _dealerName = new TextEditingController();
-  var _subDealerName = new TextEditingController();
-  var _so = new TextEditingController();
-  var _plotNumber = TextEditingController();
-  var _siteAddress = TextEditingController();
-  var _pincode = TextEditingController();
-  var _state = TextEditingController();
-  var _district = TextEditingController();
-  var _taluk = TextEditingController();
+  TextEditingController _rera = new TextEditingController();
+  TextEditingController _dealerName = new TextEditingController();
+  TextEditingController _subDealerName = new TextEditingController();
+  TextEditingController _so = new TextEditingController();
+  TextEditingController _plotNumber = TextEditingController();
+  TextEditingController _siteAddress = TextEditingController();
+  TextEditingController _pincode = TextEditingController();
+  TextEditingController _state = TextEditingController();
+  TextEditingController _district = TextEditingController();
+  TextEditingController _taluk = TextEditingController();
   TextEditingController? _totalBathroomCount = TextEditingController();
   late TextEditingController _totalKitchenCount = TextEditingController();
   LatLng? _currentPosition;
-  String? geoTagType;
+  String? labelProbabilityText, geoTagType;
+  int? labelProbabilityId;
   List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
   List<ConstructionStageEntity>? constructionStageEntity =
       new List.empty(growable: true);
@@ -94,7 +90,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       viewSiteDataResponse = widget.viewSiteDataResponse;
       sitesModal = viewSiteDataResponse!.sitesModal;
       constructionStageEntity = viewSiteDataResponse!.constructionStageEntity;
-      siteBuiltupArea.text = (sitesModal!.siteBuiltArea != null ? sitesModal!.siteBuiltArea : "")!;
+      siteBuiltupArea.text =
+          (sitesModal!.siteBuiltArea != null ? sitesModal!.siteBuiltArea : "")!;
       //ToDo:
       siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
       _totalKitchenCount.text = sitesModal!.kitchenCount != null
@@ -137,7 +134,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
             (int.parse(_siteTotalBalanceBags.text) / 20).toString();
       }
 
-      _plotNumber.text = sitesModal!.sitePlotNumber??"";
+      _plotNumber.text = sitesModal!.sitePlotNumber ?? "";
       _siteAddress.text = sitesModal!.siteAddress!;
       _pincode.text = sitesModal!.sitePincode!;
       _state.text = sitesModal!.siteState!;
@@ -327,13 +324,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      minTextAdapt: true,
+      designSize: Size(360, 690),
+    );
 
     return siteDataView();
   }
@@ -376,15 +370,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                       value: label,
                                     ))
                                 .toList(),
-                            onChanged: (_)async{
-                                // siteFloorsEntity= await _siteController.getSiteFloorList(_?.id);
+                            onChanged: (_) async {
+                              // siteFloorsEntity= await _siteController.getSiteFloorList(_?.id);
                               setState(() {
                                 _selectedConstructionType = _;
                                 UpdatedValues.setSiteConstructionId(
                                     _selectedConstructionType);
                               });
-
-
                             },
                             decoration: FormFieldStyle.buildInputDecoration(
                                 labelText: "Stage of Construction"),
@@ -422,7 +414,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               ],
                               decoration: FormFieldStyle.buildInputDecoration(
                                   labelText: "Site Built-up area (sqft)")),
-
                           TextStyles.mandatoryText,
                           SizedBox(height: 16),
                           Padding(
@@ -662,7 +653,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                               fontFamily: "Muli"))
                                     ])
                                   ])),
-
                           Padding(
                               padding: const EdgeInsets.only(
                                   top: 10.0, bottom: 20, left: 5),
@@ -806,7 +796,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
                                       return null;
                                     },
-
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: ColorConstants.inputBoxHintColor,
@@ -866,7 +855,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(
                             height: 20,
                           ),
-
                           DropdownButtonFormField<SiteProbabilityWinningEntity>(
                             value: _siteProbabilityWinningEntity,
                             items: viewSiteDataResponse!.sitesModal != null &&
@@ -915,12 +903,10 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Probability of winning",
                             ),
                           ),
-
                           TextStyles.mandatoryText,
                           SizedBox(
                             height: 20,
                           ),
-
                           TextFormField(
                             controller: _completionStatus,
                             readOnly: true,
@@ -935,7 +921,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           SizedBox(
                             height: 20,
                           ),
-
                           TextFormField(
                             controller: _opportunityStatus,
                             readOnly: true,
@@ -1008,14 +993,13 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                           ),
                           TextStyles.mandatoryText,
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Geo Tag",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  fontFamily: "Muli"))),
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 20, left: 5),
+                              child: Text("Geo Tag",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      fontFamily: "Muli"))),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -1213,10 +1197,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "District",
                             ),
                           ),
-
                           TextStyles.mandatoryText,
                           SizedBox(height: 16),
-
                           TextFormField(
                             controller: _taluk,
                             validator: (value) {
@@ -1238,9 +1220,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Taluk",
                             ),
                           ),
-
                           TextStyles.mandatoryText,
-
                           SizedBox(height: 16),
                           Container(
                             width: MediaQuery.of(context).size.width,
@@ -1273,7 +1253,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               },
                             ),
                           ),
-
                           Row(
                             children: [
                               Expanded(
@@ -1345,9 +1324,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               ),
                             ],
                           ),
-
                           SizedBox(height: 16),
-
                           TextFormField(
                             controller: _rera,
                             onChanged: (String data) {
@@ -1362,9 +1339,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "RERA",
                             ),
                           ),
-
                           SizedBox(height: 16),
-
                           TextFormField(
                             controller: _dealerName,
                             readOnly: true,
@@ -1377,9 +1352,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "Counter",
                             ),
                           ),
-
                           SizedBox(height: 16),
-
                           TextFormField(
                             controller: _so,
                             onChanged: (String data) {
@@ -1394,9 +1367,7 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                               labelText: "SO",
                             ),
                           ),
-
                           SizedBox(height: 51),
-
                           Center(
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -1419,8 +1390,6 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  print("1");
-                                  print(_updateFormKey.currentState!.validate());
                                   if (_updateFormKey.currentState!.validate()) {
                                     UpdatedValues updateRequest =
                                         new UpdatedValues();
@@ -1536,7 +1505,8 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
 
   _imgFromGallery() async {
     ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       if (image != null) {

@@ -1,18 +1,15 @@
-
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
-//import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerListResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class DetailEventController extends GetxController {
   @override
@@ -20,17 +17,6 @@ class DetailEventController extends GetxController {
     super.onInit();
   }
 
-  // @override
-  // void onReady() {
-  //   // called after the widget is rendered on screen
-  //   super.onReady();
-  // }
-  //
-  // @override
-  // void onClose() {
-  //   // called just before the Controller is deleted from memory
-  //   super.onClose();
-  // }
 
   final EgRepository repository;
 
@@ -42,7 +28,6 @@ class DetailEventController extends GetxController {
 
   final _dealerListResponse = DealerListResponse().obs;
 
-  //final _eventDealersModelList = EventDealersModelList().obs;
 
   get egDetailEventDaa => _egDetailEventData.value;
 
@@ -50,16 +35,12 @@ class DetailEventController extends GetxController {
 
   get dealerListResponse => this._dealerListResponse.value;
 
- // get eventDealersModelList => _eventDealersModelList.value;
 
   set egDetailEventDaa(value) => _egDetailEventData.value = value;
 
   set deleteEventResponse(value) => _deleteEventResponse.value = value;
 
   set dealerListResponse(value) => this._dealerListResponse.value = value;
-
-
-  //set eventDealersModelList(value) => _eventDealersModelList.value = value;
 
   final _dealerList = List<DealerModel>.empty(growable: true).obs;
 
@@ -73,8 +54,6 @@ class DetailEventController extends GetxController {
 
   set dealerListSelected(value) => this._dealerListSelected.value = value;
 
-  // get isLoading => this._isLoading.value;
-  // set isLoading(value) => this._isLoading.value = value;
 
   Future<String?> getAccessKey() {
     return repository.getAccessKey().then((value) => value as String?);
@@ -83,24 +62,17 @@ class DetailEventController extends GetxController {
   Future<DetailEventModel?> getDetailEventData(
     int? eventId,
   ) async {
-    //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-    //It is working fine without the progress indicator
-    // Future.delayed(Duration.zero,
-    //     () => Get.dialog(Center(child: CircularProgressIndicator())));
     String? userSecurityKey = "";
     String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      // print(userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       String? accessKey = await (repository.getAccessKey() );
-      print('EMP: $empID');
       egDetailEventDaa = await repository.getdetailEvents(
           accessKey, userSecurityKey, empID!, eventId);
     });
-   // Get.back();
     return egDetailEventDaa;
   }
 
@@ -109,13 +81,11 @@ class DetailEventController extends GetxController {
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    // this.isLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String? accessKey = await (repository.getAccessKey() );
     _prefs.then((SharedPreferences prefs) {
       String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       String empId = prefs.getString(StringConstants.employeeId)!;
-
       repository
           .getdetailEvents(accessKey, userSecurityKey, empId, eventId)
           .then((data) {
@@ -137,11 +107,8 @@ class DetailEventController extends GetxController {
 
           Get.back();
           if (dealerListResponse.respCode == "DM1002") {
-            //Get.dialog(CustomDialogs.showMessage(SitesListResponse.respMsg));
             print('${dealerListResponse.respMsg}');
-            //SitesDetailWidget();
           } else {
-            // Get.dialog(CustomDialogs.showMessage(dealerListResponse.respMsg));
           }
         }
       });

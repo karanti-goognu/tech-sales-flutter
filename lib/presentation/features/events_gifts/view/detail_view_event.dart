@@ -1,7 +1,8 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -21,9 +22,7 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class DetailViewEvent extends StatefulWidget {
   final int eventId;
@@ -49,12 +48,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     getDetailEventsData();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
   setVisibility() {
     if (detailEventModel!.mwpEventModel!.eventStatusText ==
             StringConstants.approved &&
@@ -67,33 +60,28 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
-     // if (mounted) {
-        setState(() {
-          detailEventModel = data;
-        });
-     // }
+      // if (mounted) {
+      setState(() {
+        detailEventModel = data;
+      });
+      // }
       referenceID = detailEventModel!.mwpEventModel!.referenceId;
       isEventStarted = detailEventModel!.mwpEventModel!.isEventStarted;
       setVisibility();
-    //  print('DDDD: $data');
+      //  print('DDDD: $data');
     });
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     final btnStartEvent = TextButton(
       onPressed: () {
         _getCurrentLocation();
-        // Get.dialog(CustomDialogs.showStartEventDialog(
-        //     'Confirmation', "Do you want to start event?"));
       },
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -160,17 +148,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                           detailEventModel!.mwpEventModel!.eventId,
                           ColorConstants.eventApproved),
                       binding: EGBinding());
-                  // Get.to(
-                  //     () => UpdateDlrInf(
-                  //           detailEventModel.mwpEventModel.eventId,
-                  //         ),
-                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [
                     Icon(Icons.edit,
-                        color: ColorConstants.clearAllTextColor,
-                        size: 20.sp),
+                        color: ColorConstants.clearAllTextColor, size: 20.sp),
                     SizedBox(
                       width: 5.sp,
                     ),
@@ -196,7 +178,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     CustomDialogs.showCommentDialog("Please Enter Comment",
                         context, detailEventModel!.mwpEventModel!.eventId),
                     barrierDismissible: false);
-                // Get.toNamed(Routes.END_EVENT);
               },
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -222,17 +203,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   if (results != null && results.containsKey('reload')) {
                     getDetailEventsData();
                   }
-                  // Get.to(
-                  //     () => UpdateDlrInf(
-                  //           detailEventModel.mwpEventModel.eventId,
-                  //         ),
-                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [
                     Icon(Icons.edit,
-                        color: ColorConstants.clearAllTextColor,
-                        size: 20.sp),
+                        color: ColorConstants.clearAllTextColor, size: 20.sp),
                     SizedBox(
                       width: 5.sp,
                     ),
@@ -278,8 +253,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: (detailEventModel != null && detailEventModel!.mwpEventModel != null)
-          // && detailEventModel.eventDealersModelList != null)
+      body: (detailEventModel != null &&
+              detailEventModel!.mwpEventModel != null)
           ? ListView(
               children: [
                 Padding(
@@ -297,30 +272,23 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 displayInfo('Event Type',
                     detailEventModel!.mwpEventModel!.eventTypeText ?? ''),
                 displayInfo('Dalmia Influencers',
-                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount}' ),
-                displayInfo(
-                    'Non-Dalmia Influencers',
+                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount}'),
+                displayInfo('Non-Dalmia Influencers',
                     '${detailEventModel!.mwpEventModel!.nonDalmiaInflCount}'),
-                displayInfo(
-                    'Total Participants',
+                displayInfo('Total Participants',
                     '${detailEventModel!.mwpEventModel!.dalmiaInflCount! + detailEventModel!.mwpEventModel!.nonDalmiaInflCount!}'),
                 displayInfo('Venue Address',
                     detailEventModel!.mwpEventModel!.venueAddress!),
                 displayChip('Dealer(s) Detail'),
-                displayInfo(
-                    'Expected Leads',
+                displayInfo('Expected Leads',
                     '${detailEventModel!.mwpEventModel!.expectedLeadsCount}'),
-                displayInfo(
-                    'Gift distribution',
+                displayInfo('Gift distribution',
                     '${detailEventModel!.mwpEventModel!.giftDistributionCount}'),
                 displayInfo('Event location',
                     detailEventModel!.mwpEventModel!.eventLocation ?? ''),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 15.sp,
-                      right: 15.sp,
-                      top: 5.sp,
-                      bottom: 5.sp),
+                      left: 15.sp, right: 15.sp, top: 5.sp, bottom: 5.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -334,9 +302,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                             top: 10, bottom: 10, left: 8, right: 8),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey, // Set border color
-                              width: 1.0), // Set border width
+                          border: Border.all(color: Colors.grey, width: 1.0),
                         ),
                         child: Text(
                           detailEventModel!.mwpEventModel!.eventComment!,
@@ -384,7 +350,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 child: Text(
                   value,
                   style: TextStyles.mulliBold16,
-                  //maxLines: null,
                   overflow: TextOverflow.ellipsis,
                 ),
               )
@@ -442,7 +407,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                                           fontSize: 14.0),
                                     ),
                                     backgroundColor: Colors.white,
-                                    // elevation: 3,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(15),
@@ -468,17 +432,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         ));
   }
 
-
   _getCurrentLocation() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-      setState(() {
-        _currentPosition = result.latLng;
-              startEvent();
-      });
-
-    }
-
+    setState(() {
+      _currentPosition = result.latLng;
+      startEvent();
+    });
+  }
 
   startEvent() async {
     StartEventResponse? _startEventResponse;
@@ -497,9 +458,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   .getAccessKeyAndStartEvent(_startEventModel)
                   .then((data) {
                 _startEventResponse = data;
-               // print('DD: $_startEventResponse');
                 if (_startEventResponse!.respCode == "DM1002") {
-                  Get.dialog(redirectToStartEventPg(data!.respMsg!, data.eventID),
+                  Get.dialog(
+                      redirectToStartEventPg(data!.respMsg!, data.eventID),
                       barrierDismissible: false);
                 } else if (_startEventResponse!.respCode == "DM2044") {
                   Get.dialog(
@@ -546,29 +507,23 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            'View Event',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (BuildContext context) => super.widget)).then((_) => {getDetailEventsData()});
+            child: Text(
+              'View Event',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
               Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) =>
-                          DetailViewEvent(eventId)))
+                      context,
+                      new CupertinoPageRoute(
+                          builder: (BuildContext context) =>
+                              DetailViewEvent(eventId)))
                   .then((_) => {getDetailEventsData()});
-              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-          }
-        ),
+            }),
       ],
     );
   }
@@ -592,32 +547,26 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            'OK',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-            //if (mounted) {
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              //if (mounted) {
               Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) =>
-                          DetailViewEvent(eventId)))
-                 .then((_) => {getDetailEventsData()});
-              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-           // }
-
-          }
-        ),
+                      context,
+                      new CupertinoPageRoute(
+                          builder: (BuildContext context) =>
+                              DetailViewEvent(eventId)))
+                  .then((_) => {getDetailEventsData()});
+              // }
+            }),
       ],
     );
   }
 }
-
-//{"respCode":"DM2043","respMsg":"The event MINI CONTRACTOR MEET is scheduled for 18-05-2021 , you can not start now.","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}
-//{"respCode":"DM2043","respMsg":"You have not ended previous event/meet MINI CONTRACTOR MEET & 18-05-2021","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}

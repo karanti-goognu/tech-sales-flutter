@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/event_search.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_search.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/view/DraftLeadListScreen.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:get/get.dart';
 
 class BottomNavigator extends StatelessWidget {
   final searchType;

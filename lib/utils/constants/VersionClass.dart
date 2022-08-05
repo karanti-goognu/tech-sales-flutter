@@ -1,4 +1,3 @@
-
 class VersionClass {
   static String? version;
   static void setVersion(String newValue) {

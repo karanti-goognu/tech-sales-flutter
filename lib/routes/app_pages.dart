@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/app_binding.dart';
 import 'package:flutter_tech_sales/bindings/dashboard_binding.dart';
@@ -43,7 +44,6 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/view/site_s
 import 'package:flutter_tech_sales/presentation/features/splash/view/splash_screen.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoRequests.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/view/VideoScreen.dart';
-import 'package:get/get.dart';
 part './app_routes.dart';
 
 class AppPages {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
-import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
-import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/suggestion.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
+import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
+
 
 
 class CustomMap extends StatefulWidget {
@@ -50,7 +51,6 @@ class _CustomMapState extends State<CustomMap> {
       Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .then((Position position) {
-       // print(position);
         setState(() {
           _markerPosition = LatLng(position.latitude, position.longitude);
           _getAddressFromLatLng();
@@ -180,7 +180,6 @@ class _CustomMapState extends State<CustomMap> {
 
                     if (result != null) {
                       final placeDetails = await PlaceApiProvider(sessionToken).getLatLong(result.placeId) ;
-                      // setState(() {
                       _locationController.text = result.description!;
                       double? lat = placeDetails?.lat;
                       double? long = placeDetails?.lng;

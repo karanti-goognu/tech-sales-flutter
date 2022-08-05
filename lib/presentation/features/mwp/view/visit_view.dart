@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
@@ -12,9 +15,7 @@ import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 
 class AddEventVisit extends StatefulWidget {
   @override
@@ -47,13 +48,16 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        // context:
+        context,
+
+        // BoxConstraints(
+        //     maxWidth: MediaQuery.of(context).size.width,
+        //     maxHeight: MediaQuery.of(context).size.height),
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+        // orientation: Orientation.portrait,
+    );
 
     final name = TextFormField(
       controller: _nameController,

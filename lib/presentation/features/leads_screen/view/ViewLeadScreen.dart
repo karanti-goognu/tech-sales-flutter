@@ -1,6 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
@@ -30,12 +36,6 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dialog/lead_change_to_site_dialog.dart';
 
 class ViewLeadScreen extends StatefulWidget {
@@ -239,7 +239,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         new CommentsDetail(
             createdBy: empId,
             commentText: _comments.text,
-            // commentedAt: DateTime.now(),
             creatorName: name)
       ];
 
@@ -323,11 +322,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _selectedNextStageConstructionEntity!.nextStageConsId,
         /*_selectedNextStageConstructionEntity.nextStageConsId*/
         'siteDealerId': dealerId,
-        "subdealerId": subDealerId, //need to pass selected value
+        "subdealerId": subDealerId,
         'listLeadcomments': commentsList,
         'listLeadImage': viewLeadDataResponse.leadphotosEntity,
         'leadInfluencerEntity': influencerListForConvertToSite,
-        // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
         'leadSource': _leadSource.text,
         'leadSourceUser': _leadSourceUser.text,
         'leadSourcePlatform':
@@ -359,13 +357,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     double _height = ScreenUtil().setSp(15);
 
     final statusDropDown = Container(
@@ -757,7 +752,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         onPressed: () async {
           if (_addLeadsController.imageList!.length < 5) {
             _addLeadsController.updateImageList(
-                await UploadImageBottomSheet.showPicker(context), userSelectedImageStatus);
+                await UploadImageBottomSheet.showPicker(context),
+                userSelectedImageStatus);
           } else {
             Get.dialog(
                 CustomDialogs.showMessage("You can add only up to 5 photos"));
@@ -816,7 +812,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 }
                 return null;
               },
-
               style: FormFieldStyle.formFieldTextStyle,
               decoration:
                   FormFieldStyle.buildInputDecoration(labelText: "Bags"),
@@ -902,8 +897,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          nextStageModalBottomSheet(context );
-
+          nextStageModalBottomSheet(context);
         },
       ),
     );
@@ -1024,9 +1018,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
-                                                itemCount: controller.imageList!.length,
+                                                itemCount: controller
+                                                    .imageList!.length,
                                                 itemBuilder:
-                                                    (BuildContext context, int index) {
+                                                    (BuildContext context,
+                                                        int index) {
                                                   return GestureDetector(
                                                     onTap: () {
                                                       showDialog(
@@ -1079,7 +1075,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                               controller
                                                                   .updateImageAfterDelete(
                                                                       index);
-                                                              UploadImageBottomSheet.image = null;
+                                                              UploadImageBottomSheet
+                                                                  .image = null;
                                                             });
                                                           },
                                                         )
@@ -1152,7 +1149,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs.showMessage(
+                                                              Get.dialog(CustomDialogs
+                                                                  .showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1327,7 +1325,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs.showMessage(
+                                                              Get.dialog(CustomDialogs
+                                                                  .showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1408,7 +1407,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         }
 
                                                         if (match) {
-                                                          Get.dialog(CustomDialogs.showMessage(
+                                                          Get.dialog(CustomDialogs
+                                                              .showMessage(
                                                                   "Already added influencer : " +
                                                                       value));
                                                         } else {
@@ -1926,8 +1926,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 _listInfluencerDetail[index].inflName!.clear();
               });
             }
-            return Get.dialog(CustomDialogs
-                .showDialog("No influencer registered with this number"));
+            return Get.dialog(CustomDialogs.showDialog(
+                "No influencer registered with this number"));
           }
         } else {
           if (_listInfluencerDetail[index].inflContact != null) {
@@ -1935,8 +1935,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _listInfluencerDetail[index].inflName!.clear();
           }
           return Get.dialog(
-              CustomDialogs
-                  .showDialogRestrictSystemBack(_infDetailModel.respMsg!),
+              CustomDialogs.showDialogRestrictSystemBack(
+                  _infDetailModel.respMsg!),
               barrierDismissible: false);
         }
         Get.back();
@@ -1969,7 +1969,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           _listInfluencerDetail.add(infl);
         });
       } else {
-        Get.dialog(CustomDialogs.showMessage("Please fill previous influencer first"));
+        Get.dialog(
+            CustomDialogs.showMessage("Please fill previous influencer first"));
       }
     }
   }
@@ -2274,8 +2275,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.phone,
-                decoration:
-                FormFieldStyle.buildInputDecoration(labelText:"Original Lead Id" ),
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Original Lead Id"),
               ),
             ]),
           )),
@@ -2330,13 +2331,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       viewLeadDataResponse.leadsEntity!.nextStageConstruction,
                   'siteDealerId':
                       viewLeadDataResponse.leadsEntity!.siteDealerId,
-                  // 'listLeadcomments':
-                  //     [],
-                  // 'listLeadImage':
-                  //     [],
-                  // 'leadInfluencerEntity':
-                  //   []
-
                   'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                   'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                   'leadInfluencerEntity':
@@ -2367,66 +2361,60 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           child: Column(
             children: [
               DropdownButtonFormField<NextStageConstructionEntity>(
-                value: _selectedNextStageConstructionEntity,
-                items: nextStageConstructionEntity!
-                    .map((label) => DropdownMenuItem(
-                          child: Text(
-                            label.nexStageConsText!,
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          value: label,
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedNextStageConstructionEntity = value;
-                  });
-                },
-                decoration:
-
-                FormFieldStyle.buildInputDecoration(labelText: "Next Stage of Construction")
-              ),
+                  value: _selectedNextStageConstructionEntity,
+                  items: nextStageConstructionEntity!
+                      .map((label) => DropdownMenuItem(
+                            child: Text(
+                              label.nexStageConsText!,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedNextStageConstructionEntity = value;
+                    });
+                  },
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Next Stage of Construction")),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
               TextFormField(
                 controller: _nextDateofConstruction,
                 readOnly: true,
-                onChanged: (data) {
-                  // setState(() {
-                  //   _contactName.text = data;
-                  // });
-                },
                 style: TextStyle(
                     fontSize: 18,
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.text,
-                decoration:
-                FormFieldStyle.buildInputDecoration(labelText: "Next date of Construction",suffixIcon:IconButton(
-                  icon: Icon(
-                    Icons.date_range_rounded,
-                    size: 22,
-                    color: ColorConstants.clearAllTextColor,
-                  ),
-                  onPressed: () async {
-                    final DateTime? picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101));
-
-                    setState(() {
-                      final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                      final String formattedDate = formatter.format(picked!);
-                      nextStageConstructionPickedDate = picked;
-                      _nextDateofConstruction.text = formattedDate;
-                    });
-                  },
-                ) ),
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Next date of Construction",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.date_range_rounded,
+                        size: 22,
+                        color: ColorConstants.clearAllTextColor,
+                      ),
+                      onPressed: () async {
+                        final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2101));
+                        setState(() {
+                          final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                          final String formattedDate =
+                              formatter.format(picked!);
+                          nextStageConstructionPickedDate = picked;
+                          _nextDateofConstruction.text = formattedDate;
+                        });
+                      },
+                    )),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,

@@ -154,7 +154,7 @@ class _VolumeConvertedTableState extends State<VolumeConvertedTable> {
                           context,
                           new CupertinoPageRoute(
                               builder: (BuildContext context) =>
-                                  ViewSiteScreenNew(siteId: _dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId,tabIndex: 3,)));
+                                  ViewSiteScreen(siteId: _dashboardController.mtdConvertedVolumeList.volumeEntity[index].siteId,tabIndex: 3,)));
                     },
                     child: Container(
                       child: Column(

@@ -1,6 +1,8 @@
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
@@ -13,8 +15,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class SiteProgressWidget extends StatefulWidget {
   final ViewSiteDataResponse? viewSiteDataResponse;
@@ -494,9 +495,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 GestureDetector(
                                   onTap: () {
                                     Get.dialog(
-                                        CustomDialogs
-                                            .showDialogForKittiPoints(
-                                                _kittyBagsListModel, context),
+                                        CustomDialogs.showDialogForKittiPoints(
+                                            _kittyBagsListModel, context),
                                         barrierDismissible: false);
                                   },
                                   child: Text(
@@ -525,9 +525,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                 GestureDetector(
                                   onTap: () {
                                     Get.dialog(
-                                        CustomDialogs
-                                            .showDialogForKittiPoints(
-                                                _kittyBagsListModel, context),
+                                        CustomDialogs.showDialogForKittiPoints(
+                                            _kittyBagsListModel, context),
                                         barrierDismissible: false);
                                   },
                                   child: Text(
@@ -746,8 +745,8 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                           _siteBrandFromLocalDB!.brandName!.toLowerCase() ==
                               "dalmia") {
                         if (_dealerEntityForDb == null) {
-                          Get.dialog(CustomDialogs
-                              .showMessage("Please Select Dealer name !"));
+                          Get.dialog(CustomDialogs.showMessage(
+                              "Please Select Dealer name !"));
                           return;
                         }
                       }
@@ -759,26 +758,26 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                       }
 
                       if (productDynamicList![index].brandModelForDB == null) {
-                        Get.dialog(CustomDialogs
-                            .showMessage("Please select product sold !"));
+                        Get.dialog(CustomDialogs.showMessage(
+                            "Please select product sold !"));
                         return;
                       }
 
                       if (productDynamicList![index].brandPrice!.text.isEmpty) {
-                        Get.dialog(CustomDialogs
-                            .showMessage("Please enter brand price !"));
+                        Get.dialog(CustomDialogs.showMessage(
+                            "Please enter brand price !"));
                         return;
                       }
 
                       if (productDynamicList![index].supplyDate!.text.isEmpty) {
-                        Get.dialog(CustomDialogs
-                            .showMessage("Please Select Date !"));
+                        Get.dialog(
+                            CustomDialogs.showMessage("Please Select Date !"));
                         return;
                       }
 
                       if (productDynamicList![index].supplyQty!.text.isEmpty) {
-                        Get.dialog(CustomDialogs
-                            .showMessage("Please Enter Supply Quantity !"));
+                        Get.dialog(CustomDialogs.showMessage(
+                            "Please Enter Supply Quantity !"));
                         return;
                       }
 
@@ -891,8 +890,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
         counterListModel = viewSiteDataResponse!.counterListModel;
         constructionStageEntityNewNextStage =
             viewSiteDataResponse!.constructionStageEntity;
+        //ToDo:
+        // constructionStageEntityNew = viewSiteDataResponse!.constructionStageEntity;
         constructionStageEntityNew =
-            viewSiteDataResponse!.constructionStageEntity;
+            viewSiteDataResponse!.nextconstructionStageEntity;
         addNextButtonDisable = false;
         //ToDo:
         // siteFloorsEntity = viewSiteDataResponse!.siteFloorsEntity;
@@ -920,8 +921,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
 
         if (UpdatedValues.getSiteProgressNoOfFloors() != null) {
           _selectedSiteVisitFloor = null;
-          _selectedSiteVisitFloor = siteFloorsEntity!.firstWhere((item) =>
-              item.id == UpdatedValues.getSiteProgressNoOfFloors()!.id);
+          _selectedSiteVisitFloor = siteFloorsEntity!.isNotEmpty
+              ? siteFloorsEntity!.firstWhere((item) =>
+                  item.id == UpdatedValues.getSiteProgressNoOfFloors()!.id)
+              : null;
         }
 
         if (UpdatedValues.getSiteProgressStagePotential() != null) {
@@ -1001,13 +1004,16 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        // context:
+        context,
+
+        // BoxConstraints(
+        //     maxWidth: MediaQuery.of(context).size.width,
+        //     maxHeight: MediaQuery.of(context).size.height),
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+        // orientation: Orientation.portrait
+    );
     return visitDataView();
   }
 
@@ -1069,9 +1075,10 @@ class _SiteDataViewWidgetState extends State<SiteProgressWidget>
                                   value: label,
                                 ))
                             .toList(),
-                        onChanged: (value) async{
-
-                          siteFloorsEntityNew= await _siteController.getSiteFloorList(value?.id,UpdatedValues.getSiteId());
+                        onChanged: (value) async {
+                          siteFloorsEntityNew =
+                              await _siteController.getSiteFloorList(
+                                  value?.id, UpdatedValues.getSiteId());
                           // siteFloorsEntityNew = siteFloorsEntity;
                           // siteFloorsEntityNewNextStage = siteFloorsEntity;
 

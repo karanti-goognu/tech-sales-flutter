@@ -1,6 +1,7 @@
-
-
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/DealerInfModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EndEventModel.dart';
@@ -24,9 +25,8 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+
+
 
 class MyApiClientEvent {
   String? version;
@@ -84,8 +84,6 @@ class MyApiClientEvent {
             data["resp_msg"]), barrierDismissible: false);
       }else {
         addEventModel = AddEventModel.fromJson(json.decode(response.body));
-
-       // print(response.body);
       }
     }
     catch (e) {
@@ -374,6 +372,7 @@ class MyApiClientEvent {
     UpdateDealerInfResponse? updateDealerInfResponse;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
+      print(json.encode(updateDealerInfModel));
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEventDealersInfluencers),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
@@ -455,43 +454,6 @@ Future<SaveNewInfluencerResponse?>saveNewInfluencer(String? accessKey, String? u
   }
   return saveNewInfluencerResponse;
 }
-
-
-
-
-
-
-
-/////////////
-//   Future<InfDetailModel> getInfdata1(String accessKey,
-//       String userSecretKey, String contact) async {
-//     InfDetailModel infDetailModel;
-//     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-//     try {
-//       version = VersionClass.getVersion();
-//       var response = await http.get(Uri.parse(UrlConstants.getInfDetails + "$contact"),
-//           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
-//       var data = json.decode(response.body);
-//       if (response.statusCode == 200) {
-//         Get.back();
-//         print("======$data");
-//         if (data["resp_code"] == "DM1005") {
-//           Get.dialog(CustomDialogs.appUserInactiveDialog(
-//               data["resp_msg"]), barrierDismissible: false);
-//         }
-//         else {
-//           infDetailModel = InfDetailModel.fromJson(json.decode(response.body));
-//           // print('URL ${UrlConstants.getInfDetails + "$contact"}');
-//         }} else {
-//         print('error');
-//       }
-//     }
-//     catch (e) {
-//       print("Exception at EG Repo $e");
-//     }
-//
-//     return infDetailModel;
-//   }
 
 }
 

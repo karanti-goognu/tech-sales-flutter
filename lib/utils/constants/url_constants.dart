@@ -52,11 +52,6 @@ abstract class UrlConstants {
  static const String leadDistList = '$baseUrl/leads/v2/district-list?referenceID=';
  static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
 
-
-
-
-
-
  //Site
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
  static const String updateSiteData = '$baseUrl/sites/site-update';

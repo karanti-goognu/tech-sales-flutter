@@ -1,7 +1,8 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
@@ -13,9 +14,7 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 
 // ignore: must_be_immutable
@@ -70,14 +69,9 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
     if (_scrollController!.position.pixels ==
         _scrollController!.position.maxScrollExtent) {
       _siteController.offset += 10;
-      // _siteController.getAccessKey().then((value) async {
-      //   _siteController.getSitesData(value.accessKey,widget.influencerID);
-      // });
-      // getData();
       getData().whenComplete(() {
         Get.back();
       });
-      // _siteController.getSitesData(_siteController.accessKeyResponse.accessKey,widget.influencerID);
     }
   }
 
@@ -144,7 +138,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ):SizedBox(),
                       ),
@@ -154,7 +147,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                         style: TextStyle(
                           fontFamily: "Muli",
                           fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                          // color: HexColor("#FFFFFF99"),
                         ),
                       ):SizedBox()),
                     ],
@@ -229,7 +221,7 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                 Navigator.push(
                     context, new CupertinoPageRoute(
                     builder: (BuildContext context) =>
-                        ViewSiteScreenNew(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
+                        ViewSiteScreen(siteId: _siteController.sitesListResponse.sitesEntity[index].siteId,tabIndex: 0,))
                 );
               },
               child: Card(
@@ -332,7 +324,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.normal
-                                //fontWeight: FontWeight.normal
                               )
                           ))
                         ],
@@ -355,7 +346,6 @@ class _InfluencerNameListState extends State<InfluencerNameList> {
                                       fontFamily: "Muli",
                                       fontWeight:
                                       FontWeight.bold
-                                    //fontWeight: FontWeight.normal
                                   ),
                                 ),
                               )),

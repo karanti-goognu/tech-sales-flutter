@@ -1,24 +1,23 @@
-//ToDo: Test the functionality and remove unnecessary commented code blocks
-
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/datepicker.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class RequestUpdateAction extends StatefulWidget {
   final dept, id, severity;
@@ -181,7 +180,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     style: TextStyle(
                         color: HexColor("#1C99D4"),
                         fontWeight: FontWeight.bold,
-                        // letterSpacing: 2,
                         fontSize: 17),
                   ),
                   onPressed: () async {
@@ -910,7 +908,6 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                   _imageList.forEach((element) {
                     setState(() {
                       imageDetails.add({
-                        //ToDo: Change srComplaint Id to some dynamic value
                         'srComplaintId': widget.id,
                         'photoName': element.path.split('/').last,
                       });

@@ -1,9 +1,9 @@
-
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
@@ -25,9 +25,7 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class FormAddInfluencer extends StatefulWidget {
   @override
@@ -62,8 +60,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
-
-  // If Engineer Type
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
   int? _preferredBrandId;
@@ -162,7 +158,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               colorText: Colors.white,
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM),
-          // fetchSiteList()
         }
     });
   }
@@ -170,13 +165,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        context,
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+    );
     double _height = 16.sp;
 
     final mobileNumber = TextFormField(
@@ -198,7 +190,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         FilteringTextInputFormatter.digitsOnly
       ],
       maxLength: 10,
-      //maxLengthEnforced: true,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Mobile number*",
       ),

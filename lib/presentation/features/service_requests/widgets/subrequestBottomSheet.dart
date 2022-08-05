@@ -1,11 +1,9 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:get/get.dart';
 
 class SRRequestSubTypeBottomSheet extends StatefulWidget {
   final srComplaintModel, customFunction, isComplaint, requestID;

@@ -2,31 +2,6 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 
-class SiteFloorResponse {
-  String? respCode;
-  String? respMsg;
-  late List<SiteFloorsEntity> sitesEntity;
-
-  SiteFloorResponse({this.respCode, this.respMsg, required this.sitesEntity});
-
-  SiteFloorResponse.fromJson(Map<String, dynamic> json) {
-    respCode = json['respCode'];
-    respMsg = json['respMsg'];
-    if (json.containsKey('sitesEntity'))
-        sitesEntity = new List<SiteFloorsEntity>.empty(growable: true);
-      json['sitesEntity'].forEach((v) {
-        sitesEntity.add(new SiteFloorsEntity.fromJson(v));
-      });
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['respCode'] = this.respCode;
-    data['respMsg'] = this.respMsg;
-      data['sitesEntity'] = this.sitesEntity.map((v) => v.toJson()).toList();
-    return data;
-  }
-}
 
 class ViewSiteDataResponse {
   String? respCode;
@@ -35,13 +10,14 @@ class ViewSiteDataResponse {
   MwpVisitModel? mwpVisitModel;
   List<SiteFloorsEntity>? siteFloorsEntity;
   List<SitephotosEntity>? sitephotosEntity;
+  List<ConstructionStageEntity>? nextconstructionStageEntity;
+  List<ConstructionStageEntity>? constructionStageEntity;
 
   List<SiteStageHistory>? siteStageHistorys;
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
 
   List<SiteStageEntity>? siteStageEntity;
-  List<ConstructionStageEntity>? constructionStageEntity;
   List<SiteProbabilityWinningEntity>? siteProbabilityWinningEntity;
   List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity;
   List<SiteBrandEntity>? siteBrandEntity;
@@ -66,6 +42,7 @@ class ViewSiteDataResponse {
       this.siteFloorsEntity,
       this.sitephotosEntity,
       this.siteStageHistorys,
+        this.nextconstructionStageEntity,
 
      // this.siteVisitHistoryEntity,
       this.siteStageEntity,
@@ -158,6 +135,15 @@ class ViewSiteDataResponse {
       constructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
       json['constructionStageEntity'].forEach((v) {
         constructionStageEntity!.add(new ConstructionStageEntity.fromJson(v));
+      });
+    }
+
+    if (!json.containsKey('nextconstructionStageEntity')) nextconstructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
+    if (json['nextconstructionStageEntity'] != null) {
+      nextconstructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
+      json['nextconstructionStageEntity'].forEach((v) {
+        nextconstructionStageEntity
+            ?.add(new ConstructionStageEntity.fromJson(v));
       });
     }
 
@@ -321,6 +307,12 @@ class ViewSiteDataResponse {
       data['constructionStageEntity'] =
           this.constructionStageEntity!.map((v) => v.toJson()).toList();
     }
+
+    if (this.nextconstructionStageEntity != null) {
+      data['nextconstructionStageEntity'] =
+          this.nextconstructionStageEntity?.map((v) => v.toJson()).toList();
+    }
+
     if (this.siteProbabilityWinningEntity != null) {
       data['siteProbabilityWinningEntity'] =
           this.siteProbabilityWinningEntity!.map((v) => v.toJson()).toList();

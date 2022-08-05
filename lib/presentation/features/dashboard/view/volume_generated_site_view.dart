@@ -113,7 +113,7 @@ class _VolumeGeneratedSiteListState extends State<VolumeGeneratedSiteList> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreenNew(siteId: _dashboardController
+                                          ViewSiteScreen(siteId: _dashboardController
                                               .mtdGeneratedVolumeSiteList
                                               .sitesEntity[index]
                                               .siteId,tabIndex: 0,)));

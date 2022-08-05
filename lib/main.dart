@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'utils/constants/app_theme.dart';
 
 void main() async {
-  print("Main:::::");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);

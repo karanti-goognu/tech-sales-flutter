@@ -1,14 +1,12 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:intl/intl.dart';
 
 class RequestUpdateDetails extends StatefulWidget {
   final id;

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -16,8 +18,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SiteController extends GetxController {
   @override
@@ -382,11 +383,11 @@ class SiteController extends GetxController {
     return siteDistResponse;
   }
 
-  getAccessKeyOnly() {
+  Future<AccessKeyModel> getAccessKeyOnly() {
     return repository.getAccessKey();
   }
 
-  getSitedetailsData(String? accessKey, int? siteId) async {
+  Future<ViewSiteDataResponse> getSitedetailsData(String? accessKey, int? siteId) async {
     String? userSecurityKey = "";
     String? empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();

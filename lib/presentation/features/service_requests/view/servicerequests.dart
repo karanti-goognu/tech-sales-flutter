@@ -1,6 +1,6 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
@@ -13,8 +13,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class ServiceRequests extends StatefulWidget {
   @override
@@ -90,13 +89,16 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        // context:
+        context,
+
+        // BoxConstraints(
+        //     maxWidth: MediaQuery.of(context).size.width,
+        //     maxHeight: MediaQuery.of(context).size.height),
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+        // orientation: Orientation.portrait
+    );
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(

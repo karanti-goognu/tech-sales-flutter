@@ -1,12 +1,9 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/repository/TutorialRepository.dart';
-import 'package:get/get.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 
 class TutorialListController extends GetxController{

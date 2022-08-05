@@ -1,13 +1,9 @@
 import 'dart:async';
-
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
-import 'package:flutter_tech_sales/utils/functions/validation.dart';
-import 'package:flutter_tech_sales/utils/global.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/save_service_request_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -21,9 +17,10 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
 class RequestCreation extends StatefulWidget {
@@ -38,6 +35,10 @@ class _RequestCreationState extends State<RequestCreation> {
   SaveServiceRequestController saveRequest = Get.find();
   SaveServiceRequest? saveServiceRequest;
   UpdateServiceRequestController updateRequest = Get.find();
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  TextEditingController c = TextEditingController();
+  TextEditingController d = TextEditingController();
 
   Future getEmpId() async {
     String? empID = "";
@@ -102,6 +103,7 @@ class _RequestCreationState extends State<RequestCreation> {
   TextEditingController _district = TextEditingController();
   TextEditingController _taluk = TextEditingController();
   TextEditingController _pin = TextEditingController();
+  TextEditingController _siteController = TextEditingController();
   int? requestDepartmentId;
   int? requestId;
   String? creatorType;
@@ -130,13 +132,16 @@ class _RequestCreationState extends State<RequestCreation> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
@@ -311,47 +316,72 @@ class _RequestCreationState extends State<RequestCreation> {
                                             labelText: "Severity"),
                                   ),
                                   SizedBox(height: 16),
-                                  DropdownSearch<ActiveSiteTSOListsEntity>(
-                                    mode: Mode.BOTTOM_SHEET,
-                                    items: srComplaintModel!.activeSiteTSOLists,
-                                    itemAsString: (ActiveSiteTSOListsEntity?
-                                            u) =>
-                                        '${toBeginningOfSentenceCase(u!.contactName)} (${u.siteId})',
-                                    maxHeight: 240,
-                                    //label: "Site Id *",
-                                    dropdownSearchDecoration: FormFieldStyle.buildInputDecoration(
-                                        labelText: "Site Id *"),
-                                   // dropdownSearchDecoration: InputDecoration(labelText: "Site Id *"),
-                                    validator: (value) => value == null
-                                        ? "Site id is required "
+                                  TextFormField(
+                                    validator: (value) => value!.isEmpty
+                                        ? 'Please select the Site ID'
                                         : null,
-                                    onChanged: (value) async {
-                                      siteId = value!.siteId;
-                                      SiteAreaModel siteDetails =
-                                          await srFormDataController
-                                              .getSiteAreaDetails(
-                                                  siteId.toString());
-                                      siteDetails.siteAreaDetailsModel != null
-                                          ? setState(() {
-                                              _pin.text = siteDetails
-                                                  .siteAreaDetailsModel!
-                                                  .sitePincode!;
-                                              _state.text = siteDetails
-                                                  .siteAreaDetailsModel!
-                                                  .siteState!;
-                                              _taluk.text = siteDetails
-                                                  .siteAreaDetailsModel!
-                                                  .siteTaluk!;
-                                              _district.text = siteDetails
-                                                  .siteAreaDetailsModel!
-                                                  .siteDistrict!;
-                                            })
-                                          : Get.rawSnackbar(
-                                              title: "Message",
-                                              message: siteDetails.respMsg);
-                                    },
-                                    showSearchBox: true,
+                                    controller: _siteController,
+                                    readOnly: true,
+                                    onTap: () =>
+                                        Get.bottomSheet(siteIdBottomSheet()),
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Site ID*",
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 12),
+                                        child: Text(
+                                          'Select',
+                                          style: TextStyle(
+                                            color: HexColor('#F9A61A'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
+                                  // DropdownSearch<ActiveSiteTSOListsEntity>(
+                                  //   mode: Mode.BOTTOM_SHEET,
+                                  //   items: srComplaintModel!.activeSiteTSOLists,
+                                  //   itemAsString: (ActiveSiteTSOListsEntity?
+                                  //           u) =>
+                                  //       '${toBeginningOfSentenceCase(u!.contactName)} (${u.siteId})',
+                                  //   maxHeight: 240,
+                                  //   // label: "Site Id *",
+                                  //   dropdownSearchDecoration:
+                                  //       FormFieldStyle.buildInputDecoration(
+                                  //           labelText: "Site Id *"),
+                                  //   // dropdownSearchDecoration: InputDecoration(labelText: "Site Id *"),
+                                  //   validator: (value) => value == null
+                                  //       ? "Site id is required "
+                                  //       : null,
+                                  //   onChanged: (value) async {
+                                  //     siteId = value!.siteId;
+                                  //     SiteAreaModel siteDetails =
+                                  //         await srFormDataController
+                                  //             .getSiteAreaDetails(
+                                  //                 siteId.toString());
+                                  //     siteDetails.siteAreaDetailsModel != null
+                                  //         ? setState(() {
+                                  //             _pin.text = siteDetails
+                                  //                 .siteAreaDetailsModel!
+                                  //                 .sitePincode!;
+                                  //             _state.text = siteDetails
+                                  //                 .siteAreaDetailsModel!
+                                  //                 .siteState!;
+                                  //             _taluk.text = siteDetails
+                                  //                 .siteAreaDetailsModel!
+                                  //                 .siteTaluk!;
+                                  //             _district.text = siteDetails
+                                  //                 .siteAreaDetailsModel!
+                                  //                 .siteDistrict!;
+                                  //           })
+                                  //         : Get.rawSnackbar(
+                                  //             title: "Message",
+                                  //             message: siteDetails.respMsg);
+                                  //   },
+                                  //   showSearchBox: true,
+                                  // ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
                                     validator: (dynamic value) => value == null
@@ -988,6 +1018,79 @@ class _RequestCreationState extends State<RequestCreation> {
                       shrinkWrap: true,
                     ),
                   ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TextEditingController _siteQuery = TextEditingController();
+ ActiveSiteTSOListsEntity? siteEntity;
+  siteIdBottomSheet() {
+    List<ActiveSiteTSOListsEntity> siteList =
+        srComplaintModel!.activeSiteTSOLists ?? List.empty();
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) => Container(
+        color: Colors.white,
+        height: 400,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: _siteQuery,
+                onChanged: (value) {
+                  setState(() {
+                    siteList =
+                        srComplaintModel!.activeSiteTSOLists!.where((element) {
+                      return element.siteId
+                          .toString()
+                          .toLowerCase()
+                          .contains(value);
+                    }).toList();
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    labelText: 'Search'),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => RadioListTile(
+                    value: siteList[index],
+                    title: Text(
+                        '${siteList[index].contactName} (${siteList[index].siteId})'),
+                    groupValue: siteEntity,
+                    onChanged: (dynamic value) async {
+                      siteEntity=value;
+                      siteId = value!.siteId;
+                      _siteController.text = '${siteEntity!.contactName} ($siteId)';
+                      SiteAreaModel siteDetails = await srFormDataController.getSiteAreaDetails(siteId.toString());
+                      siteDetails.siteAreaDetailsModel != null
+                          ? setState(() {
+                              _pin.text = siteDetails
+                                  .siteAreaDetailsModel!.sitePincode!;
+                              _state.text =
+                                  siteDetails.siteAreaDetailsModel!.siteState!;
+                              _taluk.text =
+                                  siteDetails.siteAreaDetailsModel!.siteTaluk!;
+                              _district.text = siteDetails
+                                  .siteAreaDetailsModel!.siteDistrict!;
+                            })
+                          : Get.rawSnackbar(
+                              title: "Message", message: siteDetails.respMsg);
+                      Get.back();
+                    }),
+                itemCount: siteList.length,
+              ),
+            ),
           ],
         ),
       ),

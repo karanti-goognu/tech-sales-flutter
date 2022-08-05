@@ -1,7 +1,8 @@
-import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:get/get.dart';
 import 'package:moengage_inbox/moengage_inbox.dart';
 import 'package:moengage_inbox/inbox_message.dart';
+import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
+
 
 class NotificationController extends GetxController {
   MoEngageInbox _moEngageInbox = MoEngageInbox();

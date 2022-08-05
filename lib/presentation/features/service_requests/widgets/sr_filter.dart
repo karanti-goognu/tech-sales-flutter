@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
 
 class FilterWidget extends StatefulWidget {
   @override
@@ -28,9 +28,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // TODO: implement build
     return Container(
-      // height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: new BorderRadius.only(
@@ -156,7 +154,6 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    //Navigator.pop(context);
                     setState(() {
                       requestGroup='';
                       severityGroup='';

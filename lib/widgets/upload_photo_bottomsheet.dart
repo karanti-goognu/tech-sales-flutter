@@ -1,9 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/photo_controller.dart';
-import 'package:get/get.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
 
 class UploadImageBottomSheet{
   UploadImageBottomSheet._();

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_s
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/deep_link_constants.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
-import 'package:get/get.dart';
 
 class NotificationRoutes {
   NotificationRoutes._();
@@ -119,7 +119,7 @@ class NotificationRoutes {
         break;
       case DeepLinkConstants.SITES_SCREEN:
         if (payloadData!['id'] != null) {
-          Get.to(() => ViewSiteScreenNew(
+          Get.to(() => ViewSiteScreen(
                 siteId: payloadData['id'],
                 tabIndex: 0,
               ));

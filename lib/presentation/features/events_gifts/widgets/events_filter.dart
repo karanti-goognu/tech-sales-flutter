@@ -1,14 +1,13 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class EventsFilterWidget extends StatefulWidget {
   @override
@@ -24,11 +23,9 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
 
   @override
   Widget build(BuildContext context) {
-//    _leadsFilterController.getSecretKey(10);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
@@ -153,8 +150,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 GestureDetector(
                   onTap: () {
                     _eventController.isFilterApplied=false;
-
-                    //Navigator.pop(context);
                     setState(() {
                       _eventController.eventStatus =
                           StringConstants.empty;
@@ -170,7 +165,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                           StringConstants.empty;
                       _eventController.selectedFilterCount = 0;
                       Navigator.pop(context);
-//                      _eventController.getAccessKey(RequestIds.GET_LEADS_LIST);
                     });
                   },
                   child: Text(
@@ -203,7 +197,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-      // height: 50,
       color: (_eventController.selectedPosition == position)
           ? Colors.white
           : Colors.transparent,
@@ -267,7 +260,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -301,7 +293,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -376,7 +367,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 _eventController.eventStatus = value;
 
                 _eventController.eventStatusValue = leadStageValue;
-//                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -416,7 +406,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
               value: eventTypeText,
               groupValue: _eventController.eventType as String,
               onChanged: (String? value) {
-      //          print(value);
                 if (_eventController.eventType ==
                     StringConstants.empty) {
                   _eventController.selectedFilterCount =
@@ -424,10 +413,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
                 }
                 _eventController.eventType = value;
                 _eventController.eventTypeValue = eventTypeId;
-//                _leadsFilterController.selectedLeadStatus = value;
-//                _leadsFilterController.selectedLeadStatusValue =
-//                    leadStatusValue;
-//                _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -446,7 +431,6 @@ class _EventsFilterWidgetState extends State<EventsFilterWidget> {
 
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
- //   print(type);
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,

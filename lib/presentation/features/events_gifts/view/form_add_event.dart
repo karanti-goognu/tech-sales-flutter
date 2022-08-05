@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -83,17 +81,19 @@ class _FormAddEventState extends State<FormAddEvent> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
 
     final eventDropDwn = DropdownButtonFormField<Object>(
       onChanged: (value) {
@@ -123,8 +123,8 @@ class _FormAddEventState extends State<FormAddEvent> {
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child:
-          // RaisedButton(
-          ElevatedButton(
+              // RaisedButton(
+              ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
               elevation: 0,
@@ -132,7 +132,11 @@ class _FormAddEventState extends State<FormAddEvent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),
+                Expanded(
+                    child: Text(
+                  _date,
+                  style: TextStyle(color: Colors.black),
+                )),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -144,7 +148,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           ),
         ));
-
 
     final time = Container(
         decoration: BoxDecoration(
@@ -162,7 +165,12 @@ class _FormAddEventState extends State<FormAddEvent> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                    child: Text((_time != null? '${_time!.hour}:${_time!.minute}': 'Select time'),style: TextStyle(color: Colors.black),)),
+                    child: Text(
+                  (_time != null
+                      ? '${_time!.hour}:${_time!.minute}'
+                      : 'Select time'),
+                  style: TextStyle(color: Colors.black),
+                )),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -258,7 +266,8 @@ class _FormAddEventState extends State<FormAddEvent> {
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Venue"),
-      validator: (dynamic value) => value == null ? 'Please select the venue' : null,
+      validator: (dynamic value) =>
+          value == null ? 'Please select the venue' : null,
     );
 
     final venueAddress = TextFormField(
@@ -616,8 +625,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: dealers!.length,
                 itemBuilder: (context, index) {
-                  return
-                      CheckboxListTile(
+                  return CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
                     title: Column(
@@ -698,8 +706,8 @@ class _FormAddEventState extends State<FormAddEvent> {
   String total = '0';
   calculateTotal(String dalmia, String nonDalmia) {
     total = '';
-    int dal = int.parse(dalmia.isEmpty?"0":dalmia);
-    int non = int.parse(nonDalmia.isEmpty?"0":nonDalmia);
+    int dal = int.parse(dalmia.isEmpty ? "0" : dalmia);
+    int non = int.parse(nonDalmia.isEmpty ? "0" : nonDalmia);
     int tot = dal + non;
     total = tot.toString();
     setState(() {
@@ -719,15 +727,16 @@ class _FormAddEventState extends State<FormAddEvent> {
       _addEventFormKey.currentState!.save();
 
       if (_date == 'Select Date') {
-        Get.rawSnackbar(message: "Select Date",
+        Get.rawSnackbar(
+            message: "Select Date",
             // colorText: Colors.black,
             // backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else if (timeString == null) {
-        Get.rawSnackbar(message:  "Select Time",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.rawSnackbar(
+            message: "Select Time", snackPosition: SnackPosition.BOTTOM);
       } else {
-        String? empId = await (getEmpId() );
+        String? empId = await (getEmpId());
 
         timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
 
@@ -746,10 +755,9 @@ class _FormAddEventState extends State<FormAddEvent> {
           });
         });
 
-        if (dealersList == [] ||
-            dealersList.length == 0) {
-          Get.rawSnackbar( message: "Select Counter",
-              snackPosition: SnackPosition.BOTTOM);
+        if (dealersList == [] || dealersList.length == 0) {
+          Get.rawSnackbar(
+              message: "Select Counter", snackPosition: SnackPosition.BOTTOM);
         } else {
           MwpeventFormRequest _mwpeventFormRequest =
               MwpeventFormRequest.fromJson({
@@ -775,17 +783,20 @@ class _FormAddEventState extends State<FormAddEvent> {
             'venueAddress': _venueAddController.text,
           });
 
-          SaveEventFormModel _save = SaveEventFormModel.fromJson(
-              {'eventDealersModelList': dealersList});
+          SaveEventFormModel _save = SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
           SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
               mwpeventFormRequest: _mwpeventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
-          internetChecking().then((result) => {
+          internetChecking().then((result) async {
                 if (result == true)
                   {
-                    saveEventController
-                        .getAccessKeyAndSaveRequest(_saveEventFormModel)
+                    Future.delayed(
+                        Duration.zero,
+                        () => Get.dialog(
+                            Center(child: CircularProgressIndicator()), barrierDismissible: false));
+                    await saveEventController.getAccessKeyAndSaveRequest(_saveEventFormModel);
+                    Get.back();
                   }
                 else
                   {
@@ -793,7 +804,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                         "Make sure that your wifi or mobile data is turned on.",
                         colorText: Colors.white,
                         backgroundColor: Colors.red,
-                        snackPosition: SnackPosition.BOTTOM),
+                        snackPosition: SnackPosition.BOTTOM);
                   }
               });
         }
@@ -801,4 +812,3 @@ class _FormAddEventState extends State<FormAddEvent> {
     }
   }
 }
-

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -8,9 +11,7 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 
 class ChangeLeadToSiteDialog extends StatefulWidget {
  final NextStageConstructionEntity? selectedNextStageConstructionEntity;
@@ -35,7 +36,6 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
 }
 
 class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
-  //final _formKey = GlobalKey<FormState>();
   AddLeadsController _addLeadsController = Get.find();
   var _nextDateofConstruction = TextEditingController();
   DateTime? nextStageConstructionPickedDate;
@@ -117,7 +117,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
       FormFieldStyle.buildInputDecoration(labelText: "Please Select Competition Status*"),
-     // validator: (value) => value == null ? 'Please Select Competition Status' : null,
 
     );
 
@@ -142,7 +141,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           _selectedNextStageConstructionEntity = value;
         });
       },
-      //    validator: (value) => value == null ? 'Please select Next Stage of Construction' : null,
       decoration: FormFieldStyle.buildInputDecoration(
           labelText: "Next Stage of Construction*"),
     );
@@ -233,7 +231,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Total No. of Floors*"),
-    //  validator: (value) => value == null ? 'Please select Total No. of Floors' : null,
 
     );
 
@@ -259,8 +256,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Next Floor Level*"),
-    //  validator: (value) => value == null ? 'Please select Next Floor Level' : null,
-
 
     );
 
@@ -311,14 +306,12 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               _siteCompetitionStatusEntity == null) {
             Get.dialog(
                 CustomDialogs.showMessage("Please fill the details first"));
-    //if(_formKey.currentState!.validate()) {
        } else
       if (_selectedLeadFloorEntity!.id! < _selectedLeadFloorLevelEntity!.id!) {
         Get.dialog(CustomDialogs.showMessage(
             "Next Floor Level can’t be greater than Total No. of Floors."));
       }
-     // apiCallForProcced();
-   // }
+
 
           else {
             if (nextStageConstructionPickedDate!.difference(DateTime.now())
@@ -394,8 +387,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-             // child: Form(
-              //  key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -416,7 +407,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                     btnProceed
                   ],
                 ),
-            //  ),
             ),
           ),
         ),
@@ -440,12 +430,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   .then((data) {
                 if (data != null) {
                   if (data.respCode == 'DM1002') {
-                    //Get.back();
                     _totalSitePotential.text = '${data.totalSitePotential}';
                     _totalPotential = data.totalSitePotential;
                     Get.dialog(
                       successDialog(),
-                      // barrierDismissible: false
                     );
                   } else {
                     Get.back();
@@ -553,7 +541,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                     fontSize: 17,
                                     letterSpacing: 1.25,
                                     fontStyle: FontStyle.normal,
-                                    // fontWeight: FontWeight.bold,
                                     color: ColorConstants.buttonNormalColor),
                               ),
                               onPressed: () {
@@ -562,7 +549,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                   Get.dialog(
                                       CustomDialogs.showMessage("Please enter Lapse Potential"));
                                 } else {
-                                  //updateStatusforNextStage(context, 3);
                                   widget.mListener!
                                       .updateStatusForNextStageAllow(
                                       context,
@@ -582,7 +568,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                   );
                                 }
                                 }
-                             // },
                             ),
                           ),
                         ],
@@ -620,7 +605,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            // Get.back();
             _lapPotentialController.text = "";
             Get.back();
           },

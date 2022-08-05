@@ -1,7 +1,10 @@
-
-
+import 'dart:math';
 import 'dart:async';
 import 'dart:io';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
@@ -13,11 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/leads_screen/data/repos
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
+
 class AddLeadsController extends GetxController {
 
   List<File>? imageList ;
@@ -93,7 +92,6 @@ class AddLeadsController extends GetxController {
       addLeadInitialModel = await repository.getAddLeadsData(accessKey, userSecurityKey);
     });
     return addLeadInitialModel;
-    //print("access" + this.accessKeyResponse.accessKey);
   }
 
   getInflDetailsData(String accessKey) async {
@@ -204,7 +202,6 @@ class AddLeadsController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       String? accessKey = await (repository.getAccessKeyNew());
-      //if(this.accessKeyResponse!=null)
       _totalPotentialModel = await repository.getTotalPotental(accessKey, userSecurityKey, updateRequestModel);
     });
     return _totalPotentialModel;

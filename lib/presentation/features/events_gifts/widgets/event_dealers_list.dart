@@ -1,11 +1,9 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:get/get.dart';
 
 class EventDealersListWidget extends StatefulWidget {
   @override
@@ -26,7 +24,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
@@ -127,7 +124,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
             ),
             Obx(() => (
                 _detailEventController.egDetailEventDaa.dealersModels ==
-                //_addEventController.dealerListResponse.dealerList ==
                 null)
                 ? Container()
                 : (_detailEventController.egDetailEventDaa.dealersModels.length ==
@@ -175,11 +171,7 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
                                                       Text(_detailEventController.dealerList[index].dealerName),
                                                       Text('( ${_detailEventController.dealerList[index].dealerId} )'),
                                                     ],),
-
-                            // new Text(
-                            //     '${_detailEventController.dealerList[index].dealerName}'),
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
+                            controlAffinity: ListTileControlAffinity.leading,
                             onChanged: (bool? val) {
                               itemChange(val, index);
                             })
@@ -190,42 +182,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
 
 
             ),
-        // Container(
-        //               decoration:
-        //               BoxDecoration(border: Border(top: BorderSide(width: 0.2))),
-        //               padding: EdgeInsets.only(top: 24, bottom: 9, left: 30, right: 30),
-        //               child: Row(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                 children: [
-        //                   GestureDetector(
-        //                     onTap: () {
-        //                       setState(() {
-        //                         // selectedDealer.clear();
-        //                         // selectedDealersModels.clear();
-        //                       });
-        //                     },
-        //                     child: Text(
-        //                       'Clear All',
-        //                       style: TextStyle(
-        //                         fontSize: 16,
-        //                         fontWeight: FontWeight.bold,
-        //                         color: HexColor('#F6A902'),
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   MaterialButton(
-        //                     color: HexColor('#1C99D4'),
-        //                     onPressed: () {
-        //                       Get.back();
-        //                     },
-        //                     child: Text(
-        //                       'OK',
-        //                       style: TextStyle(color: Colors.white),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
 
           ],
         ),
@@ -246,7 +202,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
         setState(() {
           _searchList.add(_detailEventController.dealerList[i]);
         });
-    //    print("FilterList-->"+_searchList.length.toString());
       }
     }
 
@@ -255,18 +210,13 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
   }
 
   void itemChange(bool? val, int index) {
-    /*else{
-      _addEventController.dealerListSelected.remove(index);
-    }*/
     setState(() {
       _detailEventController.dealerList[index].isSelected = val;
       if (val!) {
-      //  print('true');
         _detailEventController.dealerListSelected.add(new DealerModelSelected(
             _detailEventController.dealerList[index].dealerId,
             _detailEventController.dealerList[index].dealerName));
       } else {
-      //  print('false');
         _detailEventController.dealerListSelected.removeWhere((item) =>
         item.dealerId == _detailEventController.dealerList[index].dealerId);
       }
@@ -275,9 +225,6 @@ class _EventDealersListWidgetState extends State<EventDealersListWidget> {
   }
 
   void itemChange1(bool? val, String? dealerName,int index1) {
-    /*else{
-      _addEventController.dealerListSelected.remove(index);
-    }*/
     var index;
     for(int i=0;i<_detailEventController.dealerList.length;i++){
       if(_detailEventController.dealerList[i].dealerName==dealerName) {

@@ -1,16 +1,13 @@
-
-
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart' as path;
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:path/path.dart' as path;
+
 
 class UpdatedValues {
   static int? siteId;
@@ -767,7 +764,7 @@ class UpdatedValues {
   }
 
   static TextEditingController? getBathroomCount() {
-    return bathroomCount;
+    return bathroomCount!=null?bathroomCount:TextEditingController();
   }
 
   static void setBathroomCount(TextEditingController? bathroomCount) {
@@ -978,8 +975,7 @@ class UpdatedValues {
       if (UpdatedValues.siteBuiltArea == "" ||
           UpdatedValues.siteBuiltArea == null ||
           UpdatedValues.siteBuiltArea == "null") {
-        Get.dialog(CustomDialogs
-            .showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
+        Get.dialog(CustomDialogs.showMessage("Please fill mandatory fields in \"Site Data\" Tab"));
       } else {
         isNoOfBagsSuppliedEntered(responseBody, context);
         UpdatedValues.setFromDropDown(false);

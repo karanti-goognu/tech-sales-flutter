@@ -1,11 +1,10 @@
-
-
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:flutter_tech_sales/utils/global.dart';
+import 'package:chewie/chewie.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
+
 
 class Video extends StatefulWidget {
 

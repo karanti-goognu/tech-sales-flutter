@@ -1,7 +1,6 @@
 
 
 import 'dart:convert';
-
 import 'package:moengage_inbox/action.dart';
 import 'package:moengage_inbox/action_type.dart';
 import 'package:moengage_inbox/inbox_data.dart';

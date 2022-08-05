@@ -1,9 +1,10 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
+
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -20,9 +21,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart' show DateFormat;
+
 
 class AddCalenderEventPage extends StatefulWidget {
   @override
@@ -53,7 +52,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS, context),
         _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL, context),
           _calendarEventController.selectedDate = "${_currentDate2.year}-${_currentDate2.month}-${_currentDate2.day}",
-          // print('${_calendarEventController.selectedDate}');
           _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY, context),
         }else{
         Get.snackbar(
@@ -61,7 +59,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM),
-        // fetchSiteList()
       }
     });
     super.initState();
@@ -75,18 +72,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        context,
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+    );
 
     return WillPopScope(
         onWillPop: () async {
-          // You can do some work here.
-          // Returning true allows the pop to happen, returning false prevents it.
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
@@ -123,7 +115,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
               ],
             ),
             body: calender(),
-
         ));
   }
 
@@ -158,12 +149,10 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           });
                           _calendarEventController.selectedDate =
                           "${date.year}-${date.month}-${date.day}";
-                          // print('${_calendarEventController.selectedDate}');
                           _appController.getAccessKey(
                               RequestIds.GET_CALENDER_EVENTS_OF_DAY, context);
                           _calendarEventController.isDayEventLoading =
                           true;
-                          /*this.setState(() => _currentDate2 = date);*/
                         },
                         markedDateMoreCustomDecoration: new BoxDecoration(
                           borderRadius: new BorderRadius.circular(10.0),
@@ -191,8 +180,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               formatted;
                           _appController.getAccessKey(
                               RequestIds.GET_CALENDER_EVENTS, context);
-                          //_calendarEventController.isLoading = true;
-
                           this.setState(() {
                             _targetDateTime = date;
                           });

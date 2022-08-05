@@ -1,6 +1,6 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -11,8 +11,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class FilterWidget extends StatefulWidget {
   final SiteDistrictListModel? siteDistrictListModel;
@@ -32,13 +31,10 @@ class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     _leadsFilterController.getSecretKey(10, context);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
@@ -422,8 +418,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
 
-                ///filter issue
-                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -585,7 +579,6 @@ class _FilterWidgetState extends State<FilterWidget> {
           _leadsFilterController.offset = 0;
           _leadsFilterController.leadsListResponse.leadsEntity = null;
           _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
-          // });
         },
         items: (widget.siteDistrictListModel == null ||
             widget.siteDistrictListModel!.districtList == null)

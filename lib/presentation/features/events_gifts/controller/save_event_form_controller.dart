@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SaveEventController extends GetxController {
   @override
@@ -31,11 +32,6 @@ class SaveEventController extends GetxController {
     String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    // Future.delayed(
-    //     Duration.zero,
-    //         () => Get.dialog(Center(child: CircularProgressIndicator()),
-    //         barrierDismissible: false));
-
       _prefs.then((SharedPreferences prefs) async {
         String? accessKey = await (repository.getAccessKey() );
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
@@ -47,7 +43,6 @@ class SaveEventController extends GetxController {
                 barrierDismissible: false);
           }
            else {
-           // Get.back();
             Get.dialog(
                 CustomDialogs.messageDialogMWP(value.respMsg.toString()),
                 barrierDismissible: false);

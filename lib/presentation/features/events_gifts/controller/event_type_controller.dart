@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class EventTypeController extends GetxController {
   @override
@@ -31,7 +32,6 @@ class EventTypeController extends GetxController {
 
 
   Future<String?> getAccessKey() {
-    // print(repository.getAccessKey().then((value) => value.accessKey));
     return repository.getAccessKey().then((value) => value as String?);
   }
 
@@ -49,23 +49,4 @@ class EventTypeController extends GetxController {
     return addEventResponse;
   }
 
-
-
-
-
-
-//   Future<AddEventModel> getInfluencerType(String accessKey, String mobileNo) async {
-//     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-//     //It is working fine without the progress indicator
-// //    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-//     String userSecurityKey = "";
-//     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//
-//     await _prefs.then((SharedPreferences prefs) async {
-//       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-//       addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, mobileNo);
-//     });
-// //    Get.back();
-//     return addEventResponse;
-//   }
 }
