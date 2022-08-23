@@ -1,8 +1,10 @@
+
+
 class UpdateLeadResponseModel {
-  String respCode;
-  String respMsg;
-  String leadId;
-  String assignedTo;
+  String? respCode;
+  String? respMsg;
+  String? leadId;
+  String? assignedTo;
 
 
 

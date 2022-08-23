@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SaveServiceRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
 class SaveServiceRequestController extends GetxController {
@@ -18,22 +18,21 @@ class SaveServiceRequestController extends GetxController {
 
   final SrRepository repository;
 
-  SaveServiceRequestController({@required this.repository})
-      : assert(repository != null);
+  SaveServiceRequestController({required this.repository});
   final _saveRequestData = SrComplaintModel().obs;
   get saveRequestData => _saveRequestData.value;
   set saveRequestData(value) => _saveRequestData.value = value;
   String responseForDialog = '';
 
-  List<File> imageList;
+  List<File>? imageList;
 
-  Future<AccessKeyModel> getAccessKey() {
+  Future<AccessKeyModel?> getAccessKey() {
     return repository.getAccessKey();
   }
 
   getAccessKeyAndSaveRequest(
       List<File> imageList, SaveServiceRequest saveRequestModel) {
-    String userSecurityKey = "";
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     Future.delayed(
@@ -44,10 +43,10 @@ class SaveServiceRequestController extends GetxController {
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
         saveServiceRequest(
-                imageList, data.accessKey, userSecurityKey, saveRequestModel)
+                imageList, data!.accessKey, userSecurityKey, saveRequestModel)
             .then((value) {
           Get.back();
-          if (value['resp-code'] == 'SRC2035') {
+          if (value!['resp-code'] == 'SRC2035') {
             Get.defaultDialog(
                 title: "Message",
                 middleText: value['resp-msg'].toString(),
@@ -61,7 +60,7 @@ class SaveServiceRequestController extends GetxController {
                 barrierDismissible: false);
           } else {
             Get.dialog(
-                CustomDialogs().messageDialogSRC(value['resp-msg'].toString()),
+                CustomDialogs.messageDialogSRC(value['resp-msg'].toString()),
                 barrierDismissible: false);
           }
         });
@@ -69,8 +68,8 @@ class SaveServiceRequestController extends GetxController {
     });
   }
 
-  Future<Map> saveServiceRequest(List<File> imageList, String accessKey,
-      String userSecurityKey, SaveServiceRequest saveRequestModel) {
+  Future<Map?> saveServiceRequest(List<File> imageList, String? accessKey,
+      String? userSecurityKey, SaveServiceRequest saveRequestModel) {
     return repository
         .saveServiceRequest(
             imageList, accessKey, userSecurityKey, saveRequestModel)

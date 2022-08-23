@@ -1,10 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 
 class BackgroundContainerImage extends StatelessWidget {
   const BackgroundContainerImage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

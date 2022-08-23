@@ -1,10 +1,12 @@
+
+
 import 'GetGiftStockModel.dart';
 
 class LogsModel {
-  List<GiftStockList> giftStockModelList;
-  List<GiftTypeModelList> giftTypeModelList;
-  String respCode;
-  String respMsg;
+  List<GiftStockList>? giftStockModelList;
+  List<GiftTypeModelList>? giftTypeModelList;
+  String? respCode;
+  String? respMsg;
 
   LogsModel(
       {this.giftStockModelList,
@@ -13,16 +15,23 @@ class LogsModel {
         this.respMsg});
 
   LogsModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey('giftStockModelList'))
+      giftStockModelList = new List<GiftStockList>.empty(growable: true);
+
     if (json['giftStockModelList'] != null) {
       giftStockModelList = new List<GiftStockList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
-        giftStockModelList.add(new GiftStockList.fromJson(v));
+        giftStockModelList!.add(new GiftStockList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('giftTypeModelList'))
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
+
     if (json['giftTypeModelList'] != null) {
       giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {
-        giftTypeModelList.add(new GiftTypeModelList.fromJson(v));
+        giftTypeModelList!.add(new GiftTypeModelList.fromJson(v));
       });
     }
     respCode = json['respCode'];
@@ -33,11 +42,11 @@ class LogsModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.giftStockModelList != null) {
       data['giftStockModelList'] =
-          this.giftStockModelList.map((v) => v.toJson()).toList();
+          this.giftStockModelList!.map((v) => v.toJson()).toList();
     }
     if (this.giftTypeModelList != null) {
       data['giftTypeModelList'] =
-          this.giftTypeModelList.map((v) => v.toJson()).toList();
+          this.giftTypeModelList!.map((v) => v.toJson()).toList();
     }
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
@@ -46,19 +55,19 @@ class LogsModel {
 }
 
 class GiftStockList {
-  String eventDate;
-  int eventId;
-  String giftAddDate;
-  int giftInHandQty;
-  int giftOpeningStockQty;
-  int giftQty;
-  int giftStockId;
-  int giftTypeId;
-  String giftTypeText;
-  int giftUtilisedQty;
-  String referenceId;
-  int stockAddedQty;
-  int tsoId;
+  String? eventDate;
+  int? eventId;
+  String? giftAddDate;
+  int? giftInHandQty;
+  int? giftOpeningStockQty;
+  int? giftQty;
+  int? giftStockId;
+  int? giftTypeId;
+  String? giftTypeText;
+  int? giftUtilisedQty;
+  String? referenceId;
+  int? stockAddedQty;
+  int? tsoId;
 
   GiftStockList(
       {this.eventDate,

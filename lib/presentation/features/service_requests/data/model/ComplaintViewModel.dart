@@ -1,41 +1,43 @@
-class ComplaintViewModel {
-  String resCode;
-  String resMsg;
-  int id;
-  String allocatedToName;
-  int dayOpen;
-  String sitePotentialMt;
-  String escalationLevel;
-  String srComplaintDate;
-  String creatorContactNumber;
-  String sla;
-  int tsoId;
-  String referenceId;
-  int requestDepartment;
-  String deaprtmentText;
-  int requestId;
-  String requestText;
-  String creatorType;
-  String creatorId;
-  String creatorName;
-  int siteId;
-  String description;
-  String severity;
-  String state;
-  String district;
-  String taluk;
-  String pincode;
-  int resoulutionStatus;
-  String createdBy;
-  String createdOn;
-  String updatedBy;
-  String updatedOn;
-  List<SrcSubtypeMappingModal> srcSubtypeMappingModal;
-  List<SrcResolutionEntity> srcResolutionEntity;
-  List<SrComplaintActionList> srComplaintActionList;
 
-  String coverBlockProvidedNo;
-  String formwarkRemovalDate;
+
+class ComplaintViewModel {
+  String? resCode;
+  String? resMsg;
+  int? id;
+  String? allocatedToName;
+  int? dayOpen;
+  String? sitePotentialMt;
+  String? escalationLevel;
+  String? srComplaintDate;
+  String? creatorContactNumber;
+  String? sla;
+  int? tsoId;
+  String? referenceId;
+  int? requestDepartment;
+  String? deaprtmentText;
+  int? requestId;
+  String? requestText;
+  String? creatorType;
+  String? creatorId;
+  String? creatorName;
+  int? siteId;
+  String? description;
+  String? severity;
+  String? state;
+  String? district;
+  String? taluk;
+  String? pincode;
+  int? resoulutionStatus;
+  String? createdBy;
+  String? createdOn;
+  String? updatedBy;
+  String? updatedOn;
+  List<SrcSubtypeMappingModal>? srcSubtypeMappingModal;
+  List<SrcResolutionEntity>? srcResolutionEntity;
+  List<SrComplaintActionList>? srComplaintActionList;
+
+  String? coverBlockProvidedNo;
+  String? formwarkRemovalDate;
 
 
 
@@ -111,22 +113,34 @@ class ComplaintViewModel {
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
+
+    if (!json.containsKey('srcSubtypeMappingModal'))
+      srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>.empty(growable: true);
+
     if (json['srcSubtypeMappingModal'] != null) {
       srcSubtypeMappingModal = new List<SrcSubtypeMappingModal>.empty(growable: true);
       json['srcSubtypeMappingModal'].forEach((v) {
-        srcSubtypeMappingModal.add(new SrcSubtypeMappingModal.fromJson(v));
+        srcSubtypeMappingModal!.add(new SrcSubtypeMappingModal.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srcResolutionEntity'))
+      srcResolutionEntity = new List<SrcResolutionEntity>.empty(growable: true);
+
     if (json['srcResolutionEntity'] != null) {
       srcResolutionEntity = new List<SrcResolutionEntity>.empty(growable: true);
       json['srcResolutionEntity'].forEach((v) {
-        srcResolutionEntity.add(new SrcResolutionEntity.fromJson(v));
+        srcResolutionEntity!.add(new SrcResolutionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplaintActionList'))
+      srComplaintActionList = new List<SrComplaintActionList>.empty(growable: true);
+
     if (json['srComplaintActionList'] != null) {
       srComplaintActionList = new List<SrComplaintActionList>.empty(growable: true);
       json['srComplaintActionList'].forEach((v) {
-        srComplaintActionList.add(new SrComplaintActionList.fromJson(v));
+        srComplaintActionList!.add(new SrComplaintActionList.fromJson(v));
       });
     }
 
@@ -167,15 +181,15 @@ class ComplaintViewModel {
     data['updatedOn'] = this.updatedOn;
     if (this.srcSubtypeMappingModal != null) {
       data['srcSubtypeMappingModal'] =
-          this.srcSubtypeMappingModal.map((v) => v.toJson()).toList();
+          this.srcSubtypeMappingModal!.map((v) => v.toJson()).toList();
     }
     if (this.srcResolutionEntity != null) {
       data['srcResolutionEntity'] =
-          this.srcResolutionEntity.map((v) => v.toJson()).toList();
+          this.srcResolutionEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplaintActionList != null) {
       data['srComplaintActionList'] =
-          this.srComplaintActionList.map((v) => v.toJson()).toList();
+          this.srComplaintActionList!.map((v) => v.toJson()).toList();
     }
 
     data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
@@ -186,8 +200,8 @@ class ComplaintViewModel {
 }
 
 class SrcSubtypeMappingModal {
-  int id;
-  String requestTypeText;
+  int? id;
+  String? requestTypeText;
 
   SrcSubtypeMappingModal({this.id, this.requestTypeText});
 
@@ -205,8 +219,8 @@ class SrcSubtypeMappingModal {
 }
 
 class SrcResolutionEntity {
-  int id;
-  String resolutionText;
+  int? id;
+  String? resolutionText;
 
   SrcResolutionEntity({this.id, this.resolutionText});
 
@@ -224,34 +238,34 @@ class SrcResolutionEntity {
 }
 
 class SrComplaintActionList {
-  int id;
-  int srComplaintId;
-  String requestNature;
-  double locationLat;
-  double locationLong;
-  String productComplaint;
-  String techvanReqd;
-  String productType;
-  int purchaseDate;
-  String sourcePlant;
-  String productBatch;
-  int bagsCount;
-  int resolutionStatusId;
-  String comment;
-  int nextVisitDate;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? srComplaintId;
+  String? requestNature;
+  double? locationLat;
+  double? locationLong;
+  String? productComplaint;
+  String? techvanReqd;
+  String? productType;
+  int? purchaseDate;
+  String? sourcePlant;
+  String? productBatch;
+  int? bagsCount;
+  int? resolutionStatusId;
+  String? comment;
+  int? nextVisitDate;
+  String? createdBy;
+  int? createdOn;
 
-  String typeOfComplaint;
-  String productVariety;
-  int balanceQtyinBags;
-  String billNumber;
-  String weekNo;
-  String bestBeforeDate;
-  String sampleCollected;
-  String sampleTOBeSentTo;
-  String demoConducted;
-  String detailsOfDemo;
+  String? typeOfComplaint;
+  String? productVariety;
+  int? balanceQtyinBags;
+  String? billNumber;
+  String? weekNo;
+  String? bestBeforeDate;
+  String? sampleCollected;
+  String? sampleTOBeSentTo;
+  String? demoConducted;
+  String? detailsOfDemo;
 
   SrComplaintActionList(
       {this.id,

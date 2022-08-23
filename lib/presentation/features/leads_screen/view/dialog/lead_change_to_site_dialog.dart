@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -8,20 +11,18 @@ import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 
 class ChangeLeadToSiteDialog extends StatefulWidget {
-  NextStageConstructionEntity selectedNextStageConstructionEntity;
-  final List<DealerForDb> dealerEntityForDb;
-  final List<CounterListModel> counterListModel;
-  final List<SiteFloorsEntity> siteFloorsEntity;
-  final List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity;
-  final ChangeLeadToSiteDialogListener mListener;
+ final NextStageConstructionEntity? selectedNextStageConstructionEntity;
+  final List<DealerForDb>? dealerEntityForDb;
+  final List<CounterListModel>? counterListModel;
+  final List<SiteFloorsEntity>? siteFloorsEntity;
+  final List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity;
+  final ChangeLeadToSiteDialogListener? mListener;
 
   ChangeLeadToSiteDialog(
-      {Key key,
+      {Key? key,
       this.selectedNextStageConstructionEntity,
       this.dealerEntityForDb,
       this.counterListModel,
@@ -37,30 +38,23 @@ class ChangeLeadToSiteDialog extends StatefulWidget {
 class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
   AddLeadsController _addLeadsController = Get.find();
   var _nextDateofConstruction = TextEditingController();
-  DateTime nextStageConstructionPickedDate;
+  DateTime? nextStageConstructionPickedDate;
   CounterListModel selectedSubDealer = CounterListModel();
   List<CounterListModel> subDealerList = new List.empty(growable: true);
-  SiteCompetitionStatusEntity _siteCompetitionStatusEntity;
-  String leadDataDealer;
-  String leadDataSubDealer;
-  NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  SiteFloorsEntity _selectedLeadFloorEntity;
-  SiteFloorsEntity _selectedLeadFloorLevelEntity;
+  SiteCompetitionStatusEntity? _siteCompetitionStatusEntity;
+  String? leadDataDealer;
+  String? leadDataSubDealer;
+  NextStageConstructionEntity? _selectedNextStageConstructionEntity;
+  SiteFloorsEntity? _selectedLeadFloorEntity;
+  SiteFloorsEntity? _selectedLeadFloorLevelEntity;
   var _noOfBagsSupplied = TextEditingController();
   TextEditingController _totalSitePotential = TextEditingController();
   TextEditingController _lapPotentialController = TextEditingController();
   TextEditingController _balancePotentialController = TextEditingController();
+  String? _selectedRadioValue = 'I';
+  int? _totalPotential;
+  int? _siteCompitationId;
 
-  String _selectedRadioValue = 'I';
-  int _totalPotential;
-  int _siteCompitationId;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("delearIdListLength     ${widget.dealerEntityForDb.length}");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +66,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               Radio(
                 value: 'I',
                 groupValue: _selectedRadioValue,
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   setState(() {
                     _selectedRadioValue = value;
                   });
@@ -88,7 +82,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               Radio(
                 value: 'C',
                 groupValue: _selectedRadioValue,
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   setState(() {
                     _selectedRadioValue = value;
                   });
@@ -103,10 +97,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
     final competitionStatus = DropdownButtonFormField<SiteCompetitionStatusEntity>(
       value: _siteCompetitionStatusEntity,
-      items: widget.siteCompetitionStatusEntity
+      items: widget.siteCompetitionStatusEntity!
           .map((label) => DropdownMenuItem(
         child: Text(
-          label.competitionStatus,
+          label.competitionStatus!,
           style: TextStyle(
               fontSize: 15,
               color: ColorConstants.inputBoxHintColor,
@@ -115,24 +109,24 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         value: label,
       ))
           .toList(),
-      //hint: Text('Select competition status'),
       onChanged: (value) {
         setState(() {
           _siteCompetitionStatusEntity = value;
-          _siteCompitationId = _siteCompetitionStatusEntity.id;
+          _siteCompitationId = _siteCompetitionStatusEntity!.id;
         });
       },
       decoration:
       FormFieldStyle.buildInputDecoration(labelText: "Please Select Competition Status*"),
+
     );
 
     final nextStageOfConstuction =
         DropdownButtonFormField<NextStageConstructionEntity>(
       value: _selectedNextStageConstructionEntity,
-      items: nextStageConstructionEntity
+      items: nextStageConstructionEntity!
           .map((label) => DropdownMenuItem(
                 child: Text(
-                  label.nexStageConsText,
+                  label.nexStageConsText!,
                   style: TextStyle(
                       fontSize: 15,
                       color: ColorConstants.inputBoxHintColor,
@@ -142,7 +136,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
           _selectedNextStageConstructionEntity = value;
@@ -154,6 +147,12 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
     final nxtDtOfConstuction = TextFormField(
       controller: _nextDateofConstruction,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please select Next date of construction';
+        }
+        return null;
+      },
       readOnly: true,
       onChanged: (data) {},
       style: TextStyle(
@@ -165,7 +164,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
               color: ColorConstants.backgroundColorBlue,
-              //color: HexColor("#0000001F"),
               width: 1.0),
         ),
         disabledBorder: OutlineInputBorder(
@@ -185,7 +183,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             color: ColorConstants.clearAllTextColor,
           ),
           onPressed: () async {
-            final DateTime picked = await showDatePicker(
+            final DateTime? picked = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime.now(),
@@ -193,7 +191,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
             setState(() {
               final DateFormat formatter = DateFormat("yyyy-MM-dd");
-              final String formattedDate = formatter.format(picked);
+              final String formattedDate = formatter.format(picked!);
               nextStageConstructionPickedDate = picked;
               _nextDateofConstruction.text = formattedDate;
             });
@@ -213,10 +211,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
     final totalNoOfFloors = DropdownButtonFormField<SiteFloorsEntity>(
       value: _selectedLeadFloorEntity,
-      items: widget.siteFloorsEntity
+      items: widget.siteFloorsEntity!
           .map((label) => DropdownMenuItem(
                 child: Text(
-                  label.siteFloorTxt,
+                  label.siteFloorTxt!,
                   style: TextStyle(
                       fontSize: 15,
                       color: ColorConstants.inputBoxHintColor,
@@ -226,7 +224,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
           _selectedLeadFloorEntity = value;
@@ -234,14 +231,15 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Total No. of Floors*"),
+
     );
 
     final nxtFloorLevel = DropdownButtonFormField<SiteFloorsEntity>(
       value: _selectedLeadFloorLevelEntity,
-      items: widget.siteFloorsEntity
+      items: widget.siteFloorsEntity!
           .map((label) => DropdownMenuItem(
                 child: Text(
-                  label.siteFloorTxt,
+                  label.siteFloorTxt!,
                   style: TextStyle(
                       fontSize: 15,
                       color: ColorConstants.inputBoxHintColor,
@@ -251,31 +249,20 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               ))
           .toList(),
 
-      // hint: Text('Rating'),
       onChanged: (value) {
         setState(() {
-          // if(_selectedLeadFloorEntity.id < value.id){
-          //   Get.dialog(CustomDialogs().errorDialog(
-          //       "Next Floor Level can’t be greater than Total No. of Floors."));
-          // }else {
             _selectedLeadFloorLevelEntity = value;
-         // }
         });
       },
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Next Floor Level*"),
-    //   validator: (value){
-    //     if(_selectedLeadFloorEntity.id < value.id){
-    //       return "Next Floor Level can’t be greater than Total No. of Floors.";
-    //     }
-    //       return null;
-    // },
+
     );
 
     final noOfBagsSupplied = TextFormField(
         controller: _noOfBagsSupplied,
         validator: (value) {
-          if (value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter no of bags supplied';
           }
           return null;
@@ -285,7 +272,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             color: ColorConstants.inputBoxHintColor,
             fontFamily: "Muli"),
         keyboardType: TextInputType.numberWithOptions(signed: true),
-        //TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
           TextInputFormatter.withFunction((oldValue, newValue) {
@@ -309,11 +295,9 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               fontSize: 17,
               letterSpacing: 1.25,
               fontStyle: FontStyle.normal,
-              // fontWeight: FontWeight.bold,
               color: ColorConstants.buttonNormalColor),
         ),
         onPressed: () {
-          //print("widget.selectedNextStageConstructionEntity.nextStageConsId    ${_selectedNextStageConstructionEntity}");
           if (_selectedNextStageConstructionEntity == null ||
               nextStageConstructionPickedDate == null ||
               _selectedLeadFloorEntity == null ||
@@ -321,16 +305,16 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
               _selectedLeadFloorLevelEntity == null ||
               _siteCompetitionStatusEntity == null) {
             Get.dialog(
-                CustomDialogs().errorDialog("Please fill the details first"));
-          } else
-            if(_selectedLeadFloorEntity.id < _selectedLeadFloorLevelEntity.id){
-              Get.dialog(CustomDialogs().errorDialog(
-                  "Next Floor Level can’t be greater than Total No. of Floors."));
+                CustomDialogs.showMessage("Please fill the details first"));
+       } else
+      if (_selectedLeadFloorEntity!.id! < _selectedLeadFloorLevelEntity!.id!) {
+        Get.dialog(CustomDialogs.showMessage(
+            "Next Floor Level can’t be greater than Total No. of Floors."));
+      }
 
-          }
+
           else {
-            if (nextStageConstructionPickedDate
-                    .difference(DateTime.now())
+            if (nextStageConstructionPickedDate!.difference(DateTime.now())
                     .inDays >
                 31) {
               showDialog(
@@ -366,19 +350,17 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                 color: ColorConstants.buttonNormalColor),
                           ),
                           onPressed: () {
-                            //  updateStatusforNextStage(context,5);
-
-                            widget.mListener.updateStatusForNextStageAllow(
+                            widget.mListener!.updateStatusForNextStageAllow(
                                 context,
                                 5,
                                 _selectedNextStageConstructionEntity,
                                 _nextDateofConstruction.text,
                                 leadDataDealer,
                                 leadDataSubDealer,
-                                _selectedLeadFloorEntity.id,
+                                _selectedLeadFloorEntity!.id,
                                 _noOfBagsSupplied.text,
                                 _selectedRadioValue,
-                                _selectedLeadFloorLevelEntity.id,
+                                _selectedLeadFloorLevelEntity!.id,
                                 int.parse(_lapPotentialController.text),
                                 _totalPotential,
                                 _siteCompitationId
@@ -388,11 +370,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                       ],
                     );
                   });
-            } else {
+            }
+            else {
               apiCallForProcced();
             }
-
-            //});
           }
         },
       ),
@@ -406,26 +387,26 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ihbRadio,
-                  competitionStatus,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  totalNoOfFloors,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  noOfBagsSupplied,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nextStageOfConstuction,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nxtFloorLevel,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  nxtDtOfConstuction,
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  btnProceed
-                ],
-              ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ihbRadio,
+                    competitionStatus,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    totalNoOfFloors,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    noOfBagsSupplied,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nextStageOfConstuction,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nxtFloorLevel,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    nxtDtOfConstuction,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    btnProceed
+                  ],
+                ),
             ),
           ),
         ),
@@ -435,9 +416,11 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
   apiCallForProcced() {
     var updateRequestModel = {
-      'noOfFloors': _selectedLeadFloorEntity.id,
+      'noOfFloors': _selectedLeadFloorEntity!.id,
       'totalFloorSqftArea': _noOfBagsSupplied.text
     };
+
+    print("updateRequestModel: $updateRequestModel");
 
     internetChecking().then((result) => {
           if (result == true)
@@ -447,17 +430,15 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                   .then((data) {
                 if (data != null) {
                   if (data.respCode == 'DM1002') {
-                    //Get.back();
                     _totalSitePotential.text = '${data.totalSitePotential}';
                     _totalPotential = data.totalSitePotential;
                     Get.dialog(
                       successDialog(),
-                      // barrierDismissible: false
                     );
                   } else {
                     Get.back();
                     Get.dialog(
-                        CustomDialogs()
+                        CustomDialogs
                             .messageDialogMWP(data.respMsg.toString()),
                         barrierDismissible: false);
                   }
@@ -477,8 +458,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
 
   Widget successDialog() {
     return
-        //AlertDialog(
-        //   content:
         Material(
             color: Colors.transparent,
             child: Center(
@@ -516,11 +495,11 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                               print("_totalSitePotential${_totalSitePotential.text}");
                               if (value.length > 0) {
                                   String balance = '';
-                                  int bal = int.tryParse(_totalSitePotential.text) - int.tryParse(value);
+                                  int bal = int.tryParse(_totalSitePotential.text)! - int.tryParse(value)!;
                                   balance = bal.toString();
                                   if(bal < 0){
                                     _lapPotentialController.text = "";
-                                    Get.dialog(errorDialogLaps(
+                                    Get.dialog(showMessageLaps(
                                         "Lapse Potential can’t be greater than Total Site Potential"));
                                   }else {
                                     _balancePotentialController.text = balance;
@@ -562,17 +541,15 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                     fontSize: 17,
                                     letterSpacing: 1.25,
                                     fontStyle: FontStyle.normal,
-                                    // fontWeight: FontWeight.bold,
                                     color: ColorConstants.buttonNormalColor),
                               ),
                               onPressed: () {
 
-                                if (_lapPotentialController.text == null || _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
+                                if ( _lapPotentialController.text.length == 0 || _lapPotentialController.text.isEmpty) {
                                   Get.dialog(
-                                      CustomDialogs().errorDialog("Please enter Lapse Potential"));
+                                      CustomDialogs.showMessage("Please enter Lapse Potential"));
                                 } else {
-                                  //updateStatusforNextStage(context, 3);
-                                  widget.mListener
+                                  widget.mListener!
                                       .updateStatusForNextStageAllow(
                                       context,
                                       3,
@@ -580,10 +557,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                       _nextDateofConstruction.text,
                                       leadDataDealer,
                                       leadDataSubDealer,
-                                      _selectedLeadFloorEntity.id,
+                                      _selectedLeadFloorEntity!.id,
                                       _noOfBagsSupplied.text,
                                       _selectedRadioValue,
-                                      _selectedLeadFloorLevelEntity.id,
+                                      _selectedLeadFloorLevelEntity!.id,
                                       int.tryParse(
                                           _lapPotentialController.text),
                                       _totalPotential,
@@ -591,7 +568,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                                   );
                                 }
                                 }
-                             // },
                             ),
                           ),
                         ],
@@ -601,7 +577,7 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
             ));
   }
 
-  Widget errorDialogLaps(String message) {
+  Widget showMessageLaps(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -629,7 +605,6 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            // Get.back();
             _lapPotentialController.text = "";
             Get.back();
           },
@@ -646,15 +621,15 @@ abstract class ChangeLeadToSiteDialogListener {
   updateStatusForNextStageAllow(
       BuildContext context,
       int statusId,
-      NextStageConstructionEntity selectedNextStageConstructionEntity,
+      NextStageConstructionEntity? selectedNextStageConstructionEntity,
       String nextStageConstructionPickedDate,
-      String dealerId,
-      String subDealerId,
-      int siteFloorId,
+      String? dealerId,
+      String? subDealerId,
+      int? siteFloorId,
       String numOfBagsSupplied,
-      String isIhbCommercial,
-      int siteFloorLevelId,
-      int lapsePotential,
-      int totalSitePotential,
-      int siteCompitationId);
+      String? isIhbCommercial,
+      int? siteFloorLevelId,
+      int? lapsePotential,
+      int? totalSitePotential,
+      int? siteCompitationId);
 }

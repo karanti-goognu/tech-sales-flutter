@@ -2,38 +2,36 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 
-class ViewSiteDataResponse {
-  String respCode;
-  String respMsg;
-  SitesModal sitesModal;
-  MwpVisitModel mwpVisitModel;
-  List<SiteFloorsEntity> siteFloorsEntity;
-  List<SitephotosEntity> sitephotosEntity;
 
-  List<SiteStageHistory> siteStageHistorys;
+class ViewSiteDataResponse {
+  String? respCode;
+  String? respMsg;
+  SitesModal? sitesModal;
+  MwpVisitModel? mwpVisitModel;
+  List<SiteFloorsEntity>? siteFloorsEntity;
+  List<SitephotosEntity>? sitephotosEntity;
+  List<ConstructionStageEntity>? nextconstructionStageEntity;
+  List<ConstructionStageEntity>? constructionStageEntity;
+
+  List<SiteStageHistory>? siteStageHistorys;
   // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
 
-  List<SiteStageEntity> siteStageEntity;
-  List<ConstructionStageEntity> constructionStageEntity;
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity;
-  List<SiteBrandEntity> siteBrandEntity;
-  List<InfluencerEntity> influencerEntity;
-  List<SiteNextStageEntity> siteNextStageEntity;
-  List<SiteCommentsEntity> siteCommentsEntity;
-  List<InfluencerTypeEntity> influencerTypeEntity;
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<SiteOpportunityStatusEntity> siteOpportunityStatusEntity;
-  List<SiteInfluencerEntity> siteInfluencerEntity;
-  List<CounterListModel> counterListModel;
-  List<SiteStagePotentialEntity> siteStagePotentialEntity;
-  int supplyDate;
-  int constructionDays;
-
-
-
-
+  List<SiteStageEntity>? siteStageEntity;
+  List<SiteProbabilityWinningEntity>? siteProbabilityWinningEntity;
+  List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity;
+  List<SiteBrandEntity>? siteBrandEntity;
+  List<InfluencerEntity>? influencerEntity;
+  List<SiteNextStageEntity>? siteNextStageEntity;
+  List<SiteCommentsEntity>? siteCommentsEntity;
+  List<InfluencerTypeEntity>? influencerTypeEntity;
+  List<InfluencerCategoryEntity>? influencerCategoryEntity;
+  List<SiteOpportunityStatusEntity>? siteOpportunityStatusEntity;
+  List<SiteInfluencerEntity>? siteInfluencerEntity;
+  List<CounterListModel>? counterListModel;
+  List<SiteStagePotentialEntity>? siteStagePotentialEntity;
+  int? supplyDate;
+  int? constructionDays;
 
 
   ViewSiteDataResponse(
@@ -43,8 +41,8 @@ class ViewSiteDataResponse {
         this.mwpVisitModel,
       this.siteFloorsEntity,
       this.sitephotosEntity,
-
       this.siteStageHistorys,
+        this.nextconstructionStageEntity,
 
      // this.siteVisitHistoryEntity,
       this.siteStageEntity,
@@ -69,22 +67,38 @@ class ViewSiteDataResponse {
     respMsg = json['respMsg'];
     supplyDate = json['supplyDate'];
     constructionDays = json['constructionDays'];
+
+    if (!json.containsKey('sitesModal'))
+      sitesModal = null;
+
     sitesModal = json['sitesModal'] != null
         ? new SitesModal.fromJson(json['sitesModal'])
         : null;
+
+    if (!json.containsKey('mwpVisitModel'))
+      mwpVisitModel = null;
+
     mwpVisitModel = json['mwpVisitModel'] != null
         ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;
+
+    if (!json.containsKey('siteFloorsEntity'))
+      siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
+
     if (json['siteFloorsEntity'] != null) {
       siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
       json['siteFloorsEntity'].forEach((v) {
-        siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
+        siteFloorsEntity!.add(new SiteFloorsEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('sitephotosEntity'))
+      sitephotosEntity = new List<SitephotosEntity>.empty(growable: true);
+
     if (json['sitephotosEntity'] != null) {
       sitephotosEntity = new List<SitephotosEntity>.empty(growable: true);
       json['sitephotosEntity'].forEach((v) {
-        sitephotosEntity.add(new SitephotosEntity.fromJson(v));
+        sitephotosEntity!.add(new SitephotosEntity.fromJson(v));
       });
     }
     // if (json['siteVisitHistoryEntity'] != null) {
@@ -94,98 +108,162 @@ class ViewSiteDataResponse {
     //   });
     // }
 
+    if (!json.containsKey('siteStageHistorys'))
+      siteStageHistorys = new List<SiteStageHistory>.empty(growable: true);
 
     if (json['siteStageHistorys'] != null) {
       siteStageHistorys = new List<SiteStageHistory>.empty(growable: true);
       json['siteStageHistorys'].forEach((v) {
-        siteStageHistorys.add(new SiteStageHistory.fromJson(v));
+        siteStageHistorys!.add(new SiteStageHistory.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStageEntity'))
+      siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
 
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
       json['siteStageEntity'].forEach((v) {
-        siteStageEntity.add(new SiteStageEntity.fromJson(v));
+        siteStageEntity!.add(new SiteStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('constructionStageEntity'))
+      constructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
+
     if (json['constructionStageEntity'] != null) {
       constructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
       json['constructionStageEntity'].forEach((v) {
-        constructionStageEntity.add(new ConstructionStageEntity.fromJson(v));
+        constructionStageEntity!.add(new ConstructionStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('nextconstructionStageEntity')) nextconstructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
+    if (json['nextconstructionStageEntity'] != null) {
+      nextconstructionStageEntity = new List<ConstructionStageEntity>.empty(growable: true);
+      json['nextconstructionStageEntity'].forEach((v) {
+        nextconstructionStageEntity
+            ?.add(new ConstructionStageEntity.fromJson(v));
+      });
+    }
+
+    if (!json.containsKey('siteProbabilityWinningEntity'))
+      siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
+
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
       json['siteProbabilityWinningEntity'].forEach((v) {
-        siteProbabilityWinningEntity.add(new SiteProbabilityWinningEntity.fromJson(v));
+        siteProbabilityWinningEntity!.add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteCompetitionStatusEntity'))
+      siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
+
     if (json['siteCompetitionStatusEntity'] != null) {
       siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
       json['siteCompetitionStatusEntity'].forEach((v) {
-        siteCompetitionStatusEntity.add(new SiteCompetitionStatusEntity.fromJson(v));
+        siteCompetitionStatusEntity!.add(new SiteCompetitionStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteBrandEntity'))
+      siteBrandEntity = new List<SiteBrandEntity>.empty(growable: true);
+
     if (json['siteBrandEntity'] != null) {
       siteBrandEntity = new List<SiteBrandEntity>.empty(growable: true);
       json['siteBrandEntity'].forEach((v) {
-        siteBrandEntity.add(new SiteBrandEntity.fromJson(v));
+        siteBrandEntity!.add(new SiteBrandEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerEntity'))
+      influencerEntity = new List<InfluencerEntity>.empty(growable: true);
+
     if (json['influencerEntity'] != null) {
       influencerEntity = new List<InfluencerEntity>.empty(growable: true);
       json['influencerEntity'].forEach((v) {
-        influencerEntity.add(new InfluencerEntity.fromJson(v));
+        influencerEntity!.add(new InfluencerEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteNextStageEntity'))
+      siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
+
     if (json['siteNextStageEntity'] != null) {
       siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
       json['siteNextStageEntity'].forEach((v) {
-        siteNextStageEntity.add(new SiteNextStageEntity.fromJson(v));
+        siteNextStageEntity!.add(new SiteNextStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteCommentsEntity'))
+      siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
+
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
       json['siteCommentsEntity'].forEach((v) {
-        siteCommentsEntity.add(new SiteCommentsEntity.fromJson(v));
+        siteCommentsEntity!.add(new SiteCommentsEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerTypeEntity'))
+      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
+
     if (json['influencerTypeEntity'] != null) {
       influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
       json['influencerTypeEntity'].forEach((v) {
-        influencerTypeEntity.add(new InfluencerTypeEntity.fromJson(v));
+        influencerTypeEntity!.add(new InfluencerTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryEntity'))
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+
     if (json['influencerCategoryEntity'] != null) {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
-        influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
+        influencerCategoryEntity!.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteOpportunityStatusEntity'))
+      siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>.empty(growable: true);
+
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusEntity = new List<SiteOpportunityStatusEntity>.empty(growable: true);
       json['siteOpportunityStatusEntity'].forEach((v) {
-        siteOpportunityStatusEntity.add(new SiteOpportunityStatusEntity.fromJson(v));
+        siteOpportunityStatusEntity!.add(new SiteOpportunityStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteInfluencerEntity'))
+      siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
+
     if (json['siteInfluencerEntity'] != null) {
       siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
       json['siteInfluencerEntity'].forEach((v) {
-        siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
+        siteInfluencerEntity!.add(new SiteInfluencerEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('counterListModel'))
+      counterListModel = new List<CounterListModel>.empty(growable: true);
 
     if (json['counterListModel'] != null) {
       counterListModel = new List<CounterListModel>.empty(growable: true);
       json['counterListModel'].forEach((v) {
-        counterListModel.add(new CounterListModel.fromJson(v));
+        counterListModel!.add(new CounterListModel.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStagePotentialEntity'))
+      siteStagePotentialEntity = new List<SiteStagePotentialEntity>.empty(growable: true);
 
     if (json['siteStagePotentialEntity'] != null) {
       siteStagePotentialEntity = new List<SiteStagePotentialEntity>.empty(growable: true);
       json['siteStagePotentialEntity'].forEach((v) {
-        siteStagePotentialEntity.add(new SiteStagePotentialEntity.fromJson(v));
+        siteStagePotentialEntity!.add(new SiteStagePotentialEntity.fromJson(v));
       });
     }
   }
@@ -197,18 +275,18 @@ class ViewSiteDataResponse {
     data['supplyDate'] = this.supplyDate;
     data['constructionDays'] = this.constructionDays;
     if (this.sitesModal != null) {
-      data['sitesModal'] = this.sitesModal.toJson();
+      data['sitesModal'] = this.sitesModal!.toJson();
     }
     if (this.mwpVisitModel != null) {
-      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
+      data['mwpVisitModel'] = this.mwpVisitModel!.toJson();
     }
     if (this.siteFloorsEntity != null) {
       data['siteFloorsEntity'] =
-          this.siteFloorsEntity.map((v) => v.toJson()).toList();
+          this.siteFloorsEntity!.map((v) => v.toJson()).toList();
     }
     if (this.sitephotosEntity != null) {
       data['sitephotosEntity'] =
-          this.sitephotosEntity.map((v) => v.toJson()).toList();
+          this.sitephotosEntity!.map((v) => v.toJson()).toList();
     }
     // if (this.siteVisitHistoryEntity != null) {
     //   data['siteVisitHistoryEntity'] =
@@ -218,61 +296,67 @@ class ViewSiteDataResponse {
 
     if (this.siteStageHistorys != null) {
       data['siteStageHistorys'] =
-          this.siteStageHistorys.map((v) => v.toJson()).toList();
+          this.siteStageHistorys!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteStageEntity != null) {
       data['siteStageEntity'] =
-          this.siteStageEntity.map((v) => v.toJson()).toList();
+          this.siteStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.constructionStageEntity != null) {
       data['constructionStageEntity'] =
-          this.constructionStageEntity.map((v) => v.toJson()).toList();
+          this.constructionStageEntity!.map((v) => v.toJson()).toList();
     }
+
+    if (this.nextconstructionStageEntity != null) {
+      data['nextconstructionStageEntity'] =
+          this.nextconstructionStageEntity?.map((v) => v.toJson()).toList();
+    }
+
     if (this.siteProbabilityWinningEntity != null) {
       data['siteProbabilityWinningEntity'] =
-          this.siteProbabilityWinningEntity.map((v) => v.toJson()).toList();
+          this.siteProbabilityWinningEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteCompetitionStatusEntity != null) {
       data['siteCompetitionStatusEntity'] =
-          this.siteCompetitionStatusEntity.map((v) => v.toJson()).toList();
+          this.siteCompetitionStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteBrandEntity != null) {
       data['siteBrandEntity'] =
-          this.siteBrandEntity.map((v) => v.toJson()).toList();
+          this.siteBrandEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerEntity != null) {
       data['influencerEntity'] =
-          this.influencerEntity.map((v) => v.toJson()).toList();
+          this.influencerEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteNextStageEntity != null) {
       data['siteNextStageEntity'] =
-          this.siteNextStageEntity.map((v) => v.toJson()).toList();
+          this.siteNextStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =
-          this.siteCommentsEntity.map((v) => v.toJson()).toList();
+          this.siteCommentsEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerTypeEntity != null) {
       data['influencerTypeEntity'] =
-          this.influencerTypeEntity.map((v) => v.toJson()).toList();
+          this.influencerTypeEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryEntity != null) {
       data['influencerCategoryEntity'] =
-          this.influencerCategoryEntity.map((v) => v.toJson()).toList();
+          this.influencerCategoryEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteOpportunityStatusEntity != null) {
       data['siteOpportunityStatusEntity'] =
-          this.siteOpportunityStatusEntity.map((v) => v.toJson()).toList();
+          this.siteOpportunityStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteInfluencerEntity != null) {
       data['siteInfluencerEntity'] =
-          this.siteInfluencerEntity.map((v) => v.toJson()).toList();
+          this.siteInfluencerEntity!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteStagePotentialEntity != null) {
       data['siteStagePotentialEntity'] =
-          this.siteStagePotentialEntity.map((v) => v.toJson()).toList();
+          this.siteStagePotentialEntity!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -280,11 +364,11 @@ class ViewSiteDataResponse {
 
 
 class SiteStagePotentialEntity {
-  int id;
-  int nosFloors;
-  int siteFloorsId;
-  int constructionStageId;
-  double potentialPercentage;
+  int? id;
+  int? nosFloors;
+  int? siteFloorsId;
+  int? constructionStageId;
+  double? potentialPercentage;
 
   SiteStagePotentialEntity({this.id, this.nosFloors,this.siteFloorsId,this.constructionStageId,this.potentialPercentage});
 
@@ -308,54 +392,55 @@ class SiteStagePotentialEntity {
 }
 
 class SitesModal {
-  String siteBuiltArea;
-  String siteProductDemo;
-  String siteProductOralBriefing;
-  String sitePlotNumber;
-  String siteTotalSitePotential;
-  String siteOwnerName;
-  String siteOwnerContactNumber;
-  String siteAddress;
-  String siteState;
-  String siteDistrict;
-  String siteTaluk;
-  String sitePincode;
-  String siteGeotagLatitude;
-  String siteGeotagLongitude;
-  String siteGeotagType;
-  String siteReraNumber;
-  String siteDealerId;
-  String siteDealerName;
-  String siteSoId;
-  String siteSoname;
-  int siteStageId;
-  String inactiveReasonText;
-  String siteNextVisitDate;
-  String siteClosureReasonText;
-  int siteProbabilityWinningId;
-  int siteCompetitionId;
-  int siteOppertunityId;
-  String assignedTo;
-  int siteStatusId;
-  String siteCreationDate;
-  int siteConstructionId;
-  int noOfFloors;
-  double siteScore;
-  String createdOn;
-   double leadId;
-   int siteId;
-   String siteSegment;
-   String updatedBy;
-  String updatedOn;
-  String dealerConfirmedChangedBy;
-  String dealerConfirmedChangedOn;
-  String isDealerConfirmedChangedBySo;
-  String subdealerId;
-  String siteSubDealerName;
+  String? siteBuiltArea;
+  String? siteProductDemo;
+  String? siteProductOralBriefing;
+  String? sitePlotNumber;
+  String? siteTotalSitePotential;
+  String? siteOwnerName;
+  String? siteOwnerContactNumber;
+  String? siteAddress;
+  String? siteState;
+  String? siteDistrict;
+  String? siteTaluk;
+  String? sitePincode;
+  String? siteGeotagLatitude;
+  String? siteGeotagLongitude;
+  String? siteGeotagType;
+  String? siteReraNumber;
+  String? siteDealerId;
+  String? siteDealerName;
+  String? siteSoId;
+  String? siteSoname;
+  int? siteStageId;
+  String? inactiveReasonText;
+  String? siteNextVisitDate;
+  String? siteClosureReasonText;
+  int? siteProbabilityWinningId;
+  int? siteCompetitionId;
+  int? siteOppertunityId;
+  String? assignedTo;
+  int? siteStatusId;
+  String? siteCreationDate;
+  int? siteConstructionId;
+  int? noOfFloors;
+  double? siteScore;
+  String? createdOn;
+   double? leadId;
+   int? siteId;
+   String? siteSegment;
+   String? updatedBy;
+  String? updatedOn;
+  String? dealerConfirmedChangedBy;
+  String? dealerConfirmedChangedOn;
+  String? isDealerConfirmedChangedBySo;
+  String? subdealerId;
+  String? siteSubDealerName;
 
-  String totalBalancePotential;
-  int kitchenCount;
-  int bathroomCount;
+  String? totalBalancePotential;
+  int? kitchenCount;
+  int? bathroomCount;
+  String? isMemberAddded;
 
   SitesModal(
       {this.assignedTo,
@@ -404,58 +489,60 @@ class SitesModal {
         this.subdealerId,
         this.totalBalancePotential,
         this.kitchenCount,
-        this.bathroomCount
+        this.bathroomCount,
+        this.isMemberAddded
       });
 
   SitesModal.fromJson(Map<String, dynamic> json) {
-    assignedTo = json['assignedTo'].toString() ?? "";
-    createdOn = json['createdOn'].toString() ?? "";
-    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'].toString() ?? "";
-    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString()??"";
-    inactiveReasonText = json['inactiveReasonText'].toString() ?? "";
+    assignedTo = json['assignedTo'].toString() ;
+    createdOn = json['createdOn'].toString() ;
+    dealerConfirmedChangedBy = json['dealerConfirmedChangedBy'].toString();
+    dealerConfirmedChangedOn = json['dealerConfirmedChangedOn'].toString();
+    inactiveReasonText = json['inactiveReasonText'].toString() ;
     leadId = json['leadId'];
     noOfFloors = json['noOfFloors'];
-    siteAddress = json['siteAddress'].toString() ?? "";
+    siteAddress = json['siteAddress'].toString() ;
     siteBuiltArea = json['siteBuiltArea'];
-    siteClosureReasonText = json['siteClosureReasonText'].toString() ?? "";
+    siteClosureReasonText = json['siteClosureReasonText'].toString();
     siteCompetitionId = json['siteCompetitionId'];
     siteConstructionId = json['siteConstructionId'];
-    siteCreationDate = json['siteCreationDate'].toString() ?? "";
-    siteDealerId = json['siteDealerId'].toString() ?? "";
-    siteDealerName = json['siteDealerName'].toString() ?? "";
-    siteDistrict = json['siteDistrict'].toString() ?? "";
-    siteGeotagLatitude = json['siteGeotag_latitude'].toString() ?? "";
-    siteGeotagLongitude = json['siteGeotag_longitude'].toString() ?? "";
-    siteGeotagType = json['siteGeotag_type'].toString() ?? "";
+    siteCreationDate = json['siteCreationDate'].toString();
+    siteDealerId = json['siteDealerId'].toString();
+    siteDealerName = json['siteDealerName'].toString();
+    siteDistrict = json['siteDistrict'].toString();
+    siteGeotagLatitude = json['siteGeotag_latitude'].toString() ;
+    siteGeotagLongitude = json['siteGeotag_longitude'].toString();
+    siteGeotagType = json['siteGeotag_type'].toString() ;
     siteId = json['siteId'];
-    siteNextVisitDate = json['siteNextVisitDate'].toString() ?? "";
+    siteNextVisitDate = json['siteNextVisitDate'].toString() ;
     siteOppertunityId = json['siteOppertunityId'];
-    siteOwnerContactNumber = json['siteOwnerContactNumber'].toString() ?? "";
-    siteOwnerName = json['siteOwnerName'].toString() ?? "";
+    siteOwnerContactNumber = json['siteOwnerContactNumber'].toString();
+    siteOwnerName = json['siteOwnerName'].toString();
     sitePincode = json['sitePincode'];
     sitePlotNumber = json['sitePlotNumber'];
     siteProbabilityWinningId = json['siteProbabilityWinningId'];
     siteProductDemo = json['siteProductDemo'];
-    siteProductOralBriefing = json['siteProductOralBriefing'].toString() ?? "";
-    siteReraNumber = json['siteRera_number'].toString() ?? "";
+    siteProductOralBriefing = json['siteProductOralBriefing'].toString() ;
+    siteReraNumber = json['siteRera_number'].toString();
     siteScore = json['siteScore'];
-    siteSegment = json['siteSegment'].toString() ?? "";
-    siteSoId = json['siteSoId'].toString() ?? "";
-    siteSoname = json['siteSoname'].toString() ?? "";
+    siteSegment = json['siteSegment'].toString() ;
+    siteSoId = json['siteSoId'].toString() ;
+    siteSoname = json['siteSoname'].toString();
     siteStageId = json['siteStageId'];
     siteState = json['siteState'];
     siteStatusId = json['siteStatusId'];
     siteTaluk = json['siteTaluk'];
     siteTotalSitePotential = json['siteTotalSitePotential'];
-    updatedBy = json['updatedBy'].toString() ?? "";
-    updatedOn = json['updatedOn'].toString() ?? "";
-    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'].toString() ?? "";
-    subdealerId = json['subdealerId'].toString() ?? "";
-    siteSubDealerName = json['siteSubDealerName'].toString() ?? "";
+    updatedBy = json['updatedBy'].toString() ;
+    updatedOn = json['updatedOn'].toString() ;
+    isDealerConfirmedChangedBySo = json['isDealerConfirmedChangedBySo'].toString() ;
+    subdealerId = json['subdealerId'].toString() ;
+    siteSubDealerName = json['siteSubDealerName'].toString();
 
     totalBalancePotential = json['totalBalancePotential']!=null? json['totalBalancePotential'].toString():"";
     kitchenCount = json['kitchenCount'];
     bathroomCount = json['bathroomCount'];
+    isMemberAddded = json['isMemberAddded'];
 
   }
 
@@ -508,26 +595,27 @@ class SitesModal {
     data['totalBalancePotential'] = this.totalBalancePotential;
     data['kitchenCount'] = this.kitchenCount;
     data['bathroomCount'] = this.bathroomCount;
+    data['isMemberAddded'] = this.isMemberAddded;
     return data;
   }
 }
 
 class MwpVisitModel {
-  int id;
-  String visitSubType;
-  int docId;
-  String visitDate;
-  String visitType;
-  String visitStartTime;
-  String visitStartLat;
-  String visitStartLong;
-  String visitEndTime;
-  String visitEndLat;
-  String visitEndLong;
-  int nextVisitDate;
-  String visitOutcomes;
-  String remark;
-  String inflName;
+  int? id;
+  String? visitSubType;
+  int? docId;
+  String? visitDate;
+  String? visitType;
+  String? visitStartTime;
+  String? visitStartLat;
+  String? visitStartLong;
+  String? visitEndTime;
+  String? visitEndLat;
+  String? visitEndLong;
+  int? nextVisitDate;
+  String? visitOutcomes;
+  String? remark;
+  String? inflName;
 
   MwpVisitModel(
       {this.id,
@@ -586,15 +674,16 @@ class MwpVisitModel {
   }
 }
 
+
 class SiteFloorsEntity {
-  int id;
-  String siteFloorTxt;
+  int? id;
+  String? siteFloorTxt;
 
   SiteFloorsEntity({this.id, this.siteFloorTxt});
 
   SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteFloorTxt = json['siteFloorTxt'].toString() ?? "";
+    siteFloorTxt = json['siteFloorTxt'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -606,11 +695,11 @@ class SiteFloorsEntity {
 }
 
 class SitephotosEntity {
-  int id;
-  int siteId;
-  String photoName;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? siteId;
+  String? photoName;
+  String? createdBy;
+  int? createdOn;
 
   SitephotosEntity(
       {this.id, this.siteId, this.photoName, this.createdBy, this.createdOn});
@@ -618,8 +707,8 @@ class SitephotosEntity {
   SitephotosEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     siteId = json['siteId'];
-    photoName = json['photoName'].toString() ?? "";
-    createdBy = json['createdBy'].toString() ?? "";
+    photoName = json['photoName'].toString();
+    createdBy = json['createdBy'].toString();
     createdOn = json['createdOn'];
   }
 
@@ -634,200 +723,16 @@ class SitephotosEntity {
   }
 }
 
-// class SiteVisitHistoryEntity {
-//   int id;
-//   String totalBalancePotential;
-//   // String constructionStageId;
-//   String floorId;
-//   String stagePotential;
-//   // String brandId;
-//   String brandPrice;
-//   String constructionDate;
-//   String siteId;
-//   String supplyDate;
-//   String supplyQty;
-//   String stageStatus;
-//   String createdBy;
-//   String soldToParty;
-//   String shipToParty;
-//
-//   //Check about the presence of below two variables
-//   int constructionStageId;
-//   int brandId;
-//   int createdOn;
-//   bool isExpanded;
-//
-//
-//
-//   SiteVisitHistoryEntity(
-//       {this.id,
-//       this.totalBalancePotential,
-//       this.constructionStageId,
-//       this.floorId,
-//       this.stagePotential,
-//       this.brandId,
-//       this.brandPrice,
-//       this.constructionDate,
-//       this.siteId,
-//       this.supplyDate,
-//       this.supplyQty,
-//       this.stageStatus,
-//       this.createdOn,
-//       this.createdBy,
-//       this.soldToParty,
-//       this.shipToParty});
-//
-//   SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     totalBalancePotential = json['totalBalancePotential'];
-//     constructionStageId = json['constructionStageId'];
-//     floorId = json['floorId'];
-//     stagePotential = json['stagePotential'];
-//     brandId = json['brandId'];
-//     brandPrice = json['brandPrice'];
-//     constructionDate = json['constructionDate'];
-//     siteId = json['siteId'];
-//     supplyDate = json['supplyDate'];
-//     supplyQty = json['supplyQty'];
-//     stageStatus = json['stageStatus'];
-//     createdOn = json['createdOn'];
-//     createdBy = json['createdBy'];
-//     isExpanded = false;
-//
-//     soldToParty = json['soldToParty'];
-//     shipToParty = json['shipToParty'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['totalBalancePotential'] = this.totalBalancePotential;
-//     data['constructionStageId'] = this.constructionStageId;
-//     data['floorId'] = this.floorId;
-//     data['stagePotential'] = this.stagePotential;
-//     data['brandId'] = this.brandId;
-//     data['brandPrice'] = this.brandPrice;
-//     data['constructionDate'] = this.constructionDate;
-//     data['siteId'] = this.siteId;
-//     data['supplyDate'] = this.supplyDate;
-//     data['supplyQty'] = this.supplyQty;
-//     data['stageStatus'] = this.stageStatus;
-//     data['createdOn'] = this.createdOn;
-//     data['createdBy'] = this.createdBy;
-//
-//     data['soldToParty'] = this.soldToParty;
-//     data['shipToParty'] = this.shipToParty;
-//     return data;
-//   }
-// }
-/*
-class SiteVisitHistoryEntity {
-  int id;
-  // String totalBalancePotential;
-  int constructionStageId;
-  int floorId;
-  String stagePotential;
-  int brandId;
-  String brandPrice;
-  String constructionDate;
-  int siteId;
-  String supplyDate;
-  String supplyQty;
-  String stageStatus;
-  int createdOn;
-  String createdBy;
-  String soldToParty;
-  String shipToParty;
-  String soCode;
-  String isAuthorised;
-  String receiptNumber;
-  bool isExpanded;
-  String authorisedBy;
-  String authorisedOn;
 
-
-  SiteVisitHistoryEntity(
-      {this.id,
-        // this.totalBalancePotential,
-        this.constructionStageId,
-        this.floorId,
-        this.stagePotential,
-        this.brandId,
-        this.brandPrice,
-        this.constructionDate,
-        this.siteId,
-        this.supplyDate,
-        this.supplyQty,
-        this.stageStatus,
-        this.createdOn,
-        this.createdBy,
-        this.soldToParty,
-        this.shipToParty,
-        this.soCode,
-        this.isAuthorised,
-        this.receiptNumber,this.authorisedBy, this.authorisedOn});
-
-  SiteVisitHistoryEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    // totalBalancePotential = json['totalBalancePotential'].toString() ?? "";
-    constructionStageId = json['constructionStageId'];
-    floorId = json['floorId'];
-    stagePotential = json['stagePotential'].toString() ?? "";
-    brandId = json['brandId'];
-    brandPrice = json['brandPrice'].toString() ?? "";
-    constructionDate = json['constructionDate'].toString() ?? "";
-    siteId = json['siteId'];
-    supplyDate = json['supplyDate'].toString() ?? "";
-    supplyQty = json['supplyQty'].toString() ?? "";
-    stageStatus = json['stageStatus'].toString() ?? "";
-    createdOn = json['createdOn'];
-    createdBy = json['createdBy'].toString() ?? "";
-    soldToParty = json['soldToParty'].toString() ?? "";
-    shipToParty = json['shipToParty'].toString() ?? "";
-    soCode = json['soCode'].toString() ?? "";
-    isAuthorised = json['isAuthorised'].toString() ?? "";
-    isExpanded = false;
-    receiptNumber = json['receiptNumber'].toString() ?? "";
-    authorisedBy = json['authorisedBy'].toString()??"";
-    authorisedOn = json['authorisedOn'].toString() ??"";
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    // data['totalBalancePotential'] = this.totalBalancePotential;
-    data['constructionStageId'] = this.constructionStageId;
-    data['floorId'] = this.floorId;
-    data['stagePotential'] = this.stagePotential;
-    data['brandId'] = this.brandId;
-    data['brandPrice'] = this.brandPrice;
-    data['constructionDate'] = this.constructionDate;
-    data['siteId'] = this.siteId;
-    data['supplyDate'] = this.supplyDate;
-    data['supplyQty'] = this.supplyQty;
-    data['stageStatus'] = this.stageStatus;
-    data['createdOn'] = this.createdOn;
-    data['createdBy'] = this.createdBy;
-    data['soldToParty'] = this.soldToParty;
-    data['shipToParty'] = this.shipToParty;
-    data['soCode'] = this.soCode;
-    data['isAuthorised'] = this.isAuthorised;
-    data['receiptNumber'] = this.receiptNumber;
-    data['authorisedBy'] = this.authorisedBy;
-    data['authorisedOn'] = this.authorisedOn;
-    return data;
-  }
-}
-*/
 class SiteStageEntity {
-  int id;
-  String siteStageDesc;
+  int? id;
+  String? siteStageDesc;
 
   SiteStageEntity({this.id, this.siteStageDesc});
 
   SiteStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteStageDesc = json['siteStageDesc'].toString() ?? "";
+    siteStageDesc = json['siteStageDesc'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -839,14 +744,14 @@ class SiteStageEntity {
 }
 
 class ConstructionStageEntity {
-  int id;
-  String constructionStageText;
+  int? id;
+  String? constructionStageText;
 
   ConstructionStageEntity({this.id, this.constructionStageText});
 
   ConstructionStageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    constructionStageText = json['constructionStageText'].toString() ?? "";
+    constructionStageText = json['constructionStageText'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -858,14 +763,14 @@ class ConstructionStageEntity {
 }
 
 class SiteProbabilityWinningEntity {
-  int id;
-  String siteProbabilityStatus;
+  int? id;
+  String? siteProbabilityStatus;
 
   SiteProbabilityWinningEntity({this.id, this.siteProbabilityStatus});
 
   SiteProbabilityWinningEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteProbabilityStatus = json['siteProbabilityStatus'].toString() ?? "";
+    siteProbabilityStatus = json['siteProbabilityStatus'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -877,14 +782,14 @@ class SiteProbabilityWinningEntity {
 }
 
 class SiteCompetitionStatusEntity {
-  int id;
-  String competitionStatus;
+  int? id;
+  String? competitionStatus;
 
   SiteCompetitionStatusEntity({this.id, this.competitionStatus});
 
   SiteCompetitionStatusEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    competitionStatus = json['competitionStatus'].toString() ?? "";
+    competitionStatus = json['competitionStatus'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -896,16 +801,16 @@ class SiteCompetitionStatusEntity {
 }
 
 class SiteBrandEntity {
-  int id;
-  String brandName;
-  String productName;
+  int? id;
+  String? brandName;
+  String? productName;
 
   SiteBrandEntity({this.id, this.brandName, this.productName});
 
   SiteBrandEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    brandName = json['brandName'].toString() ?? "";
-    productName = json['productName'].toString() ?? "";
+    brandName = json['brandName'].toString();
+    productName = json['productName'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -918,16 +823,16 @@ class SiteBrandEntity {
 }
 
 class InfluencerEntity {
-  int id;
-  String inflName;
-  String inflContact;
-  int inflTypeId;
-  int inflCatId;
-  String ilpIntrested;
-  int createdOn;
-  String isPrimary;
-  bool isPrimarybool;
-  int originalId;
+  int? id;
+  String? inflName;
+  String? inflContact;
+  int? inflTypeId;
+  int? inflCatId;
+  String? ilpIntrested;
+  int? createdOn;
+  String? isPrimary;
+  bool? isPrimarybool;
+  int? originalId;
 
   InfluencerEntity(
       {this.isPrimarybool,
@@ -943,14 +848,14 @@ class InfluencerEntity {
 
   InfluencerEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    inflName = json['inflName'].toString() ?? "";
-    inflContact = json['inflContactNumber'].toString() ?? "";
+    inflName = json['inflName'].toString() ;
+    inflContact = json['inflContactNumber'].toString();
     inflTypeId = json['inflTypeId'];
     inflCatId = json['inflCatId'];
-    ilpIntrested = json['ilpIntrested'].toString() ?? "";
+    ilpIntrested = json['ilpIntrested'].toString() ;
     createdOn = json['createdOn'];
     isPrimarybool = json['isPrimarybool'];
-    isPrimary = json['isPrimary'].toString() ?? "";
+    isPrimary = json['isPrimary'].toString();
     originalId = json['originalId'];
   }
 
@@ -971,19 +876,19 @@ class InfluencerEntity {
 }
 
 class SiteNextStageEntity {
-  int id;
-  int siteId;
-  int constructionStageId;
-  String stagePotential;
-  int brandId;
-  String brandPrice;
-  String stageStatus;
-  String constructionStartDt;
-  String nextStageSupplyDate;
-  String nextStageSupplyQty;
-  String createdBy;
-  int createdOn;
-  String floorId;
+  int? id;
+  int? siteId;
+  int? constructionStageId;
+  String? stagePotential;
+  int? brandId;
+  String? brandPrice;
+  String? stageStatus;
+  String? constructionStartDt;
+  String? nextStageSupplyDate;
+  String? nextStageSupplyQty;
+  String? createdBy;
+  int? createdOn;
+  String? floorId;
 
 
   SiteNextStageEntity(
@@ -1006,16 +911,16 @@ class SiteNextStageEntity {
     id = json['id'];
     siteId = json['siteId'];
     constructionStageId = json['constructionStageId'];
-    stagePotential = json['stagePotential'].toString() ?? "";
+    stagePotential = json['stagePotential'].toString() ;
     brandId = json['brandId'];
-    brandPrice = json['brandPrice'].toString() ?? "";
-    stageStatus = json['stageStatus'].toString() ?? "";
-    constructionStartDt = json['constructionStartDt'].toString() ?? "";
-    nextStageSupplyDate = json['nextStageSupplyDate'].toString() ?? "";
-    nextStageSupplyQty = json['nextStageSupplyQty'].toString() ?? "";
-    createdBy = json['createdBy'].toString() ?? "";
+    brandPrice = json['brandPrice'].toString() ;
+    stageStatus = json['stageStatus'].toString();
+    constructionStartDt = json['constructionStartDt'].toString() ;
+    nextStageSupplyDate = json['nextStageSupplyDate'].toString() ;
+    nextStageSupplyQty = json['nextStageSupplyQty'].toString() ;
+    createdBy = json['createdBy'].toString();
     createdOn = json['createdOn'];
-    floorId = json['floorId'].toString() ?? "";
+    floorId = json['floorId'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -1038,12 +943,12 @@ class SiteNextStageEntity {
 }
 
 class SiteCommentsEntity {
-  int id;
-  int siteId;
-  String siteCommentText;
-  String creatorName;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? siteId;
+  String? siteCommentText;
+  String? creatorName;
+  String? createdBy;
+  int? createdOn;
   SiteCommentsEntity(
       {this.id,
       this.siteId,
@@ -1055,9 +960,9 @@ class SiteCommentsEntity {
   SiteCommentsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     siteId = json['siteId'];
-    siteCommentText = json['siteCommentText'].toString() ?? "";
-    creatorName = json['creatorName'].toString() ?? "";
-    createdBy = json['createdBy'].toString() ?? "";
+    siteCommentText = json['siteCommentText'].toString() ;
+    creatorName = json['creatorName'].toString();
+    createdBy = json['createdBy'].toString();
     createdOn = json['createdOn'];
   }
 
@@ -1074,14 +979,14 @@ class SiteCommentsEntity {
 }
 
 class InfluencerTypeEntity {
-  int inflTypeId;
-  String inflTypeDesc;
+  int? inflTypeId;
+  String? inflTypeDesc;
 
   InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc});
 
   InfluencerTypeEntity.fromJson(Map<String, dynamic> json) {
     inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'].toString() ?? "";
+    inflTypeDesc = json['inflTypeDesc'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -1093,14 +998,14 @@ class InfluencerTypeEntity {
 }
 
 class InfluencerCategoryEntity {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   InfluencerCategoryEntity({this.inflCatId, this.inflCatDesc});
 
   InfluencerCategoryEntity.fromJson(Map<String, dynamic> json) {
     inflCatId = json['inflCatId'];
-    inflCatDesc = json['inflCatDesc'].toString() ?? "";
+    inflCatDesc = json['inflCatDesc'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -1112,14 +1017,14 @@ class InfluencerCategoryEntity {
 }
 
 class SiteOpportunityStatusEntity {
-  int id;
-  String opportunityStatus;
+  int? id;
+  String? opportunityStatus;
 
   SiteOpportunityStatusEntity({this.id, this.opportunityStatus});
 
   SiteOpportunityStatusEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    opportunityStatus = json['opportunityStatus'].toString() ?? "";
+    opportunityStatus = json['opportunityStatus'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -1131,15 +1036,15 @@ class SiteOpportunityStatusEntity {
 }
 
 class SiteInfluencerEntity {
-  int id;
-  int siteId;
-  int inflId;
-  String isDelete;
-  String createdBy;
-  int createdOn;
-  String updatedBy;
-  String updatedOn;
-  String isPrimary;
+  int? id;
+  int? siteId;
+  int? inflId;
+  String? isDelete;
+  String? createdBy;
+  int? createdOn;
+  String? updatedBy;
+  String? updatedOn;
+  String? isPrimary;
 
 
 
@@ -1158,12 +1063,12 @@ class SiteInfluencerEntity {
     id = json['id'];
     siteId = json['siteId'];
     inflId = json['inflId'];
-    isDelete = json['isDelete'].toString() ?? "";
-    createdBy = json['createdBy'].toString() ?? "";
+    isDelete = json['isDelete'].toString() ;
+    createdBy = json['createdBy'].toString();
     createdOn = json['createdOn'];
     updatedBy = json['updatedBy'];
     updatedOn = json['updatedOn'];
-    isPrimary = json['isPrimary'].toString() ?? "";
+    isPrimary = json['isPrimary'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -1183,11 +1088,11 @@ class SiteInfluencerEntity {
 }
 
 class CounterListModel {
-  String soldToParty;
-  String soldToPartyName;
-  String shipToParty;
-  String shipToPartyName;
-  String availableKittyPoint;
+  String? soldToParty;
+  String? soldToPartyName;
+  String? shipToParty;
+  String? shipToPartyName;
+  String? availableKittyPoint;
 
   CounterListModel(
       {this.soldToParty,
@@ -1197,10 +1102,10 @@ class CounterListModel {
         this.availableKittyPoint});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
-    soldToParty = json['soldToParty'].toString() ?? "";
-    soldToPartyName = json['soldToPartyName'].toString() ?? "";
-    shipToParty = json['shipToParty'].toString() ?? "";
-    shipToPartyName = json['shipToPartyName'].toString() ?? "";
+    soldToParty = json['soldToParty'].toString();
+    soldToPartyName = json['soldToPartyName'].toString() ;
+    shipToParty = json['shipToParty'].toString() ;
+    shipToPartyName = json['shipToPartyName'].toString() ;
     availableKittyPoint = json['availableKittyPoint']?? "";
   }
 
@@ -1215,14 +1120,14 @@ class CounterListModel {
   }
 }
 class ProductListModel {
-  int brandId;
-  var brandPrice = TextEditingController();
-  var supplyDate = TextEditingController();
-  var supplyQty = TextEditingController();
-  var isExpanded = ExpandableController();
-  BrandModelforDB brandModelForDB;
-  var dealerName = TextEditingController();
-  String awardLoyaltyPoint = "Y";
+  int? brandId;
+  TextEditingController? brandPrice = TextEditingController();
+  TextEditingController? supplyDate = TextEditingController();
+  TextEditingController? supplyQty = TextEditingController();
+  ExpandableController? isExpanded = ExpandableController();
+  BrandModelforDB? brandModelForDB;
+  TextEditingController? dealerName = TextEditingController();
+  String? awardLoyaltyPoint = "Y";
 
 
   ProductListModel(
@@ -1237,10 +1142,10 @@ class ProductListModel {
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
     brandId = json['brandId'];
-    brandPrice.text = json['brandPrice'].toString() ?? "";
-    supplyDate.text = json['supplyDate'].toString() ?? "";
-    supplyQty.text = json['supplyQty'].toString() ?? "";
-    isExpanded.expanded = json['isExpanded'];
+    brandPrice!.text = json['brandPrice'].toString();
+    supplyDate!.text = json['supplyDate'].toString();
+    supplyQty!.text = json['supplyQty'].toString() ;
+    isExpanded!.expanded = json['isExpanded'];
     brandModelForDB = json['brandModelForDB'];
     dealerName = json['dealerName'];
     awardLoyaltyPoint = json['awardLoyaltyPoint'];
@@ -1249,10 +1154,10 @@ class ProductListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['brandId'] = this.brandId;
-    data['brandPrice'] = this.brandPrice.text;
-    data['supplyDate'] = this.supplyDate.text;
-    data['supplyQty'] = this.supplyQty.text;
-    data['isExpanded'] = this.isExpanded.expanded;
+    data['brandPrice'] = this.brandPrice!.text;
+    data['supplyDate'] = this.supplyDate!.text;
+    data['supplyQty'] = this.supplyQty!.text;
+    data['isExpanded'] = this.isExpanded!.expanded;
     data['brandModelForDB'] = this.brandModelForDB;
     data['dealerName'] = this.dealerName;
     data['awardLoyaltyPoint'] = this.awardLoyaltyPoint;
@@ -1261,18 +1166,18 @@ class ProductListModel {
 }
 
 class SiteStageHistory {
-  int siteStageHistoryId;
-  int constructionStageId;
-  int siteId;
-  int floorId;
-  String stagePotential;
-  String constructionDate;
-  String stageStatus;
-  String createdBy;
-  int createdOn;
-  List<SiteSupplyHistorys> siteSupplyHistorys;
-  bool isExpanded;
-  String stagePotentialAutoCalc;
+  int? siteStageHistoryId;
+  int? constructionStageId;
+  int? siteId;
+  int? floorId;
+  String? stagePotential;
+  String? constructionDate;
+  String? stageStatus;
+  String? createdBy;
+  int? createdOn;
+  List<SiteSupplyHistorys>? siteSupplyHistorys;
+  bool? isExpanded;
+  String? stagePotentialAutoCalc;
 
 
   SiteStageHistory(
@@ -1295,17 +1200,17 @@ class SiteStageHistory {
     constructionStageId = json['constructionStageId'];
     siteId = json['siteId'];
     floorId = json['floorId'];
-    stagePotential = json['stagePotential'].toString() ?? "";
-    constructionDate = json['constructionDate'].toString() ?? "";
-    stageStatus = json['stageStatus'].toString() ?? "";
+    stagePotential = json['stagePotential'].toString();
+    constructionDate = json['constructionDate'].toString() ;
+    stageStatus = json['stageStatus'].toString() ;
     createdOn = json['createdOn'];
-    createdBy = json['createdBy'].toString() ?? "";
-    stagePotentialAutoCalc = json['stagePotentialAutoCalc'].toString() ?? "";
+    createdBy = json['createdBy'].toString() ;
+    stagePotentialAutoCalc = json['stagePotentialAutoCalc'].toString() ;
 
     if (json['siteSupplyHistorys'] != null) {
       siteSupplyHistorys = new List<SiteSupplyHistorys>.empty(growable: true);
       json['siteSupplyHistorys'].forEach((v) {
-        siteSupplyHistorys.add(new SiteSupplyHistorys.fromJson(v));
+        siteSupplyHistorys!.add(new SiteSupplyHistorys.fromJson(v));
       });
     }
     isExpanded = false;
@@ -1325,7 +1230,7 @@ class SiteStageHistory {
     data['stagePotentialAutoCalc'] = this.stagePotentialAutoCalc;
     if (this.siteSupplyHistorys != null) {
       data['siteSupplyHistorys'] =
-          this.siteSupplyHistorys.map((v) => v.toJson()).toList();
+          this.siteSupplyHistorys!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1333,23 +1238,23 @@ class SiteStageHistory {
 }
 
 class SiteSupplyHistorys {
-  int siteSupplyHistoryId;
-  int siteStageHistoryId;
-  int siteId;
-  int brandId;
-  String brandPrice;
-  String supplyDate;
-  String supplyQty;
-  String soCode;
-  String soldToParty;
-  String shipToParty;
-  String isAuthorised;
-  String receiptNumber;
-  String authorisedBy;
-  String authorisedOn;
-  String createdBy;
-  int createdOn;
-  String awardLoyaltyPoint;
+  int? siteSupplyHistoryId;
+  int? siteStageHistoryId;
+  int? siteId;
+  int? brandId;
+  String? brandPrice;
+  String? supplyDate;
+  String? supplyQty;
+  String? soCode;
+  String? soldToParty;
+  String? shipToParty;
+  String? isAuthorised;
+  String? receiptNumber;
+  String? authorisedBy;
+  String? authorisedOn;
+  String? createdBy;
+  int? createdOn;
+  String? awardLoyaltyPoint;
 
   SiteSupplyHistorys(
       {this.siteSupplyHistoryId,
@@ -1371,20 +1276,20 @@ class SiteSupplyHistorys {
     siteSupplyHistoryId = json['siteSupplyHistoryId'];
     siteStageHistoryId = json['siteStageHistoryId'];
     brandId = json['brandId'];
-    brandPrice = json['brandPrice'].toString() ?? "";
+    brandPrice = json['brandPrice'].toString() ;
     siteId = json['siteId'];
-    supplyDate = json['supplyDate'].toString() ?? "";
-    supplyQty = json['supplyQty'].toString() ?? "";
+    supplyDate = json['supplyDate'].toString() ;
+    supplyQty = json['supplyQty'].toString() ;
     createdOn = json['createdOn'];
-    createdBy = json['createdBy'].toString() ?? "";
-    soldToParty = json['soldToParty'].toString() ?? "";
-    shipToParty = json['shipToParty'].toString() ?? "";
-    soCode = json['soCode'].toString() ?? "";
-    isAuthorised = json['isAuthorised'].toString() ?? "";
-    receiptNumber = json['receiptNumber'].toString() ?? "";
-    authorisedBy = json['authorisedBy'].toString()??"";
-    authorisedOn = json['authorisedOn'].toString() ??"";
-    awardLoyaltyPoint = json['awardLoyaltyPoint'].toString() ??"";
+    createdBy = json['createdBy'].toString() ;
+    soldToParty = json['soldToParty'].toString();
+    shipToParty = json['shipToParty'].toString();
+    soCode = json['soCode'].toString() ;
+    isAuthorised = json['isAuthorised'].toString() ;
+    receiptNumber = json['receiptNumber'].toString() ;
+    authorisedBy = json['authorisedBy'].toString();
+    authorisedOn = json['authorisedOn'].toString();
+    awardLoyaltyPoint = json['awardLoyaltyPoint'].toString() ;
   }
 
   Map<String, dynamic> toJson() {

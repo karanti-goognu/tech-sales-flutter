@@ -1,10 +1,9 @@
 import 'package:flutter_tech_sales/presentation/features/splash/data/provider/splash_provider.dart';
-import 'package:meta/meta.dart';
 
 class MyRepositorySplash {
   final MyApiClientSplash apiClient;
 
-  MyRepositorySplash({@required this.apiClient}) : assert(apiClient != null);
+  MyRepositorySplash({required this.apiClient});
 
   getAccessKey() {
     return apiClient.getAccessKey();

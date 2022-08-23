@@ -1,11 +1,10 @@
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
-import 'package:flutter_tech_sales/utils/functions/validation.dart';
-import 'package:flutter_tech_sales/utils/global.dart';
-import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/get_sr_complaint_data_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/save_service_request_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
@@ -19,9 +18,10 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
+import 'package:flutter_tech_sales/utils/functions/validation.dart';
+import 'package:flutter_tech_sales/utils/global.dart';
+import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/SiteAreaDetailsModel.dart';
 
 class RequestCreation extends StatefulWidget {
@@ -30,15 +30,19 @@ class RequestCreation extends StatefulWidget {
 }
 
 class _RequestCreationState extends State<RequestCreation> {
-  SrComplaintModel srComplaintModel;
-  RequestorDetailsModel requestorDetailsModel;
+  SrComplaintModel? srComplaintModel;
+  RequestorDetailsModel? requestorDetailsModel;
   SrFormDataController srFormDataController = Get.find();
   SaveServiceRequestController saveRequest = Get.find();
-  SaveServiceRequest saveServiceRequest;
+  SaveServiceRequest? saveServiceRequest;
   UpdateServiceRequestController updateRequest = Get.find();
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  TextEditingController c = TextEditingController();
+  TextEditingController d = TextEditingController();
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -49,7 +53,7 @@ class _RequestCreationState extends State<RequestCreation> {
   getDropdownData() async {
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getSrComplaintFormData(value.accessKey)
+          .getSrComplaintFormData(value!.accessKey)
           .then((data) {
         setState(() {
           srComplaintModel = data;
@@ -58,26 +62,26 @@ class _RequestCreationState extends State<RequestCreation> {
     });
   }
 
-  getRequestorData(String requestorType, String siteId) async {
+  getRequestorData(String? requestorType, String siteId) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     await srFormDataController.getAccessKey().then((value) async {
       await srFormDataController
-          .getRequestorDetails(value.accessKey, requestorType, siteId)
+          .getRequestorDetails(value!.accessKey, requestorType, siteId)
           .then((data) {
         if (data != null) {
           setState(() {
             requestorDetailsModel = data;
           });
           for (int i = 0;
-              i < requestorDetailsModel.srComplaintRequesterList.length;
+              i < requestorDetailsModel!.srComplaintRequesterList!.length;
               i++) {
             setState(() {
-              suggestions.add(requestorDetailsModel
-                      .srComplaintRequesterList[i].requesterName +
-                  " (${requestorDetailsModel.srComplaintRequesterList[i].requesterCode})");
+              suggestions.add(requestorDetailsModel!
+                      .srComplaintRequesterList![i].requesterName! +
+                  " (${requestorDetailsModel!.srComplaintRequesterList![i].requesterCode})");
             });
           }
         }
@@ -100,21 +104,16 @@ class _RequestCreationState extends State<RequestCreation> {
   TextEditingController _district = TextEditingController();
   TextEditingController _taluk = TextEditingController();
   TextEditingController _pin = TextEditingController();
-  int requestDepartmentId;
-  int requestId;
-  String creatorType;
-  bool isComplaint;
-  int siteId;
-  String selectedValue;
-
+  TextEditingController _siteController = TextEditingController();
+  int? requestDepartmentId;
+  int? requestId;
+  String? creatorType;
+  bool? isComplaint;
+  int? siteId;
+  String? selectedValue;
 
   @override
   void initState() {
-    // _connectivity?.initialise();
-    // _connectivity.myStream.listen((source) {
-    //   setState(() => _source = source);
-    // });
-
     getDropdownData();
     UploadImageBottomSheet.image = null;
     super.initState();
@@ -129,13 +128,16 @@ class _RequestCreationState extends State<RequestCreation> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
@@ -170,10 +172,10 @@ class _RequestCreationState extends State<RequestCreation> {
                           padding: EdgeInsets.all(12),
                           height: 56,
                           child: Text(
-                            'Request Creation',
+                            StringConstants.requestCreation,
                             style: TextStyle(
                                 fontSize: 20,
-                                color: HexColor('#006838'),
+                                color: ColorConstants.greenTitle,
                                 fontFamily: "Muli"),
                           ),
                           decoration: BoxDecoration(
@@ -186,29 +188,29 @@ class _RequestCreationState extends State<RequestCreation> {
                               child: Column(
                                 children: [
                                   DropdownButtonFormField(
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         requestDepartmentId = value;
                                       });
                                     },
-                                    items: srComplaintModel
-                                        .serviceRequestComplaintDepartmentEntity
+                                    items: srComplaintModel!
+                                        .serviceRequestComplaintDepartmentEntity!
                                         .map((e) => DropdownMenuItem(
                                               value: e.id,
-                                              child: Text(e.departmentText),
+                                              child: Text(e.departmentText!),
                                             ))
                                         .toList(),
                                     style: FormFieldStyle.formFieldTextStyle,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Department*"),
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select the Department'
                                         : null,
                                   ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         selectedRequestSubtypeSeverity = [];
                                         selectedRequestSubtypeObjectList = [];
@@ -220,18 +222,18 @@ class _RequestCreationState extends State<RequestCreation> {
                                             : isComplaint = false;
                                       });
                                     },
-                                    items: srComplaintModel
-                                        .serviceRequestComplaintRequestEntity
+                                    items: srComplaintModel!
+                                        .serviceRequestComplaintRequestEntity!
                                         .map((e) => DropdownMenuItem(
                                               value: e.id,
-                                              child: Text(e.requestText),
+                                              child: Text(e.requestText!),
                                             ))
                                         .toList(),
                                     style: FormFieldStyle.formFieldTextStyle,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
                                             labelText: "Request Type*"),
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select the Request Type'
                                         : null,
                                   ),
@@ -246,7 +248,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                           )
                                         : getBottomSheet(),
                                     child: FormField(
-                                      validator: (value) => value,
+                                      validator: (dynamic value) => value,
                                       builder: (state) {
                                         return InputDecorator(
                                           decoration: FormFieldStyle
@@ -260,7 +262,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                               child: Text(
                                                 'Select',
                                                 style: TextStyle(
-                                                  color: HexColor('#F9A61A'),
+                                                  color:
+                                                      ColorConstants.btnOrange,
                                                 ),
                                               ),
                                             ),
@@ -285,7 +288,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                                                               Chip(
                                                                             label:
                                                                                 Text(
-                                                                              e.serviceRequestTypeText,
+                                                                              e.serviceRequestTypeText!,
                                                                               style: TextStyle(fontSize: 10),
                                                                             ),
                                                                             backgroundColor:
@@ -310,51 +313,36 @@ class _RequestCreationState extends State<RequestCreation> {
                                             labelText: "Severity"),
                                   ),
                                   SizedBox(height: 16),
-                                  DropdownSearch<ActiveSiteTSOListsEntity>(
-
-                                    mode: Mode.BOTTOM_SHEET,
-                                    items: srComplaintModel.activeSiteTSOLists,
-                                    itemAsString: (ActiveSiteTSOListsEntity
-                                            u) =>
-                                        '${toBeginningOfSentenceCase(u.contactName)} (${u.siteId})',
-                                    maxHeight: 240,
-                                    label: "Site Id *",
-                                    validator: (value) => value == null
-                                        ? "Site id is required "
+                                  TextFormField(
+                                    validator: (value) => value!.isEmpty
+                                        ? 'Please select the Site ID'
                                         : null,
-                                    onChanged: (value) async {
-                                      siteId = value.siteId;
-                                      SiteAreaModel siteDetails =
-                                          await srFormDataController
-                                              .getSiteAreaDetails(
-                                                  siteId.toString());
-                                      siteDetails.siteAreaDetailsModel != null
-                                          ? setState(() {
-                                              _pin.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .sitePincode;
-                                              _state.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteState;
-                                              _taluk.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteTaluk;
-                                              _district.text = siteDetails
-                                                  .siteAreaDetailsModel
-                                                  .siteDistrict;
-                                            })
-                                          : Get.rawSnackbar(
-                                              title: "Message",
-                                              message: siteDetails.respMsg);
-                                    },
-                                    showSearchBox: true,
+                                    controller: _siteController,
+                                    readOnly: true,
+                                    onTap: () =>
+                                        Get.bottomSheet(siteIdBottomSheet()),
+                                    style: FormFieldStyle.formFieldTextStyle,
+                                    decoration:
+                                        FormFieldStyle.buildInputDecoration(
+                                      labelText: "Site ID*",
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 12),
+                                        child: Text(
+                                          'Select',
+                                          style: TextStyle(
+                                            color: HexColor('#F9A61A'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
-                                    validator: (value) => value == null
+                                    validator: (dynamic value) => value == null
                                         ? 'Please select Customer Type'
                                         : null,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         FocusScope.of(context)
                                             .requestFocus(new FocusNode());
@@ -366,12 +354,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     },
                                     items: siteId == null
                                         ? []
-                                        : [
-                                            'IHB',
-                                            'Dealer',
-                                            'SUBDEALER',
-                                            'SALESOFFICER'
-                                          ]
+                                        : controller.customerTypeList
                                             .map((e) => DropdownMenuItem(
                                                   child: Text(
                                                     e.toUpperCase(),
@@ -386,7 +369,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                   ),
                                   SizedBox(height: 16),
                                   TextFormField(
-                                    validator: (value) => value.isEmpty
+                                    validator: (value) => value!.isEmpty
                                         ? 'Please select the Customer ID'
                                         : null,
                                     controller: _customerID,
@@ -427,7 +410,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     maxLength: 10,
-                                    validator: (value) => value.isEmpty ||
+                                    validator: (value) => value!.isEmpty ||
                                             value.length != 10 ||
                                             (!Validations.isValidPhoneNumber(
                                                 value))
@@ -487,100 +470,85 @@ class _RequestCreationState extends State<RequestCreation> {
                                                   .showPicker(context));
                                           // _imageList= await UploadImageBottomSheet.showPicker(context);
                                         } else {
-                                          Get.dialog(CustomDialogs().errorDialog(
+                                          Get.dialog(CustomDialogs.showMessage(
                                               "You can add only upto 5 photos"));
                                         }
                                       },
                                     ),
                                   ),
-                                  controller.imageList != null
-                                      ? Row(
-                                          children: [
-                                            Expanded(
-                                              child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: controller
-                                                      .imageList.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                content:
-                                                                    new Container(
-                                                                  // width: 500,
-                                                                  // height: 500,
-                                                                  child: Image.file(
-                                                                      controller
-                                                                              .imageList[
-                                                                          index]),
-                                                                ),
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "Picture ${(index + 1)}. ",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Text(
-                                                                "Image_${(index + 1)}.jpg",
-                                                                style: TextStyle(
-                                                                    color: HexColor(
-                                                                        "#007CBF"),
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          GestureDetector(
-                                                            child: Icon(
-                                                              Icons.delete,
-                                                              color: HexColor(
-                                                                  "#FFCD00"),
-                                                            ),
-                                                            onTap: () {
-                                                              setState(() {
-                                                                UploadImageBottomSheet
-                                                                        .image =
-                                                                    null;
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                controller.imageList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          content:
+                                                              new Container(
+                                                            child: Image.file(
                                                                 controller
-                                                                    .updateImageAfterDelete(
-                                                                        index);
-                                                                // controller.imageList
-                                                                //     .removeAt(
-                                                                //         index);
-                                                              });
-                                                            },
-                                                          )
-                                                        ],
+                                                                        .imageList[
+                                                                    index]),
+                                                          ),
+                                                        );
+                                                      });
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Picture ${(index + 1)}. ",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15),
+                                                        ),
+                                                        Text(
+                                                          "Image_${(index + 1)}.jpg",
+                                                          style: TextStyle(
+                                                              color: HexColor(
+                                                                  "#007CBF"),
+                                                              fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    GestureDetector(
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color:
+                                                            HexColor("#FFCD00"),
                                                       ),
-                                                    );
-                                                  }),
-                                            ),
-                                          ],
-                                        )
-                                      : Container(
-                                          color: Colors.blue,
-                                          height: 10,
-                                        ),
+                                                      onTap: () {
+                                                        setState(() {
+                                                          UploadImageBottomSheet
+                                                              .image = null;
+                                                          controller
+                                                              .updateImageAfterDelete(
+                                                                  index);
+                                                        });
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 16,
                                   ),
@@ -594,7 +562,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                     controller: _state,
                                     readOnly: true,
                                     style: FormFieldStyle.formFieldTextStyle,
-                                    // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
                                     keyboardType: TextInputType.text,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
@@ -636,9 +603,9 @@ class _RequestCreationState extends State<RequestCreation> {
                                       primary: HexColor("#1C99D4"),
                                     ),
                                     onPressed: () async {
-                                      if (!_srCreationFormKey.currentState
+                                      if (!_srCreationFormKey.currentState!
                                           .validate())
-                                        Get.dialog(CustomDialogs().errorDialog(
+                                        Get.dialog(CustomDialogs.showMessage(
                                             'Please enter the mandatory details'));
                                       else if (_severity.text == "")
                                         Get.defaultDialog(
@@ -646,7 +613,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                             middleText:
                                                 "Request Sub-type and Severity cannot be empty");
                                       else {
-                                        String empId = await getEmpId();
+                                        String? empId = await (getEmpId());
                                         List imageDetails =
                                             List.empty(growable: true);
                                         List subTypeDetails =
@@ -740,23 +707,21 @@ class _RequestCreationState extends State<RequestCreation> {
     );
   }
 
-  List<bool> checkedValues;
-  List<String> selectedRequestSubtype = [];
-  List<String> selectedRequestSubtypeSeverity = [];
+  late List<bool?> checkedValues;
+  List<String?> selectedRequestSubtype = [];
+  List<String?> selectedRequestSubtypeSeverity = [];
   List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList = [];
-  // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
-  // ServiceRequestComplaintTypeEntity dataToBeSentBack;
   TextEditingController _query = TextEditingController();
 
   requestSubTypeBottomSheetWidget() {
-    List<ServiceRequestComplaintTypeEntity> requestSubtype =
-        srComplaintModel.serviceRequestComplaintTypeEntity;
+    List<ServiceRequestComplaintTypeEntity>? requestSubtype =
+        srComplaintModel!.serviceRequestComplaintTypeEntity;
     checkedValues = List.generate(
-        srComplaintModel.serviceRequestComplaintTypeEntity.length,
+        srComplaintModel!.serviceRequestComplaintTypeEntity!.length,
         (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -774,20 +739,20 @@ class _RequestCreationState extends State<RequestCreation> {
                       onPressed: () {
                         if (selectedRequestSubtypeSeverity != null) {
                           if (selectedRequestSubtypeSeverity.contains('HIGH')) {
-                            setState(() {
-                              _severity.text = 'HIGH';
-                            });
+                            // setState(() {
+                            _severity.text = 'HIGH';
+                            // });
                           } else if (selectedRequestSubtypeSeverity
                               .contains('MEDIUM')) {
-                            setState(() {
-                              _severity.text = 'MEDIUM';
-                            });
+                            // setState(() {
+                            _severity.text = 'MEDIUM';
+                            // });
                           } else if (selectedRequestSubtypeSeverity
                               .contains('LOW')) {
-                            setState(() {
-                              _severity.text = 'LOW';
-                            });
-                          } else {}
+                            // setState(() {
+                            _severity.text = 'LOW';
+                            // });
+                          }
                           Get.back();
                         } else {
                           Get.back();
@@ -804,8 +769,8 @@ class _RequestCreationState extends State<RequestCreation> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    requestSubtype = srComplaintModel
-                        .serviceRequestComplaintTypeEntity
+                    requestSubtype = srComplaintModel!
+                        .serviceRequestComplaintTypeEntity!
                         .where((element) {
                       return element.serviceRequestTypeText
                           .toString()
@@ -825,42 +790,34 @@ class _RequestCreationState extends State<RequestCreation> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: requestSubtype.length,
+                itemCount: requestSubtype!.length,
                 itemBuilder: (context, index) {
-                  return requestId == requestSubtype[index].requestId
+                  return requestId == requestSubtype![index].requestId
                       ? CheckboxListTile(
                           activeColor: Colors.black,
                           dense: true,
                           title: Text(
-                              requestSubtype[index].serviceRequestTypeText),
+                              requestSubtype![index].serviceRequestTypeText!),
                           value: selectedRequestSubtype.contains(
-                              requestSubtype[index].serviceRequestTypeText),
+                              requestSubtype![index].serviceRequestTypeText),
                           onChanged: (newValue) {
-                            // if (!checkedValues.contains(true) ||
-                            //     checkedValues[index] == true) {
                             setState(() {
-                              // if(requestId==1){
-                              //   selectedRequestSubtypeSeverity = [];
-                              //   selectedRequestSubtypeObjectList = [];
-                              //   selectedRequestSubtype = [];
-                              //   // checkedValues=[];
-                              // }
                               selectedRequestSubtype.contains(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText)
                                   ? selectedRequestSubtype.remove(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText)
                                   : selectedRequestSubtype.add(
-                                      requestSubtype[index]
+                                      requestSubtype![index]
                                           .serviceRequestTypeText);
 
                               selectedRequestSubtypeObjectList
-                                      .contains(requestSubtype[index])
+                                      .contains(requestSubtype![index])
                                   ? selectedRequestSubtypeObjectList
-                                      .remove(requestSubtype[index])
+                                      .remove(requestSubtype![index])
                                   : selectedRequestSubtypeObjectList
-                                      .add(requestSubtype[index]);
+                                      .add(requestSubtype![index]);
 
                               selectedRequestSubtypeSeverity = [];
                               selectedRequestSubtypeObjectList
@@ -872,7 +829,6 @@ class _RequestCreationState extends State<RequestCreation> {
                               });
 
                               checkedValues[index] = newValue;
-                              // dataToBeSentBack = requestSubtype[index];
                             });
                           },
                           controlAffinity: ListTileControlAffinity.leading,
@@ -880,7 +836,7 @@ class _RequestCreationState extends State<RequestCreation> {
                       : Container();
                 },
                 separatorBuilder: (context, index) {
-                  return requestId == requestSubtype[index].requestId
+                  return requestId == requestSubtype![index].requestId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -940,13 +896,14 @@ class _RequestCreationState extends State<RequestCreation> {
     ).then((value) => setState(() {}));
   }
 
-  int serviceRequestComplaintTypeId;
-  ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
+  int? serviceRequestComplaintTypeId;
+  late ServiceRequestComplaintTypeEntity serviceRequestComplaintType;
   customFunction(dataFromOtherClass) {
     setState(() {
       serviceRequestComplaintType = dataFromOtherClass;
-      _requestSubType.text = serviceRequestComplaintType.serviceRequestTypeText;
-      _severity.text = serviceRequestComplaintType.complaintSeverity;
+      _requestSubType.text =
+          serviceRequestComplaintType.serviceRequestTypeText!;
+      _severity.text = serviceRequestComplaintType.complaintSeverity!;
       serviceRequestComplaintTypeId = serviceRequestComplaintType.id;
     });
   }
@@ -970,20 +927,20 @@ class _RequestCreationState extends State<RequestCreation> {
               height: 15,
             ),
             Divider(),
-            requestorDetailsModel.srComplaintRequesterList == null
+            requestorDetailsModel!.srComplaintRequesterList == null
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : Expanded(
                     child: ListView(
-                      children: requestorDetailsModel.srComplaintRequesterList
+                      children: requestorDetailsModel!.srComplaintRequesterList!
                           .map(
                             (e) => RadioListTile(
                                 value: e,
                                 title: Text(
                                     '${e.requesterName} (${e.requesterCode})'),
                                 groupValue: customer,
-                                onChanged: (text) {
+                                onChanged: (dynamic text) {
                                   setState(() {
                                     _requestorName.text = text.requesterName;
                                     _customerID.text = text.requesterCode;
@@ -996,6 +953,86 @@ class _RequestCreationState extends State<RequestCreation> {
                       shrinkWrap: true,
                     ),
                   ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TextEditingController _siteQuery = TextEditingController();
+  ActiveSiteTSOListsEntity? siteEntity;
+  siteIdBottomSheet() {
+    List<ActiveSiteTSOListsEntity> siteList =
+        srComplaintModel!.activeSiteTSOLists ?? List.empty();
+    return StatefulBuilder(
+      builder: (context, StateSetter setState) => Container(
+        color: Colors.white,
+        height: 400,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                controller: _siteQuery,
+                onChanged: (value) {
+                  setState(() {
+                    siteList =
+                        srComplaintModel!.activeSiteTSOLists!.where((element) {
+                      return (element.siteId
+                              .toString()
+                              .toLowerCase()
+                              .contains(value) ||
+                          element.contactName
+                              .toString()
+                              .toLowerCase()
+                              .contains(value));
+                    }).toList();
+                  });
+                },
+                decoration: FormFieldStyle.buildInputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    labelText: 'Search'),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => RadioListTile(
+                    value: siteList[index],
+                    title: Text(
+                        '${siteList[index].contactName} (${siteList[index].siteId})'),
+                    groupValue: siteEntity,
+                    onChanged: (dynamic value) async {
+                      siteEntity = value;
+                      this.setState(() {
+                        this.siteId = value!.siteId;
+                      });
+                      _siteController.text =
+                          '${siteEntity!.contactName} ($siteId)';
+                      SiteAreaModel siteDetails = await srFormDataController
+                          .getSiteAreaDetails(siteId.toString());
+                      if (siteDetails.siteAreaDetailsModel != null) {
+                        _pin.text =
+                            siteDetails.siteAreaDetailsModel!.sitePincode!;
+                        _state.text =
+                            siteDetails.siteAreaDetailsModel!.siteState!;
+                        _taluk.text =
+                            siteDetails.siteAreaDetailsModel!.siteTaluk!;
+                        _district.text =
+                            siteDetails.siteAreaDetailsModel!.siteDistrict!;
+                      } else
+                        Get.rawSnackbar(
+                            title: "Message", message: siteDetails.respMsg);
+                      _siteQuery.clear();
+                      Get.back();
+                    }),
+                itemCount: siteList.length,
+              ),
+            ),
           ],
         ),
       ),

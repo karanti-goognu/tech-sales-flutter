@@ -1,8 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:device_info/device_info.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarDataByDay.dart';
@@ -26,13 +23,12 @@ import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 class MyApiClientApp {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
-  MyApiClientApp({@required this.httpClient});
+  String? version;
+  MyApiClientApp({required this.httpClient});
 
   getAccessKey() async {
     try {
@@ -60,7 +56,6 @@ class MyApiClientApp {
         'mobile-number': mobile,
       };
 
-      log("requestHeadersEmpIdAndNo: ${requestHeadersEmpIdAndNo}");
 
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
@@ -76,7 +71,7 @@ class MyApiClientApp {
     }
   }
 
-  saveMWPData(String accessKey, String userSecurityKey, String url,
+  saveMWPData(String? accessKey, String userSecurityKey, String url,
       SaveMWPModel saveMWPModel) async {
     try {
       version = VersionClass.getVersion();
@@ -85,12 +80,12 @@ class MyApiClientApp {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
           body: body,
-          // encoding: Encoding.getByName("utf-8")
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print(data);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveMWPResponse saveMWPResponse = SaveMWPResponse.fromJson(data);
@@ -105,7 +100,7 @@ class MyApiClientApp {
     }
   }
 
-  saveVisitRequest(String accessKey, String userSecurityKey, String url,
+  saveVisitRequest(String? accessKey, String userSecurityKey, String url,
       SaveVisitRequest saveVisitRequest) async {
     try {
       version = VersionClass.getVersion();
@@ -118,7 +113,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -133,7 +128,7 @@ class MyApiClientApp {
     }
   }
 
-  saveMeetRequest(String accessKey, String userSecurityKey, String url,
+  saveMeetRequest(String? accessKey, String userSecurityKey, String url,
       SaveMeetRequest saveMeetRequest) async {
     try {
       version = VersionClass.getVersion();
@@ -146,7 +141,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -161,7 +156,7 @@ class MyApiClientApp {
     }
   }
 
-  updateVisitPlan(String accessKey, String userSecurityKey, String url,
+  updateVisitPlan(String? accessKey, String userSecurityKey, String url,
       UpdateVisitResponseModel updateVisitRequest) async {
     try {
       version = VersionClass.getVersion();
@@ -173,7 +168,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
@@ -188,7 +183,7 @@ class MyApiClientApp {
     }
   }
 
-  updateMeetPlan(String accessKey, String userSecurityKey, String url,
+  updateMeetPlan(String? accessKey, String userSecurityKey, String url,
       UpdateMeetRequest saveMeetRequest) async {
     try {
       version = VersionClass.getVersion();
@@ -210,7 +205,7 @@ class MyApiClientApp {
     }
   }
 
-  getMWPData(String accessKey, String userSecurityKey, String url) async {
+  getMWPData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
@@ -219,7 +214,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }else {
           return GetMWPResponse.fromJson(data);
@@ -232,16 +227,16 @@ class MyApiClientApp {
     }
   }
 
-  getDealerList(String accessKey, String userSecurityKey, String url) async {
+  getDealerList(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) );
 //       if (response.statusCode == 200) {
          var data = json.decode(response.body);
 //         if(data["resp_code"] == "DM1005"){
-//           Get.dialog(CustomDialogs().appUserInactiveDialog(
+//           Get.dialog(CustomDialogs.appUserInactiveDialog(
 //               data["resp_msg"]), barrierDismissible: false);
 //         }
 // else {
@@ -255,7 +250,7 @@ class MyApiClientApp {
     }
   }
 
-  getVisitData(String accessKey, String userSecurityKey, String url) async {
+  getVisitData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
@@ -272,7 +267,7 @@ class MyApiClientApp {
     }
   }
 
-  getMeetData(String accessKey, String userSecurityKey, String url) async {
+  getMeetData(String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
@@ -289,7 +284,7 @@ class MyApiClientApp {
     }
   }
 
-  Future<CalendarPlanModel> getCalendarPlan(String accessKey, String userSecurityKey, String url) async {
+  Future<CalendarPlanModel> getCalendarPlan(String? accessKey, String? userSecurityKey, String url) async {
     var data;
     try {
       version = VersionClass.getVersion();
@@ -300,7 +295,7 @@ class MyApiClientApp {
         data = json.decode(response.body);
 
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
       } else {
@@ -314,7 +309,7 @@ class MyApiClientApp {
   }
 
   getCalenderPlanByDay(
-      String accessKey, String userSecurityKey, String url) async {
+      String? accessKey, String? userSecurityKey, String url) async {
 
     try {
       version = VersionClass.getVersion();
@@ -324,7 +319,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         return CalendarDataByDay.fromJson(data);
@@ -337,7 +332,7 @@ class MyApiClientApp {
   }
 
   getTargetSsActualPlan(
-      String accessKey, String userSecurityKey, String url) async {
+      String? accessKey, String? userSecurityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
@@ -346,7 +341,7 @@ class MyApiClientApp {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         return TargetVsActualModel.fromJson(data);

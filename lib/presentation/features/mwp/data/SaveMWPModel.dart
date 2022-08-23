@@ -1,3 +1,5 @@
+
+
 /*
 class SaveMWPModel {
   String mwpMonth;
@@ -139,12 +141,12 @@ class SaveMWPModel {
 import 'package:flutter_tech_sales/presentation/features/mwp/data/GetMWPResponse.dart';
 
 class SaveMWPModel {
-  String mwpMonth;
-  String referenceId;
-  String status;
-  String createdBy;
-  String actionedBy;
-  List<MwpPlannigList> mwpPlannigList;
+  String? mwpMonth;
+  String? referenceId;
+  String? status;
+  String? createdBy;
+  String? actionedBy;
+  List<MwpPlannigList>? mwpPlannigList;
 
 
   SaveMWPModel(
@@ -162,10 +164,14 @@ class SaveMWPModel {
     status = json['status'];
     createdBy = json['createdBy'];
     actionedBy = json['actionedBy'];
+
+    if (!json.containsKey('mwpPlannigList'))
+      mwpPlannigList = <MwpPlannigList>[];
+
     if (json['mwpPlannigList'] != null) {
       mwpPlannigList = <MwpPlannigList>[];
       json['mwpPlannigList'].forEach((v) {
-        mwpPlannigList.add(new MwpPlannigList.fromJson(v));
+        mwpPlannigList!.add(new MwpPlannigList.fromJson(v));
       });
     }
   }
@@ -179,7 +185,7 @@ class SaveMWPModel {
     data['actionedBy'] = this.actionedBy;
     if (this.mwpPlannigList != null) {
       data['mwpPlannigList'] =
-          this.mwpPlannigList.map((v) => v.toJson()).toList();
+          this.mwpPlannigList!.map((v) => v.toJson()).toList();
     }
     return data;
   }

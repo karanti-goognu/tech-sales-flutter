@@ -1,12 +1,14 @@
+
+
 class SrComplaintModel {
-  String respCode;
-  String respMsg;
-  List<ServiceRequestComplaintDepartmentEntity>
+  String? respCode;
+  String? respMsg;
+  List<ServiceRequestComplaintDepartmentEntity>?
       serviceRequestComplaintDepartmentEntity;
-  List<ServiceRequestComplaintRequestEntity>
+  List<ServiceRequestComplaintRequestEntity>?
       serviceRequestComplaintRequestEntity;
-  List<ServiceRequestComplaintTypeEntity> serviceRequestComplaintTypeEntity;
-  List<ActiveSiteTSOListsEntity> activeSiteTSOLists;
+  List<ServiceRequestComplaintTypeEntity>? serviceRequestComplaintTypeEntity;
+  List<ActiveSiteTSOListsEntity>? activeSiteTSOLists;
 
   SrComplaintModel(
       {this.respCode,
@@ -19,36 +21,55 @@ class SrComplaintModel {
   SrComplaintModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('serviceRequestComplaintDepartmentEntity'))
+      serviceRequestComplaintDepartmentEntity =
+      new List<ServiceRequestComplaintDepartmentEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintDepartmentEntity'] != null) {
       serviceRequestComplaintDepartmentEntity =
           new List<ServiceRequestComplaintDepartmentEntity>.empty(growable: true);
       json['serviceRequestComplaintDepartmentEntity'].forEach((v) {
-        serviceRequestComplaintDepartmentEntity
+        serviceRequestComplaintDepartmentEntity!
             .add(new ServiceRequestComplaintDepartmentEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('serviceRequestComplaintRequestEntity'))
+      serviceRequestComplaintRequestEntity =
+      new List<ServiceRequestComplaintRequestEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintRequestEntity'] != null) {
       serviceRequestComplaintRequestEntity =
           new List<ServiceRequestComplaintRequestEntity>.empty(growable: true);
       json['serviceRequestComplaintRequestEntity'].forEach((v) {
-        serviceRequestComplaintRequestEntity
+        serviceRequestComplaintRequestEntity!
             .add(new ServiceRequestComplaintRequestEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('serviceRequestComplaintTypeEntity'))
+      serviceRequestComplaintTypeEntity =
+      new List<ServiceRequestComplaintTypeEntity>.empty(growable: true);
+
     if (json['serviceRequestComplaintTypeEntity'] != null) {
       serviceRequestComplaintTypeEntity =
           new List<ServiceRequestComplaintTypeEntity>.empty(growable: true);
       json['serviceRequestComplaintTypeEntity'].forEach((v) {
-        serviceRequestComplaintTypeEntity
+        serviceRequestComplaintTypeEntity!
             .add(new ServiceRequestComplaintTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('activeSiteTSOLists'))
+      activeSiteTSOLists =
+      new List<ActiveSiteTSOListsEntity>.empty(growable: true);
 
     if (json['activeSiteTSOLists'] != null) {
       activeSiteTSOLists =
       new List<ActiveSiteTSOListsEntity>.empty(growable: true);
       json['activeSiteTSOLists'].forEach((v) {
-        activeSiteTSOLists
+        activeSiteTSOLists!
             .add(new ActiveSiteTSOListsEntity.fromJson(v));
       });
     }
@@ -61,26 +82,26 @@ class SrComplaintModel {
     data['respMsg'] = this.respMsg;
     if (this.serviceRequestComplaintDepartmentEntity != null) {
       data['serviceRequestComplaintDepartmentEntity'] = this
-          .serviceRequestComplaintDepartmentEntity
+          .serviceRequestComplaintDepartmentEntity!
           .map((v) => v.toJson())
           .toList();
     }
     if (this.serviceRequestComplaintRequestEntity != null) {
       data['serviceRequestComplaintRequestEntity'] = this
-          .serviceRequestComplaintRequestEntity
+          .serviceRequestComplaintRequestEntity!
           .map((v) => v.toJson())
           .toList();
     }
     if (this.serviceRequestComplaintTypeEntity != null) {
       data['serviceRequestComplaintTypeEntity'] = this
-          .serviceRequestComplaintTypeEntity
+          .serviceRequestComplaintTypeEntity!
           .map((v) => v.toJson())
           .toList();
     }
 
     if (this.activeSiteTSOLists != null) {
       data['activeSiteTSOLists'] = this
-          .activeSiteTSOLists
+          .activeSiteTSOLists!
           .map((v) => v.toJson())
           .toList();
     }
@@ -92,8 +113,8 @@ class SrComplaintModel {
 
 
 class ServiceRequestComplaintDepartmentEntity {
-  int id;
-  String departmentText;
+  int? id;
+  String? departmentText;
 
   ServiceRequestComplaintDepartmentEntity({this.id, this.departmentText});
 
@@ -111,8 +132,8 @@ class ServiceRequestComplaintDepartmentEntity {
 }
 
 class ServiceRequestComplaintRequestEntity {
-  int id;
-  String requestText;
+  int? id;
+  String? requestText;
 
   ServiceRequestComplaintRequestEntity({this.id, this.requestText});
 
@@ -130,10 +151,10 @@ class ServiceRequestComplaintRequestEntity {
 }
 
 class ServiceRequestComplaintTypeEntity {
-  int id;
-  int requestId;
-  String serviceRequestTypeText;
-  String complaintSeverity;
+  int? id;
+  int? requestId;
+  String? serviceRequestTypeText;
+  String? complaintSeverity;
 
   ServiceRequestComplaintTypeEntity(
       {this.id,
@@ -159,8 +180,8 @@ class ServiceRequestComplaintTypeEntity {
 }
 
 class ActiveSiteTSOListsEntity {
-  int siteId;
-  String contactName;
+  int? siteId;
+  String? contactName;
 
   ActiveSiteTSOListsEntity(
       {this.siteId,

@@ -24,6 +24,7 @@ void main() async {
     },
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   MoengageService.getInstance();
 }
 

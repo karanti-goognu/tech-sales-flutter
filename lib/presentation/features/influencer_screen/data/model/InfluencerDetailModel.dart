@@ -1,34 +1,53 @@
-class InfluencerDetailModel {
-  String respCode;
-  String respMsg;
-  String mobileNumber;
-  InfluencerModel influencerModel;
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
-  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList;
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 
-  InfluencerDetailModel({this.respCode, this.respMsg, this.mobileNumber, this.influencerModel,this.influencerTypeEntitiesList,
-    this.influencerCategoryEntitiesList});
+class InfluencerDetailModel {
+  String? respCode;
+  String? respMsg;
+  String? mobileNumber;
+  InfluencerModel? influencerModel;
+  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList;
+  List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList;
+
+  InfluencerDetailModel(
+      {this.respCode,
+      this.respMsg,
+      this.mobileNumber,
+      this.influencerModel,
+      this.influencerTypeEntitiesList,
+      this.influencerCategoryEntitiesList});
 
   InfluencerDetailModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     mobileNumber = json['mobile_number'];
+
+    if (!json.containsKey('influencer_model')) influencerModel = null;
+
     influencerModel = json['influencer_model'] != null
         ? new InfluencerModel.fromJson(json['influencer_model'])
         : null;
 
+    if (!json.containsKey('influencer_type_entities_list'))
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
+
     if (json['influencer_type_entities_list'] != null) {
-      influencerTypeEntitiesList = new List<InfluencerTypeEntitiesList>.empty(growable: true);
+      influencerTypeEntitiesList =
+          new List<InfluencerTypeEntitiesList>.empty(growable: true);
       json['influencer_type_entities_list'].forEach((v) {
-        influencerTypeEntitiesList
+        influencerTypeEntitiesList!
             .add(new InfluencerTypeEntitiesList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencer_category_entities_list'))
+      influencerCategoryEntitiesList =
+          new List<InfluencerCategoryEntitiesList>.empty(growable: true);
     if (json['influencer_category_entities_list'] != null) {
       influencerCategoryEntitiesList =
-      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
+          new List<InfluencerCategoryEntitiesList>.empty(growable: true);
       json['influencer_category_entities_list'].forEach((v) {
-        influencerCategoryEntitiesList
+        influencerCategoryEntitiesList!
             .add(new InfluencerCategoryEntitiesList.fromJson(v));
       });
     }
@@ -40,45 +59,45 @@ class InfluencerDetailModel {
     data['respMsg'] = this.respMsg;
     data['mobile_number'] = this.mobileNumber;
     if (this.influencerModel != null) {
-      data['influencer_model'] = this.influencerModel.toJson();
+      data['influencer_model'] = this.influencerModel!.toJson();
     }
 
     if (this.influencerTypeEntitiesList != null) {
       data['influencer_type_entities_list'] =
-          this.influencerTypeEntitiesList.map((v) => v.toJson()).toList();
+          this.influencerTypeEntitiesList!.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryEntitiesList != null) {
       data['influencer_category_entities_list'] =
-          this.influencerCategoryEntitiesList.map((v) => v.toJson()).toList();
+          this.influencerCategoryEntitiesList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class InfluencerModel {
-  String ilpRegFlag;
-  int inflId;
-  String inflName;
-  String inflContact;
-  int inflTypeId;
-  String influencerTypeText;
-  int inflCatId;
-  String influencerCategoryText;
-  String ilpMember;
-  int sitesCount;
-  int monthlyPotential;
-  int monthlyLifting;
+  String? ilpRegFlag;
+  int? inflId;
+  String? inflName;
+  String? inflContact;
+  int? inflTypeId;
+  String? influencerTypeText;
+  int? inflCatId;
+  String? influencerCategoryText;
+  String? ilpMember;
+  int? sitesCount;
+  int? monthlyPotential;
+  int? monthlyLifting;
 
   InfluencerModel(
       {this.ilpRegFlag,
-        this.inflId,
-        this.inflName,
-        this.inflContact,
-        this.inflTypeId,
-        this.influencerTypeText,
-        this.inflCatId,
-        this.influencerCategoryText,
-        this.ilpMember,
+      this.inflId,
+      this.inflName,
+      this.inflContact,
+      this.inflTypeId,
+      this.influencerTypeText,
+      this.inflCatId,
+      this.influencerCategoryText,
+      this.ilpMember,
       this.sitesCount,
       this.monthlyPotential,
       this.monthlyLifting});
@@ -116,32 +135,9 @@ class InfluencerModel {
   }
 }
 
-class InfluencerTypeEntitiesList {
-  int inflTypeId;
-  String inflTypeDesc;
-  String infRegFlag;
-
-  InfluencerTypeEntitiesList(
-      {this.inflTypeId, this.inflTypeDesc, this.infRegFlag});
-
-  InfluencerTypeEntitiesList.fromJson(Map<String, dynamic> json) {
-    inflTypeId = json['inflTypeId'];
-    inflTypeDesc = json['inflTypeDesc'];
-    infRegFlag = json['infRegFlag'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['inflTypeId'] = this.inflTypeId;
-    data['inflTypeDesc'] = this.inflTypeDesc;
-    data['infRegFlag'] = this.infRegFlag;
-    return data;
-  }
-}
-
 class InfluencerCategoryEntitiesList {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   InfluencerCategoryEntitiesList({this.inflCatId, this.inflCatDesc});
 
@@ -157,9 +153,3 @@ class InfluencerCategoryEntitiesList {
     return data;
   }
 }
-
-
-
-
-
-

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_action.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_details.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/widgets/request_update_history.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
-import 'package:get/get.dart';
 
 class RequestUpdation extends StatefulWidget {
   final id;
@@ -19,19 +20,19 @@ class RequestUpdation extends StatefulWidget {
 
 class _RequestUpdationState extends State<RequestUpdation>{
   UpdateServiceRequestController updateServiceRequestController = Get.find();
-  Future<ComplaintViewModel> _complaintViewModel;
-  ComplaintViewModel complaintViewModel = new ComplaintViewModel();
+  Future<ComplaintViewModel?>? _complaintViewModel;
+  ComplaintViewModel? complaintViewModel = new ComplaintViewModel();
 
 
-  Future<ComplaintViewModel> getComplaintViewData() async {
-    AccessKeyModel accessKeyModel = new AccessKeyModel();
+  Future<ComplaintViewModel?> getComplaintViewData() async {
+    AccessKeyModel? accessKeyModel = new AccessKeyModel();
     var data = await updateServiceRequestController.getAccessKey();
       accessKeyModel = data;
       updateServiceRequestController.id = widget.id.toString();
       updateServiceRequestController.coverBlockProvidedNo.clear();
       updateServiceRequestController.formwarkRemovalDate.clear();
       updateServiceRequestController.setTabOption(1);
-      await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel.accessKey).then((value) => {
+      await updateServiceRequestController.getRequestUpdateDetailsData(accessKeyModel!.accessKey).then((value) => {
       setState(() {
         complaintViewModel = value;
       }),
@@ -71,7 +72,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
       bottomNavigationBar: BottomNavigator(),
       body: FutureBuilder(
           future: _complaintViewModel,
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return  Align(
                   alignment: Alignment.center,
@@ -189,7 +190,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(1);
                                             },
                                             child: Chip(
-                                              label: Text('Details'),
+                                              label: Text(StringConstants.tabDetails),
                                               backgroundColor: controller.option == 1
                                                   ? Colors.blue.withOpacity(0.2)
                                                   : Colors.white,
@@ -206,7 +207,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(2);
                                             },
                                             child: Chip(
-                                                label: Text('Action'),
+                                                label: Text(StringConstants.tabAction),
                                                 shape: StadiumBorder(
                                                   side: BorderSide(
                                                       color:controller. option == 2
@@ -222,7 +223,7 @@ class _RequestUpdationState extends State<RequestUpdation>{
                                               controller.setTabOption(3);
                                             },
                                             child: Chip(
-                                              label: Text('History'),
+                                              label: Text(StringConstants.tabHistory),
                                               backgroundColor: controller. option == 3
                                                   ? Colors.blue.withOpacity(0.2)
                                                   : Colors.white,

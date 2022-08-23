@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
-import 'package:intl/intl.dart';
 
 class RequestUpdateDetails extends StatefulWidget {
   final id;
-  final ComplaintViewModel complaintViewModel;
+  final ComplaintViewModel? complaintViewModel;
   RequestUpdateDetails({this.id, this.complaintViewModel});
 
   @override
@@ -23,44 +23,44 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
 
   setValues() {
     setState(() {
-      updateServiceRequestController.complaintID.text = widget.complaintViewModel.id.toString();
-      updateServiceRequestController. allocatedToID.text = widget.complaintViewModel.referenceId;
-      updateServiceRequestController. allocatedToName.text = widget.complaintViewModel.allocatedToName;
-      updateServiceRequestController. dateOfComplaint.text = widget.complaintViewModel.srComplaintDate;
-      updateServiceRequestController.daysOpen.text = widget.complaintViewModel.dayOpen.toString();
-      updateServiceRequestController.sitePotential.text = widget.complaintViewModel.sitePotentialMt;
-      updateServiceRequestController.department.text = widget.complaintViewModel.deaprtmentText;
-      updateServiceRequestController.requestType.text = widget.complaintViewModel.requestText;
-      updateServiceRequestController.requestSubType.text = widget.complaintViewModel.srcSubtypeMappingModal==null || widget.complaintViewModel.srcSubtypeMappingModal.isEmpty?' ': widget.complaintViewModel.srcSubtypeMappingModal[0].requestTypeText;
-      updateServiceRequestController.customerType.text = widget.complaintViewModel.creatorType;
-      updateServiceRequestController.severity.text = widget.complaintViewModel.severity;
-      updateServiceRequestController.customerID.text = widget.complaintViewModel.creatorId.toString();
-      updateServiceRequestController.requestorName.text = widget.complaintViewModel.creatorName ?? ' ';
-      updateServiceRequestController.requestorContact.text = widget.complaintViewModel.creatorContactNumber;
-      updateServiceRequestController.description.text = widget.complaintViewModel.description;
-      updateServiceRequestController.state.text = widget.complaintViewModel.state;
-      updateServiceRequestController.state.text = widget.complaintViewModel.state;
-      updateServiceRequestController.district.text = widget.complaintViewModel.district;
-      updateServiceRequestController.taluk.text = widget.complaintViewModel.taluk;
-      updateServiceRequestController.pin.text = widget.complaintViewModel.pincode;
-      if(updateServiceRequestController.coverBlockProvidedNo!=null && updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
-        if(widget.complaintViewModel.coverBlockProvidedNo==null){
+      updateServiceRequestController.complaintID.text = widget.complaintViewModel!.id.toString();
+      updateServiceRequestController. allocatedToID.text = widget.complaintViewModel!.referenceId!;
+      updateServiceRequestController. allocatedToName.text = widget.complaintViewModel!.allocatedToName!;
+      updateServiceRequestController. dateOfComplaint.text = widget.complaintViewModel!.srComplaintDate!;
+      updateServiceRequestController.daysOpen.text = widget.complaintViewModel!.dayOpen.toString();
+      updateServiceRequestController.sitePotential.text = widget.complaintViewModel!.sitePotentialMt!;
+      updateServiceRequestController.department.text = widget.complaintViewModel!.deaprtmentText!;
+      updateServiceRequestController.requestType.text = widget.complaintViewModel!.requestText!;
+      updateServiceRequestController.requestSubType.text = widget.complaintViewModel!.srcSubtypeMappingModal==null || widget.complaintViewModel!.srcSubtypeMappingModal!.isEmpty?' ': widget.complaintViewModel!.srcSubtypeMappingModal![0].requestTypeText!;
+      updateServiceRequestController.customerType.text = widget.complaintViewModel!.creatorType!;
+      updateServiceRequestController.severity.text = widget.complaintViewModel!.severity!;
+      updateServiceRequestController.customerID.text = widget.complaintViewModel!.creatorId.toString();
+      updateServiceRequestController.requestorName.text = widget.complaintViewModel!.creatorName ?? ' ';
+      updateServiceRequestController.requestorContact.text = widget.complaintViewModel!.creatorContactNumber!;
+      updateServiceRequestController.description.text = widget.complaintViewModel!.description!;
+      updateServiceRequestController.state.text = widget.complaintViewModel!.state!;
+      updateServiceRequestController.state.text = widget.complaintViewModel!.state!;
+      updateServiceRequestController.district.text = widget.complaintViewModel!.district!;
+      updateServiceRequestController.taluk.text = widget.complaintViewModel!.taluk!;
+      updateServiceRequestController.pin.text = widget.complaintViewModel!.pincode!;
+      if(updateServiceRequestController.coverBlockProvidedNo.text.isEmpty){
+        if(widget.complaintViewModel!.coverBlockProvidedNo==null){
           updateServiceRequestController.coverBlockProvidedNo.text = "";
         }else{
-          updateServiceRequestController.coverBlockProvidedNo.text = widget.complaintViewModel.coverBlockProvidedNo;
+          updateServiceRequestController.coverBlockProvidedNo.text = widget.complaintViewModel!.coverBlockProvidedNo!;
         }
       }
 
-      if(updateServiceRequestController.formwarkRemovalDate!=null && updateServiceRequestController.formwarkRemovalDate.text.isEmpty){
-        if(widget.complaintViewModel.formwarkRemovalDate==null){
+      if(updateServiceRequestController.formwarkRemovalDate.text.isEmpty){
+        if(widget.complaintViewModel!.formwarkRemovalDate==null){
           updateServiceRequestController.formwarkRemovalDate.text = "";
         }else{
-          updateServiceRequestController.formwarkRemovalDate.text = widget.complaintViewModel.formwarkRemovalDate;
+          updateServiceRequestController.formwarkRemovalDate.text = widget.complaintViewModel!.formwarkRemovalDate!;
         }
       }
 
-      for(int i=0 ; i<widget.complaintViewModel.srcSubtypeMappingModal.length ; i++){
-        if((updateServiceRequestController.requestType.text=='SERVICE REQUEST') && widget.complaintViewModel.srcSubtypeMappingModal[i].requestTypeText == "SLAB SUPERVISION"){
+      for(int i=0 ; i<widget.complaintViewModel!.srcSubtypeMappingModal!.length ; i++){
+        if((updateServiceRequestController.requestType.text=='SERVICE REQUEST') && widget.complaintViewModel!.srcSubtypeMappingModal![i].requestTypeText == "SLAB SUPERVISION"){
           isSlabVisible = true;
         }
       }
@@ -145,7 +145,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             FormFieldStyle.buildInputDecoration(labelText: "Request Type*"),
           ),
           SizedBox(height: 16),
-          displayChipForRequestSubType("Request Sub-type*", widget.complaintViewModel.srcSubtypeMappingModal),
+          displayChipForRequestSubType("Request Sub-type*", widget.complaintViewModel!.srcSubtypeMappingModal),
           SizedBox(height: 16),
           Visibility(
             visible: isSlabVisible, child:slab()),
@@ -294,7 +294,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
             ),
             onPressed: () async {
               print("here");
-              final DateTime picked = await showDatePicker(
+              final DateTime? picked = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2001),
@@ -327,7 +327,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
     //:Container();
   }
 
-  Widget displayChipForRequestSubType(String title, List<SrcSubtypeMappingModal> list) {
+  Widget displayChipForRequestSubType(String title, List<SrcSubtypeMappingModal>? list) {
     return Padding(
         padding: EdgeInsets.only(
           left: (10),
@@ -355,7 +355,7 @@ class _RequestUpdateDetailsState extends State<RequestUpdateDetails> {
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Chip(
                     label: Text(
-                      e.requestTypeText,
+                      e.requestTypeText!,
                       style: TextStyle(
                           fontFamily: "Muli",
                           color: Colors.black,

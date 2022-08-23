@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/influencer_meet_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/view/visit_view.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:get/get.dart';
 
 class AddEvent extends StatefulWidget {
   @override
@@ -17,7 +17,6 @@ class AddEvent extends StatefulWidget {
 
 class AddEventScreenPageState extends State<AddEvent> {
   AddEventController _addEventController = Get.find();
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +47,6 @@ class AddEventScreenPageState extends State<AddEvent> {
                   Navigator.of(context).pop();
                   if(_addEventController.selectedView == "Visit"){
                     this._addEventController.visitDateTime = "Visit Date";
-
-
                   }
                 },
               ),
@@ -101,7 +98,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                           child: Obx(
                                 () => DropdownButton<String>(
                               value: _addEventController.selectedView,
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 _addEventController.selectedView = newValue;
                                 if(_addEventController.selectedView=='Service Requests'){
                                   Get.offNamed(Routes.SERVICE_REQUEST_CREATION);
@@ -119,7 +116,6 @@ class AddEventScreenPageState extends State<AddEvent> {
                                   child: Text(value,
                                     style: TextStyle(
                                         fontSize: SizeConfig.safeBlockHorizontal*3.8,
-
                                         fontFamily: "Muli"),
                                   ),
                                 );
@@ -134,8 +130,7 @@ class AddEventScreenPageState extends State<AddEvent> {
                 height: 30,
               ),
               Obx(() => (_addEventController.selectedView == "Visit")
-                  ? AddEventVisit()
-                  :
+                  ? AddEventVisit():
               (_addEventController.selectedView == "Influencers meet")
                   ? AddEventInfluencerMeet():
               AddEventInfluencerMeet()),

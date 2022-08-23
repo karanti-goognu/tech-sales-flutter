@@ -1,8 +1,10 @@
+
+
 class SaveEventResponse {
-  String respCode;
-  String respMsg;
-  String referenceId;
-  int eventId;
+  String? respCode;
+  String? respMsg;
+  String? referenceId;
+  int? eventId;
 
   SaveEventResponse(
       {this.respCode, this.respMsg, this.referenceId, this.eventId});

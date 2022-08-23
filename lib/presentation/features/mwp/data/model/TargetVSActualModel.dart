@@ -1,11 +1,13 @@
+
+
 class TargetVsActualModel {
-  String respMsg;
-  int siteConversionCountTarget;
-  int siteVisitsCountTarget;
-  int counterMeetCountTarget;
-  int siteConversionCountActual;
-  int siteVisitsCountActual;
-  int counterMeetCountActual;
+  String? respMsg;
+  int? siteConversionCountTarget;
+  int? siteVisitsCountTarget;
+  int? counterMeetCountTarget;
+  int? siteConversionCountActual;
+  int? siteVisitsCountActual;
+  int? counterMeetCountActual;
 
   TargetVsActualModel(
       {this.respMsg,

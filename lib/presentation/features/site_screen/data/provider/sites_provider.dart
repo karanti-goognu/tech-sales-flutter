@@ -1,8 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/UpdateLeadResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
@@ -10,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/data/models
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteFloorResponse.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SitesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/UpdateSiteModel.dart';
@@ -21,32 +28,30 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MyApiClientSites {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClientSites({@required this.httpClient});
+  MyApiClientSites({required this.httpClient});
 
-  getAccessKey() async {
+  Future<AccessKeyModel> getAccessKey() async {
+    late AccessKeyModel accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-        return accessKeyModel;
+         accessKeyModel = AccessKeyModel.fromJson(data);
       } else
         print('error');
     } catch (_) {
       print('exception ${_.toString()}');
     }
+    return accessKeyModel;
   }
 
   Future getAccessKeyNew() async {
@@ -71,7 +76,7 @@ class MyApiClientSites {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': version,
+        'app-version': version!,
         'reference-id': empId,
         'mobile-number': mobile,
       };
@@ -118,12 +123,12 @@ class MyApiClientSites {
     }
   }
 
-  getSitesData(String accessKey, String securityKey, String url) async {
+  getSitesData(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
+              accessKey, securityKey, version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         SitesListModel sitesListModel = SitesListModel.fromJson(data);
@@ -152,8 +157,8 @@ class MyApiClientSites {
     }
   }
 
-  getSiteDetailsData(String accessKey, String userSecurityKey, int siteId,
-      String empID, int stageId) async {
+
+  getSiteDetailsData(String? accessKey, String? userSecurityKey, int? siteId, String? empID) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(
@@ -164,29 +169,23 @@ class MyApiClientSites {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        log('Data::::::${json.encode(data)}');
-        log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
+
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-              barrierDismissible: false);
-        } else {
-          ViewSiteDataResponse viewSiteDataResponse =
-              ViewSiteDataResponse.fromJson(data);
-          if (stageId != null) {
-            viewSiteDataResponse.siteFloorsEntity =
-                await getFloorDetail(accessKey, userSecurityKey, stageId);
-          }
-          if (viewSiteDataResponse.respCode == "ST2010") {
-            return viewSiteDataResponse;
-          } else if (viewSiteDataResponse.respCode == "ST2011") {
-            Get.back();
-            Get.dialog(
-                CustomDialogs().showDialog(viewSiteDataResponse.respMsg));
-          } else {
-            Get.back();
-            Get.dialog(CustomDialogs().showDialog("Some Error Occured !!! "));
-          }
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }else{
+        ViewSiteDataResponse viewSiteDataResponse = ViewSiteDataResponse.fromJson(data);
+        if (viewSiteDataResponse.respCode == "ST2010") {
+          return viewSiteDataResponse;
+        } else if (viewSiteDataResponse.respCode == "ST2011") {
+          // Get.back();
+          Get.dialog(CustomDialogs.showDialog(viewSiteDataResponse.respMsg!));
         }
+        else {
+          Get.back();
+          Get.dialog(CustomDialogs.showDialog("Some Error Occured !!! "));
+        }
+      }
       } else
         print('error');
     } catch (_) {
@@ -194,22 +193,23 @@ class MyApiClientSites {
     }
   }
 
-  Future<List<SiteFloorsEntity>> getFloorDetail(
-      String accessKey, String userSecurityKey, int stageId) async {
-    List<SiteFloorsEntity> siteList = List.empty(growable: true);
+
+  Future<List<SiteFloorsEntity>> getSiteFloorList(String accessKey, String userSecurityKey, int stageId, dynamic siteId) async{
+    List<SiteFloorsEntity> siteList = List<SiteFloorsEntity>.empty(growable: true);
     try {
       version = VersionClass.getVersion();
+      print(UrlConstants.getFloorDetail+"$stageId"+"&siteId=$siteId");
       final response = await get(
-        Uri.parse(UrlConstants.getFloorDetail + stageId.toString()),
+        Uri.parse(UrlConstants.getFloorDetail+"$stageId"+"&siteId=$siteId"),
         headers: requestHeadersWithAccessKeyAndSecretKey(
             accessKey, userSecurityKey, version),
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        List data = json.decode(response.body);
-        data.forEach((element) {
-          SiteFloorsEntity siteFloorsEntity =
-              SiteFloorsEntity.fromJson(element);
-          siteList.add(siteFloorsEntity);
+        var data = json.decode(response.body);
+        SiteFloorResponse siteFloorResponse = SiteFloorResponse.fromJson(data);
+        siteFloorResponse.sitesEntity.forEach((element) {
+          siteList.add(element);
         });
       } else {
         print('error');
@@ -240,14 +240,9 @@ class MyApiClientSites {
     }
 
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
-
       gv.currentId = empId;
 
       request.fields['uploadImageWithUpdateSiteModel'] =
@@ -257,100 +252,89 @@ class MyApiClientSites {
         request
             .send()
             .then((result) async {
-              http.Response.fromStream(result).then((response) {
-                var data = json.decode(response.body);
-                UpdateLeadResponseModel updateLeadResponseModel =
-                    UpdateLeadResponseModel.fromJson(data);
-                if (updateLeadResponseModel.respCode == "ST2033") {
-                  Get.back();
-                  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
-                } else {
-                  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg));
-                }
-              });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+
+          http.Response.fromStream(result).then((response) {
+            var data = json.decode(response.body);
+            UpdateLeadResponseModel updateLeadResponseModel =
+            UpdateLeadResponseModel.fromJson(data);
+            if (updateLeadResponseModel.respCode == "ST2033") {
+              Get.back();
+              Get.dialog(CustomDialogs
+                  .showDialog(updateLeadResponseModel.respMsg!));
+            } else {
+              Get.dialog(CustomDialogs
+                  .showDialog(updateLeadResponseModel.respMsg!));
+            }
+          });
+        });
       } catch (_) {
         print('exception ${_.toString()}');
       }
     });
   }
 
-  updateVersion2SiteData(accessKey, String userSecurityKey, updateDataRequest,
-      List<File> list, BuildContext context, int siteId) async {
+  updateVersion2SiteData(accessKey, String? userSecurityKey, updateDataRequest,
+      List<File> list, BuildContext context, int? siteId) async {
     version = VersionClass.getVersion();
-    http.MultipartRequest request = new http.MultipartRequest(
-        'POST', Uri.parse(UrlConstants.updateVersion4SiteData));
-    request.headers.addAll(headersWithAccessAndSecretWithoutContent(
-        accessKey, userSecurityKey, version));
-
+    http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateVersion4SiteData));
+    request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey, version) );
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));
-
     for (var file in list) {
       String fileName = file.path.split("/").last;
       var stream = new http.ByteStream(file.openRead());
       stream.cast();
-
       var length = await file.length();
-
       var multipartFileSign =
-          new http.MultipartFile('file', stream, length, filename: fileName);
-
+      new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
     }
-
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       gv.currentId = empId;
 
-      request.fields['uploadImageWithUpdateSiteModel'] =
-          json.encode(updateDataRequest);
-      log("Site Body--> " + json.encode(updateDataRequest));
+      request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
+      log("Site Body--> "+json.encode(updateDataRequest));
+      log(request.files.toString());
       try {
         request
             .send()
             .then((result) async {
-              http.Response.fromStream(result).then((response) {
-                var data = json.decode(response.body);
-                if (data["resp_code"] == "DM1005") {
-                  Get.dialog(
-                      CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-                      barrierDismissible: false);
-                } else {
-                  UpdateSiteModel updateLeadResponseModel =
-                      UpdateSiteModel.fromJson(data);
-                  if (updateLeadResponseModel.respCode == "ST2033") {
-                    Get.back();
-                    Get.dialog(CustomDialogs()
-                        .showDialog(updateLeadResponseModel.respMsg));
-                  } else {
-                    Get.dialog(CustomDialogs()
-                        .showDialog(updateLeadResponseModel.respMsg));
-                  }
-                }
-              });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+          http.Response.fromStream(result).then((response) {
+            var data = json.decode(response.body);
+            if(data["resp_code"] == "DM1005"){
+              Get.dialog(CustomDialogs.appUserInactiveDialog(
+                  data["resp_msg"]), barrierDismissible: false);
+            }else{
+            UpdateSiteModel updateLeadResponseModel =
+            UpdateSiteModel.fromJson(data);
+            print(updateLeadResponseModel.respMsg);
+            print(jsonEncode(updateLeadResponseModel));
+            if (updateLeadResponseModel.respCode == "ST2033") {
+              Get.back();
+              Get.dialog(CustomDialogs
+                  .showDialog(updateLeadResponseModel.respMsg!));
+            }
+            else {
+              Get.dialog(CustomDialogs
+                  .showDialog(updateLeadResponseModel.respMsg!));
+            }
+          }
+          });
+        });
       } catch (_) {
         print('exception ${_.toString()}');
       }
     });
   }
 
-  Future<SitesListModel> getSearchDataNew(String accessKey,
-      String userSecurityKey, String empID, String searchText) async {
-    SitesListModel sitesListModel;
+
+
+  Future<SitesListModel?> getSearchDataNew(String? accessKey,
+      String? userSecurityKey, String? empID, String searchText) async {
+    SitesListModel? sitesListModel;
     try {
       version = VersionClass.getVersion();
       String url =
@@ -369,12 +353,10 @@ class MyApiClientSites {
     return sitesListModel;
   }
 
-  Future<SiteVisitResponseModel> siteVisitSave(String accessKey,
-      String userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-    SiteVisitResponseModel siteVisitResponseModel;
-    Future.delayed(Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator())));
-    try {
+  Future<SiteVisitResponseModel?>siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+    SiteVisitResponseModel? siteVisitResponseModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+    try{
       version = VersionClass.getVersion();
       var response = await http.post(
         Uri.parse(UrlConstants.saveUpdateSiteVisit),
@@ -389,11 +371,8 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-              barrierDismissible: false);
-        } else {
-          siteVisitResponseModel =
-              SiteVisitResponseModel.fromJson(json.decode(response.body));
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
         }
       } else {
         print('error');
@@ -404,7 +383,7 @@ class MyApiClientSites {
     return siteVisitResponseModel;
   }
 
-  getPendingSupplyData(String accessKey, String securityKey, String url) async {
+  getPendingSupplyData(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
@@ -413,8 +392,7 @@ class MyApiClientSites {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         PendingSupplyData pendingSupplyData = PendingSupplyData.fromJson(data);
-        PendingSupplyDataResponse pendingSupplyDataResponse =
-            pendingSupplyData.response;
+        PendingSupplyDataResponse? pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
       } else
         print('error');
@@ -423,20 +401,18 @@ class MyApiClientSites {
     }
   }
 
-  getPendingSupplyDetails(
-      String accessKey, String securityKey, String url) async {
+
+  getPendingSupplyDetails(String? accessKey, String securityKey, String url) async {
     try {
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, securityKey, version));
-      if (response.statusCode == 200) {
+              accessKey, securityKey, version) );
+      if(response.statusCode==200) {
         var data = json.decode(response.body);
         log("Data: ${json.encode(data)}");
-        PendingSupplyDetails pendingSupplyData =
-            PendingSupplyDetails.fromJson(data);
-        PendingSupplyDetailsEntity pendingSupplyDataResponse =
-            pendingSupplyData.response;
+        PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
+        PendingSupplyDetailsEntity? pendingSupplyDataResponse = pendingSupplyData.response;
         return pendingSupplyDataResponse;
       } else
         print('error');
@@ -445,31 +421,26 @@ class MyApiClientSites {
     }
   }
 
-  Future<PendingSuppliesDetailsModel> getPendingSupplyDetailsNew(
-      String accessKey, String userSecretKey, String url) async {
-    PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
-    Future.delayed(Duration.zero,
-        () => Get.dialog(Center(child: CircularProgressIndicator())));
+  Future<PendingSuppliesDetailsModel?> getPendingSupplyDetailsNew(String accessKey,
+      String? userSecretKey, String url) async {
+    PendingSuppliesDetailsModel? _pendingSuppliesDetailsModel;
+    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
-      var response = await http.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey, version));
+      var response = await http.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-              barrierDismissible: false);
-        } else {
-          PendingSupplyDetails pendingSupplyData =
-              PendingSupplyDetails.fromJson(data);
-          PendingSupplyDetailsEntity pendingSupplyDetailsEntity =
-              pendingSupplyData.response;
-          _pendingSuppliesDetailsModel =
-              pendingSupplyDetailsEntity.pendingSuppliesDetailsModel;
+
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
         }
-      } else {
+        else {
+          PendingSupplyDetails pendingSupplyData = PendingSupplyDetails.fromJson(data);
+          PendingSupplyDetailsEntity pendingSupplyDetailsEntity = pendingSupplyData.response!;
+          _pendingSuppliesDetailsModel = pendingSupplyDetailsEntity.pendingSuppliesDetailsModel;
+        }} else {
         print('error');
       }
     } catch (e) {
@@ -479,16 +450,17 @@ class MyApiClientSites {
     return _pendingSuppliesDetailsModel;
   }
 
-  updatePendingSupplyDetails(String accessKey, String securityKey, String url,
-      Map<String, dynamic> jsonData) async {
+
+  updatePendingSupplyDetails(String? accessKey, String securityKey, String url,Map<String, dynamic> jsonData) async {
     try {
       version = VersionClass.getVersion();
       final response = await http.put(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, securityKey, version),
           body: json.encode(jsonData));
-      log("" + json.encode(jsonData));
-      if (response.statusCode == 200) {
+
+       log("pending supply"+json.encode(jsonData));
+      if(response.statusCode==200) {
         String data = response.body;
         return json.decode(data);
       } else
@@ -497,9 +469,9 @@ class MyApiClientSites {
   }
 
   ///district list for filter
-  Future<SiteDistrictListModel> getSiteDistList(
-      String accessKey, String userSecretKey, String empID) async {
-    SiteDistrictListModel siteDistrictListModel;
+
+  Future<SiteDistrictListModel?> getSiteDistList(String? accessKey, String? userSecretKey, String empID) async {
+    SiteDistrictListModel? siteDistrictListModel;
     try {
       version = VersionClass.getVersion();
 
@@ -508,12 +480,12 @@ class MyApiClientSites {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey, version));
       var data = json.decode(response.body);
-      if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-            barrierDismissible: false);
-      } else {
-        siteDistrictListModel =
-            SiteDistrictListModel.fromJson(json.decode(response.body));
+
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
       }
     } catch (e) {
       print("Exception at Site Repo $e");
@@ -521,12 +493,9 @@ class MyApiClientSites {
     return siteDistrictListModel;
   }
 
-  Future<KittyBagsListModel> getKittyBagsList(
-    String accessKey,
-    String partyCode,
-    String userSecretKey,
-  ) async {
-    KittyBagsListModel kittyBagsListModel;
+
+  Future<KittyBagsListModel?> getKittyBagsList(String? accessKey, String? partyCode, String? userSecretKey,) async {
+    KittyBagsListModel? kittyBagsListModel;
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.siteKittyPoints + "$partyCode";
@@ -536,13 +505,12 @@ class MyApiClientSites {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey, version));
       var data = json.decode(response.body);
-      print(data);
-      if (data["resp_code"] == "DM1005") {
-        Get.dialog(CustomDialogs().appUserInactiveDialog(data["resp_msg"]),
-            barrierDismissible: false);
-      } else {
-        kittyBagsListModel =
-            KittyBagsListModel.fromJson(json.decode(response.body));
+
+      if(data["resp_code"] == "DM1005"){
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
+            data["resp_msg"]), barrierDismissible: false);
+      }else {
+        kittyBagsListModel = KittyBagsListModel.fromJson(json.decode(response.body));
       }
     } catch (e) {
       print("Exception at Site Repo $e");

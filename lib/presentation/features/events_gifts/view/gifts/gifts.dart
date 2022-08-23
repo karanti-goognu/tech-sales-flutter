@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/gifts_controlller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/gift_type.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/gifts/view_logs.dart';
@@ -8,10 +12,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:intl/intl.dart';
 
 class GiftsView extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _GiftsViewState extends State<GiftsView> {
     'Stock In Hand',
     'Utilized'
   ];
-  String giftTypeText,_giftInHandQty;
+  String? giftTypeText, _giftInHandQty;
   List _giftsCategoriesValueList = [];
   List _giftCategoriesList = [];
   TextEditingController _comments = TextEditingController();
@@ -35,20 +35,20 @@ class _GiftsViewState extends State<GiftsView> {
     _giftsCategoriesValueList = [];
     _giftCategoriesList = [];
     _giftsCategoriesValueList = [
-      _giftController.giftStockModelList[_giftController.selectedDropdown].giftOpeningStockQty,
-      _giftController.giftStockModelList[_giftController.selectedDropdown].giftInHandQty,
-      _giftController.giftStockModelList[_giftController.selectedDropdown].giftUtilisedQty
+      _giftController.giftStockModelList[_giftController.selectedDropdown]
+          .giftOpeningStockQty,
+      _giftController
+          .giftStockModelList[_giftController.selectedDropdown].giftInHandQty,
+      _giftController
+          .giftStockModelList[_giftController.selectedDropdown].giftUtilisedQty
     ];
     for (int i = 0; i < _giftsCategoriesNameList.length; i++) {
       _giftCategoriesList.add(GiftsCategories(
           _giftsCategoriesNameList[i], _giftsCategoriesValueList[i]));
-     // print("print ->"+_giftCategoriesList[i].count.toString()+" "+_giftCategoriesList[i].text+",,"+_giftController.selectedDropdown.toString()+".."+ _giftController.giftStockModelList[0].giftInHandQty.toString()+" "+_giftController.giftStockModelList[1].giftInHandQty.toString()+"  "+_giftController.giftStockModelList[2].giftInHandQty.toString());
     }
-    _giftInHandQtyNew.text=_giftCategoriesList[1].count.toString();
-    _giftInHandQty=_giftCategoriesList[1].count.toString();
-    setState(() {
-
-    });
+    _giftInHandQtyNew.text = _giftCategoriesList[1].count.toString();
+    _giftInHandQty = _giftCategoriesList[1].count.toString();
+    setState(() {});
   }
 
   TextStyle _myFormFont() {
@@ -60,24 +60,19 @@ class _GiftsViewState extends State<GiftsView> {
 
   @override
   void initState() {
-    _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
+    _giftController
+        .getGiftStockData()
+        .whenComplete(() => addDateForGiftsView());
     final DateFormat formatter = DateFormat("MMMM");
     DateTime date = DateTime.now();
     var currentMonth = formatter.format(date);
-    _giftController.monthYear='$currentMonth-${date.year.toString().substring(2)}';
-//    _giftController.getViewLogsData("${_giftController.monthYear}");
+    _giftController.monthYear =
+        '$currentMonth-${date.year.toString().substring(2)}';
     super.initState();
   }
 
   @override
-  void dispose() {
-    // _giftController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: BackFloatingButton(),
@@ -116,16 +111,16 @@ class _GiftsViewState extends State<GiftsView> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black12)]
-              ),
+                  borderRadius: BorderRadius.circular(4),
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(color: Colors.black12)]),
               child: DropdownButtonHideUnderline(
-                  child: Obx(() => _giftController.giftStockModelList.isEmpty ||
+                child: Obx(
+                  () => _giftController.giftStockModelList.isEmpty ||
                           _giftController.giftStockModelList == null
                       ? Container()
                       : DropdownButton(
-                          onChanged: (newValue) {
+                          onChanged: (dynamic newValue)  {
                             var x = _giftController.giftStockModelList
                                 .toList()
                                 .indexWhere((e) {
@@ -135,13 +130,13 @@ class _GiftsViewState extends State<GiftsView> {
                               _giftController.selectedDropdown = newValue;
                               giftTypeText = _giftController
                                   .giftStockModelList[x].giftTypeText;
-                              _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
                             });
+                             _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
 
                           },
-                    value: _giftController.selectedDropdown,
-                    items: _giftController.giftStockModelList
-                              .map<DropdownMenuItem>((value) {
+                          value: _giftController.selectedDropdown,
+                          items: _giftController.giftStockModelList
+                              .map<DropdownMenuItem<Object>>((value) {
                             return DropdownMenuItem(
                               value: value.giftTypeId,
                               child: Text(
@@ -150,13 +145,15 @@ class _GiftsViewState extends State<GiftsView> {
                               ),
                             );
                           }).toList(),
-                        ))),
+                        ),
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
             ),
             Flexible(
-                child:  ListView.separated(
+                child: ListView.separated(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -170,28 +167,26 @@ class _GiftsViewState extends State<GiftsView> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-
-                            index == 1 && _giftController.selectedDropdown!=0
+                            index == 1 && _giftController.selectedDropdown != 0
                                 ? Container(
                                     padding: EdgeInsets.zero,
                                     width: 70,
                                     height: 40,
-                                    child:
-                                    TextFormField(
+                                    child: TextFormField(
                                       controller: _giftInHandQtyNew,
                                       textAlign: TextAlign.right,
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       keyboardType: TextInputType.phone,
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blue
-                                      ),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         labelText: '',
                                       ),
-//                                      initialValue: _giftCategoriesList[index].count.toString(),
                                     ))
                                 : Text(
                                     _giftCategoriesList[index].count.toString(),
@@ -218,10 +213,9 @@ class _GiftsViewState extends State<GiftsView> {
               () => _giftController.selectedDropdown == 0
                   ? Container()
                   : Container(
-                color: Colors.white,
-                    child: TextFormField(
+                      color: Colors.white,
+                      child: TextFormField(
                         controller: _comments,
-//                        maxLength: 100,
                         onChanged: (value) async {},
                         style: TextStyle(
                             fontSize: 18,
@@ -232,30 +226,11 @@ class _GiftsViewState extends State<GiftsView> {
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Comments"),
                       ),
-                  ),
+                    ),
             ),
             SizedBox(
               height: 14,
             ),
-            // RaisedButton(
-            //   onPressed: () => _giftController.selectedDropdown == 0
-            //       ? Get.bottomSheet(GiftTypeBottomSheet(giftController: _giftController),)
-            //       : _giftController.addGiftStock(
-            //           comment: _comments.text,
-            //           giftTypeId: _giftController.selectedDropdown.toString(),
-            //           giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
-            //
-            //   ),
-            //   color: HexColor("#1C99D4"),
-            //   child: Text(
-            //     "Update Inventory",
-            //     style: TextStyle(
-            //         color: Colors.white,
-            //         fontWeight: FontWeight.bold,
-            //         // letterSpacing: 2,
-            //         fontSize: 17),
-            //   ),
-            // ),
             buildBody(context),
             SizedBox(
               height: 24,
@@ -266,44 +241,46 @@ class _GiftsViewState extends State<GiftsView> {
     );
   }
 
-  Widget buildBody(context){
+  Widget buildBody(context) {
     return Container(
-      child: StatefulBuilder( builder: (BuildContext context, StateSetter setstates){
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: HexColor("#1C99D4"),
-          ),
-          onPressed: () => _giftController.selectedDropdown == 0
-              ?
-          _settingModalBottomSheet(context,setstates)
-              : _giftInHandQtyNew.text.isEmpty?
-          Get.dialog(CustomDialogs().showMessage("Please enter value"))
-          :Get.dialog(showConfirmationDialog("Are you sure you want to submit this entry? ")),
-          child: Text(
-            "Update Inventory",
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
-                fontSize: 17),
-          ),
-        );
-      },
+      child: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setstates) {
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: HexColor("#1C99D4"),
+            ),
+            onPressed: () => _giftController.selectedDropdown == 0
+                ? _settingModalBottomSheet(context, setstates)
+                : _giftInHandQtyNew.text.isEmpty
+                    ? Get.dialog(
+                        CustomDialogs.showMessage("Please enter value"))
+                    : Get.dialog(showConfirmationDialog(
+                        "Are you sure you want to submit this entry? ")),
+            child: Text(
+              "Update Inventory",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17),
+            ),
+          );
+        },
       ),
     );
   }
 
-  void _settingModalBottomSheet(context,StateSetter setstates) {
+  void _settingModalBottomSheet(context, StateSetter setstates) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return GiftTypeBottomSheet(giftController: _giftController,setstates:setstates);
+          return GiftTypeBottomSheet(
+              giftController: _giftController, setstates: setstates);
         }).whenComplete(() {
-
-      _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
-
+      _giftController
+          .getGiftStockData()
+          .whenComplete(() => addDateForGiftsView());
     });
   }
 
@@ -347,12 +324,11 @@ class _GiftsViewState extends State<GiftsView> {
         ),
         TextButton(
           child: Text(
-            'NO',
+            'No',
             style: GoogleFonts.roboto(
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                //  fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
@@ -362,12 +338,10 @@ class _GiftsViewState extends State<GiftsView> {
       ],
     );
   }
-
 }
 
-
 class GiftsCategories {
-  int count;
+  int? count;
   String text;
   GiftsCategories(this.text, this.count);
 }

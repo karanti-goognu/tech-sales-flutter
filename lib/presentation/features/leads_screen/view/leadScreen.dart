@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/widgets/leads_filter.dart';
@@ -13,10 +16,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'ViewLeadScreen.dart';
 
 class LeadScreen extends StatefulWidget {
@@ -24,31 +23,21 @@ class LeadScreen extends StatefulWidget {
   _LeadScreenState createState() => _LeadScreenState();
 }
 
-//final GlobalKey<ScaffoldState> _leadScreenFormKey = GlobalKey<ScaffoldState>();
-PersistentBottomSheetController controller;
+PersistentBottomSheetController? controller;
 
 class _LeadScreenState extends State<LeadScreen> {
-  // String formatter = new DateFormat("yyyy-mm-dd");
-  // Instantiate your class using Get.put() to make it available for all "child" routes there.
   LeadsFilterController _leadsFilterController = Get.find();
-
-  //LoginController _loginController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
-
+  String? selectedDateString;
   int selectedPosition = 0;
-
   int currentTab = 0;
-
   var bottomSheetController;
-  ScrollController _scrollController;
-  SiteDistrictListModel _siteDistrictListModel;
+  ScrollController? _scrollController;
+  SiteDistrictListModel? _siteDistrictListModel;
 
   @override
   void initState() {
-    print("Leads init state called");
-
     super.initState();
     _leadsFilterController.leadsListResponse.leadsEntity = null;
     print(_leadsFilterController.offset);
@@ -57,15 +46,13 @@ class _LeadScreenState extends State<LeadScreen> {
       if (result) _leadsFilterController.offset = 0;
       _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
     });
-
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      print('hello');
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       _leadsFilterController.offset += 10;
       print(_leadsFilterController.offset);
       _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
@@ -74,18 +61,14 @@ class _LeadScreenState extends State<LeadScreen> {
 
   @override
   void dispose() {
-    //_connectivity.disposeStream();
     super.dispose();
     _leadsFilterController.offset = 0;
-    _leadsFilterController?.dispose();
-    // Route.dispose();
+    _leadsFilterController.dispose();
   }
 
   void disposeController(BuildContext context) {
-//or what you want to dispose/clear
     _leadsFilterController.offset = 0;
-    _leadsFilterController?.dispose();
-    // print(_leadsFilterController.offset);
+    _leadsFilterController.dispose();
   }
 
   getDropdownDistData() {
@@ -116,7 +99,6 @@ class _LeadScreenState extends State<LeadScreen> {
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    // print(selectedDateString); // something like 20-04-2020
     return WillPopScope(
         onWillPop: () async {
           disposeController(context);
@@ -125,26 +107,20 @@ class _LeadScreenState extends State<LeadScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          //resizeToAvoidBottomInset: true,
           extendBody: true,
-//          key: _leadScreenFormKey,
           backgroundColor: ColorConstants.backgroundColorGrey,
           appBar: AppBar(
-            // titleSpacing: 50,
-            // leading: new Container(),
             backgroundColor: ColorConstants.appBarColor,
-            toolbarHeight: SizeConfig.screenHeight * .14,
+            toolbarHeight: SizeConfig.screenHeight! * .14,
             centerTitle: false,
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-                  // mainAxisSize: MainAxisSize.max,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "OPEN LEADS",
+                      StringConstants.LEAD,
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 22,
@@ -166,11 +142,9 @@ class _LeadScreenState extends State<LeadScreen> {
                             padding: const EdgeInsets.only(bottom: 5),
                             child: Row(
                               children: [
-                                //  Icon(Icons.exposure_zero_outlined),
                                 Container(
                                     height: 18,
                                     width: 18,
-                                    // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                                     decoration: new BoxDecoration(
                                       color: Colors.white,
                                       border: Border.all(
@@ -179,13 +153,14 @@ class _LeadScreenState extends State<LeadScreen> {
                                           Radius.circular(3)),
                                     ),
                                     child: Center(
-                                        child: Obx(() => Text(
-                                            "${_leadsFilterController.selectedFilterCount}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                                fontWeight:
-                                                    FontWeight.normal))))),
+                                        child: Obx(
+                                      () => Text(
+                                          "${_leadsFilterController.selectedFilterCount}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.normal)),
+                                    ))),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
@@ -241,8 +216,8 @@ class _LeadScreenState extends State<LeadScreen> {
                                   _leadsFilterController.offset = 0;
                                   _leadsFilterController
                                       .leadsListResponse.leadsEntity = null;
-                                  _leadsFilterController
-                                      .getAccessKey(RequestIds.GET_LEADS_LIST, context);
+                                  _leadsFilterController.getAccessKey(
+                                      RequestIds.GET_LEADS_LIST, context);
                                 });
                               },
                             ),
@@ -357,9 +332,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                     ),
                                     backgroundColor: Colors.transparent,
                                     shape: StadiumBorder(side: BorderSide()),
-                                    onSelected: (bool value) {
-                                      print("selected");
-                                    },
+                                    onSelected: (bool value) {},
                                   )),
                         SizedBox(
                           width: 8,
@@ -384,9 +357,7 @@ class _LeadScreenState extends State<LeadScreen> {
                                 ),
                                 backgroundColor: Colors.transparent,
                                 shape: StadiumBorder(side: BorderSide()),
-                                onSelected: (bool value) {
-                                  print("selected");
-                                },
+                                onSelected: (bool value) {},
                               )),
                         SizedBox(
                           width: 8,
@@ -429,104 +400,6 @@ class _LeadScreenState extends State<LeadScreen> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigator(),
-          // BottomAppBar(
-          //   color: ColorConstants.appBarColor,
-          //   shape: CircularNotchedRectangle(),
-          //   notchMargin: 10,
-          //   child: Container(
-          //     height: 60,
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: <Widget>[
-          //         Row(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: <Widget>[
-          //             MaterialButton(
-          //               minWidth: 40,
-          //               onPressed: () {
-          //                 setState(() {
-          //                   // currentScreen =
-          //                   //     Dashboard(); // if user taps on this dashboard tab will be active
-          //                   // currentTab = 0;
-          //                   Get.toNamed(Routes.HOME_SCREEN);
-          //                 });
-          //               },
-          //               child: Column(
-          //                 mainAxisAlignment: MainAxisAlignment.center,
-          //                 children: <Widget>[
-          //                   Icon(
-          //                     Icons.home,
-          //                     color: Colors.white60,
-          //                   ),
-          //                   Text(
-          //                     'Home',
-          //                     style: TextStyle(
-          //                       color: Colors.white60,
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //
-          //         // Right Tab bar icons
-          //
-          //         Row(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: <Widget>[
-          //             MaterialButton(
-          //               minWidth: 40,
-          //               onPressed: () {
-          //                 Navigator.push(
-          //                     context,
-          //                     new CupertinoPageRoute(
-          //                         builder: (BuildContext context) =>
-          //                             DraftLeadListScreen()));
-          //               },
-          //               child: Column(
-          //                 mainAxisAlignment: MainAxisAlignment.center,
-          //                 children: <Widget>[
-          //                   Icon(
-          //                     Icons.drafts,
-          //                     color: Colors.white60,
-          //                   ),
-          //                   Text(
-          //                     'Drafts',
-          //                     style: TextStyle(
-          //                       color: Colors.white60,
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //             MaterialButton(
-          //               minWidth: 40,
-          //               onPressed: () {
-          //                 Get.toNamed(Routes.SEARCH_SCREEN);
-          //               },
-          //               child: Column(
-          //                 mainAxisAlignment: MainAxisAlignment.center,
-          //                 children: <Widget>[
-          //                   Icon(
-          //                     Icons.search,
-          //                     color: Colors.white60,
-          //                   ),
-          //                   Text(
-          //                     'Search',
-          //                     style: TextStyle(
-          //                       color: Colors.white60,
-          //                     ), //
-          //                   ),
-          //                 ],
-          //               ),
-          //             )
-          //           ],
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // )
           body: Container(
             child: Column(
               children: [
@@ -542,7 +415,6 @@ class _LeadScreenState extends State<LeadScreen> {
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ),
                       ),
@@ -552,7 +424,6 @@ class _LeadScreenState extends State<LeadScreen> {
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal * 3.7,
-                              // color: HexColor("#FFFFFF99"),
                             ),
                           )),
                     ],
@@ -585,7 +456,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                     style: TextStyle(
                                       fontFamily: "Muli",
                                       fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
                                     ),
                                   ),
                                 ),
@@ -613,7 +483,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                     style: TextStyle(
                                       fontFamily: "Muli",
                                       fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
                                     ),
                                   ),
                                 ),
@@ -641,7 +510,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                     style: TextStyle(
                                       fontFamily: "Muli",
                                       fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
                                     ),
                                   ),
                                 ),
@@ -668,7 +536,6 @@ class _LeadScreenState extends State<LeadScreen> {
                                     style: TextStyle(
                                       fontFamily: "Muli",
                                       fontSize: 14,
-                                      // color: HexColor("#FFFFFF99"),
                                     ),
                                   ),
                                 ),
@@ -692,414 +559,333 @@ class _LeadScreenState extends State<LeadScreen> {
 
   Widget leadsDetailWidget() {
     return Obx(
-      () => (_leadsFilterController == null)
+      () => (_leadsFilterController.leadsListResponse == null)
           ? Container(
               child: Center(
-                child: Text("Leads controller  is empty!!"),
+                child: Text("Leads list response  is empty!!"),
               ),
             )
-          : (_leadsFilterController.leadsListResponse == null)
+          : (_leadsFilterController.leadsListResponse.leadsEntity == null)
               ? Container(
-                  child: Center(
-                    child: Text("Leads list response  is empty!!"),
-                  ),
+                  child: Center(child: Text("Leads list is empty!!")),
                 )
-              : (_leadsFilterController.leadsListResponse.leadsEntity == null)
+              : (_leadsFilterController.leadsListResponse.leadsEntity.length ==
+                      0)
                   ? Container(
-        child:
-                      // child: Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.center,
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     CircularProgressIndicator(),
-                          Center(child: Text("Leads list is empty!!")),
-                       // ],
-                    //  )
-    )
-                  : (_leadsFilterController
-                              .leadsListResponse.leadsEntity.length ==
-                          0)
-                      ? Container(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("You don't have any leads..!!"),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ColorConstants.buttonNormalColor,
-                                  ),
-                                  onPressed: () {
-                                    _leadsFilterController.offset = 0;
-                                    _leadsFilterController.getAccessKey(
-                                        RequestIds.GET_LEADS_LIST, context);
-                                  },
-                                  child: Text(
-                                    "TRY AGAIN",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )
-                              ],
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("You don't have any leads..!!"),
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          itemCount: _leadsFilterController
-                              .leadsListResponse.leadsEntity.length,
-                          padding: const EdgeInsets.only(
-                              left: 6.0, right: 6, bottom: 10),
-                          // itemExtent: 125.0,
-                          itemBuilder: (context, index) {
-                            // print(${_splashController.splashDataModel.leadStatusEntity[(_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) - 1].leadStatusDesc}');
-                            return GestureDetector(
-                              onTap: () {
-                                print(
-                                    "Lead ID: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId}");
-                                Get.to(
-                                    () => ViewLeadScreen(_leadsFilterController
-                                        .leadsListResponse
-                                        .leadsEntity[index]
-                                        .leadId),
-                                    binding: AddLeadsBinding());
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: ColorConstants.buttonNormalColor,
+                              ),
+                              onPressed: () {
+                                _leadsFilterController.offset = 0;
+                                _leadsFilterController.getAccessKey(
+                                    RequestIds.GET_LEADS_LIST, context);
                               },
-                              child: Card(
-                                clipBehavior: Clip.antiAlias,
-                                borderOnForeground: true,
-                                elevation: 6,
-                                margin: EdgeInsets.all(4.0),
-                                color: Colors.white,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                        left: BorderSide(
-                                      color: (_leadsFilterController
+                              child: Text(
+                                "TRY AGAIN",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      controller: _scrollController,
+                      itemCount: _leadsFilterController
+                          .leadsListResponse.leadsEntity.length,
+                      padding: const EdgeInsets.only(
+                          left: 6.0, right: 6, bottom: 10),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            print(
+                                "Lead ID: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId}");
+                            Get.to(
+                                () => ViewLeadScreen(_leadsFilterController
+                                    .leadsListResponse
+                                    .leadsEntity[index]
+                                    .leadId),
+                                binding: AddLeadsBinding());
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            borderOnForeground: true,
+                            elevation: 6,
+                            margin: EdgeInsets.all(4.0),
+                            color: Colors.white,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                    left: BorderSide(
+                                  color: (_leadsFilterController
+                                              .leadsListResponse
+                                              .leadsEntity[index]
+                                              .leadStageId ==
+                                          1)
+                                      ? HexColor("#F9A61A")
+                                      : (_leadsFilterController
                                                   .leadsListResponse
                                                   .leadsEntity[index]
                                                   .leadStageId ==
-                                              1)
-                                          ? HexColor("#F9A61A")
-                                          : (_leadsFilterController
-                                                      .leadsListResponse
-                                                      .leadsEntity[index]
-                                                      .leadStageId ==
-                                                  2)
-                                              ? HexColor("#007CBF")
-                                              : HexColor("#39B54A"),
-                                      width: 6,
-                                    )),
-                                  ),
-                                  child: Stack(
+                                              2)
+                                          ? HexColor("#007CBF")
+                                          : HexColor("#39B54A"),
+                                  width: 6,
+                                )),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // Positioned(
-                                      //     top: 0,
-                                      //     left: 250,
-                                      //     right: 0,
-                                      //     child: Container(
-                                      //         color: Colors.white,
-                                      //         child: Column(
-                                      //           children: <Widget>[
-                                      //             Image.asset(
-                                      //               'assets/images/Container.png',
-                                      //               fit: BoxFit.fitHeight,
-                                      //             ),
-                                      //           ],
-                                      //         ))),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 3.0),
-                                            child: Column(
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 3.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: Obx(
+                                                  () => Row(
+                                                    children: [
+                                                      Visibility(
+                                                        visible: (_leadsFilterController
+                                                                    .leadsListResponse
+                                                                    .leadsEntity[
+                                                                        index]
+                                                                    .leadSourcePlatform ==
+                                                                "CALL_CENTRE")
+                                                            ? true
+                                                            : false,
+                                                        child: Container(
+                                                          width: 15,
+                                                          height: 15,
+                                                          child: Image.asset(
+                                                              "assets/images/callcenter.png"),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                            Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: Obx(
+                                                  () => Text(
+                                                    "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                                    style: TextStyle(
+                                                        color: Colors.black38,
+                                                        fontSize: 14,
+                                                        fontFamily: "Muli",
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                )),
+                                            Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            2.0),
-                                                    child: Obx(
-                                                      () => Row(
-                                                        children: [
-                                                          Visibility(
-                                                            visible: (_leadsFilterController
-                                                                        .leadsListResponse
-                                                                        .leadsEntity[
-                                                                            index]
-                                                                        .leadSourcePlatform ==
-                                                                    "CALL_CENTRE")
-                                                                ? true
-                                                                : false,
-                                                            child: Container(
-                                                              width: 15,
-                                                              height: 15,
-                                                              child: Image.asset(
-                                                                  "assets/images/callcenter.png"),
-                                                            ),
-                                                          ),
-                                                          // Container(
-                                                          //   margin: EdgeInsets.only(left: 5, right: 8),
-                                                          //   width: 15,
-                                                          //   height: 15,
-                                                          //   child: Image.asset("assets/images/callcenter.png"),
-                                                          // ),
-                                                          Text(
-                                                            "Lead ID (${_leadsFilterController.leadsListResponse.leadsEntity[index].leadId})",
-                                                            style: TextStyle(
-                                                                fontSize: 18,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )),
-                                                Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            2.0),
-                                                    child: Obx(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 1.0),
+                                                  child: Chip(
+                                                    shape: StadiumBorder(
+                                                        side: BorderSide(
+                                                            color: HexColor(
+                                                                "#39B54A"))),
+                                                    backgroundColor:
+                                                        HexColor("#39B54A")
+                                                            .withOpacity(0.1),
+                                                    label: Obx(
                                                       () => Text(
-                                                        "District: ${_leadsFilterController.leadsListResponse.leadsEntity[index].leadDistrictName}",
+                                                        (_splashController
+                                                                    .splashDataModel
+                                                                    .leadStatusEntity !=
+                                                                null
+                                                            ? _splashController
+                                                                    .splashDataModel
+                                                                    .leadStatusEntity[(_leadsFilterController
+                                                                            .leadsListResponse
+                                                                            .leadsEntity[index]
+                                                                            .leadStatusId) -
+                                                                        1]
+                                                                    .leadStatusDesc ??
+                                                                ""
+                                                            : ""),
+                                                        style: TextStyle(
+                                                            color: HexColor(
+                                                                "#39B54A"),
+                                                            fontSize: SizeConfig
+                                                                    .safeBlockHorizontal *
+                                                                1.9,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: SizeConfig
+                                                              .safeBlockHorizontal *
+                                                          1.3),
+                                                  child: Text(
+                                                    " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                                                      _leadsFilterController
+                                                          .leadsListResponse
+                                                          .leadsEntity[index]
+                                                          .createdOn,
+                                                    ))}",
+                                                    style: TextStyle(
+                                                      fontSize: SizeConfig
+                                                              .safeBlockHorizontal *
+                                                          2.8,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 5.0, bottom: 10),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: FittedBox(
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Site-Pt: ",
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.black38,
                                                             fontSize: 14,
                                                             fontFamily: "Muli",
                                                             fontWeight:
-                                                                FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
-                                                            ),
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
-                                                    )),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 1.0),
-                                                      child: Chip(
-                                                        shape: StadiumBorder(
-                                                            side: BorderSide(
-                                                                color: HexColor(
-                                                                    "#39B54A"))),
-                                                        backgroundColor:
-                                                            HexColor("#39B54A")
-                                                                .withOpacity(
-                                                                    0.1),
-                                                        label: Obx(
-                                                          () => Text(
-                                                            (_splashController
-                                                                        .splashDataModel
-                                                                        .leadStatusEntity !=
-                                                                    null
-                                                                ? _splashController
-                                                                        .splashDataModel
-                                                                        .leadStatusEntity[
-                                                                            (_leadsFilterController.leadsListResponse.leadsEntity[index].leadStatusId) -
-                                                                                1]
-                                                                        .leadStatusDesc ??
-                                                                    ""
-                                                                : ""),
-                                                            style: TextStyle(
-                                                                color: HexColor(
-                                                                    "#39B54A"),
-                                                                fontSize: SizeConfig
-                                                                        .safeBlockHorizontal *
-                                                                    1.9,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
+                                                      Obx(
+                                                        () => Text(
+                                                          "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
+                                                          style: TextStyle(
+                                                              fontSize: SizeConfig
+                                                                      .safeBlockHorizontal *
+                                                                  3.7,
+                                                              fontFamily:
+                                                                  "Muli",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: SizeConfig
-                                                                  .safeBlockHorizontal *
-                                                              1.3),
-                                                      child: Text(
-                                                        " ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                                                          _leadsFilterController
-                                                              .leadsListResponse
-                                                              .leadsEntity[
-                                                                  index]
-                                                              .createdOn,
-                                                        ))}",
-                                                        //  textAlign: TextAlign.start,
-                                                        style: TextStyle(
-                                                          fontSize: SizeConfig
-                                                                  .safeBlockHorizontal *
-                                                              2.8,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold,
-
-                                                          //fontWeight: FontWeight.normal
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 5.0, bottom: 10),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 8.0),
-                                                    child: FittedBox(
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "Site-Pt: ",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black38,
-                                                                fontSize: 14,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
-                                                          Obx(
-                                                            () => Text(
-                                                              "${_leadsFilterController.leadsListResponse.leadsEntity[index].leadSitePotentialMt}MT",
-                                                              style: TextStyle(
-                                                                  // color: Colors.black38,
-                                                                  fontSize:
-                                                                      SizeConfig
-                                                                              .safeBlockHorizontal *
-                                                                          3.7,
-                                                                  fontFamily:
-                                                                      "Muli",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold
-                                                                  //fontWeight: FontWeight.normal
-                                                                  ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  SizedBox(
-                                                    height: 30,
-                                                  ),
-                                                  // Text(
-                                                  //   "Call Contractor",
-                                                  //   style: TextStyle(
-                                                  //       // color: Colors.white,
-                                                  //       fontSize: 11,
-                                                  //       fontFamily: "Muli",
-                                                  //       fontWeight: FontWeight.bold
-                                                  //       //fontWeight: FontWeight.normal
-                                                  //       ),
-                                                  // ),
-                                                  Text(
-                                                      "${toBeginningOfSentenceCase(_leadsFilterController.leadsListResponse.leadsEntity[index].contactName)}",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 14,
-                                                          fontFamily: "Muli",
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontStyle:
-                                                              FontStyle.normal
-                                                          //fontWeight: FontWeight.normal
-                                                          )),
-
-                                                  GestureDetector(
-                                                    child: FittedBox(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.call,
-                                                            color: HexColor(
-                                                                "#8DC63F"),
-                                                          ),
-                                                          Text(
-                                                            // "${_leadsFilterController.leadsListResponse.leadsEntity[index].contactNumber}",
-                                                            " Call Contact",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 16,
-                                                                fontFamily:
-                                                                    "Muli",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal
-                                                                //fontWeight: FontWeight.normal
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    onTap: () {
-                                                      String num =
-                                                          _leadsFilterController
-                                                              .leadsListResponse
-                                                              .leadsEntity[
-                                                                  index]
-                                                              .contactNumber;
-                                                      launch('tel:$num');
-                                                    },
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Text(
+                                                  "${toBeginningOfSentenceCase(_leadsFilterController.leadsListResponse.leadsEntity[index].contactName)}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontFamily: "Muli",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontStyle:
+                                                          FontStyle.normal)),
+                                              GestureDetector(
+                                                child: FittedBox(
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.call,
+                                                        color:
+                                                            HexColor("#8DC63F"),
+                                                      ),
+                                                      Text(
+                                                        " Call Contact",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontFamily: "Muli",
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontStyle: FontStyle
+                                                                .normal),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  String? num =
+                                                      _leadsFilterController
+                                                          .leadsListResponse
+                                                          .leadsEntity[index]
+                                                          .contactNumber;
+                                                  launch('tel:$num');
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                            );
-                          }),
+                            ),
+                          ),
+                        );
+                      }),
     );
   }
 
@@ -1111,31 +897,6 @@ class _LeadScreenState extends State<LeadScreen> {
         builder: (BuildContext bc) {
           return FilterWidget(siteDistrictListModel: _siteDistrictListModel);
         });
-  }
-
-  //Below section causes multiple GlobalKey error. This was fixed earlier, however, it has started occurring again
-
-//  void _settingModalBottomSheet(context) {
-//    _leadScreenFormKey.currentState
-//        .showBottomSheet<Null>((BuildContext context) {
-//      /*return  showModalBottomSheet(
-//        backgroundColor: Colors.transparent,
-//        context: context,
-//        isScrollControlled: true,
-//        builder: (BuildContext bc) {*/
-//      return FilterWidget();
-//    })
-//        .closed
-//        .then((value) => () {
-//      print('Closed');
-//    });
-//  }
-
-  void _closeModalBottomSheet() {
-    if (controller != null) {
-      controller.close();
-      controller = null;
-    }
   }
 
   BoxDecoration myBoxDecoration() {

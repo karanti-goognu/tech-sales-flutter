@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class DropListModel {
   DropListModel(this.listOptionItems);
@@ -10,5 +9,5 @@ class OptionItem {
   final String id;
   final String title;
 
-  OptionItem({@required this.id, @required this.title});
+  OptionItem({required this.id, required this.title});
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/sr_list_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ServiceRequestComplaintListModel.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/view/request_updation.dart';
 
 
@@ -19,7 +19,7 @@ class SiteDetails extends StatefulWidget {
 }
 
 class _SiteDetailsState extends State<SiteDetails> {
-  ServiceRequestComplaintListModel siteListModel;
+  ServiceRequestComplaintListModel? siteListModel;
 
   SRListController eventController = Get.find();
   var data;
@@ -27,7 +27,7 @@ class _SiteDetailsState extends State<SiteDetails> {
   getData() async {
     await eventController.getAccessKey().then((value) async {
       data =
-          await eventController.getSiteListData(value.accessKey, widget.siteId);
+          await eventController.getSiteListData(value!.accessKey, widget.siteId);
     });
   }
 
@@ -60,7 +60,7 @@ class _SiteDetailsState extends State<SiteDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarColor,
-        toolbarHeight: SizeConfig.screenHeight*.14,
+        toolbarHeight: SizeConfig.screenHeight!*.14,
         centerTitle: false,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -117,8 +117,8 @@ class _SiteDetailsState extends State<SiteDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          siteListModel.totalCount != null
-                              ? "Total Count : ${siteListModel.totalCount}"
+                          siteListModel!.totalCount != null
+                              ? "Total Count : ${siteListModel!.totalCount}"
                               : "Total Count : 0",
                           style: TextStyle(
                             fontFamily: "Muli",
@@ -126,8 +126,8 @@ class _SiteDetailsState extends State<SiteDetails> {
                           ),
                         ),
                         Text(
-                          siteListModel.totalPotential != null
-                              ? "Total Potential : ${siteListModel.totalPotential} MT"
+                          siteListModel!.totalPotential != null
+                              ? "Total Potential : ${siteListModel!.totalPotential} MT"
                               : "Total Potential : 0 MT",
                           style: TextStyle(
                             fontFamily: "Muli",
@@ -175,25 +175,18 @@ class _SiteDetailsState extends State<SiteDetails> {
                   SizedBox(
                     height: 5,
                   ),
-                  siteListModel.srComplaintListModal != null?
+                  siteListModel!.srComplaintListModal != null?
                   Expanded(
                     child: Container(
                       child: ListView.builder(
-                          itemCount: siteListModel.srComplaintListModal.length,
+                          itemCount: siteListModel!.srComplaintListModal!.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: (){
-                                // Get.to(
-                                //   RequestUpdation(
-                                //       id: siteListModel
-                                //           .srComplaintListModal[index]
-                                //           .srComplaintId), binding: SRBinding(),
-                                //   transition: Transition.rightToLeft,
-                                // );
 
                                 Get.to(()=> RequestUpdation(
-                                    id: siteListModel
-                                        .srComplaintListModal[index]
+                                    id: siteListModel!
+                                        .srComplaintListModal![index]
                                         .srComplaintId),binding: SRBinding(),
                                   transition: Transition.rightToLeft,);
                               },
@@ -211,8 +204,8 @@ class _SiteDetailsState extends State<SiteDetails> {
                                       Flexible(
                                         flex: 1,
                                         child: Container(
-                                          color: siteListModel
-                                                      .srComplaintListModal[index]
+                                          color: siteListModel!
+                                                      .srComplaintListModal![index]
                                                       .request ==
                                                   'COMPLAINT'
                                               ? HexColor('#9E3A0D')
@@ -242,7 +235,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                             const EdgeInsets.all(
                                                                 2.0),
                                                         child: Text(
-                                                          "Date of SR ${siteListModel.srComplaintListModal[index].createdOn}",
+                                                          "Date of SR ${siteListModel!.srComplaintListModal![index].createdOn}",
                                                           style: TextStyle(
                                                               color: HexColor(
                                                                   '#FF000099'),
@@ -260,7 +253,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                             const EdgeInsets.all(
                                                                 2.0),
                                                         child: Text(
-                                                          "Site ID (${siteListModel.srComplaintListModal[index].siteId})",
+                                                          "Site ID (${siteListModel!.srComplaintListModal![index].siteId})",
                                                           style: TextStyle(
                                                               fontSize: 18,
                                                               fontFamily: "Muli",
@@ -275,7 +268,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                             const EdgeInsets.all(
                                                                 2.0),
                                                         child: Text(
-                                                          "District: ${siteListModel.srComplaintListModal[index].district}",
+                                                          "District: ${siteListModel!.srComplaintListModal![index].district}",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.black38,
@@ -298,14 +291,14 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                               shape:
                                                                   StadiumBorder(
                                                                 side: BorderSide(
-                                                                    color: siteListModel
-                                                                                .srComplaintListModal[
+                                                                    color: siteListModel!
+                                                                                .srComplaintListModal![
                                                                                     index]
                                                                                 .severity ==
                                                                             'HIGH'
                                                                         ? HexColor(
                                                                             '#9E3A0D')
-                                                                        : siteListModel.srComplaintListModal[index].severity ==
+                                                                        : siteListModel!.srComplaintListModal![index].severity ==
                                                                                 'MEDIUM'
                                                                             ? HexColor(
                                                                                 '#F9A61A')
@@ -313,29 +306,29 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                                 '#0054A6'),
                                                                 ),
                                                               ),
-                                                              backgroundColor: HexColor(siteListModel
-                                                                              .srComplaintListModal[
+                                                              backgroundColor: HexColor(siteListModel!
+                                                                              .srComplaintListModal![
                                                                                   index]
                                                                               .severity ==
                                                                           'HIGH'
                                                                       ? "#FFCD0014"
-                                                                      : siteListModel.srComplaintListModal[index].severity ==
+                                                                      : siteListModel!.srComplaintListModal![index].severity ==
                                                                               'MEDIUM'
                                                                           ? "#FFCD00"
                                                                           : "#0054A6")
                                                                   .withOpacity(
                                                                       0.1),
                                                               label: Text(
-                                                                "${siteListModel.srComplaintListModal[index].severity}",
+                                                                "${siteListModel!.srComplaintListModal![index].severity}",
                                                                 style: TextStyle(
-                                                                    color: siteListModel
-                                                                                .srComplaintListModal[
+                                                                    color: siteListModel!
+                                                                                .srComplaintListModal![
                                                                                     index]
                                                                                 .severity ==
                                                                             'HIGH'
                                                                         ? HexColor(
                                                                             '#9E3A0D')
-                                                                        : siteListModel.srComplaintListModal[index].severity ==
+                                                                        : siteListModel!.srComplaintListModal![index].severity ==
                                                                                 'MEDIUM'
                                                                             ? HexColor(
                                                                                 '#F9A61A')
@@ -404,7 +397,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                                   ),
                                                             ),
                                                             Text(
-                                                              "${siteListModel.srComplaintListModal[index].sitePotential}MT",
+                                                              "${siteListModel!.srComplaintListModal![index].sitePotential}MT",
                                                               style: TextStyle(
                                                                   // color: Colors.black38,
                                                                   fontSize: 15,
@@ -419,7 +412,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                         ),
                                                       ),
                                                       Text(
-                                                        "SLA Remaining: ${siteListModel.srComplaintListModal[index].slaRemaining}",
+                                                        "SLA Remaining: ${siteListModel!.srComplaintListModal![index].slaRemaining}",
                                                         style: TextStyle(
                                                             color: HexColor(
                                                                 '#000000'),
@@ -440,7 +433,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                           ),
                                                           backgroundColor: HexColor("#00000014").withOpacity(0.1),
                                                           label: Text(
-                                                            "Status: ${siteListModel.srComplaintListModal[index].status}",
+                                                            "Status: ${siteListModel!.srComplaintListModal![index].status}",
                                                             style: TextStyle(
                                                                 color: HexColor(
                                                                     "#666666"),
@@ -476,7 +469,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "Request Id (${siteListModel.srComplaintListModal[index].srComplaintId}) "
+                                                    "Request Id (${siteListModel!.srComplaintListModal![index].srComplaintId}) "
                                                         .toUpperCase(),
                                                     style: TextStyle(
                                                         color:
@@ -506,7 +499,7 @@ class _SiteDetailsState extends State<SiteDetails> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        siteListModel.respMsg,
+                        siteListModel!.respMsg!,
                         textAlign: TextAlign.center,
                       ),
                     ),

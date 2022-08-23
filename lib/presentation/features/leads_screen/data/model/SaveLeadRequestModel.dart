@@ -9,8 +9,7 @@ import 'CommentDetailModel.dart';
 class SaveLeadRequestModel {
   SaveLeadRequestModel(
       {
-      //this.leadSegmane,
-        this.eventId,
+      this.eventId,
       this.siteSubTypeId,
       this.assignedTo,
       this.leadStatusId,
@@ -39,36 +38,35 @@ class SaveLeadRequestModel {
       this.leadSourcePlatform,
       this.isIhbCommercial});
 
-  // String leadSegmane;
-  int eventId;
-  String siteSubTypeId;
-  String assignedTo;
-  String leadStatusId;
-  String leadStage;
-  String contactName;
-  String contactNumber;
-  String geotagType;
-  String leadLatitude;
-  String leadLongitude;
-  String leadAddress;
-  String leadPincode;
-  String leadStateName;
-  String leadDistrictName;
-  String leadTalukName;
-  String leadSalesPotentialMt;
-  String leadReraNumber;
-  String assignDate;
-  String isStatus;
-  String leadBags;
-  List<MultipartFile> photos;
-  List<CommentsDetail> comments;
-  List<InfluencerDetail> influencerList;
-  List<ListLeadImage> listLeadImage;
+  int? eventId;
+  String? siteSubTypeId;
+  String? assignedTo;
+  String? leadStatusId;
+  String? leadStage;
+  String? contactName;
+  String? contactNumber;
+  String? geotagType;
+  String? leadLatitude;
+  String? leadLongitude;
+  String? leadAddress;
+  String? leadPincode;
+  String? leadStateName;
+  String? leadDistrictName;
+  String? leadTalukName;
+  String? leadSalesPotentialMt;
+  String? leadReraNumber;
+  String? assignDate;
+  String? isStatus;
+  String? leadBags;
+  List<MultipartFile>? photos;
+  List<CommentsDetail>? comments;
+  List<InfluencerDetail>? influencerList;
+  List<ListLeadImage>? listLeadImage;
 
-  String leadSource;
-  String leadSourceUser;
-  String leadSourcePlatform;
-  String isIhbCommercial;
+  String? leadSource;
+  String? leadSourceUser;
+  String? leadSourcePlatform;
+  String? isIhbCommercial;
 
   SaveLeadRequestModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -102,19 +100,19 @@ class SaveLeadRequestModel {
     if (json['comments'] != null) {
       comments = new List<CommentsDetail>.empty(growable: true);
       json['comments'].forEach((v) {
-        comments.add(new CommentsDetail.fromJson(v));
+        comments!.add(new CommentsDetail.fromJson(v));
       });
     }
     if (json['influencerList'] != null) {
       influencerList = new List<InfluencerDetail>.empty(growable: true);
       json['influencerList'].forEach((v) {
-        influencerList.add(new InfluencerDetail.fromJson(v));
+        influencerList!.add(new InfluencerDetail.fromJson(v));
       });
     }
     if (json['listLeadImage'] != null) {
       listLeadImage = new List<ListLeadImage>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
-        listLeadImage.add(new ListLeadImage.fromJson(v));
+        listLeadImage!.add(new ListLeadImage.fromJson(v));
       });
     }
   }
@@ -143,10 +141,10 @@ class SaveLeadRequestModel {
     data['assignDate'] = this.assignDate;
     data['isStatus'] = this.isStatus;
     data['photos'] = jsonEncode(this.photos);
-    data['comments'] = this.comments.map((e) => e.toJson()).toList();
+    data['comments'] = this.comments!.map((e) => e.toJson()).toList();
     data['influencerList'] =
-        this.influencerList.map((e) => e.toJson()).toList();
-    data['listLeadImage'] = this.listLeadImage.map((e) => e.toJson()).toList();
+        this.influencerList!.map((e) => e.toJson()).toList();
+    data['listLeadImage'] = this.listLeadImage!.map((e) => e.toJson()).toList();
 
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
@@ -158,9 +156,9 @@ class SaveLeadRequestModel {
 }
 
 class ListLeadImage {
-  String photoName;
-  File imageFilePath;
-  int imageStatus; // image status use for identify current image selected by user or comes from server.
+  String? photoName;
+  File? imageFilePath;
+  int? imageStatus; // image status use for identify current image selected by user or comes from server.
 
 
   ListLeadImage({this.photoName, this.imageFilePath, this.imageStatus});

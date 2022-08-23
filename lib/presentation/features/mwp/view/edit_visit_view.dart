@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
@@ -11,9 +14,7 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 
 class EditEventVisit extends StatefulWidget {
   @override
@@ -26,14 +27,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   String dropdownValue = 'RETENTION SITE';
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-
-  //TextEditingController _remarks = new TextEditingController();
-
-  //VisitResponseModel visitResponseModel;
-
   String siteIdText = "Site Id";
 
   @override
@@ -67,7 +63,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
     return SafeArea(
         child: Obx(() =>
-                // (_addEventController.isLoadingVisitView == false) ?
                 (_addEventController.visitResponseModel.mwpVisitModel != null)
                     ? Padding(
                         padding: EdgeInsets.all(16),
@@ -128,7 +123,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           child: DropdownButton<String>(
                                             value: _addEventController
                                                 .visitSubType,
-                                            onChanged: (String newValue) {
+                                            onChanged: (String? newValue) {
                                               if (_addEventController
                                                       .visitSubType ==
                                                   "RETENTION SITE") {
@@ -159,11 +154,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                             },
                                             items: <String>[
                                               _addEventController.visitSubType
-                                              // 'RETENTION SITE',
-                                              // 'LEADS',
-                                              // 'CONVERSION OPPORTUNITY',
-                                              // 'COUNTER',
-                                              // 'TECHNOCRAT'
                                             ].map<DropdownMenuItem<String>>(
                                                 (String value) {
                                               return DropdownMenuItem<String>(
@@ -209,7 +199,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         _addEventController.visitSiteId,
                                     enabled: false,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return "Site ID can't be empty";
                                       }
                                       return null;
@@ -228,8 +218,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                         false),
                                   ),
                                   SizedBox(height: 16),
-
-                                  ////Only in case of counter
                                   Obx(
                                     () => (_addEventController.visitSubType ==
                                             "COUNTER")
@@ -246,7 +234,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                         color: Colors.grey),
                                                     borderRadius: BorderRadius.all(
                                                         Radius.circular(
-                                                            5.0) //                 <--- border radius here
+                                                            5.0)
                                                         ),
                                                   ),
                                                   child:
@@ -270,7 +258,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
 
                                                     controlAffinity:
                                                     ListTileControlAffinity
-                                                        .leading, //  <-- leading Checkbox
+                                                        .leading,
                                                   ):
                                                   CheckboxListTile(
                                                     title: Text(
@@ -303,7 +291,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                     },
                                                     controlAffinity:
                                                         ListTileControlAffinity
-                                                            .leading, //  <-- leading Checkbox
+                                                            .leading,
                                                   )),),
                                               SizedBox(height: 16),
                                               Visibility(
@@ -313,7 +301,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                     ? true
                                                     : false,
                                                 child: Column(
-                                                  // mainAxisAlignment: MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
@@ -330,7 +317,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                 FontWeight
                                                                     .normal,
                                                             fontSize: 15,
-                                                            // color: HexColor("#000000DE"),
                                                             fontFamily: "Muli"),
                                                       ),
                                                     ),
@@ -357,7 +343,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                       .inputBoxHintColor,
                                                                   fontFamily:
                                                                   "Muli"),
-                                                              // keyboardType: TextInputType.text,
                                                               decoration:
                                                               FormFieldStyle
                                                                   .buildInputDecoration(
@@ -369,7 +354,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                   controller: _addEventController.bagsController,
                                                               onChanged: (_) {
                                                                 setState(() {
-                                                                  if (_addEventController.bagsController.text == null || _addEventController.bagsController.text == "") {
+                                                                  if ( _addEventController.bagsController.text == "") {
                                                                     _addEventController.mtController.clear();
                                                                   } else {
                                                                     _addEventController.mtController.text = (int.parse(_addEventController.bagsController.text) / 20).toString();
@@ -387,7 +372,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               ],
                                                               validator:
                                                                   (value) {
-                                                                if (value
+                                                                if (value!
                                                                     .isEmpty) {
                                                                   return 'Please enter Bags ';
                                                                 }
@@ -401,7 +386,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                                       .inputBoxHintColor,
                                                                   fontFamily:
                                                                       "Muli"),
-                                                              // keyboardType: TextInputType.text,
                                                               decoration:
                                                                   FormFieldStyle
                                                                       .buildInputDecoration(
@@ -441,7 +425,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               onChanged:
                                                                   (value) {
                                                                 setState(() {
-                                                                  if (value == null || value == "") {
+                                                                  if ( value == "") {
                                                                     _addEventController.bagsController.clear();
                                                                     _addEventController.dspAvailableQty = "";
                                                                   } else {
@@ -452,7 +436,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                               },
                                                               validator:
                                                                   (value) {
-                                                                if (value
+                                                                if (value!
                                                                     .isEmpty) {
                                                                   return 'Please enter MT ';
                                                                 }
@@ -525,7 +509,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                 child: DropdownButton<String>(
                                                   value: _addEventController
                                                       .visitType,
-                                                  onChanged: (String newValue) {
+                                                  onChanged: (String? newValue) {
                                                     setState(() {
                                                       _addEventController
                                                           .visitType = newValue;
@@ -587,7 +571,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                           children: [
                                             Obx(
                                               () => Text(
-                                                // "${this._addEventController.visitDateTime}",
                                                 "${this._addEventController.visitViewDateTime}",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
@@ -681,12 +664,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                       .visitEndTime ==
                                                   null)
                                           ? DropdownButtonFormField(
-                                              validator: (value) => value ==
+                                              validator: (dynamic value) => value ==
                                                       null
                                                   ? 'Please select Visit Outcome Type'
                                                   : null,
 
-                                              onChanged: (value) {
+                                              onChanged: (dynamic value) {
                                                 print(value);
                                                 _addEventController
                                                     .visitOutcomes = value;
@@ -711,7 +694,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   .buildInputDecoration(
                                                       labelText:
                                                           "Visit Outcome"),
-                                              // ),
                                             )
                                           : _addEventController.visitSubType ==
                                                   "COUNTER"
@@ -746,16 +728,11 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                                   : _addEventController
                                                       .visitRemarks,
                                           onSaved: (val) {
-                                            print('saved' + val);
+                                            print('saved' + val!);
                                             _addEventController.visitRemarks =
                                                 val;
                                           },
-                                          // onChanged: (_) {
-                                          //   _addEventController.visitRemarks =
-                                          //       _.toString();
-                                          // },
-
-                                          style: TextStyle(
+                                      style: TextStyle(
                                               fontSize: 18,
                                               color:
                                                   ColorConstants.inputBoxHintColor,
@@ -767,15 +744,10 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               key: Key(_addEventController.visitRemarks),
                                               initialValue: _addEventController.visitRemarks,
                                               onSaved: (val) {
-                                                print('saved' + val);
+                                                print('saved' + val!);
                                                 _addEventController
                                                     .visitRemarks = val;
                                               },
-                                              // onChanged: (_) {
-                                              //   _addEventController.visitRemarks =
-                                              //       _.toString();
-                                              // },
-
                                               style: TextStyle(fontSize: 18, color: ColorConstants.inputBoxHintColor, fontFamily: "Muli"),
                                               maxLines: 3,
                                               decoration: _inputDecoration("Remarks", false))
@@ -783,14 +755,14 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                                               key: Key(_addEventController.visitRemarks),
                                               readOnly: true,
                                               validator: (value) {
-                                                if (value.isEmpty) {
+                                                if (value!.isEmpty) {
                                                   return 'Please enter remarks ';
                                                 }
                                                 return null;
                                               },
                                               initialValue: _addEventController.visitRemarks,
                                               onSaved: (val) {
-                                                print('saved' + val);
+                                                print('saved' + val!);
                                                 _addEventController
                                                     .visitRemarks = val;
                                               },
@@ -829,22 +801,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
                           ],
                         ))
                     : Container()
-            // : Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Expanded(
-            //         flex: 1,
-            //         child: Text(
-            //           "Please wait, Loading Data..",
-            //           style: TextStyle(
-            //               color: ColorConstants.greenText,
-            //               fontFamily: "Muli-Semibold.ttf",
-            //               fontSize: 20,
-            //               letterSpacing: .15),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
             ));
   }
 
@@ -857,11 +813,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
           style: ElevatedButton.styleFrom(
             primary: ColorConstants.buttonNormalColor,),
           onPressed: () {
-            // Validate returns true if the form is valid, or false
-            // otherwise.
-            if (_formKey.currentState.validate()) {
-              //afterRequestLayout(empId, mobileNumber);
-              _formKey.currentState.save();
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "UPDATE";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
@@ -878,11 +831,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     style: ElevatedButton.styleFrom(
           primary: ColorConstants.buttonNormalColor,),
           onPressed: () {
-            // Validate returns true if the form is valid, or false
-            // otherwise.
-            if (_formKey.currentState.validate()) {
-              //afterRequestLayout(empId, mobileNumber);
-              _formKey.currentState.save();
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "START";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
@@ -906,10 +856,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     ElevatedButton(
     style: ElevatedButton.styleFrom(          primary: ColorConstants.buttonNormalColor,
     ),          onPressed: () {
-            // Validate returns true if the form is valid, or false
-            // otherwise.
-            if (_formKey.currentState.validate()) {
-              _formKey.currentState.save();
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
               _addEventController.visitActionType = "END";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
@@ -978,7 +926,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -993,7 +941,7 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   }
 
   Future<void> _selectDateNextVisit(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime.now(),

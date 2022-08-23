@@ -1,9 +1,11 @@
+
+
 class GetMWPResponse {
-  String respCode;
-  String respMsg;
-  List<String> listOfMonthYear;
-  MwpplanModel mwpplanModel;
-  List<MwpPlannigList> mwpPlannigList;
+  String? respCode;
+  String? respMsg;
+  List<String>? listOfMonthYear;
+  MwpplanModel? mwpplanModel;
+  List<MwpPlannigList>? mwpPlannigList;
 
   GetMWPResponse(
       {this.respCode, this.respMsg, this.listOfMonthYear, this.mwpplanModel, this.mwpPlannigList});
@@ -12,13 +14,20 @@ class GetMWPResponse {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     listOfMonthYear = json['listOfMonthYear'].cast<String>();
-    mwpplanModel = json['mwpplanModel'] != null
+
+    if (!json.containsKey('mwpplanModel'))
+      mwpplanModel = null;
+          mwpplanModel = json['mwpplanModel'] != null
         ? new MwpplanModel.fromJson(json['mwpplanModel'])
         : null;
+
+    if (!json.containsKey('mwpPlannigList'))
+      mwpPlannigList = <MwpPlannigList>[];
+
     if (json['mwpPlannigList'] != null) {
       mwpPlannigList = <MwpPlannigList>[];
       json['mwpPlannigList'].forEach((v) {
-        mwpPlannigList.add(new MwpPlannigList.fromJson(v));
+        mwpPlannigList!.add(new MwpPlannigList.fromJson(v));
       });
     }
   }
@@ -29,80 +38,80 @@ class GetMWPResponse {
     data['respMsg'] = this.respMsg;
     data['listOfMonthYear'] = this.listOfMonthYear;
     if (this.mwpplanModel != null) {
-      data['mwpplanModel'] = this.mwpplanModel.toJson();
+      data['mwpplanModel'] = this.mwpplanModel!.toJson();
     }
     if (this.mwpPlannigList != null) {
       data['mwpPlannigList'] =
-          this.mwpPlannigList.map((v) => v.toJson()).toList();
+          this.mwpPlannigList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpplanModel {
-  int id;
-  int tsoId;
-  String mwpMonth;
-  String referenceId;
-  double totalConvMt;
-  int newIlpMembers;
-  int dspSlabConvNo;
-  double siteConvMt;
-  int siteConvNo;
-  int siteVisitesNo;
-  int siteUniqueVisitsNo;
-  int inflVisitsNo;
-  int masonMeetNo;
-  int counterMeetNo;
-  int contractorMeetNo;
-  int miniContractorMeetNo;
-  int consumerMeetNo;
-  double actualTotalConvMt;
-  int actualNewIlpMembers;
-  int actualDspSlabConvNo;
-  double actualSiteConvMt;
-  int actualSiteConvNo;
-  int actualSiteVisitesNo;
-  int actualSiteUniqueVisitsNo;
-  int actualInflVisitsNo;
-  int actualMasonMeetNo;
-  int actualCounterMeetNo;
-  int actualContractorMeetNo;
-  int actualMiniContractorMeetNo;
-  int actualConsumerMeetNo;
+  int? id;
+  int? tsoId;
+  String? mwpMonth;
+  String? referenceId;
+  double? totalConvMt;
+  int? newIlpMembers;
+  int? dspSlabConvNo;
+  double? siteConvMt;
+  int? siteConvNo;
+  int? siteVisitesNo;
+  int? siteUniqueVisitsNo;
+  int? inflVisitsNo;
+  int? masonMeetNo;
+  int? counterMeetNo;
+  int? contractorMeetNo;
+  int? miniContractorMeetNo;
+  int? consumerMeetNo;
+  double? actualTotalConvMt;
+  int? actualNewIlpMembers;
+  int? actualDspSlabConvNo;
+  double? actualSiteConvMt;
+  int? actualSiteConvNo;
+  int? actualSiteVisitesNo;
+  int? actualSiteUniqueVisitsNo;
+  int? actualInflVisitsNo;
+  int? actualMasonMeetNo;
+  int? actualCounterMeetNo;
+  int? actualContractorMeetNo;
+  int? actualMiniContractorMeetNo;
+  int? actualConsumerMeetNo;
 
 
-  String status;
-  String createdBy;
-  int createdOn;
-  int submittedOn;
-  int approvedOn;
-  int rejectedOn;
-  String actionedBy;
+  String? status;
+  String? createdBy;
+  int? createdOn;
+  int? submittedOn;
+  int? approvedOn;
+  int? rejectedOn;
+  String? actionedBy;
 
 
-  int slabServices;
-  int blockLevelMeet;
-  int contractorVisit;
-  double dspConversionVol;
-  int techVanDemo;
-  int techVanService;
-  int technocratMeet;
-  int technocratVisit;
+  int? slabServices;
+  int? blockLevelMeet;
+  int? contractorVisit;
+  double? dspConversionVol;
+  int? techVanDemo;
+  int? techVanService;
+  int? technocratMeet;
+  int? technocratVisit;
 
-  int actualSlabServices;
-  int actualBlockLevelMeet;
-  int actualContractorVisit;
-  double actualDspConversionVol;
-  int actualTechVanDemo;
-  int actualTechVanService;
-  int actualTechnocratMeet;
-  int actualTechnocratVisit;
+  int? actualSlabServices;
+  int? actualBlockLevelMeet;
+  int? actualContractorVisit;
+  double? actualDspConversionVol;
+  int? actualTechVanDemo;
+  int? actualTechVanService;
+  int? actualTechnocratMeet;
+  int? actualTechnocratVisit;
 
-  int headMasonMeet;
-  int actualHeadMasonMeet;
-  int newInfluencer;
-  int actualNewInfluencer;
+  int? headMasonMeet;
+  int? actualHeadMasonMeet;
+  int? newInfluencer;
+  int? actualNewInfluencer;
 
 
      MwpplanModel(
@@ -292,10 +301,10 @@ class MwpplanModel {
 }
 
 class MwpPlannigList {
-  String name;
-  int id;
-  String actualValue;
-  String targetValue;
+  String? name;
+  int? id;
+  String? actualValue;
+  String? targetValue;
 
   MwpPlannigList({this.name, this.id, this.actualValue, this.targetValue});
 

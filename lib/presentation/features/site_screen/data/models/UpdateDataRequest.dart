@@ -1,54 +1,56 @@
+
+
 import 'ViewSiteDataResponse.dart';
 
 class UpdateDataRequest {
-  int siteId;
-  String siteSegment;
-  String assignedTo;
-  String siteStatusId;
-  String siteStageId;
-  String contactName;
-  String contactNumber;
-  String siteGeotag;
-  double siteGeotagLat;
-  double siteGeotagLong;
-  String plotNumber;
-  String siteAddress;
-  String sitePincode;
-  String siteState;
-  String siteDistrict;
-  String siteTaluk;
-  String sitePotentialMt;
-  String reraNumber;
-  String siteCreationDate;
-  String dealerId;
-  String siteBuiltArea;
-  String noOfFloors;
-  String productDemo;
-  String productOralBriefing;
-  String soCode;
-  String inactiveReasonText;
-  String nextVisitDate;
-  String closureReasonText;
-  String createdBy;
-  String totalBalancePotential;
-  List<SiteCommentsEntity> siteCommentsEntity;
-  List<SiteStageHistory> siteStageHistory;
+  int? siteId;
+  String? siteSegment;
+  String? assignedTo;
+  String? siteStatusId;
+  String? siteStageId;
+  String? contactName;
+  String? contactNumber;
+  String? siteGeotag;
+  double? siteGeotagLat;
+  double? siteGeotagLong;
+  String? plotNumber;
+  String? siteAddress;
+  String? sitePincode;
+  String? siteState;
+  String? siteDistrict;
+  String? siteTaluk;
+  String? sitePotentialMt;
+  String? reraNumber;
+  String? siteCreationDate;
+  String? dealerId;
+  String? siteBuiltArea;
+  String? noOfFloors;
+  String? productDemo;
+  String? productOralBriefing;
+  String? soCode;
+  String? inactiveReasonText;
+  String? nextVisitDate;
+  String? closureReasonText;
+  String? createdBy;
+  String? totalBalancePotential;
+  List<SiteCommentsEntity>? siteCommentsEntity;
+  List<SiteStageHistory>? siteStageHistory;
 
-  String siteProbabilityWinningId;
-  String siteCompetitionId;
-  String siteOppertunityId;
-  int siteConstructionId;
+  String? siteProbabilityWinningId;
+  String? siteCompetitionId;
+  String? siteOppertunityId;
+  int? siteConstructionId;
  // List<SiteVisitHistoryEntity> siteVisitHistoryEntity;
-  List<SiteNextStageEntity> siteNextStageEntity;
-  List<SitePhotosEntity> sitePhotosEntity;
-  List<SiteInfluencerEntity> siteInfluencerEntity;
+  List<SiteNextStageEntity>? siteNextStageEntity;
+  List<SitePhotosEntity>? sitePhotosEntity;
+  List<SiteInfluencerEntity>? siteInfluencerEntity;
 
-  String dealerConfirmedChangedBy;
-  String dealerConfirmedChangedOn;
-  String isDealerConfirmedChangedBySo;
-  String subdealerId;
-  int kitchenCount;
-  int bathroomCount;
+  String? dealerConfirmedChangedBy;
+  String? dealerConfirmedChangedOn;
+  String? isDealerConfirmedChangedBySo;
+  String? subdealerId;
+  int? kitchenCount;
+  int? bathroomCount;
 
 
   UpdateDataRequest(
@@ -138,35 +140,53 @@ class UpdateDataRequest {
     // soldToParty = json['soldToParty'];
     // shipToParty = json['shipToParty'];
 
+    if (!json.containsKey('siteCommentsEntity'))
+      siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
+
     if (json['siteCommentsEntity'] != null) {
       siteCommentsEntity = new List<SiteCommentsEntity>.empty(growable: true);
       json['siteCommentsEntity'].forEach((v) {
-        siteCommentsEntity.add(new SiteCommentsEntity.fromJson(v));
+        siteCommentsEntity!.add(new SiteCommentsEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStageHistorys'))
+      siteStageHistory = new List<SiteStageHistory>.empty(growable: true);
+
     if (json['siteStageHistorys'] != null) {
       siteStageHistory = new List<SiteStageHistory>.empty(growable: true);
       json['siteStageHistorys'].forEach((v) {
-        siteStageHistory.add(new SiteStageHistory.fromJson(v));
+        siteStageHistory!.add(new SiteStageHistory.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteNextStageEntity'))
+      siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
 
     if (json['siteNextStageEntity'] != null) {
       siteNextStageEntity = new List<SiteNextStageEntity>.empty(growable: true);
       json['siteNextStageEntity'].forEach((v) {
-        siteNextStageEntity.add(new SiteNextStageEntity.fromJson(v));
+        siteNextStageEntity!.add(new SiteNextStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('sitePhotosEntity'))
+      sitePhotosEntity = new List<SitePhotosEntity>.empty(growable: true);
+
     if (json['sitePhotosEntity'] != null) {
       sitePhotosEntity = new List<SitePhotosEntity>.empty(growable: true);
       json['sitePhotosEntity'].forEach((v) {
-        sitePhotosEntity.add(new SitePhotosEntity.fromJson(v));
+        sitePhotosEntity!.add(new SitePhotosEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteInfluencerEntity'))
+      siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
+
     if (json['siteInfluencerEntity'] != null) {
       siteInfluencerEntity = new List<SiteInfluencerEntity>.empty(growable: true);
       json['siteInfluencerEntity'].forEach((v) {
-        siteInfluencerEntity.add(new SiteInfluencerEntity.fromJson(v));
+        siteInfluencerEntity!.add(new SiteInfluencerEntity.fromJson(v));
       });
     }
 
@@ -220,25 +240,25 @@ class UpdateDataRequest {
 
     if (this.siteCommentsEntity != null) {
       data['siteCommentsEntity'] =
-          this.siteCommentsEntity.map((v) => v.toJson()).toList();
+          this.siteCommentsEntity!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteStageHistory != null) {
       data['siteStageHistorys'] =
-          this.siteStageHistory.map((v) => v.toJson()).toList();
+          this.siteStageHistory!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteNextStageEntity != null) {
       data['siteNextStageEntity'] =
-          this.siteNextStageEntity.map((v) => v.toJson()).toList();
+          this.siteNextStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.sitePhotosEntity != null) {
       data['sitePhotosEntity'] =
-          this.sitePhotosEntity.map((v) => v.toJson()).toList();
+          this.sitePhotosEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteInfluencerEntity != null) {
       data['siteInfluencerEntity'] =
-          this.siteInfluencerEntity.map((v) => v.toJson()).toList();
+          this.siteInfluencerEntity!.map((v) => v.toJson()).toList();
     }
 
     data['dealerConfirmedChangedBy']= this.dealerConfirmedChangedBy;
@@ -253,10 +273,10 @@ class UpdateDataRequest {
 }
 
 class SitePhotosEntity {
-  int id;
-  int siteId;
-  String photoName;
-  String createdBy;
+  int? id;
+  int? siteId;
+  String? photoName;
+  String? createdBy;
 
   SitePhotosEntity({this.id, this.siteId, this.photoName, this.createdBy});
 
@@ -278,12 +298,12 @@ class SitePhotosEntity {
 }
 
 class SiteInfluencerEntityNew {
-  int id;
-  int siteId;
-  int inflId;
-  String isDelete;
-  String createdBy;
-  String isPrimary;
+  int? id;
+  int? siteId;
+  int? inflId;
+  String? isDelete;
+  String? createdBy;
+  String? isPrimary;
 
   SiteInfluencerEntityNew({
     this.isPrimary,

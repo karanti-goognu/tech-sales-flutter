@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -18,12 +20,6 @@ class StartEvent extends StatefulWidget {
 
 class _StartEventState extends State<StartEvent> {
   bool _isVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    //_isVisible = false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +133,7 @@ class _StartEventState extends State<StartEvent> {
   addInfluencerBottomSheetWidget() {
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.3,
+        height: SizeConfig.screenHeight! / 1.3,
         color: Colors.white,
         child: Column(
           children: [
@@ -252,7 +248,7 @@ class _StartEventState extends State<StartEvent> {
             Padding(
               padding: const EdgeInsets.only(right: 16, left: 16, bottom: 8),
               child: DropdownButtonFormField(
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   setState(() {
                     //requestDepartmentId = value;
                   });
@@ -271,7 +267,7 @@ class _StartEventState extends State<StartEvent> {
                 style: FormFieldStyle.formFieldTextStyle,
                 decoration: FormFieldStyle.buildInputDecoration(
                     labelText: "Influencer Type"),
-                validator: (value) =>
+                validator: (dynamic value) =>
                     value == null ? 'Please select Influencer type ' : null,
               ),
             ),
@@ -306,7 +302,6 @@ class _StartEventState extends State<StartEvent> {
             Visibility(
               visible: _isVisible,
               child: Container(
-                //height: 50,
                 color: ColorConstants.backgroundColorGrey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +319,7 @@ class _StartEventState extends State<StartEvent> {
                       padding: const EdgeInsets.only(
                           right: 16, left: 16, bottom: 12),
                       child: DropdownButtonFormField(
-                        onChanged: (value) {
+                        onChanged: (dynamic value) {
                           setState(() {
                             //requestDepartmentId = value;
                           });
@@ -343,7 +338,7 @@ class _StartEventState extends State<StartEvent> {
                         style: FormFieldStyle.formFieldTextStyle,
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Influencer Type"),
-                        validator: (value) => value == null
+                        validator: (dynamic value) => value == null
                             ? 'Please select Influencer type '
                             : null,
                       ),

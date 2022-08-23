@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/data/model/TsoAppTutorialListModel.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -6,10 +8,8 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/presentation/features/video_tutorial/controller/tutorial_list_controller.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:video_player/video_player.dart';
 
 class VideoRequests extends StatefulWidget{
   @override
@@ -18,7 +18,7 @@ class VideoRequests extends StatefulWidget{
 
 class _VideoRequestsState extends State<VideoRequests> {
 
-  TsoAppTutorialListModel tsoAppTutorialListModel;
+  TsoAppTutorialListModel? tsoAppTutorialListModel;
   TutorialListController eventController = Get.find();
 
 
@@ -26,7 +26,7 @@ class _VideoRequestsState extends State<VideoRequests> {
   var data;
   getAppTutorialListData() async {
     await eventController.getAccessKey().then((value) async {
-      data = await eventController.getAppTutorialListData(value.accessKey);
+      data = await eventController.getAppTutorialListData(value!.accessKey);
     });
   }
 
@@ -103,18 +103,18 @@ class _VideoRequestsState extends State<VideoRequests> {
               SizedBox(
                 height: 5,
               ),
-              tsoAppTutorialListModel.tsoAppTutorial != null
+              tsoAppTutorialListModel!.tsoAppTutorial != null
               ? Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
-                    itemCount: tsoAppTutorialListModel
-                        .tsoAppTutorial.length,
+                    itemCount: tsoAppTutorialListModel!
+                        .tsoAppTutorial!.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
                           Get.toNamed(Routes.VIDEO_PLAYER, arguments: [
-                            tsoAppTutorialListModel.tsoAppTutorial[index].url,
-                            tsoAppTutorialListModel.tsoAppTutorial[index].description
+                            tsoAppTutorialListModel!.tsoAppTutorial![index].url,
+                            tsoAppTutorialListModel!.tsoAppTutorial![index].description
                           ]);
 
                             // Navigator.push(context, MaterialPageRoute(
@@ -142,7 +142,7 @@ class _VideoRequestsState extends State<VideoRequests> {
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    tsoAppTutorialListModel.respMsg,
+                    tsoAppTutorialListModel!.respMsg!,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -161,8 +161,8 @@ class _VideoRequestsState extends State<VideoRequests> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            tsoAppTutorialListModel.totalCount != null
-                ? "Total Count - ${tsoAppTutorialListModel.totalCount}"
+            tsoAppTutorialListModel!.totalCount != null
+                ? "Total Count - ${tsoAppTutorialListModel!.totalCount}"
                 : "Total Count - 0",
             style: TextStyle(
               fontFamily: "Muli",
@@ -188,7 +188,7 @@ class _VideoRequestsState extends State<VideoRequests> {
               height: 80,
               width: 120,
               color: Colors.grey,
-              child: Image.network('${tsoAppTutorialListModel.tsoAppTutorial[index].thumbnailUrl}', fit: BoxFit.fill,),
+              child: Image.network('${tsoAppTutorialListModel!.tsoAppTutorial![index].thumbnailUrl}', fit: BoxFit.fill,),
             ),
             // SizedBox(width: 10,),
             Expanded(
@@ -197,7 +197,7 @@ class _VideoRequestsState extends State<VideoRequests> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}",
+                    Text("${tsoAppTutorialListModel!.tsoAppTutorial![index].description}",
                         style: TextStyle(
                             color: HexColor('#002A64'),
                             fontSize: 14,
@@ -206,7 +206,7 @@ class _VideoRequestsState extends State<VideoRequests> {
                         ),
                       textAlign: TextAlign.left,
                       ),
-                    Text("${tsoAppTutorialListModel.tsoAppTutorial[index].category}",
+                    Text("${tsoAppTutorialListModel!.tsoAppTutorial![index].category}",
                       style: TextStyle(
                           color: HexColor('#002A64'),
                           fontSize: 10,
@@ -234,7 +234,7 @@ class _VideoRequestsState extends State<VideoRequests> {
           height: 230,width: 300,
           child: VideoPlayerScreen(url:'https://mobileqacloud.dalmiabharat.com//tso/tutorial/lead_creation_module.mp4'),
         ),
-        title: Text("${tsoAppTutorialListModel.tsoAppTutorial[index].description}", style: TextStyle(fontSize: 12),),
+        title: Text("${tsoAppTutorialListModel!.tsoAppTutorial![index].description}", style: TextStyle(fontSize: 12),),
     );
     showDialog(context: context,
         builder: (BuildContext context){
@@ -245,15 +245,15 @@ class _VideoRequestsState extends State<VideoRequests> {
 }
 class VideoPlayerScreen extends StatefulWidget {
   final url;
-  VideoPlayerScreen({Key key, this.url}) : super(key: key);
+  VideoPlayerScreen({Key? key, this.url}) : super(key: key);
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
+  late VideoPlayerController _controller;
+  Future<void>? _initializeVideoPlayerFuture;
 
   @override
   void initState() {

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/influencer_binding.dart';
 import 'package:flutter_tech_sales/bindings/sr_binding.dart';
@@ -9,13 +9,12 @@ import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_s
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/deep_link_constants.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
-import 'package:get/get.dart';
 
 class NotificationRoutes {
   NotificationRoutes._();
 
   static navigateAfterResponse(
-      {@required String screenName, Map<String, dynamic> payloadData}) {
+      {required String? screenName, Map<String, dynamic>? payloadData}) {
     TsoLogger.printLog("navigateAfterResponse   $screenName");
     TsoLogger.printLog("payloadData   $payloadData");
     switch (screenName) {
@@ -113,21 +112,21 @@ class NotificationRoutes {
         Get.toNamed(Routes.VISIT_VIEW_SCREEN);
         break;
       case DeepLinkConstants.VIDEO_PLAYER:
-        if (payloadData['url'] != null && payloadData['des'] != null) {
+        if (payloadData!['url'] != null && payloadData['des'] != null) {
           Get.toNamed(Routes.VIDEO_PLAYER,
               arguments: [payloadData['url'], payloadData['des']]);
         }
         break;
       case DeepLinkConstants.SITES_SCREEN:
-        if (payloadData['id'] != null) {
-          Get.to(() => ViewSiteScreenNew(
+        if (payloadData!['id'] != null) {
+          Get.to(() => ViewSiteScreen(
                 siteId: payloadData['id'],
                 tabIndex: 0,
               ));
         }
         break;
       case DeepLinkConstants.SERVICE_REQUEST_UPDATESCREEN:
-        if (payloadData['id'] != null) {
+        if (payloadData!['id'] != null) {
           Get.to(
             () => RequestUpdation(id: payloadData["id"]),
             transition: Transition.rightToLeft,
@@ -136,13 +135,13 @@ class NotificationRoutes {
         }
         break;
       case DeepLinkConstants.VIEW_OLD_LEAD_SCREEN:
-        if (payloadData['id'] != null) {
+        if (payloadData!['id'] != null) {
           Get.to(() => ViewLeadScreen(int.parse(payloadData['id'])),
               binding: AddLeadsBinding());
         }
         break;
       case DeepLinkConstants.INFLUENCER_DETAILS:
-        if (payloadData['id'] != null) {
+        if (payloadData!['id'] != null) {
           Get.to(() => InfluencerDetailView(int.parse(payloadData['id'])),
               binding: InfBinding());
         }

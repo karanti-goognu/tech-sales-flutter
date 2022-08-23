@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:intl/intl.dart';
 
 class RequestUpdateHistory extends StatefulWidget {
-  final List<SrComplaintActionList> srComplaintActionList;
+  final List<SrComplaintActionList>? srComplaintActionList;
   final updatedOn, requestStatus;
   RequestUpdateHistory({this.srComplaintActionList, this.updatedOn, this.requestStatus});
   @override
@@ -25,17 +25,17 @@ class _RequestUpdateHistoryState extends State<RequestUpdateHistory> {
         Container(
           child: ListView.builder(
               shrinkWrap: true,
-              itemCount: widget.srComplaintActionList.length,
+              itemCount: widget.srComplaintActionList!.length,
               itemBuilder: (context, index) {
                 final DateFormat formatter = DateFormat('dd-MMM-yyyy');
                 String selectedDateString = formatter.format(
                     DateTime.fromMillisecondsSinceEpoch(
-                        widget.srComplaintActionList[index].createdOn));
-                List<TextEditingController> _commentList = List.generate(widget.srComplaintActionList.length,
-                    (index) => TextEditingController(text: widget.srComplaintActionList[index].comment));
+                        widget.srComplaintActionList![index].createdOn!));
+                List<TextEditingController> _commentList = List.generate(widget.srComplaintActionList!.length,
+                    (index) => TextEditingController(text: widget.srComplaintActionList![index].comment));
                 List<dynamic> _nextVisitDate = List.generate(
-                    widget.srComplaintActionList.length,
-                    (index) => widget.srComplaintActionList[index].nextVisitDate);
+                    widget.srComplaintActionList!.length,
+                    (index) => widget.srComplaintActionList![index].nextVisitDate);
                 String visitDate = formatter.format(
                     DateTime.fromMillisecondsSinceEpoch(_nextVisitDate[index]));
                 TextEditingController _visitDate =

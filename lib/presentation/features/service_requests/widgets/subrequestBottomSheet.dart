@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/AddSrComplaintModel.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
-import 'package:get/get.dart';
 
 class SRRequestSubTypeBottomSheet extends StatefulWidget {
   final srComplaintModel, customFunction, isComplaint, requestID;
@@ -19,9 +19,9 @@ class SRRequestSubTypeBottomSheet extends StatefulWidget {
 
 class _SRRequestSubTypeBottomSheetState
     extends State<SRRequestSubTypeBottomSheet> {
-  List<bool> checkedValues;
-  ServiceRequestComplaintTypeEntity dataToBeSentBack;
-  List<ServiceRequestComplaintTypeEntity> requestSubtype;
+  late List<bool?> checkedValues;
+  ServiceRequestComplaintTypeEntity? dataToBeSentBack;
+  List<ServiceRequestComplaintTypeEntity>? requestSubtype;
   TextEditingController _query = TextEditingController();
 
   @override
@@ -38,7 +38,7 @@ class _SRRequestSubTypeBottomSheetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeight / 1.5,
+      height: SizeConfig.screenHeight! / 1.5,
       color: Colors.white,
       child: Column(
         children: [
@@ -78,21 +78,21 @@ class _SRRequestSubTypeBottomSheetState
           Expanded(
             child: ListView.separated(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              itemCount: requestSubtype.length,
+              itemCount: requestSubtype!.length,
               itemBuilder: (context, index) {
-                return widget.requestID == requestSubtype[index].requestId
+                return widget.requestID == requestSubtype![index].requestId
                     ? CheckboxListTile(
                         activeColor: Colors.black,
                         dense: true,
-                        title: Text(requestSubtype[index]
-                            .serviceRequestTypeText),
+                        title: Text(requestSubtype![index]
+                            .serviceRequestTypeText!),
                         value: checkedValues[index],
                         onChanged: (newValue) {
                           if (!checkedValues.contains(true) ||
                               checkedValues[index] == true) {
                             setState(() {
                               checkedValues[index] = newValue;
-                              dataToBeSentBack = requestSubtype[index];
+                              dataToBeSentBack = requestSubtype![index];
                             });
                           } else {
                             Get.snackbar(
@@ -108,7 +108,7 @@ class _SRRequestSubTypeBottomSheetState
               },
               separatorBuilder: (context, index) {
                 return widget.requestID ==
-                    requestSubtype[index].requestId
+                    requestSubtype![index].requestId
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Divider(),

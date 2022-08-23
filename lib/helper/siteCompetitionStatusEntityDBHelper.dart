@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
   static final SiteCompetitionStatusEntityDBHelper _instance = SiteCompetitionStatusEntityDBHelper._();
-  static Database _database;
+  static Database? _database;
 
   SiteCompetitionStatusEntityDBHelper._();
 
@@ -12,7 +14,7 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }
@@ -36,14 +38,14 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
 
 
   Future<int> addSiteCompetitionStatusInDraft(SiteCompetitionStatusEntityForDB siteCompetitionStatusEntityForDB) async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     print(siteCompetitionStatusEntityForDB.siteCompetitionStatusEntity);
     return client.insert('siteCompetitionStatus', siteCompetitionStatusEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<SiteCompetitionStatusEntityForDB> fetchCompetitionStatusInDraft(int id) async {
-    var client = await db;
+  Future<SiteCompetitionStatusEntityForDB?> fetchCompetitionStatusInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     final Future<List<Map<String, dynamic>>> futureMaps =
     client.query('siteCompetitionStatus', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
@@ -57,20 +59,20 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
 
   Future<int> updateCompetitionStatusInDraft(SiteCompetitionStatusEntityForDB siteCompetitionStatusEntityForDB) async {
     print(siteCompetitionStatusEntityForDB.id);
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.update('siteCompetitionStatus', siteCompetitionStatusEntityForDB.toMapForDb(),
         where: 'id = ?',
         whereArgs: [siteCompetitionStatusEntityForDB.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> removeCompetitionStatusInDraft(int id) async {
-    var client = await db;
+  Future<int> removeCompetitionStatusInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     return client.delete('siteCompetitionStatus', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<SiteCompetitionStatusEntityForDB>> fetchAll() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.query('siteCompetitionStatus');
 
     if (res.isNotEmpty) {
@@ -85,9 +87,9 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
 
 class SiteCompetitionStatusEntityForDB {
   // @required
-  final int id;
+  final int? id;
   @required
-  final String siteCompetitionStatusEntity;
+  final String? siteCompetitionStatusEntity;
 
   SiteCompetitionStatusEntityForDB(this.id, this.siteCompetitionStatusEntity);
 

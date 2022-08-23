@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/view/month_to_date.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_tech_sales/presentation/features/dashboard/view/year_to_
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:get/get.dart';
@@ -18,10 +21,10 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   DashboardController _dashboardController = Get.find();
   SplashController _splashController = Get.find();
-  List<ReportingTsoListModel> _employeeDropDownData=[];
-  String empID;
-  String yearMonth;
-  GlobalKey<MonthToDateState> monthToDateKey;
+  List<ReportingTsoListModel>? _employeeDropDownData=[];
+  String? empID;
+  String? yearMonth;
+  GlobalKey<MonthToDateState>? monthToDateKey;
   int _tabNumber=0;
 
   @override
@@ -43,11 +46,11 @@ class _DashboardState extends State<Dashboard> {
     _dashboardController.yearMonth=yearMonth;
     _employeeDropDownData = _splashController.splashDataModel.reportingTsoListModel;
 
-    empID = _employeeDropDownData.isEmpty ? _dashboardController.empId: _employeeDropDownData[0].tsoId;
+    empID = _employeeDropDownData!.isEmpty ? _dashboardController.empId: _employeeDropDownData![0].tsoId;
     _dashboardController.getMonthViewDetails(yearMonth: yearMonth)
         .then((value) {
-      if(_employeeDropDownData.isEmpty ){
-        monthToDateKey.currentState.passEmpId(_dashboardController.empId);
+      if(_employeeDropDownData!.isEmpty ){
+        monthToDateKey!.currentState!.passEmpId(_dashboardController.empId);
         empID=_dashboardController.empId;
       }
 
@@ -62,15 +65,15 @@ class _DashboardState extends State<Dashboard> {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Text('MY DASHBOARD'),
+            title: Text(StringConstants.dashboardTitle),
             backgroundColor: ColorConstants.appBarColor,
             bottom: PreferredSize(
-              preferredSize: _employeeDropDownData.isEmpty
+              preferredSize: _employeeDropDownData!.isEmpty
                   ? Size.fromHeight(50)
                   : Size.fromHeight(110),
               child: Column(
                 children: [
-                  _employeeDropDownData.isEmpty
+                  _employeeDropDownData!.isEmpty
                       ? Container()
                       : DropdownButtonHideUnderline(
                           child: Container(
@@ -84,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
                                 isExpanded: true,
                                 value: empID,
                                 iconEnabledColor: ColorConstants.appBarColor,
-                                items: _employeeDropDownData
+                                items: _employeeDropDownData!
                                     .map((e) => DropdownMenuItem(
                                           value: e.tsoId,
                                           child: Text(
@@ -96,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                         ))
                                     .toList(),
-                                onChanged: (value) {
+                                onChanged: (dynamic value) {
                                   setState(() {
                                     empID = value;
                                   });
@@ -110,10 +113,10 @@ class _DashboardState extends State<Dashboard> {
                   TabBar(
                     tabs: [
                       Tab(
-                        text: "MONTH TO DATE",
+                        text: StringConstants.tabMonthToDate,
                       ),
                       Tab(
-                        text: "YEAR TO DATE",
+                        text: StringConstants.tabYearToDate,
                       ),
                     ],
                     indicatorColor: Colors.white,

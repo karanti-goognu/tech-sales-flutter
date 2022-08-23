@@ -4,9 +4,9 @@ import 'package:moengage_flutter/push_campaign.dart';
 import 'package:moengage_inbox/moengage_inbox.dart';
 
 class MoengageService {
-  static MoEngageFlutter _moengagePlugin;
+  static MoEngageFlutter? _moengagePlugin;
   static bool isPushClickCall=false;
-  static MoEngageInbox moEngageInbox;
+  static late MoEngageInbox moEngageInbox;
 
 
   MoengageService._() {
@@ -20,6 +20,7 @@ class MoengageService {
   }
 
   static void getInstance() {
+    print("MoEngage Get instance");
     MoengageService._();
   }
 
@@ -34,11 +35,12 @@ class MoengageService {
 
 
   void _onPushClick(PushCampaign pushCampaign) {
+    print("On Push Click");
     isPushClickCall= true;
     Map<String, dynamic> payload = pushCampaign.payload;
-    String gcmWebUrl = payload["gcm_webUrl"];
-    String gcmActivityName = payload["gcm_activityName"];
+    String? gcmWebUrl = payload["gcm_webUrl"];
     if (gcmWebUrl != null) {
+      print("GCM not null");
       String screenName= gcmWebUrl.split('/').last;
       handleDynamicLink(navigationScreenName:screenName,payloadData: payload);
     }
@@ -46,7 +48,8 @@ class MoengageService {
 
 
 
-  handleDynamicLink({String navigationScreenName, Map<String, dynamic>  payloadData}) {
+  handleDynamicLink({String? navigationScreenName, Map<String, dynamic>?  payloadData}) {
+    print("Handle Dynamic Link");
     NotificationRoutes.navigateAfterResponse(screenName: navigationScreenName, payloadData: payloadData);
 
   }

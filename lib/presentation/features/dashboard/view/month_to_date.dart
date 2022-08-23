@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/controller/dashboard_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/dsp_for_mtd.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/widgets/top_row_for_mtd.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +17,7 @@ import 'package:screenshot/screenshot.dart';
 class MonthToDate extends StatefulWidget {
   final empID, yearMonth;
   MonthToDate({
-    Key key,
+    Key? key,
     this.empID,
     this.yearMonth,
   }) : super(key: key);
@@ -28,20 +30,19 @@ class MonthToDateState extends State<MonthToDate> {
   bool _currentMothDspSlabVolume = false;
   DashboardController _dashboardController = Get.find();
   ScreenshotController screenshotController = ScreenshotController();
-  File imgFile;
-  String empID, _currentMonth, _previousMonth;
-  String yearMonthForFileName;
+  late File imgFile;
+  String? empID, _currentMonth, _previousMonth;
+  String? yearMonthForFileName;
   Random random = Random();
 
 
   void _printPngBytes() async {
     Get.dialog(Center(child: CircularProgressIndicator()));
     String empIdForFileName= _dashboardController.empId;
-    var pngBytes = await  screenshotController.capture(pixelRatio: 5);
+    Uint8List? pngBytes = await  (screenshotController.capture(pixelRatio: 5) );
     final directory = (await getApplicationDocumentsDirectory()).path;
-
     imgFile = new File('$directory/$empIdForFileName-MTD-${DateTime.now().millisecondsSinceEpoch}.png');
-    imgFile.writeAsBytes(pngBytes);
+    imgFile.writeAsBytes(pngBytes!);
     _dashboardController.getDetailsForSharingReport(imgFile);
     Get.back();
   }
@@ -145,7 +146,7 @@ class MonthToDateState extends State<MonthToDate> {
                               Row(
                                 children: [
                                   Text(
-                                    'All target achievement are shown on Pro rata basis',
+                                    StringConstants.dashSubTitle,
                                     style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*2.5),
                                   ),
                                   Expanded(child: Container())
@@ -208,7 +209,7 @@ class MonthToDateState extends State<MonthToDate> {
                                 children: [
                                   Text(
                                     'Total Slab Opportunities',
-                                    style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*2.5),
+                                    style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal!*2.5),
                                   ),
                                   Expanded(child: Container())
                                 ],
@@ -343,6 +344,6 @@ class MonthToDateState extends State<MonthToDate> {
 class ChartDataForMTD {
   ChartDataForMTD(this.x, this.y, [this.color]);
   final String x;
-  final double y;
-  final Color color;
+  final double? y;
+  final Color? color;
 }

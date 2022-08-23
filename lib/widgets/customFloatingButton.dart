@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
-import 'package:get/get.dart';
 
 class SpeedDialDetailsModel {
   String value;
@@ -30,7 +30,7 @@ final TextStyle customStyle =
 
 class BackFloatingButton extends StatelessWidget {
   const BackFloatingButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -56,9 +56,9 @@ class BackFloatingButton extends StatelessWidget {
 
 class SpeedDialFAB extends StatelessWidget {
   const SpeedDialFAB({
-    Key key,
-    @required this.speedDial,
-    @required this.customStyle,
+    Key? key,
+    required this.speedDial,
+    required this.customStyle,
   }) : super(key: key);
 
   final List<SpeedDialDetailsModel> speedDial;
@@ -99,10 +99,10 @@ class SpeedDialFAB extends StatelessWidget {
               body: Row(
                 children: [
                   Container(
-                    width: SizeConfig.screenWidth / 2.22,
+                    width: SizeConfig.screenWidth! / 2.22,
                   ),
                   Container(
-                    width: SizeConfig.screenWidth / 2,
+                    width: SizeConfig.screenWidth! / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

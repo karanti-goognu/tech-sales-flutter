@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
+
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
@@ -18,9 +21,7 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart' show DateFormat;
+
 
 class AddCalenderEventPage extends StatefulWidget {
   @override
@@ -30,7 +31,6 @@ class AddCalenderEventPage extends StatefulWidget {
 class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
-  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
 
   CalendarEventController _calendarEventController = Get.find();
@@ -52,7 +52,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
         _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS, context),
         _appController.getAccessKey(RequestIds.TARGET_VS_ACTUAL, context),
           _calendarEventController.selectedDate = "${_currentDate2.year}-${_currentDate2.month}-${_currentDate2.day}",
-          // print('${_calendarEventController.selectedDate}');
           _appController.getAccessKey(RequestIds.GET_CALENDER_EVENTS_OF_DAY, context),
         }else{
         Get.snackbar(
@@ -60,7 +59,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM),
-        // fetchSiteList()
       }
     });
     super.initState();
@@ -74,18 +72,13 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
+        context,
         designSize: Size(360, 690),
-        context: context,
         minTextAdapt: true,
-        orientation: Orientation.portrait);
+    );
 
     return WillPopScope(
         onWillPop: () async {
-          // You can do some work here.
-          // Returning true allows the pop to happen, returning false prevents it.
           Get.offNamed(Routes.HOME_SCREEN);
           return true;
         },
@@ -122,101 +115,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
               ],
             ),
             body: calender(),
-            // body: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: <Widget>[
-            //     Container(
-            //         color: Colors.white,
-            //         child: Padding(
-            //           padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //           child: Obx(() => CalendarCarousel<Event>(
-            //                 todayButtonColor: Colors.green,
-            //                 height: 360.0,
-            //                 selectedDateTime: _currentDate2,
-            //                 headerMargin: EdgeInsets.zero,
-            //                 selectedDayButtonColor:
-            //                     Colors.grey.withOpacity(0.1),
-            //                 selectedDayTextStyle:
-            //                     TextStyle(color: Colors.black),
-            //                 weekdayTextStyle: TextStyle(
-            //                     color: Colors.grey,
-            //                     fontWeight: FontWeight.w400),
-            //                 dayPadding: 4,
-            //                 weekendTextStyle: TextStyle(color: Colors.black),
-            //                 onDayLongPressed: (DateTime date) {
-            //                   print('long pressed date $date');
-            //                 },
-            //                 onDayPressed:
-            //                     (DateTime date, List<Event> events) {
-            //                   this.setState(() {
-            //                     _currentDate2 = date;
-            //                   });
-            //                   _calendarEventController.selectedDate =
-            //                       "${date.year}-${date.month}-${date.day}";
-            //                   // print('${_calendarEventController.selectedDate}');
-            //                   _appController.getAccessKey(
-            //                       RequestIds.GET_CALENDER_EVENTS_OF_DAY);
-            //                   _calendarEventController.isDayEventLoading =
-            //                       true;
-            //                   /*this.setState(() => _currentDate2 = date);*/
-            //                 },
-            //                 markedDateMoreCustomDecoration: new BoxDecoration(
-            //                   borderRadius: new BorderRadius.circular(10.0),
-            //                   color: Colors.grey,
-            //                 ),
-            //                 markedDatesMap:
-            //                     _calendarEventController.markedDateMap,
-            //                 targetDateTime: _targetDateTime,
-            //                 customGridViewPhysics:
-            //                     NeverScrollableScrollPhysics(),
-            //                 minSelectedDate:
-            //                     _currentDate.subtract(Duration(days: 360)),
-            //                 maxSelectedDate:
-            //                     _currentDate.add(Duration(days: 360)),
-            //                 inactiveDaysTextStyle: TextStyle(
-            //                   color: Colors.tealAccent,
-            //                   fontSize: 16,
-            //                 ),
-            //             childAspectRatio: 1,
-            //                 onCalendarChanged: (DateTime date) {
-            //                   final DateFormat formatter =
-            //                       DateFormat('MMMM-yyyy');
-            //                   final String formatted = formatter.format(date);
-            //                   _calendarEventController.selectedMonth =
-            //                       formatted;
-            //                   _appController.getAccessKey(
-            //                       RequestIds.GET_CALENDER_EVENTS);
-            //                   //_calendarEventController.isLoading = true;
-            //
-            //                   this.setState(() {
-            //                     _targetDateTime = date;
-            //                     _currentMonth =
-            //                         DateFormat.yMMM().format(_targetDateTime);
-            //                   });
-            //                 },
-            //               )),
-            //         )),
-            //     SizedBox(
-            //       height: 12,
-            //     ),
-            //     returnRow(),
-            //     Expanded(
-            //       child: Container(
-            //         child: SingleChildScrollView(
-            //           child: Column(
-            //             children: [
-            //               SizedBox(
-            //                 height: 12,
-            //               ),
-            //               returnEventsList(),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // )
         ));
   }
 
@@ -251,12 +149,10 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                           });
                           _calendarEventController.selectedDate =
                           "${date.year}-${date.month}-${date.day}";
-                          // print('${_calendarEventController.selectedDate}');
                           _appController.getAccessKey(
                               RequestIds.GET_CALENDER_EVENTS_OF_DAY, context);
                           _calendarEventController.isDayEventLoading =
                           true;
-                          /*this.setState(() => _currentDate2 = date);*/
                         },
                         markedDateMoreCustomDecoration: new BoxDecoration(
                           borderRadius: new BorderRadius.circular(10.0),
@@ -284,12 +180,8 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                               formatted;
                           _appController.getAccessKey(
                               RequestIds.GET_CALENDER_EVENTS, context);
-                          //_calendarEventController.isLoading = true;
-
                           this.setState(() {
                             _targetDateTime = date;
-                            _currentMonth =
-                                DateFormat.yMMM().format(_targetDateTime);
                           });
                         },
                       )),
@@ -380,7 +272,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      // print('${_calendarEventController.listOfEvents[index].eventType}');
                       if (_calendarEventController
                               .listOfEvents[index].eventType == 'VISIT') {
                         _addEventController.visitId = _calendarEventController.listOfEvents[index].id;
@@ -391,13 +282,6 @@ class _AddCalenderEventPageState extends State<AddCalenderEventPage> {
                         _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.pendingApproval?eventColor = ColorConstants.eventPending:
                         _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.rejectedEvent?  eventColor = ColorConstants.eventRejected:
                         _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.notSubmitted? eventColor = ColorConstants.eventNotSubmited: eventColor = ColorConstants.blackColor;
-
-                        // _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.approved ||
-                        //     _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ||
-                        //     _calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.cancelled?
-                        // Get.to(() => DetailViewEvent(_calendarEventController.listOfEvents[index].id),
-                        //     binding: EGBinding()):Get.to(() => DetailPending(_calendarEventController.listOfEvents[index].id,eventColor),
-                        //     binding: EGBinding());
 
                         if(_calendarEventController.listOfEvents[index].displayMessage1 == StringConstants.completed ){
                           Get.to(() => EndEvent(_calendarEventController.listOfEvents[index].id,1),

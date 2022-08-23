@@ -6,6 +6,13 @@ final client = Client();
 abstract class UrlConstants {
  UrlConstants._();
 
+ //PREPROD
+
+ // static const String baseUrl = 'https://prepod.dalmiabharat.com:8443/tech_sales_server';
+ // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
+ // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
+
+
  //PROD
  // static const String baseUrl = 'https://mobileapps.dalmiabharat.com/tech_sales_server';
  // static const String baseUrlforImages = 'https://mobileapps.dalmiabharat.com/tso/leads';
@@ -17,47 +24,68 @@ abstract class UrlConstants {
  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
 
- //Development
+ ///Development
  // static const String baseUrl = 'https://mobiledevcloud.dalmiabharat.com/tech_sales_server';
  // static const String baseUrlforImages = 'https://mobiledevcloud.dalmiabharat.com/tso/leads';
  // static const String baseUrlforImagesSites = 'https://mobiledevcloud.dalmiabharat.com/tso/sites';
 
 
- //End points
+ /// API End points
  static const String loginCheck = '$baseUrl/login/login-otp';
  static const String getAccessKey = '$baseUrl/validation/generate-access-key';
  static const String getSecretKey = '$baseUrl/validation/generate-secret-key';
  static const String retryOtp = '$baseUrl/login/login-otp-retry';
  static const String validateOtp = '$baseUrl/login/login-otp-validate';
+ static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
+
+
+
+ //Leads
  static const String getFilterData = '$baseUrl/leads/lead-filter-data';
  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
- //static const String addLeadsData = '$baseUrl/leads/lead-new';
  static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
- static const String getInflData = '$baseUrl/influencer/getDetails';
  static const String saveLeadsData = '$baseUrl/leads/v2/lead-save';
- static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';
- static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
-// static const String updateLeadsData = '$baseUrl/leads/lead-update';
  static const String updateLeadsData = '$baseUrl/leads/v2/lead-update';
+ static const String getSearchData = '$baseUrl/leads/lead-search?';
+ static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
+ static const String leadDistList = '$baseUrl/leads/v2/district-list?referenceID=';
+ static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
+
+ //Site
+ static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
  static const String updateSiteData = '$baseUrl/sites/site-update';
  static const String updateVersion2SiteData = '$baseUrl/sites/v2/site-update';
- static const String getSearchData = '$baseUrl/leads/lead-search?';
  static const String getSiteSearchData = '$baseUrl/sites/site-search/?';
  static const String getCheckInDetails = '$baseUrl/journey/details';
  static const String getSitesList = '$baseUrl/sites/site-list-view?referenceID=';
- //static const String saveMWPData = '$baseUrl/mwp/mwp-save';
+ static const String getSiteAreaDetails = '$baseUrl/sites/site-areaDetails?referenceID=';
+ static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
+ static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
+ static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
+ static const String getFloorDetail = '$baseUrl/sites/getFloorDetailbyStageId?stageId=';
+
+ static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
+ static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
+ static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
+
+
+
+ //MWP
  static const String saveMWPData = '$baseUrl/mwp/v2/mwp-save';
  static const String getMWPData = '$baseUrl/mwp/view-mwp?';
  static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';
  static const String getCalendarEventDataByDay = '$baseUrl/mwp/visit-view?';
  static const String getTargetVsActualData = '$baseUrl/mwp/targetVsActual?referenceID=';
- //static const String saveVisit = '$baseUrl/mwp/save-visit';
-
  static const String saveVisit = '$baseUrl/mwp/v2/save-visit';
  static const String updateVisit = '$baseUrl/mwp/v2/update-visit';
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
  static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
+ static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
+
+
+
+ //SR
  static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
  static const String getServiceRequestFormDataNew = '$baseUrl/srcomplaint/v2/sr_complaint_add';
  static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
@@ -65,39 +93,24 @@ abstract class UrlConstants {
  static const String addServiceRequest = '$baseUrl/srcomplaint/sr_complaint_save';
  static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
  static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
+
+ //Tutorial
  static const String AppTutorialList = '$baseUrl/tsoAppTuorial/view';
- static const String getSiteAreaDetails = '$baseUrl/sites/site-areaDetails?referenceID=';
+
+ //Dashboard
  static const String homepageDashboardData = '$baseUrl/dashboard/view?referenceID=';
  static const String shareReport = '$baseUrl/dashboard/reportSharing?reference-Id=';
  static const String dashboadrMonthlyView = '$baseUrl/dashboard/dashboadrMonthlyView?referenceID=';
  static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
  static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
- static const String getSiteDataVersion2 = '$baseUrl/sites/v2/view-site?siteId=';
- static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
- static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
- static const String getFloorDetail = '$baseUrl/sites/getFloorDetailbyStageId?stageId=';
-
-
-
- static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
- //static const String updateVersion4SiteData = '$baseUrl/sites/v4/site-update';
- static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
- static const String getLeadData2 = '$baseUrl/leads/v2/view-lead?leadId=';
-
- static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
- static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
-
-
- static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="
+  static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="
  // "https://mobiledevcloud.dalmiabharat.com:443/dalmiabharat-smartd/tsoappintegration/getKittyPointsByBrand?partyCode="
      // '$baseUrl/sites/getKittyPointsByBrand?partyCode='
  ;
 
- static const String leadDistList = '$baseUrl/leads/v2/district-list?referenceID=';
 
 
- static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
 
  ///Events and Gifts
  static const String getAddEvent = '$baseUrl/event/add-event?referenceID=';
@@ -121,7 +134,7 @@ abstract class UrlConstants {
 
 
 
- // pending supply
+ /// pending supply
  static const String getPendingSupplyList = '$baseUrl/sites/get-pending-supplies?referenceID=';
  static const String getPendingSupplyDetails = '$baseUrl/sites/get-pending-supplies-details?referenceID=';
  static const String updatePendingSupply = '$baseUrl/sites/update-pending-supply';
@@ -134,6 +147,7 @@ abstract class UrlConstants {
  static const String getInfluencerList = "$baseUrl/influencer/get-influencer-list?referenceID=";
  static const String getInfluencerDetailsByMembership = "$baseUrl/influencer/get-influencer-details-by-membership?memberShipId=";
  static const String searchInfluencerList = "$baseUrl/influencer/searchInfluencerList?searchText=";
+ static const String getInflData = '$baseUrl/influencer/getDetails';
 
 
 }

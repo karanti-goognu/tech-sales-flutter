@@ -1,24 +1,27 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/controller/update_sr_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/ComplaintViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/model/UpdateSRModel.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
+import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/widgets/datepicker.dart';
 import 'package:flutter_tech_sales/widgets/upload_photo_bottomsheet.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class RequestUpdateAction extends StatefulWidget {
   final dept, id, severity;
-  final List<SrcResolutionEntity> resolutionStatus;
+  final List<SrcResolutionEntity>? resolutionStatus;
   final requestType;
 
   RequestUpdateAction(
@@ -34,24 +37,24 @@ class RequestUpdateAction extends StatefulWidget {
 
 class _RequestUpdateActionState extends State<RequestUpdateAction> {
   UpdateServiceRequestController updateServiceRequestController = Get.find();
-  UpdateSRModel _updateSRModel;
+  UpdateSRModel? _updateSRModel;
   UpdateServiceRequestController updateRequest = Get.find();
-  Position _currentPosition;
+  Position? _currentPosition;
   final _updateActionFormKey = GlobalKey<FormState>();
   TextEditingController _location = TextEditingController();
   TextEditingController _noOfBags = TextEditingController();
   TextEditingController _comment = TextEditingController();
   TextEditingController _batchNo = TextEditingController();
   TextEditingController _sourcePlant = TextEditingController();
-  String _productComplaint;
-  String _techVan;
-  String _productType;
-  int _resolutionStatus;
-  String _requestNature;
+  String? _productComplaint;
+  String? _techVan;
+  String? _productType;
+  int? _resolutionStatus;
+  String? _requestNature;
   TextEditingController _dateOfPurchase = TextEditingController();
   TextEditingController _nextVisitDate = TextEditingController();
   List<File> _imageList = List<File>.empty(growable: true);
-  String _selectedTypeOfComplain;
+  String? _selectedTypeOfComplain;
 
   var _balanceQuantity = new TextEditingController();
   var _billNo = new TextEditingController();
@@ -60,12 +63,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   var _detailsOfDemoConducted = new TextEditingController();
   var _bestBeforeDate = new TextEditingController();
   var _mtController = new TextEditingController();
-  String _selectedSampleCollected;
-  String _gropuSampleCollected;
-  String _groupDemoConducted;
-  String _selectedDemoConducted;
+  String? _selectedSampleCollected;
+  String? _groupSampleCollected;
+  String? _groupDemoConducted;
+  String? _selectedDemoConducted;
 
-  Map<String, bool> values = {
+  Map<String, bool?> values = {
     'OPC': false,
     'PPC': false,
     'CC': false,
@@ -98,7 +101,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
         child: Column(
           children: [
             DropdownButtonFormField(
-              onChanged: (value) {
+              onChanged: (dynamic value) {
                 setState(() {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _requestNature = value;
@@ -115,7 +118,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               style: FormFieldStyle.formFieldTextStyle,
               decoration: FormFieldStyle.buildInputDecoration(
                   labelText: "Request Nature*"),
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'Please select the Request Nature' : null,
             ),
             SizedBox(height: 16),
@@ -128,153 +131,125 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             ),
             SizedBox(height: 16),
             TextButton.icon(
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(color: Colors.black26)),
-                backgroundColor: Colors.transparent,
-              ),
-              icon: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.location_searching,
-                  color: HexColor("#F9A61A"),
-                  size: 18,
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black26)),
+                  backgroundColor: Colors.transparent,
                 ),
-              ),
-              label: Padding(
-                padding: const EdgeInsets.only(right: 5, bottom: 8, top: 5),
-                child: Text(
-                  "DETECT",
-                  style: TextStyle(
-                      color: HexColor("#F9A61A"),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17),
+                icon: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Icon(
+                    Icons.location_searching,
+                    color: HexColor("#F9A61A"),
+                    size: 18,
+                  ),
                 ),
-              ),
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return new WillPopScope(
-                          onWillPop: () => null,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ));
-                    });
-                LocationDetails result;
-                result = await GetCurrentLocation.getCurrentLocation();
-                if (result != null) {
-                  Get.back();
+                label: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Text(
+                    "DETECT",
+                    style: TextStyle(
+                        color: HexColor("#F9A61A"),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                ),
+                onPressed: () async {
+                  Get.rawSnackbar(
+                      title: "Message",
+                      message: StringConstants.ACCESS_LOCATION);
+                  LocationDetails result;
+                  result = await GetCurrentLocation.getCurrentLocation();
                   _currentPosition = result.position;
                   List<String> loc = result.loc;
                   _location.text = "${loc[2]}, ${loc[3]}, ${loc[5]}";
-                }
-
-              }
-            ),
+                }),
             SizedBox(
               height: 16,
-              child: Divider(),
+              child: Divider(color: Colors.black26),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.white)),
+                        side: BorderSide(color: Colors.black26)),
                   ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 5, bottom: 10, top: 10),
-                    child: Text(
-                      "UPLOAD PHOTOS",
-                      style: TextStyle(
-                          color: HexColor("#1C99D4"),
-                          fontWeight: FontWeight.bold,
-                          // letterSpacing: 2,
-                          fontSize: 17),
-                    ),
+                  child: Text(
+                    "UPLOAD PHOTOS",
+                    style: TextStyle(
+                        color: HexColor("#1C99D4"),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
                   ),
                   onPressed: () async {
+                    if(controller.imageList.length<6)
                     controller.updateImageList(
                         await UploadImageBottomSheet.showPicker(context));
-
-                    // setState(() {
-                    //   _imageList = UploadImageBottomSheet.showPicker(context);
-                    // });
+                    else
+                      Get.dialog(CustomDialogs.showMessage(
+                          "You can add only upto 5 photos"));
                   }),
             ),
-            controller.imageList != null
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.imageList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  return showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: new Container(
-                                            // width: 500,
-                                            // height: 500,
-                                            child: Image.file(
-                                                controller.imageList[index]),
-                                          ),
-                                        );
-                                      });
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Picture ${(index + 1)}. ",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
-                                          "Image_${(index + 1)}.jpg",
-                                          style: TextStyle(
-                                              color: HexColor("#007CBF"),
-                                              fontSize: 15),
-                                        ),
-                                      ],
+            Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.imageList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: new Container(
+                                      child: Image.file(
+                                          controller.imageList[index]),
                                     ),
-                                    GestureDetector(
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: HexColor("#FFCD00"),
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          controller
-                                              .updateImageAfterDelete(index);
-                                          UploadImageBottomSheet.image = null;
-                                          // controller.imageList.removeAt(index);
-                                        });
-                                      },
-                                    )
-                                  ],
+                                  );
+                                });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Picture ${(index + 1)}. ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                  Text(
+                                    "Image_${(index + 1)}.jpg",
+                                    style: TextStyle(
+                                        color: HexColor("#007CBF"),
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                              GestureDetector(
+                                child: Icon(
+                                  Icons.delete,
+                                  color: HexColor("#FFCD00"),
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  )
-                : Container(
-                    color: Colors.blue,
-                    height: 10,
-                  ),
+                                onTap: () {
+                                  setState(() {
+                                    controller.updateImageAfterDelete(index);
+                                    UploadImageBottomSheet.image = null;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
             widget.requestType == "Complaint".toUpperCase()
                 ? Column(
                     children: [
@@ -299,7 +274,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 Radio(
                                     value: 'Written'.toUpperCase(),
                                     groupValue: _selectedTypeOfComplain,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedTypeOfComplain = value;
                                       });
@@ -317,7 +292,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 Radio(
                                     value: 'Verbal'.toUpperCase(),
                                     groupValue: _selectedTypeOfComplain,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         _selectedTypeOfComplain = value;
                                       });
@@ -345,13 +320,13 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                     ),
                   )
                   .toList(),
-              onChanged: (val) {
+              onChanged: (dynamic val) {
                 setState(() {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   _productComplaint = val;
                 });
               },
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'This field cannot be empty' : null,
             ),
             SizedBox(height: 16),
@@ -394,7 +369,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                 ),
                                 value: values[key],
                                 checkColor: Colors.white,
-                                onChanged: (bool value) {
+                                onChanged: (bool? value) {
                                   setState(() {
                                     values[key] = value;
                                   });
@@ -428,8 +403,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _balanceQuantity,
                                     onChanged: (_) {
                                       setState(() {
-                                        if (_balanceQuantity.text == null ||
-                                            _balanceQuantity.text == "") {
+                                        if (_balanceQuantity.text == "") {
                                           _mtController.clear();
                                         } else {
                                           _mtController.text = (int.parse(
@@ -469,8 +443,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     controller: _mtController,
                                     onChanged: (value) {
                                       setState(() {
-                                        if (_mtController.text == null ||
-                                            _mtController.text == "") {
+                                        if (_mtController.text == "") {
                                           _balanceQuantity.clear();
                                         } else {
                                           _balanceQuantity.text = (double.parse(
@@ -552,8 +525,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       TextFormField(
                         controller: _bestBeforeDate,
                         readOnly: true,
-                        onChanged: (data) {
-                                              },
+                        onChanged: (data) {},
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.inputBoxHintColor,
@@ -586,7 +558,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                             ),
                             onPressed: () async {
                               print("here");
-                              final DateTime picked = await showDatePicker(
+                              final DateTime? picked = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2001),
@@ -637,10 +609,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
-                                        groupValue: _gropuSampleCollected,
-                                        onChanged: (value) {
+                                        groupValue: _groupSampleCollected,
+                                        onChanged: (dynamic value) {
                                           setState(() {
-                                            _gropuSampleCollected = value;
+                                            _groupSampleCollected = value;
                                             _selectedSampleCollected = "Y";
                                           });
                                         }),
@@ -656,10 +628,10 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                   children: [
                                     Radio(
                                         value: 'No'.toUpperCase(),
-                                        groupValue: _gropuSampleCollected,
-                                        onChanged: (value) {
+                                        groupValue: _groupSampleCollected,
+                                        onChanged: (dynamic value) {
                                           setState(() {
-                                            _gropuSampleCollected = value;
+                                            _groupSampleCollected = value;
                                             _selectedSampleCollected = "N";
                                           });
                                         }),
@@ -707,7 +679,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'Yes'.toUpperCase(),
                                         groupValue: _groupDemoConducted,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _groupDemoConducted = value;
                                             _selectedDemoConducted = "Y";
@@ -726,7 +698,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                                     Radio(
                                         value: 'No'.toUpperCase(),
                                         groupValue: _groupDemoConducted,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _groupDemoConducted = value;
                                             _selectedDemoConducted = "N";
@@ -769,12 +741,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           ),
                         )
                         .toList(),
-                    onChanged: (val) {
+                    onChanged: (dynamic val) {
                       setState(() {
                         _techVan = val;
                       });
                     },
-                    validator: (value) =>
+                    validator: (dynamic value) =>
                         value == null ? 'This field cannot be empty' : null,
                   )
                 : Container(),
@@ -796,12 +768,12 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                               ),
                             )
                             .toList(),
-                        onChanged: (val) {
+                        onChanged: (dynamic val) {
                           setState(() {
                             _productType = val;
                           });
                         },
-                        validator: (value) =>
+                        validator: (dynamic value) =>
                             (value == null) && (_productComplaint == 'YES')
                                 ? 'Please select the Product Type'
                                 : null,
@@ -813,7 +785,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                           labelText: 'Batch No.',
                         ),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please select the Product Type'
                                 : null,
                       ),
@@ -824,7 +796,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         onTap: () => PickDate.selectDate(
                                 context: context, lastDate: DateTime.now())
                             .then(
-                          (value) => value==null
+                          (value) => value == null
                               ? null
                               : setState(
                                   () {
@@ -851,7 +823,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "Source Plant"),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please enter the details about source plant'
                                 : null,
                       ),
@@ -863,7 +835,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                         decoration: FormFieldStyle.buildInputDecoration(
                             labelText: "No. of Bags"),
                         validator: (value) =>
-                            (value.isEmpty) && (_productComplaint == 'YES')
+                            (value!.isEmpty) && (_productComplaint == 'YES')
                                 ? 'Please enter the number of bags'
                                 : null,
                       ),
@@ -876,19 +848,19 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               decoration: FormFieldStyle.buildInputDecoration(
                   labelText: "Resolution Status*"),
               items: widget.resolutionStatus != null
-                  ? widget.resolutionStatus
+                  ? widget.resolutionStatus!
                       .map(
                         (e) => DropdownMenuItem(
-                          child: Text(e.resolutionText),
+                          child: Text(e.resolutionText!),
                           value: e.id,
                         ),
                       )
                       .toList()
                   : [],
-              onChanged: (val) {
+              onChanged: (dynamic val) {
                 _resolutionStatus = val;
               },
-              validator: (value) =>
+              validator: (dynamic value) =>
                   value == null ? 'Please select the Resolution Status' : null,
             ),
             SizedBox(height: 16),
@@ -905,11 +877,11 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
               style: FormFieldStyle.formFieldTextStyle,
               readOnly: true,
               validator: (value) =>
-                  value.isEmpty ? 'Please enter the next visit date' : null,
+                  value!.isEmpty ? 'Please enter the next visit date' : null,
               controller: _nextVisitDate,
               onTap: () => PickDate.selectDate(
                       context: context, firstDate: DateTime.now())
-                  .then((value) => value==null
+                  .then((value) => value == null
                       ? null
                       : setState(() {
                           final DateFormat formatter = DateFormat("yyyy-MM-dd");
@@ -925,18 +897,17 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                if (!_updateActionFormKey.currentState.validate()) {
+                if (!_updateActionFormKey.currentState!.validate()) {
                   Get.rawSnackbar(
                       message: 'All fields are mandatory',
                       title: 'Warning:',
                       backgroundColor: Colors.red);
                 } else {
-                  String empId = await getEmpId();
+                  String? empId = await (getEmpId());
                   List imageDetails = List.empty(growable: true);
                   _imageList.forEach((element) {
                     setState(() {
                       imageDetails.add({
-                        //ToDo: Change srComplaint Id to some dynamic value
                         'srComplaintId': widget.id,
                         'photoName': element.path.split('/').last,
                       });
@@ -956,8 +927,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                       {
                         "srComplaintId": widget.id,
                         "requestNature": _requestNature,
-                        "locationLat": _currentPosition.latitude,
-                        "locationLong": _currentPosition.longitude,
+                        "locationLat": _currentPosition!.latitude,
+                        "locationLong": _currentPosition!.longitude,
                         "productComplaint": _productComplaint,
                         "productType": _productType,
                         "techvanReqd": _techVan,
@@ -991,7 +962,8 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
                 }
               },
               style: ElevatedButton.styleFrom(
-              primary: HexColor("#1C99D4"),),
+                primary: HexColor("#1C99D4"),
+              ),
               child: Text(
                 "UPDATE",
                 style: TextStyle(
@@ -1007,7 +979,7 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);

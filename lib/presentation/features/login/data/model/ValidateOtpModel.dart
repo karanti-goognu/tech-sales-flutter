@@ -1,15 +1,17 @@
+
+
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/LeadStatusModel.dart';
 
 class ValidateOtpModel {
-  String respCode;
-  String respMsg;
-  EmployeeDetails employeeDetails;
-  List<UserMenu> userMenu;
-  JourneyDetails journeyDetails;
-  List<LeadStatusEntity> leadStatusEntity;
-  List<LeadStageEntity> leadStageEntity;
-  String userSecurityKey;
+  String? respCode;
+  String? respMsg;
+  EmployeeDetails? employeeDetails;
+  List<UserMenu>? userMenu;
+  JourneyDetails? journeyDetails;
+  List<LeadStatusEntity>? leadStatusEntity;
+  List<LeadStageEntity>? leadStageEntity;
+  String? userSecurityKey;
 
   ValidateOtpModel(
       {this.respCode,
@@ -24,28 +26,48 @@ class ValidateOtpModel {
   ValidateOtpModel.fromJson(Map<String, dynamic> json) {
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
+
+    if (!json.containsKey('employee-details'))
+      employeeDetails = null;
+
     employeeDetails = json['employee-details'] != null
         ? new EmployeeDetails.fromJson(json['employee-details'])
         : null;
+
+    if (!json.containsKey('user-menu'))
+      userMenu = new List<UserMenu>.empty(growable: true);
+
     if (json['user-menu'] != null) {
       userMenu = new List<UserMenu>.empty(growable: true);
       json['user-menu'].forEach((v) {
-        userMenu.add(new UserMenu.fromJson(v));
+        userMenu!.add(new UserMenu.fromJson(v));
       });
     }
+
+    if (!json.containsKey('journey-details'))
+      journeyDetails = null;
+
     journeyDetails = json['journey-details'] != null
         ? new JourneyDetails.fromJson(json['journey-details'])
         : null;
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
-        leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
+        leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
-        leadStageEntity.add(new LeadStageEntity.fromJson(v));
+        leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
     userSecurityKey = json['user-security-key'];
@@ -56,21 +78,21 @@ class ValidateOtpModel {
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
     if (this.employeeDetails != null) {
-      data['employee-details'] = this.employeeDetails.toJson();
+      data['employee-details'] = this.employeeDetails!.toJson();
     }
     if (this.userMenu != null) {
-      data['user-menu'] = this.userMenu.map((v) => v.toJson()).toList();
+      data['user-menu'] = this.userMenu!.map((v) => v.toJson()).toList();
     }
     if (this.journeyDetails != null) {
-      data['journey-details'] = this.journeyDetails.toJson();
+      data['journey-details'] = this.journeyDetails!.toJson();
     }
     if (this.leadStatusEntity != null) {
       data['leadStatusEntity'] =
-          this.leadStatusEntity.map((v) => v.toJson()).toList();
+          this.leadStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadStageEntity != null) {
       data['leadStageEntity'] =
-          this.leadStageEntity.map((v) => v.toJson()).toList();
+          this.leadStageEntity!.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     return data;
@@ -78,17 +100,17 @@ class ValidateOtpModel {
 }
 
 class EmployeeDetails {
-  String referenceId;
-  String mobileNumber;
-  String employeeName;
-  String employeeFirstName;
-  int userType;
+  String? referenceId;
+  String? mobileNumber;
+  String? employeeName;
+  String? employeeFirstName;
+  int? userType;
 
-  String employeeDesignation;
-  String employeeReportingManagerId;
-  int employeeUserRoleId;
-  String employeeBaseLocation;
-  String employeeWorkLocation;
+  String? employeeDesignation;
+  String? employeeReportingManagerId;
+  int? employeeUserRoleId;
+  String? employeeBaseLocation;
+  String? employeeWorkLocation;
 
   EmployeeDetails(
       {this.referenceId,
@@ -132,8 +154,8 @@ class EmployeeDetails {
 }
 
 class UserMenu {
-  int menuId;
-  String menuText;
+  int? menuId;
+  String? menuText;
 
   UserMenu({this.menuId, this.menuText});
 
@@ -151,8 +173,8 @@ class UserMenu {
 }
 
 class LeadStageEntity {
-  int id;
-  String leadStageDesc;
+  int? id;
+  String? leadStageDesc;
 
   LeadStageEntity({this.id, this.leadStageDesc});
 

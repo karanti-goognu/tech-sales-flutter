@@ -1,5 +1,6 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter_tech_sales/presentation/features/login/controller/login_controller.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_tech_sales/utils/functions/check_internet.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
-import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -69,8 +69,8 @@ class LoginScreenPageState extends State<LoginScreen> {
   }
 
   Widget _buildLoginInterface(BuildContext context) {
-    var mobileNumber = "8860080067";
-    var empId = "EMP12345533";
+    String? mobileNumber = "8860080067";
+    String? empId = "EMP12345533";
 
     SizeConfig().init(context);
 
@@ -122,7 +122,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                 children: <Widget>[
                   TextFormField(
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return "Employee ID can't be empty";
                       }
                       empId = value;
@@ -163,7 +163,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                   SizedBox(height: 16),
                   TextFormField(
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'Please enter mobile number ';
                       }
                       if (value.length <= 9) {
@@ -206,7 +206,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                     ),
                     onPressed: () {
                       print("press");
-                      if (_formKey.currentState.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         print("late");
                         afterRequestLayout(empId, mobileNumber);
                       }
@@ -228,7 +228,7 @@ class LoginScreenPageState extends State<LoginScreen> {
 
 
 
-  void afterRequestLayout(String empId, String mobileNumber) {
+  void afterRequestLayout(String? empId, String? mobileNumber) {
         internetChecking().then((result) => {
       if (result == true)
         {

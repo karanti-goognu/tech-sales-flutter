@@ -1,23 +1,21 @@
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
-import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/model/TargetVSActualModel.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 class MyApiClient {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  String version;
+  String? version;
 
-  MyApiClient({@required this.httpClient});
+  MyApiClient({required this.httpClient});
 
-  Future<AccessKeyModel> getAccessKey() async {
-    AccessKeyModel accessKeyModel;
+  Future<AccessKeyModel?> getAccessKey() async {
+    AccessKeyModel? accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
@@ -34,9 +32,9 @@ class MyApiClient {
     return accessKeyModel;
   }
 
-  Future<TargetVsActualModel> getTargetVsActualData(
-      String accessKey, String userSecretKey, String empID) async {
-    TargetVsActualModel actualModel;
+  Future<TargetVsActualModel?> getTargetVsActualData(
+      String accessKey, String? userSecretKey, String empID) async {
+    TargetVsActualModel? actualModel;
     try {
       version = VersionClass.getVersion();
       var response = await http.get(

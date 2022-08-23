@@ -32,26 +32,21 @@ class _SiteListScreenState extends State<SiteListScreen> {
   AppController _appController = Get.find();
   SplashController _splashController = Get.find();
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
   int selectedPosition = 0;
   int currentTab = 0;
 
-  ScrollController _scrollController;
+  late ScrollController? _scrollController;
 
   _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
       _siteController.offset += 10;
-      //_siteController.getAccessKey(RequestIds.GET_SITES_LIST);
-
       _appController.getAccessKey(RequestIds.GET_SITES_LIST, context);
-      // _siteController.getSitesData(this._appController.accessKeyResponse.accessKey);
-      // _siteController.getAccessKey(RequestIds.GET_LEADS_LIST);
     }
   }
 
   Future<bool> internetChecking() async {
-    // do something here
     bool result = await CheckInternet.hasConnection();
     return result;
   }
@@ -83,8 +78,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                 _siteController.sitesListResponse.sitesEntity[i].contactNumber,
             siteProbabilityWinningId: _siteController
                 .sitesListResponse.sitesEntity[i].siteProbabilityWinningId);
-        // SiteListModelForDB siteListModelForDb = new SiteListModelForDB(null, json.encode(siteEntity));
-        // await db.addSiteEntityInDraftList(siteListModelForDb);
         await db.insertSiteEntityInTable(siteEntity);
       }
     }
@@ -93,11 +86,9 @@ class _SiteListScreenState extends State<SiteListScreen> {
   _getRequests() async {
     _siteController.sitesListResponse.sitesEntity = null;
     _siteController.offset = 0;
-    // _appController.getAccessKey(RequestIds.GET_SITES_LIST);
     await _siteController.getAccessKey().then((value) async {
       await _siteController.getSitesData(context, value.accessKey, "");
     });
-    // _siteController.offset = 0;
   }
 
   @override
@@ -105,18 +96,12 @@ class _SiteListScreenState extends State<SiteListScreen> {
     super.initState();
     _siteController.sitesListResponse.sitesEntity = null;
     _siteController.offset = 0;
-    // clearFilterSelection();
     internetChecking().then((result) => {
           if (result == true)
             {
-              // _appController.getAccessKey(RequestIds.GET_SITES_LIST),
               _siteController.getAccessKey().then((value) async {
                 _siteController.getSitesData(context, value.accessKey, "");
               }),
-              //_siteController.getAccessKey(RequestIds.GET_SITES_LIST),
-
-              // _siteController.offset = 0,
-              // storeOfflineSiteData()
             }
           else
             {
@@ -125,11 +110,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
             }
         });
     _scrollController = ScrollController();
-    _scrollController..addListener(_scrollListener);
+    _scrollController?..addListener(_scrollListener);
   }
 
   clearFilterSelection() {
@@ -143,7 +127,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
     _siteController.assignToDate = StringConstants.empty;
     _siteController.assignFromDate = StringConstants.empty;
     _siteController.selectedSitePincode = StringConstants.empty;
-    //_siteController.selectedSiteDistrict = StringConstants.empty;
   }
 
   @override
@@ -155,8 +138,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
 
   void disposeController(BuildContext context) {
-//or what you wnat to dispose/clear
-    _siteController?.dispose();
+    _siteController.dispose();
     _siteController.offset = 0;
   }
 
@@ -185,13 +167,10 @@ class _SiteListScreenState extends State<SiteListScreen> {
                     children: [
                       Obx(
                         () => Text(
-                          // "Total Count : ${(_siteController.sitesListResponse.sitesEntity == null) ? 0 : _siteController.sitesListResponse.sitesEntity.length}",
                           "Total Count : ${(_siteController.sitesListResponse.totalSiteCount == null) ? 0 : _siteController.sitesListResponse.totalSiteCount}",
-
                           style: TextStyle(
                             fontFamily: "Muli",
                             fontSize: SizeConfig.safeBlockHorizontal * 3.5,
-                            // color: HexColor("#FFFFFF99"),
                           ),
                         ),
                       ),
@@ -200,7 +179,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                             style: TextStyle(
                               fontFamily: "Muli",
                               fontSize: SizeConfig.safeBlockHorizontal * 3.5,
-                              // color: HexColor("#FFFFFF99"),
                             ),
                             overflow: TextOverflow.ellipsis,
                           )),
@@ -215,13 +193,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_siteController == null)
-        ? Container(
-            child: Center(
-              child: Text("Sites controller  is empty!!"),
-            ),
-          )
-        : (_siteController.sitesListResponse == null)
+    return Obx(() =>(_siteController.sitesListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Sites list response  is empty!!"),
@@ -250,31 +222,28 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                 .sitesListResponse.sitesEntity.length,
                             padding: const EdgeInsets.only(
                                 left: 10.0, right: 10, bottom: 10),
-                            // itemExtent: 125.0,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
                                   if(_siteController
                                       .sitesListResponse
                                       .sitesEntity==null){
-                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.transparent);
+                                    Get.rawSnackbar(title: "Message",message: "Please wait for data to load", backgroundColor: Colors.red);
                                   }
                                   else {
                                     Navigator.push(
                                         context,
                                         new CupertinoPageRoute(
                                             builder: (BuildContext context) =>
-                                                ViewSiteScreenNew(
+                                                ViewSiteScreen(
                                                   siteId:
                                                   _siteController
                                                       .sitesListResponse
                                                       .sitesEntity[index]
                                                       .siteId,
                                                   tabIndex: 0,
-                                                ))).then((_) =>
-                                    {
-                                      _getRequests()
-                                    });
+                                                ))).then((_) => _getRequests()
+                                    );
                                   }
                                 },
                                 child: Card(
@@ -552,7 +521,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                                                 ),
                                                           ),
                                                           onTap: () {
-                                                            String num = _siteController
+                                                            String? num = _siteController
                                                                 .sitesListResponse
                                                                 .sitesEntity[
                                                                     index]
@@ -630,7 +599,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
         color: Colors.white);
   }
 
-  String printOpportuityStatus(int value) {
+  String printOpportuityStatus(int? value) {
     List<SiteOpportuityStatus> data = List<SiteOpportuityStatus>.from(
         _splashController.splashDataModel.siteOpportunityStatusRepository
             .where((i) => i.id == value));
@@ -641,7 +610,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     }
   }
 
-  String printProbabilityOfWinning(int value) {
+  String printProbabilityOfWinning(int? value) {
     List<SiteProbabilityWinningEntity> data =
         List<SiteProbabilityWinningEntity>.from(_splashController
             .splashDataModel.siteProbabilityWinningEntity
@@ -653,7 +622,7 @@ class _SiteListScreenState extends State<SiteListScreen> {
     }
   }
 
-  String printSiteStage(int value) {
+  String printSiteStage(int? value) {
     if (_splashController.splashDataModel.siteStageEntity != null) {
       List<SiteStageEntity> data = List<SiteStageEntity>.from(_splashController
           .splashDataModel.siteStageEntity

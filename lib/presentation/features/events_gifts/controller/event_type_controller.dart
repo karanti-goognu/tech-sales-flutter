@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/addEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/repository/eg_repository.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class EventTypeController extends GetxController {
   @override
@@ -14,9 +15,8 @@ class EventTypeController extends GetxController {
 
   final EgRepository repository;
 
-  EventTypeController({@required this.repository})
-      : assert(repository != null);
-  final _addEventResponse = AddEventModel().obs;
+  EventTypeController({required this.repository});
+  final Rx<AddEventModel?> _addEventResponse = AddEventModel().obs;
   final _dealerList = List<DealerModel>.empty(growable: true).obs;
   final _dealerListSelected = List<DealerModelSelected>.empty(growable: true).obs;
 
@@ -31,42 +31,22 @@ class EventTypeController extends GetxController {
 
 
 
-  Future<String> getAccessKey() {
-    // print(repository.getAccessKey().then((value) => value.accessKey));
-    return repository.getAccessKey();
+  Future<String?> getAccessKey() {
+    return repository.getAccessKey().then((value) => value as String?);
   }
 
 
-  Future<AddEventModel>getEventType() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<AddEventModel?>getEventType() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKey();
+    String? accessKey = await (repository.getAccessKey());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, empID);
+      addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, empID!);
     });
     return addEventResponse;
   }
 
-
-
-
-
-
-//   Future<AddEventModel> getInfluencerType(String accessKey, String mobileNo) async {
-//     //In case you want to show the progress indicator, uncomment the below code and line 43 also.
-//     //It is working fine without the progress indicator
-// //    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-//     String userSecurityKey = "";
-//     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//
-//     await _prefs.then((SharedPreferences prefs) async {
-//       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-//       addEventResponse = await repository.getEventTypeData(accessKey, userSecurityKey, mobileNo);
-//     });
-// //    Get.back();
-//     return addEventResponse;
-//   }
 }

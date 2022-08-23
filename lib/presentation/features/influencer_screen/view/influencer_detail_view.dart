@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerSourceListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
@@ -12,12 +16,10 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class InfluencerDetailView extends StatefulWidget {
-  int membershipId;
+  final int membershipId;
 
   InfluencerDetailView(this.membershipId);
 
@@ -27,26 +29,24 @@ class InfluencerDetailView extends StatefulWidget {
 
 class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   InfController _infController = Get.find();
-  InfluencerDetailDataModel _influencerDetailDataModel;
+  InfluencerDetailDataModel? _influencerDetailDataModel;
   final _addInfluencerFormKey = GlobalKey<FormState>();
-  StateDistrictListModel _stateDistrictListModel;
 
-  List<InfluencerTypeEntitiesList> influencerTypeEntitiesList = new List.empty(growable: true);
-  InfluencerTypeEntitiesList _influencerTypeEntitiesList;
-
-  List<InfluencerCategoryEntitiesList> influencerCategoryEntitiesList =
+  List<InfluencerTypeEntitiesList>? influencerTypeEntitiesList =
       new List.empty(growable: true);
-  InfluencerCategoryEntitiesList _influencerCategoryEntitiesList;
+  InfluencerTypeEntitiesList? _influencerTypeEntitiesList;
 
-  List<InfluencerSourceList> influencerSourceList = new List.empty(growable: true);
-  InfluencerSourceList _influencerSourceList;
-  List<SiteBrandList> siteBrandList = new List.empty(growable: true);
-  SiteBrandList _siteBrandList;
+  List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList =
+      new List.empty(growable: true);
+  InfluencerCategoryEntitiesList? _influencerCategoryEntitiesList;
+
+  List<InfluencerSourceList>? influencerSourceList =
+      new List.empty(growable: true);
+  InfluencerSourceList? _influencerSourceList;
+  List<SiteBrandList>? siteBrandList = new List.empty(growable: true);
+  SiteBrandList? _siteBrandList;
   bool _qualificationVisible = false;
-  int _influencerCategory;
-  int _source;
-  int _memberType, memberShipId;
-  String _selectedEnrollValue;
+  int? _memberType, memberShipId;
   bool checkedValue = false;
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -60,17 +60,15 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _potentialSiteController = TextEditingController();
   TextEditingController _enrollmentDateController = TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
-  TextEditingController _query = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _baseCityController = TextEditingController();
   TextEditingController _talukaController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _primaryCounterController = TextEditingController();
-  FocusNode myFocusNode;
+  FocusNode? myFocusNode;
   TextEditingController _designationController = TextEditingController();
   TextEditingController _departmentNameController = TextEditingController();
-  int _preferredBrandId;
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
 
@@ -81,11 +79,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     myFocusNode = FocusNode();
     getEmpId();
     getData();
-
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -101,10 +98,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   .getInfDetailData('${widget.membershipId}')
                   .then((data) {
                 setState(() {
-                  if (data != null) {
-                    _influencerDetailDataModel = data;
-                    setData();
-                  }
+                  _influencerDetailDataModel = data;
+                  setData();
                 });
               })
             }
@@ -118,21 +113,21 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
             }
         });
   }
+
   setData() {
     if (_influencerDetailDataModel != null ||
-        _influencerDetailDataModel.response != null ||
-        _influencerDetailDataModel.response.influencerDetails != null) {
+        _influencerDetailDataModel!.response != null ||
+        _influencerDetailDataModel!.response!.influencerDetails != null) {
       InfluencerDetails _data =
-          _influencerDetailDataModel.response.influencerDetails;
-      // memberShipId = _data.id;
-      _contactNumberController.text = _data.inflContactNumber;
-      _nameController.text = _data.inflName;
-      _fatherNameController.text = _data.fatherName;
-      _districtController.text = _data.districtName;
-      _giftAddressController.text = _data.giftAddress;
-      _giftPincodeController.text = _data.giftAddressPincode;
-      _giftDistrictController.text = _data.giftAddressDistrict;
-      _giftStateController.text = _data.giftAddressState;
+          _influencerDetailDataModel!.response!.influencerDetails!;
+      _contactNumberController.text = _data.inflContactNumber!;
+      _nameController.text = _data.inflName!;
+      _fatherNameController.text = _data.fatherName!;
+      _districtController.text = _data.districtName!;
+      _giftAddressController.text = _data.giftAddress!;
+      _giftPincodeController.text = _data.giftAddressPincode!;
+      _giftDistrictController.text = _data.giftAddressDistrict!;
+      _giftStateController.text = _data.giftAddressState!;
       _totalPotentialController.text =
           '${_data.monthlyPotentialVolumeMT}' == "null"
               ? ""
@@ -141,94 +136,92 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           ? ""
           : '${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
-      _qualificationController.text = _data.inflQualification;
-      _emailController.text = _data.email;
-      _baseCityController.text = _data.baseCity;
-      _talukaController.text = _data.taluka;
-      _pincodeController.text = _data.pinCode;
-      _source = _data.inflEnrollmentSourceId;
+      _qualificationController.text = _data.inflQualification!;
+      _emailController.text = _data.email!;
+      _baseCityController.text = _data.baseCity!;
+      _talukaController.text = _data.taluka!;
+      _pincodeController.text = _data.pinCode!;
       _memberType = _data.inflTypeId;
-      _influencerCategory = _data.inflCategoryId;
-      //_date = '${_data.inflDob}';
-      _primaryCounterController.text = _data.primaryCounterName;
-
-
+      _primaryCounterController.text = _data.primaryCounterName!;
 
       _dateController.text =
           '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
 
       if (_data.ilpregFlag == "Y") {
         checkedValue = true;
-        _selectedEnrollValue = "Y";
       } else {
         checkedValue = false;
-        _selectedEnrollValue = "N";
       }
 
       influencerTypeEntitiesList =
-          _influencerDetailDataModel.response.influencerTypeEntitiesList;
-      if (_influencerDetailDataModel.response.influencerDetails.inflTypeId !=
+          _influencerDetailDataModel!.response!.influencerTypeEntitiesList;
+      if (_influencerDetailDataModel!.response!.influencerDetails!.inflTypeId !=
           null) {
-        for (int i = 0; i < influencerTypeEntitiesList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.inflTypeId
+        for (int i = 0; i < influencerTypeEntitiesList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflTypeId
                   .toString() ==
-              influencerTypeEntitiesList[i].inflTypeId.toString()) {
-            _influencerTypeEntitiesList = influencerTypeEntitiesList[i];
+              influencerTypeEntitiesList![i].inflTypeId.toString()) {
+            _influencerTypeEntitiesList = influencerTypeEntitiesList![i];
           }
         }
-      }
-      else {}
+      } else {}
 
       influencerSourceList =
-          _influencerDetailDataModel.response.influencerSourceList;
-      if (_influencerDetailDataModel
-              .response.influencerDetails.inflEnrollmentSourceId !=
+          _influencerDetailDataModel!.response!.influencerSourceList;
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.inflEnrollmentSourceId !=
           null) {
-        for (int i = 0; i < influencerSourceList.length; i++) {
-          if (_influencerDetailDataModel
-                  .response.influencerDetails.inflEnrollmentSourceId
+        for (int i = 0; i < influencerSourceList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflEnrollmentSourceId
                   .toString() ==
-              influencerSourceList[i].inflSourceId.toString()) {
-            _influencerSourceList = influencerSourceList[i];
+              influencerSourceList![i].inflSourceId.toString()) {
+            _influencerSourceList = influencerSourceList![i];
           }
         }
       } else {}
 
       influencerCategoryEntitiesList =
-          _influencerDetailDataModel.response.influencerCategoryEntitiesList;
-      if (_influencerDetailDataModel
-              .response.influencerDetails.inflCategoryId !=
+          _influencerDetailDataModel!.response!.influencerCategoryEntitiesList;
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.inflCategoryId !=
           null) {
-        for (int i = 0; i < influencerCategoryEntitiesList.length; i++) {
-          if (_influencerDetailDataModel
-                  .response.influencerDetails.inflCategoryId
+        for (int i = 0; i < influencerCategoryEntitiesList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.inflCategoryId
                   .toString() ==
-              influencerCategoryEntitiesList[i].inflCatId.toString()) {
-            _influencerCategoryEntitiesList = influencerCategoryEntitiesList[i];
+              influencerCategoryEntitiesList![i].inflCatId.toString()) {
+            _influencerCategoryEntitiesList =
+                influencerCategoryEntitiesList![i];
           }
         }
       } else {}
 
-      siteBrandList = _influencerDetailDataModel.response.siteBrandList;
-      if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId !=
+      siteBrandList = _influencerDetailDataModel!.response!.siteBrandList;
+      if (_influencerDetailDataModel!
+              .response!.influencerDetails!.preferredBrandId !=
           null) {
-        for (int i = 0; i < siteBrandList.length; i++) {
-          if (_influencerDetailDataModel.response.influencerDetails.preferredBrandId
-              .toString() ==
-              siteBrandList[i].id.toString()) {
-            _siteBrandList = siteBrandList[i];
+        for (int i = 0; i < siteBrandList!.length; i++) {
+          if (_influencerDetailDataModel!
+                  .response!.influencerDetails!.preferredBrandId
+                  .toString() ==
+              siteBrandList![i].id.toString()) {
+            _siteBrandList = siteBrandList![i];
           }
         }
       } else {}
-
-      _designationController.text = _data.designation;
-      _departmentNameController.text = _data.departmentName;
-      _preferredBrandId=_influencerDetailDataModel.response.influencerDetails.preferredBrandId;
-      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary;
-      _firmNameController.text = _data.firmName;
+      _designationController.text =
+          _data.designation == null ? "" : _data.designation!;
+      _departmentNameController.text =
+          _data.departmentName == null ? "" : _data.departmentName!;
+      // _preferredBrandId=_influencerDetailDataModel!.response!.influencerDetails!.preferredBrandId;
+      _dateMarriageAnnController.text = _data.dateOfMarriageAnniversary == null
+          ? ""
+          : _data.dateOfMarriageAnniversary!;
+      _firmNameController.text = _data.firmName == null ? "" : _data.firmName!;
       myFocusNode = FocusNode();
-      myFocusNode.requestFocus();
-
+      myFocusNode!.requestFocus();
     }
   }
 
@@ -241,13 +234,16 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     double _height = 16.sp;
 
     final mobileNumber = TextFormField(
@@ -346,21 +342,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final pincode = TextFormField(
       controller: _pincodeController,
       readOnly: true,
-      // validator: (value) {
-      //   // if (value.isEmpty) {
-      //   //   return 'Please enter name';
-      //   // }
-      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
-      //     return "Enter valid pincode";
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -370,11 +356,10 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-              ),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: CheckboxListTile(
+          onChanged: (_) {},
           title: Text(
             "Enroll for Dalmia Masters",
             style: TextStyles.formfieldLabelText,
@@ -382,18 +367,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           activeColor: Colors.black,
           dense: true,
           value: checkedValue,
-          // onChanged: (newValue) {
-          //   setState(() {
-          //     checkedValue = newValue;
-          //     if (checkedValue == true) {
-          //       _selectedEnrollValue = "Y";
-          //     } else {
-          //       _selectedEnrollValue = "N";
-          //     }
-          //   });
-         // },
           controlAffinity:
-              ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ListTileControlAffinity.leading,
         ));
 
     final primaryCounter = TextFormField(
@@ -406,12 +381,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final district = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select District' : null,
+      validator: (value) => value!.isEmpty ? 'Please select District' : null,
       controller: _districtController,
       readOnly: true,
-      // onTap: () {
-      //   Get.bottomSheet(districtList());
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "District Name*",
@@ -427,33 +399,30 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final memberDropDwn = DropdownButtonFormField<InfluencerTypeEntitiesList>(
+      onChanged: (_) {},
       value: _influencerTypeEntitiesList,
       items: (_influencerDetailDataModel == null ||
               _influencerTypeEntitiesList == null)
           ? []
-          : influencerTypeEntitiesList
+          : influencerTypeEntitiesList!
               .map((e) => DropdownMenuItem(
                     value: e,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,
-                        child: Text(e.inflTypeDesc, style: TextStyle(color: Colors.black),)),
+                        child: Text(
+                          e.inflTypeDesc!,
+                          style: TextStyle(color: Colors.black),
+                        )),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration:
           FormFieldStyle.buildInputDecoration(labelText: "Member Type*"),
-     // validator: (value) => value == null ? 'Please select member type' : null,
     );
 
     final qualification = TextFormField(
       controller: _qualificationController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter qualification';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -462,14 +431,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final birthDate = TextFormField(
-      validator: (value) => value.isEmpty ? 'Please select Birth date' : null,
+      validator: (value) => value!.isEmpty ? 'Please select Birth date' : null,
       controller: _dateController,
       readOnly: true,
-      // onTap: () {
-      //   setState(() {
-      //     _selectBirthDate();
-      //   });
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Birth Date*",
@@ -506,18 +470,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final giftPincode = TextFormField(
       controller: _giftPincodeController,
       readOnly: true,
-      // validator: (value) {
-      //   if (!value.isEmpty && !Validations.isValidPincode(value)) {
-      //     return "Enter valid pincode";
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
       ],
-      //maxLength: 6,
       decoration: FormFieldStyle.buildInputDecoration(
         labelText: "Pincode",
       ),
@@ -564,14 +521,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     );
 
     final sourceDropDwn = DropdownButtonFormField<InfluencerSourceList>(
+      onChanged: (_) {},
       value: _influencerSourceList,
       items:
           (_influencerDetailDataModel == null || influencerSourceList == null)
               ? []
-              : influencerSourceList
+              : influencerSourceList!
                   .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.inflSourceText, style: TextStyle(color: Colors.black),),
+                        child: Text(
+                          e.inflSourceText!,
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ))
                   .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -580,14 +541,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
     final influencerCategoryDropDwn =
         DropdownButtonFormField<InfluencerCategoryEntitiesList>(
+      onChanged: (_) {},
       value: _influencerCategoryEntitiesList,
       items: (_influencerDetailDataModel == null ||
               influencerCategoryEntitiesList == null)
           ? []
-          : influencerCategoryEntitiesList
+          : influencerCategoryEntitiesList!
               .map((e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e.inflCatDesc, style: TextStyle(color: Colors.black),),
+                    child: Text(
+                      e.inflCatDesc!,
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -624,18 +589,17 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                   onChanged: (value) {
                     setState(() {
                       _siteBrandList = value;
-                      _preferredBrandId = _siteBrandList.id;
                     });
                   },
-                  items: siteBrandList
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.5,
-                                    child: Text(e.brandName+" - "+e.productName)),
-                              ))
-                          .toList(),
+                  items: siteBrandList!
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: Text(
+                                    e.brandName! + " - " + e.productName!)),
+                          ))
+                      .toList(),
                   style: FormFieldStyle.formFieldTextStyle,
                   decoration: FormFieldStyle.buildInputDecoration(
                       labelText: "Preferred Brand"),
@@ -669,7 +633,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           : Container();
     }
 
-
     final firmName = TextFormField(
       controller: _firmNameController,
       readOnly: true,
@@ -689,7 +652,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         children: [
           BackgroundContainerImage(),
           (_influencerDetailDataModel != null &&
-                  _influencerDetailDataModel.response.influencerDetails != null)
+                  _influencerDetailDataModel!.response!.influencerDetails !=
+                      null)
               ? ListView(children: [
                   Container(
                     padding: EdgeInsets.all(12.sp),
@@ -704,7 +668,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: 8.sp),
                   Divider(
                     height: 1.sp,
@@ -798,16 +761,15 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   }
 
   Future _selectMarriageAnniversaryDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1950),
         lastDate: new DateTime.now());
     setState(() {
       var _date;
-      _date = new DateFormat('yyyy-MM-dd').format(_picked);
+      _date = new DateFormat('yyyy-MM-dd').format(_picked!);
       _dateMarriageAnnController.text = _date;
     });
   }
-
 }

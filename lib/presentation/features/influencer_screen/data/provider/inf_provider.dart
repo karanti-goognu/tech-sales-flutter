@@ -1,6 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
@@ -13,14 +14,13 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+
 
 class MyApiClientInf {
-  String version;
+  String? version;
   final http.Client httpClient;
 
-  MyApiClientInf({@required this.httpClient});
+  MyApiClientInf({required this.httpClient});
 
   Future getAccessKey() async {
     try {
@@ -28,7 +28,7 @@ class MyApiClientInf {
       // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -40,20 +40,20 @@ class MyApiClientInf {
     }
   }
 
-  Future<InfluencerTypeModel> getInfTypeData(String accessKey, String userSecretKey,
+  Future<InfluencerTypeModel?> getInfTypeData(String? accessKey, String? userSecretKey,
       String empID) async {
-    InfluencerTypeModel influencerTypeModel;
+    InfluencerTypeModel? influencerTypeModel;
     try {
       version = VersionClass.getVersion();
 
       var response = await http.get(Uri.parse(UrlConstants.addIlpInfluencer + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version));
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
      // print("URL-------${UrlConstants.addIlpInfluencer + empID}");
      // print("-------$data");
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerTypeModel = InfluencerTypeModel.fromJson(json.decode(response.body));
@@ -66,18 +66,18 @@ class MyApiClientInf {
     return influencerTypeModel;
   }
 
-  Future<StateDistrictListModel> getDistList(String accessKey, String userSecretKey,
+  Future<StateDistrictListModel?> getDistList(String? accessKey, String? userSecretKey,
       String empID) async {
-    StateDistrictListModel stateDistrictListModel;
+    StateDistrictListModel? stateDistrictListModel;
     try {
       version = VersionClass.getVersion();
 
       var response = await http.get(Uri.parse(UrlConstants.stateDistrictList + empID),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version));
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         stateDistrictListModel = StateDistrictListModel.fromJson(json.decode(response.body));
@@ -91,14 +91,14 @@ class MyApiClientInf {
   }
 
 
-  Future<InfluencerDetailModel> getInfdata(String accessKey,
-      String userSecretKey, String contact) async {
-    InfluencerDetailModel infDetailModel;
+  Future<InfluencerDetailModel?> getInfdata(String? accessKey,
+      String? userSecretKey, String contact) async {
+    InfluencerDetailModel? infDetailModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
      // print("======${UrlConstants.getInfluencerDetail + "$contact"}");
       var data = json.decode(response.body);
       //print("======$data");
@@ -107,7 +107,7 @@ class MyApiClientInf {
        // print("======$data");
 
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -125,13 +125,13 @@ class MyApiClientInf {
   }
 
 
-  Future<InfluencerResponseModel>saveInfluencerRequest(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
-    InfluencerResponseModel influencerResponseModel;
+  Future<InfluencerResponseModel?>saveInfluencerRequest(String? accessKey, String? userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
+    InfluencerResponseModel? influencerResponseModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveIlpInfluencer + "$status"),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(influencerRequestModel),
       );
      // print("__---${response.request}");
@@ -140,7 +140,7 @@ class MyApiClientInf {
       if (response.statusCode == 200) {
         Get.back();
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -159,20 +159,20 @@ class MyApiClientInf {
   }
 
 
-  Future<InfluencerListModel> getInfluencerList(String accessKey, String userSecretKey,
+  Future<InfluencerListModel?> getInfluencerList(String? accessKey, String? userSecretKey,
       String url) async {
-    InfluencerListModel influencerListModel;
+    InfluencerListModel? influencerListModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
 
       var response = await http.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecretKey,version));
+              accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       Get.back();
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
@@ -188,9 +188,9 @@ class MyApiClientInf {
 
 
 
-  Future<InfluencerDetailDataModel> getInfDetaildata(String accessKey,
-      String userSecretKey, String membershipId) async {
-    InfluencerDetailDataModel influencerDetailDataModel;
+  Future<InfluencerDetailDataModel> getInfDetaildata(String? accessKey,
+      String? userSecretKey, String membershipId) async {
+    late InfluencerDetailDataModel influencerDetailDataModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
@@ -201,7 +201,7 @@ class MyApiClientInf {
         Get.back();
        // print("======$data");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -218,8 +218,8 @@ class MyApiClientInf {
     return influencerDetailDataModel;
   }
 
-  Future<InfluencerListModel> infSearch(String accessKey, String userSecurityKey, String empID, String searchText) async {
-    InfluencerListModel infSearchModel;
+  Future<InfluencerListModel?> infSearch(String? accessKey, String? userSecurityKey, String? empID, String searchText) async {
+    InfluencerListModel? infSearchModel;
     try {
       version = VersionClass.getVersion();
       String url = UrlConstants.searchInfluencerList+searchText+'&referenceID=$empID';
@@ -236,8 +236,8 @@ class MyApiClientInf {
     return infSearchModel;
   }
 
-  Future<InfluencerResponseModel>saveNewInfluencer(String accessKey, String userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
-    InfluencerResponseModel influencerResponseModel;
+  Future<InfluencerResponseModel?>saveNewInfluencer(String? accessKey, String? userSecretKey, InfluencerRequestModel influencerRequestModel, bool status) async {
+    InfluencerResponseModel? influencerResponseModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
@@ -250,7 +250,7 @@ class MyApiClientInf {
         Get.back();
       //  print("======$data");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {

@@ -1,5 +1,9 @@
-import 'package:device_info/device_info.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/repository/home_repository.dart';
@@ -12,21 +16,18 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomeController extends GetxController {
   @override
   void onInit() {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     super.onInit();
   }
 
   final MyRepositoryHome repository;
   SplashController _splashController = Get.find();
 
-  HomeController({@required this.repository}) : assert(repository != null);
+  HomeController({required this.repository});
 
   final _accessKeyResponse = AccessKeyModel().obs;
   final _validateOtpResponse = ValidateOtpModel().obs;
@@ -89,7 +90,7 @@ class HomeController extends GetxController {
 
   set checkInStatus(value) => this._checkInStatus.value = value;
 
-  LatLng _currentPosition;
+  LatLng? _currentPosition;
 
   showNoInternetSnack() {
     Get.snackbar(
@@ -130,7 +131,7 @@ class HomeController extends GetxController {
     });
   }
 
-  getDashboardDetails(String accessKey) async {
+  getDashboardDetails(String? accessKey) async {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -140,15 +141,15 @@ class HomeController extends GetxController {
       await repository.getHomeDashboardDetails(accessKey, userSecurityKey, empId).then((_) {
         Get.back();
         DashboardModel data = _;
-        this.sitesConverted = data.dashBoardViewModal.sitesConverted;
-        this.dspSlabsConverted = data.dashBoardViewModal.dspSlabsConverted;
-        this.volumeConverted = data.dashBoardViewModal.volumeConverted;
-        this.newInfl = data.dashBoardViewModal.newInfl;
+        this.sitesConverted = data.dashBoardViewModal!.sitesConverted;
+        this.dspSlabsConverted = data.dashBoardViewModal!.dspSlabsConverted;
+        this.volumeConverted = data.dashBoardViewModal!.volumeConverted;
+        this.newInfl = data.dashBoardViewModal!.newInfl;
       });
-    }).catchError((e) => print(e));
+    });
   }
 
-  getCheckInDetails(String accessKey) {
+  getCheckInDetails(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     String journeyStartLat = "empty";
@@ -159,11 +160,10 @@ class HomeController extends GetxController {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-      if (result != null) {
         _currentPosition = result.latLng;
         print('start');
-        journeyStartLat = _currentPosition.latitude.toString();
-        journeyStartLong = _currentPosition.longitude.toString();
+        journeyStartLat = _currentPosition!.latitude.toString();
+        journeyStartLong = _currentPosition!.longitude.toString();
         String url = "${UrlConstants.getCheckInDetails}";
         TsoLogger.printLog('Url is : $url');
         var date = DateTime.now();
@@ -178,8 +178,7 @@ class HomeController extends GetxController {
             checkInStatus = StringConstants.checkOut;
             _splashController.splashDataModel.journeyDetails.journeyStartLat =
                 this.checkInResponse.journeyEntity.journeyStartLat;
-            _splashController.splashDataModel.journeyDetails.journeyStartLong =
-                this.checkInResponse.journeyEntity.journeyStartLong;
+            _splashController.splashDataModel.journeyDetails.journeyStartLong = this.checkInResponse.journeyEntity.journeyStartLong;
             _splashController.splashDataModel.journeyDetails.journeyDate =
                 this.checkInResponse.journeyEntity.journeyDate;
             _splashController.splashDataModel.journeyDetails.journeyStartTime =
@@ -189,17 +188,16 @@ class HomeController extends GetxController {
           }
           Get.back();
         });
-      }
 
 
      });
   }
 
-  getCheckOutDetails(String accessKey) {
+  getCheckOutDetails(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
-    String journeyStartLat = "empty";
-    String journeyStartLong = "empty";
+    String? journeyStartLat = "empty";
+    String? journeyStartLong = "empty";
     String journeyEndLat = "empty";
     String journeyEndLong = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -210,19 +208,18 @@ class HomeController extends GetxController {
       if (result != null) {
         _currentPosition = result.latLng;
         print('start');
-        journeyStartLong = _currentPosition.longitude.toString();
+        journeyStartLong = _currentPosition!.longitude.toString();
         journeyStartLat =
             _splashController.splashDataModel.journeyDetails.journeyStartLat;
         journeyStartLong =
             _splashController.splashDataModel.journeyDetails.journeyStartLong;
-        journeyEndLat = _currentPosition.latitude.toString();
-        journeyEndLong = _currentPosition.longitude.toString();
+        journeyEndLat = _currentPosition!.latitude.toString();
+        journeyEndLong = _currentPosition!.longitude.toString();
         String url = "${UrlConstants.getCheckInDetails}";
         var date = DateTime.now();
-        var formattedDate = "${date.year}-${date.month}-${date.day}";
-        String journeyDate = _splashController.splashDataModel.journeyDetails
+        String? journeyDate = _splashController.splashDataModel.journeyDetails
             .journeyDate;
-        String journeyStartTime = _splashController.splashDataModel
+        String? journeyStartTime = _splashController.splashDataModel
             .journeyDetails.journeyStartTime;
         repository
             .getCheckInDetails(

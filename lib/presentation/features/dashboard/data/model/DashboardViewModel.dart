@@ -1,11 +1,15 @@
+
+
 class DashboardModel {
-  DashBoardViewModal dashBoardViewModal;
-  String respCode;
-  String respMsg;
+  DashBoardViewModal? dashBoardViewModal;
+  String? respCode;
+  String? respMsg;
 
   DashboardModel({this.dashBoardViewModal, this.respCode, this.respMsg});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
+    if(!json.containsKey(['dashBoardViewModal']))
+      dashBoardViewModal = null;
     dashBoardViewModal = json['dashBoardViewModal'] != null
         ? new DashBoardViewModal.fromJson(json['dashBoardViewModal'])
         : null;
@@ -16,7 +20,7 @@ class DashboardModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.dashBoardViewModal != null) {
-      data['dashBoardViewModal'] = this.dashBoardViewModal.toJson();
+      data['dashBoardViewModal'] = this.dashBoardViewModal!.toJson();
     }
     data['resp-code'] = this.respCode;
     data['resp-msg'] = this.respMsg;
@@ -25,10 +29,10 @@ class DashboardModel {
 }
 
 class DashBoardViewModal {
-  String dspSlabsConverted;
-  String newInfl;
-  String sitesConverted;
-  String volumeConverted;
+  String? dspSlabsConverted;
+  String? newInfl;
+  String? sitesConverted;
+  String? volumeConverted;
 
   DashBoardViewModal(
       {this.dspSlabsConverted,

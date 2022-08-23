@@ -6,7 +6,6 @@ import 'CommentDetailModel.dart';
 class SaveLeadRequestDraftModel {
   SaveLeadRequestDraftModel(
       {
-      //this.leadSegmane,
       this.siteSubTypeId,
       this.assignedTo,
       this.leadStatusId,
@@ -36,35 +35,33 @@ class SaveLeadRequestDraftModel {
         this.isIhbCommercial,
       });
 
-  // String leadSegmane;
-  String siteSubTypeId;
-  String assignedTo;
-  String leadStatusId;
-  String leadStage;
-  String contactName;
-  String contactNumber;
-  String geotagType;
-  String leadLatitude;
-  String leadLongitude;
-  String leadAddress;
-  String leadPincode;
-  String leadStateName;
-  String leadDistrictName;
-  String leadTalukName;
-  String leadSalesPotentialMt;
-  String leadReraNumber;
-  String assignDate;
-  String isStatus;
-  String leadBags;
-  List<MultipartFile> photos;
-  List<CommentsDetail> comments;
-  List<InfluencerDetailDraft> influencerList;
-  List<ListLeadImageDraft> listLeadImage;
-
-  String leadSource;
-  String leadSourceUser;
-  String leadSourcePlatform;
-  String isIhbCommercial;
+  String? siteSubTypeId;
+  String? assignedTo;
+  String? leadStatusId;
+  String? leadStage;
+  String? contactName;
+  String? contactNumber;
+  String? geotagType;
+  String? leadLatitude;
+  String? leadLongitude;
+  String? leadAddress;
+  String? leadPincode;
+  String? leadStateName;
+  String? leadDistrictName;
+  String? leadTalukName;
+  String? leadSalesPotentialMt;
+  String? leadReraNumber;
+  String? assignDate;
+  String? isStatus;
+  String? leadBags;
+  List<MultipartFile>? photos;
+  List<CommentsDetail>? comments;
+  List<InfluencerDetailDraft>? influencerList;
+  List<ListLeadImageDraft>? listLeadImage;
+  String? leadSource;
+  String? leadSourceUser;
+  String? leadSourcePlatform;
+  String? isIhbCommercial;
 
   SaveLeadRequestDraftModel.fromJson(Map<String, dynamic> json) {
     siteSubTypeId = json['siteSubTypeId'];
@@ -95,19 +92,19 @@ class SaveLeadRequestDraftModel {
     if (json['comments'] != null) {
       comments = new List<CommentsDetail>.empty(growable: true);
       json['comments'].forEach((v) {
-        comments.add(new CommentsDetail.fromJson(v));
+        comments!.add(new CommentsDetail.fromJson(v));
       });
     }
     if (json['influencerList'] != null) {
       influencerList = new List<InfluencerDetailDraft>.empty(growable: true);
       json['influencerList'].forEach((v) {
-        influencerList.add(new InfluencerDetailDraft.fromJson(v));
+        influencerList!.add(new InfluencerDetailDraft.fromJson(v));
       });
     }
     if (json['listLeadImage'] != null) {
       listLeadImage = new List<ListLeadImageDraft>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
-        listLeadImage.add(new ListLeadImageDraft.fromJson(v));
+        listLeadImage!.add(new ListLeadImageDraft.fromJson(v));
       });
     }
   }
@@ -135,10 +132,10 @@ class SaveLeadRequestDraftModel {
     data['assignDate'] = this.assignDate;
     data['isStatus'] = this.isStatus;
     data['photos'] = jsonEncode(this.photos);
-    data['comments'] = this.comments.map((e) => e.toJson()).toList();
+    data['comments'] = this.comments!.map((e) => e.toJson()).toList();
     data['influencerList'] =
-        this.influencerList.map((e) => e.toJson()).toList();
-    data['listLeadImage'] = this.listLeadImage.map((e) => e.toJson()).toList();
+        this.influencerList!.map((e) => e.toJson()).toList();
+    data['listLeadImage'] = this.listLeadImage!.map((e) => e.toJson()).toList();
     data['leadSource'] = this.leadSource;
     data['leadSourceUser'] = this.leadSourceUser;
     data['leadSourcePlatform'] = this.leadSourcePlatform;
@@ -148,7 +145,7 @@ class SaveLeadRequestDraftModel {
 }
 
 class ListLeadImageDraft {
-  String photoPath;
+  String? photoPath;
 
   ListLeadImageDraft({this.photoPath});
 
@@ -179,20 +176,20 @@ class InfluencerDetailDraft {
       this.isPrimarybool,
       this.isPrimary});
 
-  String id;
+  String? id;
 
-  String inflName;
-  String inflContact;
-  String inflTypeId;
-  String inflTypeValue;
-  String inflCatId;
-  String inflCatValue;
-  String ilpIntrested;
-  String createdOn;
-  String createdBy;
-  bool isExpanded;
-  String isPrimary;
-  bool isPrimarybool;
+  String? inflName;
+  String? inflContact;
+  String? inflTypeId;
+  String? inflTypeValue;
+  String? inflCatId;
+  String? inflCatValue;
+  String? ilpIntrested;
+  String? createdOn;
+  String? createdBy;
+  bool? isExpanded;
+  String? isPrimary;
+  bool? isPrimarybool;
 
   InfluencerDetailDraft.fromJson(Map<String, dynamic> json) {
     this.id = json['inflId'].toString();
@@ -223,7 +220,7 @@ class InfluencerDetailDraft {
     // data['createdOn'] = this.createdOn.toString();
     //data['createdBy'] = this.createdBy;
     data['isDelete'] = 'N';
-    data['isPrimary'] = this.isPrimarybool ? "Y" : "N";
+    data['isPrimary'] = this.isPrimarybool! ? "Y" : "N";
     data['isPrimarybool'] = this.isPrimarybool;
     return data;
   }

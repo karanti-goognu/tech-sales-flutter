@@ -1,12 +1,15 @@
+
+
+
 class UpdateSRModel {
-  int id;
-  String severity;
-  int resoulutionStatus;
-  String updatedBy;
-  List<SrComplaintAction> srComplaintAction;
-  List<SrcActionPhotosEntity> srcActionPhotosEntity;
-  String coverBlockProvidedNo;
-  String formwarkRemovalDate;
+  int? id;
+  String? severity;
+  int? resoulutionStatus;
+  String? updatedBy;
+  List<SrComplaintAction>? srComplaintAction;
+  List<SrcActionPhotosEntity>? srcActionPhotosEntity;
+  String? coverBlockProvidedNo;
+  String? formwarkRemovalDate;
 
   UpdateSRModel(
       {this.id,
@@ -23,16 +26,24 @@ class UpdateSRModel {
     severity = json['severity'];
     resoulutionStatus = json['resoulutionStatus'];
     updatedBy = json['updatedBy'];
+
+    if (!json.containsKey('srComplaintAction'))
+      srComplaintAction = new List<SrComplaintAction>.empty(growable: true);
+
     if (json['srComplaintAction'] != null) {
       srComplaintAction = new List<SrComplaintAction>.empty(growable: true);
       json['srComplaintAction'].forEach((v) {
-        srComplaintAction.add(new SrComplaintAction.fromJson(v));
+        srComplaintAction!.add(new SrComplaintAction.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srcActionPhotosEntity'))
+      srcActionPhotosEntity = new List<SrcActionPhotosEntity>.empty(growable: true);
+
     if (json['srcActionPhotosEntity'] != null) {
       srcActionPhotosEntity = new List<SrcActionPhotosEntity>.empty(growable: true);
       json['srcActionPhotosEntity'].forEach((v) {
-        srcActionPhotosEntity.add(new SrcActionPhotosEntity.fromJson(v));
+        srcActionPhotosEntity!.add(new SrcActionPhotosEntity.fromJson(v));
       });
     }
 
@@ -48,11 +59,11 @@ class UpdateSRModel {
     data['updatedBy'] = this.updatedBy;
     if (this.srComplaintAction != null) {
       data['srComplaintAction'] =
-          this.srComplaintAction.map((v) => v.toJson()).toList();
+          this.srComplaintAction!.map((v) => v.toJson()).toList();
     }
     if (this.srcActionPhotosEntity != null) {
       data['srcActionPhotosEntity'] =
-          this.srcActionPhotosEntity.map((v) => v.toJson()).toList();
+          this.srcActionPhotosEntity!.map((v) => v.toJson()).toList();
     }
 
     data['coverBlockProvidedNo'] = this.coverBlockProvidedNo;
@@ -62,31 +73,31 @@ class UpdateSRModel {
 }
 
 class SrComplaintAction {
-  int srComplaintId;
-  String requestNature;
-  double locationLat;
-  double locationLong;
-  String productComplaint;
-  String productType;
-  String techvanReqd;
-  String purchaseDate;
-  String sourcePlant;
-  String productBatch;
-  int bagsCount;
-  int resolutionStatusId;
-  String comment;
-  String nextVisitDate;
+  int? srComplaintId;
+  String? requestNature;
+  double? locationLat;
+  double? locationLong;
+  String? productComplaint;
+  String? productType;
+  String? techvanReqd;
+  String? purchaseDate;
+  String? sourcePlant;
+  String? productBatch;
+  int? bagsCount;
+  int? resolutionStatusId;
+  String? comment;
+  String? nextVisitDate;
 
-  String typeOfComplaint;
-  String productVariety;
-  int balanceQtyinBags;
-  String billNumber;
-  String weekNo;
-  String bestBeforeDate;
-  String sampleCollected;
-  String sampleTOBeSentTo;
-  String demoConducted;
-  String detailsOfDemo;
+  String? typeOfComplaint;
+  String? productVariety;
+  int? balanceQtyinBags;
+  String? billNumber;
+  String? weekNo;
+  String? bestBeforeDate;
+  String? sampleCollected;
+  String? sampleTOBeSentTo;
+  String? demoConducted;
+  String? detailsOfDemo;
 
   SrComplaintAction(
       {this.srComplaintId,
@@ -176,8 +187,8 @@ class SrComplaintAction {
 }
 
 class SrcActionPhotosEntity {
-  int srComplaintId;
-  String photoName;
+  int? srComplaintId;
+  String? photoName;
 
   SrcActionPhotosEntity({this.srComplaintId, this.photoName});
 

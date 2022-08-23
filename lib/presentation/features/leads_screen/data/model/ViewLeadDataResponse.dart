@@ -1,21 +1,25 @@
+
+
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsEntity.dart';
+
 class ViewLeadDataResponse {
-  String respCode;
-  String respMsg;
-  List<LeadStageEntity> leadStageEntity;
-  List<LeadStatusEntity> leadStatusEntity;
-  List<LeadInfluencerEntity> leadInfluencerEntity;
-  List<LeadcommentsEnitiy> leadcommentsEnitiy;
-  List<LeadphotosEntity> leadphotosEntity;
-  List<InfluencerEntity> influencerEntity;
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<InfluencerTypeEntity> influencerTypeEntity;
-  List<LeadRejectReasonEntity> leadRejectReasonEntity;
-  List<NextStageConstructionEntity> nextStageConstructionEntity;
-  List<CounterListModel> counterListModel;
-  LeadsEntity leadsEntity;
-  List<DealerList> dealerList;
-  List<SiteFloorsEntity> siteFloorsEntity;
-  List<SiteCompetitionStatusEntity> siteCompetitionStatusEntity;
+  String? respCode;
+  String? respMsg;
+  List<LeadStageEntity>? leadStageEntity;
+  List<LeadStatusEntity>? leadStatusEntity;
+  List<LeadInfluencerEntity>? leadInfluencerEntity;
+  List<LeadcommentsEnitiy>? leadcommentsEnitiy;
+  List<LeadphotosEntity>? leadphotosEntity;
+  List<InfluencerEntity>? influencerEntity;
+  List<InfluencerCategoryEntity>? influencerCategoryEntity;
+  List<InfluencerTypeEntity>? influencerTypeEntity;
+  List<LeadRejectReasonEntity>? leadRejectReasonEntity;
+  List<NextStageConstructionEntity>? nextStageConstructionEntity;
+  List<CounterListModel>? counterListModel;
+  LeadsEntity? leadsEntity;
+  List<DealerList>? dealerList;
+  List<SiteFloorsEntity>? siteFloorsEntity;
+  List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity;
 
 
   ViewLeadDataResponse(
@@ -41,97 +45,155 @@ class ViewLeadDataResponse {
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('counterListModel'))
+      counterListModel = new List<CounterListModel>.empty(growable: true);
+
     if (json['counterListModel'] != null) {
       counterListModel = new List<CounterListModel>.empty(growable: true);
       json['counterListModel'].forEach((v) {
-        counterListModel.add(new CounterListModel.fromJson(v));
+        counterListModel!.add(new CounterListModel.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
 
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
-        leadStageEntity.add(new LeadStageEntity.fromJson(v));
+        leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
-        leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
+        leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadInfluencerEntity'))
+      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
+
     if (json['leadInfluencerEntity'] != null) {
       leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
       json['leadInfluencerEntity'].forEach((v) {
-        leadInfluencerEntity.add(new LeadInfluencerEntity.fromJson(v));
+        leadInfluencerEntity!.add(new LeadInfluencerEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadcommentsEnitiy'))
+      leadcommentsEnitiy = new List<LeadcommentsEnitiy>.empty(growable: true);
+
     if (json['leadcommentsEnitiy'] != null) {
       leadcommentsEnitiy = new List<LeadcommentsEnitiy>.empty(growable: true);
       json['leadcommentsEnitiy'].forEach((v) {
-        leadcommentsEnitiy.add(new LeadcommentsEnitiy.fromJson(v));
+        leadcommentsEnitiy!.add(new LeadcommentsEnitiy.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadphotosEntity'))
+      leadphotosEntity = new List<LeadphotosEntity>.empty(growable: true);
+
     if (json['leadphotosEntity'] != null) {
       leadphotosEntity = new List<LeadphotosEntity>.empty(growable: true);
       json['leadphotosEntity'].forEach((v) {
-        leadphotosEntity.add(new LeadphotosEntity.fromJson(v));
+        leadphotosEntity!.add(new LeadphotosEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerEntity'))
+      influencerEntity = new List<InfluencerEntity>.empty(growable: true);
+
     if (json['influencerEntity'] != null) {
       influencerEntity = new List<InfluencerEntity>.empty(growable: true);
       json['influencerEntity'].forEach((v) {
         print(v);
-        influencerEntity.add(new InfluencerEntity.fromJson(v));
+        influencerEntity!.add(new InfluencerEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryEntity'))
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+
     if (json['influencerCategoryEntity'] != null) {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
-        influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
+        influencerCategoryEntity!.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerTypeEntity'))
+      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
+
     if (json['influencerTypeEntity'] != null) {
       influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
       json['influencerTypeEntity'].forEach((v) {
-        influencerTypeEntity.add(new InfluencerTypeEntity.fromJson(v));
+        influencerTypeEntity!.add(new InfluencerTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadRejectReasonEntity'))
+      leadRejectReasonEntity = new List<LeadRejectReasonEntity>.empty(growable: true);
+
     if (json['leadRejectReasonEntity'] != null) {
       leadRejectReasonEntity = new List<LeadRejectReasonEntity>.empty(growable: true);
       json['leadRejectReasonEntity'].forEach((v) {
-        leadRejectReasonEntity.add(new LeadRejectReasonEntity.fromJson(v));
+        leadRejectReasonEntity!.add(new LeadRejectReasonEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('nextStageConstructionEntity'))
+      nextStageConstructionEntity = new List<NextStageConstructionEntity>.empty(growable: true);
+
     if (json['nextStageConstructionEntity'] != null) {
       nextStageConstructionEntity = new List<NextStageConstructionEntity>.empty(growable: true);
       json['nextStageConstructionEntity'].forEach((v) {
-        nextStageConstructionEntity
+        nextStageConstructionEntity!
             .add(new NextStageConstructionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadsEntity'))
+      leadsEntity = null;
+
     leadsEntity = json['leadsEntity'] != null
         ? new LeadsEntity.fromJson(json['leadsEntity'])
         : null;
 
+
+    if (!json.containsKey('dealerList'))
+      dealerList = new List<DealerList>.empty(growable: true);
+
     if (json['dealerList'] != null) {
       dealerList = new List<DealerList>.empty(growable: true);
       json['dealerList'].forEach((v) {
-        dealerList.add(new DealerList.fromJson(v));
+        dealerList!.add(new DealerList.fromJson(v));
       });
     }
+
+
+    if (!json.containsKey('siteFloorsEntity'))
+      siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
 
     if (json['siteFloorsEntity'] != null) {
       siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
       json['siteFloorsEntity'].forEach((v) {
-        siteFloorsEntity.add(new SiteFloorsEntity.fromJson(v));
+        siteFloorsEntity!.add(new SiteFloorsEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteCompetitionStatusEntity'))
+      siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
 
     if (json['siteCompetitionStatusEntity'] != null) {
       siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
       json['siteCompetitionStatusEntity'].forEach((v) {
-        siteCompetitionStatusEntity.add(new SiteCompetitionStatusEntity.fromJson(v));
+        siteCompetitionStatusEntity!.add(new SiteCompetitionStatusEntity.fromJson(v));
       });
     }
   }
@@ -143,61 +205,61 @@ class ViewLeadDataResponse {
 
     if (this.leadStageEntity != null) {if (this.counterListModel != null) {
       data['counterListModel'] =
-          this.counterListModel.map((v) => v.toJson()).toList();
+          this.counterListModel!.map((v) => v.toJson()).toList();
     }
       data['leadStageEntity'] =
-          this.leadStageEntity.map((v) => v.toJson()).toList();
+          this.leadStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadStatusEntity != null) {
       data['leadStatusEntity'] =
-          this.leadStatusEntity.map((v) => v.toJson()).toList();
+          this.leadStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadInfluencerEntity != null) {
       data['leadInfluencerEntity'] =
-          this.leadInfluencerEntity.map((v) => v.toJson()).toList();
+          this.leadInfluencerEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadcommentsEnitiy != null) {
       data['leadcommentsEnitiy'] =
-          this.leadcommentsEnitiy.map((v) => v.toJson()).toList();
+          this.leadcommentsEnitiy!.map((v) => v.toJson()).toList();
     }
     if (this.leadphotosEntity != null) {
       data['leadphotosEntity'] =
-          this.leadphotosEntity.map((v) => v.toJson()).toList();
+          this.leadphotosEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerEntity != null) {
       data['influencerEntity'] =
-          this.influencerEntity.map((v) => v.toJson()).toList();
+          this.influencerEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryEntity != null) {
       data['influencerCategoryEntity'] =
-          this.influencerCategoryEntity.map((v) => v.toJson()).toList();
+          this.influencerCategoryEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerTypeEntity != null) {
       data['influencerTypeEntity'] =
-          this.influencerTypeEntity.map((v) => v.toJson()).toList();
+          this.influencerTypeEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadRejectReasonEntity != null) {
       data['leadRejectReasonEntity'] =
-          this.leadRejectReasonEntity.map((v) => v.toJson()).toList();
+          this.leadRejectReasonEntity!.map((v) => v.toJson()).toList();
     }
     if (this.nextStageConstructionEntity != null) {
       data['nextStageConstructionEntity'] =
-          this.nextStageConstructionEntity.map((v) => v.toJson()).toList();
+          this.nextStageConstructionEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadsEntity != null) {
-      data['leadsEntity'] = this.leadsEntity.toJson();
+      data['leadsEntity'] = this.leadsEntity!.toJson();
     }
     if (this.dealerList != null) {
-      data['dealerList'] = this.dealerList.map((v) => v.toJson()).toList();
+      data['dealerList'] = this.dealerList!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteFloorsEntity != null) {
-      data['siteFloorsEntity'] = this.siteFloorsEntity.map((v) => v.toJson()).toList();
+      data['siteFloorsEntity'] = this.siteFloorsEntity!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteCompetitionStatusEntity != null) {
       data['siteCompetitionStatusEntity'] =
-          this.siteCompetitionStatusEntity.map((v) => v.toJson()).toList();
+          this.siteCompetitionStatusEntity!.map((v) => v.toJson()).toList();
     }
 
     return data;
@@ -205,8 +267,8 @@ class ViewLeadDataResponse {
 }
 
 class LeadStageEntity {
-  int id;
-  String leadStageDesc;
+  int? id;
+  String? leadStageDesc;
 
   LeadStageEntity({this.id, this.leadStageDesc});
 
@@ -224,8 +286,8 @@ class LeadStageEntity {
 }
 
 class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
+  int? id;
+  String? leadStatusDesc;
 
   LeadStatusEntity({this.id, this.leadStatusDesc});
 
@@ -243,15 +305,15 @@ class LeadStatusEntity {
 }
 
 class LeadInfluencerEntity {
-  int id;
-  int leadId;
-  int inflId;
-  String isDelete;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? leadId;
+  int? inflId;
+  String? isDelete;
+  String? createdBy;
+  int? createdOn;
   Null updatedBy;
   Null updatedOn;
-  String isPrimary;
+  String? isPrimary;
 
 
 
@@ -294,12 +356,12 @@ class LeadInfluencerEntity {
 }
 
 class LeadcommentsEnitiy {
-  int id;
-  int leadId;
-  String commentText;
-  String creatorName;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? leadId;
+  String? commentText;
+  String? creatorName;
+  String? createdBy;
+  int? createdOn;
 
   LeadcommentsEnitiy(
       {this.id,
@@ -331,11 +393,11 @@ class LeadcommentsEnitiy {
 }
 
 class LeadphotosEntity {
-  int id;
-  int leadId;
-  String photoName;
-  String createdBy;
-  int createdOn;
+  int? id;
+  int? leadId;
+  String? photoName;
+  String? createdBy;
+  int? createdOn;
 
   LeadphotosEntity(
       {this.id, this.leadId, this.photoName, this.createdBy, this.createdOn});
@@ -360,14 +422,14 @@ class LeadphotosEntity {
 }
 
 class InfluencerEntity {
-  int id;
-  String inflName;
-  String inflContact;
-  int inflTypeId;
-  int inflCatId;
-  String ilpIntrested;
-  int createdOn;
-  String isPrimary;
+  int? id;
+  String? inflName;
+  String? inflContact;
+  int? inflTypeId;
+  int? inflCatId;
+  String? ilpIntrested;
+  int? createdOn;
+  String? isPrimary;
 
   InfluencerEntity(
       {this.id,
@@ -405,8 +467,8 @@ class InfluencerEntity {
 }
 
 class InfluencerCategoryEntity {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   InfluencerCategoryEntity({this.inflCatId, this.inflCatDesc});
 
@@ -424,8 +486,8 @@ class InfluencerCategoryEntity {
 }
 
 class InfluencerTypeEntity {
-  int inflTypeId;
-  String inflTypeDesc;
+  int? inflTypeId;
+  String? inflTypeDesc;
 
   InfluencerTypeEntity({this.inflTypeId, this.inflTypeDesc});
 
@@ -443,8 +505,8 @@ class InfluencerTypeEntity {
 }
 
 class LeadRejectReasonEntity {
-  int rejectionId;
-  String rejectionText;
+  int? rejectionId;
+  String? rejectionText;
 
   LeadRejectReasonEntity({this.rejectionId, this.rejectionText});
 
@@ -462,8 +524,8 @@ class LeadRejectReasonEntity {
 }
 
 class NextStageConstructionEntity {
-  int nextStageConsId;
-  String nexStageConsText;
+  int? nextStageConsId;
+  String? nexStageConsText;
 
   NextStageConstructionEntity({this.nextStageConsId, this.nexStageConsText});
 
@@ -481,8 +543,8 @@ class NextStageConstructionEntity {
 }
 
 class DealerList {
-  String dealerId;
-  String dealerName;
+  String? dealerId;
+  String? dealerName;
 
   DealerList({this.dealerId, this.dealerName});
 
@@ -499,187 +561,16 @@ class DealerList {
   }
 }
 
-class LeadsEntity {
-  int leadId;
-  int eventId;
-  String leadSegment;
-  String assignedTo;
-  Null siteSubTypeId;
-  int leadStatusId;
-  int leadStageId;
-  String contactName;
-  String contactNumber;
-  String geotagType;
-  String leadLatitude;
-  String leadLongitude;
-  String leadAddress;
-  String leadPincode;
-  String leadStateName;
-  String leadDistrictName;
-  String leadTalukName;
-  String leadSitePotentialMt;
-  String leadReraNumber;
-  int leadRejectReason;
-  String leadIsDuplicate;
-  int leadOriginalId;
-  Null siteConverted;
-  String createdBy;
-  int createdOn;
-  String updatedBy;
-  int updatedOn;
-  int assignDate;
-  String rejectionComment;
-  String leadscol;
-  int nextDateCconstruction;
-  int nextStageConstruction;
-  String siteDealerId;
-
-  String subdealerId;
-
-  String leadSource;
-  String leadSourceUser;
-  String leadSourcePlatform;
-  String isIhbCommercial;
-
-
-
-
-  LeadsEntity(
-      {this.leadId,
-        this.eventId,
-      this.leadSegment,
-      this.assignedTo,
-      this.siteSubTypeId,
-      this.leadStatusId,
-      this.leadStageId,
-      this.contactName,
-      this.contactNumber,
-      this.geotagType,
-      this.leadLatitude,
-      this.leadLongitude,
-      this.leadAddress,
-      this.leadPincode,
-      this.leadStateName,
-      this.leadDistrictName,
-      this.leadTalukName,
-      this.leadSitePotentialMt,
-      this.leadReraNumber,
-      this.leadRejectReason,
-      this.leadIsDuplicate,
-      this.leadOriginalId,
-      this.siteConverted,
-      this.createdBy,
-      this.createdOn,
-      this.updatedBy,
-      this.updatedOn,
-      this.assignDate,
-      this.rejectionComment,
-      this.leadscol,
-      this.nextDateCconstruction,
-      this.nextStageConstruction,
-      this.siteDealerId,
-      this.subdealerId,
-        this.leadSource,
-        this.leadSourceUser,
-        this.leadSourcePlatform,
-        this.isIhbCommercial
-      });
-
-  LeadsEntity.fromJson(Map<String, dynamic> json) {
-    leadId = json['leadId'];
-    eventId = json['eventId'];
-    leadSegment = json['leadSegment'];
-    assignedTo = json['assignedTo'];
-    siteSubTypeId = json['siteSubTypeId'];
-    leadStatusId = json['leadStatusId'];
-    leadStageId = json['leadStageId'];
-    contactName = json['contactName'];
-    contactNumber = json['contactNumber'];
-    geotagType = json['geotagType'];
-    leadLatitude = json['leadLatitude'];
-    leadLongitude = json['leadLongitude'];
-    leadAddress = json['leadAddress'];
-    leadPincode = json['leadPincode'];
-    leadStateName = json['leadStateName'];
-    leadDistrictName = json['leadDistrictName'];
-    leadTalukName = json['leadTalukName'];
-    leadSitePotentialMt = json['leadSitePotentialMt'];
-    leadReraNumber = json['leadReraNumber'];
-    leadRejectReason = json['leadRejectReason'];
-    leadIsDuplicate = json['leadIsDuplicate'];
-    leadOriginalId = json['leadOriginalId'];
-    siteConverted = json['siteConverted'];
-    createdBy = json['createdBy'];
-    createdOn = json['createdOn'];
-    updatedBy = json['updatedBy'];
-    updatedOn = json['updatedOn'];
-    assignDate = json['assignDate'];
-    rejectionComment = json['rejectionComment'];
-    leadscol = json['leadscol'];
-    nextDateCconstruction = json['nextDateCconstruction'];
-    nextStageConstruction = json['nextStageConstruction'];
-    siteDealerId = json['siteDealerId'];
-    subdealerId = json['subdealerId'];
-    leadSource = json['leadSource'];
-    leadSourceUser = json['leadSourceUser'];
-    leadSourcePlatform = json['leadSourcePlatform'];
-    isIhbCommercial = json['isIhbCommercial'];
-
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leadId'] = this.leadId;
-    data['eventId'] = this.eventId;
-    data['leadSegment'] = this.leadSegment;
-    data['assignedTo'] = this.assignedTo;
-    data['siteSubTypeId'] = this.siteSubTypeId;
-    data['leadStatusId'] = this.leadStatusId;
-    data['leadStageId'] = this.leadStageId;
-    data['contactName'] = this.contactName;
-    data['contactNumber'] = this.contactNumber;
-    data['geotagType'] = this.geotagType;
-    data['leadLatitude'] = this.leadLatitude;
-    data['leadLongitude'] = this.leadLongitude;
-    data['leadAddress'] = this.leadAddress;
-    data['leadPincode'] = this.leadPincode;
-    data['leadStateName'] = this.leadStateName;
-    data['leadDistrictName'] = this.leadDistrictName;
-    data['leadTalukName'] = this.leadTalukName;
-    data['leadSitePotentialMt'] = this.leadSitePotentialMt;
-    data['leadReraNumber'] = this.leadReraNumber;
-    data['leadRejectReason'] = this.leadRejectReason;
-    data['leadIsDuplicate'] = this.leadIsDuplicate;
-    data['leadOriginalId'] = this.leadOriginalId;
-    data['siteConverted'] = this.siteConverted;
-    data['createdBy'] = this.createdBy;
-    data['createdOn'] = this.createdOn;
-    data['updatedBy'] = this.updatedBy;
-    data['updatedOn'] = this.updatedOn;
-    data['assignDate'] = this.assignDate;
-    data['rejectionComment'] = this.rejectionComment;
-    data['leadscol'] = this.leadscol;
-    data['nextDateCconstruction'] = this.nextDateCconstruction;
-    data['nextStageConstruction'] = this.nextStageConstruction;
-    data['siteDealerId'] = this.siteDealerId;
-    data['subdealerId'] = this.subdealerId;
-    data['leadSource'] = this.leadSource;
-    data['leadSourceUser'] = this.leadSourceUser;
-    data['leadSourcePlatform'] = this.leadSourcePlatform;
-    data['isIhbCommercial'] = this.isIhbCommercial;
-    return data;
-  }
-}
 
 class SiteFloorsEntity {
-  int id;
-  String siteFloorTxt;
+  int? id;
+  String? siteFloorTxt;
 
   SiteFloorsEntity({this.id, this.siteFloorTxt});
 
   SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteFloorTxt = json['siteFloorTxt'].toString() ?? "";
+    siteFloorTxt = json['siteFloorTxt'].toString() ;
   }
 
   Map<String, dynamic> toJson() {
@@ -692,10 +583,10 @@ class SiteFloorsEntity {
 
 
 class CounterListModel {
-  String shipToParty;
-  String shipToPartyName;
-  String soldToParty;
-  String soldToPartyName;
+  String? shipToParty;
+  String? shipToPartyName;
+  String? soldToParty;
+  String? soldToPartyName;
 
   CounterListModel(
       {this.shipToParty,
@@ -721,14 +612,14 @@ class CounterListModel {
 }
 
 class SiteCompetitionStatusEntity {
-  int id;
-  String competitionStatus;
+  int? id;
+  String? competitionStatus;
 
   SiteCompetitionStatusEntity({this.id, this.competitionStatus});
 
   SiteCompetitionStatusEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    competitionStatus = json['competitionStatus'].toString() ?? "";
+    competitionStatus = json['competitionStatus'].toString();
   }
 
   Map<String, dynamic> toJson() {

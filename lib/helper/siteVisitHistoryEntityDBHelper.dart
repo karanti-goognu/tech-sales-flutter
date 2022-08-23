@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
   static final SiteVisitHistoryEntityDBHelper _instance = SiteVisitHistoryEntityDBHelper._();
-  static Database _database;
+  static Database? _database;
 
   SiteVisitHistoryEntityDBHelper._();
 
@@ -12,7 +14,7 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }
@@ -35,13 +37,13 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
 
 
   Future<int> addSiteVisitInDraft(SiteVisitHistoryEntityForDB siteVisitHistoryEntityForDB) async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.insert('siteVisitHistory', siteVisitHistoryEntityForDB.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<SiteVisitHistoryEntityForDB> fetchSiteVisitHistoryEntityInDraft(int id) async {
-    var client = await db;
+  Future<SiteVisitHistoryEntityForDB?> fetchSiteVisitHistoryEntityInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     final Future<List<Map<String, dynamic>>> futureMaps =
     client.query('siteVisitHistory', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
@@ -52,20 +54,20 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
   }
 
   Future<int> updateSiteVisitInDraft(SiteVisitHistoryEntityForDB siteVisitHistoryEntityForDB) async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     return client.update('siteVisitHistory', siteVisitHistoryEntityForDB.toMapForDb(),
         where: 'id = ?',
         whereArgs: [siteVisitHistoryEntityForDB.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> removeSiteVisitInDraft(int id) async {
-    var client = await db;
+  Future<int> removeSiteVisitInDraft(int id) async {
+    var client = await (db as FutureOr<Database>);
     return client.delete('siteVisitHistory', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<SiteVisitHistoryEntityForDB>> fetchAll() async {
-    var client = await db;
+    var client = await (db as FutureOr<Database>);
     var res = await client.query('siteVisitHistory');
 
     if (res.isNotEmpty) {
@@ -80,9 +82,9 @@ class SiteVisitHistoryEntityDBHelper extends ChangeNotifier{
 
 class SiteVisitHistoryEntityForDB {
   // @required
-  final int id;
+  final int? id;
   @required
-  final String siteVisitHistoryEntity;
+  final String? siteVisitHistoryEntity;
 
   SiteVisitHistoryEntityForDB(this.id, this.siteVisitHistoryEntity);
 

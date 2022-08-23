@@ -2,6 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/helper/draftLeadDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/AddLeadInitialModel.dart';
@@ -21,30 +25,21 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MyApiClientLeads {
   final http.Client httpClient;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   final db = DraftLeadDBHelper();
-  String version;
-
-
-  MyApiClientLeads({@required this.httpClient});
-
-
+  String? version;
+  MyApiClientLeads({required this.httpClient});
 
   getAccessKey() async {
-    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version));
       if (response.statusCode == 200) {
-       // Get.back();
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
         return accessKeyModel;
@@ -58,11 +53,9 @@ class MyApiClientLeads {
 
   Future getAccessKeyNew() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
-          headers: requestHeaders(version));
+          headers: requestHeaders(version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
@@ -75,26 +68,20 @@ class MyApiClientLeads {
   }
 
   getSecretKey(String empId, String mobile) async {
-    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     version = VersionClass.getVersion();
     try {
       Map<String, String> requestHeadersEmpIdAndNo = {
         'Content-type': 'application/json',
         'app-name': StringConstants.appName,
-        'app-version': version,
+        'app-version': version!,
         'reference-id': empId,
         'mobile-number': mobile,
       };
-
-
       var response = await httpClient.get(Uri.parse(UrlConstants.getSecretKey),
           headers: requestHeadersEmpIdAndNo);
-//      print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
-       // Get.back();
         var data = json.decode(response.body);
         SecretKeyModel secretKeyModel = SecretKeyModel.fromJson(data);
-        //print('Access key Object is :: $accessKeyModel');
         return secretKeyModel;
       } else {
         print('Error in else');
@@ -104,7 +91,7 @@ class MyApiClientLeads {
     }
   }
 
-  getFilterData(String accessKey) async {
+  getFilterData(String? accessKey) async {
     try {
       version = VersionClass.getVersion();
       String userSecurityKey = "empty";
@@ -112,17 +99,14 @@ class MyApiClientLeads {
       _prefs.then((SharedPreferences prefs) {
         userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-//        print('$userSecurityKey');
       });
       if (userSecurityKey == "empty") {
         var response = await httpClient.get(Uri.parse(UrlConstants.getFilterData),
             headers: requestHeadersWithAccessKeyAndSecretKey(
-                accessKey, userSecurityKey,version));
-//        print('Response body is : ${json.decode(response.body)}');
+                accessKey, userSecurityKey,version) );
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           AccessKeyModel accessKeyModel = AccessKeyModel.fromJson(data);
-          //print('Access key Object is :: $accessKeyModel');
           return accessKeyModel;
         } else
           print('error');
@@ -134,26 +118,14 @@ class MyApiClientLeads {
     }
   }
 
-  getLeadsData(String accessKey, String securityKey, String url) async {
-    //Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+  getLeadsData(String? accessKey, String securityKey, String url) async {
 
     try {
-      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       version = VersionClass.getVersion();
-      final response = await get(Uri.parse(url),
-          headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-//      print('response is :  ${response.body}');
-     // Get.back();
-
+      final response = await get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
       if (response.statusCode == 200) {
-   //     Get.back();
-//        print('success');
         var data = json.decode(response.body);
-//        print(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
         return leadsListModel;
       } else
         print('error in else');
@@ -162,20 +134,15 @@ class MyApiClientLeads {
     }
   }
 
-  getSearchData(String accessKey, String securityKey, String url) async {
+  getSearchData(String? accessKey, String securityKey, String url) async {
     try {
-      //debugPrint('in get posts: ${UrlConstants.loginCheck}');
       version = VersionClass.getVersion();
       final response = await get(Uri.parse(url),
           headers:
-              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version));
-      //var response = await httpClient.post(UrlConstants.loginCheck);
-//      print('response is :  ${response.body}');
+              requestHeadersWithAccessKeyAndSecretKey(accessKey, securityKey,version) );
       if (response.statusCode == 200) {
-        print('success');
         var data = json.decode(response.body);
         LeadsListModel leadsListModel = LeadsListModel.fromJson(data);
-        //print('Access key Object is :: $loginModel');
         return leadsListModel;
       } else
         print('error in else');
@@ -184,25 +151,21 @@ class MyApiClientLeads {
     }
   }
 
-  getAddLeadsData(String accessKey, String userSecurityKey) async {
-
+  getAddLeadsData(String? accessKey, String? userSecurityKey) async {
     try {
+      print(Uri.parse(UrlConstants.addLeadsData));
       version = VersionClass.getVersion();
-      // var response = await httpClient.get(UrlConstants.addLeadsData,
-      //     headers: requestHeadersWithAccessKeyAndSecretKey(
-      //         accessKey, userSecurityKey,version));
       var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey,version));
+              accessKey, userSecurityKey,version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         AddLeadInitialModel addLeadInitialModel =
             AddLeadInitialModel.fromJson(data);
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
-        print(addLeadInitialModel.siteSubTypeEntity[0]);
         return addLeadInitialModel;
       } else
         print('error');
@@ -213,7 +176,7 @@ class MyApiClientLeads {
 
   getInflDetailsData(
     accessKey,
-    String userSecurityKey,
+    String? userSecurityKey,
     phoneNumber,
   ) async {
     try {
@@ -221,16 +184,14 @@ class MyApiClientLeads {
       final response = await get(
         Uri.parse(UrlConstants.getInflData + "/$phoneNumber"),
         headers:
-            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+            requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
-
-
        if (response.statusCode == 200) {
          var data = json.decode(response.body);
         InfluencerDetail influencerDetailModel =
             InfluencerDetail.fromJson(json.decode(response.body));
         if(data["resp_code"] == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         return influencerDetailModel;
@@ -243,11 +204,10 @@ class MyApiClientLeads {
 
   saveLeadsData(
       accessKey,
-      String userSecurityKey,
+      String? userSecurityKey,
       SaveLeadRequestModel saveLeadRequestModel,
-      List<File> imageList,
+      List<File?> imageList,
       BuildContext context) async {
-    // print(imageList.length);
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.saveLeadsData));
@@ -255,7 +215,7 @@ class MyApiClientLeads {
         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
 
     for (var file in imageList) {
-      String fileName = file.path.split("/").last;
+      String fileName = file!.path.split("/").last;
       var stream = new http.ByteStream(file.openRead());
       stream.cast();
       var length = await file.length();
@@ -265,18 +225,13 @@ class MyApiClientLeads {
     }
 
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
-
       gv.currentId = empId;
       var uploadImageWithLeadModel = {
         'leadSegment': "TRADE",
-        'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId),
+        'siteSubTypeId': int.parse(saveLeadRequestModel.siteSubTypeId!),
         'assignedTo': empId,
         'leadStatusId': 1,
         'leadStage': 1,
@@ -320,15 +275,15 @@ class MyApiClientLeads {
 
 
             if(data["resp_code"] == "DM1005"){
-              Get.dialog(CustomDialogs().appUserInactiveDialog(
+              Get.dialog(CustomDialogs.appUserInactiveDialog(
                   data["resp_msg"]), barrierDismissible: false);
             }else{
             if (saveLeadResponse.respCode == "LD2008") {
               Get.back();
               gv.selectedLeadID = saveLeadResponse.leadId;
               gv.fromLead = false;
-              Get.dialog(CustomDialogs().showExistingLeadDialog(
-                  saveLeadResponse.respMsg,
+              Get.dialog(CustomDialogs.showExistingLeadDialog(
+                  saveLeadResponse.respMsg!,
                   context,
                   saveLeadRequestModel,
                   imageList));
@@ -338,20 +293,20 @@ class MyApiClientLeads {
                 gv.fromLead = false;
               }
               gv.fromLead = false;
-              Get.dialog(CustomDialogs()
+              Get.dialog(CustomDialogs
                   .showDialogSubmitLead(
-                  saveLeadResponse.respMsg, 2, context),barrierDismissible: false);
+                  saveLeadResponse.respMsg!, 2, context),barrierDismissible: false);
               if (saveLeadRequestModel.eventId == null) {
                 Get.back();
-                Get.dialog(CustomDialogs()
+                Get.dialog(CustomDialogs
                     .showDialogSubmitLead(
-                    saveLeadResponse.respMsg, 1, context),barrierDismissible: false);
+                    saveLeadResponse.respMsg!, 1, context),barrierDismissible: false);
               }
 
             } else if (saveLeadResponse.respCode == "LD2012") {
               gv.fromLead = false;
-              Get.dialog(CustomDialogs().showExistingTSODialog(
-                  saveLeadResponse.respMsg,
+              Get.dialog(CustomDialogs.showExistingTSODialog(
+                  saveLeadResponse.respMsg!,
                   context,
                   saveLeadRequestModel,
                   imageList));
@@ -360,13 +315,11 @@ class MyApiClientLeads {
               gv.fromLead = false;
               Get.back();
               Get.dialog(
-                  CustomDialogs().showDialog(saveLeadResponse.respMsg));
+                  CustomDialogs.showDialog(saveLeadResponse.respMsg!));
             }
           }
               });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+            });
       } catch (_) {
         print('exception ${_.toString()}');
       }
@@ -374,13 +327,13 @@ class MyApiClientLeads {
   }
 
 
-  getLeadData(String accessKey, String userSecurityKey, int leadId, String empID) async {
+  getLeadData(String accessKey, String? userSecurityKey, int leadId, String? empID) async {
      try {
       version = VersionClass.getVersion();
        final response = await get(
         Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
          headers:
-         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+         requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
       if (response.statusCode == 200) {
         Get.back();
@@ -396,20 +349,20 @@ class MyApiClientLeads {
     }
   }
 
-  Future<ViewLeadDataResponse>getLeadDataNew(String accessKey, String userSecurityKey, int leadId, String empID) async {
-    ViewLeadDataResponse viewLeadDataResponse;
+  Future<ViewLeadDataResponse?>getLeadDataNew(String? accessKey, String? userSecurityKey, int? leadId, String? empID) async {
+    ViewLeadDataResponse? viewLeadDataResponse;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
 
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version),
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -424,15 +377,14 @@ class MyApiClientLeads {
     return viewLeadDataResponse;
   }
 
-  updateLeadsData(accessKey, String userSecurityKey, var updateRequestModel,
-      List<File> imageList, BuildContext context, int leadId,int from) async {
+  updateLeadsData(accessKey, String? userSecurityKey, var updateRequestModel,
+      List<File?> imageList, BuildContext context, int? leadId,int from) async {
     version = VersionClass.getVersion();
     http.MultipartRequest request = new http.MultipartRequest(
         'POST', Uri.parse(UrlConstants.updateLeadsData));
-    request.headers.addAll(
-        requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+    request.headers.addAll(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
     for (var file in imageList) {
-      String fileName = file.path.split("/").last;
+      String fileName = file!.path.split("/").last;
       var stream = new http.ByteStream(file.openRead());
       stream.cast();
       var length = await file.length();
@@ -443,14 +395,9 @@ class MyApiClientLeads {
 
     }
     String empId;
-    String mobileNumber;
-    String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
-
       gv.currentId = empId;
 
       request.fields['uploadImageWithUpdateLeadModel'] =
@@ -466,35 +413,31 @@ class MyApiClientLeads {
                 UpdateLeadResponseModel updateLeadResponseModel =
                 UpdateLeadResponseModel.fromJson(data);
                 if(data["resp_code"] == "DM1005"){
-                    Get.dialog(CustomDialogs().appUserInactiveDialog(
+                    Get.dialog(CustomDialogs.appUserInactiveDialog(
                         data["resp_msg"]), barrierDismissible: false);
                   }
                 else{
                 if (updateLeadResponseModel.respCode == "LD2009") {
                   gv.selectedLeadID = updateLeadResponseModel.leadId;
-
-
                   Get.back();
                   Get.back();
                   Get.back();
-                  Get.dialog(CustomDialogs().showDialogSubmitLead(
-                      updateLeadResponseModel.respMsg, from, context), barrierDismissible: false);
+                  Get.dialog(CustomDialogs.showDialogSubmitLead(
+                      updateLeadResponseModel.respMsg!, from, context), barrierDismissible: false);
                 } else if (updateLeadResponseModel.respCode == "ED2011") {
                   Get.back();
-                  Get.dialog(CustomDialogs()
-                      .showDialog(updateLeadResponseModel.respMsg), barrierDismissible: false);
+                  Get.dialog(CustomDialogs
+                      .showDialog(updateLeadResponseModel.respMsg!), barrierDismissible: false);
                 }
                 else {
                   Get.back();
                   Get.dialog(
-                    CustomDialogs().showDialog("Some Error Occured !!! "),
+                    CustomDialogs.showDialog("Some Error Occurred !!! "),
                   );
                 }
               }
               });
-            })
-            .catchError((err) => print('error : ' + err.toString()))
-            .whenComplete(() {});
+            });
       } catch (_) {
         print('exception ${_.toString()}');
       }
@@ -502,19 +445,19 @@ class MyApiClientLeads {
     });
   }
 
-  Future<LeadsListModel> getSearchDataNew(String accessKey, String userSecurityKey, String empID, String searchText) async {
-    LeadsListModel leadsListModel;
+  Future<LeadsListModel?> getSearchDataNew(String? accessKey, String? userSecurityKey, String? empID, String searchText) async {
+    LeadsListModel? leadsListModel;
     try {
       String url = "${UrlConstants.getSearchData}searchText=$searchText&referenceID=$empID";
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         leadsListModel = LeadsListModel.fromJson(data);
         if(leadsListModel.respCode == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
-              leadsListModel.respMsg), barrierDismissible: false);
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
+              leadsListModel.respMsg!), barrierDismissible: false);
         }
       } else
         print('error');
@@ -525,19 +468,20 @@ class MyApiClientLeads {
 
   }
 
-  Future<InfluencerDetailModel> getInfNewData(String accessKey,
-      String userSecretKey, String contact) async {
-    InfluencerDetailModel infDetailModel;
+  Future<InfluencerDetailModel?> getInfNewData(String? accessKey,
+      String? userSecretKey, String contact) async {
+    InfluencerDetailModel? infDetailModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
-          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
+        print(response.body);
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -553,26 +497,20 @@ class MyApiClientLeads {
     return infDetailModel;
   }
 
-  Future<TotalPotentialModel> getTotalPotential(accessKey, String userSecretKey, var updateRequestModel) async {
-    TotalPotentialModel totalPotentialModel;
+  Future<TotalPotentialModel?> getTotalPotential(accessKey, String? userSecretKey, var updateRequestModel) async {
+    TotalPotentialModel? totalPotentialModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
-      // var response = await http.get(Uri.parse(UrlConstants.getTotalSitePotential),
-      //     headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
-      // var data = json.decode(response.body);
-
       var response = await http.post(Uri.parse(UrlConstants.getTotalSitePotential),
-        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version),
+        headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(updateRequestModel),
       );
       var data = json.decode(response.body);
-      print(UrlConstants.getTotalSitePotential);
       if (response.statusCode == 200) {
         Get.back();
-        print("======$data");
         if (data["resp_code"] == "DM1005") {
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
@@ -589,8 +527,8 @@ class MyApiClientLeads {
   }
 
 
-  Future<SiteDistrictListModel> getLeadDistList(String accessKey, String userSecretKey, String empID) async {
-    SiteDistrictListModel siteDistrictListModel;
+  Future<SiteDistrictListModel?> getLeadDistList(String? accessKey, String? userSecretKey, String empID) async {
+    SiteDistrictListModel? siteDistrictListModel;
     try {
       version = VersionClass.getVersion();
 
@@ -599,16 +537,15 @@ class MyApiClientLeads {
               accessKey, userSecretKey,version));
       var data = json.decode(response.body);
       if(data["resp_code"] == "DM1005"){
-        Get.dialog(CustomDialogs().appUserInactiveDialog(
+        Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         siteDistrictListModel = SiteDistrictListModel.fromJson(json.decode(response.body));
       }
     }
     catch (e) {
-      print("Exception at Lead Repo $e");
+      print("Exception at Lead Repo .... $e");
     }
     return siteDistrictListModel;
   }
-
 }

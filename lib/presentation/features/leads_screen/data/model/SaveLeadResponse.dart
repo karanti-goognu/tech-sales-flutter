@@ -1,8 +1,10 @@
+
+
 class SaveLeadResponse {
-  String respCode;
-  String respMsg;
-  String leadId;
-  String assignedTo;
+  String? respCode;
+  String? respMsg;
+  String? leadId;
+  String? assignedTo;
 
   SaveLeadResponse({this.respCode, this.respMsg, this.leadId, this.assignedTo});
 

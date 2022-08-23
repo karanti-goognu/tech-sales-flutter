@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
@@ -27,15 +29,15 @@ class FormAddEvent extends StatefulWidget {
 }
 
 class _FormAddEventState extends State<FormAddEvent> {
-  AddEventModel addEventModel;
+  AddEventModel? addEventModel;
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   var _date = 'Select Date';
-  TimeOfDay _time;
-  String geoTagType, timeString, dateString;
-  int dealerId;
+  TimeOfDay? _time;
+  String? geoTagType, timeString, dateString;
+  int? dealerId;
 
   ///textfield controllers
   TextEditingController _totalParticipantsController = TextEditingController();
@@ -48,10 +50,10 @@ class _FormAddEventState extends State<FormAddEvent> {
   TextEditingController _commentController = TextEditingController();
 
   ///DropDown Values
-  int _eventTypeId;
-  String _selectedVenue;
-  double locatinLat;
-  double locationLong;
+  int? _eventTypeId;
+  String? _selectedVenue;
+  double? locatinLat;
+  double? locationLong;
 
   @override
   void initState() {
@@ -61,7 +63,7 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -80,35 +82,31 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    eventController.dispose();
-    saveEventController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
 
-    final eventDropDwn = DropdownButtonFormField(
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
+
+    final eventDropDwn = DropdownButtonFormField<Object>(
       onChanged: (value) {
         setState(() {
-          _eventTypeId = value;
+          _eventTypeId = value as int;
         });
       },
       items: addEventModel == null
           ? []
-          : addEventModel.eventTypeModels
+          : addEventModel!.eventTypeModels!
               .map((e) => DropdownMenuItem(
                     value: e.eventTypeId,
-                    child: Text(e.eventTypeText),
+                    child: Text(e.eventTypeText!),
                   ))
               .toList(),
       style: FormFieldStyle.formFieldTextStyle,
@@ -125,8 +123,8 @@ class _FormAddEventState extends State<FormAddEvent> {
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child:
-          // RaisedButton(
-          ElevatedButton(
+              // RaisedButton(
+              ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
               elevation: 0,
@@ -134,7 +132,11 @@ class _FormAddEventState extends State<FormAddEvent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),
+                Expanded(
+                    child: Text(
+                  _date,
+                  style: TextStyle(color: Colors.black),
+                )),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -146,7 +148,6 @@ class _FormAddEventState extends State<FormAddEvent> {
             },
           ),
         ));
-
 
     final time = Container(
         decoration: BoxDecoration(
@@ -164,7 +165,12 @@ class _FormAddEventState extends State<FormAddEvent> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                    child: Text((_time != null? '${_time.hour}:${_time.minute}': 'Select time'),style: TextStyle(color: Colors.black),)),
+                    child: Text(
+                  (_time != null
+                      ? '${_time!.hour}:${_time!.minute}'
+                      : 'Select time'),
+                  style: TextStyle(color: Colors.black),
+                )),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -247,7 +253,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     );
 
     final venueDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
+      onChanged: (dynamic value) {
         setState(() {
           _selectedVenue = value;
         });
@@ -260,13 +266,14 @@ class _FormAddEventState extends State<FormAddEvent> {
           .toList(),
       style: FormFieldStyle.formFieldTextStyle,
       decoration: FormFieldStyle.buildInputDecoration(labelText: "Venue"),
-      validator: (value) => value == null ? 'Please select the venue' : null,
+      validator: (dynamic value) =>
+          value == null ? 'Please select the venue' : null,
     );
 
     final venueAddress = TextFormField(
       controller: _venueAddController,
       validator: (value) {
-        if (value.isEmpty && _selectedVenue == 'Booked') {
+        if (value!.isEmpty && _selectedVenue == 'Booked') {
           return "Venue address can't be empty if Booked";
         }
         return null;
@@ -307,7 +314,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Chip(
                             label: Text(
-                              e.dealerName,
+                              e.dealerName!,
                               style: TextStyle(fontSize: 10),
                             ),
                             backgroundColor: Colors.lightGreen.withOpacity(0.2),
@@ -383,16 +390,21 @@ class _FormAddEventState extends State<FormAddEvent> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15.sp),
           ),
-          onPressed: () {
-            btnPresssed(1);
-          },
+          onPressed: isButtonPressed == true
+              ? null
+              : () {
+                  setState(() {
+                    isButtonPressed = true;
+                  });
+                  btnPresssed(1);
+                },
         ),
       ],
     );
 
     final location = TextFormField(
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return "Select location";
         }
         return null;
@@ -401,7 +413,7 @@ class _FormAddEventState extends State<FormAddEvent> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
-        final Suggestion result = await showSearch(
+        final Suggestion? result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
         );
@@ -410,8 +422,8 @@ class _FormAddEventState extends State<FormAddEvent> {
           final placeDetails =
               await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
-            _locationController.text = result.description;
-            locatinLat = placeDetails.lat;
+            _locationController.text = result.description!;
+            locatinLat = placeDetails!.lat;
             locationLong = placeDetails.lng;
           });
         }
@@ -518,13 +530,13 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   Future _selectFromDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime.now(),
         lastDate: new DateTime(2025));
     setState(() {
-      _date = new DateFormat('dd-MM-yyyy').format(_picked);
+      _date = new DateFormat('dd-MM-yyyy').format(_picked!);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
       dateString = '$d';
     });
@@ -535,41 +547,42 @@ class _FormAddEventState extends State<FormAddEvent> {
         ? _time = await showTimePicker(
             context: context,
             initialTime: (TimeOfDay(hour: 10, minute: 47)),
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           )
         : _time = await showTimePicker(
             context: context,
-            initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
-            builder: (BuildContext context, Widget child) {
+            initialTime: (TimeOfDay(hour: _time!.hour, minute: _time!.minute)),
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           );
     setState(() {
-      timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+      timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
     });
   }
 
-  List<bool> checkedValues;
-  List<String> selectedDealer = [];
+  bool isButtonPressed = false;
+  late List<bool?> checkedValues;
+  List<String?> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
 
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = addEventModel.dealersModels;
+    List<DealersModels>? dealers = addEventModel!.dealersModels;
     checkedValues =
-        List.generate(addEventModel.dealersModels.length, (index) => false);
+        List.generate(addEventModel!.dealersModels!.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -594,7 +607,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = addEventModel.dealersModels.where((element) {
+                    dealers = addEventModel!.dealersModels!.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -616,29 +629,28 @@ class _FormAddEventState extends State<FormAddEvent> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: dealers.length,
+                itemCount: dealers!.length,
                 itemBuilder: (context, index) {
-                  return
-                      CheckboxListTile(
+                  return CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
+                        Text(dealers![index].dealerName!),
+                        Text('( ${dealers![index].dealerId} )'),
                       ],
                     ),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                    value: selectedDealer.contains(dealers![index].dealerId),
                     onChanged: (newValue) {
                       setState(() {
-                        selectedDealer.contains(dealers[index].dealerName)
-                            ? selectedDealer.remove(dealers[index].dealerName)
-                            : selectedDealer.add(dealers[index].dealerName);
+                        selectedDealer.contains(dealers![index].dealerId)
+                            ? selectedDealer.remove(dealers![index].dealerId)
+                            : selectedDealer.add(dealers![index].dealerId);
 
-                        selectedDealersModels.contains(dealers[index])
-                            ? selectedDealersModels.remove(dealers[index])
-                            : selectedDealersModels.add(dealers[index]);
+                        selectedDealersModels.contains(dealers![index])
+                            ? selectedDealersModels.remove(dealers![index])
+                            : selectedDealersModels.add(dealers![index]);
 
                         checkedValues[index] = newValue;
                       });
@@ -647,7 +659,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId.toString() == dealers[index].dealerId
+                  return dealerId.toString() == dealers![index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -700,11 +712,9 @@ class _FormAddEventState extends State<FormAddEvent> {
   String total = '0';
   calculateTotal(String dalmia, String nonDalmia) {
     total = '';
-    int dal = int.parse(dalmia);
-    int non = int.parse(nonDalmia);
-
+    int dal = int.parse(dalmia.isEmpty ? "0" : dalmia);
+    int non = int.parse(nonDalmia.isEmpty ? "0" : nonDalmia);
     int tot = dal + non;
-
     total = tot.toString();
     setState(() {
       _totalParticipantsController.text = total;
@@ -719,24 +729,21 @@ class _FormAddEventState extends State<FormAddEvent> {
   }
 
   btnPresssed(int eventStatusId) async {
-    if (_addEventFormKey.currentState.validate()) {
-      _addEventFormKey.currentState.save();
+    if (_addEventFormKey.currentState!.validate()) {
+      _addEventFormKey.currentState!.save();
 
-      if (_date == null || _date == 'Select Date') {
-        Get.snackbar("", "Select Date",
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
+      if (_date == 'Select Date') {
+        Get.rawSnackbar(
+            message: "Select Date",
+            // colorText: Colors.black,
+            // backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else if (timeString == null) {
-        Get.snackbar("", "Select Time",
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
-            snackPosition: SnackPosition.BOTTOM);
+        Get.rawSnackbar(
+            message: "Select Time", snackPosition: SnackPosition.BOTTOM);
       } else {
-        String empId = await getEmpId();
-
-        timeString = ('$_date ${_time.hour}:${_time.minute}:00');
-
+        String? empId = await (getEmpId());
+        timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
         List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {
@@ -752,13 +759,9 @@ class _FormAddEventState extends State<FormAddEvent> {
           });
         });
 
-        if (dealersList == null ||
-            dealersList == [] ||
-            dealersList.length == 0) {
-          Get.snackbar("", "Select Counter",
-              colorText: Colors.black,
-              backgroundColor: Colors.white,
-              snackPosition: SnackPosition.BOTTOM);
+        if (dealersList == [] || dealersList.length == 0) {
+          Get.rawSnackbar(
+              message: "Select Counter", snackPosition: SnackPosition.BOTTOM);
         } else {
           MwpeventFormRequest _mwpeventFormRequest =
               MwpeventFormRequest.fromJson({
@@ -790,24 +793,20 @@ class _FormAddEventState extends State<FormAddEvent> {
               mwpeventFormRequest: _mwpeventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
-          internetChecking().then((result) => {
-                if (result == true)
-                  {
-                    saveEventController
-                        .getAccessKeyAndSaveRequest(_saveEventFormModel)
-                  }
-                else
-                  {
-                    Get.snackbar("No internet connection.",
-                        "Make sure that your wifi or mobile data is turned on.",
-                        colorText: Colors.white,
-                        backgroundColor: Colors.red,
-                        snackPosition: SnackPosition.BOTTOM),
-                  }
-              });
+          internetChecking().then((result) async {
+            if (result == true) {
+              await saveEventController
+                  .getAccessKeyAndSaveRequest(_saveEventFormModel);
+            } else {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM);
+            }
+          });
         }
       }
     }
   }
 }
-

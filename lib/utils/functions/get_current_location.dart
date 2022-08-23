@@ -5,8 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GetCurrentLocation{
   GetCurrentLocation._();
-  static Position _currentPosition;
-  static LatLng latLng;
+
+  static Position? _currentPosition;
+  static LatLng? latLng;
   static GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
   static Future<bool> checkLocationPermission() async{
@@ -14,38 +15,36 @@ class GetCurrentLocation{
     return _;
   }
 
-
   static Future<LocationDetails> getCurrentLocation() async {
       bool serviceEnabled;
       LocationPermission permission;
       List<String> loc;
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Get.rawSnackbar(title: "Message", message:'Location services are disabled.');
+        Get.rawSnackbar(message:'Location services are disabled.');
       }
-
-      permission = await Geolocator.checkPermission();
+    permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          Get.rawSnackbar(title: "Message", message:'Location permissions are denied');
+          Get.rawSnackbar(message:'Location permissions are denied');
         }
       }
-
       if (permission == LocationPermission.deniedForever) {
-        Get.rawSnackbar(title: "Message", message:'Location permissions are permanently denied, we cannot request permissions.');
+        Future.error("location denied forever");
+        Get.rawSnackbar(message:'Location permissions are permanently denied, we cannot request permissions.');
       }
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentPosition = position;
-      loc = await getAddressFromLatLng();
-      latLng = LatLng(_currentPosition.latitude, _currentPosition.longitude);
+    loc = await getAddressFromLatLng();
+     latLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
      return LocationDetails(loc,_currentPosition, latLng);
   }
 
 
   static getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+      List<Placemark> p = await GeocodingPlatform.instance.placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude);
       Placemark place = p[0];
       return ["${place.country}","${place.administrativeArea}","${place.subAdministrativeArea}", "${place.locality}", "${place.subLocality}", "${place.postalCode}", "${place.thoroughfare}", "${place.name}"];
     } catch (e) {
@@ -56,9 +55,8 @@ class GetCurrentLocation{
 
 class LocationDetails{
   List<String> loc;
-  Position position;
-  LatLng latLng;
+  Position? position;
+  LatLng? latLng;
 
   LocationDetails(this.loc,this.position,this.latLng);
-
 }

@@ -1,5 +1,6 @@
-import 'dart:convert';
 
+
+import 'dart:convert';
 import 'package:moengage_inbox/action.dart';
 import 'package:moengage_inbox/action_type.dart';
 import 'package:moengage_inbox/inbox_data.dart';
@@ -22,7 +23,7 @@ Map<String, dynamic> messageToMap(InboxMessage inboxMessage) {
     ACTION: actionsListFromModel(inboxMessage.action)
   };
   if (inboxMessage.media != null) {
-    message[MEDIA_CONTENT] = mapFromMedia(inboxMessage.media);
+    message[MEDIA_CONTENT] = mapFromMedia(inboxMessage.media!);
   }
   return message;
 }
@@ -35,7 +36,7 @@ InboxData deSerializeInboxMessages(dynamic messagesPayload) {
 List<InboxMessage> messagesJsonToList(List<dynamic> messageArray) {
   List<InboxMessage> messages = List<InboxMessage>.empty(growable: true);
   for (final message in messageArray) {
-    InboxMessage inboxMessage = messageFromJson(message);
+    InboxMessage? inboxMessage = messageFromJson(message);
     if (inboxMessage != null) {
       messages.add(inboxMessage);
     }
@@ -43,7 +44,7 @@ List<InboxMessage> messagesJsonToList(List<dynamic> messageArray) {
   return messages;
 }
 
-InboxMessage messageFromJson(Map<String, dynamic> message) {
+InboxMessage? messageFromJson(Map<String, dynamic> message) {
   try {
     return InboxMessage(
         message.containsKey(ID) ? message[ID] : -1,
@@ -78,7 +79,7 @@ TextContent textContentFromMap(Map<String, dynamic> textMap) {
           : "");
 }
 
-Media mediaFromMap(Map<String, dynamic> mediaMap) {
+Media? mediaFromMap(Map<String, dynamic> mediaMap) {
   if (mediaMap.isEmpty) {
     return null;
   }
@@ -88,7 +89,7 @@ Media mediaFromMap(Map<String, dynamic> mediaMap) {
 List<Action> actionsFromMap(List<dynamic> actions) {
   List<Action> actionList = List<Action>.empty(growable: true);
   for (final action in actions) {
-    Action parsedAction = actionFromMap(action);
+    Action? parsedAction = actionFromMap(action);
     if (parsedAction != null) {
       actionList.add(parsedAction);
     }
@@ -96,13 +97,14 @@ List<Action> actionsFromMap(List<dynamic> actions) {
   return actionList;
 }
 
-Action actionFromMap(Map<String, dynamic> actionMap) {
+Action? actionFromMap(Map<String, dynamic> actionMap) {
   ActionType actionType = ActionTypeExt.fromString(actionMap[ACTION_TYPE]);
   switch (actionType) {
     case ActionType.navigation:
       return navigationActionFromMap(actionType, actionMap);
+    default:
+      return null;
   }
-  return null;
 }
 
 NavigationAction navigationActionFromMap(
@@ -130,7 +132,7 @@ Map<String, String> mapFromMedia(Media media) {
 List<Map<String, dynamic>> actionsListFromModel(List<Action> actions) {
   List<Map<String, dynamic>> actionsList = List<Map<String, dynamic>>.empty(growable: true);
   for (final action in actions) {
-    Map<String, dynamic> actionMap = actionToMap(action);
+    Map<String, dynamic>? actionMap = actionToMap(action);
     if (actionMap != null) {
       actionsList.add(actionMap);
     }
@@ -138,12 +140,13 @@ List<Map<String, dynamic>> actionsListFromModel(List<Action> actions) {
   return actionsList;
 }
 
-Map<String, dynamic> actionToMap(Action action) {
+Map<String, dynamic>? actionToMap(Action action) {
   switch (action.actionType) {
     case ActionType.navigation:
-      return navigationActionToMap(action);
+      return navigationActionToMap(action as NavigationAction);
+    default:
+      return null;
   }
-  return null;
 }
 
 Map<String, dynamic> navigationActionToMap(NavigationAction navigationAction) {

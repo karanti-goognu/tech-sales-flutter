@@ -1,8 +1,10 @@
+
+
 class GetGiftStockModel {
-  String respCode;
-  String respMsg;
-  List<GiftStockModelList> giftStockModelList;
-  List<GiftTypeModelList> giftTypeModelList;
+  String? respCode;
+  String? respMsg;
+  List<GiftStockModelList>? giftStockModelList;
+  List<GiftTypeModelList>? giftTypeModelList;
 
   GetGiftStockModel(
       {this.respCode,
@@ -13,16 +15,24 @@ class GetGiftStockModel {
   GetGiftStockModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if(!json.containsKey('giftStockModelList'))
+      giftStockModelList = new List<GiftStockModelList>.empty(growable: true);
+
     if (json['giftStockModelList'] != null) {
       giftStockModelList = new List<GiftStockModelList>.empty(growable: true);
       json['giftStockModelList'].forEach((v) {
-        giftStockModelList.add(new GiftStockModelList.fromJson(v));
+        giftStockModelList!.add(new GiftStockModelList.fromJson(v));
       });
     }
+
+    if(!json.containsKey('giftTypeModelList'))
+      giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
+
     if (json['giftTypeModelList'] != null) {
       giftTypeModelList = new List<GiftTypeModelList>.empty(growable: true);
       json['giftTypeModelList'].forEach((v) {
-        giftTypeModelList.add(new GiftTypeModelList.fromJson(v));
+        giftTypeModelList!.add(new GiftTypeModelList.fromJson(v));
       });
     }
   }
@@ -33,23 +43,23 @@ class GetGiftStockModel {
     data['respMsg'] = this.respMsg;
     if (this.giftStockModelList != null) {
       data['giftStockModelList'] =
-          this.giftStockModelList.map((v) => v.toJson()).toList();
+          this.giftStockModelList!.map((v) => v.toJson()).toList();
     }
     if (this.giftTypeModelList != null) {
       data['giftTypeModelList'] =
-          this.giftTypeModelList.map((v) => v.toJson()).toList();
+          this.giftTypeModelList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class GiftStockModelList {
-  int giftTypeId;
-  String giftTypeText;
-  String referenceId;
-  int giftOpeningStockQty;
-  int giftInHandQty;
-  int giftUtilisedQty;
+  int? giftTypeId;
+  String? giftTypeText;
+  String? referenceId;
+  int? giftOpeningStockQty;
+  int? giftInHandQty;
+  int? giftUtilisedQty;
 
   GiftStockModelList(
       {this.giftTypeId,
@@ -81,9 +91,9 @@ class GiftStockModelList {
 }
 
 class GiftTypeModelList {
-  int giftTypeId;
-  String giftTypeText;
-  int giftStockInHand;
+  int? giftTypeId;
+  String? giftTypeText;
+  int? giftStockInHand;
 
   GiftTypeModelList({this.giftTypeId, this.giftTypeText, this.giftStockInHand});
 

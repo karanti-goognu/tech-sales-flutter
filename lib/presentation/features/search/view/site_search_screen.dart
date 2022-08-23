@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/view_site_detail_screen_new.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class SiteSearchScreen extends StatefulWidget {
   @override
@@ -18,40 +19,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   TextEditingController controller = new TextEditingController();
   SiteController _siteController = Get.find();
 
-  List<LeadDetailsModel> list = [
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, false,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-    new LeadDetailsModel("XXXX", "NIT Fridabad", 200, true, true,
-        DateFormat("yyyy-MM-dd").format(DateTime.now()), 999999999),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    // getUserDetails();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +41,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                   controller: controller,
                   decoration: new InputDecoration(
                       hintText: 'Search', border: InputBorder.none,
-                      // prefixIcon: Icon(Icons.search)
                   ),
                   onChanged: onSearchTextChanged,
                 ),
@@ -95,13 +61,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_siteController == null)
-        ? Container(
-            child: Center(
-              child: Text("Leads controller  is empty!!"),
-            ),
-          )
-        : (_siteController.sitesListResponse == null)
+    return Obx(() =>  (_siteController.sitesListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Leads list response  is empty!!"),
@@ -124,7 +84,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                             .sitesListResponse.sitesEntity.length,
                         padding: const EdgeInsets.only(
                             left: 10.0, right: 10, bottom: 10),
-                        // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -132,7 +91,7 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                   context,
                                   new CupertinoPageRoute(
                                       builder: (BuildContext context) =>
-                                          ViewSiteScreenNew(siteId: _siteController
+                                          ViewSiteScreen(siteId: _siteController
                                               .sitesListResponse
                                               .sitesEntity[index]
                                               .siteId,
@@ -141,7 +100,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                             child: Card(
                               clipBehavior: Clip.antiAlias,
                               borderOnForeground: true,
-                              //shadowColor: colornew,
                               elevation: 6,
                               margin: EdgeInsets.all(5.0),
                               color: Colors.white,
@@ -174,20 +132,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              // Padding(
-                                              //   padding:
-                                              //       const EdgeInsets.all(2.0),
-                                              //   child: Text(
-                                              //     "Follow-up Date XXXX",
-                                              //     style: TextStyle(
-                                              //         fontSize: 12,
-                                              //         fontFamily: "Muli",
-                                              //         fontWeight:
-                                              //             FontWeight.normal
-                                              //         //fontWeight: FontWeight.normal
-                                              //         ),
-                                              //   ),
-                                              // ),
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
@@ -199,7 +143,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                   )),
@@ -215,7 +158,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                   )),
@@ -252,7 +194,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold
-                                                              //fontWeight: FontWeight.normal
                                                               ),
                                                         ),
                                                       ),
@@ -268,14 +209,11 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                             .sitesEntity[index]
                                                             .createdOn,
                                                       ))}",
-                                                      //  textAlign: TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 13,
                                                         fontFamily: "Muli",
                                                         fontWeight:
                                                             FontWeight.bold,
-
-                                                        //fontWeight: FontWeight.normal
                                                       ),
                                                     ),
                                                   ),
@@ -307,19 +245,16 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                     Obx(
                                                       () => Text(
                                                         "${_siteController.sitesListResponse.sitesEntity[index].sitePotentialMt}MT",
                                                         style: TextStyle(
-                                                            // color: Colors.black38,
                                                             fontSize: 15,
                                                             fontFamily: "Muli",
                                                             fontWeight:
                                                                 FontWeight.bold
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                     )
@@ -333,7 +268,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                     fontSize: 12,
                                                     fontFamily: "Muli",
                                                     fontWeight: FontWeight.bold
-                                                    //fontWeight: FontWeight.normal
                                                     ),
                                               ),
                                               SizedBox(
@@ -358,11 +292,10 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                                 FontWeight.bold,
                                                             fontStyle:
                                                                 FontStyle.italic
-                                                            //fontWeight: FontWeight.normal
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num =
+                                                        String? num =
                                                             _siteController
                                                                 .sitesListResponse
                                                                 .sitesEntity[
@@ -401,7 +334,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                 fontSize: 12,
                                                 fontFamily: "Muli",
                                                 fontWeight: FontWeight.bold
-                                                //fontWeight: FontWeight.normal
                                                 ),
                                           ),
                                           Text(
@@ -411,7 +343,6 @@ class _SiteSearchScreenState extends State<SiteSearchScreen> {
                                                 fontSize: 12,
                                                 fontFamily: "Muli",
                                                 fontWeight: FontWeight.bold
-                                                //fontWeight: FontWeight.normal
                                                 ),
                                           ),
                                         ],

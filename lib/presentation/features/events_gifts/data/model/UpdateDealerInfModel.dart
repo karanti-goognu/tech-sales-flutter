@@ -1,68 +1,83 @@
 class UpdateDealerInfModel {
-  List<EventDealerRequestsList> eventDealerRequestsList;
-  List<EventInfluencerRequestsList> eventInfluencerRequestsList;
-  String referenceID;
+  List<EventDealerRequestsList>? eventDealerRequestsList;
+  List<EventInfluencerRequestsList>? eventInfluencerRequestsList;
+  String? referenceID;
+  String? eventID;
 
   UpdateDealerInfModel(
       {this.eventDealerRequestsList,
-        this.eventInfluencerRequestsList,
-        this.referenceID});
+      this.eventInfluencerRequestsList,
+      this.referenceID,
+      this.eventID});
 
   UpdateDealerInfModel.fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey('event_dealer_requests_list'))
+      eventDealerRequestsList =
+          new List<EventDealerRequestsList>.empty(growable: true);
+
     if (json['event_dealer_requests_list'] != null) {
-      eventDealerRequestsList = new List<EventDealerRequestsList>.empty(growable: true);
+      eventDealerRequestsList =
+          new List<EventDealerRequestsList>.empty(growable: true);
       json['event_dealer_requests_list'].forEach((v) {
-        eventDealerRequestsList.add(new EventDealerRequestsList.fromJson(v));
+        eventDealerRequestsList!.add(new EventDealerRequestsList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('event_influencer_requests_list'))
+      eventInfluencerRequestsList =
+          new List<EventInfluencerRequestsList>.empty(growable: true);
+
     if (json['event_influencer_requests_list'] != null) {
-      eventInfluencerRequestsList = new List<EventInfluencerRequestsList>.empty(growable: true);
+      eventInfluencerRequestsList =
+          new List<EventInfluencerRequestsList>.empty(growable: true);
       json['event_influencer_requests_list'].forEach((v) {
-        eventInfluencerRequestsList
+        eventInfluencerRequestsList!
             .add(new EventInfluencerRequestsList.fromJson(v));
       });
     }
     referenceID = json['referenceID'];
+    eventID=json['eventID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.eventDealerRequestsList != null) {
       data['event_dealer_requests_list'] =
-          this.eventDealerRequestsList.map((v) => v.toJson()).toList();
+          this.eventDealerRequestsList!.map((v) => v.toJson()).toList();
     }
     if (this.eventInfluencerRequestsList != null) {
       data['event_influencer_requests_list'] =
-          this.eventInfluencerRequestsList.map((v) => v.toJson()).toList();
+          this.eventInfluencerRequestsList!.map((v) => v.toJson()).toList();
     }
     data['referenceID'] = this.referenceID;
+    data['eventID'] = this.eventID;
     return data;
   }
 }
 
 class EventDealerRequestsList {
-  String createdBy;
-  String createdOn;
-  String dealerId;
-  String dealerName;
-  int eventDealerId;
-  int eventId;
-  String eventStage;
-  String isActive;
-  String modifiedBy;
-  String modifiedOn;
+  String? createdBy;
+  String? createdOn;
+  String? dealerId;
+  String? dealerName;
+  int? eventDealerId;
+  int? eventId;
+  String? eventStage;
+  String? isActive;
+  String? modifiedBy;
+  String? modifiedOn;
 
   EventDealerRequestsList(
       {this.createdBy,
-        this.createdOn,
-        this.dealerId,
-        this.dealerName,
-        this.eventDealerId,
-        this.eventId,
-        this.eventStage,
-        this.isActive,
-        this.modifiedBy,
-        this.modifiedOn});
+      this.createdOn,
+      this.dealerId,
+      this.dealerName,
+      this.eventDealerId,
+      this.eventId,
+      this.eventStage,
+      this.isActive,
+      this.modifiedBy,
+      this.modifiedOn});
 
   EventDealerRequestsList.fromJson(Map<String, dynamic> json) {
     createdBy = json['createdBy'];
@@ -94,22 +109,22 @@ class EventDealerRequestsList {
 }
 
 class EventInfluencerRequestsList {
-  int eventId;
-  int eventInflId;
-  String inflContact;
-  int inflId;
-  String inflName;
-  int inflTypeId;
-  String isActive;
+  int? eventId;
+  int? eventInflId;
+  String? inflContact;
+  int? inflId;
+  String? inflName;
+  int? inflTypeId;
+  String? isActive;
 
   EventInfluencerRequestsList(
       {this.eventId,
-        this.eventInflId,
-        this.inflContact,
-        this.inflId,
-        this.inflName,
-        this.inflTypeId,
-        this.isActive});
+      this.eventInflId,
+      this.inflContact,
+      this.inflId,
+      this.inflName,
+      this.inflTypeId,
+      this.isActive});
 
   EventInfluencerRequestsList.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -133,4 +148,3 @@ class EventInfluencerRequestsList {
     return data;
   }
 }
-

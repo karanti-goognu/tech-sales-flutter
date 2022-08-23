@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FocusNode inputFieldNode;
+  FocusNode? inputFieldNode;
   TextEditingController controller = new TextEditingController();
   LeadsFilterController _leadsFilterController = Get.find();
   SplashController _splashController = Get.find();
@@ -61,13 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_leadsFilterController == null)
-        ? Container(
-            child: Center(
-              child: Text("Leads controller  is empty!!"),
-            ),
-          )
-        : (_leadsFilterController.leadsListResponse == null)
+    return Obx(() =>  (_leadsFilterController.leadsListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Leads list response  is empty!!"),
@@ -92,7 +87,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             .leadsListResponse.leadsEntity.length,
                         padding: const EdgeInsets.only(
                             left: 6.0, right: 6, bottom: 8),
-                        // itemExtent: 125.0,
                         itemBuilder: (context, index) {
                           String selectedDateString = "empty";
                           final DateFormat formatter =
@@ -243,7 +237,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           fontFamily: "Muli",
                                                           fontWeight:
                                                               FontWeight.bold
-                                                          //fontWeight: FontWeight.normal
                                                           ),
                                                     ),
                                                     Obx(
@@ -265,11 +258,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                               Text(
                                                 "Call Contractor",
                                                 style: TextStyle(
-                                                    // color: Colors.white,
                                                     fontSize: 11,
                                                     fontFamily: "Muli",
                                                     fontWeight: FontWeight.bold
-                                                    //fontWeight: FontWeight.normal
                                                     ),
                                               ),
                                               Row(
@@ -312,10 +303,7 @@ class _SearchScreenState extends State<SearchScreen> {
   onSearchTextChanged(String text) async {
     LeadsFilterController _leadsFilterController = Get.find();
     if (controller.text.length >= 3) {
-      print('Hello');
       _leadsFilterController.srSearch(text);
-      // _leadsFilterController.searchKey = text;
-      // _leadsFilterController.getAccessKey(RequestIds.SEARCH_LEADS);
     }
   }
 

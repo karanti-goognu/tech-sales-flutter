@@ -1,6 +1,8 @@
+
+
 class RetryOtpModel {
-  String respCode;
-  String respMsg;
+  String? respCode;
+  String? respMsg;
 
   RetryOtpModel({
     this.respCode,
@@ -8,7 +10,6 @@ class RetryOtpModel {
   });
 
   static RetryOtpModel fromMap(Map<String, dynamic> json) {
-    if (json == null) return null;
     return RetryOtpModel(
       respCode: json['resp-code'],
       respMsg: json['resp-msg'],

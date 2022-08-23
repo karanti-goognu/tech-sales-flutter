@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/Pending.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/view/pending_supply_detail.dart';
@@ -14,9 +14,7 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class PendingSupplyListScreen extends StatefulWidget {
   @override
@@ -28,17 +26,9 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   SiteController _siteController = Get.find();
   SplashController _splashController = Get.find();
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
-  _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _siteController.offset += 10;
-      _siteController.pendingSupplyList();
-    }
-  }
-
-  PendingSupplyDataResponse pendingSupplyDataResponse;
+  PendingSupplyDataResponse? pendingSupplyDataResponse;
 
   getPendingSupplyData() async {
     var data = await _siteController.pendingSupplyList();
@@ -46,6 +36,15 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
       pendingSupplyDataResponse = data;
     });
   }
+
+  _scrollListener() {
+    if (_scrollController!.position.pixels ==
+        _scrollController!.position.maxScrollExtent) {
+      _siteController.offset += 10;
+      _siteController.pendingSupplyList();
+    }
+  }
+
 
   @override
   void initState() {
@@ -64,12 +63,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                   colorText: Colors.white,
                   backgroundColor: Colors.red,
                   snackPosition: SnackPosition.BOTTOM),
-              // fetchSiteList()
             }
         });
 
-    // _scrollController = ScrollController();
-    // _scrollController..addListener(_scrollListener);
+    _scrollController = ScrollController();
+    _scrollController?..addListener(_scrollListener);
   }
 
   clearFilterSelection() {
@@ -90,12 +88,11 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     super.dispose();
     //_appController?.dispose();
     // _siteController?.dispose();
-    // _siteController.offset = 0;
+     _siteController.offset = 0;
   }
 
   void disposeController(BuildContext context) {
-//or what you wnat to dispose/clear
-    _siteController?.dispose();
+    _siteController.dispose();
     _siteController.offset = 0;
   }
 
@@ -224,13 +221,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
   }
 
   Widget leadsDetailWidget() {
-    return Obx(() => (_siteController == null)
-        ? Container(
-            child: Center(
-              child: Text("Sites controller  is empty!!"),
-            ),
-          )
-        : (_siteController.pendingSupplyListResponse == null)
+    return Obx(() => (_siteController.pendingSupplyListResponse == null)
             ? Container(
                 child: Center(
                   child: Text("Supply list response  is empty!!"),
@@ -545,7 +536,7 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
                                                             ),
                                                       ),
                                                       onTap: () {
-                                                        String num = _siteController
+                                                        String? num = _siteController
                                                             .pendingSupplyListResponse
                                                             .pendingSuppliesModel[
                                                                 index]
@@ -582,7 +573,6 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
     if (data.length >= 1) {
       return "${data[0].opportunityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -593,11 +583,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
             .splashDataModel.siteProbabilityWinningEntity
             .where((i) => i.id == value));
     if (data.length >= 1) {
-      print(
-          "size greater than 0 \n ${jsonEncode(data[0].siteProbabilityStatus)}");
       return "${data[0].siteProbabilityStatus}";
     } else {
-      print("size is 0");
       return "";
     }
   }
@@ -607,10 +594,8 @@ class _PendingSupplyListScreenState extends State<PendingSupplyListScreen> {
         .splashDataModel.siteStageEntity
         .where((i) => i.id == value));
     if (data.length >= 1) {
-      print("size greater than 0 \n ${jsonEncode(data[0].siteStageDesc)}");
       return "${data[0].siteStageDesc}";
     } else {
-      print("size is 0");
       return "";
     }
   }

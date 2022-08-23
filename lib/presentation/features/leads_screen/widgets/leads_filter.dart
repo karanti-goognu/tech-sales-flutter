@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/leads_filter_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteDistrictListModel.dart';
@@ -9,11 +11,10 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 
 class FilterWidget extends StatefulWidget {
-  SiteDistrictListModel siteDistrictListModel;
+  final SiteDistrictListModel? siteDistrictListModel;
 
   FilterWidget({this.siteDistrictListModel});
   @override
@@ -25,23 +26,19 @@ class _FilterWidgetState extends State<FilterWidget> {
   SplashController _splashController = Get.find();
 
   DateTime selectedDate = DateTime.now();
-  String selectedDateString;
+  String? selectedDateString;
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     _leadsFilterController.getSecretKey(10, context);
     SizeConfig().init(context);
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     selectedDateString = formatter.format(selectedDate);
-    // TODO: implement build
     return Container(
       height: MediaQuery.of(context).size.height * 0.70,
       decoration: new BoxDecoration(
@@ -181,8 +178,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 GestureDetector(
                   onTap: () {
                     _leadsFilterController.isFilterApplied = false;
-
-                    //Navigator.pop(context);
                     setState(() {
                       _leadsFilterController.selectedLeadStage =
                           StringConstants.empty;
@@ -224,7 +219,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                     Navigator.pop(context);
                     _leadsFilterController.isFilterApplied = true;
                     _leadsFilterController.offset = 0;
-                    // _leadsFilterController.leadsListResponse = [];
                     _leadsFilterController.leadsListResponse.leadsEntity = null;
                     _leadsFilterController
                         .getAccessKey(RequestIds.GET_LEADS_LIST, context);
@@ -245,7 +239,6 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   Widget returnSelectedWidget(String text, int position) {
     return Obx(() => Container(
-          // height: 50,
           color: (_leadsFilterController.selectedPosition == position)
               ? Colors.white
               : Colors.transparent,
@@ -314,7 +307,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -349,7 +341,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 width: double.infinity,
                 height: 51,
                 decoration: myBoxDecoration(),
-                //       <--- BoxDecoration here
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -415,7 +406,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             () => Radio(
               value: stageValue,
               groupValue: _leadsFilterController.selectedLeadStage as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadStage ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -427,8 +418,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                 _leadsFilterController.leadsListResponse.leadsEntity = null;
                 _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
 
-                ///filter issue
-                // _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST);
               },
             ),
           )),
@@ -467,7 +456,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             () => Radio(
               value: statusValue,
               groupValue: _leadsFilterController.selectedLeadStatus as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadStatus ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -530,7 +519,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 () => Radio(
               value: option,
               groupValue: _leadsFilterController.selectedDeliveryPointsValue as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedDeliveryPointsValue ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -558,7 +547,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               value: potentialValue,
               groupValue:
                   _leadsFilterController.selectedLeadPotential as String,
-              onChanged: (String value) {
+              onChanged: (String? value) {
                 if (_leadsFilterController.selectedLeadPotential ==
                     StringConstants.empty) {
                   _leadsFilterController.selectedFilterCount =
@@ -580,8 +569,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     return Container(
       padding: EdgeInsets.fromLTRB(18, 28, 18, 28),
       child: DropdownButtonFormField(
-        onChanged: (_) {
-          //setState(() {
+        onChanged: (dynamic _) {
           if (_leadsFilterController.selectedLeadDistrict == StringConstants.empty) {
             _leadsFilterController.selectedFilterCount =
                 _leadsFilterController.selectedFilterCount + 1;
@@ -591,22 +579,20 @@ class _FilterWidgetState extends State<FilterWidget> {
           _leadsFilterController.offset = 0;
           _leadsFilterController.leadsListResponse.leadsEntity = null;
           _leadsFilterController.getAccessKey(RequestIds.GET_LEADS_LIST, context);
-          // });
         },
         items: (widget.siteDistrictListModel == null ||
-            widget.siteDistrictListModel.districtList == null)
+            widget.siteDistrictListModel!.districtList == null)
             ? []
-            : widget.siteDistrictListModel.districtList
+            : widget.siteDistrictListModel!.districtList!
             .map((e) => DropdownMenuItem(
           value: e.name,
           child: Container(
               width: MediaQuery.of(context).size.width / 2.5,
-              child: Text(e.name)),
+              child: Text(e.name!)),
         ))
             .toList(),
         style: FormFieldStyle.formFieldTextStyle,
         decoration: FormFieldStyle.buildInputDecoration(labelText: "District"),
-        //validator: (value) => value == null ? 'Please select member type' : null,
       ),
     );
   }
@@ -620,13 +606,12 @@ class _FilterWidgetState extends State<FilterWidget> {
   Future<void> _selectDate(
       BuildContext context, String type, DateTime fromDate) async {
     (type == "to") ? selectedDate = fromDate : selectedDate = DateTime.now();
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: fromDate,
         lastDate: DateTime(2101));
     if (picked != null )
-        //&& picked != selectedDate)
       setState(() {
         final DateFormat formatter = DateFormat("yyyy-MM-dd");
         final String formattedDate = formatter.format(picked);

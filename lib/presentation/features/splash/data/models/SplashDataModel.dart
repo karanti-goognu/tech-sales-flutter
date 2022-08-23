@@ -1,32 +1,34 @@
 
+
+
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/JourneyDetailsModel.dart';
 
 class SplashDataModel {
-  List<SrComplainResolutionEntity> srComplainResolutionEntity;
-  List<SrComplaintTypeEntity> srComplaintTypeEntity;
-  List<SrctRequestEntity> srctRequestEntity;
-  List<LeadStatusEntity> leadStatusEntity;
-  List<LeadStageEntity> leadStageEntity;
-  List<SiteStageEntity> siteStageEntity;
-  List<SiteStatusEntity> siteStatusEntity;
-  List<SiteSubTypeEntity> siteSubTypeEntity;
-  List<SiteOpportuityStatus> siteOpportunityStatusRepository;
-  List<SiteProbabilityWinningEntity> siteProbabilityWinningEntity;
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<String> severity;
+  List<SrComplainResolutionEntity>? srComplainResolutionEntity;
+  List<SrComplaintTypeEntity>? srComplaintTypeEntity;
+  List<SrctRequestEntity>? srctRequestEntity;
+  List<LeadStatusEntity>? leadStatusEntity;
+  List<LeadStageEntity>? leadStageEntity;
+  List<SiteStageEntity>? siteStageEntity;
+  List<SiteStatusEntity>? siteStatusEntity;
+  List<SiteSubTypeEntity>? siteSubTypeEntity;
+  List<SiteOpportuityStatus>? siteOpportunityStatusRepository;
+  List<SiteProbabilityWinningEntity>? siteProbabilityWinningEntity;
+  List<InfluencerCategoryEntity>? influencerCategoryEntity;
+  List<String>? severity;
   Null userSecurityKey;
   Null respCode;
   Null respMsg;
-  EmployeeDetails employeeDetails;
-  List<ReportingTsoListModel> reportingTsoListModel;
-  List<UserMenu> userMenu;
-  JourneyDetails journeyDetails;
+  EmployeeDetails? employeeDetails;
+  List<ReportingTsoListModel>? reportingTsoListModel;
+  List<UserMenu>? userMenu;
+  JourneyDetails? journeyDetails;
 
 
 
-  List<EventTypeModels> eventTypeModels;
-  List<StatusEntitieList> statusEntitieList;
-  List<VersionUpdateModel> versionUpdateModel;
+  List<EventTypeModels>? eventTypeModels;
+  List<StatusEntitieList>? statusEntitieList;
+  List<VersionUpdateModel>? versionUpdateModel;
 
   SplashDataModel(
       {
@@ -56,99 +58,157 @@ class SplashDataModel {
       });
 
   SplashDataModel.fromJson(Map<String, dynamic> json) {
+
+    if (!json.containsKey('leadStatusEntity'))
+      leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
+
     if (json['leadStatusEntity'] != null) {
       leadStatusEntity = new List<LeadStatusEntity>.empty(growable: true);
       json['leadStatusEntity'].forEach((v) {
-        leadStatusEntity.add(new LeadStatusEntity.fromJson(v));
+        leadStatusEntity!.add(new LeadStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadStageEntity'))
+      leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
+
     if (json['leadStageEntity'] != null) {
       leadStageEntity = new List<LeadStageEntity>.empty(growable: true);
       json['leadStageEntity'].forEach((v) {
-        leadStageEntity.add(new LeadStageEntity.fromJson(v));
+        leadStageEntity!.add(new LeadStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('eventTypeModels'))
+      eventTypeModels = new List<EventTypeModels>.empty(growable: true);
+
     if (json['eventTypeModels'] != null) {
       eventTypeModels = new List<EventTypeModels>.empty(growable: true);
       json['eventTypeModels'].forEach((v) {
-        eventTypeModels.add(new EventTypeModels.fromJson(v));
+        eventTypeModels!.add(new EventTypeModels.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteOpportunityStatusEntity'))
+      siteOpportunityStatusRepository = new List<SiteOpportuityStatus>.empty(growable: true);
 
     if (json['siteOpportunityStatusEntity'] != null) {
       siteOpportunityStatusRepository = new List<SiteOpportuityStatus>.empty(growable: true);
       json['siteOpportunityStatusEntity'].forEach((v) {
-        siteOpportunityStatusRepository
+        siteOpportunityStatusRepository!
             .add(new SiteOpportuityStatus.fromJson(v));
       });
     }
 
+    if (!json.containsKey('siteProbabilityWinningEntity'))
+      siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
+
     if (json['siteProbabilityWinningEntity'] != null) {
       siteProbabilityWinningEntity = new List<SiteProbabilityWinningEntity>.empty(growable: true);
       json['siteProbabilityWinningEntity'].forEach((v) {
-        siteProbabilityWinningEntity
+        siteProbabilityWinningEntity!
             .add(new SiteProbabilityWinningEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStageEntity'))
+      siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
+
     if (json['siteStageEntity'] != null) {
       siteStageEntity = new List<SiteStageEntity>.empty(growable: true);
       json['siteStageEntity'].forEach((v) {
-        siteStageEntity.add(new SiteStageEntity.fromJson(v));
+        siteStageEntity!.add(new SiteStageEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteStatusEntity'))
+      siteStatusEntity = new List<SiteStatusEntity>.empty(growable: true);
+
     if (json['siteStatusEntity'] != null) {
       siteStatusEntity = new List<SiteStatusEntity>.empty(growable: true);
       json['siteStatusEntity'].forEach((v) {
-        siteStatusEntity.add(new SiteStatusEntity.fromJson(v));
+        siteStatusEntity!.add(new SiteStatusEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('siteSubTypeEntity'))
+      siteSubTypeEntity = new List<SiteSubTypeEntity>.empty(growable: true);
+
     if (json['siteSubTypeEntity'] != null) {
       siteSubTypeEntity = new List<SiteSubTypeEntity>.empty(growable: true);
       json['siteSubTypeEntity'].forEach((v) {
-        siteSubTypeEntity.add(new SiteSubTypeEntity.fromJson(v));
+        siteSubTypeEntity!.add(new SiteSubTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplainResolutionEntity'))
+      srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
+
     if (json['srComplainResolutionEntity'] != null) {
       srComplainResolutionEntity = new List<SrComplainResolutionEntity>.empty(growable: true);
       json['srComplainResolutionEntity'].forEach((v) {
-        srComplainResolutionEntity
+        srComplainResolutionEntity!
             .add(new SrComplainResolutionEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srComplaintTypeEntity'))
+      srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty(growable: true);
+
     if (json['srComplaintTypeEntity'] != null) {
       srComplaintTypeEntity = new List<SrComplaintTypeEntity>.empty(growable: true);
       json['srComplaintTypeEntity'].forEach((v) {
-        srComplaintTypeEntity.add(new SrComplaintTypeEntity.fromJson(v));
+        srComplaintTypeEntity!.add(new SrComplaintTypeEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('srctRequestEntity'))
+      srctRequestEntity = new List<SrctRequestEntity>.empty(growable: true);
+
     if (json['srctRequestEntity'] != null) {
       srctRequestEntity = new List<SrctRequestEntity>.empty(growable: true);
       json['srctRequestEntity'].forEach((v) {
-        srctRequestEntity.add(new SrctRequestEntity.fromJson(v));
+        srctRequestEntity!.add(new SrctRequestEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('influencerCategoryEntity'))
+      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+
     if (json['influencerCategoryEntity'] != null) {
       influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
-        influencerCategoryEntity.add(new InfluencerCategoryEntity.fromJson(v));
+        influencerCategoryEntity!.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
+
+    if (!json.containsKey('reportingTsoListModel'))
+      reportingTsoListModel = new List<ReportingTsoListModel>.empty(growable: true);
+
     if (json['reportingTsoListModel'] != null) {
       reportingTsoListModel = new List<ReportingTsoListModel>.empty(growable: true);
       json['reportingTsoListModel'].forEach((v) {
-        reportingTsoListModel.add(new ReportingTsoListModel.fromJson(v));
+        reportingTsoListModel!.add(new ReportingTsoListModel.fromJson(v));
       });
     }
+
+    if (!json.containsKey('statusEntitieList'))
+      statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
+
     if (json['statusEntitieList'] != null) {
       statusEntitieList = new List<StatusEntitieList>.empty(growable: true);
       json['statusEntitieList'].forEach((v) {
-        statusEntitieList.add(new StatusEntitieList.fromJson(v));
+        statusEntitieList!.add(new StatusEntitieList.fromJson(v));
       });
     }
+
+    if (!json.containsKey('versionUpdateModel'))
+      versionUpdateModel = new List<VersionUpdateModel>.empty(growable: true);
+
     if (json['versionUpdateModel'] != null) {
       versionUpdateModel = new List<VersionUpdateModel>.empty(growable: true);
       json['versionUpdateModel'].forEach((v) {
-        versionUpdateModel.add(new VersionUpdateModel.fromJson(v));
+        versionUpdateModel!.add(new VersionUpdateModel.fromJson(v));
       });
     }
 
@@ -156,15 +216,27 @@ class SplashDataModel {
     userSecurityKey = json['user-security-key'];
     respCode = json['resp-code'];
     respMsg = json['resp-msg'];
+
+    if (!json.containsKey('employee-details'))
+      employeeDetails = null;
+
     employeeDetails = json['employee-details'] != null
         ? new EmployeeDetails.fromJson(json['employee-details'])
         : null;
+
+    if (!json.containsKey('user-menu'))
+      userMenu = new List<UserMenu>.empty(growable: true);
+
     if (json['user-menu'] != null) {
       userMenu = new List<UserMenu>.empty(growable: true);
       json['user-menu'].forEach((v) {
-        userMenu.add(new UserMenu.fromJson(v));
+        userMenu!.add(new UserMenu.fromJson(v));
       });
     }
+
+    if (!json.containsKey('journey-details'))
+      journeyDetails = null;
+
     journeyDetails = json['journey-details'] != null
         ? new JourneyDetails.fromJson(json['journey-details'])
         : null;
@@ -174,65 +246,65 @@ class SplashDataModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.leadStatusEntity != null) {
       data['leadStatusEntity'] =
-          this.leadStatusEntity.map((v) => v.toJson()).toList();
+          this.leadStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.leadStageEntity != null) {
       data['leadStageEntity'] =
-          this.leadStageEntity.map((v) => v.toJson()).toList();
+          this.leadStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteStageEntity != null) {
       data['siteStageEntity'] =
-          this.siteStageEntity.map((v) => v.toJson()).toList();
+          this.siteStageEntity!.map((v) => v.toJson()).toList();
     }
     if (this.eventTypeModels != null) {
       data['eventTypeModels'] =
-          this.eventTypeModels.map((v) => v.toJson()).toList();
+          this.eventTypeModels!.map((v) => v.toJson()).toList();
     }
     if (this.siteStatusEntity != null) {
       data['siteStatusEntity'] =
-          this.siteStatusEntity.map((v) => v.toJson()).toList();
+          this.siteStatusEntity!.map((v) => v.toJson()).toList();
     }
     if (this.siteSubTypeEntity != null) {
       data['siteSubTypeEntity'] =
-          this.siteSubTypeEntity.map((v) => v.toJson()).toList();
+          this.siteSubTypeEntity!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteOpportunityStatusRepository != null) {
       data['siteOpportunityStatusEntity'] =
-          this.siteOpportunityStatusRepository.map((v) => v.toJson()).toList();
+          this.siteOpportunityStatusRepository!.map((v) => v.toJson()).toList();
     }
     if (this.siteProbabilityWinningEntity != null) {
       data['siteProbabilityWinningEntity'] =
-          this.siteProbabilityWinningEntity.map((v) => v.toJson()).toList();
+          this.siteProbabilityWinningEntity!.map((v) => v.toJson()).toList();
     }
     if (this.influencerCategoryEntity != null) {
       data['influencerCategoryEntity'] =
-          this.influencerCategoryEntity.map((v) => v.toJson()).toList();
+          this.influencerCategoryEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplainResolutionEntity != null) {
       data['srComplainResolutionEntity'] =
-          this.srComplainResolutionEntity.map((v) => v.toJson()).toList();
+          this.srComplainResolutionEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srComplaintTypeEntity != null) {
       data['srComplaintTypeEntity'] =
-          this.srComplaintTypeEntity.map((v) => v.toJson()).toList();
+          this.srComplaintTypeEntity!.map((v) => v.toJson()).toList();
     }
     if (this.srctRequestEntity != null) {
       data['srctRequestEntity'] =
-          this.srctRequestEntity.map((v) => v.toJson()).toList();
+          this.srctRequestEntity!.map((v) => v.toJson()).toList();
     }
     if (this.reportingTsoListModel != null) {
       data['reportingTsoListModel'] =
-          this.reportingTsoListModel.map((v) => v.toJson()).toList();
+          this.reportingTsoListModel!.map((v) => v.toJson()).toList();
     }
     if (this.statusEntitieList != null) {
       data['statusEntitieList'] =
-          this.statusEntitieList.map((v) => v.toJson()).toList();
+          this.statusEntitieList!.map((v) => v.toJson()).toList();
     }
 
     if (this.versionUpdateModel != null) {
       data['versionUpdateModel'] =
-          this.versionUpdateModel.map((v) => v.toJson()).toList();
+          this.versionUpdateModel!.map((v) => v.toJson()).toList();
     }
     data['user-security-key'] = this.userSecurityKey;
     data['resp-code'] = this.respCode;
@@ -240,21 +312,21 @@ class SplashDataModel {
     data['severity'] = this.severity;
 
     if (this.employeeDetails != null) {
-      data['employee-details'] = this.employeeDetails.toJson();
+      data['employee-details'] = this.employeeDetails!.toJson();
     }
     if (this.userMenu != null) {
-      data['user-menu'] = this.userMenu.map((v) => v.toJson()).toList();
+      data['user-menu'] = this.userMenu!.map((v) => v.toJson()).toList();
     }
     if (this.journeyDetails != null) {
-      data['journey-details'] = this.journeyDetails.toJson();
+      data['journey-details'] = this.journeyDetails!.toJson();
     }
     return data;
   }
 }
 
 class LeadStatusEntity {
-  int id;
-  String leadStatusDesc;
+  int? id;
+  String? leadStatusDesc;
 
   LeadStatusEntity({this.id, this.leadStatusDesc});
 
@@ -272,8 +344,8 @@ class LeadStatusEntity {
 }
 
 class LeadStageEntity {
-  int id;
-  String leadStageDesc;
+  int? id;
+  String? leadStageDesc;
 
   LeadStageEntity({this.id, this.leadStageDesc});
 
@@ -291,8 +363,8 @@ class LeadStageEntity {
 }
 
 class SiteStageEntity {
-  int id;
-  String siteStageDesc;
+  int? id;
+  String? siteStageDesc;
 
   SiteStageEntity({this.id, this.siteStageDesc});
 
@@ -310,8 +382,8 @@ class SiteStageEntity {
 }
 
 class SiteStatusEntity {
-  int id;
-  String siteStatusDesc;
+  int? id;
+  String? siteStatusDesc;
 
   SiteStatusEntity({this.id, this.siteStatusDesc});
 
@@ -329,8 +401,8 @@ class SiteStatusEntity {
 }
 
 class SiteSubTypeEntity {
-  int siteSubId;
-  String siteSubTypeDesc;
+  int? siteSubId;
+  String? siteSubTypeDesc;
 
   SiteSubTypeEntity({this.siteSubId, this.siteSubTypeDesc});
 
@@ -348,8 +420,8 @@ class SiteSubTypeEntity {
 }
 
 class InfluencerCategoryEntity {
-  int inflCatId;
-  String inflCatDesc;
+  int? inflCatId;
+  String? inflCatDesc;
 
   InfluencerCategoryEntity({this.inflCatId, this.inflCatDesc});
 
@@ -367,16 +439,16 @@ class InfluencerCategoryEntity {
 }
 
 class EmployeeDetails {
-  String referenceId;
-  String mobileNumber;
-  String employeeFirstName;
-  String employeeName;
+  String? referenceId;
+  String? mobileNumber;
+  String? employeeFirstName;
+  String? employeeName;
 
-  String employeeDesignation;
-  String employeeReportingManagerId;
-  int employeeUserRoleId;
-  String employeeBaseLocation;
-  String employeeWorkLocation;
+  String? employeeDesignation;
+  String? employeeReportingManagerId;
+  int? employeeUserRoleId;
+  String? employeeBaseLocation;
+  String? employeeWorkLocation;
 
   EmployeeDetails(
       {this.referenceId,
@@ -417,8 +489,8 @@ class EmployeeDetails {
 }
 
 class UserMenu {
-  int menuId;
-  String menuText;
+  int? menuId;
+  String? menuText;
 
   UserMenu({this.menuId, this.menuText});
 
@@ -436,8 +508,8 @@ class UserMenu {
 }
 
 class SiteOpportuityStatus {
-  int id;
-  String opportunityStatus;
+  int? id;
+  String? opportunityStatus;
 
   SiteOpportuityStatus({this.id, this.opportunityStatus});
 
@@ -455,8 +527,8 @@ class SiteOpportuityStatus {
 }
 
 class SiteProbabilityWinningEntity {
-  int id;
-  String siteProbabilityStatus;
+  int? id;
+  String? siteProbabilityStatus;
 
   SiteProbabilityWinningEntity({this.id, this.siteProbabilityStatus});
 
@@ -474,8 +546,8 @@ class SiteProbabilityWinningEntity {
 }
 
 class SrComplainResolutionEntity {
-  int id;
-  String resolutionText;
+  int? id;
+  String? resolutionText;
 
   SrComplainResolutionEntity({this.id, this.resolutionText});
 
@@ -493,10 +565,10 @@ class SrComplainResolutionEntity {
 }
 
 class SrComplaintTypeEntity {
-  int id;
-  int requestId;
-  String serviceRequestTypeText;
-  String complaintSeverity;
+  int? id;
+  int? requestId;
+  String? serviceRequestTypeText;
+  String? complaintSeverity;
 
   SrComplaintTypeEntity(
       {this.id,
@@ -522,8 +594,8 @@ class SrComplaintTypeEntity {
 }
 
 class SrctRequestEntity {
-  int id;
-  String requestText;
+  int? id;
+  String? requestText;
 
   SrctRequestEntity({this.id, this.requestText});
 
@@ -541,8 +613,8 @@ class SrctRequestEntity {
 }
 
 class ReportingTsoListModel {
-  String tsoId;
-  String tsoName;
+  String? tsoId;
+  String? tsoName;
 
   ReportingTsoListModel({this.tsoId, this.tsoName});
 
@@ -560,8 +632,8 @@ class ReportingTsoListModel {
 }
 
 class EventTypeModels {
-  int eventTypeId;
-  String eventTypeText;
+  int? eventTypeId;
+  String? eventTypeText;
 
   EventTypeModels({this.eventTypeId, this.eventTypeText});
 
@@ -579,8 +651,8 @@ class EventTypeModels {
 }
 
 class StatusEntitieList {
-  int eventStatusId;
-  String eventStatusText;
+  int? eventStatusId;
+  String? eventStatusText;
 
   StatusEntitieList({this.eventStatusId, this.eventStatusText});
 
@@ -598,12 +670,12 @@ class StatusEntitieList {
 }
 
 class VersionUpdateModel {
-  String oldVersion;
-  String newVersion;
-  String versionUpdateText;
-  String updateType;
-  String appId;
-  String platform;
+  String? oldVersion;
+  String? newVersion;
+  String? versionUpdateText;
+  String? updateType;
+  String? appId;
+  String? platform;
 
   VersionUpdateModel(
       {this.oldVersion,

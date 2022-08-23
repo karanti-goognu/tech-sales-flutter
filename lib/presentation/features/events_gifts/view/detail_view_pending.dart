@@ -1,8 +1,11 @@
+
+
+import 'dart:async';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/detail_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/event_type_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/save_event_form_controller.dart';
-import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/deleteEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/detailEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/saveEventModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/location/address_search.dart';
@@ -23,7 +26,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class DetailPending extends StatefulWidget {
-  final int eventId;
+  final int? eventId;
   final Color statusColor;
   DetailPending(this.eventId, this.statusColor);
 
@@ -34,22 +37,22 @@ class DetailPending extends StatefulWidget {
 class _DetailPendingState extends State<DetailPending> {
   EventTypeController eventController = Get.find();
   SaveEventController saveEventController = Get.find();
-  DetailEventModel detailEventModel;
+  DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
-  DeleteEventModel _deleteEventModel;
   List<String> suggestions = [];
   final _addEventFormKey = GlobalKey<FormState>();
   List<DealersModels> selectedDealersModels = [];
-  List<bool> checkedValues;
+  late List<bool?> checkedValues;
+  bool isSubmitButtonPressed = false;
 
-  var _date = 'Select Date';
-  TimeOfDay _time;
-  String geoTagType,
+  String? _date = 'Select Date';
+  TimeOfDay? _time;
+  String? geoTagType,
       timeString,
       dateString,
       displayTime = 'Select Time',
       venueLbl;
-  int dealerId;
+  int? dealerId;
 
   ///text field controllers
   TextEditingController _totalParticipantsController = TextEditingController();
@@ -63,9 +66,9 @@ class _DetailPendingState extends State<DetailPending> {
   TextEditingController _eventTypeController = TextEditingController();
 
   ///DropDown Values
-  String _selectedVenue;
-  double locationLat;
-  double locationLong;
+  String? _selectedVenue;
+  double? locationLat;
+  double? locationLong;
   bool isVisible = false;
   bool saveBtnVisible = false;
   @override
@@ -78,10 +81,10 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setVisibility() {
-    if (detailEventModel.mwpEventModel != null) {
-      if (detailEventModel.mwpEventModel.eventStatusText ==
+    if (detailEventModel!.mwpEventModel != null) {
+      if (detailEventModel!.mwpEventModel!.eventStatusText ==
               StringConstants.rejected ||
-          detailEventModel.mwpEventModel.eventStatusText ==
+          detailEventModel!.mwpEventModel!.eventStatusText ==
               StringConstants.notSubmitted) {
         isVisible = true;
       } else {
@@ -91,7 +94,7 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setSaveBtnVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusText ==
+    if (detailEventModel!.mwpEventModel!.eventStatusText ==
         StringConstants.notSubmitted) {
       saveBtnVisible = true;
     } else {
@@ -100,49 +103,49 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   setText() {
-    if (detailEventModel != null && detailEventModel.mwpEventModel != null) {
-      int _total = detailEventModel.mwpEventModel.dalmiaInflCount +
-          detailEventModel.mwpEventModel.nonDalmiaInflCount;
-      venueLbl = detailEventModel.mwpEventModel.venue;
+    if (detailEventModel != null && detailEventModel!.mwpEventModel != null) {
+      int _total = detailEventModel!.mwpEventModel!.dalmiaInflCount! +
+          detailEventModel!.mwpEventModel!.nonDalmiaInflCount!;
+      venueLbl = detailEventModel!.mwpEventModel!.venue;
       _eventTypeController.text =
-          detailEventModel.mwpEventModel.eventTypeText ?? '';
+          detailEventModel!.mwpEventModel!.eventTypeText ?? '';
       _totalParticipantsController.text = '$_total';
-      _selectedVenue = detailEventModel.mwpEventModel.venue ?? '';
-      _date = detailEventModel.mwpEventModel.eventDate;
-      displayTime = detailEventModel.mwpEventModel.eventTime ?? '';
+      _selectedVenue = detailEventModel!.mwpEventModel!.venue ?? '';
+      _date = detailEventModel!.mwpEventModel!.eventDate;
+      displayTime = detailEventModel!.mwpEventModel!.eventTime ?? '';
       _locationController.text =
-          detailEventModel.mwpEventModel.eventLocation ?? '';
+          detailEventModel!.mwpEventModel!.eventLocation ?? '';
       _dalmiaInflController.text =
-          '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0';
+          '${detailEventModel!.mwpEventModel!.dalmiaInflCount}';
       _nonDalmiaInflController.text =
-          '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ?? '0';
+          '${detailEventModel!.mwpEventModel!.nonDalmiaInflCount}';
       _venueAddController.text =
-          detailEventModel.mwpEventModel.venueAddress ?? '';
+          detailEventModel!.mwpEventModel!.venueAddress ?? '';
       _expectedLeadsController.text =
-          '${detailEventModel.mwpEventModel.expectedLeadsCount}' ?? '0';
+          '${detailEventModel!.mwpEventModel!.expectedLeadsCount}';
       _giftsDistributionController.text =
-          '${detailEventModel.mwpEventModel.giftDistributionCount}' ?? '0';
+          '${detailEventModel!.mwpEventModel!.giftDistributionCount}';
       _commentController.text =
-          detailEventModel.mwpEventModel.eventComment ?? '';
-      timeString = detailEventModel.mwpEventModel.eventTime;
-      dateString = detailEventModel.mwpEventModel.eventDate;
+          detailEventModel!.mwpEventModel!.eventComment ?? '';
+      timeString = detailEventModel!.mwpEventModel!.eventTime;
+      dateString = detailEventModel!.mwpEventModel!.eventDate;
       locationLat =
-          double.parse('${detailEventModel.mwpEventModel.eventLocationLat}');
+          double.parse('${detailEventModel!.mwpEventModel!.eventLocationLat}');
       locationLong =
-          double.parse('${detailEventModel.mwpEventModel.eventLocationLong}');
+          double.parse('${detailEventModel!.mwpEventModel!.eventLocationLong}');
 
-      if (detailEventModel.eventDealersModelList != null &&
-          detailEventModel.eventDealersModelList.length != 0) {
+      if (detailEventModel!.eventDealersModelList != null &&
+          detailEventModel!.eventDealersModelList!.length != 0) {
         for (int i = 0;
-            i < detailEventModel.eventDealersModelList.length;
+            i < detailEventModel!.eventDealersModelList!.length;
             i++) {
           selectedDealersModels.add(DealersModels(
-              dealerId: detailEventModel.eventDealersModelList[i].dealerId,
+              dealerId: detailEventModel!.eventDealersModelList![i].dealerId,
               dealerName:
-                  detailEventModel.eventDealersModelList[i].dealerName));
+                  detailEventModel!.eventDealersModelList![i].dealerName));
 
           selectedDealer
-              .add(detailEventModel.eventDealersModelList[i].dealerName);
+              .add(detailEventModel!.eventDealersModelList![i].dealerName);
         }
       }
     }
@@ -167,7 +170,7 @@ class _DetailPendingState extends State<DetailPending> {
   // }
 
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);
@@ -183,13 +186,16 @@ class _DetailPendingState extends State<DetailPending> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     final eventType = TextFormField(
       controller: _eventTypeController,
       style: FormFieldStyle.formFieldTextStyle,
@@ -214,7 +220,7 @@ class _DetailPendingState extends State<DetailPending> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(_date, style: TextStyle(color: Colors.black),)),
+                Expanded(child: Text(_date!, style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -242,7 +248,7 @@ class _DetailPendingState extends State<DetailPending> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(displayTime, style: TextStyle(color: Colors.black))),
+                Expanded(child: Text(displayTime!, style: TextStyle(color: Colors.black),)),
                 Icon(
                   Icons.calendar_today,
                   color: ColorConstants.clearAllTextColor,
@@ -310,7 +316,7 @@ class _DetailPendingState extends State<DetailPending> {
     );
 
     final venueDropDwn = DropdownButtonFormField(
-      onChanged: (value) {
+      onChanged: (dynamic value) {
         setState(() {
           _selectedVenue = value;
         });
@@ -329,7 +335,7 @@ class _DetailPendingState extends State<DetailPending> {
     final venueAddress = TextFormField(
       controller: _venueAddController,
       validator: (value) {
-        if (value.isEmpty && _selectedVenue == 'Booked') {
+        if (value!.isEmpty && _selectedVenue == 'Booked') {
           return "Venue address can't be empty if Booked";
         }
         return null;
@@ -405,7 +411,7 @@ class _DetailPendingState extends State<DetailPending> {
                             //    });
                             //  },
                             label: Text(
-                              e.dealerName,
+                              e.dealerName!,
                               style: TextStyle(fontSize: 10),
                             ),
                             backgroundColor: Colors.lightGreen.withOpacity(0.2),
@@ -491,7 +497,10 @@ class _DetailPendingState extends State<DetailPending> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp),
           ),
-          onPressed: () {
+          onPressed: isSubmitButtonPressed==true?null:() {
+            setState(() {
+              isSubmitButtonPressed=true;
+            });
             btnPressed(1);
           },
         ),
@@ -500,7 +509,7 @@ class _DetailPendingState extends State<DetailPending> {
 
     final location = TextFormField(
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return "Select location";
         }
         return null;
@@ -509,7 +518,7 @@ class _DetailPendingState extends State<DetailPending> {
       maxLines: null,
       onTap: () async {
         final sessionToken = Uuid().v4();
-        final Suggestion result = await showSearch(
+        final Suggestion? result = await showSearch(
           context: context,
           delegate: AddressSearch(sessionToken),
         );
@@ -518,8 +527,8 @@ class _DetailPendingState extends State<DetailPending> {
           final placeDetails =
               await PlaceApiProvider(sessionToken).getLatLong(result.placeId);
           setState(() {
-            _locationController.text = result.description;
-            locationLat = placeDetails.lat;
+            _locationController.text = result.description!;
+            locationLat = placeDetails!.lat;
             locationLong = placeDetails.lng;
           });
         }
@@ -543,7 +552,7 @@ class _DetailPendingState extends State<DetailPending> {
         children: [
           Positioned.fill(
             child: (detailEventModel != null &&
-                    detailEventModel.mwpEventModel != null)
+                    detailEventModel!.mwpEventModel != null)
                 ? ListView(
                     children: [
                       Visibility(
@@ -570,12 +579,7 @@ class _DetailPendingState extends State<DetailPending> {
                                 ),
                                 onPressed: () async {
                                   await detailEventController
-                                      .deleteEvent(widget.eventId)
-                                      .then((data) {
-                                    setState(() {
-                                      _deleteEventModel = data;
-                                    });
-                                  });
+                                      .deleteEvent(widget.eventId);
                                 },
                               ),
                             ],
@@ -598,7 +602,7 @@ class _DetailPendingState extends State<DetailPending> {
                               backgroundColor:
                                   widget.statusColor.withOpacity(0.1),
                               label: Text(
-                                  'Status: ${detailEventModel.mwpEventModel.eventStatusText}'),
+                                  'Status: ${detailEventModel!.mwpEventModel!.eventStatusText}'),
                             ),
                           ],
                         ),
@@ -660,20 +664,20 @@ class _DetailPendingState extends State<DetailPending> {
   }
 
   Future _selectFromDate() async {
-    DateTime _picked = await showDatePicker(
+    DateTime? _picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime.now(),
         lastDate: new DateTime(2025));
     setState(() {
-      _date = new DateFormat('dd-MM-yyyy').format(_picked);
+      _date = new DateFormat('dd-MM-yyyy').format(_picked!);
       var d = DateFormat('dd-MM-yyyy HH:mm:ss').format(_picked);
       dateString = '$d';
     });
   }
 
   Future _startTime() async {
-    String t = detailEventModel.mwpEventModel.eventTime;
+    String t = detailEventModel!.mwpEventModel!.eventTime!;
     TimeOfDay eventTime = TimeOfDay(
         hour: int.parse(t.split(":")[0]), minute: int.parse(t.split(":")[1]));
     (_time == null)
@@ -681,42 +685,41 @@ class _DetailPendingState extends State<DetailPending> {
             context: context,
             initialTime: eventTime,
             //TimeOfDay(hour: 10, minute: 10),
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           )
         : _time = await showTimePicker(
             context: context,
-            initialTime: (TimeOfDay(hour: _time.hour, minute: _time.minute)),
-            builder: (BuildContext context, Widget child) {
+            initialTime: (TimeOfDay(hour: _time!.hour, minute: _time!.minute)),
+            builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
-                child: child,
+                child: child!,
               );
             },
           );
     setState(() {
-      displayTime = '${_time.hour}:${_time.minute}';
-      timeString = ('$_date ${_time.hour}:${_time.minute}:00');
+      displayTime = '${_time!.hour}:${_time!.minute}';
+      timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
     });
   }
 
-  List<String> selectedDealer = [];
+  List<String?> selectedDealer = [];
 
   TextEditingController _query = TextEditingController();
 
   addDealerBottomSheetWidget() {
-    List<DealersModels> dealers = detailEventModel.dealersModels;
+    List<DealersModels>? dealers = detailEventModel!.dealersModels;
 
     checkedValues =
-        List.generate(detailEventModel.dealersModels.length, (index) => false);
-    //checkedValues = List.generate(selectedDealersModels.length, (index) => true);
+        List.generate(detailEventModel!.dealersModels!.length, (index) => false);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
-        height: SizeConfig.screenHeight / 1.5,
+        height: SizeConfig.screenHeight! / 1.5,
         color: Colors.white,
         child: Column(
           children: [
@@ -741,7 +744,7 @@ class _DetailPendingState extends State<DetailPending> {
                 controller: _query,
                 onChanged: (value) {
                   setState(() {
-                    dealers = detailEventModel.dealersModels.where((element) {
+                    dealers = detailEventModel!.dealersModels!.where((element) {
                       return element.dealerName
                           .toString()
                           .toLowerCase()
@@ -763,7 +766,7 @@ class _DetailPendingState extends State<DetailPending> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: dealers.length,
+                itemCount: dealers!.length,
                 itemBuilder: (context, index) {
                   return
                       // dealerId != dealers[index].dealerId
@@ -774,28 +777,28 @@ class _DetailPendingState extends State<DetailPending> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dealers[index].dealerName),
-                        Text('( ${dealers[index].dealerId} )'),
+                        Text(dealers![index].dealerName!),
+                        Text('( ${dealers![index].dealerId} )'),
                       ],
                     ),
                     selected:
-                        selectedDealer.contains(dealers[index].dealerName),
-                    value: selectedDealer.contains(dealers[index].dealerName),
+                        selectedDealer.contains(dealers![index].dealerName),
+                    value: selectedDealer.contains(dealers![index].dealerName),
                     // selectedDealersModels.contains(dealers[index].dealerName),
 
                     onChanged: (newValue) {
                       setState(() {
                         if (newValue == true) {
-                          selectedDealer.add(dealers[index].dealerName);
-                          selectedDealersModels.add(dealers[index]);
+                          selectedDealer.add(dealers![index].dealerName);
+                          selectedDealersModels.add(dealers![index]);
                         }
                         if (newValue == false) {
                           // selectedDealer.remove(dealers[index].dealerName);
                           // selectedDealersModels.remove(dealers[index]);
                           selectedDealersModels.removeWhere((item) =>
-                              item.dealerId == dealers[index].dealerId);
+                              item.dealerId == dealers![index].dealerId);
                           selectedDealer.removeWhere(
-                              (item) => item == dealers[index].dealerName);
+                              (item) => item == dealers![index].dealerName);
                         }
                         checkedValues[index] = newValue;
                       });
@@ -805,7 +808,7 @@ class _DetailPendingState extends State<DetailPending> {
                   //: Container();
                 },
                 separatorBuilder: (context, index) {
-                  return dealerId.toString() == dealers[index].dealerId
+                  return dealerId.toString() == dealers![index].dealerId
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Divider(),
@@ -879,8 +882,8 @@ class _DetailPendingState extends State<DetailPending> {
 
 
   btnPressed(int eventStatusId) async {
-    if (_addEventFormKey.currentState.validate()) {
-      _addEventFormKey.currentState.save();
+    if (_addEventFormKey.currentState!.validate()) {
+      _addEventFormKey.currentState!.save();
       if (timeString == null || displayTime == null) {
         Get.snackbar("", "Select Time",
             colorText: Colors.black,
@@ -892,7 +895,7 @@ class _DetailPendingState extends State<DetailPending> {
             backgroundColor: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        String empId = await getEmpId();
+        String? empId = await (getEmpId() );
         List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {
@@ -908,8 +911,7 @@ class _DetailPendingState extends State<DetailPending> {
           });
         });
 
-        if (dealersList == null ||
-            dealersList == [] ||
+        if (dealersList == [] ||
             dealersList.length == 0) {
           Get.snackbar("", "Select Counter",
               colorText: Colors.black,
@@ -928,7 +930,7 @@ class _DetailPendingState extends State<DetailPending> {
             'eventLocationLong': locationLong,
             'eventStatusId': eventStatusId,
             'eventTime': timeString,
-            'eventTypeId': detailEventModel.mwpEventModel.eventTypeId,
+            'eventTypeId': detailEventModel!.mwpEventModel!.eventTypeId,
             'expectedLeadsCount':
                 int.tryParse('${_expectedLeadsController.text}') ?? 0,
             'giftDistributionCount':

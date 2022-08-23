@@ -1,7 +1,9 @@
+
+
 class TargetVsActualModel {
-  String respCode;
-  String respMsg;
-  MwpPlanTargetVsActualModel mwpPlanTargetVsActualModel;
+  String? respCode;
+  String? respMsg;
+  MwpPlanTargetVsActualModel? mwpPlanTargetVsActualModel;
 
   TargetVsActualModel(
       {this.respCode, this.respMsg, this.mwpPlanTargetVsActualModel});
@@ -9,6 +11,10 @@ class TargetVsActualModel {
   TargetVsActualModel.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('mwpPlanTargetVsActualModel'))
+      mwpPlanTargetVsActualModel = null;
+
     mwpPlanTargetVsActualModel = json['mwpPlanTargetVsActualModel'] != null
         ? new MwpPlanTargetVsActualModel.fromJson(
             json['mwpPlanTargetVsActualModel'])
@@ -21,19 +27,19 @@ class TargetVsActualModel {
     data['respMsg'] = this.respMsg;
     if (this.mwpPlanTargetVsActualModel != null) {
       data['mwpPlanTargetVsActualModel'] =
-          this.mwpPlanTargetVsActualModel.toJson();
+          this.mwpPlanTargetVsActualModel!.toJson();
     }
     return data;
   }
 }
 
 class MwpPlanTargetVsActualModel {
-  int siteConversionCountTarget;
-  int siteVisitsCountTarget;
-  int counterMeetCountTarget;
-  int siteConversionCountActual;
-  int siteVisitsCountActual;
-  int counterMeetCountActual;
+  int? siteConversionCountTarget;
+  int? siteVisitsCountTarget;
+  int? counterMeetCountTarget;
+  int? siteConversionCountActual;
+  int? siteVisitsCountActual;
+  int? counterMeetCountActual;
 
   MwpPlanTargetVsActualModel(
       {this.siteConversionCountTarget,

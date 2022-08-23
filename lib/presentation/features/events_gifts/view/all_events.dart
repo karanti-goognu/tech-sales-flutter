@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/controller/all_events_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/EventListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/allEventsModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_event.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/view/detail_view_pending.dart';
@@ -17,7 +18,7 @@ class AllEvents extends StatefulWidget {
 }
 
 class _AllEventsState extends State<AllEvents> {
-  AllEventsModel allEventsModel;
+  AllEventsModel? allEventsModel;
   AllEventController allEventController = Get.find();
   List<EventListModels> pending = [];
   List<EventListModels> approved = [];
@@ -27,8 +28,8 @@ class _AllEventsState extends State<AllEvents> {
   List<EventListModels> eventRejected = [];
   List<EventListModels> notSubmitted = [];
 
-  ScrollController _scrollController;
-  String option = StringConstants.pendingApproval;
+  ScrollController? _scrollController;
+  String? option = StringConstants.pendingApproval;
 
   @override
   void initState() {
@@ -48,26 +49,26 @@ class _AllEventsState extends State<AllEvents> {
   }
 
   getSortedData() {
-    if (allEventsModel != null && allEventsModel.eventListModels != null) {
-      for (int i = 0; i < allEventsModel.eventListModels.length; i++) {
-        if (allEventsModel.eventListModels[i].eventStatusText ==
+    if (allEventsModel != null && allEventsModel!.eventListModels != null) {
+      for (int i = 0; i < allEventsModel!.eventListModels!.length; i++) {
+        if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.pendingApproval) {
-          pending.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          pending.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.approved) {
-          approved.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          approved.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.rejected) {
-          rejected.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          rejected.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.completed) {
-          completed.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          completed.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.cancelled) {
-          cancelled.add(allEventsModel.eventListModels[i]);
-        } else if (allEventsModel.eventListModels[i].eventStatusText ==
+          cancelled.add(allEventsModel!.eventListModels![i]);
+        } else if (allEventsModel!.eventListModels![i].eventStatusText ==
             StringConstants.notSubmitted) {
-          notSubmitted.add(allEventsModel.eventListModels[i]);
+          notSubmitted.add(allEventsModel!.eventListModels![i]);
         }
       }
     } else {}
@@ -78,17 +79,20 @@ class _AllEventsState extends State<AllEvents> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      // context:
+      context,
+
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait
+    );
     return Scaffold(
       body: ListView(
         children: [
-          Obx(()=>!allEventController.isFilterApplied  ?getStatusList():Container()),
+          Obx(()=>!allEventController.isFilterApplied ?getStatusList():Container()),
           Obx(
               ()=>
               allEventController.isFilterApplied  ?getFilteredList():
@@ -118,8 +122,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getStatusList() {
     return (allEventsModel != null &&
-            allEventsModel.eventStatusEntities != null &&
-            allEventsModel.eventStatusEntities.length > 0)
+            allEventsModel!.eventStatusEntities != null &&
+            allEventsModel!.eventStatusEntities!.length > 0)
         ? Container(
             padding: EdgeInsets.only(
               top: 5.sp,
@@ -137,24 +141,14 @@ class _AllEventsState extends State<AllEvents> {
                     child: FilterChip(
                       onSelected: (bool selected) {
                         setState(() {
-                          option = allEventsModel
-                              .eventStatusEntities[index].eventStatusText;
-
-                          //allEventController.egAllEventData.eventStatusEntities[index].eventStatusText;
+                          option = allEventsModel!
+                              .eventStatusEntities![index].eventStatusText;
                         });
                       },
                       selectedColor: Colors.blue.withOpacity(0.2),
-                      label: Text(allEventsModel
-                          .eventStatusEntities[index].eventStatusText),
-                      // backgroundColor: option == 1
-                      //     ? Colors.blue.withOpacity(0.2)
-                      //     : Colors.white,
-                      // shape: StadiumBorder(
-                      //   side: BorderSide(
-                      //       color: option == 5 ? Colors.blue : Colors.black12),
-                      // ),
+                      label: Text(allEventsModel!
+                          .eventStatusEntities![index].eventStatusText!),
                     ),
-                    //),
                   );
                 }),
           )
@@ -167,9 +161,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getList(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
-            list != null)
+            allEventsModel!.eventListModels != null &&
+            allEventsModel!.eventListModels!.length > 0)
         ? ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -191,7 +184,7 @@ class _AllEventsState extends State<AllEvents> {
             ),
           );
   }
-  _color(int id){
+  _color(int? id){
     switch(id){
       case 1:return HexColor('#F9A61A');
       case 2:return HexColor('#39B54A');
@@ -205,8 +198,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getFilteredList(){
     return (allEventsModel != null &&
-        allEventsModel.eventListModels != null &&
-        allEventsModel.eventListModels.length > 0 &&
+        allEventsModel!.eventListModels != null &&
+        allEventsModel!.eventListModels!.length > 0 &&
         allEventController.egAllEventData.eventListModels != null)
         ?
     ListView.builder(
@@ -235,9 +228,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getListForPending(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-            allEventsModel.eventListModels != null &&
-            allEventsModel.eventListModels.length > 0 &&
-            list != null)
+            allEventsModel!.eventListModels != null &&
+            allEventsModel!.eventListModels!.length > 0)
         ?
         ListView.builder(
             shrinkWrap: true,
@@ -264,9 +256,8 @@ class _AllEventsState extends State<AllEvents> {
 
   Widget getListForCompleted(Color borderColor, List<EventListModels> list) {
     return (allEventsModel != null &&
-        allEventsModel.eventListModels != null &&
-        allEventsModel.eventListModels.length > 0 &&
-        list != null)
+        allEventsModel!.eventListModels != null &&
+        allEventsModel!.eventListModels!.length > 0 )
         ?
     ListView.builder(
         shrinkWrap: true,
@@ -277,8 +268,6 @@ class _AllEventsState extends State<AllEvents> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // Get.to(() => DetailPending(list[index].eventId, borderColor),
-              //     binding: EGBinding());
               Get.to(() => EndEvent(list[index].eventId,1));
             },
             child: eventCard(index, list, borderColor),
@@ -318,63 +307,41 @@ class _AllEventsState extends State<AllEvents> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Obx(
-                  //   () =>
                   Text(
-                    list[index].eventDate,
-                    //"24-Mar-21",
+                    list[index].eventDate!,
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Muli",
-                        //fontWeight:
-                        // FontWeight.bold
                         fontWeight: FontWeight.normal),
                   ),
-                  // ),
-                  // Obx(
-                  //   () =>
                   Chip(
                     shape: StadiumBorder(side: BorderSide(color: borderColor)),
                     backgroundColor: borderColor.withOpacity(0.1),
                     label: Text('Status: ${list[index].eventStatusText}'),
                   ),
-                  // )
                 ],
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Text(
-                  list[index].eventTypeText,
-                  //allEventController.egAllEventData.eventListModels[index].eventTypeText,
+                  list[index].eventTypeText!,
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.bold),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Text(
                   "Inf. Planned : ${list[index].actualEventInflCount}",
-                  // "Inf. Planned : ${allEventController.egAllEventData.eventListModels[index].actualEventInflCount}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.normal),
                 ),
-                //),
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Flexible(
                   flex: 2,
                   child: Text(
                     "Venue: ${list[index].eventVenue}",
-                    //"Venue: ${allEventController.egAllEventData.eventListModels[index].eventVenue}",
-
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -382,15 +349,11 @@ class _AllEventsState extends State<AllEvents> {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Flexible(
                   flex: 3,
                   child: ( list[index].dealerName != null)?
                   Text(
                     "Dealer(s) : ${list[index].dealerName}",
-                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -398,7 +361,6 @@ class _AllEventsState extends State<AllEvents> {
                         fontWeight: FontWeight.normal),
                   ):Text(
                     "Dealer(s) : -",
-                    //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 15,
@@ -416,24 +378,15 @@ class _AllEventsState extends State<AllEvents> {
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                // Obx(
-                //   () =>
                 Text(
                   "EVENT ID: ${list[index].eventId}",
-                  //"EVENT ID: ${allEventController.egAllEventData.eventListModels[index].eventId}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",
                       fontWeight: FontWeight.normal),
                 ),
-                // ),
-                // Obx(
-                //   () =>
                 Text(
                   "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
-                  //"LEADS EXPECTED : ${allEventController.egAllEventData.eventListModels[index].expectedLeadsCount}",
-
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Muli",

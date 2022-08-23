@@ -1,19 +1,21 @@
+
+
 class DashboardMonthlyViewModel {
-  int convTargetCount;
-  int convTargetVolume;
-  int convertedCount;
-  int convertedVolume;
-  int dspRemaingTargetCount;
-  int dspSlabConvertedCount;
-  int dspSlabConvertedVolume;
-  int dspTargetCount;
-  int dspTotalOpperCount;
-  int dspTotalOpperVolume;
-  int generatedCount;
-  int generatedVolume;
-  String mwpPlanApproveStatus;
-  int remainingTargetCount;
-  int remainingTargetVolume;
+  int? convTargetCount;
+  int? convTargetVolume;
+  int? convertedCount;
+  int? convertedVolume;
+  int? dspRemaingTargetCount;
+  int? dspSlabConvertedCount;
+  int? dspSlabConvertedVolume;
+  int? dspTargetCount;
+  int? dspTotalOpperCount;
+  int? dspTotalOpperVolume;
+  int? generatedCount;
+  int? generatedVolume;
+  String? mwpPlanApproveStatus;
+  int? remainingTargetCount;
+  int? remainingTargetVolume;
 
   DashboardMonthlyViewModel(
       {this.convTargetCount,

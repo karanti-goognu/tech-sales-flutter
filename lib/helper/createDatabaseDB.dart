@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class CreateDatabaseDB extends ChangeNotifier{
   static final CreateDatabaseDB _instance = CreateDatabaseDB._();
-  static Database _database;
+  static Database? _database;
 
   CreateDatabaseDB._();
 
@@ -12,7 +12,7 @@ class CreateDatabaseDB extends ChangeNotifier{
     return _instance;
   }
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_database != null) {
       return _database;
     }

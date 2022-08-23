@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/core/data/controller/app_controller.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
@@ -10,6 +13,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/DealerModel.da
 import 'package:flutter_tech_sales/presentation/features/site_screen/controller/site_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/PendingSupplyDetails.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/ViewSiteDataResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -21,14 +25,12 @@ import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 // ignore: must_be_immutable
 class PendingSupplyDetailScreen extends StatefulWidget {
-  String siteId;
-  String supplyHistoryId;
+  String? siteId;
+  String? supplyHistoryId;
 
   PendingSupplyDetailScreen({this.siteId, this.supplyHistoryId});
 
@@ -39,29 +41,30 @@ class PendingSupplyDetailScreen extends StatefulWidget {
 
 class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     with SingleTickerProviderStateMixin {
-  String geoTagType;
+  String? geoTagType;
   SiteController _siteController = Get.find();
   final db = BrandNameDBHelper();
   List<DealerForDb> dealerEntityForDb = new List.empty(growable: true);
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
-  String siteCreationDate, visitRemarks, infName = "";
+  String? siteCreationDate, visitRemarks, infName = "";
   final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-  KittyBagsListModel _kittyBagsListModel;
+  late KittyBagsListModel _kittyBagsListModel;
   String claimableKittyBagsAvailable = "0";
   String reservedKittyBagsAvailable = "0";
-  ConstStage _selectedConstructionType;
-  SiteFloorlist _selectedFloorType;
+  ConstStage? _selectedConstructionType;
+  SiteFloorsEntity? _selectedFloorType;
   bool isExpanded = true;
-  String _selectedRadioValue = 'Y';
-  DealerModel _selectedDealer;
+  String? _selectedRadioValue = 'Y';
+  DealerModel? _selectedDealer;
+
   TextEditingController counterController = TextEditingController();
 
-  List<SiteFloorlist> siteFloorsEntity = new List.empty(growable: true);
-  List<ConstStage> constStageEntity = new List.empty(growable: true);
+  List<SiteFloorsEntity>? siteFloorsEntity = new List.empty(growable: true);
+  List<ConstStage>? constStageEntity = new List.empty(growable: true);
   List<DealerModel> dealerList = new List.empty(growable: true);
 
-  PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
+  late PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
 
   getPendingSupplyData() {
     internetChecking().then((result) => {
@@ -95,21 +98,22 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
         setState(() {
           _pendingSuppliesDetailsModel = data;
           dealerList = _addEventController.dealerList;
-          siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
+          //ToDo:
+          // siteFloorsEntity = _pendingSuppliesDetailsModel.siteFloorlist;
           constStageEntity = _pendingSuppliesDetailsModel.constStage;
           if (_pendingSuppliesDetailsModel.floorId != null) {
-            for (int i = 0; i < siteFloorsEntity.length; i++) {
+            for (int i = 0; i < siteFloorsEntity!.length; i++) {
               if (_pendingSuppliesDetailsModel.floorId.toString() ==
-                  siteFloorsEntity[i].id.toString()) {
-                _selectedFloorType = siteFloorsEntity[i];
+                  siteFloorsEntity![i].id.toString()) {
+                // _selectedFloorType = siteFloorsEntity![i];
               }
             }
           }
           if (_pendingSuppliesDetailsModel.stageConstructionId != null) {
-            for (int i = 0; i < constStageEntity.length; i++) {
+            for (int i = 0; i < constStageEntity!.length; i++) {
               if (_pendingSuppliesDetailsModel.stageConstructionId.toString() ==
-                  constStageEntity[i].id.toString()) {
-                _selectedConstructionType = constStageEntity[i];
+                  constStageEntity![i].id.toString()) {
+                _selectedConstructionType = constStageEntity![i];
               }
             }
           }
@@ -143,7 +147,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     super.dispose();
   }
 
-  getKittyBags(String partyCode) {
+  getKittyBags(String? partyCode) {
     internetChecking().then((result) => {
           if (result == true)
             {
@@ -152,9 +156,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                   if (data != null) {
                     _kittyBagsListModel = data;
                     claimableKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForKittyPointsList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForKittyPointsList}';
                     reservedKittyBagsAvailable =
-                        '${_kittyBagsListModel.response.totalKittyBagsForReservePoolList}';
+                        '${_kittyBagsListModel.response!.totalKittyBagsForReservePoolList}';
                   }
                 });
               })
@@ -172,7 +176,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     setState(() {
@@ -185,13 +188,10 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+        context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -204,13 +204,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
 
   Widget supplyDetailsDataView() {
     return Obx(
-      () => (_siteController == null)
-          ? Container(
-              child: Center(
-                child: Text("Sites controller  is empty!!"),
-              ),
-            )
-          : (_siteController.pendingSupplyDetailsResponse == null)
+      () => (_siteController.pendingSupplyDetailsResponse == null)
               ? Container(
                   child: Center(
                     child: Text("Supply detail response  is empty!!"),
@@ -359,7 +353,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   value: 'Y',
                                                   groupValue:
                                                       _selectedRadioValue,
-                                                  onChanged: (value) {
+                                                  onChanged: (dynamic value) {
                                                     setState(() {
                                                       _selectedRadioValue =
                                                           value;
@@ -384,7 +378,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   value: 'N',
                                                   groupValue:
                                                       _selectedRadioValue,
-                                                  onChanged: (value) {
+                                                  onChanged: (dynamic value) {
                                                     setState(() {
                                                       _selectedRadioValue =
                                                           value;
@@ -407,53 +401,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ],
                                   )),
                                   SizedBox(height: 16),
-                                  DropdownButtonFormField<SiteFloorlist>(
-                                    value: _selectedFloorType,
-                                    items: siteFloorsEntity
-                                        .map<DropdownMenuItem<SiteFloorlist>>(
-                                            (SiteFloorlist label) =>
-                                                DropdownMenuItem<SiteFloorlist>(
-                                                  child: Text(
-                                                    label.siteFloorTxt,
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: ColorConstants
-                                                            .inputBoxHintColor,
-                                                        fontFamily: "Muli"),
-                                                  ),
-                                                  value: label,
-                                                ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _siteController.floorId = value.id;
-                                        _selectedFloorType = value;
-                                      });
-                                    },
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Floor"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Mandatory",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: ColorConstants
-                                            .inputBoxHintColorDark,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
                                   DropdownButtonFormField<ConstStage>(
                                     value: _selectedConstructionType,
-                                    items: constStageEntity
+                                    items: constStageEntity!
                                         .map((label) =>
                                             DropdownMenuItem<ConstStage>(
                                               child: Text(
-                                                label.constructionStageText,
+                                                label.constructionStageText!,
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     color: ColorConstants
@@ -463,7 +417,9 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                               value: label,
                                             ))
                                         .toList(),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
+                                      siteFloorsEntity= await _siteController.getSiteFloorList(value?.id,widget.siteId);
+                                      print(siteFloorsEntity.runtimeType);
                                       setState(() {
                                         _selectedConstructionType = value;
                                       });
@@ -485,13 +441,54 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 16),
+                                  DropdownButtonFormField<SiteFloorsEntity>(
+                                    value: _selectedFloorType,
+                                    items: siteFloorsEntity!
+                                        .map<DropdownMenuItem<SiteFloorsEntity>>(
+                                            (SiteFloorsEntity label) =>
+                                            DropdownMenuItem<SiteFloorsEntity>(
+                                              child: Text(
+                                                label.siteFloorTxt!,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: ColorConstants
+                                                        .inputBoxHintColor,
+                                                    fontFamily: "Muli"),
+                                              ),
+                                              value: label,
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _siteController.floorId = value!.id;
+                                        _selectedFloorType = value;
+                                      });
+                                    },
+                                    decoration:
+                                    FormFieldStyle.buildInputDecoration(
+                                        labelText: "Floor"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Text(
+                                      "Mandatory",
+                                      style: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: ColorConstants
+                                            .inputBoxHintColorDark,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
                                   Obx(() => TextFormField(
                                         controller: _siteController
                                             .pendingSupplyDetailsResponse
                                             .pendingSuppliesDetailsModel
                                             .sitePotentialMt,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+
+                                          if (value!.isEmpty) {
                                             return 'Please enter Stage Potential ';
                                           }
                                           return null;
@@ -502,7 +499,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 .inputBoxHintColor,
                                             fontFamily: "Muli"),
                                         keyboardType: TextInputType.number,
-                                        //readOnly: true,
                                         decoration:
                                             FormFieldStyle.buildInputDecoration(
                                           labelText: "Stage Potential",
@@ -527,7 +523,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .brandName,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter brand ';
                                           }
                                           return null;
@@ -577,7 +573,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     value: val,
                                                     child: SizedBox(
                                                         width: SizeConfig
-                                                                .screenWidth -
+                                                                .screenWidth! -
                                                             100,
                                                         child: Text(
                                                             '${val.dealerName} (${val.dealerId})')),
@@ -585,7 +581,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 }).toList(),
                                                 onChanged: (val) {
                                                   _siteController.counterId =
-                                                      val.dealerId;
+                                                      val!.dealerId;
 
                                                   getKittyBags(val.dealerId);
                                                 }),
@@ -652,7 +648,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   GestureDetector(
                                                     onTap: () {
                                                       Get.dialog(
-                                                          CustomDialogs()
+                                                          CustomDialogs
                                                               .showDialogForKittiPoints(
                                                                   _kittyBagsListModel,
                                                                   context),
@@ -693,7 +689,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                   GestureDetector(
                                                     onTap: () {
                                                       Get.dialog(
-                                                          CustomDialogs()
+                                                          CustomDialogs
                                                               .showDialogForKittiPoints(
                                                                   _kittyBagsListModel,
                                                                   context),
@@ -724,7 +720,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .productName,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter product ';
                                           }
                                           return null;
@@ -760,7 +756,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                             .pendingSuppliesDetailsModel
                                             .brandPrice,
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter Brand Price ';
                                           }
                                           return null;
@@ -810,7 +806,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          // color: HexColor("#000000DE"),
                                           fontFamily: "Muli"),
                                     ),
                                   ),
@@ -827,7 +822,7 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .pendingSuppliesDetailsModel
                                                     .supplyQty,
                                                 validator: (value) {
-                                                  if (value.isEmpty) {
+                                                  if (value!.isEmpty) {
                                                     return 'Please enter Bags ';
                                                   }
                                                   return null;
@@ -861,11 +856,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     .pendingSuppliesDetailsModel
                                                     .supplyDate,
                                                 readOnly: true,
-                                                onChanged: (data) {
-                                                  // setState(() {
-                                                  //   _contactName.text = data;
-                                                  // });
-                                                },
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: ColorConstants
@@ -879,7 +869,6 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                     borderSide: BorderSide(
                                                         color: ColorConstants
                                                             .backgroundColorBlue,
-                                                        //color: HexColor("#0000001F"),
                                                         width: 1.0),
                                                   ),
                                                   disabledBorder:
@@ -901,32 +890,12 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                         width: 1.0),
                                                   ),
                                                   labelText: "Date ",
-                                                  suffixIcon: IconButton(
-                                                    icon: Icon(
+                                                  suffixIcon: Icon(
                                                       Icons.date_range_rounded,
                                                       size: 22,
                                                       color: ColorConstants
                                                           .clearAllTextColor,
                                                     ),
-                                                    onPressed: () async {
-                                                      // final DateTime picked = await showDatePicker(
-                                                      //   context: context,
-                                                      //   initialDate: DateTime.now(),
-                                                      //   firstDate: DateTime(2001),
-                                                      //   lastDate: DateTime.now(),
-                                                      // );
-                                                      //
-                                                      // setState(() {
-                                                      //   final DateFormat formatter =
-                                                      //   DateFormat("yyyy-MM-dd");
-                                                      //   if (picked != null) {
-                                                      //     final String formattedDate =
-                                                      //     formatter.format(picked);
-                                                      //     // _supplyDate.text = formattedDate;
-                                                      //   }
-                                                      // });
-                                                    },
-                                                  ),
                                                   filled: false,
                                                   focusColor: Colors.black,
                                                   isDense: false,
@@ -1005,101 +974,17 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String empId = await getEmpId();
-                                          if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs()
-                                                .showMessage(
-                                                    "Please select Floor !"));
-                                            return;
-                                          }
-                                          if (_selectedConstructionType ==
-                                              null) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please select a Construction Stage !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .sitePotentialMt
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter Stage Potential !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .requestInitiatedBy ==
-                                              "Influencer") {
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
-                                            }
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .brandPrice
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter brand price !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .supplyQty
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs()
-                                                .showMessage(
-                                                    "Please enter supply qty !"));
-                                            return;
-                                          }
-
-                                          if (empId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter reference Id!"));
-                                            return;
-                                          }
-
-                                          if (widget.siteId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Site id can't be null or empty!"));
-                                            return;
-                                          }
-
-                                          if (widget.supplyHistoryId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "supplyHistory id can't be null or empty!"));
-                                            return;
-                                          }
-
+                                          String? empId = await getEmpId();
+                                          checkPendingSupplyValidations(empId);
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "R",
-                                            // "floor": _siteController
-                                            //     .pendingSupplyDetailsResponse
-                                            //     .pendingSuppliesDetailsModel
-                                            //     .floorText
-                                            //     .text,
                                             "floor":
-                                                _selectedFloorType.siteFloorTxt,
+                                                _selectedFloorType!.siteFloorTxt,
                                             "floorId":
                                                 _selectedFloorType == null
                                                     ? null
-                                                    : _selectedFloorType.id,
+                                                    : _selectedFloorType!.id,
                                             "brandPrice": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
@@ -1118,13 +1003,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedConstructionType ==
                                                         null
                                                     ? ""
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .constructionStageText,
                                             "consStageId":
                                                 _selectedConstructionType ==
                                                         null
                                                     ? null
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .id,
                                             "counterId":
                                                 _siteController.counterId,
@@ -1159,105 +1044,17 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String empId = await getEmpId();
-                                          // if (_siteController
-                                          //         .pendingSupplyDetailsResponse
-                                          //         .pendingSuppliesDetailsModel
-                                          //         .shipToPartyName ==
-                                          //     null) {
-                                          if (_selectedFloorType == null) {
-                                            Get.dialog(CustomDialogs()
-                                                .showMessage(
-                                                    "Please select Floor !"));
-                                            return;
-                                          }
-                                          if (_selectedConstructionType ==
-                                              null) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please select a Construction Stage !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .sitePotentialMt
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter Stage Potential !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                                  .pendingSupplyDetailsResponse
-                                                  .pendingSuppliesDetailsModel
-                                                  .requestInitiatedBy ==
-                                              "Influencer") {
-                                            if (_siteController.counterId
-                                                .toString()
-                                                .isEmpty) {
-                                              Get.dialog(CustomDialogs()
-                                                  .showMessage(
-                                                      "Please select a Counter !"));
-                                              return;
-                                            }
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .brandPrice
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter brand price !"));
-                                            return;
-                                          }
-
-                                          if (_siteController
-                                              .pendingSupplyDetailsResponse
-                                              .pendingSuppliesDetailsModel
-                                              .supplyQty
-                                              .text
-                                              .isEmpty) {
-                                            Get.dialog(CustomDialogs()
-                                                .showMessage(
-                                                    "Please enter supply qty !"));
-                                            return;
-                                          }
-
-                                          if (empId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Please enter reference Id!"));
-                                            return;
-                                          }
-
-                                          if (widget.siteId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "Site id can't be null or empty!"));
-                                            return;
-                                          }
-
-                                          if (widget.supplyHistoryId.isEmpty) {
-                                            Get.dialog(CustomDialogs().showMessage(
-                                                "supplyHistory id can't be null or empty!"));
-                                            return;
-                                          }
+                                          String? empId = await (getEmpId() );
+                                          checkPendingSupplyValidations(empId);
                                           final Map<String, dynamic> jsonData =
                                               {
                                             "approveOrReject": "A",
-                                            // "floor": _siteController
-                                            //     .pendingSupplyDetailsResponse
-                                            //     .pendingSuppliesDetailsModel
-                                            //     .floorText
-                                            //     .text,
                                             "floor":
-                                                _selectedFloorType.siteFloorTxt,
+                                                _selectedFloorType!.siteFloorTxt,
                                             "floorId":
                                                 _selectedFloorType == null
                                                     ? null
-                                                    : _selectedFloorType.id,
+                                                    : _selectedFloorType!.id,
                                             "brandPrice": _siteController
                                                 .pendingSupplyDetailsResponse
                                                 .pendingSuppliesDetailsModel
@@ -1276,13 +1073,13 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
                                                 _selectedConstructionType ==
                                                         null
                                                     ? ""
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .constructionStageText,
                                             "consStageId":
                                                 _selectedConstructionType ==
                                                         null
                                                     ? null
-                                                    : _selectedConstructionType
+                                                    : _selectedConstructionType!
                                                         .id,
                                             "counterId":
                                                 _siteController.counterId,
@@ -1307,8 +1104,82 @@ class _PendingSupplyDetailScreenState extends State<PendingSupplyDetailScreen>
     );
   }
 
+  checkPendingSupplyValidations(String? empId) async {
+    if (_selectedFloorType == null) {
+      Get.dialog(CustomDialogs
+          .showMessage(
+          "Please select Floor !"));
+      return;
+    }
+    if (_selectedConstructionType == null) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please select a Construction Stage !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .sitePotentialMt
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter Stage Potential !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .requestInitiatedBy ==
+        "Influencer") {
+      if (_siteController.counterId
+          .toString()
+          .isEmpty) {
+        Get.dialog(CustomDialogs
+            .showMessage(
+            "Please select a Counter !"));
+        return;
+      }
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .brandPrice
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter brand price !"));
+      return;
+    }
+    if (_siteController
+        .pendingSupplyDetailsResponse
+        .pendingSuppliesDetailsModel
+        .supplyQty
+        .text
+        .isEmpty) {
+      Get.dialog(CustomDialogs
+          .showMessage(
+          "Please enter supply qty !"));
+      return;
+    }
+    if (empId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Please enter reference Id!"));
+      return;
+    }
+    if (widget.siteId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "Site id can't be null or empty!"));
+      return;
+    }
+    if (widget.supplyHistoryId!.isEmpty) {
+      Get.dialog(CustomDialogs.showMessage(
+          "supplyHistory id can't be null or empty!"));
+      return;
+    }
+  }
+
   Future getEmpId() async {
-    String empID = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       empID = prefs.getString(StringConstants.employeeId);

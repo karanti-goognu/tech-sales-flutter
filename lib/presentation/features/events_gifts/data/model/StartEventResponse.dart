@@ -1,15 +1,17 @@
+
+
 class StartEventResponse {
-  String respCode;
-  String respMsg;
-  int eventID;
-  int eventTypeId;
-  String eventTypeText;
-  int eventDate;
+  String? respCode;
+  String? respMsg;
+  late int eventID;
+  int? eventTypeId;
+  String? eventTypeText;
+  int? eventDate;
 
   StartEventResponse(
       {this.respCode,
         this.respMsg,
-        this.eventID,
+       required this.eventID,
         this.eventTypeId,
         this.eventTypeText,
         this.eventDate});

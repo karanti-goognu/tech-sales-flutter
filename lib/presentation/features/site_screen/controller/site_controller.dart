@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
-import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/helper/siteListDBHelper.dart';
 import 'package:flutter_tech_sales/presentation/features/login/data/model/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/KittyBagsListModel.dart';
@@ -16,8 +18,7 @@ import 'package:flutter_tech_sales/routes/app_pages.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SiteController extends GetxController {
   @override
@@ -37,19 +38,19 @@ class SiteController extends GetxController {
     super.onClose();
   }
 
-
   final MyRepositorySites repository;
 
-  SiteController({@required this.repository}) : assert(repository != null);
-  final _sitesListResponse = SitesListModel().obs;
+  SiteController({required this.repository});
+  final Rx<SitesListModel?> _sitesListResponse = SitesListModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
   final _pendingSupplyListResponse = PendingSupplyDataResponse().obs;
   final _pendingSupplyDetailsResponse = PendingSupplyDetailsEntity().obs;
-  final _siteDistResponse = SiteDistrictListModel().obs;
-  final _kittyBagsListModel = KittyBagsListModel().obs;
+  final Rx<SiteDistrictListModel?> _siteDistResponse =
+      SiteDistrictListModel().obs;
+  final Rx<KittyBagsListModel?> _kittyBagsListModel = KittyBagsListModel().obs;
   final _counterId = StringConstants.empty.obs;
-  final _floorId= 0.obs;
+  final _floorId = 0.obs;
 
   get floorId => _floorId.value;
 
@@ -73,11 +74,8 @@ class SiteController extends GetxController {
     _pendingSupplyDetailsResponse.value = value;
   }
 
-
-
   get siteDistResponse => _siteDistResponse.value;
   set siteDistResponse(value) => _siteDistResponse.value = value;
-
 
   get kittyBagsListModel => _kittyBagsListModel.value;
   set kittyBagsListModel(value) => _kittyBagsListModel.value = value;
@@ -85,7 +83,6 @@ class SiteController extends GetxController {
   var _sitesListOffline = List<SitesEntity>.empty(growable: true).obs;
 
   List<SitesEntity> _siteList = new List.empty(growable: true);
-
 
   final _phoneNumber = "8860080067".obs;
 
@@ -118,7 +115,8 @@ class SiteController extends GetxController {
 
   get selectedDeliveryPointsValue => _selectedDeliveryPointsValue.value;
 
-  set selectedDeliveryPointsValue(value) => _selectedDeliveryPointsValue.value = value;
+  set selectedDeliveryPointsValue(value) =>
+      _selectedDeliveryPointsValue.value = value;
 
   get selectedFilterCount => this._selectedFilterCount.value;
 
@@ -160,7 +158,6 @@ class SiteController extends GetxController {
   get infname => this._infName.value;
 
   set selectedFilterCount(value) => this._selectedFilterCount.value = value;
-
 
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
 
@@ -216,18 +213,19 @@ class SiteController extends GetxController {
     _isFilterApplied.value = value;
   }
 
-   getAccessKey() {
+  getAccessKey() {
     return repository.getAccessKey();
   }
 
-  getSitesData(BuildContext context, String accessKey,String influencerId) {
+
+  getSitesData(BuildContext context, String? accessKey,String? influencerId) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =  encryptString(empId, StringConstants.encryptedKey).toString();
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
@@ -267,10 +265,10 @@ class SiteController extends GetxController {
         deliveryPoints = "&deliveryPoints=${this.selectedDeliveryPointsValue}";
         switch (this.selectedDeliveryPointsValue) {
           case "Yes":
-            deliveryPoints="&deliveryPoint=Y";
+            deliveryPoints = "&deliveryPoint=Y";
             break;
           case "No":
-            deliveryPoints="&deliveryPoint=N";
+            deliveryPoints = "&deliveryPoint=N";
             break;
           default:
             deliveryPoints = "";
@@ -282,37 +280,37 @@ class SiteController extends GetxController {
       if (influencerId != StringConstants.empty) {
         influencerID = "&influencerID=$influencerId";
       }
-      String url = "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
+      String url =
+          "${UrlConstants.getSitesList}$empId$deliveryPoints$assignFrom$assignTo$siteStatus$siteStage$sitePincode$siteInfluencerCat$influencerID$siteDistrict&limit=10&offset=${this.offset}";
       var encodedUrl = Uri.encodeFull(url);
       repository
           .getSitesData(accessKey, userSecurityKey, encodedUrl)
           .then((data) {
-            if (data == null) {
+        if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
-
-          if(sitesListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
-                sitesListResponse.respMsg), barrierDismissible: false);
+          if (sitesListResponse.respCode == "DM1005") {
+            Get.dialog(
+                CustomDialogs
+                    .appUserInactiveDialog(sitesListResponse.respMsg),
+                barrierDismissible: false);
           }
           if (this.sitesListResponse.sitesEntity == null ||
               this.sitesListResponse.sitesEntity.isEmpty) {
             this.sitesListResponse = data;
           } else {
             SitesListModel sitesListModel = data;
-            if (sitesListModel.sitesEntity.isNotEmpty) {
-              sitesListModel.sitesEntity.addAll(this.sitesListResponse.sitesEntity);
+            if (sitesListModel.sitesEntity!.isNotEmpty) {
+              sitesListModel.sitesEntity!
+                  .addAll(this.sitesListResponse.sitesEntity);
               this.sitesListResponse = sitesListModel;
-              this.sitesListResponse.sitesEntity.sort((SitesEntity a, SitesEntity b) => b.createdOn.compareTo(a.createdOn));
-              if(this.isFilterApplied==true){
+              this.sitesListResponse.sitesEntity.sort(
+                  (SitesEntity a, SitesEntity b) =>
+                      b.createdOn!.compareTo(a.createdOn!));
+              if (this.isFilterApplied == true) {
                 this.sitesListResponse = sitesListModel;
               }
-              // Get.rawSnackbar(
-              //   titleText: Text("Note"),
-              //   messageText: Text(
-              //       "Loading more .."),
-              //   backgroundColor: Colors.white,
-              // );
+
               final snackBar = SnackBar(
                 content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
                 backgroundColor: Colors.white,
@@ -322,12 +320,6 @@ class SiteController extends GetxController {
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
-              // Get.rawSnackbar(
-              //   titleText: Text("Note"),
-              //   messageText: Text(
-              //       "No more leads .."),
-              //   backgroundColor: Colors.white,
-              // );
               final snackBar = SnackBar(
                 content: const Text("No more sites ..", style: TextStyle(color: Colors.black),),
                 backgroundColor: Colors.white,
@@ -340,14 +332,13 @@ class SiteController extends GetxController {
             if (sitesListResponse.respCode == "ST2006") {
             } else {
               Get.dialog(
-                  CustomDialogs().errorDialog(sitesListResponse.respMsg));
+                  CustomDialogs.showMessage(sitesListResponse.respMsg));
             }
           }
         }
       });
     });
   }
-
 
   searchSites(String accessKey) {
     String empId = "empty";
@@ -357,54 +348,68 @@ class SiteController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId = encryptString(empId, StringConstants.encryptedKey).toString();
-      String url = "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
+      String url =
+          "${UrlConstants.getSiteSearchData}searchText=${this.searchKey}&referenceID=$empId";
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Sites Data Response is null');
         } else {
           this.sitesListResponse = data;
           if (sitesListResponse.respCode == "ST2004") {
-          } else if(sitesListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
-                sitesListResponse.respMsg), barrierDismissible: false);
-          }
-          else {
-            Get.dialog(CustomDialogs().errorDialog(sitesListResponse.respMsg));
+          } else if (sitesListResponse.respCode == "DM1005") {
+            Get.dialog(
+                CustomDialogs
+                    .appUserInactiveDialog(sitesListResponse.respMsg),
+                barrierDismissible: false);
+          } else {
+            Get.dialog(CustomDialogs.showMessage(sitesListResponse.respMsg));
           }
         }
       });
     });
   }
 
-  Future<SiteDistrictListModel> getSiteDistList() async {
-    String userSecurityKey = "";
+  Future<SiteDistrictListModel?> getSiteDistList() async {
+    String? userSecurityKey = "";
     String empID = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId) ?? "empty";
-      siteDistResponse = await repository.getSiteDistList(accessKey, userSecurityKey, empID);
+      siteDistResponse =
+          await repository.getSiteDistList(accessKey, userSecurityKey, empID);
     });
     return siteDistResponse;
   }
 
-  getAccessKeyOnly() {
+  Future<AccessKeyModel> getAccessKeyOnly() {
     return repository.getAccessKey();
   }
 
-  getSitedetailsData(String accessKey, int siteId, [int stageId]) async {
-    String userSecurityKey = "";
-    String empID = "";
+
+  Future<ViewSiteDataResponse> getSitedetailsData(String? accessKey, int? siteId) async {
+    String? userSecurityKey = "";
+    String? empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      empID = prefs.getString(StringConstants.employeeId);
+      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
+    return viewSiteDataResponse;
+  }
+
+  getSiteFloorList(stageId, siteId) async{
+    print(siteId.runtimeType);
+    List<SiteFloorsEntity> siteList= List<SiteFloorsEntity>.empty(growable: true);
+    String? userSecurityKey = "";
+    AccessKeyModel accessKey= await getAccessKeyOnly();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      empID =  prefs.getString(StringConstants.employeeId);
-      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID, stageId);
+      siteList = await repository.getSiteFloorList(accessKey.accessKey!, userSecurityKey!, stageId, siteId);
     });
-    return viewSiteDataResponse;
+    return siteList;
   }
 
   showNoInternetSnack() {
@@ -419,101 +424,97 @@ class SiteController extends GetxController {
     Get.toNamed(Routes.VERIFY_OTP);
   }
 
-  void updateLeadData(var updateDataRequest, List<File> list,
-      BuildContext context, int siteId) {
+  void updateLeadData(var updateDataRequest, List<File>? list,
+      BuildContext context, int? siteId) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     repository.getAccessKey().then((data) {
-
       this.accessKeyResponse = data;
       updateSiteDataInBackend(updateDataRequest, list, context, siteId);
-    }
-    );
+    });
   }
 
-  Future<void> updateSiteDataInBackend(updateDataRequest, List<File> list,
-      BuildContext context, int siteId) async {
-    String userSecurityKey = "";
+  Future<void> updateSiteDataInBackend(updateDataRequest, List<File>? list,
+      BuildContext context, int? siteId) async {
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
 
       await repository.updateSiteData(this.accessKeyResponse.accessKey,
-          userSecurityKey, updateDataRequest, list, context, siteId);
+          userSecurityKey, updateDataRequest, list!, context, siteId);
     });
   }
 
-   fetchSiteList() async {
-
-     final db = SiteListDBHelper();
-     db.fetchAllSites().then((value) => {
-       this.sitesListOffline = value,
-       _siteList = value
-     });
-     return _siteList;
-  }
-
-  fetchFliterSiteList(String appendQuery,String whereArgs) async {
+  fetchSiteList() async {
     final db = SiteListDBHelper();
-    db.filterSiteEntityList(appendQuery, whereArgs).then((value) => {
-    this.sitesListOffline = value,
-      _siteList = value
-    });
+    db
+        .fetchAllSites()
+        .then((value) => {this.sitesListOffline = value, _siteList = value});
     return _siteList;
   }
 
+  fetchFliterSiteList(String appendQuery, String whereArgs) async {
+    final db = SiteListDBHelper();
+    db
+        .filterSiteEntityList(appendQuery, whereArgs)
+        .then((value) => {this.sitesListOffline = value, _siteList = value});
+    return _siteList;
+  }
 
   fetchFliterSiteList1(List<SitesEntity> value) async {
-
-      _siteList = value;
+    _siteList = value;
 
     return _siteList;
   }
 
-
-
-
-  Future<SiteVisitResponseModel>getAccessKeyAndSaveSiteRequest(SiteVisitRequestModel siteVisitRequestModel) async{
-    SiteVisitResponseModel siteVisitResponseModel;
-    String userSecurityKey = "";
+  Future<SiteVisitResponseModel?> getAccessKeyAndSaveSiteRequest(
+      SiteVisitRequestModel siteVisitRequestModel) async {
+    SiteVisitResponseModel? siteVisitResponseModel;
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      siteVisitResponseModel = await repository.siteVisitSave(accessKey, userSecurityKey, siteVisitRequestModel);
+      siteVisitResponseModel = await repository.siteVisitSave(
+          accessKey, userSecurityKey, siteVisitRequestModel);
     });
     return siteVisitResponseModel;
   }
 
-
-  Future siteSearch(String searchText) async{
-    String userSecurityKey = "";
-    String empID = "";
-    String accessKey = await repository.getAccessKeyNew();
-    Future<SharedPreferences>  _prefs = SharedPreferences.getInstance();
+  Future siteSearch(String searchText) async {
+    String? userSecurityKey = "";
+    String? empID = "";
+    String? accessKey = await (repository.getAccessKeyNew());
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
     });
-    sitesListResponse = await repository.getSearchDataNew(accessKey, userSecurityKey, empID, searchText);
+    sitesListResponse = await repository.getSearchDataNew(
+        accessKey, userSecurityKey, empID, searchText);
   }
 
   pendingSupplyList() async {
-    Future.delayed(Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      String url = "${UrlConstants.getPendingSupplyList+empId}";
-      repository.getPendingSupplyData(accessKey, userSecurityKey, url).then((data) {
+      String url = "${UrlConstants.getPendingSupplyList + empId}";
+      repository
+          .getPendingSupplyData(accessKey, userSecurityKey, url)
+          .then((data) {
         Get.back();
         if (data == null) {
           debugPrint('Supply Data Response is null');
@@ -523,51 +524,59 @@ class SiteController extends GetxController {
             debugPrint('Supply Data Response is not null');
           }
         }
-
       });
     });
     return pendingSupplyListResponse;
   }
 
-  pendingSupplyDetails(String supplyHistoryId,String siteId) async {
-    Future.delayed(Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+  pendingSupplyDetails(String? supplyHistoryId, String? siteId) async {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
 
-      String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-      var data = await repository.getPendingSupplyDetails(accessKey, userSecurityKey, url);
-        Get.back();
-        if (data == null) {
-          debugPrint('Supply Detail Response is null');
-        } else {
-          this.pendingSupplyDetailsResponse = data;
-          if (pendingSupplyDetailsResponse.respCode == "DM1002") {
-            debugPrint('Supply Detail Response is not null');
-          }
+      String url =
+          "${UrlConstants.getPendingSupplyDetails + empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
+      var data = await repository.getPendingSupplyDetails(
+          accessKey, userSecurityKey, url);
+      Get.back();
+      if (data == null) {
+        debugPrint('Supply Detail Response is null');
+      } else {
+        this.pendingSupplyDetailsResponse = data;
+        if (pendingSupplyDetailsResponse.respCode == "DM1002") {
+          debugPrint('Supply Detail Response is not null');
         }
+      }
     });
     return this.pendingSupplyDetailsResponse;
   }
 
-  Future<PendingSuppliesDetailsModel>pendingSupplyDetailsNew (String supplyHistoryId,String siteId) async {
-    PendingSuppliesDetailsModel _pendingSuppliesDetailsModel;
-    String userSecurityKey = "";
+  Future<PendingSuppliesDetailsModel?> pendingSupplyDetailsNew(
+      String? supplyHistoryId, String? siteId) async {
+    PendingSuppliesDetailsModel? _pendingSuppliesDetailsModel;
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     String empId = "empty";
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      String url = "${UrlConstants.getPendingSupplyDetails+empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-
-      _pendingSuppliesDetailsModel = await repository.getPendingSupplyDetailsNew(accessKey, userSecurityKey, url);
+      String url =
+          "${UrlConstants.getPendingSupplyDetails + empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
+      print(accessKey);
+      print(userSecurityKey);
+      print(url);
+      _pendingSuppliesDetailsModel = await repository
+          .getPendingSupplyDetailsNew(accessKey!, userSecurityKey, url);
     });
     return _pendingSuppliesDetailsModel;
   }
@@ -575,25 +584,29 @@ class SiteController extends GetxController {
   updatePendingSupplyDetails(Map<String, dynamic> jsonData) async {
     Future.delayed(
         Duration.zero,
-            () => Get.dialog(Center(child: CircularProgressIndicator()),
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+      userSecurityKey =
+          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
       String url = "${UrlConstants.updatePendingSupply}";
-      repository.updatePendingSupplyDetails(accessKey, userSecurityKey, url,jsonData).then((data) {
+      repository
+          .updatePendingSupplyDetails(accessKey, userSecurityKey, url, jsonData)
+          .then((data) {
         Get.back();
         if (data == null) {
           debugPrint('Update Supply Response is null');
         } else {
           var dataValue = data;
-          if(dataValue['response']['respCode']=="DM1002"){
-            Get.dialog(CustomDialogs().showPendingSupplyData(dataValue['response']['respMsg']));
-          }else {
+          if (dataValue['response']['respCode'] == "DM1002") {
+            Get.dialog(CustomDialogs
+                .showPendingSupplyData(dataValue['response']['respMsg']));
+          } else {
             Get.dialog(
-                CustomDialogs().errorDialog(dataValue['response']['respMsg']));
+                CustomDialogs.showMessage(dataValue['response']['respMsg']));
           }
         }
       });
@@ -601,16 +614,15 @@ class SiteController extends GetxController {
   }
 
   ///siteKittyBags
-  Future<KittyBagsListModel> getSiteKittyBags(String partyCode) async {
-    String userSecurityKey = "";
+  Future<KittyBagsListModel?> getSiteKittyBags(String? partyCode) async {
+    String? userSecurityKey = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew());
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      kittyBagsListModel = await repository.getKittyBagsList(accessKey, partyCode, userSecurityKey);
+      kittyBagsListModel = await repository.getKittyBagsList(
+          accessKey, partyCode, userSecurityKey);
     });
     return kittyBagsListModel;
   }
-
-
 }

@@ -1,12 +1,14 @@
+
+
 class JourneyDetails {
-  String journeyDate;
-  String journeyStartTime;
-  String journeyStartLat;
-  String journeyStartLong;
-  String journeyEndTime;
-  String journeyEndLat;
-  String journeyEndLong;
-  String employeeId;
+  String? journeyDate;
+  String? journeyStartTime;
+  String? journeyStartLat;
+  String? journeyStartLong;
+  String? journeyEndTime;
+  String? journeyEndLat;
+  String? journeyEndLong;
+  String? employeeId;
 
   JourneyDetails(
       {this.journeyDate,

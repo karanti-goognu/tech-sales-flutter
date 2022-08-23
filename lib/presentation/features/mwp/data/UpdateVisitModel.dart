@@ -1,11 +1,15 @@
+
+
 class UpdateVisitResponseModel {
-  MwpVisitModelUpdate mwpVisitModel;
+  MwpVisitModelUpdate? mwpVisitModel;
   Null mwpMeetModel;
 
   UpdateVisitResponseModel(
       {this.mwpVisitModel, this.mwpMeetModel});
 
   UpdateVisitResponseModel.fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey('mwpVisitModel'))
+      mwpVisitModel = null;
 
     mwpVisitModel = json['mwpVisitModel'] != null
         ? new MwpVisitModelUpdate.fromJson(json['mwpVisitModel'])
@@ -16,7 +20,7 @@ class UpdateVisitResponseModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.mwpVisitModel != null) {
-      data['mwpVisitModel'] = this.mwpVisitModel.toJson();
+      data['mwpVisitModel'] = this.mwpVisitModel!.toJson();
     }
     data['mwpMeetModel'] = this.mwpMeetModel;
     return data;
@@ -24,22 +28,22 @@ class UpdateVisitResponseModel {
 }
 
 class MwpVisitModelUpdate {
-  int id;
-  String visitDate;
-  String visitType;
-  String visitStartTime;
-  double visitStartLat;
-  double visitStartLong;
-  String visitEndTime;
-  String nextVisitDate;
-  double visitEndLat;
-  double visitEndLong;
-  String visitOutcomes;
-  String remark;
-  String visitSubType;
-  String docId;
-  String dspAvailableQty;
-  String isDspAvailable;
+  int? id;
+  String? visitDate;
+  String? visitType;
+  String? visitStartTime;
+  double? visitStartLat;
+  double? visitStartLong;
+  String? visitEndTime;
+  String? nextVisitDate;
+  double? visitEndLat;
+  double? visitEndLong;
+  String? visitOutcomes;
+  String? remark;
+  String? visitSubType;
+  String? docId;
+  String? dspAvailableQty;
+  String? isDspAvailable;
 
 
   MwpVisitModelUpdate(this.id,

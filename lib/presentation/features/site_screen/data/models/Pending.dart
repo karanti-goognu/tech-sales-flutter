@@ -1,5 +1,7 @@
+
+
 class PendingSupplyData {
-  PendingSupplyDataResponse response;
+  PendingSupplyDataResponse? response;
 
   PendingSupplyData({this.response});
 
@@ -12,17 +14,17 @@ class PendingSupplyData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.response != null) {
-      data['response'] = this.response.toJson();
+      data['response'] = this.response!.toJson();
     }
     return data;
   }
 }
 
 class PendingSupplyDataResponse {
-  String respCode;
-  String respMsg;
-  List<PendingSuppliesModel> pendingSuppliesModel;
-  int pendingSupplyListCount;
+  String? respCode;
+  String? respMsg;
+  List<PendingSuppliesModel>? pendingSuppliesModel;
+  int? pendingSupplyListCount;
 
   PendingSupplyDataResponse(
       {this.respCode,
@@ -33,10 +35,14 @@ class PendingSupplyDataResponse {
   PendingSupplyDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+
+    if (!json.containsKey('pendingSuppliesModel'))
+      pendingSuppliesModel = new List<PendingSuppliesModel>.empty(growable: true);
+
     if (json['pendingSuppliesModel'] != null) {
       pendingSuppliesModel = new List<PendingSuppliesModel>.empty(growable: true);
       json['pendingSuppliesModel'].forEach((v) {
-        pendingSuppliesModel.add(new PendingSuppliesModel.fromJson(v));
+        pendingSuppliesModel!.add(new PendingSuppliesModel.fromJson(v));
       });
     }
     pendingSupplyListCount = json['pendingSupplyListCount'];
@@ -48,7 +54,7 @@ class PendingSupplyDataResponse {
     data['respMsg'] = this.respMsg;
     if (this.pendingSuppliesModel != null) {
       data['pendingSuppliesModel'] =
-          this.pendingSuppliesModel.map((v) => v.toJson()).toList();
+          this.pendingSuppliesModel!.map((v) => v.toJson()).toList();
     }
     data['pendingSupplyListCount'] = this.pendingSupplyListCount;
     return data;
@@ -56,22 +62,22 @@ class PendingSupplyDataResponse {
 }
 
 class PendingSuppliesModel {
-  String siteId;
-  String siteSupplyHistoryId;
-  String siteStageHistoryId;
-  String assigneTo;
-  String siteDistrict;
-  String inflId;
-  String productName;
-  String requestDate;
-  String dealerId;
-  String sitePotentialMt;
-  String pendingQty;
-  String approvedQty;
-  String dealerName;
-  String dealerContact;
-  String inflName;
-  String siteOwnerName;
+  String? siteId;
+  String? siteSupplyHistoryId;
+  String? siteStageHistoryId;
+  String? assigneTo;
+  String? siteDistrict;
+  String? inflId;
+  String? productName;
+  String? requestDate;
+  String? dealerId;
+  String? sitePotentialMt;
+  String? pendingQty;
+  String? approvedQty;
+  String? dealerName;
+  String? dealerContact;
+  String? inflName;
+  String? siteOwnerName;
 
   PendingSuppliesModel(
       {this.siteId,

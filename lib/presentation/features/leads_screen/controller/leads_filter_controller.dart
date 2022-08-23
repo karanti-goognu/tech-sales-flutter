@@ -1,8 +1,11 @@
-import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsEntity.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsFilterModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
@@ -14,9 +17,7 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LeadsFilterController extends GetxController {
   @override
@@ -38,14 +39,12 @@ class LeadsFilterController extends GetxController {
 
   final MyRepositoryLeads repository;
 
-  LeadsFilterController({@required this.repository})
-      : assert(repository != null);
-
+  LeadsFilterController({required this.repository});
   final _accessKeyResponse = AccessKeyModel().obs;
   final _secretKeyResponse = SecretKeyModel().obs;
   final _filterDataResponse = LeadsFilterModel().obs;
-  final _leadsListResponse = LeadsListModel().obs;
-  final _leadDistResponse = SiteDistrictListModel().obs;
+  final Rx<LeadsListModel?> _leadsListResponse = LeadsListModel().obs;
+  final Rx<SiteDistrictListModel?> _leadDistResponse = SiteDistrictListModel().obs;
 
   final _phoneNumber = "8860080067".obs;
   final _offset = 0.obs;
@@ -160,7 +159,7 @@ class LeadsFilterController extends GetxController {
 
   set leadsListResponse(value) => this._leadsListResponse.value = value;
 
-  String accessKeyNew;
+  String? accessKeyNew;
 
   getSecretKey(int requestId, BuildContext context) {
     Future.delayed(
@@ -177,8 +176,7 @@ class LeadsFilterController extends GetxController {
           encryptString(empId, StringConstants.encryptedKey);
       String mobileNumberEncrypted =
           encryptString(mobileNumber, StringConstants.encryptedKey);
-      repository
-          .getSecretKey(empIdEncrypted, mobileNumberEncrypted)
+      repository.getSecretKey(empIdEncrypted, mobileNumberEncrypted)
           .then((data) {
         Get.back();
         this.secretKeyResponse = data;
@@ -219,7 +217,6 @@ class LeadsFilterController extends GetxController {
         String userSecurityKey =
             prefs.getString(StringConstants.userSecurityKey) ?? "empty";
         if (userSecurityKey != "empty") {
-          //Map<String, dynamic> decodedToken = JwtDecoder.decode(userSecurityKey);
           bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
           if (hasExpired) {
             getSecretKey(requestId, context);
@@ -248,17 +245,17 @@ class LeadsFilterController extends GetxController {
       } else {
         this.filterDataResponse = data;
         if (filterDataResponse.respCode == "DM1011") {
-          //Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
         } else if(this.filterDataResponse.respCode == "DM1005"){
-          Get.dialog(CustomDialogs().appUserInactiveDialog(
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
               filterDataResponse.respMsg), barrierDismissible: false);
         }
         else {
-          Get.dialog(CustomDialogs().errorDialog(filterDataResponse.respMsg));
+          Get.dialog(CustomDialogs.showMessage(filterDataResponse.respMsg));
         }
       }
     });
   }
+
 
   getLeadsData(String accessKey, BuildContext context) {
     String empId = "empty";
@@ -268,8 +265,6 @@ class LeadsFilterController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-      encryptString(empId, StringConstants.encryptedKey).toString();
       String assignTo = "";
       if (this.assignToDate != StringConstants.empty) {
         assignTo = "&assignDateTo=${this.assignToDate}";
@@ -329,7 +324,6 @@ class LeadsFilterController extends GetxController {
         districtName = "&districtName=${this.selectedLeadDistrict}";
       }
 
-      //debugPrint('request without encryption: $body');
       String url = "${UrlConstants.getLeadsData}$empId$assignFrom$assignTo$leadStatus$leadStage$leadPotentialFrom$leadPotentialTo$deliveryPoints$districtName&limit=10&offset=${this.offset}";
 
       var encodedUrl = Uri.encodeFull(url);
@@ -344,21 +338,15 @@ class LeadsFilterController extends GetxController {
           }else{
 
             LeadsListModel leadListResponseServer = data;
-            if(leadListResponseServer.leadsEntity.isNotEmpty){
-              leadListResponseServer.leadsEntity.addAll(this.leadsListResponse.leadsEntity );
+            if(leadListResponseServer.leadsEntity!.isNotEmpty){
+              leadListResponseServer.leadsEntity!.addAll(this.leadsListResponse.leadsEntity );
               this.leadsListResponse = leadListResponseServer;
-              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn.compareTo(a.createdOn));
+              this.leadsListResponse.leadsEntity.sort((LeadsEntity a, LeadsEntity b) => b.createdOn!.compareTo(a.createdOn!));
 
               ///filter issue
               if(this.isFilterApplied==true){
 
                 this.leadsListResponse = leadListResponseServer;
-                // Get.rawSnackbar(
-                //   titleText: Text("Note"),
-                //   messageText: Text(
-                //       "Loading more .."),
-                //   backgroundColor: Colors.white,
-                // );
 
                 final snackBar = SnackBar(
                   content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
@@ -369,13 +357,6 @@ class LeadsFilterController extends GetxController {
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
-              // Get.rawSnackbar(
-              //   titleText: Text("Note"),
-              //   messageText: Text(
-              //       "Loading more .."),
-              //   backgroundColor: Colors.white,
-              //   isDismissible: false
-              // );
 
               final snackBar = SnackBar(
                 content: const Text("Loading more ..", style: TextStyle(color: Colors.black)),
@@ -394,12 +375,6 @@ class LeadsFilterController extends GetxController {
                 dismissDirection: DismissDirection.down,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                // Get.rawSnackbar(
-                //   titleText: Text("Note"),
-                //   messageText: Text(
-                //       "No more leads .."),
-                //   backgroundColor: Colors.white,
-                // );
               }
 
 
@@ -407,18 +382,18 @@ class LeadsFilterController extends GetxController {
 
           if (leadsListResponse.respCode == "LD2006") {
           }else if(this.leadsListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
+            Get.dialog(CustomDialogs.appUserInactiveDialog(
                 leadsListResponse.respMsg), barrierDismissible: false);
           }
           else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
           }
         }
       });
     });
   }
 
-  Future<LeadsListModel>searchLeads(String accessKey) {
+  Future<LeadsListModel>?searchLeads(String? accessKey) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -426,8 +401,6 @@ class LeadsFilterController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      String encryptedEmpId =
-          encryptString(empId, StringConstants.encryptedKey).toString();
       String url = "${UrlConstants.getSearchData}$empId&searchText=${this.searchKey}";
       repository.getSearchData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
@@ -435,14 +408,14 @@ class LeadsFilterController extends GetxController {
         } else {
           this.leadsListResponse = data;
           if (leadsListResponse.respCode == "LD2004") {
-            //Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            //Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
             //leadsDetailWidget();
           } else if(leadsListResponse.respCode == "DM1005"){
-            Get.dialog(CustomDialogs().appUserInactiveDialog(
+            Get.dialog(CustomDialogs.appUserInactiveDialog(
                 leadsListResponse.respMsg), barrierDismissible: false);
           }
           else {
-            Get.dialog(CustomDialogs().errorDialog(leadsListResponse.respMsg));
+            Get.dialog(CustomDialogs.showMessage(leadsListResponse.respMsg));
           }
         }
       });
@@ -464,12 +437,12 @@ class LeadsFilterController extends GetxController {
 
 
   Future srSearch(String searchText) async {
-    String userSecurityKey = "";
-    String empID = "";
+    String? userSecurityKey = "";
+    String? empID = "";
 
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await (repository.getAccessKeyNew() );
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
@@ -479,15 +452,15 @@ class LeadsFilterController extends GetxController {
   }
 
 
-  Future<SiteDistrictListModel> getLeadDistList() async {
-    String userSecurityKey = "";
-    String empID = "";
+  Future<SiteDistrictListModel?> getLeadDistList() async {
+    String? userSecurityKey = "";
+    String? empID = "";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String accessKey = await repository.getAccessKeyNew();
+    String? accessKey = await repository.getAccessKeyNew();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      leadDistResponse = await repository.getLeadDistList(accessKey, userSecurityKey, empID);
+      leadDistResponse = await repository.getLeadDistList(accessKey, userSecurityKey, empID!);
     });
     return leadDistResponse;
   }

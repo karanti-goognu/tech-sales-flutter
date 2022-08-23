@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/add_leads_binding.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -19,13 +22,10 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class DetailViewEvent extends StatefulWidget {
-  int eventId;
+  final int eventId;
   DetailViewEvent(this.eventId);
 
   @override
@@ -33,14 +33,14 @@ class DetailViewEvent extends StatefulWidget {
 }
 
 class _DetailViewEventState extends State<DetailViewEvent> {
-  LatLng _currentPosition;
-  DetailEventModel detailEventModel;
+  LatLng? _currentPosition;
+  DetailEventModel? detailEventModel;
   DetailEventController detailEventController = Get.find();
   EventsFilterController _eventsFilterController = Get.find();
-  int total;
+  int? total;
   bool isVisible = false;
-  String isEventStarted;
-  String referenceID;
+  String? isEventStarted;
+  String? referenceID;
 
   @override
   void initState() {
@@ -48,14 +48,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
     getDetailEventsData();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
   setVisibility() {
-    if (detailEventModel.mwpEventModel.eventStatusText ==
+    if (detailEventModel!.mwpEventModel!.eventStatusText ==
             StringConstants.approved &&
         isEventStarted == 'N') {
       isVisible = true;
@@ -66,33 +60,28 @@ class _DetailViewEventState extends State<DetailViewEvent> {
 
   getDetailEventsData() async {
     await detailEventController.getDetailEventData(widget.eventId).then((data) {
-     // if (mounted) {
-        setState(() {
-          detailEventModel = data;
-        });
-     // }
-      referenceID = detailEventModel.mwpEventModel.referenceId;
-      isEventStarted = detailEventModel.mwpEventModel.isEventStarted;
+      // if (mounted) {
+      setState(() {
+        detailEventModel = data;
+      });
+      // }
+      referenceID = detailEventModel!.mwpEventModel!.referenceId;
+      isEventStarted = detailEventModel!.mwpEventModel!.isEventStarted;
       setVisibility();
-    //  print('DDDD: $data');
+      //  print('DDDD: $data');
     });
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     final btnStartEvent = TextButton(
       onPressed: () {
         _getCurrentLocation();
-        // Get.dialog(CustomDialogs().showStartEventDialog(
-        //     'Confirmation', "Do you want to start event?"));
       },
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -134,7 +123,7 @@ class _DetailViewEventState extends State<DetailViewEvent> {
           children: [
             TextButton(
                 onPressed: () {
-                  Get.dialog(CustomDialogs().showCancelEventDialog(
+                  Get.dialog(CustomDialogs.showCancelEventDialog(
                       widget.eventId,
                       'Confirmation',
                       "You will not be able to undo this action, are you sure you want to Cancel this event?"));
@@ -156,20 +145,14 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 onPressed: () {
                   Get.to(
                       () => DetailPending(
-                          detailEventModel.mwpEventModel.eventId,
+                          detailEventModel!.mwpEventModel!.eventId,
                           ColorConstants.eventApproved),
                       binding: EGBinding());
-                  // Get.to(
-                  //     () => UpdateDlrInf(
-                  //           detailEventModel.mwpEventModel.eventId,
-                  //         ),
-                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [
                     Icon(Icons.edit,
-                        color: ColorConstants.clearAllTextColor,
-                        size: 20.sp),
+                        color: ColorConstants.clearAllTextColor, size: 20.sp),
                     SizedBox(
                       width: 5.sp,
                     ),
@@ -192,10 +175,9 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             TextButton(
               onPressed: () {
                 Get.dialog(
-                    CustomDialogs().showCommentDialog("Please Enter Comment",
-                        context, detailEventModel.mwpEventModel.eventId),
+                    CustomDialogs.showCommentDialog("Please Enter Comment",
+                        context, detailEventModel!.mwpEventModel!.eventId),
                     barrierDismissible: false);
-                // Get.toNamed(Routes.END_EVENT);
               },
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -209,11 +191,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ),
             TextButton(
                 onPressed: () async {
-                  Map results =
+                  Map? results =
                       await Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) {
                       return UpdateDlrInf(
-                        detailEventModel.mwpEventModel.eventId,
+                        detailEventModel!.mwpEventModel!.eventId,
                       );
                     },
                   ));
@@ -221,17 +203,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   if (results != null && results.containsKey('reload')) {
                     getDetailEventsData();
                   }
-                  // Get.to(
-                  //     () => UpdateDlrInf(
-                  //           detailEventModel.mwpEventModel.eventId,
-                  //         ),
-                  //     binding: EGBinding());
                 },
                 child: Row(
                   children: [
                     Icon(Icons.edit,
-                        color: ColorConstants.clearAllTextColor,
-                        size: 20.sp),
+                        color: ColorConstants.clearAllTextColor, size: 20.sp),
                     SizedBox(
                       width: 5.sp,
                     ),
@@ -252,8 +228,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             children: [
               Text('EVENTS DETAILS', style: TextStyles.appBarTitleStyle),
               (detailEventModel != null &&
-                      detailEventModel.mwpEventModel != null)
-                  ? (detailEventModel.mwpEventModel.eventStatusText ==
+                      detailEventModel!.mwpEventModel != null)
+                  ? (detailEventModel!.mwpEventModel!.eventStatusText ==
                               StringConstants.approved &&
                           isEventStarted == "Y")
                       ? btnAddLead
@@ -262,11 +238,11 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             ],
           ),
           bottom: (isEventStarted == "N" &&
-                  detailEventModel.mwpEventModel.eventStatusText ==
+                  detailEventModel!.mwpEventModel!.eventStatusText ==
                       StringConstants.approved)
               ? editRow
               : (isEventStarted == "Y" &&
-                      detailEventModel.mwpEventModel.eventStatusText ==
+                      detailEventModel!.mwpEventModel!.eventStatusText ==
                           StringConstants.approved)
                   ? endRow
                   : PreferredSize(
@@ -277,8 +253,8 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       floatingActionButton: BackFloatingButton(),
       bottomNavigationBar: BottomNavigator(),
       backgroundColor: Colors.white,
-      body: (detailEventModel != null && detailEventModel.mwpEventModel != null)
-          // && detailEventModel.eventDealersModelList != null)
+      body: (detailEventModel != null &&
+              detailEventModel!.mwpEventModel != null)
           ? ListView(
               children: [
                 Padding(
@@ -289,41 +265,30 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                     bottom: 20.sp,
                   ),
                   child: Text(
-                    '${detailEventModel.mwpEventModel.eventDate} | ${detailEventModel.mwpEventModel.eventTime}',
+                    '${detailEventModel!.mwpEventModel!.eventDate} | ${detailEventModel!.mwpEventModel!.eventTime}',
                     style: TextStyles.mulliBoldBlue,
                   ),
                 ),
                 displayInfo('Event Type',
-                    detailEventModel.mwpEventModel.eventTypeText ?? ''),
+                    detailEventModel!.mwpEventModel!.eventTypeText ?? ''),
                 displayInfo('Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.dalmiaInflCount}' ?? '0'),
-                displayInfo(
-                    'Non-Dalmia Influencers',
-                    '${detailEventModel.mwpEventModel.nonDalmiaInflCount}' ??
-                        '0'),
-                displayInfo(
-                    'Total Participants',
-                    '${(detailEventModel.mwpEventModel.dalmiaInflCount) + (detailEventModel.mwpEventModel.nonDalmiaInflCount)}' ??
-                        '0'),
+                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount}'),
+                displayInfo('Non-Dalmia Influencers',
+                    '${detailEventModel!.mwpEventModel!.nonDalmiaInflCount}'),
+                displayInfo('Total Participants',
+                    '${detailEventModel!.mwpEventModel!.dalmiaInflCount! + detailEventModel!.mwpEventModel!.nonDalmiaInflCount!}'),
                 displayInfo('Venue Address',
-                    detailEventModel.mwpEventModel.venueAddress),
+                    detailEventModel!.mwpEventModel!.venueAddress!),
                 displayChip('Dealer(s) Detail'),
-                displayInfo(
-                    'Expected Leads',
-                    '${detailEventModel.mwpEventModel.expectedLeadsCount}' ??
-                        '0'),
-                displayInfo(
-                    'Gift distribution',
-                    '${detailEventModel.mwpEventModel.giftDistributionCount}' ??
-                        '0'),
+                displayInfo('Expected Leads',
+                    '${detailEventModel!.mwpEventModel!.expectedLeadsCount}'),
+                displayInfo('Gift distribution',
+                    '${detailEventModel!.mwpEventModel!.giftDistributionCount}'),
                 displayInfo('Event location',
-                    detailEventModel.mwpEventModel.eventLocation ?? ''),
+                    detailEventModel!.mwpEventModel!.eventLocation ?? ''),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 15.sp,
-                      right: 15.sp,
-                      top: 5.sp,
-                      bottom: 5.sp),
+                      left: 15.sp, right: 15.sp, top: 5.sp, bottom: 5.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -337,12 +302,10 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                             top: 10, bottom: 10, left: 8, right: 8),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey, // Set border color
-                              width: 1.0), // Set border width
+                          border: Border.all(color: Colors.grey, width: 1.0),
                         ),
                         child: Text(
-                          detailEventModel.mwpEventModel.eventComment,
+                          detailEventModel!.mwpEventModel!.eventComment!,
                           maxLines: null,
                         ),
                       ),
@@ -387,7 +350,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                 child: Text(
                   value,
                   style: TextStyles.mulliBold16,
-                  //maxLines: null,
                   overflow: TextOverflow.ellipsis,
                 ),
               )
@@ -426,18 +388,18 @@ class _DetailViewEventState extends State<DetailViewEvent> {
             Container(
                 height: 30.sp,
                 child: (detailEventModel != null &&
-                        detailEventModel.eventDealersModelList != null &&
-                        detailEventModel.eventDealersModelList.length > 0)
+                        detailEventModel!.eventDealersModelList != null &&
+                        detailEventModel!.eventDealersModelList!.length > 0)
                     ? ListView(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        children: detailEventModel.eventDealersModelList
+                        children: detailEventModel!.eventDealersModelList!
                             .map((e) => Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4.0),
                                   child: Chip(
                                     label: Text(
-                                      e.dealerName,
+                                      e.dealerName!,
                                       style: TextStyle(
                                           fontFamily: "Muli",
                                           color: Colors.black,
@@ -445,7 +407,6 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                                           fontSize: 14.0),
                                     ),
                                     backgroundColor: Colors.white,
-                                    // elevation: 3,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(15),
@@ -471,24 +432,21 @@ class _DetailViewEventState extends State<DetailViewEvent> {
         ));
   }
 
-
   _getCurrentLocation() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
 
-    if (result != null) {
-      setState(() {
-        _currentPosition = result.latLng;
-              startEvent();
-      });
-    }
+    setState(() {
+      _currentPosition = result.latLng;
+      startEvent();
+    });
   }
 
   startEvent() async {
-    StartEventResponse _startEventResponse;
+    StartEventResponse? _startEventResponse;
     StartEventModel _startEventModel = StartEventModel.fromJson({
       'eventID': widget.eventId,
-      'eventStartUserLat': _currentPosition.latitude,
-      'eventStartUserLong': _currentPosition.longitude,
+      'eventStartUserLat': _currentPosition!.latitude,
+      'eventStartUserLong': _currentPosition!.longitude,
       'isEventStarted': 'Y',
       'referenceID': referenceID,
     });
@@ -500,22 +458,21 @@ class _DetailViewEventState extends State<DetailViewEvent> {
                   .getAccessKeyAndStartEvent(_startEventModel)
                   .then((data) {
                 _startEventResponse = data;
-               // print('DD: $_startEventResponse');
-                if (_startEventResponse.respCode == "DM1002") {
-                  Get.dialog(redirectToStartEventPg(data.respMsg, data.eventID),
-                      barrierDismissible: false);
-                } else if (_startEventResponse.respCode == "DM2044") {
+                if (_startEventResponse!.respCode == "DM1002") {
                   Get.dialog(
-                      redirectToEventDetailPg(data.respMsg, data.eventID),
+                      redirectToStartEventPg(data!.respMsg!, data.eventID),
                       barrierDismissible: false);
-                } else if (_startEventResponse.respCode == "DM2043") {
+                } else if (_startEventResponse!.respCode == "DM2044") {
                   Get.dialog(
-                      CustomDialogs()
-                          .errorDialogForEvent(data.respMsg.toString()),
+                      redirectToEventDetailPg(data!.respMsg!, data.eventID),
+                      barrierDismissible: false);
+                } else if (_startEventResponse!.respCode == "DM2043") {
+                  Get.dialog(
+                      CustomDialogs.showMessage(data!.respMsg.toString()),
                       barrierDismissible: false);
                 } else {
                   Get.dialog(
-                      CustomDialogs().messageDialogMWP(data.respMsg.toString()),
+                      CustomDialogs.messageDialogMWP(data!.respMsg.toString()),
                       barrierDismissible: false);
                 }
               })
@@ -550,29 +507,23 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            'View Event',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (BuildContext context) => super.widget)).then((_) => {getDetailEventsData()});
+            child: Text(
+              'View Event',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
               Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) =>
-                          DetailViewEvent(eventId)))
+                      context,
+                      new CupertinoPageRoute(
+                          builder: (BuildContext context) =>
+                              DetailViewEvent(eventId)))
                   .then((_) => {getDetailEventsData()});
-              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-          }
-        ),
+            }),
       ],
     );
   }
@@ -596,32 +547,26 @@ class _DetailViewEventState extends State<DetailViewEvent> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            'OK',
-            style: GoogleFonts.roboto(
-                fontSize: 20,
-                letterSpacing: 1.25,
-                fontStyle: FontStyle.normal,
-                color: ColorConstants.buttonNormalColor),
-          ),
-          onPressed: () {
-            Get.back();
-            //if (mounted) {
+            child: Text(
+              'OK',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  letterSpacing: 1.25,
+                  fontStyle: FontStyle.normal,
+                  color: ColorConstants.buttonNormalColor),
+            ),
+            onPressed: () {
+              Get.back();
+              //if (mounted) {
               Navigator.push(
-                  context,
-                  new CupertinoPageRoute(
-                      builder: (BuildContext context) =>
-                          DetailViewEvent(eventId)))
-                 .then((_) => {getDetailEventsData()});
-              // Get.to(() => DetailViewEvent(eventId), binding: EGBinding());
-           // }
-
-          }
-        ),
+                      context,
+                      new CupertinoPageRoute(
+                          builder: (BuildContext context) =>
+                              DetailViewEvent(eventId)))
+                  .then((_) => {getDetailEventsData()});
+              // }
+            }),
       ],
     );
   }
 }
-
-//{"respCode":"DM2043","respMsg":"The event MINI CONTRACTOR MEET is scheduled for 18-05-2021 , you can not start now.","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}
-//{"respCode":"DM2043","respMsg":"You have not ended previous event/meet MINI CONTRACTOR MEET & 18-05-2021","eventID":86,"eventTypeId":4,"eventTypeText":"MINI CONTRACTOR MEET","eventDate":1621276200000}

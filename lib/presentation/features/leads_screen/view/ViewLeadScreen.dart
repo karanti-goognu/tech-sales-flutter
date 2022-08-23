@@ -1,7 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
@@ -31,17 +36,10 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dialog/lead_change_to_site_dialog.dart';
 
 class ViewLeadScreen extends StatefulWidget {
-  final int leadId;
+  final int? leadId;
 
   ViewLeadScreen(this.leadId);
 
@@ -59,19 +57,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     getData();
   }
 
-
   getData() {
     internetChecking().then((result) => {
           if (result == true)
             {
-              _addLeadsController.getLeadDataNew(widget.leadId).then((data) {
-                setState(() {
-                  if (data != null) {
-                    viewLeadDataResponse = data;
-                    print(viewLeadDataResponse.nextStageConstructionEntity);
-                    setData();
-                  }
-                });
+              _addLeadsController
+                  .getLeadDataNew(widget.leadId)
+                  .then((ViewLeadDataResponse data) {
+                setState(() => viewLeadDataResponse = data);
+                setData();
               })
             }
           else
@@ -88,145 +82,153 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<LeadInfluencerEntity> influencerListForConvertToSite =
       List.empty(growable: true);
   setData() {
-    if (viewLeadDataResponse != null) {
-      _addLeadsController.imageList.clear();
-      checkStatus();
-      _contactName.text = viewLeadDataResponse.leadsEntity.contactName;
-      _contactNumber.text = viewLeadDataResponse.leadsEntity.contactNumber;
-      geoTagType.text = viewLeadDataResponse.leadsEntity.geotagType;
-      _siteAddress.text = viewLeadDataResponse.leadsEntity.leadAddress;
-      _pincode.text = viewLeadDataResponse.leadsEntity.leadPincode;
-      _state.text = viewLeadDataResponse.leadsEntity.leadStateName;
-      _district.text = viewLeadDataResponse.leadsEntity.leadDistrictName;
-      _taluk.text = viewLeadDataResponse.leadsEntity.leadTalukName;
-      _leadSource.text = viewLeadDataResponse.leadsEntity.leadSource;
-      _leadSourceUser.text = viewLeadDataResponse.leadsEntity.leadSourceUser;
-      leadCreatedBy = viewLeadDataResponse.leadsEntity.createdBy;
-      leadStageEntity = viewLeadDataResponse.leadStageEntity;
-      for (int i = 0; i < leadStageEntity.length; i++) {
-        if (viewLeadDataResponse.leadsEntity.leadStageId.toString() ==
-            leadStageEntity[i].id.toString()) {
-          leadStageVal.id = leadStageEntity[i].id;
-          leadStageVal.leadStageDesc = leadStageEntity[i].leadStageDesc;
-        }
-      }
-      leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
-      gv.leadRejectReasonEntity = leadRejectReasonEntity;
-      nextStageConstructionEntity =
-          viewLeadDataResponse.nextStageConstructionEntity;
-      gv.nextStageConstructionEntity = nextStageConstructionEntity;
-      dealerList = viewLeadDataResponse.dealerList;
-      _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
-      _siteCompetitionStatusEntity = viewLeadDataResponse.siteCompetitionStatusEntity;
-      gv.dealerList = dealerList;
-      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-      _currentPosition = new LatLng(
-          double.parse(viewLeadDataResponse.leadsEntity.leadLatitude),
-          double.parse(viewLeadDataResponse.leadsEntity.leadLongitude));
-      listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+    print(viewLeadDataResponse.respMsg);
+    print(viewLeadDataResponse.leadsEntity!.leadSource);
 
-      for (int i = 0; i < listLeadImagePhoto.length; i++) {
-        String imageUrl = UrlConstants.baseUrlforImages + "/" + listLeadImagePhoto[i].photoName;
-        _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
-          _imgDetails.add(new ImageDetails("Network", imageFile));
-          _addLeadsController.updateImageList(imageFile, serverImageStatus);
-        });
+    _addLeadsController.imageList!.clear();
+    checkStatus();
+    _contactName.text = viewLeadDataResponse.leadsEntity!.contactName!;
+    _contactNumber.text = viewLeadDataResponse.leadsEntity!.contactNumber!;
+    geoTagType.text = viewLeadDataResponse.leadsEntity!.geotagType!;
+    _siteAddress.text = viewLeadDataResponse.leadsEntity!.leadAddress!;
+    _pincode.text = viewLeadDataResponse.leadsEntity!.leadPincode!;
+    _state.text = viewLeadDataResponse.leadsEntity!.leadStateName!;
+    _district.text = viewLeadDataResponse.leadsEntity!.leadDistrictName!;
+    _taluk.text = viewLeadDataResponse.leadsEntity!.leadTalukName!;
+    _leadSource.text = viewLeadDataResponse.leadsEntity!.leadSource!;
+    _leadSourceUser.text = viewLeadDataResponse.leadsEntity!.leadSourceUser!;
+    leadCreatedBy = viewLeadDataResponse.leadsEntity!.createdBy;
+    leadStageEntity = viewLeadDataResponse.leadStageEntity;
+    for (int i = 0; i < leadStageEntity!.length; i++) {
+      if (viewLeadDataResponse.leadsEntity!.leadStageId.toString() ==
+          leadStageEntity![i].id.toString()) {
+        leadStageVal.id = leadStageEntity![i].id;
+        leadStageVal.leadStageDesc = leadStageEntity![i].leadStageDesc;
       }
-      initialImagelistLength = _addLeadsController.imageList.length;
-      influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
-      influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
-      _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
-      _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
-      if (_listInfluencerEntity.length != null) {
-        for (int i = 0; i < _listInfluencerEntity.length; i++) {
-          int originalId;
-          for (int j = 0; j < _listLeadInfluencerEntity.length; j++) {
-            if (_listInfluencerEntity[i].id ==
-                _listLeadInfluencerEntity[j].inflId) {
-              influencerListForConvertToSite.add(_listLeadInfluencerEntity[j]);
-              _listInfluencerEntity[i].isPrimary =
-                  _listLeadInfluencerEntity[j].isPrimary;
-              originalId = _listLeadInfluencerEntity[j].id;
-              break;
-            }
-          }
-
-          InfluencerDetail inflDetail = new InfluencerDetail(
-            originalId: originalId,
-            isPrimary: _listInfluencerEntity[i].isPrimary,
-            isPrimarybool:
-                _listInfluencerEntity[i].isPrimary == "Y" ? true : false,
-            id: new TextEditingController(
-                text: _listInfluencerEntity[i].id.toString()),
-            inflName: new TextEditingController(
-                text: _listInfluencerEntity[i].inflName.toString()),
-            inflContact: new TextEditingController(
-                text: _listInfluencerEntity[i].inflContact.toString()),
-            inflTypeId: new TextEditingController(
-                text: _listInfluencerEntity[i].inflTypeId.toString()),
-            inflCatId: new TextEditingController(
-                text: _listInfluencerEntity[i].inflCatId.toString()),
-            ilpIntrested: new TextEditingController(
-                text: _listInfluencerEntity[i].ilpIntrested.toString()),
-            createdOn: new TextEditingController(
-                text: _listInfluencerEntity[i].createdOn.toString()),
-            isExpanded: false,
-          );
-          for (int j = 0; j < influencerTypeEntity.length; j++) {
-            if (influencerTypeEntity[j].inflTypeId.toString() ==
-                inflDetail.inflTypeId.text.toString()) {
-              inflDetail.inflTypeValue = new TextEditingController(
-                  text: influencerTypeEntity[j].inflTypeDesc);
-              break;
-            }
-          }
-          for (int j = 0; j < influencerCategoryEntity.length; j++) {
-            if (influencerCategoryEntity[j].inflCatId.toString() ==
-                inflDetail.inflCatId.text.toString()) {
-              inflDetail.inflCatValue = new TextEditingController(
-                  text: influencerCategoryEntity[j].inflCatDesc);
-              break;
-            }
-          }
-
-          _listInfluencerDetail.add(inflDetail);
-        }
-      } else {
-        _listInfluencerDetail
-            .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
-      }
-      initialInfluencerListLength = _listInfluencerDetail.length;
-
-      _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
-      final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
-      for (int i = 0; i < _commentsListEntity.length; i++) {
-        _commentsList.add(new CommentsDetail(
-          creatorName: _commentsListEntity[i].creatorName,
-          commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
-              _commentsListEntity[i].createdOn)),
-          createdBy: _commentsListEntity[i].createdBy,
-          commentText: _commentsListEntity[i].commentText,
-        ));
-      }
-      _totalMT.text = viewLeadDataResponse.leadsEntity.leadSitePotentialMt;
-      _rera.text = viewLeadDataResponse.leadsEntity.leadReraNumber;
-      _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
-      myFocusNode = FocusNode();
-      myFocusNode.requestFocus();
     }
+    leadRejectReasonEntity = viewLeadDataResponse.leadRejectReasonEntity;
+    gv.leadRejectReasonEntity = leadRejectReasonEntity;
+    nextStageConstructionEntity =
+        viewLeadDataResponse.nextStageConstructionEntity;
+    gv.nextStageConstructionEntity = nextStageConstructionEntity;
+    dealerList = viewLeadDataResponse.dealerList;
+    _siteFloorsEntity = viewLeadDataResponse.siteFloorsEntity;
+    _siteCompetitionStatusEntity =
+        viewLeadDataResponse.siteCompetitionStatusEntity;
+    gv.dealerList = dealerList;
+    influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+    influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+    _currentPosition = new LatLng(
+        double.parse(viewLeadDataResponse.leadsEntity!.leadLatitude!),
+        double.parse(viewLeadDataResponse.leadsEntity!.leadLongitude!));
+    listLeadImagePhoto = viewLeadDataResponse.leadphotosEntity;
+
+    for (int i = 0; i < listLeadImagePhoto!.length; i++) {
+      String imageUrl = UrlConstants.baseUrlforImages +
+          "/" +
+          listLeadImagePhoto![i].photoName!;
+      _addLeadsController.getFileFromUrl(imageUrl).then((imageFile) {
+        _imgDetails.add(new ImageDetails("Network", imageFile));
+        _addLeadsController.updateImageList(imageFile, serverImageStatus);
+      });
+    }
+    initialImagelistLength = _addLeadsController.imageList!.length;
+    influencerTypeEntity = viewLeadDataResponse.influencerTypeEntity;
+    influencerCategoryEntity = viewLeadDataResponse.influencerCategoryEntity;
+    _listInfluencerEntity = viewLeadDataResponse.influencerEntity;
+    _listLeadInfluencerEntity = viewLeadDataResponse.leadInfluencerEntity;
+    if (_listInfluencerEntity!.length != null) {
+      for (int i = 0; i < _listInfluencerEntity!.length; i++) {
+        int? originalId;
+        for (int j = 0; j < _listLeadInfluencerEntity!.length; j++) {
+          if (_listInfluencerEntity![i].id ==
+              _listLeadInfluencerEntity![j].inflId) {
+            influencerListForConvertToSite.add(_listLeadInfluencerEntity![j]);
+            _listInfluencerEntity![i].isPrimary =
+                _listLeadInfluencerEntity![j].isPrimary;
+            originalId = _listLeadInfluencerEntity![j].id;
+            break;
+          }
+        }
+
+        InfluencerDetail inflDetail = new InfluencerDetail(
+          originalId: originalId,
+          isPrimary: _listInfluencerEntity![i].isPrimary,
+          isPrimarybool:
+              _listInfluencerEntity![i].isPrimary == "Y" ? true : false,
+          id: new TextEditingController(
+              text: _listInfluencerEntity![i].id.toString()),
+          inflName: new TextEditingController(
+              text: _listInfluencerEntity![i].inflName.toString()),
+          inflContact: new TextEditingController(
+              text: _listInfluencerEntity![i].inflContact.toString()),
+          inflTypeId: new TextEditingController(
+              text: _listInfluencerEntity![i].inflTypeId.toString()),
+          inflCatId: new TextEditingController(
+              text: _listInfluencerEntity![i].inflCatId.toString()),
+          ilpIntrested: new TextEditingController(
+              text: _listInfluencerEntity![i].ilpIntrested.toString()),
+          createdOn: new TextEditingController(
+              text: _listInfluencerEntity![i].createdOn.toString()),
+          isExpanded: false,
+        );
+        for (int j = 0; j < influencerTypeEntity!.length; j++) {
+          if (influencerTypeEntity![j].inflTypeId.toString() ==
+              inflDetail.inflTypeId!.text.toString()) {
+            inflDetail.inflTypeValue = new TextEditingController(
+                text: influencerTypeEntity![j].inflTypeDesc);
+            break;
+          }
+        }
+        for (int j = 0; j < influencerCategoryEntity!.length; j++) {
+          if (influencerCategoryEntity![j].inflCatId.toString() ==
+              inflDetail.inflCatId!.text.toString()) {
+            inflDetail.inflCatValue = new TextEditingController(
+                text: influencerCategoryEntity![j].inflCatDesc);
+            break;
+          }
+        }
+
+        _listInfluencerDetail.add(inflDetail);
+      }
+    } else {
+      _listInfluencerDetail
+          .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
+    }
+    initialInfluencerListLength = _listInfluencerDetail.length;
+
+    _commentsListEntity = viewLeadDataResponse.leadcommentsEnitiy;
+    final DateFormat formatter = DateFormat('dd-MMM-yyyy hh:mm');
+    for (int i = 0; i < _commentsListEntity!.length; i++) {
+      _commentsList.add(new CommentsDetail(
+        creatorName: _commentsListEntity![i].creatorName,
+        commentedAt: formatter.format(DateTime.fromMillisecondsSinceEpoch(
+            _commentsListEntity![i].createdOn!)),
+        createdBy: _commentsListEntity![i].createdBy,
+        commentText: _commentsListEntity![i].commentText,
+      ));
+    }
+    _totalMT.text = viewLeadDataResponse.leadsEntity!.leadSitePotentialMt!;
+    _rera.text = viewLeadDataResponse.leadsEntity!.leadReraNumber!;
+    _totalBags.text = (double.parse(_totalMT.text) * 20).round().toString();
+    myFocusNode = FocusNode();
+    myFocusNode!.requestFocus();
   }
 
   updateStatusForNextStage(BuildContext context, int statusId,
-      {String dealerId, String subDealerId,int floorId,
-        String noOfBagSupplied, String isIhbCommercial, int lapsePotential, int nextFloorLevel, int totalSitePotential}) {
+      {String? dealerId,
+      String? subDealerId,
+      int? floorId,
+      String? noOfBagSupplied,
+      String? isIhbCommercial,
+      int? lapsePotential,
+      int? nextFloorLevel,
+      int? totalSitePotential}) {
     String empId;
-    String mobileNumber;
     String name;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
       name = prefs.getString(StringConstants.employeeName) ?? "empty";
 
       if (_comments.text == "") {
@@ -237,7 +239,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         new CommentsDetail(
             createdBy: empId,
             commentText: _comments.text,
-            // commentedAt: DateTime.now(),
             creatorName: name)
       ];
 
@@ -266,13 +267,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName ==
                 null ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                    .inflName
+                    .inflName!
                     .text ==
                 "null" ||
             _listInfluencerDetail[_listInfluencerDetail.length - 1]
-                .inflName
+                .inflName!
                 .text
-                .isBlank) {
+                .isBlank!) {
           _listInfluencerDetail.removeAt(_listInfluencerDetail.length - 1);
         }
       }
@@ -282,9 +283,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         listInfluencer.add(new updateRequest.LeadInfluencerEntity(
             id: _listInfluencerDetail[i].originalId,
             leadId: widget.leadId,
-            isPrimary: _listInfluencerDetail[i].isPrimarybool ? "Y" : "N",
+            isPrimary: _listInfluencerDetail[i].isPrimarybool! ? "Y" : "N",
             createdBy: empId,
-            inflId: int.parse(_listInfluencerDetail[i].id.text),
+            inflId: int.parse(_listInfluencerDetail[i].id!.text),
             isDelete: "N"));
       }
 
@@ -293,54 +294,53 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       }
       print(influencerListForConvertToSite);
       var updateRequestModel = {
-        'eventId': viewLeadDataResponse.leadsEntity.eventId,
-        'leadId': viewLeadDataResponse.leadsEntity.leadId,
-        'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
-        'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
+        'eventId': viewLeadDataResponse.leadsEntity!.eventId,
+        'leadId': viewLeadDataResponse.leadsEntity!.leadId,
+        'leadSegment': viewLeadDataResponse.leadsEntity!.leadSegment,
+        'assignedTo': viewLeadDataResponse.leadsEntity!.assignedTo,
         'leadStatusId': statusId,
-        'leadStage': viewLeadDataResponse.leadsEntity.leadStageId,
-        'contactName': viewLeadDataResponse.leadsEntity.contactName,
-        'contactNumber': viewLeadDataResponse.leadsEntity.contactNumber,
-        'geotagType': viewLeadDataResponse.leadsEntity.geotagType,
-        'leadLatitude': viewLeadDataResponse.leadsEntity.leadLatitude,
-        'leadLongitude': viewLeadDataResponse.leadsEntity.leadLongitude,
-        'leadAddress': viewLeadDataResponse.leadsEntity.leadAddress,
-        'leadPincode': viewLeadDataResponse.leadsEntity.leadPincode,
-        'leadStateName': viewLeadDataResponse.leadsEntity.leadStateName,
-        'leadDistrictName': viewLeadDataResponse.leadsEntity.leadDistrictName,
-        'leadTalukName': viewLeadDataResponse.leadsEntity.leadTalukName,
+        'leadStage': viewLeadDataResponse.leadsEntity!.leadStageId,
+        'contactName': viewLeadDataResponse.leadsEntity!.contactName,
+        'contactNumber': viewLeadDataResponse.leadsEntity!.contactNumber,
+        'geotagType': viewLeadDataResponse.leadsEntity!.geotagType,
+        'leadLatitude': viewLeadDataResponse.leadsEntity!.leadLatitude,
+        'leadLongitude': viewLeadDataResponse.leadsEntity!.leadLongitude,
+        'leadAddress': viewLeadDataResponse.leadsEntity!.leadAddress,
+        'leadPincode': viewLeadDataResponse.leadsEntity!.leadPincode,
+        'leadStateName': viewLeadDataResponse.leadsEntity!.leadStateName,
+        'leadDistrictName': viewLeadDataResponse.leadsEntity!.leadDistrictName,
+        'leadTalukName': viewLeadDataResponse.leadsEntity!.leadTalukName,
         'leadSalesPotentialMt':
-            viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
-        'leadReraNumber': viewLeadDataResponse.leadsEntity.leadReraNumber,
+            viewLeadDataResponse.leadsEntity!.leadSitePotentialMt,
+        'leadReraNumber': viewLeadDataResponse.leadsEntity!.leadReraNumber,
         'isStatus': "false",
         'updatedBy': empId,
-        'leadIsDuplicate': viewLeadDataResponse.leadsEntity.leadIsDuplicate,
-        'rejectionComment': viewLeadDataResponse.leadsEntity.rejectionComment,
+        'leadIsDuplicate': viewLeadDataResponse.leadsEntity!.leadIsDuplicate,
+        'rejectionComment': viewLeadDataResponse.leadsEntity!.rejectionComment,
         'nextDateCconstruction': _nextDateofConstruction.text,
         'nextStageConstruction':
-            _selectedNextStageConstructionEntity.nextStageConsId,
+            _selectedNextStageConstructionEntity!.nextStageConsId,
         /*_selectedNextStageConstructionEntity.nextStageConsId*/
         'siteDealerId': dealerId,
-        "subdealerId": subDealerId, //need to pass selected value
+        "subdealerId": subDealerId,
         'listLeadcomments': commentsList,
         'listLeadImage': viewLeadDataResponse.leadphotosEntity,
         'leadInfluencerEntity': influencerListForConvertToSite,
-        // 'leadInfluencerEntity': viewLeadDataResponse.leadInfluencerEntity,
         'leadSource': _leadSource.text,
         'leadSourceUser': _leadSourceUser.text,
-        'leadSourcePlatform' : viewLeadDataResponse.leadsEntity.leadSourcePlatform,
-        'nosFloors':_floorId,
-        'totalFloorSqftArea':int.tryParse(_noOfBagSupplied),
+        'leadSourcePlatform':
+            viewLeadDataResponse.leadsEntity!.leadSourcePlatform,
+        'nosFloors': _floorId,
+        'totalFloorSqftArea': int.tryParse(_noOfBagSupplied),
         'isIhbCommercial': _isIhbCommercial,
-        'lapsePotential' : _lapsePotential,
-        'nextFloorLevel' : _floorLevelId,
-        'totalSitePotential' : _totalSitePotential,
-        'siteCompitationId' : _siteCompitationId
+        'lapsePotential': _lapsePotential,
+        'nextFloorLevel': _floorLevelId,
+        'totalSitePotential': _totalSitePotential,
+        'siteCompitationId': _siteCompitationId
       };
 
-      var body = jsonEncode(updateRequestModel);
       _addLeadsController.updateLeadData(updateRequestModel, [], context,
-          viewLeadDataResponse.leadsEntity.leadId, 3);
+          viewLeadDataResponse.leadsEntity!.leadId, 3);
 
       Get.back();
     });
@@ -348,7 +348,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   void dispose() {
-    _addLeadsController.imageList.clear();
+    _addLeadsController.imageList!.clear();
     myFocusNode?.dispose();
     myFocusNode = null;
     super.dispose();
@@ -357,13 +357,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        context: context,
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+    );
     double _height = ScreenUtil().setSp(15);
 
     final statusDropDown = Container(
@@ -373,7 +370,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-                color: Colors.grey[500],
+                color: Colors.grey[500]!,
                 offset: Offset(5.0, 5.0),
                 blurRadius: 10.0,
                 spreadRadius: 4.0)
@@ -381,14 +378,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           value: _selectedValue,
-          items: leadStatusEntity
+          items: leadStatusEntity!
               .map((label) => DropdownMenuItem(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2.7,
                         child: Text(
-                          label.leadStatusDesc,
+                          label.leadStatusDesc!,
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(13),
                               color: ColorConstants.inputBoxHintColor,
@@ -399,26 +396,23 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     value: label,
                   ))
               .toList(),
-          //  elevation: 0,
           iconSize: 35,
           hint: Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: (labelText != null) ? Text(labelText) : Text(""),
+            child: (labelText != null) ? Text(labelText!) : Text(""),
           ),
-          // hint: Text('Rating'),
-          onChanged: (value) {
+          onChanged: (dynamic value) {
             setState(() {
               _selectedValuedummy = value;
-              if ((viewLeadDataResponse.leadsEntity.leadStageId == 2 ||
-                  viewLeadDataResponse.leadsEntity.leadStageId == 3)) {
-                if (_selectedValuedummy.id == 2) {
-                  Get.dialog(CustomDialogs().showRejectionConfirmationDialog(
+              if ((viewLeadDataResponse.leadsEntity!.leadStageId == 2 ||
+                  viewLeadDataResponse.leadsEntity!.leadStageId == 3)) {
+                if (_selectedValuedummy!.id == 2) {
+                  Get.dialog(CustomDialogs.showRejectionConfirmationDialog(
                       "Are you sure, You want to reject a site",
                       context,
                       viewLeadDataResponse));
-                } else if (_selectedValuedummy.id == 3) {
+                } else if (_selectedValuedummy!.id == 3) {
                   showDialog(
-                     // barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) =>
                           new ChangeLeadToSiteDialog(
@@ -427,21 +421,18 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             dealerEntityForDb: dealerEntityForDb,
                             counterListModel: counterListModel,
                             siteFloorsEntity: _siteFloorsEntity,
-                            siteCompetitionStatusEntity: _siteCompetitionStatusEntity,
+                            siteCompetitionStatusEntity:
+                                _siteCompetitionStatusEntity,
                             mListener: this,
                           ));
-                } else if (_selectedValuedummy.id == 4) {
+                } else if (_selectedValuedummy!.id == 4) {
                   String empId;
-                  String mobileNumber;
                   String name;
                   Future<SharedPreferences> _prefs =
                       SharedPreferences.getInstance();
                   _prefs.then((SharedPreferences prefs) async {
                     empId =
                         prefs.getString(StringConstants.employeeId) ?? "empty";
-                    mobileNumber =
-                        prefs.getString(StringConstants.mobileNumber) ??
-                            "empty";
                     name = prefs.getString(StringConstants.employeeName) ??
                         "empty";
 
@@ -484,11 +475,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       _listInfluencerDetail.length - 1]
                                   .inflName ==
                               null) ||
-                          (_listInfluencerDetail[
+                          _listInfluencerDetail[
                                   _listInfluencerDetail.length - 1]
-                              .inflName
+                              .inflName!
                               .text
-                              .isBlank)) {
+                              .isBlank!) {
                         _listInfluencerDetail
                             .removeAt(_listInfluencerDetail.length - 1);
                       }
@@ -500,33 +491,30 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                       print(_listInfluencerDetail[i].toJson());
                       listInfluencer.add(new updateRequest.LeadInfluencerEntity(
                           leadId: widget.leadId,
-                          isPrimary: _listInfluencerDetail[i].isPrimarybool
+                          isPrimary: _listInfluencerDetail[i].isPrimarybool!
                               ? "Y"
                               : "N",
                           createdBy: empId,
-                          inflId: int.parse(_listInfluencerDetail[i].id.text),
+                          inflId: int.parse(_listInfluencerDetail[i].id!.text),
                           isDelete: "N"));
                     }
                     Get.dialog(showDuplicateDialog(context, empId));
                   });
-                } else if (_selectedValuedummy.id == 5) {
+                } else if (_selectedValuedummy!.id == 5) {
                   Get.dialog(showFutureDialog(context));
                 }
               } else {
-                Get.dialog(CustomDialogs().errorDialog(
+                Get.dialog(CustomDialogs.showMessage(
                     "Lead Stage must be either phy-verified or Tele-verified"));
               }
             });
           },
-
-          //
         ),
       ),
     );
 
     final name = TextFormField(
       controller: _contactName,
-      //autofocus: true,
       focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
@@ -544,8 +532,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final leadSource = TextFormField(
       controller: _leadSource,
-      //autofocus: true,
-      //focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
@@ -554,7 +540,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
     final leadSourceUser = TextFormField(
       controller: _leadSourceUser,
-      //autofocus: true,
       focusNode: myFocusNode,
       readOnly: true,
       style: FormFieldStyle.formFieldTextStyle,
@@ -590,7 +575,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#F9A61A"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
@@ -610,7 +594,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             _state.text = "${loc[1]}";
             _pincode.text = "${loc[5]}";
             _taluk.text = "${loc[3]}";
-            _currentAddress = "${loc[3]}, ${loc[5]}, ${loc[1]}";
+            Get.back();
           },
         ),
         Text(
@@ -631,18 +615,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#F9A61A"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
           onPressed: () async {
-            var data = [];
+            List<dynamic>? data = [];
             data = await Navigator.push(
                 context, MaterialPageRoute(builder: (context) => CustomMap()));
             setState(() {
               geoTagType.text = "M";
             });
-            _currentPosition = new LatLng(data[0], data[1]);
+            _currentPosition = new LatLng(data![0], data[1]);
             _getAddressFromLatLng();
           },
         ),
@@ -652,7 +635,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final siteAddress = TextFormField(
       controller: _siteAddress,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter Address ';
         }
         return null;
@@ -665,7 +648,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final pincode = TextFormField(
       controller: _pincode,
       validator: (value) {
-        if (value.isNotEmpty && !Validations.isValidPincode(value)) {
+        if (value!.isNotEmpty && !Validations.isValidPincode(value)) {
           return "Enter valid pincode";
         }
         return null;
@@ -696,7 +679,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final state = TextFormField(
       controller: _state,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter State ';
         }
 
@@ -715,7 +698,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final district = TextFormField(
       controller: _district,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter District ';
         }
 
@@ -734,7 +717,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final taluka = TextFormField(
       controller: _taluk,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter Taluk ';
         }
         return null;
@@ -763,20 +746,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             style: TextStyle(
                 color: HexColor("#1C99D4"),
                 fontWeight: FontWeight.bold,
-                // letterSpacing: 2,
                 fontSize: 17),
           ),
         ),
         onPressed: () async {
-          print(
-              "_addLeadsController.imageList.length  ${_addLeadsController.imageList.length}");
-          if (_addLeadsController.imageList.length < 5) {
+          if (_addLeadsController.imageList!.length < 5) {
             _addLeadsController.updateImageList(
                 await UploadImageBottomSheet.showPicker(context),
                 userSelectedImageStatus);
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog("You can add only up to 5 photos"));
+                CustomDialogs.showMessage("You can add only up to 5 photos"));
           }
         },
       ),
@@ -797,7 +777,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               style: TextStyle(
                   color: HexColor("#1C99D4"),
                   fontWeight: FontWeight.bold,
-                  // letterSpacing: 2,
                   fontSize: 17),
             ),
           ),
@@ -812,12 +791,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           child: Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: TextFormField(
-              // initialValue: _totalBags.toString(),
               controller: _totalBags,
               onChanged: (value) {
                 setState(() {
-                  // _totalBags.text = value ;
-                  if (_totalBags.text == null || _totalBags.text == "") {
+                  if (_totalBags.text == "") {
                     _totalMT.clear();
                   } else {
                     _totalMT.text =
@@ -830,12 +807,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 FilteringTextInputFormatter.digitsOnly
               ],
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'Please enter Bags ';
                 }
                 return null;
               },
-
               style: FormFieldStyle.formFieldTextStyle,
               decoration:
                   FormFieldStyle.buildInputDecoration(labelText: "Bags"),
@@ -849,8 +825,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               controller: _totalMT,
               onChanged: (value) {
                 setState(() {
-                  // _totalBags.text = value ;
-                  if (_totalMT.text == null || _totalMT.text == "") {
+                  if (_totalMT.text == "") {
                     _totalBags.clear();
                   } else {
                     _totalBags.text =
@@ -859,7 +834,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 });
               },
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'Please enter MT ';
                 }
 
@@ -877,7 +852,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final rera = TextFormField(
       controller: _rera,
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter RERA Number ';
         }
 
@@ -904,11 +879,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
     final btnMoveToNextStage = Center(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          primary: HexColor("#1C99D4"),
         ),
-        primary: HexColor("#1C99D4"),),
         child: Padding(
           padding: const EdgeInsets.only(right: 5, bottom: 10, top: 10),
           child: Text(
@@ -921,12 +897,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           ),
         ),
         onPressed: () async {
-          // print("_addLeadsController.imageList   ${_addLeadsController.imageList.length}");
-
-          nextStageModalBottomSheet(
-              context /*, _addLeadsController.imageList*/);
-
-          //nextStageModalBottomSheet(context);
+          nextStageModalBottomSheet(context);
         },
       ),
     );
@@ -942,8 +913,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
         children: [
           BackgroundContainerImage(),
           Positioned.fill(
-            child: (viewLeadDataResponse != null &&
-                    viewLeadDataResponse.leadsEntity != null)
+            child: (viewLeadDataResponse.leadsEntity != null)
                 ? GetBuilder<AddLeadsController>(builder: (controller) {
                     return ListView(
                       children: [
@@ -1019,7 +989,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
-                                        // color: HexColor("#000000DE"),
                                         fontFamily: "Muli"),
                                   ),
                                 ),
@@ -1042,7 +1011,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 btnUploadPhoto,
                                 SizedBox(height: _height),
                                 controller.imageList != null
-                                    //    _imageList != null
                                     ? Row(
                                         children: [
                                           Expanded(
@@ -1050,51 +1018,23 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
-                                                itemCount:
-                                                    //_imageList.length,
-                                                    controller.imageList.length,
+                                                itemCount: controller
+                                                    .imageList!.length,
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         int index) {
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      return showDialog(
+                                                      showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
-                                                            // return AlertDialog(
-                                                            //   content:
-                                                            //   new Container(
-                                                            //     // width: 500,
-                                                            //     // height: 500,
-                                                            //     child: _imgDetails[
-                                                            //     index]
-                                                            //         .from
-                                                            //         .toLowerCase() ==
-                                                            //         "network"
-                                                            //         ? Image.network(
-                                                            //         _imgDetails[
-                                                            //         index]
-                                                            //             .file
-                                                            //             .path)
-                                                            //         : Image.file(
-                                                            //         _imgDetails[
-                                                            //         index]
-                                                            //             .file),
-                                                            //   ),
-                                                            // );
-                                                            print(controller
-                                                                .imageList[
-                                                                    index]
-                                                                .toString());
                                                             return AlertDialog(
                                                               content:
                                                                   new Container(
-                                                                // width: 500,
-                                                                // height: 500,
                                                                 child: Image.file(
                                                                     controller
-                                                                            .imageList[
+                                                                            .imageList![
                                                                         index]),
                                                               ),
                                                             );
@@ -1132,7 +1072,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                           ),
                                                           onTap: () {
                                                             setState(() {
-                                                              //controller.imageList.removeAt(index);
                                                               controller
                                                                   .updateImageAfterDelete(
                                                                       index);
@@ -1174,7 +1113,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             if (!_listInfluencerDetail[index]
-                                                .isExpanded) {
+                                                .isExpanded!) {
                                               return Column(
                                                 children: [
                                                   Row(
@@ -1210,8 +1149,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs()
-                                                                  .errorDialog(
+                                                              Get.dialog(CustomDialogs
+                                                                  .showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1219,7 +1158,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         value:
                                                             _listInfluencerDetail[
                                                                     index]
-                                                                .isPrimarybool,
+                                                                .isPrimarybool!,
                                                         activeColor:
                                                             HexColor("#009688"),
                                                         activeTrackColor:
@@ -1233,7 +1172,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       ),
                                                       _listInfluencerDetail[
                                                                   index]
-                                                              .isExpanded
+                                                              .isExpanded!
                                                           ? TextButton.icon(
                                                               icon: Icon(
                                                                 Icons.remove,
@@ -1252,7 +1191,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded = !_listInfluencerDetail[
                                                                           index]
-                                                                      .isExpanded;
+                                                                      .isExpanded!;
                                                                 });
                                                               },
                                                             )
@@ -1277,9 +1216,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded = !_listInfluencerDetail[
                                                                           index]
-                                                                      .isExpanded;
+                                                                      .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             ),
                                                     ],
@@ -1288,8 +1226,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               );
                                             } else {
                                               return Column(
-                                                // mainAxisAlignment:
-                                                // MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Row(
                                                     mainAxisAlignment:
@@ -1302,9 +1238,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                               .mulliBold18),
                                                       _listInfluencerDetail[
                                                                   index]
-                                                              .isExpanded
+                                                              .isExpanded!
                                                           ? TextButton.icon(
-
                                                               icon: Icon(
                                                                 Icons.remove,
                                                                 color: ColorConstants
@@ -1322,9 +1257,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded = !_listInfluencerDetail[
                                                                           index]
-                                                                      .isExpanded;
+                                                                      .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             )
                                                           : TextButton.icon(
@@ -1348,9 +1282,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                           index]
                                                                       .isExpanded = !_listInfluencerDetail[
                                                                           index]
-                                                                      .isExpanded;
+                                                                      .isExpanded!;
                                                                 });
-                                                                // _getCurrentLocation();
                                                               },
                                                             ),
                                                     ],
@@ -1367,7 +1300,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 18,
-                                                            // color: HexColor("#000000DE"),
                                                             fontFamily: "Muli"),
                                                       ),
                                                       Switch(
@@ -1393,8 +1325,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                                 }
                                                               }
                                                             } else {
-                                                              Get.dialog(CustomDialogs()
-                                                                  .errorDialog(
+                                                              Get.dialog(CustomDialogs
+                                                                  .showMessage(
                                                                       "There should be one Primary Influencer . Please select other influencer to make this influencer secondary"));
                                                             }
                                                           });
@@ -1402,7 +1334,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         value:
                                                             _listInfluencerDetail[
                                                                     index]
-                                                                .isPrimarybool,
+                                                                .isPrimarybool!,
                                                         activeColor:
                                                             HexColor("#009688"),
                                                         activeTrackColor:
@@ -1422,11 +1354,10 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             fontSize: 18,
                                                             color: _listInfluencerDetail[
                                                                         index]
-                                                                    .isPrimarybool
+                                                                    .isPrimarybool!
                                                                 ? HexColor(
                                                                     "#009688")
                                                                 : Colors.black,
-                                                            // color: HexColor("#000000DE"),
                                                             fontFamily: "Muli"),
                                                       ),
                                                     ],
@@ -1446,24 +1377,19 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             null) {
                                                           _listInfluencerDetail[
                                                                   index]
-                                                              .inflName
+                                                              .inflName!
                                                               .clear();
                                                           _listInfluencerDetail[
                                                                   index]
-                                                              .inflTypeValue
+                                                              .inflTypeValue!
                                                               .clear();
                                                           _listInfluencerDetail[
                                                                   index]
-                                                              .inflCatValue
+                                                              .inflCatValue!
                                                               .clear();
                                                         }
                                                       } else if (value.length ==
                                                           10) {
-                                                        var bodyEncrypted = {
-                                                          //"reference-id": "IqEAFdXco54HTrBkH+sWOw==",
-                                                          "inflContact": value
-                                                        };
-
                                                         for (int i = 0;
                                                             i <
                                                                 _listInfluencerDetail
@@ -1473,7 +1399,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                           if (value ==
                                                               _listInfluencerDetail[
                                                                       i]
-                                                                  .inflContact
+                                                                  .inflContact!
                                                                   .text) {
                                                             match = true;
                                                             break;
@@ -1481,8 +1407,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         }
 
                                                         if (match) {
-                                                          Get.dialog(CustomDialogs()
-                                                              .errorDialog(
+                                                          Get.dialog(CustomDialogs
+                                                              .showMessage(
                                                                   "Already added influencer : " +
                                                                       value));
                                                         } else {
@@ -1494,7 +1420,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                       }
                                                     },
                                                     validator: (value) {
-                                                      if (value.isEmpty) {
+                                                      if (value!.isEmpty) {
                                                         return 'Please enter Influencer Number ';
                                                       } else if (value.length !=
                                                           10) {
@@ -1528,14 +1454,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail[
                                                                 index]
                                                             .inflName,
-
-                                                    // validator: (value) {
-                                                    //   if (value.isEmpty) {
-                                                    //     return 'Please enter Influencer Number ';
-                                                    //   }
-                                                    //
-                                                    //   return null;
-                                                    // },
                                                     style: FormFieldStyle
                                                         .formFieldTextStyle,
                                                     keyboardType:
@@ -1551,13 +1469,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail[
                                                                 index]
                                                             .inflTypeValue,
-                                                    // validator: (value) {
-                                                    //   if (value.isEmpty) {
-                                                    //     return 'Please enter Influencer Number ';
-                                                    //   }
-                                                    //
-                                                    //   return null;
-                                                    // },
                                                     style: FormFieldStyle
                                                         .formFieldTextStyle,
                                                     keyboardType:
@@ -1614,8 +1525,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                 SizedBox(height: _height),
                                 comment,
                                 SizedBox(height: _height),
-                                _commentsList != null &&
-                                        _commentsList.length != 0
+                                _commentsList.length != 0
                                     ? viewMoreActive
                                         ? Row(
                                             children: [
@@ -1646,7 +1556,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                               Text(
                                                                 _commentsList[
                                                                         index]
-                                                                    .creatorName,
+                                                                    .creatorName!,
                                                                 style: TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
@@ -1657,7 +1567,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                               Text(
                                                                 _commentsList[
                                                                         index]
-                                                                    .commentText,
+                                                                    .commentText!,
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black
@@ -1707,7 +1617,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     _commentsList[_commentsList
                                                                 .length -
                                                             1]
-                                                        .creatorName,
+                                                        .creatorName!,
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -1717,7 +1627,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                     _commentsList[_commentsList
                                                                 .length -
                                                             1]
-                                                        .commentText,
+                                                        .commentText!,
                                                     style: TextStyle(
                                                         color: Colors.black
                                                             .withOpacity(0.5),
@@ -1763,7 +1673,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                             "##F9A61A"),
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        // letterSpacing: 2,
                                                         fontSize: 17),
                                                   )
                                                 : Text(
@@ -1818,16 +1727,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   final _addLeadFormKey = GlobalKey<FormState>();
   final _formKeyForViewLeadScreen = GlobalKey();
 
-  int initialImagelistLength;
-  LeadStatusEntity _selectedValue;
-  NextStageConstructionEntity _selectedNextStageConstructionEntity;
-  DealerList selectedDealer;
-  LeadStatusEntity _selectedValuedummy;
-  int initialInfluencerListLength;
-  String labelText;
-  int labelId;
+  int? initialImagelistLength;
+  LeadStatusEntity? _selectedValue;
+  NextStageConstructionEntity? _selectedNextStageConstructionEntity;
+  DealerList? selectedDealer;
+  LeadStatusEntity? _selectedValuedummy;
+  int? initialInfluencerListLength;
+  String? labelText;
+  int? labelId;
 
-  ///TextEditingControllers
   var _contactName = TextEditingController();
   var _contactNumber = TextEditingController();
   var txt = TextEditingController();
@@ -1849,66 +1757,59 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   var leadCreatedBy;
   bool isEditable = false;
-  DateTime nextStageConstructionPickedDate;
+  DateTime? nextStageConstructionPickedDate;
 
   /*List<File> _imageList = [];*/
   List<ListLeadImage> listLeadImage =
       new List<ListLeadImage>.empty(growable: true);
 
-  List<LeadphotosEntity> listLeadImagePhoto =
+  List<LeadphotosEntity>? listLeadImagePhoto =
       new List<LeadphotosEntity>.empty(growable: true);
   List<CommentsDetail> _commentsList = [];
-  List<LeadcommentsEnitiy> _commentsListEntity = [];
-  List<CommentsDetail> _commentsListNew = [];
-  List<LeadStageEntity> leadStageEntity = [];
+  List<LeadcommentsEnitiy>? _commentsListEntity = [];
+  List<LeadStageEntity>? leadStageEntity = [];
   LeadStageEntity leadStageVal = new LeadStageEntity();
-  List<LeadRejectReasonEntity> leadRejectReasonEntity = [];
-  List<NextStageConstructionEntity> nextStageConstructionEntity = [];
+  List<LeadRejectReasonEntity>? leadRejectReasonEntity = [];
+  List<NextStageConstructionEntity>? nextStageConstructionEntity = [];
   /*Work on dealer and subdelear*/
   List<CounterListModel> counterListModel = [];
   List<CounterListModel> subDealerList = [];
   CounterListModel selectedSubDealer = CounterListModel();
   List<DealerForDb> dealerEntityForDb = [];
 
-  List<DealerList> dealerList = [];
+  List<DealerList>? dealerList = [];
   List<ImageDetails> _imgDetails = [];
-  String leadDataDealer;
-  String leadDataSubDealer;
+  String? leadDataDealer;
+  String? leadDataSubDealer;
 
-  FocusNode myFocusNode;
+  FocusNode? myFocusNode;
   bool viewMoreActive = false;
 
-  List<String> _items = []; // to store comments
-
-  List<Item> _data = generateItems(1);
   List<InfluencerDetail> _listInfluencerDetail = [];
-  List<InfluencerEntity> _listInfluencerEntity = [];
-  List<LeadInfluencerEntity> _listLeadInfluencerEntity = [];
-  LatLng _currentPosition;
-  String _currentAddress;
-  List<LeadStatusEntity> leadStatusEntity = [];
+  List<InfluencerEntity>? _listInfluencerEntity = [];
+  List<LeadInfluencerEntity>? _listLeadInfluencerEntity = [];
+  LatLng? _currentPosition;
+  List<LeadStatusEntity>? leadStatusEntity = [];
   ViewLeadDataResponse viewLeadDataResponse = new ViewLeadDataResponse();
 
-  List<InfluencerTypeEntity> influencerTypeEntity;
+  List<InfluencerTypeEntity>? influencerTypeEntity;
 
-  List<InfluencerCategoryEntity> influencerCategoryEntity;
-  List<SiteFloorsEntity> _siteFloorsEntity;
-  List<SiteCompetitionStatusEntity> _siteCompetitionStatusEntity;
+  List<InfluencerCategoryEntity>? influencerCategoryEntity;
+  List<SiteFloorsEntity>? _siteFloorsEntity;
+  List<SiteCompetitionStatusEntity>? _siteCompetitionStatusEntity;
   AddLeadsController _addLeadsController = Get.find();
   final db = BrandNameDBHelper();
 
   checkStatus() {
     leadStatusEntity = viewLeadDataResponse.leadStatusEntity;
-    LeadStatusEntity list;
-
-    for (int i = 0; i < leadStatusEntity.length; i++) {
-      if (viewLeadDataResponse.leadsEntity.leadStatusId.toString() ==
-          leadStatusEntity[i].id.toString()) {
-        labelText = leadStatusEntity[i].leadStatusDesc;
-        labelId = leadStatusEntity[i].id;
+    for (int i = 0; i < leadStatusEntity!.length; i++) {
+      if (viewLeadDataResponse.leadsEntity!.leadStatusId.toString() ==
+          leadStatusEntity![i].id.toString()) {
+        labelText = leadStatusEntity![i].leadStatusDesc;
+        labelId = leadStatusEntity![i].id;
         if (labelId == 2 || labelId == 3 || labelId == 4 || labelId == 5) {
           showDialog(
-            context: _formKeyForViewLeadScreen.currentState.context,
+            context: _formKeyForViewLeadScreen.currentState!.context,
             barrierDismissible: false,
             builder: (BuildContext context) {
               return WillPopScope(
@@ -1918,7 +1819,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     "Status of this lead is $labelText . You cannot edit or update it.",
                   ),
                   actions: <Widget>[
-                    // usually buttons at the bottom of the dialog
                     new TextButton(
                       child: new Text("Close"),
                       onPressed: () {
@@ -1932,22 +1832,15 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             },
           );
         }
-        list = new LeadStatusEntity(
-            id: leadStatusEntity[i].id,
-            leadStatusDesc: leadStatusEntity[i].leadStatusDesc);
       }
     }
   }
 
   apiCallForInfContact(int index, String value, BuildContext context) async {
-    String empId;
-    String mobileNumber;
-    String name;
+    String? empId;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      mobileNumber = prefs.getString(StringConstants.mobileNumber) ?? "empty";
-      name = prefs.getString(StringConstants.employeeName) ?? "empty";
     });
     AddLeadsController _addLeadsController = Get.find();
     _addLeadsController.phoneNumber = value;
@@ -1957,9 +1850,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
       await _addLeadsController
           .getInfNewData(accessKeyModel.accessKey)
           .then((data) {
-        InfluencerDetailModel _infDetailModel = data;
+        InfluencerDetailModel _infDetailModel = data!;
         if (_infDetailModel.respCode == "DM1002") {
-          InfluencerModel inflDetail = _infDetailModel.influencerModel;
+          InfluencerModel inflDetail = _infDetailModel.influencerModel!;
 
           if (inflDetail.inflName != "null") {
             setState(() {
@@ -1980,69 +1873,70 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
               _listInfluencerDetail[index].ilpIntrested =
                   new TextEditingController();
 
-              _listInfluencerDetail[index].inflContact.text =
-                  inflDetail.inflContact;
-              _listInfluencerDetail[index].inflName.text = inflDetail.inflName;
-              _listInfluencerDetail[index].id.text =
+              _listInfluencerDetail[index].inflContact!.text =
+                  inflDetail.inflContact!;
+              _listInfluencerDetail[index].inflName!.text =
+                  inflDetail.inflName!;
+              _listInfluencerDetail[index].id!.text =
                   inflDetail.inflId.toString();
-              _listInfluencerDetail[index].ilpIntrested.text =
-                  inflDetail.ilpRegFlag;
-              _listInfluencerDetail[index].inflTypeValue.text =
-                  inflDetail.influencerTypeText;
-              _listInfluencerDetail[index].inflCatValue.text =
-                  inflDetail.influencerCategoryText;
+              _listInfluencerDetail[index].ilpIntrested!.text =
+                  inflDetail.ilpRegFlag!;
+              _listInfluencerDetail[index].inflTypeValue!.text =
+                  inflDetail.influencerTypeText!;
+              _listInfluencerDetail[index].inflCatValue!.text =
+                  inflDetail.influencerCategoryText!;
               _listInfluencerDetail[index].createdBy = empId;
 
-              for (int i = 0; i < influencerTypeEntity.length; i++) {
-                if (influencerTypeEntity[i].inflTypeId.toString() ==
+              for (int i = 0; i < influencerTypeEntity!.length; i++) {
+                if (influencerTypeEntity![i].inflTypeId.toString() ==
                     inflDetail.inflTypeId.toString()) {
-                  _listInfluencerDetail[index].inflTypeId.text =
+                  _listInfluencerDetail[index].inflTypeId!.text =
                       inflDetail.inflTypeId.toString();
-                  _listInfluencerDetail[index].inflTypeValue.text =
-                      influencerTypeEntity[
-                              influencerTypeEntity[i].inflTypeId - 1]
-                          .inflTypeDesc;
+                  _listInfluencerDetail[index].inflTypeValue!.text =
+                      influencerTypeEntity![
+                              influencerTypeEntity![i].inflTypeId! - 1]
+                          .inflTypeDesc!;
                   break;
                 } else {
-                  _listInfluencerDetail[index].inflTypeId.clear();
-                  _listInfluencerDetail[index].inflTypeValue.clear();
+                  _listInfluencerDetail[index].inflTypeId!.clear();
+                  _listInfluencerDetail[index].inflTypeValue!.clear();
                 }
               }
 
-              for (int i = 0; i < influencerCategoryEntity.length; i++) {
-                if (influencerCategoryEntity[i].inflCatId.toString() ==
+              for (int i = 0; i < influencerCategoryEntity!.length; i++) {
+                if (influencerCategoryEntity![i].inflCatId.toString() ==
                     inflDetail.inflCatId.toString()) {
-                  _listInfluencerDetail[index].inflCatId.text =
+                  _listInfluencerDetail[index].inflCatId!.text =
                       inflDetail.inflCatId.toString();
-                  _listInfluencerDetail[index].inflCatValue.text =
-                      influencerCategoryEntity[
-                              influencerCategoryEntity[i].inflCatId - 1]
-                          .inflCatDesc;
+                  _listInfluencerDetail[index].inflCatValue!.text =
+                      influencerCategoryEntity![
+                              influencerCategoryEntity![i].inflCatId! - 1]
+                          .inflCatDesc!;
                   break;
                 } else {
-                  _listInfluencerDetail[index].inflCatId.clear();
-                  _listInfluencerDetail[index].inflCatValue.clear();
+                  _listInfluencerDetail[index].inflCatId!.clear();
+                  _listInfluencerDetail[index].inflCatValue!.clear();
                 }
               }
             });
           } else {
             if (_listInfluencerDetail[index].inflContact != null) {
               setState(() {
-                _listInfluencerDetail[index].inflContact.clear();
-                _listInfluencerDetail[index].inflName.clear();
+                _listInfluencerDetail[index].inflContact!.clear();
+                _listInfluencerDetail[index].inflName!.clear();
               });
             }
-            return Get.dialog(CustomDialogs()
-                .showDialog("No influencer registered with this number"));
+            return Get.dialog(CustomDialogs.showDialog(
+                "No influencer registered with this number"));
           }
         } else {
           if (_listInfluencerDetail[index].inflContact != null) {
-            _listInfluencerDetail[index].inflContact.clear();
-            _listInfluencerDetail[index].inflName.clear();
+            _listInfluencerDetail[index].inflContact!.clear();
+            _listInfluencerDetail[index].inflName!.clear();
           }
           return Get.dialog(
-              CustomDialogs()
-                  .showDialogRestrictSystemBack(_infDetailModel.respMsg),
+              CustomDialogs.showDialogRestrictSystemBack(
+                  _infDetailModel.respMsg!),
               barrierDismissible: false);
         }
         Get.back();
@@ -2057,14 +1951,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             .add(new InfluencerDetail(isExpanded: true, isPrimarybool: true));
       });
     } else {
-      if (_listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
+      if (_listInfluencerDetail[
+                      _listInfluencerDetail.length - 1]
+                  .inflName !=
               null &&
           _listInfluencerDetail[_listInfluencerDetail.length - 1].inflName !=
               null &&
           !_listInfluencerDetail[_listInfluencerDetail.length - 1]
-              .inflName
+              .inflName!
               .text
-              .isBlank) {
+              .isBlank!) {
         InfluencerDetail infl =
             new InfluencerDetail(isExpanded: true, isPrimarybool: false);
         setState(() {
@@ -2073,8 +1969,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           _listInfluencerDetail.add(infl);
         });
       } else {
-        Get.dialog(CustomDialogs()
-            .errorDialog("Please fill previous influencer first"));
+        Get.dialog(
+            CustomDialogs.showMessage("Please fill previous influencer first"));
       }
     }
   }
@@ -2082,17 +1978,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
+          _currentPosition!.latitude, _currentPosition!.longitude);
 
       Placemark place = p[0];
       setState(() {
         _siteAddress.text =
-            place.name + "," + place.thoroughfare + place.subLocality;
-        _district.text = place.subAdministrativeArea;
-        _state.text = place.administrativeArea;
-        _pincode.text = place.postalCode;
-        _taluk.text = place.locality;
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+            place.name! + "," + place.thoroughfare! + place.subLocality!;
+        _district.text = place.subAdministrativeArea!;
+        _state.text = place.administrativeArea!;
+        _pincode.text = place.postalCode!;
+        _taluk.text = place.locality!;
       });
     } catch (e) {
       print(e);
@@ -2122,7 +2017,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                     child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: leadStageEntity.length,
+                        itemCount: leadStageEntity!.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding:
@@ -2141,13 +2036,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      leadStageEntity[index].leadStageDesc,
+                                      leadStageEntity![index].leadStageDesc!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                     ),
                                     (leadStageVal.id ==
-                                            leadStageEntity[index].id)
+                                            leadStageEntity![index].id)
                                         ? Icon(
                                             Icons.check_circle,
                                             color: Colors.green,
@@ -2158,29 +2053,22 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                               ),
                               onPressed: () async {
                                 if (leadStageVal.id !=
-                                    leadStageEntity[index].id) {
-
-                                  if (!(leadStageEntity[index].id == 2 ||
-                                      (leadStageEntity[index].id == 3 &&
-                                          _siteAddress.text != null &&
+                                    leadStageEntity![index].id) {
+                                  if (!(leadStageEntity![index].id == 2 ||
+                                      (leadStageEntity![index].id == 3 &&
                                           _siteAddress.text != "" &&
-                                          _pincode.text != null &&
                                           _pincode.text != "" &&
-                                          _state.text != null &&
                                           _state.text != "" &&
-                                          _district.text != null &&
                                           _district.text != "" &&
-                                          _taluk.text != null &&
                                           _taluk.text != ""))) {
-                                    if (leadStageEntity[index].id != 1) {
-                                      Get.dialog(CustomDialogs().showDialog(
+                                    if (leadStageEntity![index].id != 1) {
+                                      Get.dialog(CustomDialogs.showDialog(
                                           "Please Fill Geo tag Details "));
                                     }
                                   } else {
                                     print("Step 3");
 
                                     String empId;
-                                    String mobileNumber;
                                     String name;
                                     Future<SharedPreferences> _prefs =
                                         SharedPreferences.getInstance();
@@ -2188,9 +2076,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         .then((SharedPreferences prefs) async {
                                       empId = prefs.getString(
                                               StringConstants.employeeId) ??
-                                          "empty";
-                                      mobileNumber = prefs.getString(
-                                              StringConstants.mobileNumber) ??
                                           "empty";
                                       name = prefs.getString(
                                               StringConstants.employeeName) ??
@@ -2204,7 +2089,6 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         new CommentsDetail(
                                             createdBy: empId,
                                             commentText: _comments.text,
-                                            // commentedAt: DateTime.now(),
                                             creatorName: name)
                                       ];
                                       List<updateRequest.ListLeadcomments>
@@ -2220,11 +2104,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                               commentsDetails[i].commentText,
                                           creatorName: name,
                                           createdBy: empId,
-                                        ));                                     }
+                                        ));
+                                      }
 
                                       List<updateRequest.ListLeadImage>
                                           selectedImageListDetails = [];
-                                      List<File> userSelectedImageFile = [];
+                                      List<File?> userSelectedImageFile = [];
                                       print(
                                           "addLeadsController.selectedImageNameList    ${_addLeadsController.selectedImageNameList.length}");
 
@@ -2237,7 +2122,8 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                             leadId: widget.leadId,
                                             photoName: leadModel.photoName,
                                             createdBy: empId,
-                                          ));                                        userSelectedImageFile
+                                          ));
+                                        userSelectedImageFile
                                             .add(leadModel.imageFilePath);
                                       });
 
@@ -2252,16 +2138,16 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                         _listInfluencerDetail
                                                                 .length -
                                                             1]
-                                                    .inflName
+                                                    .inflName!
                                                     .text ==
                                                 "null" ||
                                             _listInfluencerDetail[
                                                     _listInfluencerDetail
                                                             .length -
                                                         1]
-                                                .inflName
+                                                .inflName!
                                                 .text
-                                                .isBlank) {
+                                                .isBlank!) {
                                           _listInfluencerDetail.removeAt(
                                               _listInfluencerDetail.length - 1);
                                         }
@@ -2278,13 +2164,13 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                                 .originalId,
                                             leadId: widget.leadId,
                                             isPrimary: _listInfluencerDetail[i]
-                                                    .isPrimarybool
+                                                    .isPrimarybool!
                                                 ? "Y"
                                                 : "N",
                                             createdBy: empId,
                                             inflId: int.parse(
                                                 _listInfluencerDetail[i]
-                                                    .id
+                                                    .id!
                                                     .text),
                                             isDelete: "N"));
                                       }
@@ -2292,23 +2178,23 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
                                       var updateRequestModel = {
                                         'leadId': viewLeadDataResponse
-                                            .leadsEntity.leadId,
+                                            .leadsEntity!.leadId,
                                         'eventId': viewLeadDataResponse
-                                            .leadsEntity.eventId,
+                                            .leadsEntity!.eventId,
                                         'leadSegment': viewLeadDataResponse
-                                            .leadsEntity.leadSegment,
+                                            .leadsEntity!.leadSegment,
                                         'assignedTo': viewLeadDataResponse
-                                            .leadsEntity.assignedTo,
+                                            .leadsEntity!.assignedTo,
                                         'leadStatusId': viewLeadDataResponse
-                                            .leadsEntity.leadStatusId,
-                                        'leadStage': leadStageEntity[index].id,
+                                            .leadsEntity!.leadStatusId,
+                                        'leadStage': leadStageEntity![index].id,
                                         'contactName': _contactName.text,
                                         'contactNumber': _contactNumber.text,
                                         'geotagType': geoTagType.text,
-                                        'leadLatitude': _currentPosition
+                                        'leadLatitude': _currentPosition!
                                             .latitude
                                             .toString(),
-                                        'leadLongitude': _currentPosition
+                                        'leadLongitude': _currentPosition!
                                             .longitude
                                             .toString(),
                                         'leadAddress': _siteAddress.text,
@@ -2321,17 +2207,17 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         'isStatus': "false",
                                         'updatedBy': empId,
                                         'leadIsDuplicate': viewLeadDataResponse
-                                            .leadsEntity.leadIsDuplicate,
+                                            .leadsEntity!.leadIsDuplicate,
                                         'rejectionComment': viewLeadDataResponse
-                                            .leadsEntity.rejectionComment,
+                                            .leadsEntity!.rejectionComment,
                                         'nextDateCconstruction':
-                                            viewLeadDataResponse.leadsEntity
+                                            viewLeadDataResponse.leadsEntity!
                                                 .nextDateCconstruction,
                                         'nextStageConstruction':
-                                            viewLeadDataResponse.leadsEntity
+                                            viewLeadDataResponse.leadsEntity!
                                                 .nextStageConstruction,
                                         'siteDealerId': viewLeadDataResponse
-                                            .leadsEntity.siteDealerId,
+                                            .leadsEntity!.siteDealerId,
                                         'listLeadcomments': commentsList,
                                         'listLeadImage':
                                             selectedImageListDetails,
@@ -2340,23 +2226,21 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                                         'leadSourceUser': _leadSourceUser.text,
                                         'leadSourcePlatform':
                                             viewLeadDataResponse
-                                                .leadsEntity.leadSourcePlatform
+                                                .leadsEntity!.leadSourcePlatform
                                       };
 
                                       leadStageVal.id =
-                                          leadStageEntity[index].id;
+                                          leadStageEntity![index].id;
                                       viewLeadDataResponse
-                                              .leadsEntity.leadStageId =
-                                          leadStageEntity[index].id;
+                                              .leadsEntity!.leadStageId =
+                                          leadStageEntity![index].id;
 
                                       _addLeadsController.updateLeadData(
                                           updateRequestModel,
-                                          //  _imageList,
-                                          //  _imageListFromController,
                                           userSelectedImageFile,
                                           context,
                                           viewLeadDataResponse
-                                              .leadsEntity.leadId,
+                                              .leadsEntity!.leadId,
                                           4);
                                     });
                                   }
@@ -2385,44 +2269,14 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
             child: Column(children: [
               TextFormField(
                 controller: _originalLeadID,
-                onChanged: (data) {
-                  // setState(() {
-                  //   _contactName.text = data;
-                  // });
-                },
                 maxLength: 6,
                 style: TextStyle(
                     fontSize: 18,
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Original Lead Id",
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Original Lead Id"),
               ),
             ]),
           )),
@@ -2437,51 +2291,46 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   color: ColorConstants.buttonNormalColor),
             ),
             onPressed: () {
-              if (_originalLeadID.text != null && _originalLeadID.text != "") {
+              if (_originalLeadID.text != "") {
                 var updateRequestModel = {
-                  'eventId': viewLeadDataResponse.leadsEntity.eventId,
-                  'leadId': viewLeadDataResponse.leadsEntity.leadId,
-                  'leadSegment': viewLeadDataResponse.leadsEntity.leadSegment,
-                  'assignedTo': viewLeadDataResponse.leadsEntity.assignedTo,
+                  'eventId': viewLeadDataResponse.leadsEntity!.eventId,
+                  'leadId': viewLeadDataResponse.leadsEntity!.leadId,
+                  'leadSegment': viewLeadDataResponse.leadsEntity!.leadSegment,
+                  'assignedTo': viewLeadDataResponse.leadsEntity!.assignedTo,
                   'leadStatusId': 4,
-                  'leadStage': viewLeadDataResponse.leadsEntity.leadStageId,
-                  'contactName': viewLeadDataResponse.leadsEntity.contactName,
+                  'leadStage': viewLeadDataResponse.leadsEntity!.leadStageId,
+                  'contactName': viewLeadDataResponse.leadsEntity!.contactName,
                   'contactNumber':
-                      viewLeadDataResponse.leadsEntity.contactNumber,
-                  'geotagType': viewLeadDataResponse.leadsEntity.geotagType,
-                  'leadLatitude': viewLeadDataResponse.leadsEntity.leadLatitude,
+                      viewLeadDataResponse.leadsEntity!.contactNumber,
+                  'geotagType': viewLeadDataResponse.leadsEntity!.geotagType,
+                  'leadLatitude':
+                      viewLeadDataResponse.leadsEntity!.leadLatitude,
                   'leadLongitude':
-                      viewLeadDataResponse.leadsEntity.leadLongitude,
-                  'leadAddress': viewLeadDataResponse.leadsEntity.leadAddress,
-                  'leadPincode': viewLeadDataResponse.leadsEntity.leadPincode,
+                      viewLeadDataResponse.leadsEntity!.leadLongitude,
+                  'leadAddress': viewLeadDataResponse.leadsEntity!.leadAddress,
+                  'leadPincode': viewLeadDataResponse.leadsEntity!.leadPincode,
                   'leadStateName':
-                      viewLeadDataResponse.leadsEntity.leadStateName,
+                      viewLeadDataResponse.leadsEntity!.leadStateName,
                   'leadDistrictName':
-                      viewLeadDataResponse.leadsEntity.leadDistrictName,
+                      viewLeadDataResponse.leadsEntity!.leadDistrictName,
                   'leadTalukName':
-                      viewLeadDataResponse.leadsEntity.leadTalukName,
+                      viewLeadDataResponse.leadsEntity!.leadTalukName,
                   'leadSalesPotentialMt':
-                      viewLeadDataResponse.leadsEntity.leadSitePotentialMt,
+                      viewLeadDataResponse.leadsEntity!.leadSitePotentialMt,
                   'leadReraNumber':
-                      viewLeadDataResponse.leadsEntity.leadReraNumber,
+                      viewLeadDataResponse.leadsEntity!.leadReraNumber,
                   'isStatus': "false",
                   'updatedBy': empId,
                   'leadIsDuplicate': "Y",
                   'leadOriginalId': _originalLeadID.text,
                   'rejectionComment':
-                      viewLeadDataResponse.leadsEntity.rejectionComment,
+                      viewLeadDataResponse.leadsEntity!.rejectionComment,
                   'nextDateCconstruction':
-                      viewLeadDataResponse.leadsEntity.nextDateCconstruction,
+                      viewLeadDataResponse.leadsEntity!.nextDateCconstruction,
                   'nextStageConstruction':
-                      viewLeadDataResponse.leadsEntity.nextStageConstruction,
-                  'siteDealerId': viewLeadDataResponse.leadsEntity.siteDealerId,
-                  // 'listLeadcomments':
-                  //     [],
-                  // 'listLeadImage':
-                  //     [],
-                  // 'leadInfluencerEntity':
-                  //   []
-
+                      viewLeadDataResponse.leadsEntity!.nextStageConstruction,
+                  'siteDealerId':
+                      viewLeadDataResponse.leadsEntity!.siteDealerId,
                   'listLeadcomments': viewLeadDataResponse.leadcommentsEnitiy,
                   'listLeadImage': viewLeadDataResponse.leadphotosEntity,
                   'leadInfluencerEntity':
@@ -2489,11 +2338,11 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                   'leadSource': _leadSource.text,
                   'leadSourceUser': _leadSourceUser.text,
                   'leadSourcePlatform':
-                      viewLeadDataResponse.leadsEntity.leadSourcePlatform
+                      viewLeadDataResponse.leadsEntity!.leadSourcePlatform
                 };
 
                 _addLeadsController.updateLeadData(updateRequestModel, [],
-                    context, viewLeadDataResponse.leadsEntity.leadId, 2);
+                    context, viewLeadDataResponse.leadsEntity!.leadId, 2);
 
                 Get.back();
               }
@@ -2512,115 +2361,60 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
           child: Column(
             children: [
               DropdownButtonFormField<NextStageConstructionEntity>(
-                value: _selectedNextStageConstructionEntity,
-                items: nextStageConstructionEntity
-                    .map((label) => DropdownMenuItem(
-                          child: Text(
-                            label.nexStageConsText,
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          value: label,
-                        ))
-                    .toList(),
-
-                // hint: Text('Rating'),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedNextStageConstructionEntity = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Next Stage of Construction",
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
-              ),
+                  value: _selectedNextStageConstructionEntity,
+                  items: nextStageConstructionEntity!
+                      .map((label) => DropdownMenuItem(
+                            child: Text(
+                              label.nexStageConsText!,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                            ),
+                            value: label,
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedNextStageConstructionEntity = value;
+                    });
+                  },
+                  decoration: FormFieldStyle.buildInputDecoration(
+                      labelText: "Next Stage of Construction")),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
               TextFormField(
                 controller: _nextDateofConstruction,
                 readOnly: true,
-                onChanged: (data) {
-                  // setState(() {
-                  //   _contactName.text = data;
-                  // });
-                },
                 style: TextStyle(
                     fontSize: 18,
                     color: ColorConstants.inputBoxHintColor,
                     fontFamily: "Muli"),
                 keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: ColorConstants.backgroundColorBlue,
-                        //color: HexColor("#0000001F"),
-                        width: 1.0),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black26, width: 1.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 1.0),
-                  ),
-                  labelText: "Next date of construction",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.date_range_rounded,
-                      size: 22,
-                      color: ColorConstants.clearAllTextColor,
-                    ),
-                    onPressed: () async {
-                      final DateTime picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101));
-
-                      setState(() {
-                        final DateFormat formatter = DateFormat("yyyy-MM-dd");
-                        final String formattedDate = formatter.format(picked);
-                        nextStageConstructionPickedDate = picked;
-                        _nextDateofConstruction.text = formattedDate;
-                      });
-                    },
-                  ),
-                  filled: false,
-                  focusColor: Colors.black,
-                  isDense: false,
-                  labelStyle: TextStyle(
-                      fontFamily: "Muli",
-                      color: ColorConstants.inputBoxHintColorDark,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.0),
-                  fillColor: ColorConstants.backgroundColor,
-                ),
+                decoration: FormFieldStyle.buildInputDecoration(
+                    labelText: "Next date of Construction",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.date_range_rounded,
+                        size: 22,
+                        color: ColorConstants.clearAllTextColor,
+                      ),
+                      onPressed: () async {
+                        final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2101));
+                        setState(() {
+                          final DateFormat formatter = DateFormat("yyyy-MM-dd");
+                          final String formattedDate =
+                              formatter.format(picked!);
+                          nextStageConstructionPickedDate = picked;
+                          _nextDateofConstruction.text = formattedDate;
+                        });
+                      },
+                    )),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
@@ -2637,17 +2431,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                // fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
-            if (!(_selectedNextStageConstructionEntity.nextStageConsId !=
+            if (!(_selectedNextStageConstructionEntity!.nextStageConsId !=
                     null &&
-                _selectedNextStageConstructionEntity.nextStageConsId.toString() != "" &&
-                _selectedNextStageConstructionEntity.nextStageConsId != null &&
-                _selectedNextStageConstructionEntity.nextStageConsId.toString() != "")) {
+                _selectedNextStageConstructionEntity!.nextStageConsId
+                        .toString() !=
+                    "" &&
+                _selectedNextStageConstructionEntity!.nextStageConsId != null &&
+                _selectedNextStageConstructionEntity!.nextStageConsId
+                        .toString() !=
+                    "")) {
               Get.dialog(
-                  CustomDialogs().errorDialog("Please fill the details first"));
+                  CustomDialogs.showMessage("Please fill the details first"));
             } else {
               updateStatusForNextStage(context, 5);
             }
@@ -2659,37 +2456,35 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
   @override
   userChangeDealerId() {
-    // TODO: implement userChangeDealerId
     if (mounted) setState(() {});
   }
 
-  String selectedDealerId = "";
-  String selectedDealerSubId = "";
+  String? selectedDealerId = "";
+  String? selectedDealerSubId = "";
   String selectedDate = "";
-  int _floorId;
-  int _floorLevelId;
+  int? _floorId;
+  int? _floorLevelId;
   String _noOfBagSupplied = "";
-  String _isIhbCommercial = "";
-  int _totalSitePotential;
-  int _lapsePotential;
-  int _siteCompitationId;
+  String? _isIhbCommercial = "";
+  int? _totalSitePotential;
+  int? _lapsePotential;
+  int? _siteCompitationId;
 
   @override
   updateStatusForNextStageAllow(
       BuildContext context,
       int statusId,
-      NextStageConstructionEntity selectedNextStageConstructionEntity,
+      NextStageConstructionEntity? selectedNextStageConstructionEntity,
       String nextStageConstructionPicked,
-      String dealerId,
-      String subDealerId,
-      int selectedFloorId,
+      String? dealerId,
+      String? subDealerId,
+      int? selectedFloorId,
       String noOfBagsSupplied,
-      String isIhbCommercial,
-      int nextFloorLevel,
-      int lapsePotential,
-      int totalSitePotential,
-      int siteCompitationId
-      ) {
+      String? isIhbCommercial,
+      int? nextFloorLevel,
+      int? lapsePotential,
+      int? totalSitePotential,
+      int? siteCompitationId) {
     selectedDealerId = dealerId;
     selectedDealerSubId = subDealerId;
     _selectedNextStageConstructionEntity = selectedNextStageConstructionEntity;
@@ -2718,8 +2513,8 @@ class Item {
     this.isExpanded = false,
   });
 
-  String expandedValue;
-  String headerValue;
+  String? expandedValue;
+  String? headerValue;
   bool isExpanded;
 }
 

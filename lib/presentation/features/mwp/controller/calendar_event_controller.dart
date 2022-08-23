@@ -1,6 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
@@ -11,9 +12,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActual
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class CalendarEventController extends GetxController {
   @override
@@ -23,15 +22,14 @@ class CalendarEventController extends GetxController {
 
   final MyRepositoryApp repository;
 
-  CalendarEventController({@required this.repository})
-      : assert(repository != null);
+  CalendarEventController({required this.repository});
 
   final _calendarPlanResponse = CalendarPlanModel().obs;
   final _calendarDataByDay = CalendarDataByDay().obs;
   final _targetVsActual = TargetVsActualModel().obs;
   final _listOfEvents = List<ListOfEventDetails>.empty(growable: true).obs;
 
-  var _markedDateMap = EventList<Event>().obs;
+  var _markedDateMap = EventList<Event>(events: {}).obs;
   final _dateList = List<String>.empty(growable: true).obs;
   final _testMap = Map<DateTime, List<Event>>().obs;
 
@@ -43,22 +41,13 @@ class CalendarEventController extends GetxController {
   final _selectedDate = StringConstants.empty.obs;
 
   get testMap => this._testMap.value;
-
   set testMap(value) => this._testMap.value = value;
-
-
   set isLoading(value) => this._isLoading.value = value;
-
   set isDayEventLoading(value) => this._isDayEventLoading.value = value;
-
   get isDayEventLoading => this._isDayEventLoading.value;
-
   set isCalenderLoading(value) => this._isCalenderLoading.value = value;
-
   get isCalenderLoading => this._isCalenderLoading.value;
-
   set listOfEvents(value) => this._listOfEvents.value = value;
-
   get listOfEvents => this._listOfEvents;
 
   set selectedDate(value) => this._selectedDate.value = value;
@@ -110,8 +99,8 @@ class CalendarEventController extends GetxController {
     this.isCalenderLoading = true;
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventData +
           "referenceID=$empId&" +
           "monthYear=${this.selectedMonth}";
@@ -121,12 +110,11 @@ class CalendarEventController extends GetxController {
         if (data == null) {
           debugPrint('MWP Data Response is null');
         } else {
-          debugPrint('MWP Data Response is not null');
           this.calendarPlanResponse = data;
           this.listOfEvents = this.calendarPlanResponse.listOfEventDetails;
           markedDateMap.clear();
           if (this.calendarPlanResponse.listOfEventDates.length > 0) {
-            var temp = EventList<Event>();
+            var temp = EventList<Event>(events: {});
             for (int i = 0;
             i < this.calendarPlanResponse.listOfEventDates.length;
             i++) {
@@ -165,8 +153,8 @@ class CalendarEventController extends GetxController {
   getCalendarEventOfDay(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getCalendarEventDataByDay + "referenceID=$empId&" + "&date=${this.selectedDate}";
       repository
           .getCalenderPlanByDay(accessKey, userSecurityKey, url)
@@ -180,10 +168,9 @@ class CalendarEventController extends GetxController {
           if (calendarDataByDay.respCode == "MWP2019") {
           } else {
             this.isLoading = false;
-            Get.dialog(CustomDialogs().errorDialog(calendarDataByDay.respMsg));
+            Get.dialog(CustomDialogs.showMessage(calendarDataByDay.respMsg));
           }
         }
-        //}
       });
     });
   }
@@ -191,8 +178,8 @@ class CalendarEventController extends GetxController {
   getTargetVsActualEvent(String accessKey) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) {
-      String userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      String empId = prefs.getString(StringConstants.employeeId);
+      String? userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+      String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getTargetVsActualData + "$empId";
       print('$url');
       repository
@@ -202,16 +189,13 @@ class CalendarEventController extends GetxController {
         if (data == null) {
           debugPrint('Target vs Actual Response is null');
         } else {
-          debugPrint('Target vs Actual Response is not null');
           this.targetVsActual = data;
           this.isLoading = false;
           if (targetVsActual.respCode == "MWP2023") {
-            //Get.dialog(CustomDialogs().errorDialog(SitesListResponse.respMsg));
             print('${targetVsActual.respMsg}');
-            //SitesDetailWidget();
           } else {
             Get.dialog(
-                CustomDialogs().errorDialog(calendarPlanResponse.respMsg));
+                CustomDialogs.showMessage(calendarPlanResponse.respMsg));
           }
         }
       });

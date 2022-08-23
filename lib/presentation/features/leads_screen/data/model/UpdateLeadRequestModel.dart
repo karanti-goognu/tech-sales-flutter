@@ -1,31 +1,33 @@
+
+
 class UpdateLeadRequestModel {
-  int leadId;
-  String leadSegment;
-  String assignedTo;
-  int leadStatusId;
-  int leadStage;
-  String contactName;
-  String contactNumber;
-  String geotagType;
-  String leadLatitude;
-  String leadLongitude;
-  String leadAddress;
-  String leadPincode;
-  String leadStateName;
-  String leadDistrictName;
-  String leadTalukName;
-  String leadSalesPotentialMt;
-  String leadReraNumber;
-  String isStatus;
-  String updatedBy;
-  String leadIsDuplicate;
-  String rejectionComment;
-  String nextDateCconstruction;
-  int nextStageConstruction;
-  String siteDealerId;
-  List<ListLeadcomments> listLeadcomments;
-  List<ListLeadImage> listLeadImage;
-  List<LeadInfluencerEntity> leadInfluencerEntity;
+  int? leadId;
+  String? leadSegment;
+  String? assignedTo;
+  int? leadStatusId;
+  int? leadStage;
+  String? contactName;
+  String? contactNumber;
+  String? geotagType;
+  String? leadLatitude;
+  String? leadLongitude;
+  String? leadAddress;
+  String? leadPincode;
+  String? leadStateName;
+  String? leadDistrictName;
+  String? leadTalukName;
+  String? leadSalesPotentialMt;
+  String? leadReraNumber;
+  String? isStatus;
+  String? updatedBy;
+  String? leadIsDuplicate;
+  String? rejectionComment;
+  String? nextDateCconstruction;
+  int? nextStageConstruction;
+  String? siteDealerId;
+  List<ListLeadcomments>? listLeadcomments;
+  List<ListLeadImage>? listLeadImage;
+  List<LeadInfluencerEntity>? leadInfluencerEntity;
 
   UpdateLeadRequestModel(
       {this.leadId,
@@ -81,22 +83,34 @@ class UpdateLeadRequestModel {
     nextDateCconstruction = json['nextDateCconstruction'];
     nextStageConstruction = json['nextStageConstruction'];
     siteDealerId = json['siteDealerId'];
+
+    if (!json.containsKey('listLeadcomments'))
+      listLeadcomments = new List<ListLeadcomments>.empty(growable: true);
+
     if (json['listLeadcomments'] != null) {
       listLeadcomments = new List<ListLeadcomments>.empty(growable: true);
       json['listLeadcomments'].forEach((v) {
-        listLeadcomments.add(new ListLeadcomments.fromJson(v));
+        listLeadcomments!.add(new ListLeadcomments.fromJson(v));
       });
     }
+
+    if (!json.containsKey('listLeadImage'))
+      listLeadImage = new List<ListLeadImage>.empty(growable: true);
+
     if (json['listLeadImage'] != null) {
       listLeadImage = new List<ListLeadImage>.empty(growable: true);
       json['listLeadImage'].forEach((v) {
-        listLeadImage.add(new ListLeadImage.fromJson(v));
+        listLeadImage!.add(new ListLeadImage.fromJson(v));
       });
     }
+
+    if (!json.containsKey('leadInfluencerEntity'))
+      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
+
     if (json['leadInfluencerEntity'] != null) {
       leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
       json['leadInfluencerEntity'].forEach((v) {
-        leadInfluencerEntity.add(new LeadInfluencerEntity.fromJson(v));
+        leadInfluencerEntity!.add(new LeadInfluencerEntity.fromJson(v));
       });
     }
   }
@@ -129,25 +143,25 @@ class UpdateLeadRequestModel {
     data['siteDealerId'] = this.siteDealerId;
     if (this.listLeadcomments != null) {
       data['listLeadcomments'] =
-          this.listLeadcomments.map((v) => v.toJson()).toList();
+          this.listLeadcomments!.map((v) => v.toJson()).toList();
     }
     if (this.listLeadImage != null) {
       data['listLeadImage'] =
-          this.listLeadImage.map((v) => v.toJson()).toList();
+          this.listLeadImage!.map((v) => v.toJson()).toList();
     }
     if (this.leadInfluencerEntity != null) {
       data['leadInfluencerEntity'] =
-          this.leadInfluencerEntity.map((v) => v.toJson()).toList();
+          this.leadInfluencerEntity!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class ListLeadcomments {
-  int leadId;
-  String createdBy;
-  String commentText;
-  String creatorName;
+  int? leadId;
+  String? createdBy;
+  String? commentText;
+  String? creatorName;
 
   ListLeadcomments(
       {this.leadId, this.createdBy, this.commentText, this.creatorName});
@@ -170,9 +184,9 @@ class ListLeadcomments {
 }
 
 class ListLeadImage {
-  int leadId;
-  String photoName;
-  String createdBy;
+  int? leadId;
+  String? photoName;
+  String? createdBy;
 
   ListLeadImage({this.leadId, this.photoName, this.createdBy});
 
@@ -192,12 +206,12 @@ class ListLeadImage {
 }
 
 class LeadInfluencerEntity {
-  int id;
-  int leadId;
-  int inflId;
-  String createdBy;
-  String isDelete;
-  String isPrimary;
+  int? id;
+  int? leadId;
+  int? inflId;
+  String? createdBy;
+  String? isDelete;
+  String? isPrimary;
 
   LeadInfluencerEntity(
       {this.id,

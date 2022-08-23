@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/widgets/background_container_image.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/controller/add_leads_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/ViewLeadDataResponse.dart';
@@ -7,11 +9,10 @@ import 'package:flutter_tech_sales/utils/constants/GlobalConstant.dart' as gv;
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class RejectionLeadScreen extends StatefulWidget {
-  ViewLeadDataResponse viewLeadDataResponse;
+  final ViewLeadDataResponse viewLeadDataResponse;
 
   RejectionLeadScreen(this.viewLeadDataResponse);
 
@@ -20,16 +21,13 @@ class RejectionLeadScreen extends StatefulWidget {
 }
 
 class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
-  List<LeadRejectReasonEntity> leadRejectReasonEntity;
-
-  LeadRejectReasonEntity _selectedValue;
-
-  var _commentsController = new TextEditingController();
-  AddLeadsController _addLeadsController;
+  List<LeadRejectReasonEntity>? leadRejectReasonEntity;
+  LeadRejectReasonEntity? _selectedValue;
+  TextEditingController _commentsController = new TextEditingController();
+  late AddLeadsController _addLeadsController;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _addLeadsController = Get.find();
     leadRejectReasonEntity = gv.leadRejectReasonEntity;
@@ -71,8 +69,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15,
-
-                        //color: HexColor("#B00020")
                       ),
                     ),
                   ),
@@ -80,10 +76,10 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: DropdownButtonFormField<LeadRejectReasonEntity>(
                       value: _selectedValue,
-                      items: leadRejectReasonEntity
+                      items: leadRejectReasonEntity!
                           .map((label) => DropdownMenuItem(
                                 child: Text(
-                                  label.rejectionText,
+                                  label.rejectionText!,
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: ColorConstants.inputBoxHintColor,
@@ -92,8 +88,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                                 value: label,
                               ))
                           .toList(),
-
-                      // hint: Text('Rating'),
                       onChanged: (value) {
                         setState(() {
                           _selectedValue = value;
@@ -103,7 +97,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
                               width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -142,7 +135,6 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorConstants.backgroundColorBlue,
-                              //color: HexColor("#0000001F"),
                               width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -191,66 +183,57 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                             widget.viewLeadDataResponse;
 
                         String empId;
-                        String mobileNumber;
-                        String name;
                         Future<SharedPreferences> _prefs =
                             SharedPreferences.getInstance();
                         _prefs.then((SharedPreferences prefs) async {
-                          empId = prefs.getString(StringConstants.employeeId) ??
-                              "empty";
-                          mobileNumber =
-                              prefs.getString(StringConstants.mobileNumber) ??
-                                  "empty";
-                          name =
-                              prefs.getString(StringConstants.employeeName) ??
-                                  "empty";
+                          empId = prefs.getString(StringConstants.employeeId) ?? "empty";
 
                           var updateRequestModel = {
-                            'leadId': viewLeadDataResponse.leadsEntity.leadId,
+                            'leadId': viewLeadDataResponse.leadsEntity!.leadId,
                             'leadSegment':
-                                viewLeadDataResponse.leadsEntity.leadSegment,
+                                viewLeadDataResponse.leadsEntity!.leadSegment,
                             'assignedTo':
-                                viewLeadDataResponse.leadsEntity.assignedTo,
-                            'eventId': viewLeadDataResponse.leadsEntity.eventId,
+                                viewLeadDataResponse.leadsEntity!.assignedTo,
+                            'eventId': viewLeadDataResponse.leadsEntity!.eventId,
                             'leadStatusId': 2,
                             'leadStage':
-                                viewLeadDataResponse.leadsEntity.leadStageId,
+                                viewLeadDataResponse.leadsEntity!.leadStageId,
                             'contactName':
-                                viewLeadDataResponse.leadsEntity.contactName,
+                                viewLeadDataResponse.leadsEntity!.contactName,
                             'contactNumber':
-                                viewLeadDataResponse.leadsEntity.contactNumber,
+                                viewLeadDataResponse.leadsEntity!.contactNumber,
                             'geotagType':
-                                viewLeadDataResponse.leadsEntity.geotagType,
+                                viewLeadDataResponse.leadsEntity!.geotagType,
                             'leadLatitude':
-                                viewLeadDataResponse.leadsEntity.leadLatitude,
+                                viewLeadDataResponse.leadsEntity!.leadLatitude,
                             'leadLongitude':
-                                viewLeadDataResponse.leadsEntity.leadLongitude,
+                                viewLeadDataResponse.leadsEntity!.leadLongitude,
                             'leadAddress':
-                                viewLeadDataResponse.leadsEntity.leadAddress,
+                                viewLeadDataResponse.leadsEntity!.leadAddress,
                             'leadPincode':
-                                viewLeadDataResponse.leadsEntity.leadPincode,
+                                viewLeadDataResponse.leadsEntity!.leadPincode,
                             'leadStateName':
-                                viewLeadDataResponse.leadsEntity.leadStateName,
+                                viewLeadDataResponse.leadsEntity!.leadStateName,
                             'leadDistrictName': viewLeadDataResponse
-                                .leadsEntity.leadDistrictName,
+                                .leadsEntity!.leadDistrictName,
                             'leadTalukName':
-                                viewLeadDataResponse.leadsEntity.leadTalukName,
+                                viewLeadDataResponse.leadsEntity!.leadTalukName,
                             'leadSalesPotentialMt': viewLeadDataResponse
-                                .leadsEntity.leadSitePotentialMt,
+                                .leadsEntity!.leadSitePotentialMt,
                             'leadReraNumber':
-                                viewLeadDataResponse.leadsEntity.leadReraNumber,
+                                viewLeadDataResponse.leadsEntity!.leadReraNumber,
                             'isStatus': "false",
                             'updatedBy': empId,
                             'leadIsDuplicate': viewLeadDataResponse
-                                .leadsEntity.leadIsDuplicate,
+                                .leadsEntity!.leadIsDuplicate,
                             'rejectionComment': _commentsController.text,
-                            'leadRejectReason': _selectedValue.rejectionId,
+                            'leadRejectReason': _selectedValue!.rejectionId,
                             'nextDateCconstruction': viewLeadDataResponse
-                                .leadsEntity.nextDateCconstruction,
+                                .leadsEntity!.nextDateCconstruction,
                             'nextStageConstruction': viewLeadDataResponse
-                                .leadsEntity.nextStageConstruction,
+                                .leadsEntity!.nextStageConstruction,
                             'siteDealerId':
-                                viewLeadDataResponse.leadsEntity.siteDealerId,
+                                viewLeadDataResponse.leadsEntity!.siteDealerId,
                             'listLeadcomments': new List.empty(growable: true),
                             'listLeadImage': new List.empty(growable: true),
                             'leadInfluencerEntity': new List.empty(growable: true)
@@ -263,20 +246,18 @@ class _RejectionLeadScreenState extends State<RejectionLeadScreen> {
                               updateRequestModel,
                               new List<File>.empty(growable: true),
                               context,
-                              viewLeadDataResponse.leadsEntity.leadId,1);
+                              viewLeadDataResponse.leadsEntity!.leadId,1);
 
                           Get.back();
                         });
                       },
                     ),
                   ),
-                  // Image.asset('assets/images/rejected.png'),
                 ],
               ),
             ),
           ],
         ),
-        // ]),
       ),
     );
   }

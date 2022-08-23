@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 
 class CustomSimmerWidget extends StatelessWidget {
 
   final double width;
-  final double height;
+  final double? height;
   final ShapeBorder shapeBorder;
 
   const CustomSimmerWidget.rectangular({
@@ -23,7 +23,7 @@ class CustomSimmerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context)  => Shimmer.fromColors(
     baseColor: ColorConstants.lightOutlineColor,
-    highlightColor: Colors.grey[300],
+    highlightColor: Colors.grey[300]!,
     period: Duration(seconds: 2),
     child: Container(
       width: width,

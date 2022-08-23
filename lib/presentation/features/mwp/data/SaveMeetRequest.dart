@@ -1,19 +1,21 @@
+
+
 class SaveMeetRequest {
-  String id;
-  String referenceId;
-  String eventType;
-  String visitMeetType;
-  String visitMeetDate;
-  int dalmiaInflCount;
-  int nonDalmiaInflCount;
-  String venue;
-  int expectedLeadsCount;
-  int giftsDistributedCount;
-  String eventLocation;
-  String isSaveDraft;
-  String createdBy;
-  String meetInitiatorName;
-  List<MwpMeetDealers> mwpMeetDealers;
+  String? id;
+  String? referenceId;
+  String? eventType;
+  String? visitMeetType;
+  String? visitMeetDate;
+  int? dalmiaInflCount;
+  int? nonDalmiaInflCount;
+  String? venue;
+  int? expectedLeadsCount;
+  int? giftsDistributedCount;
+  String? eventLocation;
+  String? isSaveDraft;
+  String? createdBy;
+  String? meetInitiatorName;
+  List<MwpMeetDealers>? mwpMeetDealers;
 
   SaveMeetRequest(
       this.referenceId,
@@ -45,10 +47,14 @@ class SaveMeetRequest {
     isSaveDraft = json['isSaveDraft'];
     createdBy = json['createdBy'];
     meetInitiatorName = json['meetInitiatorName'];
+
+    if (!json.containsKey('mwpMeetDealers'))
+      mwpMeetDealers = new List<MwpMeetDealers>.empty(growable: true);
+
     if (json['mwpMeetDealers'] != null) {
       mwpMeetDealers = new List<MwpMeetDealers>.empty(growable: true);
       json['mwpMeetDealers'].forEach((v) {
-        mwpMeetDealers.add(new MwpMeetDealers.fromJson(v));
+        mwpMeetDealers!.add(new MwpMeetDealers.fromJson(v));
       });
     }
   }
@@ -70,14 +76,14 @@ class SaveMeetRequest {
     data['meetInitiatorName'] = this.meetInitiatorName;
     if (this.mwpMeetDealers != null) {
       data['mwpMeetDealers'] =
-          this.mwpMeetDealers.map((v) => v.toJson()).toList();
+          this.mwpMeetDealers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class MwpMeetDealers {
-  String dealerId;
+  String? dealerId;
 
   MwpMeetDealers({this.dealerId});
 

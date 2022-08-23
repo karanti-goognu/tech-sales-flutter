@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
 import 'package:flutter_tech_sales/core/services/notification_service.dart';
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/SecretKeyModel.dart';
@@ -12,14 +15,12 @@ import 'package:flutter_tech_sales/utils/constants/request_ids.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SplashController extends GetxController {
   final MyRepositorySplash repository;
 
-  SplashController({@required this.repository}) : assert(repository != null);
+  SplashController({required this.repository});
 
   final _login = LoginModel().obs;
   final _accessKeyResponse = AccessKeyModel().obs;
@@ -47,6 +48,8 @@ class SplashController extends GetxController {
             Get.dialog(Center(child: CircularProgressIndicator()),
                 barrierDismissible: false));
     repository.getAccessKey().then((data) {
+      print(data);
+      print(data.runtimeType);
       Get.back();
       this.accessKeyResponse = data;
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -97,7 +100,7 @@ class SplashController extends GetxController {
         if (data != null) {
           if (this.secretKeyResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs()
+                CustomDialogs
                     .appUserInactiveDialog(this.secretKeyResponse.respMsg),
                 barrierDismissible: false);
           }
@@ -114,8 +117,8 @@ class SplashController extends GetxController {
     });
   }
 
-  getRefreshData(String accessKey, int reqId) async {
-    List<VersionUpdateModel> versionUpdateModel = new List.empty(
+  getRefreshData(String? accessKey, int reqId) async {
+    List<VersionUpdateModel>? versionUpdateModel = new List.empty(
         growable: true);
     String empId = "empty";
     String userSecurityKey = "empty";
@@ -128,56 +131,56 @@ class SplashController extends GetxController {
       // encryptString(empId, StringConstants.encryptedKey).toString();
 
       String url = "${UrlConstants.refreshSplashData}$empId";
+      print(url);
       await repository
-          .getRefreshData(url, accessKey, userSecurityKey)
+          .getRefreshData(url, accessKey!, userSecurityKey)
           .then((data) {
         if (data == null) {
           debugPrint('Leads Data Response is null');
         } else {
           this.splashDataModel = data;
+          print(data);
           versionUpdateModel = this.splashDataModel.versionUpdateModel;
-          if (versionUpdateModel != null && versionUpdateModel.length > 0) {
-            for (int i = 0; i < versionUpdateModel.length; i++) {
-              if (versionUpdateModel[i].platform == "ANDROID") {
-                if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "SOFT") {
+          print(versionUpdateModel);
+          print("-----------------version update model");
+          if (versionUpdateModel != null && versionUpdateModel!.length > 0) {
+            print("YE");
+            for (int i = 0; i < versionUpdateModel!.length; i++) {
+              print("YES $i");
+              if (versionUpdateModel![i].platform?.toUpperCase() == "ANDROID") {
+                print("YES Android");
+                if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "SOFT") {
                   Get.dialog(
-                      CustomDialogs().appUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                      CustomDialogs.appUpdateDialog(
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "ANDROID"),
                       barrierDismissible: true)
                       .then((value) => openNextPage(1));
-                } else if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "HARD") {
+                } else if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType?.toUpperCase() == "HARD") {
                   Get.dialog(
-                      CustomDialogs().appForceUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
-                          "ANDROID"),
-                      barrierDismissible: false);
+                      CustomDialogs.appForceUpdateDialog(versionUpdateModel![i].versionUpdateText!,versionUpdateModel![i].appId, "ANDROID"), barrierDismissible: false);
                 }
               }
-              if (versionUpdateModel[i].platform == "IOS") {
-                if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "SOFT") {
+              if (versionUpdateModel![i].platform?.toUpperCase() == "IOS") {
+                if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType?.toUpperCase() == "SOFT") {
                   Get.dialog(
-                      CustomDialogs().appUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
-                          "IOS"),
+                      CustomDialogs.appUpdateDialog(versionUpdateModel![i].versionUpdateText!,versionUpdateModel![i].appId, "IOS"),
                       barrierDismissible: true)
                       .then((value) => openNextPage(2));
-                } else if (versionUpdateModel[i].oldVersion !=
-                    versionUpdateModel[i].newVersion &&
-                    versionUpdateModel[i].updateType == "HARD") {
+                } else if (versionUpdateModel![i].oldVersion !=
+                    versionUpdateModel![i].newVersion &&
+                    versionUpdateModel![i].updateType == "HARD") {
                   Get.dialog(
-                      CustomDialogs().appForceUpdateDialog(
-                          versionUpdateModel[i].versionUpdateText,
-                          versionUpdateModel[i].appId,
+                      CustomDialogs.appForceUpdateDialog(
+                          versionUpdateModel![i].versionUpdateText!,
+                          versionUpdateModel![i].appId,
                           "IOS"),
                       barrierDismissible: false);
                 }
@@ -195,6 +198,8 @@ class SplashController extends GetxController {
             }
             if (journeyEndTime != null) {
               prefs.setString(StringConstants.JOURNEY_END_DATE, journeyEndTime);
+            } else {
+              prefs.setString(StringConstants.JOURNEY_END_DATE, "NA");
             }
             if (reqId == RequestIds.GET_MASTER_DATA_FOR_SPLASH)
               openNextPage(3);
