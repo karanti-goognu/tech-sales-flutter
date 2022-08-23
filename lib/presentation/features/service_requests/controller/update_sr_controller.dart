@@ -19,6 +19,12 @@ class UpdateServiceRequestController extends GetxController {
   ComplaintViewModel? complaintViewModel;
   int option = 1;
   String dropdownValue = 'Select visit sub-types';
+  List<String> customerTypeList = [
+    'IHB',
+    'Dealer',
+    'SUBDEALER',
+    'SALESOFFICER'
+  ];
 
   setTabOption(int value){
     this.option=value;

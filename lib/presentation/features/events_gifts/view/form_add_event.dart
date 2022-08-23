@@ -390,9 +390,14 @@ class _FormAddEventState extends State<FormAddEvent> {
                 fontWeight: FontWeight.bold,
                 fontSize: 15.sp),
           ),
-          onPressed: () {
-            btnPresssed(1);
-          },
+          onPressed: isButtonPressed == true
+              ? null
+              : () {
+                  setState(() {
+                    isButtonPressed = true;
+                  });
+                  btnPresssed(1);
+                },
         ),
       ],
     );
@@ -564,6 +569,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     });
   }
 
+  bool isButtonPressed = false;
   late List<bool?> checkedValues;
   List<String?> selectedDealer = [];
   List<DealersModels> selectedDealersModels = [];
@@ -737,9 +743,7 @@ class _FormAddEventState extends State<FormAddEvent> {
             message: "Select Time", snackPosition: SnackPosition.BOTTOM);
       } else {
         String? empId = await (getEmpId());
-
         timeString = ('$_date ${_time!.hour}:${_time!.minute}:00');
-
         List dealersList = List.empty(growable: true);
         selectedDealersModels.forEach((e) {
           setState(() {
@@ -783,30 +787,24 @@ class _FormAddEventState extends State<FormAddEvent> {
             'venueAddress': _venueAddController.text,
           });
 
-          SaveEventFormModel _save = SaveEventFormModel.fromJson({'eventDealersModelList': dealersList});
+          SaveEventFormModel _save = SaveEventFormModel.fromJson(
+              {'eventDealersModelList': dealersList});
           SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
               mwpeventFormRequest: _mwpeventFormRequest,
               eventDealersModelList: _save.eventDealersModelList);
 
           internetChecking().then((result) async {
-                if (result == true)
-                  {
-                    Future.delayed(
-                        Duration.zero,
-                        () => Get.dialog(
-                            Center(child: CircularProgressIndicator()), barrierDismissible: false));
-                    await saveEventController.getAccessKeyAndSaveRequest(_saveEventFormModel);
-                    Get.back();
-                  }
-                else
-                  {
-                    Get.snackbar("No internet connection.",
-                        "Make sure that your wifi or mobile data is turned on.",
-                        colorText: Colors.white,
-                        backgroundColor: Colors.red,
-                        snackPosition: SnackPosition.BOTTOM);
-                  }
-              });
+            if (result == true) {
+              await saveEventController
+                  .getAccessKeyAndSaveRequest(_saveEventFormModel);
+            } else {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM);
+            }
+          });
         }
       }
     }

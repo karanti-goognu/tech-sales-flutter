@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +29,6 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/styles/outline_input_borders.dart';
 import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-
 
 class UpdateDlrInf extends StatefulWidget {
   final int? eventId;
@@ -86,7 +85,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       setState(() {
         _dealerInfModel = data;
       });
-      print(jsonEncode(data));
       setData();
     });
   }
@@ -256,45 +254,45 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
       body: Stack(
         children: [
           Positioned.fill(
-              child:
-            ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 16.sp, top: 16.sp, right: 16.sp),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'update Dealers & Influencers',
-                      style: TextStyles.titleGreenStyle,
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          if (_isUpdate == true) {
-                            Get.dialog(CustomDialogs.showSaveChangesDialog(
-                                "Do you want to save changes?"));
-                          } else {
-                            Get.back();
-                          }
-                        })
-                  ],
+            child: ListView(
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 16.sp, top: 16.sp, right: 16.sp),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'update Dealers & Influencers',
+                        style: TextStyles.titleGreenStyle,
+                      ),
+                      IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            if (_isUpdate == true) {
+                              Get.dialog(CustomDialogs.showSaveChangesDialog(
+                                  "Do you want to save changes?"));
+                            } else {
+                              Get.back();
+                            }
+                          })
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [influencer, SizedBox(height: 16), dealer]),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: btns,
-              )
-            ],
+                SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [influencer, SizedBox(height: 16), dealer]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: btns,
+                )
+              ],
+            ),
           ),
-              ),
         ],
       ),
     );
@@ -441,7 +439,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                       ),
                       onPressed: () {
                         if (_isButtonDisabled == true) {
-                          log(jsonEncode(selectedInfModels));
+                          TsoLogger.logD(jsonEncode(selectedInfModels));
                           List<String?> infCont = List.empty(growable: true);
                           infCont = selectedInfModels
                               .map((e) => e.inflContact)
@@ -550,7 +548,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                     decoration:
                         FormFieldStyle.buildInputDecoration(labelText: "Name*"),
                   )),
-
               Padding(
                   padding:
                       const EdgeInsets.only(right: 16, left: 16, bottom: 12),
@@ -597,7 +594,6 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         ? 'Please select the Influencer Type'
                         : null,
                   )),
-
               Visibility(
                 visible: _enrollVisible,
                 child: Container(
@@ -606,9 +602,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                         EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                              5.0)
-                          ),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
                     child: CheckboxListTile(
                       title: Text(
@@ -628,8 +622,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                           }
                         });
                       },
-                      controlAffinity: ListTileControlAffinity
-                          .leading,
+                      controlAffinity: ListTileControlAffinity.leading,
                     )),
               ),
               SizedBox(height: 12),
@@ -795,7 +788,7 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: dealers!.length,
                 itemBuilder: (context, index) {
-                  return  CheckboxListTile(
+                  return CheckboxListTile(
                     activeColor: Colors.black,
                     dense: true,
                     title: Column(
@@ -940,8 +933,10 @@ class _UpdateDlrInfState extends State<UpdateDlrInf> {
     UpdateDealerInfModel _updateDealer = new UpdateDealerInfModel(
         eventDealerRequestsList: _dealersList,
         eventInfluencerRequestsList: _infList,
-        referenceID: empId);
+        referenceID: empId,
+        eventID: widget.eventId.toString());
 
+    TsoLogger.logD(jsonEncode(_updateDealer));
 
     internetChecking().then((result) => {
           if (result == true)

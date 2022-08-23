@@ -2,11 +2,13 @@ class UpdateDealerInfModel {
   List<EventDealerRequestsList>? eventDealerRequestsList;
   List<EventInfluencerRequestsList>? eventInfluencerRequestsList;
   String? referenceID;
+  String? eventID;
 
   UpdateDealerInfModel(
       {this.eventDealerRequestsList,
       this.eventInfluencerRequestsList,
-      this.referenceID});
+      this.referenceID,
+      this.eventID});
 
   UpdateDealerInfModel.fromJson(Map<String, dynamic> json) {
     if (!json.containsKey('event_dealer_requests_list'))
@@ -34,6 +36,7 @@ class UpdateDealerInfModel {
       });
     }
     referenceID = json['referenceID'];
+    eventID=json['eventID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class UpdateDealerInfModel {
           this.eventInfluencerRequestsList!.map((v) => v.toJson()).toList();
     }
     data['referenceID'] = this.referenceID;
+    data['eventID'] = this.eventID;
     return data;
   }
 }

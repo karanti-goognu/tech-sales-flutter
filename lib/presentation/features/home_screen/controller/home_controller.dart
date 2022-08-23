@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -176,8 +178,7 @@ class HomeController extends GetxController {
             checkInStatus = StringConstants.checkOut;
             _splashController.splashDataModel.journeyDetails.journeyStartLat =
                 this.checkInResponse.journeyEntity.journeyStartLat;
-            _splashController.splashDataModel.journeyDetails.journeyStartLong =
-                this.checkInResponse.journeyEntity.journeyStartLong;
+            _splashController.splashDataModel.journeyDetails.journeyStartLong = this.checkInResponse.journeyEntity.journeyStartLong;
             _splashController.splashDataModel.journeyDetails.journeyDate =
                 this.checkInResponse.journeyEntity.journeyDate;
             _splashController.splashDataModel.journeyDetails.journeyStartTime =

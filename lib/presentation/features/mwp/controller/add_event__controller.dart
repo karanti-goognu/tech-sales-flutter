@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -373,7 +374,6 @@ class AddEventController extends GetxController {
           debugPrint('Dealer List Response is null');
         } else {
           debugPrint('Dealer List Response is not null');
-          debugPrint("Data: ${json.encode(data)}");
           this.dealerListResponse = data;
           this.isLoading = false;
           if (this.dealerListResponse.dealerList.length != 0 &&
@@ -417,7 +417,7 @@ class AddEventController extends GetxController {
           debugPrint('Dealer List Response is not null');
           // Get.back();
           this.visitResponseModel = data;
-          log(json.encode(visitResponseModel));
+          TsoLogger.logD(json.encode(visitResponseModel));
 
           this.visitSiteId =
               this.visitResponseModel.mwpVisitModel.docId.toString();

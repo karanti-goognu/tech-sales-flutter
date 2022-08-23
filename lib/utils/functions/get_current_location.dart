@@ -23,7 +23,7 @@ class GetCurrentLocation{
       if (!serviceEnabled) {
         Get.rawSnackbar(message:'Location services are disabled.');
       }
-      permission = await Geolocator.checkPermission();
+    permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
@@ -34,17 +34,17 @@ class GetCurrentLocation{
         Future.error("location denied forever");
         Get.rawSnackbar(message:'Location permissions are permanently denied, we cannot request permissions.');
       }
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentPosition = position;
-      loc = await getAddressFromLatLng();
-      latLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+    loc = await getAddressFromLatLng();
+     latLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
      return LocationDetails(loc,_currentPosition, latLng);
   }
 
 
   static getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude);
+      List<Placemark> p = await GeocodingPlatform.instance.placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude);
       Placemark place = p[0];
       return ["${place.country}","${place.administrativeArea}","${place.subAdministrativeArea}", "${place.locality}", "${place.subLocality}", "${place.postalCode}", "${place.thoroughfare}", "${place.name}"];
     } catch (e) {

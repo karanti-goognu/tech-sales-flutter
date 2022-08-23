@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,6 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
-
 
 
 class MyApiClientEvent {
@@ -360,6 +360,7 @@ class MyApiClientEvent {
         } else {
         print('error');
       }
+      print(json.decode(response.body));
     }
     catch (e) {
       print("Exception at EG Repo $e");
@@ -372,7 +373,6 @@ class MyApiClientEvent {
     UpdateDealerInfResponse? updateDealerInfResponse;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
-      print(json.encode(updateDealerInfModel));
       version = VersionClass.getVersion();
       var response = await http.post(Uri.parse(UrlConstants.saveEventDealersInfluencers),
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,

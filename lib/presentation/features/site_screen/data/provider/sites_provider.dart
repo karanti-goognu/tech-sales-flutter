@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -164,8 +165,6 @@ class MyApiClientSites {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        log('Data:${json.encode(data)}');
-        log('URL: ${UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"}');
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
@@ -202,7 +201,6 @@ class MyApiClientSites {
       print(response.statusCode);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print(data);
         SiteFloorResponse siteFloorResponse = SiteFloorResponse.fromJson(data);
         siteFloorResponse.sitesEntity.forEach((element) {
           siteList.add(element);
@@ -271,7 +269,6 @@ class MyApiClientSites {
   updateVersion2SiteData(accessKey, String? userSecurityKey, updateDataRequest,
       List<File> list, BuildContext context, int? siteId) async {
     version = VersionClass.getVersion();
-    print(UrlConstants.updateVersion4SiteData);
     http.MultipartRequest request = new http.MultipartRequest('POST', Uri.parse(UrlConstants.updateVersion4SiteData));
     request.headers.addAll(headersWithAccessAndSecretWithoutContent(accessKey, userSecurityKey, version) );
     updateDataRequest['siteStageHistorys'].forEach((e) => print(e));

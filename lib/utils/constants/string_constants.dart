@@ -141,6 +141,7 @@ abstract class StringConstants {
   static const String tabDetails = "Details";
   static const String tabAction = "Action";
   static const String tabHistory = "History";
+  static const String requestCreation = "Request Creation";
 
 
 

@@ -50,8 +50,6 @@ class ConstructionStageEntityDBHelper extends ChangeNotifier{
     client.query('constructStage', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
       return ConstructStageEntityForDB.fromDb(maps.first);
     }
     return null;

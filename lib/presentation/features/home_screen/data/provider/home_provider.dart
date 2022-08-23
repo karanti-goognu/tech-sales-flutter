@@ -64,6 +64,8 @@ class MyApiClientHome {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print(data);
+        print("____");
         JourneyModel journeyModel = JourneyModel.fromJson(data);
         return journeyModel;
       } else
@@ -81,6 +83,7 @@ class MyApiClientHome {
       var response = await httpClient.get(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,secretKey, version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print(data);
         dashboardModel = DashboardModel.fromJson(data);
       } else
         print('error: ${response.statusCode}');

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tech_sales/bindings/event_binding.dart';
@@ -33,7 +31,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   }
 
   getApprovedEventsData() async {
-
       await eventsFilterController
           .getApprovedEventData()
           .then((data) {
@@ -52,7 +49,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
     int day = DateTime.now().day;
 
     if (approvedEventsModel != null && approvedEventsModel!.eventListModels != null) {
-
       for (int i = 0; i < approvedEventsModel!.eventListModels!.length; i++) {
         String date = approvedEventsModel!.eventListModels![i].eventDate!;
         DateTime eventDt = DateTime.parse(date);
@@ -78,15 +74,9 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait
     );
     return Scaffold(
         body: ListView(
@@ -180,8 +170,7 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
         ),
       ],
     )
-        // getList(),
-        );
+    );
   }
 
   Widget getList(List<EventListModels> list) {
@@ -230,14 +219,10 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                             children: [
                               Text(
                                 list[index].eventDate!,
-                                //"24-Mar-21",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontFamily: "Muli",
-                                    //fontWeight:
-                                    // FontWeight.bold
                                     fontWeight: FontWeight.normal),
-                                // ),
                               ),
                               Chip(
                                 shape: StadiumBorder(
@@ -247,47 +232,34 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                     HexColor("#39B54A").withOpacity(0.1),
                                 label: Text(
                                     'Status: ${list[index].eventStatusText}'),
-
                               ),
                             ],
                           ),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
+                              Text(
                                   list[index].eventTypeText!,
-                                  // "Mason Meet",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.bold),
                                 ),
-                                // ),
-                                //Obx(
-                                // () =>
                                 Text(
                                   "Planned : ${list[index].eventInflCount}",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.normal),
-                                  // ),
                                 ),
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //Obx(
-                                // () =>
-
-                                Flexible(
+                              Flexible(
                                   flex: 2,
                                   child: Text(
                                     list[index].eventVenue!,
-                                    //"Venue:",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 15,
@@ -295,27 +267,12 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                         fontWeight: FontWeight.normal),
                                   ),
                                 ),
-                                // ),
-                                //Obx(
-                                // () =>
                                 Flexible(
                                   flex: 3,
                                   child:
-
-                                  // Text(
-                                  //   "Dealer(s) : ${list[index].dealerName}",
-                                  //   overflow: TextOverflow.ellipsis,
-                                  //   style: TextStyle(
-                                  //       fontSize: 15,
-                                  //       fontFamily: "Muli",
-                                  //       fontWeight: FontWeight.normal),
-                                  //   // ),
-                                  // ),
-
                                    ( list[index].dealerName != null)?
                                 Text(
                                   "Dealer(s) : ${list[index].dealerName}",
-                                  //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 15,
@@ -323,7 +280,6 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                                       fontWeight: FontWeight.normal),
                                 ):Text(
                                   "Dealer(s) : -",
-                                  //"Dealer(s) : ${allEventController.egAllEventData.eventListModels[index].dealerName}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 15,
@@ -343,26 +299,19 @@ class _ApprovedEventsState extends State<ApprovedEvents> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //Obx(
-                                // () =>
-
-                                Text(
+                             Text(
                                   "EVENT ID: ${list[index].eventId}",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.normal),
                                 ),
-                                // ),
-                                //Obx(
-                                // () =>
                                 Text(
                                   "LEADS EXPECTED : ${list[index].expectedLeadsCount}",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Muli",
                                       fontWeight: FontWeight.normal),
-                                  // ),
                                 ),
                               ]),
                         ],

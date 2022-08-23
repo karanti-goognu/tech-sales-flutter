@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,11 +114,6 @@ class _RequestCreationState extends State<RequestCreation> {
 
   @override
   void initState() {
-    // _connectivity?.initialise();
-    // _connectivity.myStream.listen((source) {
-    //   setState(() => _source = source);
-    // });
-
     getDropdownData();
     UploadImageBottomSheet.image = null;
     super.initState();
@@ -176,10 +172,10 @@ class _RequestCreationState extends State<RequestCreation> {
                           padding: EdgeInsets.all(12),
                           height: 56,
                           child: Text(
-                            'Request Creation',
+                            StringConstants.requestCreation,
                             style: TextStyle(
                                 fontSize: 20,
-                                color: HexColor('#006838'),
+                                color: ColorConstants.greenTitle,
                                 fontFamily: "Muli"),
                           ),
                           decoration: BoxDecoration(
@@ -266,7 +262,8 @@ class _RequestCreationState extends State<RequestCreation> {
                                               child: Text(
                                                 'Select',
                                                 style: TextStyle(
-                                                  color: HexColor('#F9A61A'),
+                                                  color:
+                                                      ColorConstants.btnOrange,
                                                 ),
                                               ),
                                             ),
@@ -340,48 +337,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                       ),
                                     ),
                                   ),
-                                  // DropdownSearch<ActiveSiteTSOListsEntity>(
-                                  //   mode: Mode.BOTTOM_SHEET,
-                                  //   items: srComplaintModel!.activeSiteTSOLists,
-                                  //   itemAsString: (ActiveSiteTSOListsEntity?
-                                  //           u) =>
-                                  //       '${toBeginningOfSentenceCase(u!.contactName)} (${u.siteId})',
-                                  //   maxHeight: 240,
-                                  //   // label: "Site Id *",
-                                  //   dropdownSearchDecoration:
-                                  //       FormFieldStyle.buildInputDecoration(
-                                  //           labelText: "Site Id *"),
-                                  //   // dropdownSearchDecoration: InputDecoration(labelText: "Site Id *"),
-                                  //   validator: (value) => value == null
-                                  //       ? "Site id is required "
-                                  //       : null,
-                                  //   onChanged: (value) async {
-                                  //     siteId = value!.siteId;
-                                  //     SiteAreaModel siteDetails =
-                                  //         await srFormDataController
-                                  //             .getSiteAreaDetails(
-                                  //                 siteId.toString());
-                                  //     siteDetails.siteAreaDetailsModel != null
-                                  //         ? setState(() {
-                                  //             _pin.text = siteDetails
-                                  //                 .siteAreaDetailsModel!
-                                  //                 .sitePincode!;
-                                  //             _state.text = siteDetails
-                                  //                 .siteAreaDetailsModel!
-                                  //                 .siteState!;
-                                  //             _taluk.text = siteDetails
-                                  //                 .siteAreaDetailsModel!
-                                  //                 .siteTaluk!;
-                                  //             _district.text = siteDetails
-                                  //                 .siteAreaDetailsModel!
-                                  //                 .siteDistrict!;
-                                  //           })
-                                  //         : Get.rawSnackbar(
-                                  //             title: "Message",
-                                  //             message: siteDetails.respMsg);
-                                  //   },
-                                  //   showSearchBox: true,
-                                  // ),
                                   SizedBox(height: 16),
                                   DropdownButtonFormField(
                                     validator: (dynamic value) => value == null
@@ -399,12 +354,7 @@ class _RequestCreationState extends State<RequestCreation> {
                                     },
                                     items: siteId == null
                                         ? []
-                                        : [
-                                            'IHB',
-                                            'Dealer',
-                                            'SUBDEALER',
-                                            'SALESOFFICER'
-                                          ]
+                                        : controller.customerTypeList
                                             .map((e) => DropdownMenuItem(
                                                   child: Text(
                                                     e.toUpperCase(),
@@ -589,9 +539,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                                           controller
                                                               .updateImageAfterDelete(
                                                                   index);
-                                                          // controller.imageList
-                                                          //     .removeAt(
-                                                          //         index);
                                                         });
                                                       },
                                                     )
@@ -615,7 +562,6 @@ class _RequestCreationState extends State<RequestCreation> {
                                     controller: _state,
                                     readOnly: true,
                                     style: FormFieldStyle.formFieldTextStyle,
-                                    // validator: (value)=> value.isEmpty? 'Please select the Customer ID': null,
                                     keyboardType: TextInputType.text,
                                     decoration:
                                         FormFieldStyle.buildInputDecoration(
@@ -765,8 +711,6 @@ class _RequestCreationState extends State<RequestCreation> {
   List<String?> selectedRequestSubtype = [];
   List<String?> selectedRequestSubtypeSeverity = [];
   List<ServiceRequestComplaintTypeEntity> selectedRequestSubtypeObjectList = [];
-  // List<ServiceRequestComplaintTypeEntity> dataToBeSentBack = List<ServiceRequestComplaintTypeEntity>();
-  // ServiceRequestComplaintTypeEntity dataToBeSentBack;
   TextEditingController _query = TextEditingController();
 
   requestSubTypeBottomSheetWidget() {
@@ -795,20 +739,20 @@ class _RequestCreationState extends State<RequestCreation> {
                       onPressed: () {
                         if (selectedRequestSubtypeSeverity != null) {
                           if (selectedRequestSubtypeSeverity.contains('HIGH')) {
-                            setState(() {
-                              _severity.text = 'HIGH';
-                            });
+                            // setState(() {
+                            _severity.text = 'HIGH';
+                            // });
                           } else if (selectedRequestSubtypeSeverity
                               .contains('MEDIUM')) {
-                            setState(() {
-                              _severity.text = 'MEDIUM';
-                            });
+                            // setState(() {
+                            _severity.text = 'MEDIUM';
+                            // });
                           } else if (selectedRequestSubtypeSeverity
                               .contains('LOW')) {
-                            setState(() {
-                              _severity.text = 'LOW';
-                            });
-                          } else {}
+                            // setState(() {
+                            _severity.text = 'LOW';
+                            // });
+                          }
                           Get.back();
                         } else {
                           Get.back();
@@ -857,15 +801,7 @@ class _RequestCreationState extends State<RequestCreation> {
                           value: selectedRequestSubtype.contains(
                               requestSubtype![index].serviceRequestTypeText),
                           onChanged: (newValue) {
-                            // if (!checkedValues.contains(true) ||
-                            //     checkedValues[index] == true) {
                             setState(() {
-                              // if(requestId==1){
-                              //   selectedRequestSubtypeSeverity = [];
-                              //   selectedRequestSubtypeObjectList = [];
-                              //   selectedRequestSubtype = [];
-                              //   // checkedValues=[];
-                              // }
                               selectedRequestSubtype.contains(
                                       requestSubtype![index]
                                           .serviceRequestTypeText)
@@ -893,7 +829,6 @@ class _RequestCreationState extends State<RequestCreation> {
                               });
 
                               checkedValues[index] = newValue;
-                              // dataToBeSentBack = requestSubtype[index];
                             });
                           },
                           controlAffinity: ListTileControlAffinity.leading,
@@ -1025,12 +960,12 @@ class _RequestCreationState extends State<RequestCreation> {
   }
 
   TextEditingController _siteQuery = TextEditingController();
- ActiveSiteTSOListsEntity? siteEntity;
+  ActiveSiteTSOListsEntity? siteEntity;
   siteIdBottomSheet() {
     List<ActiveSiteTSOListsEntity> siteList =
         srComplaintModel!.activeSiteTSOLists ?? List.empty();
     return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) => Container(
+      builder: (context, StateSetter setState) => Container(
         color: Colors.white,
         height: 400,
         child: Column(
@@ -1038,16 +973,19 @@ class _RequestCreationState extends State<RequestCreation> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextFormField(
-                keyboardType: TextInputType.number,
                 controller: _siteQuery,
                 onChanged: (value) {
                   setState(() {
                     siteList =
                         srComplaintModel!.activeSiteTSOLists!.where((element) {
-                      return element.siteId
-                          .toString()
-                          .toLowerCase()
-                          .contains(value);
+                      return (element.siteId
+                              .toString()
+                              .toLowerCase()
+                              .contains(value) ||
+                          element.contactName
+                              .toString()
+                              .toLowerCase()
+                              .contains(value));
                     }).toList();
                   });
                 },
@@ -1069,23 +1007,27 @@ class _RequestCreationState extends State<RequestCreation> {
                         '${siteList[index].contactName} (${siteList[index].siteId})'),
                     groupValue: siteEntity,
                     onChanged: (dynamic value) async {
-                      siteEntity=value;
-                      siteId = value!.siteId;
-                      _siteController.text = '${siteEntity!.contactName} ($siteId)';
-                      SiteAreaModel siteDetails = await srFormDataController.getSiteAreaDetails(siteId.toString());
-                      siteDetails.siteAreaDetailsModel != null
-                          ? setState(() {
-                              _pin.text = siteDetails
-                                  .siteAreaDetailsModel!.sitePincode!;
-                              _state.text =
-                                  siteDetails.siteAreaDetailsModel!.siteState!;
-                              _taluk.text =
-                                  siteDetails.siteAreaDetailsModel!.siteTaluk!;
-                              _district.text = siteDetails
-                                  .siteAreaDetailsModel!.siteDistrict!;
-                            })
-                          : Get.rawSnackbar(
-                              title: "Message", message: siteDetails.respMsg);
+                      siteEntity = value;
+                      this.setState(() {
+                        this.siteId = value!.siteId;
+                      });
+                      _siteController.text =
+                          '${siteEntity!.contactName} ($siteId)';
+                      SiteAreaModel siteDetails = await srFormDataController
+                          .getSiteAreaDetails(siteId.toString());
+                      if (siteDetails.siteAreaDetailsModel != null) {
+                        _pin.text =
+                            siteDetails.siteAreaDetailsModel!.sitePincode!;
+                        _state.text =
+                            siteDetails.siteAreaDetailsModel!.siteState!;
+                        _taluk.text =
+                            siteDetails.siteAreaDetailsModel!.siteTaluk!;
+                        _district.text =
+                            siteDetails.siteAreaDetailsModel!.siteDistrict!;
+                      } else
+                        Get.rawSnackbar(
+                            title: "Message", message: siteDetails.respMsg);
+                      _siteQuery.clear();
                       Get.back();
                     }),
                 itemCount: siteList.length,

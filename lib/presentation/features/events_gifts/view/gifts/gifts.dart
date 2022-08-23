@@ -115,11 +115,12 @@ class _GiftsViewState extends State<GiftsView> {
                   color: Colors.white,
                   boxShadow: [BoxShadow(color: Colors.black12)]),
               child: DropdownButtonHideUnderline(
-                  child: Obx(() => _giftController.giftStockModelList.isEmpty ||
+                child: Obx(
+                  () => _giftController.giftStockModelList.isEmpty ||
                           _giftController.giftStockModelList == null
                       ? Container()
                       : DropdownButton(
-                          onChanged: (dynamic newValue) {
+                          onChanged: (dynamic newValue)  {
                             var x = _giftController.giftStockModelList
                                 .toList()
                                 .indexWhere((e) {
@@ -129,10 +130,9 @@ class _GiftsViewState extends State<GiftsView> {
                               _giftController.selectedDropdown = newValue;
                               giftTypeText = _giftController
                                   .giftStockModelList[x].giftTypeText;
-                              _giftController
-                                  .getGiftStockData()
-                                  .whenComplete(() => addDateForGiftsView());
                             });
+                             _giftController.getGiftStockData().whenComplete(() => addDateForGiftsView());
+
                           },
                           value: _giftController.selectedDropdown,
                           items: _giftController.giftStockModelList
@@ -145,7 +145,9 @@ class _GiftsViewState extends State<GiftsView> {
                               ),
                             );
                           }).toList(),
-                        ))),
+                        ),
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
@@ -301,23 +303,25 @@ class _GiftsViewState extends State<GiftsView> {
       ),
       actions: <Widget>[
         TextButton(
-            child: Text(
-              'Yes',
-              style: GoogleFonts.roboto(
-                  fontSize: 17,
-                  letterSpacing: 1.25,
-                  fontStyle: FontStyle.normal,
-                  color: ColorConstants.buttonNormalColor),
-            ),
-            onPressed: () {
-              // Get.back();
-              _giftController.addGiftStock(
-                  comment: _comments.text,
-                  giftTypeId: _giftController.selectedDropdown.toString(),
-                  giftTypeText: giftTypeText,
-                  giftInHandQty: _giftInHandQty,
-                  giftInHandQtyNew: _giftInHandQtyNew.text);
-            }),
+          child: Text(
+            'Yes',
+            style: GoogleFonts.roboto(
+                fontSize: 17,
+                letterSpacing: 1.25,
+                fontStyle: FontStyle.normal,
+                // fontWeight: FontWeight.bold,
+                color: ColorConstants.buttonNormalColor),
+          ),
+          onPressed: () {
+            Get.back();
+            _giftController.addGiftStock(
+                comment: _comments.text,
+                giftTypeId: _giftController.selectedDropdown.toString(),
+                giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
+
+            );
+          }
+        ),
         TextButton(
           child: Text(
             'No',

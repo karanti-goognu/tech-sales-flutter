@@ -391,13 +391,10 @@ class SiteController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      viewSiteDataResponse = await repository.getSitedetailsData(
-          accessKey, userSecurityKey, siteId, empID);
-    });
+      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
     return viewSiteDataResponse;
   }
 

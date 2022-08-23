@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
@@ -37,7 +39,9 @@ String? version;
     try{
       var url=UrlConstants.getGiftStock +empID;
       version = VersionClass.getVersion();
+      Future.delayed(Duration.zero, (){Get.dialog(Center(child: CircularProgressIndicator()),barrierDismissible: false);});
       var response = await httpClient.get(Uri.parse(url),headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version));
+      Get.back();
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if(data["resp_code"] == "DM1005"){

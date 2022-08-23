@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 
 class TsoLogger {
@@ -8,4 +10,8 @@ class TsoLogger {
     debugPrint(msg.toString());
   }
 
+  /// This method is used to log the message passed to it in the logcat.
+  static void logD(Object msg) {
+    log(msg.toString());
+  }
 }

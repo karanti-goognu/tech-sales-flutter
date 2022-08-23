@@ -21,7 +21,6 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
-
 class SiteVisitWidget extends StatefulWidget {
   final int? siteId;
   SiteVisitWidget({
@@ -36,6 +35,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   DateTime selectedDate = DateTime.now();
   String? visitSubType;
   String? selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
+  bool isDataLoaded = false;
 
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
@@ -57,10 +57,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
   Future getEmpId() async {
     String? empID = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      empID = prefs.getString(StringConstants.employeeId);
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    empID = prefs.getString(StringConstants.employeeId);
     return empID;
   }
 
@@ -68,7 +66,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     AccessKeyModel accessKeyModel = await _siteController.getAccessKeyOnly();
     viewSiteDataResponse = await _siteController.getSitedetailsData(
         accessKeyModel.accessKey, widget.siteId);
+
     setData();
+    setState(() {
+      isDataLoaded = true;
+    });
   }
 
   setData() {
@@ -261,14 +263,18 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       ],
     );
 
-    return SingleChildScrollView(
+    return
+      !isDataLoaded?
+      Center(child: CircularProgressIndicator(),) :
+      SingleChildScrollView(
         child: Padding(
             padding: EdgeInsets.only(
                 left: 16,
                 right: 16,
                 top: 16,
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
+            child:
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

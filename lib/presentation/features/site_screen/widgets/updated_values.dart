@@ -764,11 +764,17 @@ class UpdatedValues {
   }
 
   static TextEditingController? getBathroomCount() {
+    print(bathroomCount!=null?bathroomCount:TextEditingController());
+    print("***");
     return bathroomCount!=null?bathroomCount:TextEditingController();
   }
 
   static void setBathroomCount(TextEditingController? bathroomCount) {
+    print(bathroomCount?.text);
+    print("*****");
+
     UpdatedValues.bathroomCount = bathroomCount;
+    print(UpdatedValues.bathroomCount);
   }
 
   static ConstructionStageEntity? getSiteProgressConstructionId() {
@@ -971,6 +977,7 @@ class UpdatedValues {
           ? int.parse(UpdatedValues.getBathroomCount()!.text)
           : null,
     };
+    print(responseBody);
     if (UpdatedValues.getFromDropDown() == true) {
       if (UpdatedValues.siteBuiltArea == "" ||
           UpdatedValues.siteBuiltArea == null ||

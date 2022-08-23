@@ -43,6 +43,7 @@ class _DetailPendingState extends State<DetailPending> {
   final _addEventFormKey = GlobalKey<FormState>();
   List<DealersModels> selectedDealersModels = [];
   late List<bool?> checkedValues;
+  bool isSubmitButtonPressed = false;
 
   String? _date = 'Select Date';
   TimeOfDay? _time;
@@ -496,7 +497,10 @@ class _DetailPendingState extends State<DetailPending> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp),
           ),
-          onPressed: () {
+          onPressed: isSubmitButtonPressed==true?null:() {
+            setState(() {
+              isSubmitButtonPressed=true;
+            });
             btnPressed(1);
           },
         ),
@@ -713,7 +717,6 @@ class _DetailPendingState extends State<DetailPending> {
 
     checkedValues =
         List.generate(detailEventModel!.dealersModels!.length, (index) => false);
-    //checkedValues = List.generate(selectedDealersModels.length, (index) => true);
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         height: SizeConfig.screenHeight! / 1.5,

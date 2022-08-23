@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -289,17 +290,19 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
         UpdatedValues.setSiteBuiltArea(siteBuiltupArea.text);
       }
 
-      if (UpdatedValues.getBathroomCount() != null) {
-        _totalBathroomCount = UpdatedValues.getBathroomCount();
-      } else {
-        UpdatedValues.setBathroomCount(_totalBathroomCount);
-      }
+      // if (UpdatedValues.getBathroomCount() != null && UpdatedValues.getBathroomCount()!.text.isNotEmpty) {
+      //   _totalBathroomCount = UpdatedValues.getBathroomCount();
+      // } else {
 
-      if (UpdatedValues.getKitchenCount() != null) {
-        _totalKitchenCount = UpdatedValues.getKitchenCount();
-      } else {
+        UpdatedValues.setBathroomCount(_totalBathroomCount);
+
+      // }
+
+      // if (UpdatedValues.getKitchenCount() != null) {
+      //   _totalKitchenCount = UpdatedValues.getKitchenCount();
+      // } else {
         UpdatedValues.setKitchenCount(_totalKitchenCount);
-      }
+      // }
 
       if (UpdatedValues.getSiteTotalPotential() != null) {
         _siteTotalBags.text = UpdatedValues.getSiteTotalPotential()!;
@@ -336,1069 +339,1034 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
     return ListView(
       children: [
         Container(
-            child: Form(
-                key: _updateFormKey,
-                child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Visibility(
-                            visible: false,
-                            child: TextFormField(
-                              focusNode: myFocusNode,
-                              autofocus: true,
-                            ),
-                          ),
-                          DropdownButtonFormField<ConstructionStageEntity>(
-                            value: _selectedConstructionType,
-                            items: constructionStageEntity!
-                                .map((label) => DropdownMenuItem(
-                                      child: Text(
-                                        label.constructionStageText!,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: ColorConstants
-                                                .inputBoxHintColor,
-                                            fontFamily: "Muli"),
-                                      ),
-                                      value: label,
-                                    ))
-                                .toList(),
-                            onChanged: (_) async {
-                              // siteFloorsEntity= await _siteController.getSiteFloorList(_?.id);
-                              setState(() {
-                                _selectedConstructionType = _;
-                                UpdatedValues.setSiteConstructionId(
-                                    _selectedConstructionType);
-                              });
-                            },
-                            decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Stage of Construction"),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          TextFormField(
-                              controller: siteBuiltupArea,
-                              onChanged: (String _) => setState(() {
-                                    UpdatedValues.setSiteBuiltArea(_);
-                                  }),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter Site Built-Up Area (sqft)';
-                                }
-                                return null;
-                              },
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r"[0-9.]")),
-                                TextInputFormatter.withFunction(
-                                    (oldValue, newValue) {
-                                  try {
-                                    final text = newValue.text;
-                                    if (text.isNotEmpty) double.parse(text);
-                                    return newValue;
-                                  } catch (e) {}
-                                  return oldValue;
-                                }),
-                              ],
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                  labelText: "Site Built-up area (sqft)")),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 20, left: 5),
-                              child: Text("No. of Floors",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      fontFamily: "Muli"))),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: TextFormField(
-                                    enabled: false,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: ColorConstants
-                                                  .backgroundColorBlue,
-                                              width: 1.0)),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: const Color(0xFF000000)
-                                                .withOpacity(0.4),
-                                            width: 1.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1.0),
-                                      ),
-                                      labelText: "Ground",
-                                      filled: false,
-                                      focusColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontFamily: "Muli",
-                                          color: ColorConstants
-                                              .inputBoxHintColorDark,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 16.0),
-                                      fillColor: ColorConstants.backgroundColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child:
-                                      DropdownButtonFormField<SiteFloorsEntity>(
-                                    value: _selectedSiteFloor,
-                                    items: siteFloorsEntity!
-                                        .map((label) => DropdownMenuItem(
-                                              child: Text(
-                                                label.siteFloorTxt!,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: ColorConstants
-                                                        .inputBoxHintColor,
-                                                    fontFamily: "Muli"),
-                                              ),
-                                              value: label,
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        FocusScope.of(context)
-                                            .requestFocus(new FocusNode());
-                                        _selectedSiteFloor = value;
-                                        UpdatedValues.setNoOfFloors(
-                                            _selectedSiteFloor);
-                                      });
-                                    },
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "+ Floors"),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _totalBathroomCount,
-                            onChanged: (String text) {
-                              setState(() {
-                                UpdatedValues.setBathroomCount(
-                                    _totalBathroomCount);
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r"[0-9]")),
-                              TextInputFormatter.withFunction(
-                                  (oldValue, newValue) {
-                                try {
-                                  final text = newValue.text;
-                                  if (text.isNotEmpty) double.parse(text);
-                                  return newValue;
-                                } catch (e) {}
-                                return oldValue;
-                              }),
-                            ],
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Bathroom Count",
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _totalKitchenCount,
-                            onChanged: (String text) {
-                              setState(() {
-                                UpdatedValues.setKitchenCount(
-                                    _totalKitchenCount);
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r"[0-9]")),
-                              TextInputFormatter.withFunction(
-                                  (oldValue, newValue) {
-                                try {
-                                  final text = newValue.text;
-                                  if (text.isNotEmpty) double.parse(text);
-                                  return newValue;
-                                } catch (e) {}
-                                return oldValue;
-                              }),
-                            ],
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Kitchen Count",
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(
-                              "Site Demo conducted",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  // color: HexColor("#000000DE"),
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Product demo",
-                                        style: TextStyle(
-                                            fontSize: 18, fontFamily: "Muli")),
-                                    Row(children: [
-                                      Text("No",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              fontFamily: "Muli")),
-                                      Switch(
-                                          onChanged: toggleSwitchForProductDemo,
-                                          value: isSwitchedsiteProductDemo,
-                                          activeColor: HexColor("#009688"),
-                                          activeTrackColor: HexColor("#009688")
-                                              .withOpacity(0.5),
-                                          inactiveThumbColor:
-                                              HexColor("#F1F1F1"),
-                                          inactiveTrackColor: Colors.black26),
-                                      Text("Yes",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: isSwitchedsiteProductDemo
-                                                  ? HexColor("#009688")
-                                                  : Colors.black,
-                                              fontFamily: "Muli"))
-                                    ])
-                                  ])),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Product oral briefing",
-                                        style: TextStyle(
-                                            fontSize: 16, fontFamily: "Muli")),
-                                    Row(children: [
-                                      Text("No",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              fontFamily: "Muli")),
-                                      Switch(
-                                          onChanged:
-                                              toggleSwitchForOralBriefing,
-                                          value:
-                                              isSwitchedsiteProductOralBriefing,
-                                          activeColor: HexColor("#009688"),
-                                          activeTrackColor: HexColor("#009688")
-                                              .withOpacity(0.5),
-                                          inactiveThumbColor:
-                                              HexColor("#F1F1F1"),
-                                          inactiveTrackColor: Colors.black26),
-                                      Text("Yes",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color:
-                                                  isSwitchedsiteProductOralBriefing
-                                                      ? HexColor("#009688")
-                                                      : Colors.black,
-                                              fontFamily: "Muli"))
-                                    ])
-                                  ])),
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 20, left: 5),
-                              child: Text("Total Site Potential",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      fontFamily: "Muli"))),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: TextFormField(
-                                    controller: _siteTotalBags,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (_siteTotalBags.text == "") {
-                                          _siteTotalPt.clear();
-                                        } else {
-                                          _siteTotalPt.text =
-                                              (int.parse(_siteTotalBags.text) /
-                                                      20)
-                                                  .toString();
-
-                                          UpdatedValues.setSitePotentialMt(
-                                              _siteTotalPt.text);
-                                          UpdatedValues.setSiteTotalPotential(
-                                              _siteTotalBags.text);
-                                        }
-                                      });
-                                    },
-                                    keyboardType: TextInputType.phone,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter Bags ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "Bags"),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: TextFormField(
-                                    controller: _siteTotalPt,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (_siteTotalPt.text == "") {
-                                          _siteTotalBags.clear();
-                                        } else {
-                                          _siteTotalBags.text =
-                                              (double.parse(_siteTotalPt.text) *
-                                                      20)
-                                                  .toInt()
-                                                  .toString();
-                                          UpdatedValues.setSitePotentialMt(
-                                              _siteTotalPt.text);
-                                          UpdatedValues.setSiteTotalPotential(
-                                              _siteTotalBags.text);
-                                        }
-                                      });
-                                    },
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter MT ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: false),
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                            labelText: "MT"),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 20, left: 5),
-                            child: Text(
-                              "Total Balance Potential",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  fontFamily: "Muli"),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: TextFormField(
-                                    controller: _siteTotalBalanceBags,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (_siteTotalBalanceBags.text == "") {
-                                          _siteTotalBalancePt.clear();
-                                        } else {
-                                          _siteTotalBalancePt.text = (int.parse(
-                                                      _siteTotalBalanceBags
-                                                          .text) /
-                                                  20)
-                                              .toString();
-
-                                          UpdatedValues
-                                              .setTotalBalancePotential(
-                                                  _siteTotalBalanceBags.text);
-                                        }
-                                      });
-                                    },
-                                    keyboardType: TextInputType.phone,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter Bags ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                      labelText: "Bags",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: TextFormField(
-                                    controller: _siteTotalBalancePt,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (_siteTotalBalancePt.text == "") {
-                                          _siteTotalBalanceBags.clear();
-                                        } else {
-                                          _siteTotalBalanceBags.text =
-                                              (double.parse(_siteTotalBalancePt
-                                                          .text) *
-                                                      20)
-                                                  .toInt()
-                                                  .toString();
-                                          UpdatedValues
-                                              .setTotalBalancePotential(
-                                                  _siteTotalBalanceBags.text);
-                                        }
-                                      });
-                                    },
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter MT ';
-                                      }
-
-                                      return null;
-                                    },
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.inputBoxHintColor,
-                                        fontFamily: "Muli"),
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: true),
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(
-                                      labelText: "MT",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          DropdownButtonFormField<SiteProbabilityWinningEntity>(
-                            value: _siteProbabilityWinningEntity,
-                            items: viewSiteDataResponse!.sitesModal != null &&
-                                    viewSiteDataResponse!.sitesModal!
-                                            .siteProbabilityWinningId !=
-                                        null
-                                ? [_siteProbabilityWinningEntity]
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label == null
-                                                ? ""
-                                                : label.siteProbabilityStatus!,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList()
-                                : siteProbabilityWinningEntity!
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(
-                                            label.siteProbabilityStatus!,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: ColorConstants
-                                                    .inputBoxHintColor,
-                                                fontFamily: "Muli"),
-                                          ),
-                                          value: label,
-                                        ))
-                                    .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                labelProbabilityText =
-                                    value!.siteProbabilityStatus;
-                                labelProbabilityId = value.id;
-                                _siteProbabilityWinningEntity = value;
-                                UpdatedValues.setSiteProbabilityWinningId(
-                                    _siteProbabilityWinningEntity);
-                              });
-                            },
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Probability of winning",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _completionStatus,
-                            readOnly: true,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Competition Status",
-                            ),
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _opportunityStatus,
-                            readOnly: true,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Opportunity Status",
-                            ),
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                          ),
-                          SizedBox(height: 25),
-                          TextFormField(
-                            controller: _ownerName,
-                            validator: (value) {
-                              if (value!.isEmpty ||
-                                  value.length <= 0 ||
-                                  value == " " ||
-                                  value.trim().isEmpty) {
-                                return 'Please enter Owner Name';
-                              }
-                              return null;
-                            },
-                            onChanged: (data) {
-                              setState(() {
-                                UpdatedValues.setContactName(data);
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Owner Name"),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _contactNumber,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter contact number ';
-                              }
-                              if (value.length <= 9) {
-                                return 'Contact number is incorrect';
-                              }
-                              if (!Validations.isValidPhoneNumber(value)) {
-                                return 'Enter valid Contact number';
-                              }
-                              return null;
-                            },
-                            onChanged: (data) {
-                              setState(() {
-                                UpdatedValues.setContactNumber(data);
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            maxLength: 10,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Contact Number",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 20, left: 5),
-                              child: Text("Geo Tag",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      fontFamily: "Muli"))),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      side: BorderSide(color: Colors.black26)),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                                icon: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Icon(
-                                    Icons.location_searching,
-                                    color: HexColor("#F9A61A"),
-                                    size: 18,
-                                  ),
-                                ),
-                                label: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 8, top: 5),
-                                  child: Text(
-                                    "DETECT",
-                                    style: TextStyle(
-                                        color: HexColor("#F9A61A"),
-                                        fontWeight: FontWeight.bold,
-                                        // letterSpacing: 2,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    geoTagType = "A";
-                                    UpdatedValues.setSiteGeotag(geoTagType);
-                                  });
-                                  Get.rawSnackbar(
-                                      title: "Message",
-                                      message: StringConstants.ACCESS_LOCATION);
-                                  _getCurrentLocation();
-                                },
-                              ),
-                              Text(
-                                "Or",
-                                style:
-                                    TextStyle(fontFamily: "Muli", fontSize: 17),
-                              ),
-                              TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0),
-                                        side:
-                                            BorderSide(color: Colors.black26)),
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 5, bottom: 8, top: 5),
-                                    child: Text(
-                                      "MANUAL",
-                                      style: TextStyle(
-                                          color: HexColor("#F9A61A"),
-                                          fontWeight: FontWeight.bold,
-                                          // letterSpacing: 2,
-                                          fontSize: 17),
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    List<dynamic>? data = [];
-                                    data = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => CustomMap()));
-                                    setState(() {
-                                      geoTagType = "M";
-                                      UpdatedValues.setSiteGeotag(geoTagType);
-                                    });
-                                    if (data != null) {
-                                      Get.rawSnackbar(
-                                          title: "Message",
-                                          message:
-                                              "Location picked successfully");
-                                    }
-                                    _currentPosition =
-                                        new LatLng(data![0], data[1]);
-                                    getAddressFromLatLng();
-                                  }),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _plotNumber,
-                            onChanged: (String data) {
-                              UpdatedValues.setPlotNumber(_plotNumber.text);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Plot No.",
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                              controller: _siteAddress,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter Address ';
-                                }
-                                return null;
-                              },
-                              onChanged: (String data) {
-                                UpdatedValues.setSiteAddress(_siteAddress.text);
-                              },
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: ColorConstants.inputBoxHintColor,
-                                  fontFamily: "Muli"),
-                              keyboardType: TextInputType.text,
-                              decoration: FormFieldStyle.buildInputDecoration(
-                                labelText: "Address",
-                              )),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            //initialValue: _pincode.toString(),
-                            controller: _pincode,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter Pincode ';
-                              }
-                              return null;
-                            },
-                            onChanged: (String data) {
-                              UpdatedValues.setSitePincode(_pincode.text);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            //  maxLength: 6,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Pincode",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _state,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter State ';
-                              }
-
-                              return null;
-                            },
-                            onChanged: (String data) {
-                              UpdatedValues.setSiteState(_state.text);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "State",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _district,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter District ';
-                              }
-
-                              return null;
-                            },
-                            onChanged: (String data) {
-                              UpdatedValues.setSiteDistrict(_district.text);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "District",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _taluk,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter Taluk ';
-                              }
-
-                              return null;
-                            },
-                            onChanged: (String data) {
-                              UpdatedValues.setSiteTaluk(_taluk.text);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Taluk",
-                            ),
-                          ),
-                          TextStyles.mandatoryText,
-                          SizedBox(height: 16),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                  side: BorderSide(color: Colors.black26),
-                                ),
-                                backgroundColor: Colors.transparent,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 5, bottom: 10, top: 10),
+          child: Form(
+            key: _updateFormKey,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Visibility(
+                      visible: false,
+                      child: TextFormField(
+                        focusNode: myFocusNode,
+                        autofocus: true,
+                      ),
+                    ),
+                    DropdownButtonFormField<ConstructionStageEntity>(
+                      value: _selectedConstructionType,
+                      items: constructionStageEntity!
+                          .map((label) => DropdownMenuItem(
                                 child: Text(
-                                  "UPLOAD PHOTOS",
+                                  label.constructionStageText!,
                                   style: TextStyle(
-                                      color: HexColor("#1C99D4"),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17),
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
                                 ),
+                                value: label,
+                              ))
+                          .toList(),
+                      onChanged: (_) async {
+                        // siteFloorsEntity= await _siteController.getSiteFloorList(_?.id);
+                        setState(() {
+                          _selectedConstructionType = _;
+                          UpdatedValues.setSiteConstructionId(
+                              _selectedConstructionType);
+                        });
+                      },
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Stage of Construction"),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    TextFormField(
+                        controller: siteBuiltupArea,
+                        onChanged: (String _) => setState(() {
+                              UpdatedValues.setSiteBuiltArea(_);
+                            }),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Site Built-Up Area (sqft)';
+                          }
+                          return null;
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            try {
+                              final text = newValue.text;
+                              if (text.isNotEmpty) double.parse(text);
+                              return newValue;
+                            } catch (e) {}
+                            return oldValue;
+                          }),
+                        ],
+                        decoration: FormFieldStyle.buildInputDecoration(
+                            labelText: "Site Built-up area (sqft)")),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 20, left: 5),
+                        child: Text("No. of Floors",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                fontFamily: "Muli"))),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: TextFormField(
+                              enabled: false,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            ColorConstants.backgroundColorBlue,
+                                        width: 1.0)),
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.4),
+                                      width: 1.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.4),
+                                      width: 1.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1.0),
+                                ),
+                                labelText: "Ground",
+                                filled: false,
+                                focusColor: Colors.black,
+                                labelStyle: TextStyle(
+                                    fontFamily: "Muli",
+                                    color: ColorConstants.inputBoxHintColorDark,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16.0),
+                                fillColor: ColorConstants.backgroundColor,
                               ),
-                              onPressed: () async {
-                                if (_imgDetails.length < 5) {
-                                  _showPicker(context);
-                                } else {
-                                  Get.dialog(CustomDialogs.showMessage(
-                                      "You can add only upto 5 photos"));
-                                }
-                              },
                             ),
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: _imgDetails.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  content: new Container(
-                                                    child: _imgDetails[index]
-                                                                .from
-                                                                .toLowerCase() ==
-                                                            "network"
-                                                        ? Image.network(
-                                                            _imgDetails[index]
-                                                                .file
-                                                                .path)
-                                                        : Image.file(
-                                                            _imgDetails[index]
-                                                                .file),
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Picture ${(index + 1)}. ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15),
-                                                ),
-                                                Text(
-                                                  "Image_${(index + 1)}.jpg",
-                                                  style: TextStyle(
-                                                      color:
-                                                          HexColor("#007CBF"),
-                                                      fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            GestureDetector(
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: HexColor("#FFCD00"),
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  _imgDetails.removeAt(index);
-                                                });
-                                              },
-                                            )
-                                          ],
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: DropdownButtonFormField<SiteFloorsEntity>(
+                              value: _selectedSiteFloor,
+                              items: siteFloorsEntity!
+                                  .map((label) => DropdownMenuItem(
+                                        child: Text(
+                                          label.siteFloorTxt!,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: ColorConstants
+                                                  .inputBoxHintColor,
+                                              fontFamily: "Muli"),
                                         ),
-                                      );
-                                    }),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _rera,
-                            onChanged: (String data) {
-                              UpdatedValues.setReraNumber(data);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "RERA",
+                                        value: label,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
+                                  _selectedSiteFloor = value;
+                                  UpdatedValues.setNoOfFloors(
+                                      _selectedSiteFloor);
+                                });
+                              },
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "+ Floors"),
                             ),
                           ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _dealerName,
-                            readOnly: true,
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "Counter",
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          TextFormField(
-                            controller: _so,
-                            onChanged: (String data) {
-                              UpdatedValues.setSoCode(data);
-                            },
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.inputBoxHintColor,
-                                fontFamily: "Muli"),
-                            keyboardType: TextInputType.text,
-                            decoration: FormFieldStyle.buildInputDecoration(
-                              labelText: "SO",
-                            ),
-                          ),
-                          SizedBox(height: 51),
-                          Center(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  primary: HexColor("#1C99D4"),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 5, bottom: 10, top: 10),
-                                  child: Text(
-                                    "UPDATE",
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _totalBathroomCount,
+                      onChanged: (String text) {
+                        print("text: $text");
+                        print(
+                            "total bathroom count: ${_totalBathroomCount?.text}");
+                        setState(() {
+                          UpdatedValues.setBathroomCount(_totalBathroomCount);
+                        });
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                        TextInputFormatter.withFunction((oldValue, newValue) {
+                          try {
+                            final text = newValue.text;
+                            if (text.isNotEmpty) double.parse(text);
+                            return newValue;
+                          } catch (e) {}
+                          return oldValue;
+                        }),
+                      ],
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Bathroom Count",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _totalKitchenCount,
+                      onChanged: (String text) {
+                        setState(() {
+                          UpdatedValues.setKitchenCount(_totalKitchenCount);
+                        });
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+                        TextInputFormatter.withFunction((oldValue, newValue) {
+                          try {
+                            final text = newValue.text;
+                            if (text.isNotEmpty) double.parse(text);
+                            return newValue;
+                          } catch (e) {}
+                          return oldValue;
+                        }),
+                      ],
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Kitchen Count",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Site Demo conducted",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            // color: HexColor("#000000DE"),
+                            fontFamily: "Muli"),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Product demo",
+                                  style: TextStyle(
+                                      fontSize: 18, fontFamily: "Muli")),
+                              Row(children: [
+                                Text("No",
                                     style: TextStyle(
-                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
-                                        fontSize: 17),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  if (_updateFormKey.currentState!.validate()) {
-                                    UpdatedValues updateRequest =
-                                        new UpdatedValues();
-                                    updateRequest.updateRequest(context);
+                                        fontSize: 18,
+                                        fontFamily: "Muli")),
+                                Switch(
+                                    onChanged: toggleSwitchForProductDemo,
+                                    value: isSwitchedsiteProductDemo,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26),
+                                Text("Yes",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: isSwitchedsiteProductDemo
+                                            ? HexColor("#009688")
+                                            : Colors.black,
+                                        fontFamily: "Muli"))
+                              ])
+                            ])),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Product oral briefing",
+                                  style: TextStyle(
+                                      fontSize: 16, fontFamily: "Muli")),
+                              Row(children: [
+                                Text("No",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        fontFamily: "Muli")),
+                                Switch(
+                                    onChanged: toggleSwitchForOralBriefing,
+                                    value: isSwitchedsiteProductOralBriefing,
+                                    activeColor: HexColor("#009688"),
+                                    activeTrackColor:
+                                        HexColor("#009688").withOpacity(0.5),
+                                    inactiveThumbColor: HexColor("#F1F1F1"),
+                                    inactiveTrackColor: Colors.black26),
+                                Text("Yes",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: isSwitchedsiteProductOralBriefing
+                                            ? HexColor("#009688")
+                                            : Colors.black,
+                                        fontFamily: "Muli"))
+                              ])
+                            ])),
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5),
+                        child: Text("Total Site Potential",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                fontFamily: "Muli"))),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: TextFormField(
+                              controller: _siteTotalBags,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_siteTotalBags.text == "") {
+                                    _siteTotalPt.clear();
+                                  } else {
+                                    _siteTotalPt.text =
+                                        (int.parse(_siteTotalBags.text) / 20)
+                                            .toString();
+
+                                    UpdatedValues.setSitePotentialMt(
+                                        _siteTotalPt.text);
+                                    UpdatedValues.setSiteTotalPotential(
+                                        _siteTotalBags.text);
                                   }
-                                }),
+                                });
+                              },
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter Bags ';
+                                }
+
+                                return null;
+                              },
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "Bags"),
+                            ),
                           ),
-                          SizedBox(height: 40),
-                        ]))))
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: TextFormField(
+                              controller: _siteTotalPt,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_siteTotalPt.text == "") {
+                                    _siteTotalBags.clear();
+                                  } else {
+                                    _siteTotalBags.text =
+                                        (double.parse(_siteTotalPt.text) * 20)
+                                            .toInt()
+                                            .toString();
+                                    UpdatedValues.setSitePotentialMt(
+                                        _siteTotalPt.text);
+                                    UpdatedValues.setSiteTotalPotential(
+                                        _siteTotalBags.text);
+                                  }
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter MT ';
+                                }
+
+                                return null;
+                              },
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: false),
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                  labelText: "MT"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10.0, bottom: 20, left: 5),
+                      child: Text(
+                        "Total Balance Potential",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            fontFamily: "Muli"),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: TextFormField(
+                              controller: _siteTotalBalanceBags,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_siteTotalBalanceBags.text == "") {
+                                    _siteTotalBalancePt.clear();
+                                  } else {
+                                    _siteTotalBalancePt.text =
+                                        (int.parse(_siteTotalBalanceBags.text) /
+                                                20)
+                                            .toString();
+
+                                    UpdatedValues.setTotalBalancePotential(
+                                        _siteTotalBalanceBags.text);
+                                  }
+                                });
+                              },
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter Bags ';
+                                }
+
+                                return null;
+                              },
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "Bags",
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: TextFormField(
+                              controller: _siteTotalBalancePt,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_siteTotalBalancePt.text == "") {
+                                    _siteTotalBalanceBags.clear();
+                                  } else {
+                                    _siteTotalBalanceBags.text = (double.parse(
+                                                _siteTotalBalancePt.text) *
+                                            20)
+                                        .toInt()
+                                        .toString();
+                                    UpdatedValues.setTotalBalancePotential(
+                                        _siteTotalBalanceBags.text);
+                                  }
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter MT ';
+                                }
+
+                                return null;
+                              },
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.inputBoxHintColor,
+                                  fontFamily: "Muli"),
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              decoration: FormFieldStyle.buildInputDecoration(
+                                labelText: "MT",
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    DropdownButtonFormField<SiteProbabilityWinningEntity>(
+                      value: _siteProbabilityWinningEntity,
+                      items: viewSiteDataResponse!.sitesModal != null &&
+                              viewSiteDataResponse!
+                                      .sitesModal!.siteProbabilityWinningId !=
+                                  null
+                          ? [_siteProbabilityWinningEntity]
+                              .map((label) => DropdownMenuItem(
+                                    child: Text(
+                                      label == null
+                                          ? ""
+                                          : label.siteProbabilityStatus!,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
+                              .toList()
+                          : siteProbabilityWinningEntity!
+                              .map((label) => DropdownMenuItem(
+                                    child: Text(
+                                      label.siteProbabilityStatus!,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              ColorConstants.inputBoxHintColor,
+                                          fontFamily: "Muli"),
+                                    ),
+                                    value: label,
+                                  ))
+                              .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          labelProbabilityText = value!.siteProbabilityStatus;
+                          labelProbabilityId = value.id;
+                          _siteProbabilityWinningEntity = value;
+                          UpdatedValues.setSiteProbabilityWinningId(
+                              _siteProbabilityWinningEntity);
+                        });
+                      },
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Probability of winning",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _completionStatus,
+                      readOnly: true,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Competition Status",
+                      ),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _opportunityStatus,
+                      readOnly: true,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Opportunity Status",
+                      ),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                    ),
+                    SizedBox(height: 25),
+                    TextFormField(
+                      controller: _ownerName,
+                      validator: (value) {
+                        if (value!.isEmpty ||
+                            value.length <= 0 ||
+                            value == " " ||
+                            value.trim().isEmpty) {
+                          return 'Please enter Owner Name';
+                        }
+                        return null;
+                      },
+                      onChanged: (data) {
+                        setState(() {
+                          UpdatedValues.setContactName(data);
+                        });
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Owner Name"),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _contactNumber,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter contact number ';
+                        }
+                        if (value.length <= 9) {
+                          return 'Contact number is incorrect';
+                        }
+                        if (!Validations.isValidPhoneNumber(value)) {
+                          return 'Enter valid Contact number';
+                        }
+                        return null;
+                      },
+                      onChanged: (data) {
+                        setState(() {
+                          UpdatedValues.setContactNumber(data);
+                        });
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      maxLength: 10,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Contact Number",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 20, left: 5),
+                        child: Text("Geo Tag",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                fontFamily: "Muli"))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                side: BorderSide(color: Colors.black26)),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          icon: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Icon(
+                              Icons.location_searching,
+                              color: HexColor("#F9A61A"),
+                              size: 18,
+                            ),
+                          ),
+                          label: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, bottom: 8, top: 5),
+                            child: Text(
+                              "DETECT",
+                              style: TextStyle(
+                                  color: HexColor("#F9A61A"),
+                                  fontWeight: FontWeight.bold,
+                                  // letterSpacing: 2,
+                                  fontSize: 17),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              geoTagType = "A";
+                              UpdatedValues.setSiteGeotag(geoTagType);
+                            });
+                            Get.rawSnackbar(
+                                title: "Message",
+                                message: StringConstants.ACCESS_LOCATION);
+                            _getCurrentLocation();
+                          },
+                        ),
+                        Text(
+                          "Or",
+                          style: TextStyle(fontFamily: "Muli", fontSize: 17),
+                        ),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                  side: BorderSide(color: Colors.black26)),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 5, bottom: 8, top: 5),
+                              child: Text(
+                                "MANUAL",
+                                style: TextStyle(
+                                    color: HexColor("#F9A61A"),
+                                    fontWeight: FontWeight.bold,
+                                    // letterSpacing: 2,
+                                    fontSize: 17),
+                              ),
+                            ),
+                            onPressed: () async {
+                              List<dynamic>? data = [];
+                              data = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomMap()));
+                              setState(() {
+                                geoTagType = "M";
+                                UpdatedValues.setSiteGeotag(geoTagType);
+                              });
+                              if (data != null) {
+                                Get.rawSnackbar(
+                                    title: "Message",
+                                    message: "Location picked successfully");
+                              }
+                              _currentPosition = new LatLng(data![0], data[1]);
+                              getAddressFromLatLng();
+                            }),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _plotNumber,
+                      onChanged: (String data) {
+                        UpdatedValues.setPlotNumber(_plotNumber.text);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Plot No.",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                        controller: _siteAddress,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Address ';
+                          }
+                          return null;
+                        },
+                        onChanged: (String data) {
+                          UpdatedValues.setSiteAddress(_siteAddress.text);
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.inputBoxHintColor,
+                            fontFamily: "Muli"),
+                        keyboardType: TextInputType.text,
+                        decoration: FormFieldStyle.buildInputDecoration(
+                          labelText: "Address",
+                        )),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      //initialValue: _pincode.toString(),
+                      controller: _pincode,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter Pincode ';
+                        }
+                        return null;
+                      },
+                      onChanged: (String data) {
+                        UpdatedValues.setSitePincode(_pincode.text);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      //  maxLength: 6,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Pincode",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _state,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter State ';
+                        }
+
+                        return null;
+                      },
+                      onChanged: (String data) {
+                        UpdatedValues.setSiteState(_state.text);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "State",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _district,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter District ';
+                        }
+
+                        return null;
+                      },
+                      onChanged: (String data) {
+                        UpdatedValues.setSiteDistrict(_district.text);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "District",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _taluk,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter Taluk ';
+                        }
+
+                        return null;
+                      },
+                      onChanged: (String data) {
+                        UpdatedValues.setSiteTaluk(_taluk.text);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Taluk",
+                      ),
+                    ),
+                    TextStyles.mandatoryText,
+                    SizedBox(height: 16),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(color: Colors.black26),
+                          ),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 5, bottom: 10, top: 10),
+                          child: Text(
+                            "UPLOAD PHOTOS",
+                            style: TextStyle(
+                                color: HexColor("#1C99D4"),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_imgDetails.length < 5) {
+                            _showPicker(context);
+                          } else {
+                            Get.dialog(CustomDialogs.showMessage(
+                                "You can add only upto 5 photos"));
+                          }
+                        },
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: _imgDetails.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: new Container(
+                                              child: _imgDetails[index]
+                                                          .from
+                                                          .toLowerCase() ==
+                                                      "network"
+                                                  ? Image.network(
+                                                      _imgDetails[index]
+                                                          .file
+                                                          .path)
+                                                  : Image.file(
+                                                      _imgDetails[index].file),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Picture ${(index + 1)}. ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                          Text(
+                                            "Image_${(index + 1)}.jpg",
+                                            style: TextStyle(
+                                                color: HexColor("#007CBF"),
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      GestureDetector(
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: HexColor("#FFCD00"),
+                                        ),
+                                        onTap: () {
+                                          setState(() {
+                                            _imgDetails.removeAt(index);
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _rera,
+                      onChanged: (String data) {
+                        UpdatedValues.setReraNumber(data);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "RERA",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _dealerName,
+                      readOnly: true,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "Counter",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _so,
+                      onChanged: (String data) {
+                        UpdatedValues.setSoCode(data);
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.inputBoxHintColor,
+                          fontFamily: "Muli"),
+                      keyboardType: TextInputType.text,
+                      decoration: FormFieldStyle.buildInputDecoration(
+                        labelText: "SO",
+                      ),
+                    ),
+                    SizedBox(height: 51),
+                    Center(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            primary: HexColor("#1C99D4"),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 5, bottom: 10, top: 10),
+                            child: Text(
+                              "UPDATE",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
+                                  fontSize: 17),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_updateFormKey.currentState!.validate()) {
+                              UpdatedValues updateRequest = new UpdatedValues();
+
+                              updateRequest.updateRequest(context);
+                            }
+                          }),
+                    ),
+                    SizedBox(height: 40),
+                  ]),
+            ),
+          ),
+        )
       ],
     );
   }

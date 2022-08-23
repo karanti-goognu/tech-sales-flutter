@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -99,6 +101,8 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
     AccessKeyModel accessKeyModel = await _siteController.getAccessKeyOnly();
     viewSiteDataResponse = await _siteController.getSitedetailsData(
         accessKeyModel.accessKey, widget.siteId);
+    print('object');
+    log(jsonEncode(viewSiteDataResponse));
     setState(
       () {
         siteScore = viewSiteDataResponse.sitesModal!.siteScore;
@@ -113,7 +117,6 @@ class _ViewSiteScreenState extends State<ViewSiteScreen>
         }
       },
     );
-
     return viewSiteDataResponse;
   }
 

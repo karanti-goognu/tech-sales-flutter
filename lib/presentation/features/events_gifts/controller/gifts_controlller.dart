@@ -9,26 +9,27 @@ import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/GetGiftStockModel.dart';
 import 'package:flutter_tech_sales/presentation/features/events_gifts/data/model/LogsModel.dart';
 
-
 class GiftController extends GetxController {
   @override
   void onInit() {
     super.onInit();
   }
+
   final GiftsRepository repository;
 
   GiftController({required this.repository});
 
   final _giftStockModel = GetGiftStockModel().obs;
-  final _giftStockModelList= List<GiftStockModelList>.empty(growable: true).obs;
-  final _giftStockModelList1= List<GiftStockModelList>.empty(growable: true).obs;
-  final _giftTypeModelList= List<GiftTypeModelList>.empty(growable: true).obs;
-  final _selectedDropdown =0.obs;
+  final _giftStockModelList =
+      List<GiftStockModelList>.empty(growable: true).obs;
+  final _giftStockModelList1 =
+      List<GiftStockModelList>.empty(growable: true).obs;
+  final _giftTypeModelList = List<GiftTypeModelList>.empty(growable: true).obs;
+  final _selectedDropdown = 0.obs;
   final _itemFromBottomSheetTapped = false.obs;
   final _logsModel = LogsModel().obs;
   final _dataForViewLog = List<GiftStockList>.empty(growable: true).obs;
   final _monthYear = ''.obs;
-
 
   get monthYear => _monthYear;
 
@@ -57,7 +58,6 @@ class GiftController extends GetxController {
   get selectedDropdown => _selectedDropdown.value;
 
   set selectedDropdown(value) {
-
     _selectedDropdown.value = value;
   }
 
@@ -90,29 +90,42 @@ class GiftController extends GetxController {
   }
 
   Future getGiftStockData() async {
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String? accessKey = await repository.getAccessKey();
-    await _prefs.then((SharedPreferences prefs) async {
-      String empID= prefs.getString(StringConstants.employeeId)!;
-      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
-      giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
-      giftStockModelList= giftStockModel.giftStockModelList;
-      giftTypeModelList= giftStockModel.giftTypeModelList;
-    });
-    Get.back();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String empID = prefs.getString(StringConstants.employeeId)!;
+    String? securityKey = prefs.getString(StringConstants.userSecurityKey);
+    giftStockModel = await repository.getGiftStockData(empID, accessKey, securityKey);
+    giftStockModelList = giftStockModel.giftStockModelList;
+    giftTypeModelList = giftStockModel.giftTypeModelList;
     return giftStockModel;
   }
 
-  Future addGiftStock({String? comment, String? giftTypeId, String? giftTypeText,String? giftInHandQty,String? giftInHandQtyNew}) async {
+  Future addGiftStock(
+      {String? comment,
+      String? giftTypeId,
+      String? giftTypeText,
+      String? giftInHandQty,
+      String? giftInHandQtyNew}) async {
     SaveVisitResponse? response;
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
+    print("addGiftStock in controller");
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     String? accessKey = await repository.getAccessKey();
     await _prefs.then((SharedPreferences prefs) async {
-      String? empID= prefs.getString(StringConstants.employeeId);
+      String? empID = prefs.getString(StringConstants.employeeId);
       String? securityKey = prefs.getString(StringConstants.userSecurityKey);
-      response = await repository.addGiftStockData(empID,securityKey,accessKey,comment,giftTypeId,giftTypeText,giftInHandQty,giftInHandQtyNew);
+      response = await repository.addGiftStockData(
+          empID,
+          securityKey,
+          accessKey,
+          comment,
+          giftTypeId,
+          giftTypeText,
+          giftInHandQty,
+          giftInHandQtyNew);
     });
     Get.back();
     Get.rawSnackbar(title: "Message", message: response!.respMsg);
@@ -120,34 +133,35 @@ class GiftController extends GetxController {
   }
 
   Future getViewLogsData(String monthYear) async {
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false));
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(child: CircularProgressIndicator()),
+            barrierDismissible: false));
     String? accessKey = await repository.getAccessKey();
-    await _prefs.then((SharedPreferences prefs) async {
-      String empID= prefs.getString(StringConstants.employeeId)!;
-      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
-      logsModel = await repository.getViewLogsData(accessKey, securityKey,empID, monthYear);
-      Get.back();
-      if(logsModel.respCode=="DM1006"){
-        Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
-        dataForViewLog=<GiftStockList>[];
-      }
-      else{
-        Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
-        dataForViewLog=logsModel.giftStockModelList;
-      }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String empID = prefs.getString(StringConstants.employeeId)!;
+    String? securityKey = prefs.getString(StringConstants.userSecurityKey);
+    logsModel = await repository.getViewLogsData(
+        accessKey, securityKey, empID, monthYear);
+    Get.back();
+    if (logsModel.respCode == "DM1006") {
+      Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
+      dataForViewLog = <GiftStockList>[];
+    } else {
+      Get.dialog(CustomDialogs.showMessage(logsModel.respMsg));
+      dataForViewLog = logsModel.giftStockModelList;
+    }
 
-    });
     return logsModel;
   }
+
   Future getViewLogsData1(List<GiftStockModelList> giftStockModelList) async {
     List<GiftStockModelList> _giftStockModelList = [];
 
-    for(int i=1 ; i<giftStockModelList.length;i++){
+    for (int i = 1; i < giftStockModelList.length; i++) {
       _giftStockModelList.add(giftStockModelList[i]);
     }
-    giftStockModelList1 = _giftStockModelList ;
+    giftStockModelList1 = _giftStockModelList;
     return _giftStockModelList;
   }
-
 }

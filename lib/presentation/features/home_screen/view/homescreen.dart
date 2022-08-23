@@ -69,17 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
     _prefs.then(
       (SharedPreferences prefs) {
         _homeController.checkInStatus = StringConstants.journeyEnded;
-        var journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
-        var journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
-        if (journeyDate == null || journeyDate == "NA") {
-//        print('Check In');
+        String? journeyDate = prefs.getString(StringConstants.JOURNEY_DATE);
+        String? journeyEndDate = prefs.getString(StringConstants.JOURNEY_END_DATE);
+        if ((journeyDate == null && journeyEndDate==null ) || (journeyDate == "NA" && journeyEndDate== "NA")) {
           _homeController.checkInStatus = StringConstants.checkIn;
         } else {
-          if (journeyEndDate == null || journeyEndDate == "NA") {
-//          print('Check Out');
+          if ((journeyDate != null && journeyEndDate == null) || (journeyEndDate == "NA" )) {
             _homeController.checkInStatus = StringConstants.checkOut;
           } else {
-//          print('Journey Ended');
             _homeController.checkInStatus = StringConstants.journeyEnded;
           }
         }
@@ -90,14 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
         setMoengageData(prefs);
       },
     );
-  //  print("notification section starts here");
-    //   notification section starts here
+
     _moEngageInbox = MoEngageInbox();
     WidgetsBinding.instance?.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
                 setState(() {
                   unReadMessageCount = value;
-               //   print("unReadMessageCount $unReadMessageCount");
                 }),
               })
         });
@@ -105,26 +100,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ///** Kp Changes*
   void setMoengageData(SharedPreferences prefs) {
-  //  print("Moengage Initialize");
     final MoEngageFlutter _moengagePlugin = MoEngageFlutter();
-    //_moengagePlugin.initialise();
-    //_moengagePlugin.setAppStatus(MoEAppStatus.update);
     _moengagePlugin.enableSDKLogs();
-    //_moengagePlugin.setUpPushCallbacks(_onPushClick);
     _moengagePlugin.setUniqueId(
-        prefs.getString(StringConstants.employeeId) ?? ""); //employeeId id
+        prefs.getString(StringConstants.employeeId) ?? "");
     _moengagePlugin.setUserName(prefs.getString(StringConstants.employeeName) ?? ""); //employeeName
     _moengagePlugin.setPhoneNumber(
-        prefs.getString(StringConstants.mobileNumber) ?? ""); //contact number
-    _moengagePlugin.setEmail("test@test.com"); //email
-    _moengagePlugin.setBirthDate("xx-xx-xxxx"); //dob
+        prefs.getString(StringConstants.mobileNumber) ?? "");
+    _moengagePlugin.setEmail("test@test.com");
+    _moengagePlugin.setBirthDate("xx-xx-xxxx");
   }
 
   @override
   void dispose() {
-  //  print("homescreen.dart :::::: dispose()");
     super.dispose();
-    // _homeController.dispose();
   }
 
   @override
@@ -167,7 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     colorText: Colors.white,
                                     backgroundColor: Colors.red,
                                     snackPosition: SnackPosition.BOTTOM),
-                                // fetchSiteList()
                               }
                           },
                         );
@@ -176,7 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: (SizeConfig.screenHeight! * .12) * .43,
                         width: (SizeConfig.screenHeight! * .12) * .43,
                         padding: EdgeInsets.all(4),
-                        // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
                         decoration: new BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.0),
@@ -382,8 +369,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GridView.count(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              // itemCount: 4,
-                              //physics: NeverScrollableScrollPhysics(),
                               crossAxisCount: 2,
                               // gridDelegate:
                               //     SliverGridDelegateWithFixedCrossAxisCount(

@@ -10,6 +10,7 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
+import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -126,7 +127,7 @@ class MyApiClientDashboard {
       //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-          log("---$data");
+        TsoLogger.logD("---$data");
         if (data["resp_code"] == "DM1005") {
           //Get.back();
           //    print("User Inactive");
@@ -177,7 +178,6 @@ class MyApiClientDashboard {
           //       'resp_code': 'qwer',
           //       'resp_msg': "ooo"
           //     });
-          // log("dashboardMtdConvertedVolumeList: ${json.encode(dashboardMtdConvertedVolumeList)}");
           return dashboardMtdConvertedVolumeList;
         }
       } else

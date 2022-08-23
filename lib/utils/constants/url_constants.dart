@@ -81,7 +81,7 @@ abstract class UrlConstants {
  static const String updateVisit = '$baseUrl/mwp/v2/update-visit';
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
  static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
- static const String saveUpdateSiteVisit = '$baseUrl/mwp/https://mobileqacloud.dalmiabharat.com/tech_sales_serverSave-update-site_visit';
+ static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
 
 
 
