@@ -167,7 +167,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 Expanded(
                     child: Text(
                   (_time != null
-                      ? '${_time!.hour}:${_time!.minute}'
+                      ? '${_time!.hour}:${_time!.minute.isLowerThan(10) ? '0' + _time!.minute.toString() : _time!.minute}'
                       : 'Select time'),
                   style: TextStyle(color: Colors.black),
                 )),
@@ -546,7 +546,7 @@ class _FormAddEventState extends State<FormAddEvent> {
     (_time == null)
         ? _time = await showTimePicker(
             context: context,
-            initialTime: (TimeOfDay(hour: 10, minute: 47)),
+            initialTime: (TimeOfDay.now()),
             builder: (BuildContext context, Widget? child) {
               return MediaQuery(
                 data: MediaQuery.of(context),
