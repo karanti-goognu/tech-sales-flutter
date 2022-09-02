@@ -51,8 +51,6 @@ class _CancelEventState extends State<CancelEvent> {
   }
 
   getDetailEventsData() async {
-    // await detailEventController.getAccessKey().then((value) async {
-    //  // print(value.accessKey);
       await detailEventController
           .getDetailEventData(widget.eventId)
           .then((data) {
@@ -60,23 +58,15 @@ class _CancelEventState extends State<CancelEvent> {
           detailEventModel = data;
           selectedDealersModels = detailEventModel!.dealersModels;
         });
-      //  print('DDDD: $data');
       });
-   // });
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait
     );
 
     final dropDwnReason = DropdownButtonFormField<Object>(
@@ -250,7 +240,6 @@ class _CancelEventState extends State<CancelEvent> {
           });
         });
       });
-    //  print('DEALERS: $dealersList');
       MwpeventFormRequest _mwpeventFormRequest = MwpeventFormRequest.fromJson({
         'dalmiaInflCount': detailEventModel!.mwpEventModel!.dalmiaInflCount,
         'eventComment': detailEventModel!.mwpEventModel!.eventComment,
@@ -279,8 +268,6 @@ class _CancelEventState extends State<CancelEvent> {
       SaveEventFormModel _saveEventFormModel = SaveEventFormModel(
           mwpeventFormRequest: _mwpeventFormRequest,
           eventDealersModelList: _save.eventDealersModelList);
-
-    //  print('PARAMS: ${json.encode(_mwpeventFormRequest)}');
 
       internetChecking().then((result) => {
             if (result == true)

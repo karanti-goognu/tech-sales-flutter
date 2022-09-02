@@ -99,11 +99,9 @@ class LoginController extends GetxController {
       Get.back();
 
       if(data=="null"){
-        print("OK");
         showNoInternetSnack();
       }
       else{
-        print(data);
         this.accessKeyResponse = data;
         switch (requestId) {
           case RequestIds.LOGIN_REQUEST:
@@ -220,7 +218,6 @@ class LoginController extends GetxController {
                       ),
                       onPressed: () {
                         this.attempts=0;
-                        print(this.attempts);
                         Get.offAllNamed(Routes.LOGIN);
                       },
                     ),

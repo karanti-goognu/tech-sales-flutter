@@ -36,6 +36,7 @@ abstract class StringConstants {
   static String accessToken = 'b7a8fb07-3a4d-4696-b85a-709c9185407c';
 
   ///Filter Constants
+  static String filters = "Filters";
   static String nonVerified = 'Non-Verified';
   static String nonVerifiedValue = '1';
   static String teleVerified = 'Tele-Verified';

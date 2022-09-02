@@ -50,8 +50,6 @@ class SiteCompetitionStatusEntityDBHelper extends ChangeNotifier{
     client.query('siteCompetitionStatus', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
       return SiteCompetitionStatusEntityForDB.fromDb(maps.first);
     }
     return null;

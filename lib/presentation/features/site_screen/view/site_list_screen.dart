@@ -289,24 +289,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                                                 ),
                                                           ),
                                                         )),
-                                                    // Padding(
-                                                    //     padding:
-                                                    //     const EdgeInsets
-                                                    //         .all(2.0),
-                                                    //     child: Obx(
-                                                    //           () => Text(
-                                                    //         "${_siteController.sitesListResponse.sitesEntity[index].contactName}" ?? "" ,
-                                                    //         style: TextStyle(
-                                                    //             fontSize: 18,
-                                                    //             fontFamily:
-                                                    //             "Muli",
-                                                    //             fontWeight:
-                                                    //             FontWeight
-                                                    //                 .bold
-                                                    //           //fontWeight: FontWeight.normal
-                                                    //         ),
-                                                    //       ),
-                                                    //     )),
                                                     Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -552,16 +534,6 @@ class _SiteListScreenState extends State<SiteListScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              /*Text(
-                                            "Exclusive Dalmia ",
-                                            style: TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: 12,
-                                                fontFamily: "Muli",
-                                                fontWeight: FontWeight.bold
-                                                //fontWeight: FontWeight.normal
-                                                ),
-                                          ),*/
                                               Text(
                                                 (_siteController
                                                             .sitesListResponse

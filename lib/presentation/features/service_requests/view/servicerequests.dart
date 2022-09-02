@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_tech_sales/utils/functions/convert_to_hex.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
-
 
 class ServiceRequests extends StatefulWidget {
   @override
@@ -37,36 +37,27 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   bool isFilterApplied = false;
 
   getSRListData() async {
-    await eventController.getAccessKey().then((value) async {
-      await eventController.getSrListData(value!.accessKey, 0, context).then((data){
-        setState(() {
-          serviceRequestComplaintListModel = data;
-        });
-      });
-    });
+    AccessKeyModel value = await eventController.getAccessKey();
+    ServiceRequestComplaintListModel data =
+        await eventController.getSrListData(value.accessKey, 0, context);
+    setState(() => serviceRequestComplaintListModel = data);
   }
 
   _scrollListener() async {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       eventController.offset += 10;
-      if (isFilterApplied == false){
-        await eventController.getAccessKey().then((value) async {
-          await eventController.getSrListData(
-              value!.accessKey, eventController.offset, context).then((data) {
-            setState(() {
-              serviceRequestComplaintListModel = data;
-            });
-          });
-        });
-    }
+      if (isFilterApplied == false) {
+        AccessKeyModel value = await eventController.getAccessKey();
+        ServiceRequestComplaintListModel data = await eventController.getSrListData(value.accessKey, eventController.offset, context);
+        setState(() => serviceRequestComplaintListModel = data);
+      }
     }
   }
 
-  void disposeController(BuildContext context){
+  void disposeController(BuildContext context) {
     eventController.offset = 0;
     eventController.dispose();
-
   }
 
   @override
@@ -82,22 +73,20 @@ class _ServiceRequestsState extends State<ServiceRequests> {
   @override
   void dispose() {
     eventController.offset = 0;
-    eventController.dispose();
+    try {
+      eventController.dispose();
+    } catch (e) {
+      print(e);
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        // context:
-        context,
-
-        // BoxConstraints(
-        //     maxWidth: MediaQuery.of(context).size.width,
-        //     maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        minTextAdapt: true,
-        // orientation: Orientation.portrait
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
     );
     SizeConfig().init(context);
     return Scaffold(
@@ -123,28 +112,29 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         fontFamily: "Muli"),
                   ),
                 ),
-
                 TextButton(
                   onPressed: () =>
                       Get.bottomSheet(FilterWidget()).then((value) {
-                        setState(() {
-                          totalFilters = value[3];
-                        });
-                        isFilterApplied = true;
-                        eventController.getAccessKey().then((accessKeyModel) {
-                          eventController
-                              .getSrListDataWithFilters(accessKeyModel!.accessKey,
+                    setState(() {
+                      totalFilters = value[3];
+                    });
+                    isFilterApplied = true;
+                    eventController.getAccessKey().then((accessKeyModel) {
+                      eventController
+                          .getSrListDataWithFilters(accessKeyModel.accessKey,
                               value[0], value[1], value[2])
-                              .then((data) {
-                            setState(() {
-                              serviceRequestComplaintListModel = data;
-                            });
-                          });
+                          .then((data) {
+                        setState(() {
+                          serviceRequestComplaintListModel = data;
                         });
-                      }),
-                  style: TextButton.styleFrom(shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.white)),),
+                      });
+                    });
+                  }),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.white)),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Row(
@@ -154,10 +144,9 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           width: 18,
                           decoration: new BoxDecoration(
                             color: Colors.white,
-                            border:
-                            Border.all(color: Colors.black, width: 0.0),
+                            border: Border.all(color: Colors.black, width: 0.0),
                             borderRadius:
-                            new BorderRadius.all(Radius.circular(3)),
+                                new BorderRadius.all(Radius.circular(3)),
                           ),
                           child: Center(
                             child: Text(
@@ -175,8 +164,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'FILTER',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 18),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),
                       ],
@@ -191,152 +179,153 @@ class _ServiceRequestsState extends State<ServiceRequests> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton:
-      SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
+          SpeedDialFAB(speedDial: speedDial, customStyle: customStyle),
       bottomNavigationBar: BottomNavigator(),
       body: serviceRequestComplaintListModel == null
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            totalCountAndTotalPotential(),
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: HexColor('#F9A61A'),
-                  radius: 10,
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                Text(
-                  'Service Request',
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    fontSize: 11,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                CircleAvatar(
-                  backgroundColor: HexColor('#9E3A0D'),
-                  radius: 10,
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                Text(
-                  'Complaint',
-                  style: TextStyle(
-                    fontFamily: "Muli",
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            serviceRequestComplaintListModel!.srComplaintListModal != null
-                ? Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                  itemCount: serviceRequestComplaintListModel!
-                      .srComplaintListModal!.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(()=>
-                          RequestUpdation(
-                              id: serviceRequestComplaintListModel!
-                                  .srComplaintListModal![index]
-                                  .srComplaintId),
-                          transition: Transition.rightToLeft,
-                          binding: SRBinding(),
-                        );
-                      },
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        borderOnForeground: true,
-                        elevation: 6,
-                        margin: EdgeInsets.all(5.0),
-                        color: Colors.white,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(left: BorderSide(
-                              width: 5,
-                              color: serviceRequestComplaintListModel!
-                                  .srComplaintListModal![
-                              index]
-                                  .request !=
-                                  'SERVICE REQUEST'
-                                  ? HexColor('#9E3A0D')
-                                  : HexColor('#F9A61A'),
-                            )),
-
-                          ),
-                          padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 50,
-                                child: Column(
-                                  children: [
-                                    topRowWithSiteId(index),
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.fromLTRB(
-                                          8, 4, 8, 0),
-                                      child: Container(
-                                        color: Colors.grey,
-                                        width: double.infinity,
-                                        height: 1,
-                                      ),
-                                    ),
-                                    bottomRowWithRequestId(index),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  totalCountAndTotalPotential(),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: HexColor('#F9A61A'),
+                        radius: 10,
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        'Service Request',
+                        style: TextStyle(
+                          fontFamily: "Muli",
+                          fontSize: 11,
                         ),
                       ),
-                    );
-                  }),
-            )
-                : Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                child: Text(
-                  serviceRequestComplaintListModel!.respMsg ?? "",
-                  textAlign: TextAlign.center,
-                ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: HexColor('#9E3A0D'),
+                        radius: 10,
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        'Complaint',
+                        style: TextStyle(
+                          fontFamily: "Muli",
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  serviceRequestComplaintListModel!.srComplaintListModal != null
+                      ? Expanded(
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: serviceRequestComplaintListModel!
+                                  .srComplaintListModal!.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      () => RequestUpdation(
+                                          id: serviceRequestComplaintListModel!
+                                              .srComplaintListModal![index]
+                                              .srComplaintId),
+                                      transition: Transition.rightToLeft,
+                                      binding: SRBinding(),
+                                    );
+                                  },
+                                  child: Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    borderOnForeground: true,
+                                    elevation: 6,
+                                    margin: EdgeInsets.all(5.0),
+                                    color: Colors.white,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            left: BorderSide(
+                                          width: 5,
+                                          color:
+                                              serviceRequestComplaintListModel!
+                                                          .srComplaintListModal![
+                                                              index]
+                                                          .request !=
+                                                      'SERVICE REQUEST'
+                                                  ? HexColor('#9E3A0D')
+                                                  : HexColor('#F9A61A'),
+                                        )),
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            flex: 50,
+                                            child: Column(
+                                              children: [
+                                                topRowWithSiteId(index),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 4, 8, 0),
+                                                  child: Container(
+                                                    color: Colors.grey,
+                                                    width: double.infinity,
+                                                    height: 1,
+                                                  ),
+                                                ),
+                                                bottomRowWithRequestId(index),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
+                      : Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              serviceRequestComplaintListModel!.respMsg ?? "",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
   Padding totalCountAndTotalPotential() {
     return Padding(
       padding:
-      const EdgeInsets.only(top: 10.0, left: 15.0, bottom: 5, right: 15.0),
+          const EdgeInsets.only(top: 10.0, left: 15.0, bottom: 5, right: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-      child: Text(
-      serviceRequestComplaintListModel!.totalCount != null
-        ? "Total Count : ${ eventController.srListData.totalCount}"
-        : "Total Count : 0",
-        style: TextStyle(
+            child: Text(
+              serviceRequestComplaintListModel!.totalCount != null
+                  ? "Total Count : ${eventController.srListData.totalCount}"
+                  : "Total Count : 0",
+              style: TextStyle(
                 fontFamily: "Muli",
                 fontSize: 12,
               ),
@@ -377,8 +366,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         color: HexColor('#FF000099'),
                         fontSize: 12,
                         fontFamily: "Muli",
-                        fontWeight: FontWeight.normal
-                    ),
+                        fontWeight: FontWeight.normal),
                   ),
                 ),
                 Padding(
@@ -388,8 +376,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Muli",
-                        fontWeight: FontWeight.bold
-                    ),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
@@ -400,8 +387,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                         color: Colors.black38,
                         fontSize: 12,
                         fontFamily: "Muli",
-                        fontWeight: FontWeight.bold
-                    ),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Row(
@@ -414,49 +400,48 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           shape: StadiumBorder(
                             side: BorderSide(
                               color: serviceRequestComplaintListModel!
-                                  .srComplaintListModal![index]
-                                  .severity ==
-                                  'HIGH'
+                                          .srComplaintListModal![index]
+                                          .severity ==
+                                      'HIGH'
                                   ? HexColor('#9E3A0D')
                                   : serviceRequestComplaintListModel!
-                                  .srComplaintListModal![index]
-                                  .severity ==
-                                  'MEDIUM'
-                                  ? HexColor('#F9A61A')
-                                  : HexColor('#0054A6'),
+                                              .srComplaintListModal![index]
+                                              .severity ==
+                                          'MEDIUM'
+                                      ? HexColor('#F9A61A')
+                                      : HexColor('#0054A6'),
                             ),
                           ),
                           backgroundColor: HexColor(
-                              serviceRequestComplaintListModel!
-                                  .srComplaintListModal![index]
-                                  .severity ==
-                                  'HIGH'
-                                  ? "#FFCD0014"
-                                  : serviceRequestComplaintListModel!
-                                  .srComplaintListModal![index]
-                                  .severity ==
-                                  'MEDIUM'
-                                  ? "#FFCD00"
-                                  : "#0054A6")
+                                  serviceRequestComplaintListModel!
+                                              .srComplaintListModal![index]
+                                              .severity ==
+                                          'HIGH'
+                                      ? "#FFCD0014"
+                                      : serviceRequestComplaintListModel!
+                                                  .srComplaintListModal![index]
+                                                  .severity ==
+                                              'MEDIUM'
+                                          ? "#FFCD00"
+                                          : "#0054A6")
                               .withOpacity(0.1),
                           label: Text(
                             "${serviceRequestComplaintListModel!.srComplaintListModal![index].severity}",
                             style: TextStyle(
                                 color: serviceRequestComplaintListModel!
-                                    .srComplaintListModal![index]
-                                    .severity ==
-                                    'HIGH'
+                                            .srComplaintListModal![index]
+                                            .severity ==
+                                        'HIGH'
                                     ? HexColor('#9E3A0D')
                                     : serviceRequestComplaintListModel!
-                                    .srComplaintListModal![index]
-                                    .severity ==
-                                    'MEDIUM'
-                                    ? HexColor('#F9A61A')
-                                    : HexColor('#0054A6'),
+                                                .srComplaintListModal![index]
+                                                .severity ==
+                                            'MEDIUM'
+                                        ? HexColor('#F9A61A')
+                                        : HexColor('#0054A6'),
                                 fontSize: 12,
                                 fontFamily: "Muli",
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -495,16 +480,14 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             color: Colors.black38,
                             fontSize: 15,
                             fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "${serviceRequestComplaintListModel!.srComplaintListModal![index].sitePotential}MT",
                         style: TextStyle(
                             fontSize: 15,
                             fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -515,10 +498,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                       color: HexColor('#000000'),
                       fontSize: 12,
                       fontFamily: "Muli",
-                      fontWeight: FontWeight.bold
-                  ),
+                      fontWeight: FontWeight.bold),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(0),
                   child: Transform(
@@ -537,8 +518,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                             color: HexColor("#666666"),
                             fontSize: 12,
                             fontFamily: "Muli",
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -546,20 +526,21 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     GestureDetector(
                       child: Icon(
                         Icons.call,
                         color: HexColor("#8DC63F"),
                       ),
                       onTap: () {
-                        launch('tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
+                        launch(
+                            'tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
                       },
                     ),
                     Flexible(
                       child: GestureDetector(
-                        child: Text("${serviceRequestComplaintListModel!.srComplaintListModal![index].requesterName}",
-                        overflow: TextOverflow.ellipsis,
+                        child: Text(
+                          "${serviceRequestComplaintListModel!.srComplaintListModal![index].requesterName}",
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
@@ -568,7 +549,8 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                           ),
                         ),
                         onTap: () {
-                          launch('tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
+                          launch(
+                              'tel:${serviceRequestComplaintListModel!.srComplaintListModal![index].creatorContact}');
                         },
                       ),
                     ),
@@ -596,18 +578,18 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                   color: HexColor('#002A64'),
                   fontSize: 12,
                   fontFamily: "Muli",
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Get.to(()=> SiteDetails(
-                  siteId: serviceRequestComplaintListModel!
-                      .srComplaintListModal![index].siteId
-                      .toString(),
-                ),
+                Get.to(
+                    () => SiteDetails(
+                          siteId: serviceRequestComplaintListModel!
+                              .srComplaintListModal![index].siteId
+                              .toString(),
+                        ),
                     transition: Transition.rightToLeft);
               },
               child: Text(
@@ -618,8 +600,7 @@ class _ServiceRequestsState extends State<ServiceRequests> {
                     color: HexColor('#007CBF'),
                     fontSize: 10,
                     fontFamily: "Muli",
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

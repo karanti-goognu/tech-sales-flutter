@@ -107,26 +107,16 @@ class GiftController extends GetxController {
       String? giftInHandQty,
       String? giftInHandQtyNew}) async {
     SaveVisitResponse? response;
-    print("addGiftStock in controller");
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessKey = await repository.getAccessKey();
-    await _prefs.then((SharedPreferences prefs) async {
-      String? empID = prefs.getString(StringConstants.employeeId);
-      String? securityKey = prefs.getString(StringConstants.userSecurityKey);
-      response = await repository.addGiftStockData(
-          empID,
-          securityKey,
-          accessKey,
-          comment,
-          giftTypeId,
-          giftTypeText,
-          giftInHandQty,
-          giftInHandQtyNew);
-    });
+    String? empID = prefs.getString(StringConstants.employeeId);
+    String? securityKey = prefs.getString(StringConstants.userSecurityKey);
+    response = await repository.addGiftStockData(empID, securityKey, accessKey,
+        comment, giftTypeId, giftTypeText, giftInHandQty, giftInHandQtyNew);
     Get.back();
     Get.rawSnackbar(title: "Message", message: response!.respMsg);
     return response;
@@ -155,7 +145,8 @@ class GiftController extends GetxController {
     return logsModel;
   }
 
-  Future getViewLogsData1(List<GiftStockModelList> giftStockModelList) async {
+  Future<List<GiftStockModelList>> getViewLogsData1(
+      List<GiftStockModelList> giftStockModelList) async {
     List<GiftStockModelList> _giftStockModelList = [];
 
     for (int i = 1; i < giftStockModelList.length; i++) {

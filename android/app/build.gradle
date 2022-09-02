@@ -37,35 +37,22 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-
     signingConfigs {
         release {
             storeFile file('/Projects/Flutter/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
             storePassword 'dalmiadigitaltso'
             keyAlias 'key'
             keyPassword 'dalmiadigitaltso'
-//            storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
-//            C:\Projects\Flutter\tech-sales-flutter\keystore\android
-//            storeFile file('D:\\Projects\\CompanyProjects\\DalmiaProjects\\flutter_tech_sales\\flutter_tech_sales\\keystore\\android\\dalmiadigitaltso.jks')
-//            storeFile file('/home/shailesh/Desktop/Dalmia Tso Project/tech-sales-flutter/keystore/android/dalmiadigitaltso.jks')
         }
     }
-
-<<<<<<< HEAD
-    compileSdkVersion 31
-=======
     compileSdkVersion 32
->>>>>>> 02273807d207443b74d4ab638e373cc3e5aa756e
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
     lintOptions {
         disable 'InvalidPackage'
         checkReleaseBuilds false
     }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.dalmia.techsales"
@@ -73,17 +60,17 @@ android {
         targetSdkVersion 32
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-//        signingConfig signingConfigs.release
+//      signingConfig signingConfigs.release
 
 //Added code below
-        signingConfigs {
-            release {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-                storePassword keystoreProperties['storePassword']
-            }
+    signingConfigs {
+        release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
         }
+    }
 
         buildTypes {
 

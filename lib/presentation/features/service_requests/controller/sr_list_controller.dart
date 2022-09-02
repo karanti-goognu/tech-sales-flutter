@@ -42,7 +42,7 @@ class SRListController extends GetxController {
         snackPosition: SnackPosition.BOTTOM);
   }
 
-  Future<AccessKeyModel?> getAccessKey() {
+  Future<AccessKeyModel> getAccessKey() {
     return repository.getAccessKey();
   }
 

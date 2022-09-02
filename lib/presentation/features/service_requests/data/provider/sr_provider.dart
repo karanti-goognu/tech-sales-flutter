@@ -23,8 +23,8 @@ class MyApiClientSR {
   String? version;
   MyApiClientSR({required this.httpClient});
 
-  Future<AccessKeyModel?> getAccessKey() async {
-    AccessKeyModel? accessKeyModel;
+  Future<AccessKeyModel> getAccessKey() async {
+    late AccessKeyModel accessKeyModel;
     try {
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),

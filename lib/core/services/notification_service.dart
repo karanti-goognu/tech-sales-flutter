@@ -16,7 +16,6 @@ class MoengageService {
     _moengagePlugin?.initialise();
     _moengagePlugin?.registerForPushNotification();
     moEngageInbox =new MoEngageInbox();
-    print("moEngageInbox  ini ${moEngageInbox.getUnClickedCount()}");
   }
 
   static void getInstance() {

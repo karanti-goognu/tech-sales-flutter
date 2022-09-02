@@ -50,14 +50,11 @@ class MyApiClientInf {
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
-     // print("URL-------${UrlConstants.addIlpInfluencer + empID}");
-     // print("-------$data");
       if(data["resp_code"] == "DM1005"){
         Get.dialog(CustomDialogs.appUserInactiveDialog(
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerTypeModel = InfluencerTypeModel.fromJson(json.decode(response.body));
-      //  print(response.body);
       }
     }
     catch (e) {
@@ -99,20 +96,15 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
-     // print("======${UrlConstants.getInfluencerDetail + "$contact"}");
       var data = json.decode(response.body);
-      //print("======$data");
       if (response.statusCode == 200) {
         Get.back();
-       // print("======$data");
-
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
           infDetailModel = InfluencerDetailModel.fromJson(json.decode(response.body));
-         //  print('URL ${UrlConstants.getInfluencerDetail + "$contact"}');
         }} else {
         print('error');
       }
@@ -134,9 +126,7 @@ class MyApiClientInf {
         headers: requestHeadersWithAccessKeyAndSecretKey(accessKey,userSecretKey,version) ,
         body: json.encode(influencerRequestModel),
       );
-     // print("__---${response.request}");
       var data = json.decode(response.body);
-     // print("__---$data");
       if (response.statusCode == 200) {
         Get.back();
         if(data["resp_code"] == "DM1005"){
@@ -144,11 +134,7 @@ class MyApiClientInf {
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
-          influencerResponseModel =
-              InfluencerResponseModel.fromJson(json.decode(response.body));
-          // print('URL : ${response.request}');
-          // print('RESP: ${response.body}');
-          // print('RESPONSE : ${json.encode(influencerRequestModel)}');
+          influencerResponseModel = InfluencerResponseModel.fromJson(json.decode(response.body));
         } } else {
         print('error');
       }
@@ -176,8 +162,7 @@ class MyApiClientInf {
             data["resp_msg"]), barrierDismissible: false);
       }else {
         influencerListModel = InfluencerListModel.fromJson(json.decode(response.body));
-        // print('URL : ${response.request}');
-        // print('RESP: ${response.body}');
+
       }
     }
     catch (e) {
@@ -199,14 +184,12 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-       // print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
           influencerDetailDataModel = InfluencerDetailDataModel.fromJson(json.decode(response.body));
-        //  print('URL ${UrlConstants.getInfluencerDetailsByMembership + "$membershipId"}');
         }} else {
         print('error');
       }
@@ -248,7 +231,6 @@ class MyApiClientInf {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-      //  print("======$data");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

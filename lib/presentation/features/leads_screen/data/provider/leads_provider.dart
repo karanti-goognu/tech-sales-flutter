@@ -153,7 +153,6 @@ class MyApiClientLeads {
 
   getAddLeadsData(String? accessKey, String? userSecurityKey) async {
     try {
-      print(Uri.parse(UrlConstants.addLeadsData));
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.addLeadsData),
           headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -479,7 +478,6 @@ class MyApiClientLeads {
       var data = json.decode(response.body);
       if (response.statusCode == 200) {
         Get.back();
-        print(response.body);
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

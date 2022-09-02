@@ -79,7 +79,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Filters",
+              StringConstants.filters,
               style: TextStyles.mulliBold18,
             ),
           ),

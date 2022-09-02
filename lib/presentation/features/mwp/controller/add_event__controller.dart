@@ -268,7 +268,6 @@ class AddEventController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      print(this.visitDateTime);
       SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
         empId,
         "VISIT",
@@ -368,7 +367,6 @@ class AddEventController extends GetxController {
           prefs.getString(StringConstants.userSecurityKey);
       String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getDealersList + "$empId";
-      print('$url');
       repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Dealer List Response is null');
@@ -409,7 +407,6 @@ class AddEventController extends GetxController {
       String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=VISIT&id=${this.visitId}";
-      print('$url');
       repository.getVisitData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Dealer List Response is null');
@@ -484,7 +481,6 @@ class AddEventController extends GetxController {
       String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.viewVisitData +
           "$empId&visitCategory=MEET&id=${this.visitId}";
-      print('$url');
       repository.getMeetData(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Meet Response is null');
@@ -578,7 +574,6 @@ class AddEventController extends GetxController {
           var journeyStartLat = _currentPosition!.latitude;
           var journeyStartLong = _currentPosition!.longitude;
           DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-          print(this.visitViewDateTime);
           mwpVisitModelUpdate = new MwpVisitModelUpdate(
               this.visitId,
               this.visitViewDateTime,
@@ -732,7 +727,6 @@ class AddEventController extends GetxController {
           new UpdateMeetRequest(mwpMeetModel: mwpMeetModel);
 
       String url = "${UrlConstants.updateVisit}";
-      debugPrint('Url is : $url');
       repository
           .updateMeetPlan(accessKey, userSecurityKey, url, updateMeetRequest)
           .then((data) {
@@ -744,7 +738,6 @@ class AddEventController extends GetxController {
 
           Get.dialog(
               CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
-          print('${saveVisitResponse.respMsg}');
           //SitesDetailWidget();
         }
       });

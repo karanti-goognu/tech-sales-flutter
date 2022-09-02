@@ -10,9 +10,7 @@ import 'package:flutter_tech_sales/presentation/features/service_requests/data/m
 import 'package:flutter_tech_sales/presentation/features/service_requests/data/repository/sr_repository.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 
-
 class UpdateServiceRequestController extends GetxController {
-
   List<File> imageList = List<File>.empty(growable: true);
 
   late String id;
@@ -26,20 +24,20 @@ class UpdateServiceRequestController extends GetxController {
     'SALESOFFICER'
   ];
 
-  setTabOption(int value){
-    this.option=value;
+  setTabOption(int value) {
+    this.option = value;
     update();
   }
 
-   updateImageList(File? value) {
-    if(value!=null) {
+  updateImageList(File? value) {
+    if (value != null) {
       imageList.add(value);
       update();
     }
   }
 
   updateImageAfterDelete(int index) {
-    if(index>=0) {
+    if (index >= 0) {
       imageList.removeAt(index);
       update();
     }
@@ -51,7 +49,7 @@ class UpdateServiceRequestController extends GetxController {
   }
 
   @override
-  void onClose(){
+  void onClose() {
     imageList.clear();
     super.dispose();
   }
@@ -63,6 +61,7 @@ class UpdateServiceRequestController extends GetxController {
   }
 
   final SrRepository repository;
+
   /// Request Update Details
   TextEditingController complaintID = TextEditingController();
   TextEditingController allocatedToID = TextEditingController();
@@ -86,7 +85,6 @@ class UpdateServiceRequestController extends GetxController {
   TextEditingController coverBlockProvidedNo = TextEditingController();
   TextEditingController formwarkRemovalDate = TextEditingController();
 
-
   UpdateServiceRequestController({required this.repository});
   final _updateRequestData = UpdateSRModel().obs;
   get updateRequestData => _updateRequestData.value;
@@ -98,57 +96,48 @@ class UpdateServiceRequestController extends GetxController {
   }
 
   getAccessKeyAndUpdateRequest(
-      List<File> imageList, UpdateSRModel? updateRequestModel) {
+      List<File> imageList, UpdateSRModel? updateRequestModel) async {
     String? userSecurityKey = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
-      await _prefs.then((SharedPreferences prefs) async {
-        userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        updateServiceRequest(
-                imageList, data!.accessKey, userSecurityKey, updateRequestModel)
-            .then((value) {
+    AccessKeyModel data = await repository.getAccessKey();
+    userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+    Map? value = await updateServiceRequest(imageList, data.accessKey, userSecurityKey, updateRequestModel);
+    Get.back();
+    Get.defaultDialog(
+      title: "Message",
+      middleText: value!['resp-msg'].toString(),
+      barrierDismissible: false,
+      confirm: MaterialButton(
+        onPressed: () {
           Get.back();
-          Get.defaultDialog(
-            title: "Message",
-            middleText: value!['resp-msg'].toString(),
-            barrierDismissible: false,
-            confirm: MaterialButton(
-              onPressed: () {
-                  Get.back();
-                  Get.offAll(() => HomeScreen(), binding: HomeScreenBinding());
-                  },
-              child: Text('OK'),
-            ),
-          );
-          // }
-        });
-      });
-    });
+          Get.offAll(() => HomeScreen(), binding: HomeScreenBinding());
+        },
+        child: Text('OK'),
+      ),
+    );
   }
-
 
   Future<Map?> updateServiceRequest(List<File> imageList, String? accessKey,
       String? userSecurityKey, UpdateSRModel? updateRequestModel) {
-    return repository.updateServiceRequest(imageList, accessKey, userSecurityKey, updateRequestModel).whenComplete(() => responseReceived = true);
+    return repository
+        .updateServiceRequest(
+            imageList, accessKey, userSecurityKey, updateRequestModel)
+        .whenComplete(() => responseReceived = true);
   }
-
 
   Future getRequestUpdateDetailsData(String? accessKey) async {
     String? userSecurityKey = "";
     String? empID = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      empID = prefs.getString(StringConstants.employeeId);
-      complaintListData = await repository.getComplaintViewData(accessKey, userSecurityKey, empID!, this.id);
-      update();
-    });
-
-     return complaintListData;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+    empID = prefs.getString(StringConstants.employeeId);
+    complaintListData = await repository.getComplaintViewData(
+        accessKey, userSecurityKey, empID!, this.id);
+    update();
+    return complaintListData;
   }
-
 }

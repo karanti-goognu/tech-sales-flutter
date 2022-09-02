@@ -13,7 +13,6 @@ import 'package:flutter_tech_sales/utils/global.dart';
 import 'package:flutter_tech_sales/utils/size/size_config.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 
-
 class AddMWPPlan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -24,6 +23,8 @@ class AddMWPPlan extends StatefulWidget {
 class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
   MWPPlanController _mwpPlanController = Get.find();
   AppController _appController = Get.find();
+  bool isButtonSubmitted = false;
+
   // bool isPlanSubmitted = false;
 
   @override
@@ -304,27 +305,30 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
             style: ElevatedButton.styleFrom(
               primary: ColorConstants.buttonNormalColor,
             ),
-            onPressed: () {
-              // Validate returns true if the form is valid, or false
-              // otherwise.
-              internetChecking().then((result) => {
-                    if (result == true)
-                      {
-                        _mwpPlanController.action = "SUBMIT",
-                        _appController.getAccessKey(
-                            RequestIds.SAVE_MWP_PLAN, context),
-                      }
-                    else
-                      {
-                        Get.snackbar("No internet connection.",
-                            "Make sure that your wifi or mobile data is turned on.",
-                            colorText: Colors.white,
-                            backgroundColor: Colors.red,
-                            snackPosition: SnackPosition.BOTTOM),
-                        // fetchSiteList()
-                      }
-                  });
-            },
+            onPressed: isButtonSubmitted
+                ? null
+                : () {
+                    // Validate returns true if the form is valid, or false
+                    // otherwise.
+                    internetChecking().then((result) => {
+                          if (result == true)
+                            {
+                              setState(() => isButtonSubmitted = true),
+                              _mwpPlanController.action = "SUBMIT",
+                              _appController.getAccessKey(
+                                  RequestIds.SAVE_MWP_PLAN, context),
+                            }
+                          else
+                            {
+                              Get.snackbar("No internet connection.",
+                                  "Make sure that your wifi or mobile data is turned on.",
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.red,
+                                  snackPosition: SnackPosition.BOTTOM),
+                              // fetchSiteList()
+                            }
+                        });
+                  },
             child: Padding(
               padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
               child: Text(
@@ -346,46 +350,47 @@ class AddMWPPlanScreenPageState extends State<AddMWPPlan> {
         // Visibility(
         //   visible: !isPlanSubmitted,
         //   child:
-          Flexible(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: ColorConstants.buttonNormalColor,
-              ),
-              onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
-                internetChecking().then((result) => {
-                      if (result == true)
-                        {
-                          _mwpPlanController.action = "SUBMIT",
-                          _appController.getAccessKey(
-                              RequestIds.SAVE_MWP_PLAN, context),
-                        }
-                      else
-                        {
-                          Get.snackbar("No internet connection.",
-                              "Make sure that your wifi or mobile data is turned on.",
-                              colorText: Colors.white,
-                              backgroundColor: Colors.red,
-                              snackPosition: SnackPosition.BOTTOM),
-                          // fetchSiteList()
-                        }
-                    });
-                // setState(() => isPlanSubmitted = true);
-                // Future.delayed(Duration(seconds: 5), () {
-                //   isPlanSubmitted = false;
-                // });
-              },
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                child: Text(
-                  'SUBMIT',
-                  style: ButtonStyles.buttonStyleBlue,
-                ),
+        Flexible(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: ColorConstants.buttonNormalColor,
+            ),
+            onPressed: isButtonSubmitted ? null : () {
+              // Validate returns true if the form is valid, or false
+              // otherwise.
+              internetChecking().then((result) => {
+                    if (result == true)
+                      {
+                        setState(() => isButtonSubmitted = true),
+                        _mwpPlanController.action = "SUBMIT",
+                        _appController.getAccessKey(
+                            RequestIds.SAVE_MWP_PLAN, context),
+                      }
+                    else
+                      {
+                        Get.snackbar("No internet connection.",
+                            "Make sure that your wifi or mobile data is turned on.",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM),
+                        // fetchSiteList()
+                      }
+                  });
+              // setState(() => isPlanSubmitted = true);
+              // Future.delayed(Duration(seconds: 5), () {
+              //   isPlanSubmitted = false;
+              // });
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Text(
+                'SUBMIT',
+                style: ButtonStyles.buttonStyleBlue,
               ),
             ),
-            flex: 5,
           ),
+          flex: 5,
+        ),
         // ),
       ],
     );

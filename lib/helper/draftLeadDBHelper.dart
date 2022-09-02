@@ -52,8 +52,7 @@ class DraftLeadDBHelper extends ChangeNotifier{
         client.query('draftLead', where: 'id = ?', whereArgs: [id]);
     var maps = await futureMaps;
     if (maps.length != 0) {
-      print("Here:: ");
-      print(maps.first);
+
       return DraftLeadModelforDB.fromDb(maps.first);
     }
     return null;

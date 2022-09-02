@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardMtdConvertedVolumeList.dart';
@@ -29,7 +28,6 @@ class MyApiClientDashboard {
         var data = json.decode(response.body);
         AccessKeyModel accessKeyModel;
         accessKeyModel = AccessKeyModel.fromJson(data);
-//        print('Access key Object is :: $accessKeyModel');
         return accessKeyModel;
       } else
         print('error');
@@ -52,7 +50,8 @@ class MyApiClientDashboard {
       var stream = new http.ByteStream(image.openRead());
       stream.cast();
       var length = await image.length();
-      var multipartFileSign = new http.MultipartFile('file', stream, length, filename: fileName);
+      var multipartFileSign =
+          new http.MultipartFile('file', stream, length, filename: fileName);
       request.files.add(multipartFileSign);
       request.fields['shareReportWithFileModel '] =
           json.encode({"shareWith": "S", "repotName": empID});
@@ -83,14 +82,11 @@ class MyApiClientDashboard {
       version = VersionClass.getVersion();
       var url =
           UrlConstants.dashboadrMonthlyView + empID + '&yearMonth=' + yearMonth;
-      //    print(url);
       var response = await httpClient!.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
-      //    print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        //      print("Monthly data ${response.body}");
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
@@ -113,24 +109,19 @@ class MyApiClientDashboard {
     String? accessKey,
     String userSecurityKey,
   ) async {
-    // print('$empID $yearMonth');
     try {
       version = VersionClass.getVersion();
       var url = UrlConstants.dashboardMtdGeneratedVolumeSiteList +
           empID +
           '&yearMonth=' +
           yearMonth;
-      //  print(url);
       var response = await httpClient!.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
-      //   print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         TsoLogger.logD("---$data");
         if (data["resp_code"] == "DM1005") {
-          //Get.back();
-          //    print("User Inactive");
           Get.dialog(CustomDialogs.appUserInactiveDialog(data["resp_msg"]),
               barrierDismissible: false);
         } else {
@@ -152,18 +143,15 @@ class MyApiClientDashboard {
     String? accessKey,
     String userSecurityKey,
   ) async {
-    // print('$empID $yearMonth');
     try {
       version = VersionClass.getVersion();
       var url = UrlConstants.dashboardMtdConvertedVolumeList +
           empID +
           '&yearMonth=' +
           yearMonth;
-      //  print(url);
       var response = await httpClient!.get(Uri.parse(url),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey, version));
-      //  print('Response body is : ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data["resp_code"] == "DM1005") {
@@ -171,13 +159,7 @@ class MyApiClientDashboard {
               barrierDismissible: false);
         } else {
           DashboardMtdConvertedVolumeList dashboardMtdConvertedVolumeList;
-          dashboardMtdConvertedVolumeList =
-              DashboardMtdConvertedVolumeList.fromJson(data);
-          // dashboardMtdConvertedVolumeList =
-          //     DashboardMtdConvertedVolumeList.fromJson({
-          //       'resp_code': 'qwer',
-          //       'resp_msg': "ooo"
-          //     });
+          dashboardMtdConvertedVolumeList = DashboardMtdConvertedVolumeList.fromJson(data);
           return dashboardMtdConvertedVolumeList;
         }
       } else
@@ -196,12 +178,8 @@ class MyApiClientDashboard {
     try {
       version = VersionClass.getVersion();
       var url = UrlConstants.dashboardYearlyView + empID;
-      // print(url);
       var response = await httpClient!.get(Uri.parse(url),
-          headers: requestHeadersWithAccessKeyAndSecretKey(
-              accessKey, userSecurityKey, version));
-      // print('Response body is : ${json.decode(response.body)}');
-      //  print('URL : ${response.request}');
+          headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey, version));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data["resp_code"] == "DM1005") {

@@ -284,7 +284,7 @@ class _GiftsViewState extends State<GiftsView> {
     });
   }
 
-  Widget showConfirmationDialog(String message) {
+  AlertDialog showConfirmationDialog(String message) {
     return AlertDialog(
       content: SingleChildScrollView(
         child: ListBody(
@@ -309,7 +309,6 @@ class _GiftsViewState extends State<GiftsView> {
                 fontSize: 17,
                 letterSpacing: 1.25,
                 fontStyle: FontStyle.normal,
-                // fontWeight: FontWeight.bold,
                 color: ColorConstants.buttonNormalColor),
           ),
           onPressed: () {
@@ -318,7 +317,6 @@ class _GiftsViewState extends State<GiftsView> {
                 comment: _comments.text,
                 giftTypeId: _giftController.selectedDropdown.toString(),
                 giftTypeText: giftTypeText,giftInHandQty: _giftInHandQty, giftInHandQtyNew:_giftInHandQtyNew.text
-
             );
           }
         ),

@@ -40,6 +40,7 @@ class _RequestCreationState extends State<RequestCreation> {
   TextEditingController b = TextEditingController();
   TextEditingController c = TextEditingController();
   TextEditingController d = TextEditingController();
+  bool buttonDisabled = false;
 
   Future getEmpId() async {
     String? empID = "";
@@ -602,86 +603,102 @@ class _RequestCreationState extends State<RequestCreation> {
                                     style: ElevatedButton.styleFrom(
                                       primary: HexColor("#1C99D4"),
                                     ),
-                                    onPressed: () async {
-                                      if (!_srCreationFormKey.currentState!
-                                          .validate())
-                                        Get.dialog(CustomDialogs.showMessage(
-                                            'Please enter the mandatory details'));
-                                      else if (_severity.text == "")
-                                        Get.defaultDialog(
-                                            title: "Message",
-                                            middleText:
-                                                "Request Sub-type and Severity cannot be empty");
-                                      else {
-                                        String? empId = await (getEmpId());
-                                        List imageDetails =
-                                            List.empty(growable: true);
-                                        List subTypeDetails =
-                                            List.empty(growable: true);
-                                        selectedRequestSubtypeObjectList
-                                            .forEach((element) {
-                                          setState(() {
-                                            subTypeDetails.add({
-                                              "createdBy": empId,
-                                              "serviceRequestComplaintId": null,
-                                              "serviceRequestComplaintTypeId":
-                                                  element.id
-                                            });
-                                          });
-                                        });
+                                    onPressed: buttonDisabled
+                                        ? null
+                                        : () async {
+                                            if (!_srCreationFormKey
+                                                .currentState!
+                                                .validate())
+                                              Get.dialog(CustomDialogs.showMessage(
+                                                  'Please enter the mandatory details'));
+                                            else if (_severity.text == "")
+                                              Get.defaultDialog(
+                                                  title: "Message",
+                                                  middleText:
+                                                      "Request Sub-type and Severity cannot be empty");
+                                            else {
+                                              setState(
+                                                  () => buttonDisabled = true);
+                                              String? empId =
+                                                  await (getEmpId());
+                                              List imageDetails =
+                                                  List.empty(growable: true);
+                                              List subTypeDetails =
+                                                  List.empty(growable: true);
+                                              selectedRequestSubtypeObjectList
+                                                  .forEach((element) {
+                                                setState(() {
+                                                  subTypeDetails.add({
+                                                    "createdBy": empId,
+                                                    "serviceRequestComplaintId":
+                                                        null,
+                                                    "serviceRequestComplaintTypeId":
+                                                        element.id
+                                                  });
+                                                });
+                                              });
 
-                                        controller.imageList.forEach((element) {
-                                          setState(() {
-                                            imageDetails.add({
-                                              //ToDo: Change srComplaint Id to some dynamic value
-                                              'srComplaintId': null,
-                                              'photoName':
-                                                  element.path.split('/').last,
-                                              'createdBy': empId
-                                            });
-                                          });
-                                        });
-                                        SaveServiceRequest _saveServiceRequest =
-                                            SaveServiceRequest.fromJson({
-                                          "createdBy": empId,
-                                          "creatorContactNumber":
-                                              _requestorContact.text,
-                                          "creatorId": _customerID.text,
-                                          "creatorType": creatorType,
-                                          "description": _description.text,
-                                          "district": _district.text,
-                                          "pincode": _pin.text,
-                                          "requestDepartmentId":
-                                              requestDepartmentId,
-                                          "requestId": requestId,
-                                          "resolutionStatusId": 1,
-                                          "siteId": siteId,
-                                          "severity": _severity.text,
-                                          "srComplaintPhotosEntity":
-                                              imageDetails,
-                                          "srComplaintSubtypeMappingEntity":
-                                              subTypeDetails,
-                                          "state": _state.text,
-                                          "taluk": _taluk.text
-                                        });
+                                              controller.imageList
+                                                  .forEach((element) {
+                                                setState(() {
+                                                  imageDetails.add({
+                                                    //ToDo: Change srComplaint Id to some dynamic value
+                                                    'srComplaintId': null,
+                                                    'photoName': element.path
+                                                        .split('/')
+                                                        .last,
+                                                    'createdBy': empId
+                                                  });
+                                                });
+                                              });
+                                              SaveServiceRequest
+                                                  _saveServiceRequest =
+                                                  SaveServiceRequest.fromJson({
+                                                "createdBy": empId,
+                                                "creatorContactNumber":
+                                                    _requestorContact.text,
+                                                "creatorId": _customerID.text,
+                                                "creatorType": creatorType,
+                                                "description":
+                                                    _description.text,
+                                                "district": _district.text,
+                                                "pincode": _pin.text,
+                                                "requestDepartmentId":
+                                                    requestDepartmentId,
+                                                "requestId": requestId,
+                                                "resolutionStatusId": 1,
+                                                "siteId": siteId,
+                                                "severity": _severity.text,
+                                                "srComplaintPhotosEntity":
+                                                    imageDetails,
+                                                "srComplaintSubtypeMappingEntity":
+                                                    subTypeDetails,
+                                                "state": _state.text,
+                                                "taluk": _taluk.text
+                                              });
 
-                                        internetChecking().then((result) => {
-                                              if (result == true)
-                                                saveRequest
-                                                    .getAccessKeyAndSaveRequest(
-                                                        controller.imageList,
-                                                        _saveServiceRequest)
-                                              else
-                                                Get.snackbar(
-                                                    "No internet connection.",
-                                                    "Make sure that your wifi or mobile data is turned on.",
-                                                    colorText: Colors.white,
-                                                    backgroundColor: Colors.red,
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM),
-                                            });
-                                      }
-                                    },
+                                              internetChecking()
+                                                  .then((result) => {
+                                                        if (result == true)
+                                                          saveRequest
+                                                              .getAccessKeyAndSaveRequest(
+                                                                  controller
+                                                                      .imageList,
+                                                                  _saveServiceRequest)
+                                                        else
+                                                          Get.snackbar(
+                                                              "No internet connection.",
+                                                              "Make sure that your wifi or mobile data is turned on.",
+                                                              colorText:
+                                                                  Colors.white,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM),
+                                                      });
+                                            }
+                                          },
                                     child: Text(
                                       "SUBMIT",
                                       style: TextStyle(

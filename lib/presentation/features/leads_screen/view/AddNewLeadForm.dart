@@ -492,10 +492,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
               }).toList();
       },
       value: _eventId,
-      items: eventList == null
-          ? []
-          : eventList!
-              .map((e) => DropdownMenuItem(
+      items: eventList == null ? [] : eventList!.map((e) => DropdownMenuItem(
                     value: e.eventId != null ? e.eventId : null,
                     child: Container(
                         width: MediaQuery.of(context).size.width / 1.5,

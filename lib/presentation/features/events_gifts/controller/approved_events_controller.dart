@@ -93,7 +93,6 @@ class EventsFilterController extends GetxController {
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
-      print('EMP: $empID');
       _dealerInfModel =
       await repository.getDealerInfList(accessKey, userSecurityKey, empID!, eventId);
     });
@@ -107,7 +106,6 @@ class EventsFilterController extends GetxController {
       String? accessKey = await (repository.getAccessKey() );
       await _prefs.then((SharedPreferences prefs) async {
         userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        print(prefs.getString(StringConstants.employeeId));
         _updateDealerInfResponse = await repository.updateDealerInf(accessKey, userSecurityKey, updateDealerInfModel);
     });
     return _updateDealerInfResponse;

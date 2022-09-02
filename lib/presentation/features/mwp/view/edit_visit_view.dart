@@ -31,6 +31,8 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
   String siteIdText = "Site Id";
+  bool isStartButtonPressed=false;
+  bool isUpdateButtonPressed=false;
 
   @override
   void initState() {
@@ -812,8 +814,9 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: ColorConstants.buttonNormalColor,),
-          onPressed: () {
+          onPressed: isUpdateButtonPressed?null:() {
             if (_formKey.currentState!.validate()) {
+              setState(()=>isUpdateButtonPressed=true);
               _formKey.currentState!.save();
               _addEventController.visitActionType = "UPDATE";
               _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
@@ -830,10 +833,12 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     ElevatedButton(
     style: ElevatedButton.styleFrom(
           primary: ColorConstants.buttonNormalColor,),
-          onPressed: () {
+          onPressed:isStartButtonPressed?null: () {
+
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               _addEventController.visitActionType = "START";
+              setState(()=>isStartButtonPressed=true);
               _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
             }
           },

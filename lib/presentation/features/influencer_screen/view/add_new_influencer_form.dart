@@ -26,7 +26,6 @@ import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
-
 class FormAddInfluencer extends StatefulWidget {
   @override
   _FormAddInfluencerState createState() => _FormAddInfluencerState();
@@ -35,7 +34,7 @@ class FormAddInfluencer extends StatefulWidget {
 class _FormAddInfluencerState extends State<FormAddInfluencer> {
   final _addInfluencerFormKey = GlobalKey<FormState>();
   final _addInfluencerFormKeyNext = GlobalKey<FormState>();
-
+  bool isSubmitted = false;
   InfController _infController = Get.find();
   AppController _appController = Get.find();
   AddEventController _addEventController = Get.find();
@@ -84,7 +83,8 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   void initState() {
     super.initState();
     getEmpId();
-    _enrollmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _enrollmentDateController.text =
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
     getDropdownData();
     getDistrictData();
     getCounterData();
@@ -145,29 +145,29 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         });
   }
 
-  getCounterData(){
+  getCounterData() {
     internetChecking().then((result) => {
-      if (result == true)
-        {
-          _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context),
-        }
-      else
-        {
-          Get.snackbar("No internet connection.",
-              "Make sure that your wifi or mobile data is turned on.",
-              colorText: Colors.white,
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.BOTTOM),
-        }
-    });
+          if (result == true)
+            {
+              _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context),
+            }
+          else
+            {
+              Get.snackbar("No internet connection.",
+                  "Make sure that your wifi or mobile data is turned on.",
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                  snackPosition: SnackPosition.BOTTOM),
+            }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        context,
-        designSize: Size(360, 690),
-        minTextAdapt: true,
+      context,
+      designSize: Size(360, 690),
+      minTextAdapt: true,
     );
     double _height = 16.sp;
 
@@ -307,9 +307,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
         padding: const EdgeInsets.only(left: 3.0, right: 3, top: 5, bottom: 5),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-              ),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: CheckboxListTile(
           title: Text(
@@ -329,36 +327,27 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
               }
             });
           },
-          controlAffinity:
-              ListTileControlAffinity.leading,
+          controlAffinity: ListTileControlAffinity.leading,
         ));
 
     final primaryCounter = DropdownButtonFormField(
-        decoration: FormFieldStyle
-            .buildInputDecoration(
-            labelText:
-            "Primary Counter Name*"),
-        items: _addEventController
-            .dealerList
-            .map<
-            DropdownMenuItem<
-                DealerModel>>((DealerModel val) {
-          return DropdownMenuItem<DealerModel>(
-            value: val,
-            child: SizedBox(
-                width: SizeConfig
-                    .screenWidth! -
-                    100,
-                child: Text(
-                    '${val.dealerName} (${val.dealerId})')),
-          );
-        }).toList(),
-        onChanged: (_) {
-          _primaryCounterName = (_ as DealerModel).dealerId;
-        },
-        validator: (value) => value == null ? 'Please select Primary counter name' : null,
+      decoration: FormFieldStyle.buildInputDecoration(
+          labelText: "Primary Counter Name*"),
+      items: _addEventController.dealerList
+          .map<DropdownMenuItem<DealerModel>>((DealerModel val) {
+        return DropdownMenuItem<DealerModel>(
+          value: val,
+          child: SizedBox(
+              width: SizeConfig.screenWidth! - 100,
+              child: Text('${val.dealerName} (${val.dealerId})')),
         );
-
+      }).toList(),
+      onChanged: (_) {
+        _primaryCounterName = (_ as DealerModel).dealerId;
+      },
+      validator: (value) =>
+          value == null ? 'Please select Primary counter name' : null,
+    );
 
     final district = TextFormField(
       validator: (value) => value!.isEmpty ? 'Please select District' : null,
@@ -398,8 +387,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
             _enrollVisible = false;
           }
 
-          if (_memberType == 2 || _memberType == 3 || _memberType == 4
-              ) {
+          if (_memberType == 2 || _memberType == 3 || _memberType == 4) {
             _qualificationVisible = true;
           } else {
             _qualificationVisible = false;
@@ -542,7 +530,6 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       ),
     );
 
-
     final enrollmentDate = TextFormField(
       controller: _enrollmentDateController,
       style: FormFieldStyle.formFieldTextStyle,
@@ -565,11 +552,10 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           child: Text(
             "NEXT",
-            style:
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp),
           ),
           onPressed: () {
             setState(() {
@@ -713,22 +699,24 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
           ),
           child: Text(
             "SUBMIT",
-            style:
-                TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp),
           ),
-          onPressed: () {
-            setState(() {
-              if (_addInfluencerFormKeyNext.currentState!.validate()) {
-                _addInfluencerFormKeyNext.currentState!.save();
-                _isVisible = false;
-                _isSecondVisible = true;
-                btnSubmitPressed();
-              }
-            });
-          },
+          onPressed: isSubmitted
+              ? null
+              : () {
+                  setState(() {
+                    if (_addInfluencerFormKeyNext.currentState!.validate()) {
+                      setState(() => isSubmitted = true);
+                      _addInfluencerFormKeyNext.currentState!.save();
+                      _isVisible = false;
+                      _isSecondVisible = true;
+                      btnSubmitPressed();
+                    }
+                  });
+                },
         ),
       ],
     );
@@ -946,7 +934,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
                       children: dist!
                           .map(
                             (e) => RadioListTile(
-                              groupValue: [],
+                                groupValue: [],
                                 value: e,
                                 title:
                                     Text('${e.districtName} (${e.stateName})'),
@@ -972,7 +960,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
   }
 
   btnSubmitPressed() async {
-    String? empId = await (getEmpId() );
+    String? empId = await (getEmpId());
     InfluencerRequestModel _influencerRequestModel =
         InfluencerRequestModel.fromJson({
       "membershipId": null,
@@ -1010,7 +998,7 @@ class _FormAddInfluencerState extends State<FormAddInfluencer> {
       "preferredBrandId": _preferredBrandId,
       "dateOfMarriageAnniversary": _dateMarriageAnnController.text,
       "firmName": _firmNameController.text,
-          "primaryCounterName": _primaryCounterName
+      "primaryCounterName": _primaryCounterName
     });
 
     internetChecking().then((result) => {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/controller/splash_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/splash/data/models/SplashDataModel.dart';
@@ -67,7 +68,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Filters",
+              StringConstants.filters,
               style: TextStyles.mulliBold18,
             ),
           ),

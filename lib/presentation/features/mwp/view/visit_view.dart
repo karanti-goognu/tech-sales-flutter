@@ -16,7 +16,6 @@ import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
-
 class AddEventVisit extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -37,6 +36,7 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   var _siteCountController = TextEditingController();
   var _mPotentialController = TextEditingController();
   var _mLiftingController = TextEditingController();
+  bool isFormSubmitted = false;
 
   @override
   void initState() {
@@ -48,15 +48,15 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-        // context:
-        context,
+      // context:
+      context,
 
-        // BoxConstraints(
-        //     maxWidth: MediaQuery.of(context).size.width,
-        //     maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(360, 690),
-        minTextAdapt: true,
-        // orientation: Orientation.portrait,
+      // BoxConstraints(
+      //     maxWidth: MediaQuery.of(context).size.width,
+      //     maxHeight: MediaQuery.of(context).size.height),
+      designSize: Size(360, 690),
+      minTextAdapt: true,
+      // orientation: Orientation.portrait,
     );
 
     final name = TextFormField(
@@ -320,27 +320,31 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                   style: ElevatedButton.styleFrom(
                     primary: ColorConstants.buttonNormalColor,
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      internetChecking().then((result) => {
-                            if (result == true)
-                              {
-                                _appController.getAccessKey(
-                                    RequestIds.SAVE_VISIT, context),
-                                _addEventController.isLoading = true,
-                                _addEventController.isVisibleContact = false
-                              }
-                            else
-                              {
-                                Get.snackbar("No internet connection.",
-                                    "Make sure that your wifi or mobile data is turned on.",
-                                    colorText: Colors.white,
-                                    backgroundColor: Colors.red,
-                                    snackPosition: SnackPosition.BOTTOM),
-                              }
-                          });
-                    }
-                  },
+                  onPressed: isFormSubmitted
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            internetChecking().then((result) => {
+                                  if (result == true)
+                                    {
+                                      setState(() => isFormSubmitted = true),
+                                      _appController.getAccessKey(
+                                          RequestIds.SAVE_VISIT, context),
+                                      _addEventController.isLoading = true,
+                                      _addEventController.isVisibleContact =
+                                          false
+                                    }
+                                  else
+                                    {
+                                      Get.snackbar("No internet connection.",
+                                          "Make sure that your wifi or mobile data is turned on.",
+                                          colorText: Colors.white,
+                                          backgroundColor: Colors.red,
+                                          snackPosition: SnackPosition.BOTTOM),
+                                    }
+                                });
+                          }
+                        },
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                     child: Text(

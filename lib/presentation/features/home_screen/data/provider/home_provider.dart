@@ -64,8 +64,6 @@ class MyApiClientHome {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print(data);
-        print("____");
         JourneyModel journeyModel = JourneyModel.fromJson(data);
         return journeyModel;
       } else

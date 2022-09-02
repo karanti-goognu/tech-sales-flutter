@@ -400,7 +400,6 @@ class SiteController extends GetxController {
   }
 
   getSiteFloorList(stageId, siteId) async{
-    print(siteId.runtimeType);
     List<SiteFloorsEntity> siteList= List<SiteFloorsEntity>.empty(growable: true);
     String? userSecurityKey = "";
     AccessKeyModel accessKey= await getAccessKeyOnly();
@@ -572,9 +571,6 @@ class SiteController extends GetxController {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       String url =
           "${UrlConstants.getPendingSupplyDetails + empId}&supplyHistoryId=$supplyHistoryId&siteId=$siteId";
-      print(accessKey);
-      print(userSecurityKey);
-      print(url);
       _pendingSuppliesDetailsModel = await repository
           .getPendingSupplyDetailsNew(accessKey!, userSecurityKey, url);
     });

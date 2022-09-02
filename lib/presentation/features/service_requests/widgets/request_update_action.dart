@@ -56,13 +56,14 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
   List<File> _imageList = List<File>.empty(growable: true);
   String? _selectedTypeOfComplain;
 
-  var _balanceQuantity = new TextEditingController();
-  var _billNo = new TextEditingController();
-  var _weekNo = new TextEditingController();
-  var _sampleToBeSent = new TextEditingController();
-  var _detailsOfDemoConducted = new TextEditingController();
-  var _bestBeforeDate = new TextEditingController();
-  var _mtController = new TextEditingController();
+  TextEditingController _balanceQuantity = new TextEditingController();
+  TextEditingController _billNo = new TextEditingController();
+  TextEditingController _weekNo = new TextEditingController();
+  TextEditingController _sampleToBeSent = new TextEditingController();
+  TextEditingController _detailsOfDemoConducted = new TextEditingController();
+  TextEditingController _bestBeforeDate = new TextEditingController();
+  TextEditingController _mtController = new TextEditingController();
+  bool isUpdateButtonDisabled = false;
   String? _selectedSampleCollected;
   String? _groupSampleCollected;
   String? _groupDemoConducted;
@@ -896,69 +897,71 @@ class _RequestUpdateActionState extends State<RequestUpdateAction> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () async {
+              onPressed: isUpdateButtonDisabled?null:() async {
                 if (!_updateActionFormKey.currentState!.validate()) {
                   Get.rawSnackbar(
                       message: 'All fields are mandatory',
                       title: 'Warning:',
                       backgroundColor: Colors.red);
                 } else {
-                  String? empId = await (getEmpId());
-                  List imageDetails = List.empty(growable: true);
-                  _imageList.forEach((element) {
-                    setState(() {
-                      imageDetails.add({
-                        'srComplaintId': widget.id,
-                        'photoName': element.path.split('/').last,
+                  setState(()=>isUpdateButtonDisabled=true);
+                    String? empId = await (getEmpId());
+                    List imageDetails = List.empty(growable: true);
+                    _imageList.forEach((element) {
+                      setState(() {
+                        imageDetails.add({
+                          'srComplaintId': widget.id,
+                          'photoName': element.path.split('/').last,
+                        });
                       });
                     });
-                  });
 
-                  _updateSRModel = UpdateSRModel.fromJson({
-                    "id": widget.id,
-                    "severity": widget.severity,
-                    "resoulutionStatus": _resolutionStatus,
-                    "updatedBy": empId,
-                    "coverBlockProvidedNo": updateServiceRequestController
-                        .coverBlockProvidedNo.text,
-                    "formwarkRemovalDate":
-                        updateServiceRequestController.formwarkRemovalDate.text,
-                    "srComplaintAction": [
-                      {
-                        "srComplaintId": widget.id,
-                        "requestNature": _requestNature,
-                        "locationLat": _currentPosition!.latitude,
-                        "locationLong": _currentPosition!.longitude,
-                        "productComplaint": _productComplaint,
-                        "productType": _productType,
-                        "techvanReqd": _techVan,
-                        "purchaseDate": _dateOfPurchase.text,
-                        "sourcePlant": _sourcePlant.text,
-                        "productBatch": _batchNo.text,
-                        "bagsCount": _noOfBags.text.isNotEmpty
-                            ? int.parse(_noOfBags.text)
-                            : 0,
-                        "resolutionStatusId": _resolutionStatus,
-                        "comment": _comment.text,
-                        "nextVisitDate": _nextVisitDate.text,
-                        "typeOfComplaint": _selectedTypeOfComplain,
-                        "productVariety": getCheckboxItems().toString(),
-                        "balanceQtyinBags": _balanceQuantity.text.isNotEmpty
-                            ? int.parse(_balanceQuantity.text)
-                            : 0,
-                        "billNumber": _billNo.text,
-                        "weekNo": _weekNo.text,
-                        "bestBeforeDate": _bestBeforeDate.text,
-                        "sampleCollected": _selectedSampleCollected,
-                        "sampleTOBeSentTo": _sampleToBeSent.text,
-                        "demoConducted": _selectedDemoConducted,
-                        "detailsOfDemo": _detailsOfDemoConducted.text
-                      }
-                    ],
-                    "srcActionPhotosEntity": imageDetails
-                  });
-                  updateRequest.getAccessKeyAndUpdateRequest(
-                      _imageList, _updateSRModel);
+                    _updateSRModel = UpdateSRModel.fromJson({
+                      "id": widget.id,
+                      "severity": widget.severity,
+                      "resoulutionStatus": _resolutionStatus,
+                      "updatedBy": empId,
+                      "coverBlockProvidedNo": updateServiceRequestController
+                          .coverBlockProvidedNo.text,
+                      "formwarkRemovalDate":
+                      updateServiceRequestController.formwarkRemovalDate.text,
+                      "srComplaintAction": [
+                        {
+                          "srComplaintId": widget.id,
+                          "requestNature": _requestNature,
+                          "locationLat": _currentPosition!.latitude,
+                          "locationLong": _currentPosition!.longitude,
+                          "productComplaint": _productComplaint,
+                          "productType": _productType,
+                          "techvanReqd": _techVan,
+                          "purchaseDate": _dateOfPurchase.text,
+                          "sourcePlant": _sourcePlant.text,
+                          "productBatch": _batchNo.text,
+                          "bagsCount": _noOfBags.text.isNotEmpty
+                              ? int.parse(_noOfBags.text)
+                              : 0,
+                          "resolutionStatusId": _resolutionStatus,
+                          "comment": _comment.text,
+                          "nextVisitDate": _nextVisitDate.text,
+                          "typeOfComplaint": _selectedTypeOfComplain,
+                          "productVariety": getCheckboxItems().toString(),
+                          "balanceQtyinBags": _balanceQuantity.text.isNotEmpty
+                              ? int.parse(_balanceQuantity.text)
+                              : 0,
+                          "billNumber": _billNo.text,
+                          "weekNo": _weekNo.text,
+                          "bestBeforeDate": _bestBeforeDate.text,
+                          "sampleCollected": _selectedSampleCollected,
+                          "sampleTOBeSentTo": _sampleToBeSent.text,
+                          "demoConducted": _selectedDemoConducted,
+                          "detailsOfDemo": _detailsOfDemoConducted.text
+                        }
+                      ],
+                      "srcActionPhotosEntity": imageDetails
+                    });
+                    updateRequest.getAccessKeyAndUpdateRequest(
+                        _imageList, _updateSRModel);
+
                 }
               },
               style: ElevatedButton.styleFrom(

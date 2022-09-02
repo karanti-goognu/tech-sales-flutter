@@ -606,8 +606,6 @@ class _DetailPendingState extends State<DetailPending> {
                             ),
                           ],
                         ),
-                        // decoration: BoxDecoration(
-                        //     border: Border(bottom: BorderSide(width: 0.3))),
                       ),
                       SizedBox(height: 16),
                       Padding(

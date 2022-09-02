@@ -112,7 +112,6 @@ class ViewLeadDataResponse {
     if (json['influencerEntity'] != null) {
       influencerEntity = new List<InfluencerEntity>.empty(growable: true);
       json['influencerEntity'].forEach((v) {
-        print(v);
         influencerEntity!.add(new InfluencerEntity.fromJson(v));
       });
     }

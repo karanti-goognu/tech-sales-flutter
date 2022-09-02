@@ -26,7 +26,6 @@ import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/request_maps.dart';
-import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
 
@@ -365,9 +364,6 @@ class MyApiClientSites {
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
-      log("data:${json.encode(data)}");
-      log('Url:${UrlConstants.saveUpdateSiteVisit}');
-
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {

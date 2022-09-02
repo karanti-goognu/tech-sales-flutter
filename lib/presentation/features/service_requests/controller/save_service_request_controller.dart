@@ -31,41 +31,35 @@ class SaveServiceRequestController extends GetxController {
   }
 
   getAccessKeyAndSaveRequest(
-      List<File> imageList, SaveServiceRequest saveRequestModel) {
+      List<File> imageList, SaveServiceRequest saveRequestModel) async {
     String? userSecurityKey = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) async {
-      await _prefs.then((SharedPreferences prefs) async {
-        userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-        saveServiceRequest(
-                imageList, data!.accessKey, userSecurityKey, saveRequestModel)
-            .then((value) {
-          Get.back();
-          if (value!['resp-code'] == 'SRC2035') {
-            Get.defaultDialog(
-                title: "Message",
-                middleText: value['resp-msg'].toString(),
-                confirm: MaterialButton(
-                  onPressed: () {
-                     Get.back();
-                     Get.offAndToNamed(Routes.SERVICE_REQUESTS);
-                  },
-                  child: Text('OK'),
-                ),
-                barrierDismissible: false);
-          } else {
-            Get.dialog(
-                CustomDialogs.messageDialogSRC(value['resp-msg'].toString()),
-                barrierDismissible: false);
-          }
-        });
-      });
-    });
+    AccessKeyModel data = await repository.getAccessKey();
+    userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+    Map? value = await saveServiceRequest(
+        imageList, data.accessKey, userSecurityKey, saveRequestModel);
+    Get.back();
+    if (value!['resp-code'] == 'SRC2035') {
+      Get.defaultDialog(
+          title: "Message",
+          middleText: value['resp-msg'].toString(),
+          confirm: MaterialButton(
+            onPressed: () {
+              Get.back();
+              Get.offAndToNamed(Routes.SERVICE_REQUESTS);
+            },
+            child: Text('OK'),
+          ),
+          barrierDismissible: false);
+    } else {
+      Get.dialog(CustomDialogs.messageDialogSRC(value['resp-msg'].toString()),
+          barrierDismissible: false);
+    }
   }
 
   Future<Map?> saveServiceRequest(List<File> imageList, String? accessKey,

@@ -205,9 +205,7 @@ class LoginScreenPageState extends State<LoginScreen> {
                       primary: ColorConstants.buttonNormalColor,
                     ),
                     onPressed: () {
-                      print("press");
                       if (_formKey.currentState!.validate()) {
-                        print("late");
                         afterRequestLayout(empId, mobileNumber);
                       }
                     },
