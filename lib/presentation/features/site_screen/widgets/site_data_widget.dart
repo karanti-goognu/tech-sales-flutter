@@ -32,6 +32,7 @@ class SiteDataWidget extends StatefulWidget {
 class SiteDataViewWidgetState extends State<SiteDataWidget> {
   SiteController _siteController = Get.find();
   final _updateFormKey = GlobalKey<FormState>();
+  bool isUpdated = false;
   FocusNode? myFocusNode;
   bool isSwitchedsiteProductDemo = false;
   bool isSwitchedsiteProductOralBriefing = false;
@@ -293,14 +294,14 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
       //   _totalBathroomCount = UpdatedValues.getBathroomCount();
       // } else {
 
-        UpdatedValues.setBathroomCount(_totalBathroomCount);
+      UpdatedValues.setBathroomCount(_totalBathroomCount);
 
       // }
 
       // if (UpdatedValues.getKitchenCount() != null) {
       //   _totalKitchenCount = UpdatedValues.getKitchenCount();
       // } else {
-        UpdatedValues.setKitchenCount(_totalKitchenCount);
+      UpdatedValues.setKitchenCount(_totalKitchenCount);
       // }
 
       if (UpdatedValues.getSiteTotalPotential() != null) {
@@ -1353,8 +1354,9 @@ class SiteDataViewWidgetState extends State<SiteDataWidget> {
                                   fontSize: 17),
                             ),
                           ),
-                          onPressed: () async {
+                          onPressed:isUpdated?null: () async {
                             if (_updateFormKey.currentState!.validate()) {
+                              setState(() => isUpdated = true);
                               UpdatedValues updateRequest = new UpdatedValues();
 
                               updateRequest.updateRequest(context);

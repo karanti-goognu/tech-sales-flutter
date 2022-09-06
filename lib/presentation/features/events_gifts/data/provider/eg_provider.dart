@@ -69,9 +69,9 @@ class MyApiClientEvent {
     return eventSearchModel;
   }
 
-  Future<AddEventModel?> getEventTypeData(String? accessKey, String? userSecretKey,
+  Future<AddEventModel> getEventTypeData(String? accessKey, String? userSecretKey,
       String empID) async {
-    AddEventModel? addEventModel;
+    late AddEventModel addEventModel;
     try {
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getAddEvent + empID),

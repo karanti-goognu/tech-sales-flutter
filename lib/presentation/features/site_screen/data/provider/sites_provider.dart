@@ -291,12 +291,9 @@ class MyApiClientSites {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((SharedPreferences prefs) async {
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-
       gv.currentId = empId;
-
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
       log("Site Body--> "+json.encode(updateDataRequest));
-      log(request.files.toString());
       try {
         request
             .send()
@@ -309,8 +306,6 @@ class MyApiClientSites {
             }else{
             UpdateSiteModel updateLeadResponseModel =
             UpdateSiteModel.fromJson(data);
-            print(updateLeadResponseModel.respMsg);
-            print(jsonEncode(updateLeadResponseModel));
             if (updateLeadResponseModel.respCode == "ST2033") {
               Get.back();
               Get.dialog(CustomDialogs

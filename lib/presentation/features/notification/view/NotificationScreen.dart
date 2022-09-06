@@ -36,7 +36,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance?.addPostFrameCallback((_) => {
+    WidgetsBinding.instance.addPostFrameCallback((_) => {
       unReadMessageCoun().then((value) => {
         setState(() {
           unReadMessageCount = value;

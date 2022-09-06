@@ -1550,6 +1550,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 if (!_isSubmitButtonDisabled) {
                                   _isSubmitButtonDisabled = true;
                                   _isSaveButtonDisabled = false;
+
                                   if (_contactNumber != null &&
                                       _contactNumber!.length == 10 &&
                                       _contactNumber != '' &&
@@ -1564,9 +1565,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                         empId = prefs.getString(
                                                 StringConstants.employeeId) ??
                                             "empty";
-                                        name = prefs.getString(
-                                                StringConstants.employeeName) ??
-                                            "empty";
+                                        name = prefs.getString(StringConstants.employeeName) ?? "empty";
                                         if (_comments.text == "" ||
                                             _comments.text == "null") {
                                           _comments.text = "Added New Lead";

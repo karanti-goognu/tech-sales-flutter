@@ -64,35 +64,22 @@ class _FormAddEventState extends State<FormAddEvent> {
 
   Future getEmpId() async {
     String? empID = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      empID = prefs.getString(StringConstants.employeeId);
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    empID = prefs.getString(StringConstants.employeeId);
     return empID;
   }
 
   getDropdownData() async {
-    await eventController.getEventType().then((data) {
-      setState(() {
-        if (data != null) {
-          addEventModel = data;
-        }
-      });
-    });
+    AddEventModel data = await eventController.getEventType();
+    setState(()=>addEventModel = data);
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait
     );
 
     final eventDropDwn = DropdownButtonFormField<Object>(
@@ -167,7 +154,7 @@ class _FormAddEventState extends State<FormAddEvent> {
                 Expanded(
                     child: Text(
                   (_time != null
-                      ? '${_time!.hour}:${_time!.minute}'
+                      ? '${_time!.hour}:${_time!.minute.isLowerThan(10) ? '0' + _time!.minute.toString() : _time!.minute}'
                       : 'Select time'),
                   style: TextStyle(color: Colors.black),
                 )),
@@ -393,9 +380,7 @@ class _FormAddEventState extends State<FormAddEvent> {
           onPressed: isButtonPressed == true
               ? null
               : () {
-                  setState(() {
-                    isButtonPressed = true;
-                  });
+                  setState(() => isButtonPressed = true);
                   btnPresssed(1);
                 },
         ),
@@ -734,10 +719,7 @@ class _FormAddEventState extends State<FormAddEvent> {
 
       if (_date == 'Select Date') {
         Get.rawSnackbar(
-            message: "Select Date",
-            // colorText: Colors.black,
-            // backgroundColor: Colors.white,
-            snackPosition: SnackPosition.BOTTOM);
+            message: "Select Date", snackPosition: SnackPosition.BOTTOM);
       } else if (timeString == null) {
         Get.rawSnackbar(
             message: "Select Time", snackPosition: SnackPosition.BOTTOM);

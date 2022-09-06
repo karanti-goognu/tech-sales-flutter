@@ -45,7 +45,6 @@ class AppController extends GetxController {
 
   set secretKeyResponse(value) => this._secretKeyResponse.value = value;
 
-
   set phoneNumber(value) => this._phoneNumber.value = value;
 
   getSecretKey(int requestId, BuildContext context) {
@@ -73,94 +72,88 @@ class AppController extends GetxController {
               this.secretKeyResponse.secretKey);
           getAccessKey(requestId, context);
         } else {
-         // print('Secret key response is null');
+          // print('Secret key response is null');
         }
       });
     });
   }
 
-   getAccessKey(int requestId, BuildContext context) {
+  getAccessKey(int requestId, BuildContext context) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
-    repository.getAccessKey().then((data) {
-      this.accessKeyResponse = data;
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      _prefs.then((SharedPreferences prefs) {
-        String userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-        if (userSecurityKey != "empty") {
-          bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
-          if (hasExpired) {
-            getSecretKey(requestId, context);
-          } else {
-            Get.back();
-            if(this.accessKeyResponse!=null)
-            switch (requestId) {
-              case RequestIds.GET_SITES_LIST:
-                _siteController.getSitesData(context,this.accessKeyResponse.accessKey,"");
-                break;
-              case RequestIds.SEARCH_SITES:
-                _siteController.searchSites(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.SAVE_MWP_PLAN:
-                _mwpPlanController
-                    .saveMWPPlan(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_MWP_PLAN:
-                _mwpPlanController.getMWPPlan(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_MWP_PLAN:
-                _addEventController.saveVisit(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_CALENDER_EVENTS:
-                _calendarEventController
-                    .getCalendarEvent(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_CALENDER_EVENTS_OF_DAY:
-                _calendarEventController
-                    .getCalendarEventOfDay(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.TARGET_VS_ACTUAL:
-                _calendarEventController
-                    .getTargetVsActualEvent(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_DEALERS_LIST:
-                _addEventController
-                    .getDealersList(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.SAVE_VISIT:
-                _addEventController
-                    .saveVisit(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.SAVE_MEET:
-                _addEventController
-                    .saveMeet(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.VIEW_VISIT:
-                _addEventController
-                    .viewVisitData(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.VIEW_MEET:
-                _addEventController
-                    .viewMeetData(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.UPDATE_VISIT:
-                _addEventController
-                    .updateVisit(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.UPDATE_MEET:
-                _addEventController
-                    .updateMeet(this.accessKeyResponse.accessKey);
-                break;
-              case RequestIds.GET_REQUEST_DETAILS_FOR_UPDATE:
-                _requestUpdateController.getRequestUpdateDetailsData(this.accessKeyResponse.accessKey);
-                break;
-
-            }
+    var data = await repository.getAccessKey();
+    this.accessKeyResponse = data;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userSecurityKey =
+        prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+    if (userSecurityKey != "empty") {
+      bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
+      if (hasExpired) {
+        getSecretKey(requestId, context);
+      } else {
+        Get.back();
+        if (this.accessKeyResponse != null)
+          switch (requestId) {
+            case RequestIds.GET_SITES_LIST:
+              _siteController.getSitesData(
+                  context, this.accessKeyResponse.accessKey, "");
+              break;
+            case RequestIds.SEARCH_SITES:
+              _siteController.searchSites(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.SAVE_MWP_PLAN:
+              _mwpPlanController.saveMWPPlan(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_MWP_PLAN:
+              _mwpPlanController.getMWPPlan(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_MWP_PLAN:
+              _addEventController.saveVisit(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_CALENDER_EVENTS:
+              _calendarEventController
+                  .getCalendarEvent(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_CALENDER_EVENTS_OF_DAY:
+              _calendarEventController
+                  .getCalendarEventOfDay(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.TARGET_VS_ACTUAL:
+              _calendarEventController
+                  .getTargetVsActualEvent(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_DEALERS_LIST:
+              _addEventController
+                  .getDealersList(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.SAVE_VISIT:
+              _addEventController.saveVisit(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.SAVE_MEET:
+              _addEventController.saveMeet(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.VIEW_VISIT:
+              _addEventController
+                  .viewVisitData(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.VIEW_MEET:
+              _addEventController
+                  .viewMeetData(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.UPDATE_VISIT:
+              _addEventController.updateVisit(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.UPDATE_MEET:
+              _addEventController.updateMeet(this.accessKeyResponse.accessKey);
+              break;
+            case RequestIds.GET_REQUEST_DETAILS_FOR_UPDATE:
+              _requestUpdateController.getRequestUpdateDetailsData(
+                  this.accessKeyResponse.accessKey);
+              break;
           }
-        }
-      });
-    });
+      }
+    }
   }
 }

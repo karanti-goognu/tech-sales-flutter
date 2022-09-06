@@ -814,12 +814,13 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: ColorConstants.buttonNormalColor,),
-          onPressed: isUpdateButtonPressed?null:() {
+          onPressed: isUpdateButtonPressed?null:() async {
             if (_formKey.currentState!.validate()) {
               setState(()=>isUpdateButtonPressed=true);
               _formKey.currentState!.save();
               _addEventController.visitActionType = "UPDATE";
-              _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
+              await _appController.getAccessKey(RequestIds.UPDATE_VISIT, context);
+              setState(()=>isUpdateButtonPressed=false);
             }
           },
           child: Padding(
@@ -834,7 +835,6 @@ class EditEventVisitScreenPageState extends State<EditEventVisit> {
     style: ElevatedButton.styleFrom(
           primary: ColorConstants.buttonNormalColor,),
           onPressed:isStartButtonPressed?null: () {
-
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               _addEventController.visitActionType = "START";

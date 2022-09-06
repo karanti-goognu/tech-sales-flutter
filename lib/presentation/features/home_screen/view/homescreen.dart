@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     _moEngageInbox = MoEngageInbox();
-    WidgetsBinding.instance?.addPostFrameCallback((_) => {
+    WidgetsBinding.instance.addPostFrameCallback((_) => {
           unReadMessageCoun().then((value) => {
                 setState(() {
                   unReadMessageCount = value;
@@ -260,44 +260,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 25.0, top: 20),
-              //   child: Column(
-              //     children: [
-              //       GestureDetector(
-              //         onTap: () async {
-              //           _appController.getAccessKey(RequestIds.GET_SITES_LIST);
-              //           storeOfflineSiteData();
-              //         },
-              //         child: Container(
-              //           height: 40,
-              //           width: 40,
-              //           // margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-              //           decoration: new BoxDecoration(
-              //             color: Colors.white,
-              //             border: Border.all(color: Colors.black, width: 0.0),
-              //             borderRadius:
-              //                 new BorderRadius.all(Radius.circular(70)),
-              //           ),
-              //           child: Icon(
-              //             Icons.sync,
-              //             color: HexColor("#FFCD00"),
-              //             size: 30,
-              //           ),
-              //         ),
-              //       ),
-              //
-              //       SizedBox(
-              //         height: 8,
-              //       ),
-              //
-              //       Text(
-              //         "Sync Data",
-              //         style: TextStyle(color: Colors.white, fontSize: 12),
-              //       )
-              //     ],
-              //   ),
-              // ),
             ],
           ),
           body: Stack(
@@ -308,7 +270,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Obx(() {
                     if (_homeController.disableSlider != true) {
-                    //  print(_homeController.checkInStatus);
                       return (_homeController.checkInStatus ==
                               StringConstants.checkIn)
                           ? checkInSliderButton()
@@ -370,14 +331,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               crossAxisCount: 2,
-                              // gridDelegate:
-                              //     SliverGridDelegateWithFixedCrossAxisCount(
-
                               childAspectRatio: 2.5,
-                              // ),
-                              //   new HomeScreenDashboardModel("New Influencers", _homeController.newInfl),
-                              //   new HomeScreenDashboardModel("DSP Slabs Converted", _homeController.dspSlabsConverted),
-                              children: [
+                             children: [
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Container(
