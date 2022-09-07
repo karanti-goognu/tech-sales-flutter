@@ -19,7 +19,6 @@ import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
 import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
-
 class SiteController extends GetxController {
   @override
   void onInit() {
@@ -217,8 +216,7 @@ class SiteController extends GetxController {
     return repository.getAccessKey();
   }
 
-
-  getSitesData(BuildContext context, String? accessKey,String? influencerId) {
+  getSitesData(BuildContext context, String? accessKey, String? influencerId) {
     String empId = "empty";
     String userSecurityKey = "empty";
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -291,8 +289,7 @@ class SiteController extends GetxController {
         } else {
           if (sitesListResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs
-                    .appUserInactiveDialog(sitesListResponse.respMsg),
+                CustomDialogs.appUserInactiveDialog(sitesListResponse.respMsg),
                 barrierDismissible: false);
           }
           if (this.sitesListResponse.sitesEntity == null ||
@@ -312,7 +309,10 @@ class SiteController extends GetxController {
               }
 
               final snackBar = SnackBar(
-                content: const Text("Loading more ..", style: TextStyle(color: Colors.black),),
+                content: const Text(
+                  "Loading more ..",
+                  style: TextStyle(color: Colors.black),
+                ),
                 backgroundColor: Colors.white,
                 behavior: SnackBarBehavior.floating,
                 duration: Duration(milliseconds: 700),
@@ -321,7 +321,10 @@ class SiteController extends GetxController {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
               final snackBar = SnackBar(
-                content: const Text("No more sites ..", style: TextStyle(color: Colors.black),),
+                content: const Text(
+                  "No more sites ..",
+                  style: TextStyle(color: Colors.black),
+                ),
                 backgroundColor: Colors.white,
                 behavior: SnackBarBehavior.floating,
                 duration: Duration(milliseconds: 700),
@@ -331,8 +334,7 @@ class SiteController extends GetxController {
             }
             if (sitesListResponse.respCode == "ST2006") {
             } else {
-              Get.dialog(
-                  CustomDialogs.showMessage(sitesListResponse.respMsg));
+              Get.dialog(CustomDialogs.showMessage(sitesListResponse.respMsg));
             }
           }
         }
@@ -358,8 +360,7 @@ class SiteController extends GetxController {
           if (sitesListResponse.respCode == "ST2004") {
           } else if (sitesListResponse.respCode == "DM1005") {
             Get.dialog(
-                CustomDialogs
-                    .appUserInactiveDialog(sitesListResponse.respMsg),
+                CustomDialogs.appUserInactiveDialog(sitesListResponse.respMsg),
                 barrierDismissible: false);
           } else {
             Get.dialog(CustomDialogs.showMessage(sitesListResponse.respMsg));
@@ -387,26 +388,29 @@ class SiteController extends GetxController {
     return repository.getAccessKey();
   }
 
-
-  Future<ViewSiteDataResponse> getSitedetailsData(String? accessKey, int? siteId) async {
+  Future<ViewSiteDataResponse> getSitedetailsData(
+      String? accessKey, int? siteId) async {
     String? userSecurityKey = "";
     String? empID = "";
     ViewSiteDataResponse viewSiteDataResponse = new ViewSiteDataResponse();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      empID = prefs.getString(StringConstants.employeeId);
-      viewSiteDataResponse = await repository.getSitedetailsData(accessKey, userSecurityKey, siteId, empID);
+    userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+    empID = prefs.getString(StringConstants.employeeId);
+    viewSiteDataResponse = await repository.getSitedetailsData(
+        accessKey, userSecurityKey, siteId, empID);
     return viewSiteDataResponse;
   }
 
-  getSiteFloorList(stageId, siteId) async{
-    List<SiteFloorsEntity> siteList= List<SiteFloorsEntity>.empty(growable: true);
+  getSiteFloorList(stageId, siteId) async {
+    List<SiteFloorsEntity> siteList =
+        List<SiteFloorsEntity>.empty(growable: true);
     String? userSecurityKey = "";
-    AccessKeyModel accessKey= await getAccessKeyOnly();
+    AccessKeyModel accessKey = await getAccessKeyOnly();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     await _prefs.then((SharedPreferences prefs) async {
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      siteList = await repository.getSiteFloorList(accessKey.accessKey!, userSecurityKey!, stageId, siteId);
+      siteList = await repository.getSiteFloorList(
+          accessKey.accessKey!, userSecurityKey!, stageId, siteId);
     });
     return siteList;
   }
@@ -473,13 +477,11 @@ class SiteController extends GetxController {
       SiteVisitRequestModel siteVisitRequestModel) async {
     SiteVisitResponseModel? siteVisitResponseModel;
     String? userSecurityKey = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    String? accessKey = await (repository.getAccessKeyNew());
-    await _prefs.then((SharedPreferences prefs) async {
-      userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
-      siteVisitResponseModel = await repository.siteVisitSave(
-          accessKey, userSecurityKey, siteVisitRequestModel);
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessKey = await repository.getAccessKeyNew();
+    userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
+    siteVisitResponseModel = await repository.siteVisitSave(
+        accessKey, userSecurityKey, siteVisitRequestModel);
     return siteVisitResponseModel;
   }
 
@@ -598,8 +600,8 @@ class SiteController extends GetxController {
         } else {
           var dataValue = data;
           if (dataValue['response']['respCode'] == "DM1002") {
-            Get.dialog(CustomDialogs
-                .showPendingSupplyData(dataValue['response']['respMsg']));
+            Get.dialog(CustomDialogs.showPendingSupplyData(
+                dataValue['response']['respMsg']));
           } else {
             Get.dialog(
                 CustomDialogs.showMessage(dataValue['response']['respMsg']));

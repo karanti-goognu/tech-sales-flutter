@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:device_info/device_info.dart';
+// import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -347,9 +348,8 @@ class MyApiClientSites {
     return sitesListModel;
   }
 
-  Future<SiteVisitResponseModel?>siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+  Future<SiteVisitResponseModel?> siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
     SiteVisitResponseModel? siteVisitResponseModel;
-    Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try{
       version = VersionClass.getVersion();
       var response = await http.post(
@@ -359,6 +359,8 @@ class MyApiClientSites {
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
+      siteVisitResponseModel= SiteVisitResponseModel.fromJson(data);
+      print(response.body);
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {

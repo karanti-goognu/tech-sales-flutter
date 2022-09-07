@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -26,8 +28,10 @@ class GetCurrentLocation{
     permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+
         if (permission == LocationPermission.denied) {
           Get.rawSnackbar(message:'Location permissions are denied');
+
         }
       }
       if (permission == LocationPermission.deniedForever) {

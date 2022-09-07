@@ -36,7 +36,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   String? visitSubType;
   String? selectedDateStringNext = 'Next visit date', typeValue = "PHYSICAL";
   bool isDataLoaded = false;
-
   SiteController _siteController = Get.find();
   TextEditingController _siteTypeController = TextEditingController();
   TextEditingController _selectedVisitType = TextEditingController();
@@ -248,6 +247,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
               if (_formKey.currentState!.validate()) {
+                Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
                 _formKey.currentState!.save();
                 _getCurrentLocationEnd();
               }
@@ -376,17 +376,12 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                   )
                                 : remarkTxt,
                             SizedBox(
-                              height: 16,
+                              height:16,
                             ),
-                            (viewSiteDataResponse!
-                                            .mwpVisitModel!.visitStartTime !=
-                                        null &&
-                                    viewSiteDataResponse!
-                                            .mwpVisitModel!.visitEndTime ==
-                                        null)
+                            (viewSiteDataResponse!.mwpVisitModel!.visitStartTime != null && viewSiteDataResponse!.mwpVisitModel!.visitEndTime == null)
                                 ? btnEnd
                                 : Container(),
-                            SizedBox(height: 100),
+                            SizedBox(height:100),
                           ],
                         ),
                 )
@@ -406,9 +401,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
     String empId = await getEmpId();
-
-    if (selectedDateStringNext == null ||
-        selectedDateStringNext == "Next visit date") {
+    if (selectedDateStringNext == null || selectedDateStringNext == "Next visit date") {
       selectedDateStringNext = "";
     }
     SiteVisitRequestModel _siteVisitRequestModel =
@@ -496,6 +489,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                           barrierDismissible: false);
                     }
                   });
+                  getSiteData();
                 }
               })
             }

@@ -702,7 +702,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
           if (value!.isEmpty) {
             return 'Please enter State ';
           }
-
           return null;
         },
         style: FormFieldStyle.formFieldTextStyle,
@@ -718,7 +717,6 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
         if (value!.isEmpty) {
           return 'Please enter District ';
         }
-
         return null;
       },
       style: FormFieldStyle.formFieldTextStyle,
@@ -873,8 +871,7 @@ class _AddNewLeadFormState extends State<AddNewLeadForm> {
                                 Get.back();
                                 _currentPosition = result.latLng;
                                 List<String> loc = result.loc;
-                                _siteAddress.text =
-                                    "${loc[7]}, ${loc[6]}, ${loc[4]}";
+                                _siteAddress.text = "${loc[7]}, ${loc[6]}, ${loc[4]}";
                                 _district.text = "${loc[2]}";
                                 _state.text = "${loc[1]}";
                                 _pincode.text = "${loc[5]}";

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:device_info/device_info.dart';
+// import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';

@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:device_info/device_info.dart';
+// import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/presentation/features/dashboard/data/model/DashboardViewModel.dart';
 import 'package:flutter_tech_sales/presentation/features/home_screen/data/models/JorneyModel.dart';

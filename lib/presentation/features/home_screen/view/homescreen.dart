@@ -325,8 +325,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Container(
-                            //  height: 130,
-                            // width: MediaQuery.of(context).size.width - 24,
                             child: GridView.count(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
@@ -336,7 +334,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Container(
-                                    // color: Colors.red,
                                     child: Row(
                                       children: [
                                         Container(
