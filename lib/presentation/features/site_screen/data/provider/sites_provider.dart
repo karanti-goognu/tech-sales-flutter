@@ -161,6 +161,7 @@ class MyApiClientSites {
   getSiteDetailsData(String? accessKey, String? userSecurityKey, int? siteId, String? empID) async {
     try {
       version = VersionClass.getVersion();
+      print(UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID");
       final response = await get(
         Uri.parse(
             UrlConstants.getSiteDataVersion4 + "$siteId&referenceID=$empID"),
@@ -348,10 +349,13 @@ class MyApiClientSites {
     return sitesListModel;
   }
 
-  Future<SiteVisitResponseModel?> siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-    SiteVisitResponseModel? siteVisitResponseModel;
+  Future<SiteVisitResponseModel> siteVisitSave(String? accessKey, String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
+    late SiteVisitResponseModel siteVisitResponseModel;
     try{
       version = VersionClass.getVersion();
+      print(UrlConstants.saveUpdateSiteVisit);
+      print(json.encode(siteVisitRequestModel));
+      print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey, version));
       var response = await http.post(
         Uri.parse(UrlConstants.saveUpdateSiteVisit),
         headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -360,9 +364,7 @@ class MyApiClientSites {
       );
       var data = json.decode(response.body);
       siteVisitResponseModel= SiteVisitResponseModel.fromJson(data);
-      print(response.body);
       if (response.statusCode == 200) {
-        Get.back();
         if (data["resp_code"] == "DM1005") {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);

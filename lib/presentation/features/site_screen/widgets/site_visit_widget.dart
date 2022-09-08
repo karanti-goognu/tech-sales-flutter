@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,11 +63,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   getSiteData() async {
-
     AccessKeyModel accessKeyModel = await _siteController.getAccessKeyOnly();
     viewSiteDataResponse = await _siteController.getSitedetailsData(
         accessKeyModel.accessKey, widget.siteId);
-
+    log(jsonEncode(viewSiteDataResponse));
     setData();
     setState(() {
       isDataLoaded = true;
@@ -74,6 +74,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   setData() {
+    print("set data");
     setState(() {
       siteOpportunityStatusEntity =
           viewSiteDataResponse!.siteOpportunityStatusEntity;
@@ -89,7 +90,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         _siteTypeController.text =
             siteOpportunityStatusEntity![0].opportunityStatus!;
       }
-
       if (viewSiteDataResponse!.mwpVisitModel != null) {
         if (viewSiteDataResponse!.mwpVisitModel!.nextVisitDate != null) {
           var date = DateTime.fromMillisecondsSinceEpoch(
@@ -129,9 +129,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     final opportunityTxt = TextFormField(
       controller: _siteTypeController,
       readOnly: true,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Opportunity Status",
-      ),
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Opportunity Status"),
       style: TextStyle(
           fontSize: 18,
           color: ColorConstants.inputBoxHintColor,
@@ -141,9 +139,7 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     final remarkTxt = TextFormField(
       controller: _remarkController,
       style: FormFieldStyle.formFieldTextStyle,
-      decoration: FormFieldStyle.buildInputDecoration(
-        labelText: "Remark",
-      ),
+      decoration: FormFieldStyle.buildInputDecoration(labelText: "Remark"),
     );
 
     final visitType = Container(
@@ -247,7 +243,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
             if (!_isEndButtonDisabled) {
               _isEndButtonDisabled = true;
               if (_formKey.currentState!.validate()) {
-                Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
+                Future.delayed(
+                    Duration.zero,
+                    () =>
+                        Get.dialog(Center(child: CircularProgressIndicator())));
                 _formKey.currentState!.save();
                 _getCurrentLocationEnd();
               }
@@ -264,144 +263,159 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
       ],
     );
 
-    return
-      !isDataLoaded?
-      Center(child: CircularProgressIndicator(),) :
-      SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 16,
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child:
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Form(
-                  key: _formKey,
-                  child: (viewSiteDataResponse!.mwpVisitModel == null)
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            opportunityTxt,
-                            SizedBox(height: 16),
-                            visitType,
-                            SizedBox(height: 16),
-                            date,
-                            SizedBox(
-                              height: 16,
-                            ),
-                            remarkTxt,
-                            SizedBox(
-                              height: 16,
-                            ),
-                            btnStart,
-                            SizedBox(height: 50),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            opportunityTxt,
-                            SizedBox(height: 16),
-                            ((viewSiteDataResponse!.mwpVisitModel!
-                                                .visitStartTime !=
-                                            null &&
-                                        viewSiteDataResponse!
-                                                .mwpVisitModel!.visitEndTime ==
-                                            null) ||
-                                    (viewSiteDataResponse!.mwpVisitModel!
+    return !isDataLoaded
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 16,
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // Text(viewSiteDataResponse!.mwpVisitModel.toString()),
+                    Form(
+                      key: _formKey,
+                      child: (viewSiteDataResponse!.mwpVisitModel == null)
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                opportunityTxt,
+                                SizedBox(height: 16),
+                                visitType,
+                                SizedBox(height: 16),
+                                date,
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                remarkTxt,
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                btnStart,
+                                SizedBox(height: 50),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                opportunityTxt,
+                                SizedBox(height: 16),
+                                ((viewSiteDataResponse!.mwpVisitModel!
+                                                    .visitStartTime !=
+                                                null &&
+                                            viewSiteDataResponse!.mwpVisitModel!
+                                                    .visitEndTime ==
+                                                null) ||
+                                        (viewSiteDataResponse!.mwpVisitModel!
+                                                    .visitStartTime !=
+                                                null &&
+                                            viewSiteDataResponse!.mwpVisitModel!
+                                                    .visitEndTime !=
+                                                null))
+                                    ? TextFormField(
+                                        controller: _selectedVisitType,
+                                        style:
+                                            FormFieldStyle.formFieldTextStyle,
+                                        keyboardType: TextInputType.number,
+                                        readOnly: true,
+                                        enableInteractiveSelection: false,
+                                        decoration: FormFieldStyle
+                                            .buildInputDecoration(),
+                                      )
+                                    : visitType,
+                                SizedBox(height: 16),
+                                date,
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                (viewSiteDataResponse!.mwpVisitModel!
                                                 .visitStartTime !=
                                             null &&
                                         viewSiteDataResponse!
                                                 .mwpVisitModel!.visitEndTime !=
-                                            null))
-                                ? TextFormField(
-                                    controller: _selectedVisitType,
-                                    style: FormFieldStyle.formFieldTextStyle,
-                                    keyboardType: TextInputType.number,
-                                    readOnly: true,
-                                    enableInteractiveSelection: false,
-                                    decoration:
-                                        FormFieldStyle.buildInputDecoration(),
-                                  )
-                                : visitType,
-                            SizedBox(height: 16),
-                            date,
-                            SizedBox(
-                              height: 16,
+                                            null)
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Remark',
+                                            style: TextStyles
+                                                .formfieldLabelTextDark,
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            padding: EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 10,
+                                                left: 8,
+                                                right: 8),
+                                            alignment: Alignment.centerLeft,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors
+                                                      .grey, // Set border color
+                                                  width:
+                                                      1.0), // Set border width
+                                            ),
+                                            child: Text(
+                                              _remarkController.text,
+                                              maxLines: null,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : remarkTxt,
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                (viewSiteDataResponse!.mwpVisitModel!
+                                                .visitStartTime !=
+                                            null &&
+                                        viewSiteDataResponse!
+                                                .mwpVisitModel!.visitEndTime ==
+                                            null)
+                                    ? btnEnd
+                                    : Container(),
+                                SizedBox(height: 100),
+                              ],
                             ),
-                            (viewSiteDataResponse!
-                                            .mwpVisitModel!.visitStartTime !=
-                                        null &&
-                                    viewSiteDataResponse!
-                                            .mwpVisitModel!.visitEndTime !=
-                                        null)
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Remark',
-                                        style:
-                                            TextStyles.formfieldLabelTextDark,
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        padding: EdgeInsets.only(
-                                            top: 10,
-                                            bottom: 10,
-                                            left: 8,
-                                            right: 8),
-                                        alignment: Alignment.centerLeft,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors
-                                                  .grey, // Set border color
-                                              width: 1.0), // Set border width
-                                        ),
-                                        child: Text(
-                                          _remarkController.text,
-                                          maxLines: null,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : remarkTxt,
-                            SizedBox(
-                              height:16,
-                            ),
-                            (viewSiteDataResponse!.mwpVisitModel!.visitStartTime != null && viewSiteDataResponse!.mwpVisitModel!.visitEndTime == null)
-                                ? btnEnd
-                                : Container(),
-                            SizedBox(height:100),
-                          ],
-                        ),
-                )
-              ],
-            )));
+                    )
+                  ],
+                )));
   }
 
   _getCurrentLocation(int id) async {
+    Future.delayed(
+        Duration.zero,
+        () => Get.dialog(Center(
+              child: CircularProgressIndicator(),
+            )));
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
-      setState(() {
-        _currentPosition = result.latLng;
-        btnCreatePressed(id);
-      });
+    Get.back();
+    setState(() {
+      _currentPosition = result.latLng;
+      btnCreatePressed(id);
+    });
   }
 
   btnCreatePressed(int id) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     String visitStartTime = dateFormat.format(DateTime.now());
     String empId = await getEmpId();
-    if (selectedDateStringNext == null || selectedDateStringNext == "Next visit date") {
+    if (selectedDateStringNext == null ||
+        selectedDateStringNext == "Next visit date") {
       selectedDateStringNext = "";
     }
     SiteVisitRequestModel _siteVisitRequestModel =
@@ -431,10 +445,10 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
 
   _getCurrentLocationEnd() async {
     LocationDetails result = await GetCurrentLocation.getCurrentLocation();
-      setState(() {
-        _currentPosition = result.latLng;
-        btnEndPressed();
-      });
+    setState(() {
+      _currentPosition = result.latLng;
+      btnEndPressed();
+    });
   }
 
   btnEndPressed() async {
@@ -472,36 +486,25 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
     apiCall(_siteVisitRequestModel);
   }
 
-  apiCall(SiteVisitRequestModel _siteVisitRequestModel) {
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _siteController
-                  .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel)
-                  .then((data) {
-                if (data != null) {
-                  setState(() {
-                    if (data.respCode == "MWP2028")
-                      Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
-                    else {
-                      Get.dialog(
-                          CustomDialogs.showMessage(data.respMsg.toString()),
-                          barrierDismissible: false);
-                    }
-                  });
-                  getSiteData();
-                }
-              })
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
+  apiCall(SiteVisitRequestModel _siteVisitRequestModel) async {
+    bool result = await internetChecking();
+    if (result == true) {
+      SiteVisitResponseModel data = await _siteController
+          .getAccessKeyAndSaveSiteRequest(_siteVisitRequestModel);
+      if (data.respCode == "MWP2028")
+        Get.dialog(showDialogSubmitSite(data.respMsg.toString()));
+      else {
+        Get.dialog(CustomDialogs.showMessage(data.respMsg.toString()),
+            barrierDismissible: false);
+      }
+      getSiteData();
+    } else {
+      Get.snackbar("No internet connection.",
+          "Make sure that your wifi or mobile data is turned on.",
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 
   Widget showDialogSubmitSite(String message) {

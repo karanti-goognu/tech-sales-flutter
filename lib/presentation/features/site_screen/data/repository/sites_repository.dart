@@ -66,7 +66,7 @@ class MyRepositorySites {
         accessKey, userSecurityKey, empID, searchText);
   }
 
-  Future<SiteVisitResponseModel?>siteVisitSave(String? accessKey,
+  Future<SiteVisitResponseModel>siteVisitSave(String? accessKey,
       String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
     return apiClient.siteVisitSave(
         accessKey, userSecretKey, siteVisitRequestModel);

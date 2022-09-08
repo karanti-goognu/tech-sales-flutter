@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tech_sales/helper/brandNameDBHelper.dart';
@@ -63,6 +65,8 @@ class ViewSiteDataResponse {
       this.constructionDays});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
+    print("JSON");
+    log(json.toString());
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     supplyDate = json['supplyDate'];
@@ -81,7 +85,6 @@ class ViewSiteDataResponse {
     mwpVisitModel = json['mwpVisitModel'] != null
         ? new MwpVisitModel.fromJson(json['mwpVisitModel'])
         : null;
-
     if (!json.containsKey('siteFloorsEntity'))
       siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
 
