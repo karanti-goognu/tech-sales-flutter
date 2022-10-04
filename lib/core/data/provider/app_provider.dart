@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:device_info_plus/device_info_plus.dart';
-// import 'package:device_info/device_info.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/CalendarDataByDay.dart';
@@ -106,6 +105,7 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(saveVisitRequest);
+      print(body);
       var response = await httpClient.post(Uri.parse(UrlConstants.saveVisit),
           headers: requestHeadersWithAccessKeyAndSecretKey(
               accessKey, userSecurityKey,version),
@@ -162,7 +162,8 @@ class MyApiClientApp {
     try {
       version = VersionClass.getVersion();
       var body = jsonEncode(updateVisitRequest);
-
+      print(body);
+      print(url);
       var response = await httpClient.post(Uri.parse(url), headers: requestHeadersWithAccessKeyAndSecretKey( accessKey, userSecurityKey,version),
           body: body,
           encoding: Encoding.getByName("utf-8"));
@@ -174,7 +175,6 @@ class MyApiClientApp {
         }else {
           SaveVisitResponse saveVisitResponse = SaveVisitResponse.fromJson(
               data);
-
           return saveVisitResponse;
         }
       } else {

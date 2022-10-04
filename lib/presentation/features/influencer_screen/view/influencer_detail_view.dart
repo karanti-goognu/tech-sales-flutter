@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/widgets/influencer_visit_tab.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +20,8 @@ import 'package:flutter_tech_sales/utils/styles/text_styles.dart';
 import 'package:flutter_tech_sales/widgets/bottom_navigator.dart';
 import 'package:flutter_tech_sales/widgets/customFloatingButton.dart';
 
-
 class InfluencerDetailView extends StatefulWidget {
   final int membershipId;
-
   InfluencerDetailView(this.membershipId);
 
   @override
@@ -48,6 +49,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   bool _qualificationVisible = false;
   int? _memberType, memberShipId;
   bool checkedValue = false;
+  int option = 1;
+  String? empID = "";
   TextEditingController _contactNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _fatherNameController = TextEditingController();
@@ -81,37 +84,33 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     getData();
   }
 
+  setTabOption(int option) {
+    setState(() => this.option = option);
+  }
+
   Future getEmpId() async {
-    String? empID = "";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
-      empID = prefs.getString(StringConstants.employeeId);
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    empID = prefs.getString(StringConstants.employeeId);
     return empID;
   }
 
   getData() {
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _infController
-                  .getInfDetailData('${widget.membershipId}')
-                  .then((data) {
-                setState(() {
-                  _influencerDetailDataModel = data;
-                  setData();
-                });
-              })
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
+    internetChecking().then((result) async {
+      if (result == true) {
+        InfluencerDetailDataModel data =
+            await _infController.getInfDetailData('${widget.membershipId}');
+        setState(() {
+          _influencerDetailDataModel = data;
+          setData();
         });
+      } else {
+        Get.snackbar("No internet connection.",
+            "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    });
   }
 
   setData() {
@@ -122,12 +121,18 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _influencerDetailDataModel!.response!.influencerDetails!;
       _contactNumberController.text = _data.inflContactNumber!;
       _nameController.text = _data.inflName!;
-      _fatherNameController.text = _data.fatherName!;
-      _districtController.text = _data.districtName!;
-      _giftAddressController.text = _data.giftAddress!;
-      _giftPincodeController.text = _data.giftAddressPincode!;
-      _giftDistrictController.text = _data.giftAddressDistrict!;
-      _giftStateController.text = _data.giftAddressState!;
+      _fatherNameController.text =
+          _data.fatherName == null ? "" : _data.fatherName!;
+      _districtController.text =
+          _data.districtName == null ? "" : _data.districtName!;
+      _giftAddressController.text =
+          _data.giftAddress == null ? "" : _data.giftAddress!;
+      _giftPincodeController.text =
+          _data.giftAddressPincode == null ? "" : _data.giftAddressPincode!;
+      _giftDistrictController.text =
+          _data.giftAddressDistrict == null ? "" : _data.giftAddressDistrict!;
+      _giftStateController.text =
+          _data.giftAddressState == null ? "" : _data.giftAddressState!;
       _totalPotentialController.text =
           '${_data.monthlyPotentialVolumeMT}' == "null"
               ? ""
@@ -136,13 +141,15 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           ? ""
           : '${_data.siteAssignedCount}';
       _enrollmentDateController.text = '${_data.inflJoiningDate}';
-      _qualificationController.text = _data.inflQualification!;
-      _emailController.text = _data.email!;
-      _baseCityController.text = _data.baseCity!;
-      _talukaController.text = _data.taluka!;
+      _qualificationController.text =
+          _data.inflQualification == null ? "" : _data.inflQualification!;
+      _emailController.text = _data.email == null ? "" : _data.email!;
+      _baseCityController.text = _data.baseCity == null ? "" : _data.baseCity!;
+      _talukaController.text = _data.taluka == null ? "" : _data.taluka!;
       _pincodeController.text = _data.pinCode!;
       _memberType = _data.inflTypeId;
-      _primaryCounterController.text = _data.primaryCounterName!;
+      _primaryCounterController.text =
+          _data.primaryCounterName == null ? "" : _data.primaryCounterName!;
 
       _dateController.text =
           '${_data.inflDob}' == "null" ? "Birth Date" : '${_data.inflDob}';
@@ -234,15 +241,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
 
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait
     );
     double _height = 16.sp;
 
@@ -259,15 +260,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final email = TextFormField(
       controller: _emailController,
       readOnly: true,
-      // validator: (value) {
-      //   // if (value.isEmpty) {
-      //   //   return 'Please enter email ';
-      //   // }
-      //   if (value.isNotEmpty && !Validations.isEmail(value)) {
-      //     return 'Enter valid email ';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.emailAddress,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -278,12 +270,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final name = TextFormField(
       controller: _nameController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -294,12 +280,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final fatherName = TextFormField(
       controller: _fatherNameController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -310,12 +290,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final baseCity = TextFormField(
       controller: _baseCityController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -326,12 +300,6 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
     final taluka = TextFormField(
       controller: _talukaController,
       readOnly: true,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter name';
-      //   }
-      //   return null;
-      // },
       style: FormFieldStyle.formFieldTextStyle,
       keyboardType: TextInputType.text,
       decoration: FormFieldStyle.buildInputDecoration(
@@ -367,8 +335,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           activeColor: Colors.black,
           dense: true,
           value: checkedValue,
-          controlAffinity:
-              ListTileControlAffinity.leading,
+          controlAffinity: ListTileControlAffinity.leading,
         ));
 
     final primaryCounter = TextFormField(
@@ -642,7 +609,36 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
         labelText: "Firm Name",
       ),
     );
-
+    List<Widget> profileList = [
+      mobileNumber,
+      name,
+      email,
+      memberDropDwn,
+      enrollmentCheckbox,
+      primaryCounter,
+      district,
+      baseCity,
+      taluka,
+      pincode,
+      engineersFields(),
+      birthDate,
+      firmName,
+      fatherName,
+      Visibility(visible: _qualificationVisible, child: qualification),
+      enrollmentDate,
+      giftAddress,
+      giftPincode,
+      giftDistrict,
+      giftState,
+      Divider(
+        height: 1.sp,
+        color: Colors.grey,
+      ),
+      totalPotential,
+      potentialSite,
+      influencerCategoryDropDwn,
+      sourceDropDwn,
+    ];
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BackFloatingButton(),
@@ -654,104 +650,227 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           (_influencerDetailDataModel != null &&
                   _influencerDetailDataModel!.response!.influencerDetails !=
                       null)
-              ? ListView(children: [
-                  Container(
-                    padding: EdgeInsets.all(12.sp),
-                    height: 56,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Influencer Details',
-                          style: TextStyles.titleGreenStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 8.sp),
-                  Divider(
-                    height: 1.sp,
-                    color: Colors.grey,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.all(16.sp),
-                      child: Form(
-                        key: _addInfluencerFormKey,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              ? SafeArea(
+                  child: Column(children: [
+                    Container(
+                      padding: EdgeInsets.all(12.sp),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Membership ID : ",
-                                    style: TextStyles.welcomeMsgTextStyle20,
-                                  ),
-                                  Text(
-                                    "$memberShipId",
-                                    style: TextStyles.welcomeMsgTextStyle20,
-                                  ),
-                                ],
+                              Text(
+                                'Influencer Details',
+                                style: TextStyles.titleGreenStyle,
                               ),
-                              SizedBox(height: _height),
-                              mobileNumber,
-                              SizedBox(height: _height),
-                              name,
-                              SizedBox(height: _height),
-                              email,
-                              SizedBox(height: _height),
-                              memberDropDwn,
-                              SizedBox(height: _height),
-                              //enrollDropDwn,
-                              enrollmentCheckbox,
-                              SizedBox(height: _height),
-                              primaryCounter,
-                              SizedBox(height: _height),
-                              district,
-                              SizedBox(height: _height),
-                              baseCity,
-                              SizedBox(height: _height),
-                              taluka,
-                              SizedBox(height: _height),
-                              pincode,
-                              SizedBox(height: _height),
-                              engineersFields(),
-                              SizedBox(height: _height),
-                              birthDate,
-                              SizedBox(height: _height),
-                              firmName,
-                              SizedBox(height: _height),
-                              fatherName,
-                              SizedBox(height: _height),
-                              Visibility(
-                                  visible: _qualificationVisible,
-                                  child: qualification),
-                              SizedBox(height: _height),
-                              enrollmentDate,
-                              SizedBox(height: _height),
-                              giftAddress,
-                              SizedBox(height: _height),
-                              giftPincode,
-                              SizedBox(height: _height),
-                              giftDistrict,
-                              SizedBox(height: _height),
-                              giftState,
-                              SizedBox(height: _height),
-                              Divider(
-                                height: 1.sp,
-                                color: Colors.grey,
+                            ],
+                          ),
+                          SizedBox(height: 8.sp),
+                          Row(
+                            children: [
+                              Text(
+                                "Membership ID : ",
                               ),
-                              SizedBox(height: _height),
-                              totalPotential,
-                              SizedBox(height: _height),
-                              potentialSite,
-                              SizedBox(height: _height),
-                              influencerCategoryDropDwn,
-                              SizedBox(height: _height),
-                              sourceDropDwn,
-                              SizedBox(height: _height),
-                            ]),
-                      )),
-                ])
+                              Text(
+                                "$memberShipId",
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.sp),
+                          Row(
+                            children: [
+                              Text(
+                                "Name : ",
+                              ),
+                              Text(
+                                _influencerDetailDataModel!
+                                    .response!.influencerDetails!.inflName
+                                    .toString(),
+                                style: TextStyles.welcomeMsgTextStyle20,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setTabOption(1);
+                                },
+                                child: Transform.scale(
+                                  scale: 1.1,
+                                  child: Chip(
+                                    label: Text("Profile"),
+                                    backgroundColor: option == 1
+                                        ? Colors.blue.withOpacity(0.2)
+                                        : Colors.white,
+                                    shape: StadiumBorder(
+                                      side: BorderSide(
+                                          color: option == 1
+                                              ? Colors.blue
+                                              : Colors.black12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setTabOption(2);
+                                },
+                                child: Transform.scale(
+                                  scale: 1.1,
+                                  child: Chip(
+                                    label: Text("Visit"),
+                                    backgroundColor: option == 2
+                                        ? Colors.blue.withOpacity(0.2)
+                                        : Colors.white,
+                                    shape: StadiumBorder(
+                                      side: BorderSide(
+                                          color: option == 2
+                                              ? Colors.blue
+                                              : Colors.black12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                            padding: EdgeInsets.all(16.sp),
+                            child: Form(
+                              key: _addInfluencerFormKey,
+                              child: option == 1
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                          mobileNumber,
+                                          SizedBox(height: _height),
+                                          name,
+                                          SizedBox(height: _height),
+                                          email,
+                                          SizedBox(height: _height),
+                                          memberDropDwn,
+                                          SizedBox(height: _height),
+                                          //enrollDropDwn,
+                                          enrollmentCheckbox,
+                                          SizedBox(height: _height),
+                                          primaryCounter,
+                                          SizedBox(height: _height),
+                                          district,
+                                          SizedBox(height: _height),
+                                          baseCity,
+                                          SizedBox(height: _height),
+                                          taluka,
+                                          SizedBox(height: _height),
+                                          pincode,
+                                          SizedBox(height: _height),
+                                          engineersFields(),
+                                          SizedBox(height: _height),
+                                          birthDate,
+                                          SizedBox(height: _height),
+                                          firmName,
+                                          SizedBox(height: _height),
+                                          fatherName,
+                                          SizedBox(height: _height),
+                                          Visibility(
+                                              visible: _qualificationVisible,
+                                              child: qualification),
+                                          SizedBox(height: _height),
+                                          enrollmentDate,
+                                          SizedBox(height: _height),
+                                          giftAddress,
+                                          SizedBox(height: _height),
+                                          giftPincode,
+                                          SizedBox(height: _height),
+                                          giftDistrict,
+                                          SizedBox(height: _height),
+                                          giftState,
+                                          SizedBox(height: _height),
+                                          Divider(
+                                            height: 1.sp,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(height: _height),
+                                          totalPotential,
+                                          SizedBox(height: _height),
+                                          potentialSite,
+                                          SizedBox(height: _height),
+                                          influencerCategoryDropDwn,
+                                          SizedBox(height: _height),
+                                          sourceDropDwn,
+                                          SizedBox(height: _height),
+                                        ])
+                                  :
+                              InfluencerVisitTab(
+                                      membershipId: memberShipId!,
+                                      empID: empID!,
+                                      spacing: _height,
+                                      influencerDetailDataModel:
+                                          _influencerDetailDataModel!,
+                                      contactNumberController:
+                                          _contactNumberController,
+                                    influencerModel:
+                                    _influencerDetailDataModel!
+                                        .response!.influencerModel,
+                                      eventType: _influencerDetailDataModel!
+                                          .response!.influencerTypeEntitiesList!
+                                          .where((element) =>
+                                              element.inflTypeId ==
+                                              _influencerDetailDataModel
+                                                  ?.response!
+                                                  .influencerDetails!
+                                                  .inflTypeId)
+                                          .first
+                                          .profile,
+                                    ),
+                            )),
+                      ),
+                    )
+                    // Expanded(
+                    //   child: Padding(
+                    //     padding: EdgeInsets.all(16.sp),
+                    //     child: Form(
+                    //       key: _addInfluencerFormKey,
+                    //       child: option == 1
+                    //           ? ListView.separated(
+                    //               itemBuilder: (context, index) =>
+                    //                   profileList[index],
+                    //               separatorBuilder: (context, index) =>
+                    //                   SizedBox(height: _height),
+                    //               itemCount: profileList.length)
+                    //           : InfluencerVisitTab(
+                    //               membershipId: memberShipId!,
+                    //               empID: empID!,
+                    //               spacing: _height,
+                    //               influencerDetailDataModel:
+                    //                   _influencerDetailDataModel!,
+                    //               contactNumberController:
+                    //                   _contactNumberController,
+                    //               influencerTypeEntitiesList:
+                    //                   influencerTypeEntitiesList!,
+                    //               eventType: _influencerDetailDataModel!
+                    //                   .response!.influencerTypeEntitiesList!
+                    //                   .where((element) =>
+                    //                       element.inflTypeId ==
+                    //                       _influencerDetailDataModel?.response!
+                    //                           .influencerDetails!.inflTypeId)
+                    //                   .first
+                    //                   .profile,
+                    //             ),
+                    //     ),
+                    //   ),
+                    // )
+                  ]),
+                )
               : Center(
                   child: Text(""),
                 ),

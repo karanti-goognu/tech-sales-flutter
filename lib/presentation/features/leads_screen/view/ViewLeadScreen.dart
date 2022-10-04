@@ -58,25 +58,20 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   }
 
   getData() {
-    internetChecking().then((result) => {
-          if (result == true)
-            {
-              _addLeadsController
-                  .getLeadDataNew(widget.leadId)
-                  .then((ViewLeadDataResponse data) {
-                setState(() => viewLeadDataResponse = data);
-                setData();
-              })
-            }
-          else
-            {
-              Get.snackbar("No internet connection.",
-                  "Make sure that your wifi or mobile data is turned on.",
-                  colorText: Colors.white,
-                  backgroundColor: Colors.red,
-                  snackPosition: SnackPosition.BOTTOM),
-            }
-        });
+    internetChecking().then((result) async {
+      if (result == true) {
+        ViewLeadDataResponse data =
+            await _addLeadsController.getLeadDataNew(widget.leadId);
+        setState(() => viewLeadDataResponse = data);
+        setData();
+      } else {
+        Get.snackbar("No internet connection.",
+            "Make sure that your wifi or mobile data is turned on.",
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    });
   }
 
   List<LeadInfluencerEntity> influencerListForConvertToSite =
@@ -237,9 +232,7 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
 
       List<CommentsDetail> commentsDetails = [
         new CommentsDetail(
-            createdBy: empId,
-            commentText: _comments.text,
-            creatorName: name)
+            createdBy: empId, commentText: _comments.text, creatorName: name)
       ];
 
       List<updateRequest.ListLeadcomments> commentsList = [];
@@ -419,11 +412,12 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
                             selectedNextStageConstructionEntity:
                                 _selectedNextStageConstructionEntity,
                             dealerEntityForDb: dealerEntityForDb,
-                            counterListModel: counterListModel,
+                            // counterListModel: counterListModel,
                             siteFloorsEntity: _siteFloorsEntity,
                             siteCompetitionStatusEntity:
                                 _siteCompetitionStatusEntity,
                             mListener: this,
+                            leadCounter: viewLeadDataResponse.leadCounter ?? [],
                           ));
                 } else if (_selectedValuedummy!.id == 4) {
                   String empId;
@@ -1772,9 +1766,9 @@ class _ViewLeadScreenState extends State<ViewLeadScreen>
   List<LeadRejectReasonEntity>? leadRejectReasonEntity = [];
   List<NextStageConstructionEntity>? nextStageConstructionEntity = [];
   /*Work on dealer and subdelear*/
-  List<CounterListModel> counterListModel = [];
-  List<CounterListModel> subDealerList = [];
-  CounterListModel selectedSubDealer = CounterListModel();
+  // List<CounterListModel> counterListModel = [];
+  // List<CounterListModel> subDealerList = [];
+  // CounterListModel selectedSubDealer = CounterListModel();
   List<DealerForDb> dealerEntityForDb = [];
 
   List<DealerList>? dealerList = [];

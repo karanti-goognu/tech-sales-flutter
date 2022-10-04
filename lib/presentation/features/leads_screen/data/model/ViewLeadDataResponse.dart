@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_tech_sales/presentation/features/leads_screen/data/model/LeadsEntity.dart';
 
 class ViewLeadDataResponse {
@@ -20,32 +18,40 @@ class ViewLeadDataResponse {
   List<DealerList>? dealerList;
   List<SiteFloorsEntity>? siteFloorsEntity;
   List<SiteCompetitionStatusEntity>? siteCompetitionStatusEntity;
+  List<String>? leadCounter;
 
-
-  ViewLeadDataResponse(
-      {this.respCode,
-      this.respMsg,
-      this.leadStageEntity,
-      this.leadStatusEntity,
-      this.leadInfluencerEntity,
-      this.leadcommentsEnitiy,
-      this.leadphotosEntity,
-      this.influencerEntity,
-      this.influencerCategoryEntity,
-      this.influencerTypeEntity,
-      this.leadRejectReasonEntity,
-      this.nextStageConstructionEntity,
-        this.counterListModel,
-      this.leadsEntity,
-      this.dealerList,
-      this.siteFloorsEntity,
-      this.siteCompetitionStatusEntity,
-        });
+  ViewLeadDataResponse({
+    this.respCode,
+    this.respMsg,
+    this.leadStageEntity,
+    this.leadStatusEntity,
+    this.leadInfluencerEntity,
+    this.leadcommentsEnitiy,
+    this.leadphotosEntity,
+    this.influencerEntity,
+    this.influencerCategoryEntity,
+    this.influencerTypeEntity,
+    this.leadRejectReasonEntity,
+    this.nextStageConstructionEntity,
+    this.counterListModel,
+    this.leadsEntity,
+    this.dealerList,
+    this.siteFloorsEntity,
+    this.siteCompetitionStatusEntity,
+    this.leadCounter,
+  });
 
   ViewLeadDataResponse.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
 
+    if (!json.containsKey('leadCounter')){
+      leadCounter = new List<String>.empty(growable: true);
+    }
+
+    if(json['leadCounter']!=null){
+      leadCounter = json['leadCounter'].cast<String>();
+    }
     if (!json.containsKey('counterListModel'))
       counterListModel = new List<CounterListModel>.empty(growable: true);
 
@@ -77,10 +83,12 @@ class ViewLeadDataResponse {
     }
 
     if (!json.containsKey('leadInfluencerEntity'))
-      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
+      leadInfluencerEntity =
+          new List<LeadInfluencerEntity>.empty(growable: true);
 
     if (json['leadInfluencerEntity'] != null) {
-      leadInfluencerEntity = new List<LeadInfluencerEntity>.empty(growable: true);
+      leadInfluencerEntity =
+          new List<LeadInfluencerEntity>.empty(growable: true);
       json['leadInfluencerEntity'].forEach((v) {
         leadInfluencerEntity!.add(new LeadInfluencerEntity.fromJson(v));
       });
@@ -117,53 +125,59 @@ class ViewLeadDataResponse {
     }
 
     if (!json.containsKey('influencerCategoryEntity'))
-      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+      influencerCategoryEntity =
+          new List<InfluencerCategoryEntity>.empty(growable: true);
 
     if (json['influencerCategoryEntity'] != null) {
-      influencerCategoryEntity = new List<InfluencerCategoryEntity>.empty(growable: true);
+      influencerCategoryEntity =
+          new List<InfluencerCategoryEntity>.empty(growable: true);
       json['influencerCategoryEntity'].forEach((v) {
         influencerCategoryEntity!.add(new InfluencerCategoryEntity.fromJson(v));
       });
     }
 
     if (!json.containsKey('influencerTypeEntity'))
-      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
+      influencerTypeEntity =
+          new List<InfluencerTypeEntity>.empty(growable: true);
 
     if (json['influencerTypeEntity'] != null) {
-      influencerTypeEntity = new List<InfluencerTypeEntity>.empty(growable: true);
+      influencerTypeEntity =
+          new List<InfluencerTypeEntity>.empty(growable: true);
       json['influencerTypeEntity'].forEach((v) {
         influencerTypeEntity!.add(new InfluencerTypeEntity.fromJson(v));
       });
     }
 
     if (!json.containsKey('leadRejectReasonEntity'))
-      leadRejectReasonEntity = new List<LeadRejectReasonEntity>.empty(growable: true);
+      leadRejectReasonEntity =
+          new List<LeadRejectReasonEntity>.empty(growable: true);
 
     if (json['leadRejectReasonEntity'] != null) {
-      leadRejectReasonEntity = new List<LeadRejectReasonEntity>.empty(growable: true);
+      leadRejectReasonEntity =
+          new List<LeadRejectReasonEntity>.empty(growable: true);
       json['leadRejectReasonEntity'].forEach((v) {
         leadRejectReasonEntity!.add(new LeadRejectReasonEntity.fromJson(v));
       });
     }
 
     if (!json.containsKey('nextStageConstructionEntity'))
-      nextStageConstructionEntity = new List<NextStageConstructionEntity>.empty(growable: true);
+      nextStageConstructionEntity =
+          new List<NextStageConstructionEntity>.empty(growable: true);
 
     if (json['nextStageConstructionEntity'] != null) {
-      nextStageConstructionEntity = new List<NextStageConstructionEntity>.empty(growable: true);
+      nextStageConstructionEntity =
+          new List<NextStageConstructionEntity>.empty(growable: true);
       json['nextStageConstructionEntity'].forEach((v) {
         nextStageConstructionEntity!
             .add(new NextStageConstructionEntity.fromJson(v));
       });
     }
 
-    if (!json.containsKey('leadsEntity'))
-      leadsEntity = null;
+    if (!json.containsKey('leadsEntity')) leadsEntity = null;
 
     leadsEntity = json['leadsEntity'] != null
         ? new LeadsEntity.fromJson(json['leadsEntity'])
         : null;
-
 
     if (!json.containsKey('dealerList'))
       dealerList = new List<DealerList>.empty(growable: true);
@@ -174,7 +188,6 @@ class ViewLeadDataResponse {
         dealerList!.add(new DealerList.fromJson(v));
       });
     }
-
 
     if (!json.containsKey('siteFloorsEntity'))
       siteFloorsEntity = new List<SiteFloorsEntity>.empty(growable: true);
@@ -187,12 +200,15 @@ class ViewLeadDataResponse {
     }
 
     if (!json.containsKey('siteCompetitionStatusEntity'))
-      siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
+      siteCompetitionStatusEntity =
+          new List<SiteCompetitionStatusEntity>.empty(growable: true);
 
     if (json['siteCompetitionStatusEntity'] != null) {
-      siteCompetitionStatusEntity = new List<SiteCompetitionStatusEntity>.empty(growable: true);
+      siteCompetitionStatusEntity =
+          new List<SiteCompetitionStatusEntity>.empty(growable: true);
       json['siteCompetitionStatusEntity'].forEach((v) {
-        siteCompetitionStatusEntity!.add(new SiteCompetitionStatusEntity.fromJson(v));
+        siteCompetitionStatusEntity!
+            .add(new SiteCompetitionStatusEntity.fromJson(v));
       });
     }
   }
@@ -202,12 +218,19 @@ class ViewLeadDataResponse {
     data['respCode'] = this.respCode;
     data['respMsg'] = this.respMsg;
 
-    if (this.leadStageEntity != null) {if (this.counterListModel != null) {
-      data['counterListModel'] =
-          this.counterListModel!.map((v) => v.toJson()).toList();
-    }
+
+
+
+    if (this.leadStageEntity != null) {
+      if (this.counterListModel != null) {
+        data['counterListModel'] =
+            this.counterListModel!.map((v) => v.toJson()).toList();
+      }
       data['leadStageEntity'] =
           this.leadStageEntity!.map((v) => v.toJson()).toList();
+    }
+    if(this.leadCounter!=null){
+      data['leadCounter'] = this.leadCounter;
     }
     if (this.leadStatusEntity != null) {
       data['leadStatusEntity'] =
@@ -253,7 +276,8 @@ class ViewLeadDataResponse {
     }
 
     if (this.siteFloorsEntity != null) {
-      data['siteFloorsEntity'] = this.siteFloorsEntity!.map((v) => v.toJson()).toList();
+      data['siteFloorsEntity'] =
+          this.siteFloorsEntity!.map((v) => v.toJson()).toList();
     }
 
     if (this.siteCompetitionStatusEntity != null) {
@@ -313,8 +337,6 @@ class LeadInfluencerEntity {
   Null updatedBy;
   Null updatedOn;
   String? isPrimary;
-
-
 
   LeadInfluencerEntity(
       {this.id,
@@ -560,7 +582,6 @@ class DealerList {
   }
 }
 
-
 class SiteFloorsEntity {
   int? id;
   String? siteFloorTxt;
@@ -569,7 +590,7 @@ class SiteFloorsEntity {
 
   SiteFloorsEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    siteFloorTxt = json['siteFloorTxt'].toString() ;
+    siteFloorTxt = json['siteFloorTxt'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -580,7 +601,6 @@ class SiteFloorsEntity {
   }
 }
 
-
 class CounterListModel {
   String? shipToParty;
   String? shipToPartyName;
@@ -589,9 +609,9 @@ class CounterListModel {
 
   CounterListModel(
       {this.shipToParty,
-        this.shipToPartyName,
-        this.soldToParty,
-        this.soldToPartyName});
+      this.shipToPartyName,
+      this.soldToParty,
+      this.soldToPartyName});
 
   CounterListModel.fromJson(Map<String, dynamic> json) {
     shipToParty = json['shipToParty'];

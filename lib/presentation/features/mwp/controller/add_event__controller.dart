@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,9 +24,7 @@ import 'package:flutter_tech_sales/utils/constants/url_constants.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 
-
 class AddEventController extends GetxController {
-
   final MyRepositoryApp repository;
   AddEventController({required this.repository});
   final _accessKeyResponse = AccessKeyModel().obs;
@@ -215,7 +214,8 @@ class AddEventController extends GetxController {
 
   set visitSiteId(value) => this._visitSiteId.value = value;
 
-  set visitRemarks(value) => this._visitRemarks.value = value != null ? value : StringConstants.empty;
+  set visitRemarks(value) =>
+      this._visitRemarks.value = value != null ? value : StringConstants.empty;
 
   set dalmiaInflCount(value) => this._dalmiaInflCount.value = value;
 
@@ -258,53 +258,49 @@ class AddEventController extends GetxController {
   set isVisibleContact(value) => this._isVisibleContact.value = value;
   LatLng? _currentPosition;
 
-  saveVisit(String accessKey) {
+  saveVisit(String accessKey) async {
     Future.delayed(Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator())));
     String empId = "empty";
     String userSecurityKey = "empty";
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
-      empId = prefs.getString(StringConstants.employeeId) ?? "empty";
-      userSecurityKey =
-          prefs.getString(StringConstants.userSecurityKey) ?? "empty";
-      SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
-        empId,
-        "VISIT",
-        this.visitSubType,
-        this.visitSiteId,
-        this.visitDateTime == "Visit Date" ? null : this.visitDateTime,
-        this.visitRemarks,
-      );
-      String url = "${UrlConstants.saveVisit}";
-      repository
-          .saveVisitPlan(accessKey, userSecurityKey, url, saveVisitRequest)
-          .then((data) {
-        if (data == null) {
-          debugPrint('Save Visit Response is null');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    empId = prefs.getString(StringConstants.employeeId) ?? "empty";
+    userSecurityKey =
+        prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+    SaveVisitRequest saveVisitRequest = new SaveVisitRequest(
+      empId,
+      "VISIT",
+      this.visitSubType,
+      this.visitSiteId,
+      this.visitDateTime == "Visit Date" ? null : this.visitDateTime,
+      this.visitRemarks,
+    );
+    String url = "${UrlConstants.saveVisit}";
+    print(url);
+    repository
+        .saveVisitPlan(accessKey, userSecurityKey, url, saveVisitRequest)
+        .then((data) {
+      if (data == null) {
+        debugPrint('Save Visit Response is null');
+      } else {
+        Get.back();
+        this.saveVisitResponse = data;
+        this.visitDateTime = "Visit Date";
+        this.visitRemarks = "";
+        if (saveVisitResponse.respCode == "MWP2022") {
+          Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
+        } else if (saveVisitResponse.respCode == "DM2144") {
+          Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
+        } else if (saveVisitResponse.respCode == "INF2004") {
+          this.isVisibleContact = false;
+          contactController.text = "";
+          Get.dialog(CustomDialogs.messageDialogMWPInf(
+            saveVisitResponse.respMsg,
+          ));
         } else {
-          Get.back();
-          this.saveVisitResponse = data;
-          this.visitDateTime = "Visit Date";
-          this.visitRemarks = "";
-          if (saveVisitResponse.respCode == "MWP2022") {
-            Get.dialog(
-                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
-          } else if (saveVisitResponse.respCode == "DM2144") {
-            Get.dialog(
-                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
-          } else if (saveVisitResponse.respCode == "INF2004") {
-            this.isVisibleContact = false;
-            contactController.text = "";
-            Get.dialog(CustomDialogs.messageDialogMWPInf(
-              saveVisitResponse.respMsg,
-            ));
-          } else {
-            Get.dialog(
-                CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
-          }
+          Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
         }
-      });
+      }
     });
   }
 
@@ -462,7 +458,13 @@ class AddEventController extends GetxController {
                 .dspAvailableQty
                 .toString();
             this.mtController.text = ((int.parse(
-                this.visitResponseModel.mwpVisitModel.dspAvailableQty==""?"0":this.visitResponseModel.mwpVisitModel.dspAvailableQty) /
+                        this.visitResponseModel.mwpVisitModel.dspAvailableQty ==
+                                ""
+                            ? "0"
+                            : this
+                                .visitResponseModel
+                                .mwpVisitModel
+                                .dspAvailableQty) /
                     20)
                 .toString());
           }
@@ -510,7 +512,9 @@ class AddEventController extends GetxController {
     });
   }
 
-  updateVisit(String accessKey) {
+  updateVisit(String accessKey
+      // , bool isInflCall, VisitUpdateData? inflUpdateData
+      ) {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -523,8 +527,11 @@ class AddEventController extends GetxController {
       MwpVisitModelUpdate mwpVisitModelUpdate;
       String url = "${UrlConstants.updateVisit}";
 
-      if (this.visitActionType == "UPDATE") {
+      if (this.visitActionType == "UPDATE"
+          // && isInflCall == false
+      ) {
         print('update');
+
         mwpVisitModelUpdate = new MwpVisitModelUpdate(
             this.visitId,
             this.visitViewDateTime,
@@ -542,6 +549,7 @@ class AddEventController extends GetxController {
             this.visitSiteId,
             this.dspAvailableQty,
             this.isDspAvailable);
+
         repository
             .updateVisitPlan(
                 accessKey,
@@ -566,14 +574,18 @@ class AddEventController extends GetxController {
             }
           }
         });
-      } else if (this.visitActionType == "START") {
+      }
+      else if (this.visitActionType == "START"
+          // || inflUpdateData!.action=="start"
+      ) {
+        // print("Waheguru");
         LocationDetails? result = await GetCurrentLocation.getCurrentLocation();
-        if (result != null) {
-          _currentPosition = result.latLng;
-          print('start');
-          var journeyStartLat = _currentPosition!.latitude;
-          var journeyStartLong = _currentPosition!.longitude;
-          DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+        _currentPosition = result.latLng;
+        print('start');
+        var journeyStartLat = _currentPosition!.latitude;
+        var journeyStartLong = _currentPosition!.longitude;
+        DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+        // if (isInflCall == false) {
           mwpVisitModelUpdate = new MwpVisitModelUpdate(
               this.visitId,
               this.visitViewDateTime,
@@ -593,32 +605,42 @@ class AddEventController extends GetxController {
               this.visitSiteId,
               this.dspAvailableQty,
               this.isDspAvailable);
-          repository
-              .updateVisitPlan(
-                  accessKey,
-                  userSecurityKey,
-                  url,
-                  new UpdateVisitResponseModel(
-                      mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null))
-              .then((data) {
-            Get.back();
-            if (data == null) {
-              debugPrint('Save Visit Response is null');
-            } else {
-              debugPrint('Save Visit Response is not null');
-              this.saveVisitResponse = data;
-              if (saveVisitResponse.respCode == "MWP2028") {
-                Get.dialog(CustomDialogs.redirectToSamePg(saveVisitResponse.respMsg));
-              } else {
-                Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
-              }
-            }
-          });
+        // } else {
+        //   mwpVisitModelUpdate = MwpVisitModelUpdate(
+        //       null,
+        //       inflUpdateData!.date,
+        //       inflUpdateData.visitType,
+        //       dateFormat.format(DateTime.now()),
+        //       journeyStartLat,
+        //       journeyStartLong,
+        //       "",
+        //       0.0,
+        //       0.0,
+        //       null,
+        //       null,
+        //       "",
+        //       inflUpdateData.eventType,
+        //       inflUpdateData.contact,
+        //       null,
+        //       null);
+        // }
+        SaveVisitResponse data = await repository.updateVisitPlan(
+            accessKey,
+            userSecurityKey,
+            url,
+            new UpdateVisitResponseModel(
+                mwpVisitModel: mwpVisitModelUpdate, mwpMeetModel: null));
+        Get.back();
+        this.saveVisitResponse = data;
+        if (saveVisitResponse.respCode == "MWP2028") {
+          Get.dialog(CustomDialogs.redirectToSamePg(saveVisitResponse.respMsg));
+        } else {
+          Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
         }
-      } else if (this.visitActionType == "END") {
+      }
+      else if (this.visitActionType == "END") {
         print('end');
         print(this.nextVisitDate);
-
         LocationDetails result;
         result = await GetCurrentLocation.getCurrentLocation();
         if (result != null) {
@@ -662,12 +684,12 @@ class AddEventController extends GetxController {
               debugPrint('Save Visit Response is not null');
               this.saveVisitResponse = data;
               if (saveVisitResponse.respCode == "MWP2028") {
-                Get.dialog(CustomDialogs
-                    .redirectToSamePg(saveVisitResponse.respMsg));
+                Get.dialog(
+                    CustomDialogs.redirectToSamePg(saveVisitResponse.respMsg));
                 print('${saveVisitResponse.respMsg}');
               } else {
-                Get.dialog(CustomDialogs
-                    .messageDialogMWP(saveVisitResponse.respMsg));
+                Get.dialog(
+                    CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
               }
             }
           });
@@ -736,8 +758,7 @@ class AddEventController extends GetxController {
           debugPrint('Save Visit Response is not null');
           this.saveVisitResponse = data;
 
-          Get.dialog(
-              CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
+          Get.dialog(CustomDialogs.messageDialogMWP(saveVisitResponse.respMsg));
           //SitesDetailWidget();
         }
       });

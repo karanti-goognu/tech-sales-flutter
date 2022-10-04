@@ -56,9 +56,8 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
   }
 
   Future getEmpId() async {
-    String? empID = "";
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    empID = prefs.getString(StringConstants.employeeId);
+    String? empID = prefs.getString(StringConstants.employeeId);
     return empID;
   }
 
@@ -99,7 +98,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
         } else {
           selectedDateStringNext = "Next visit date";
         }
-
         if (viewSiteDataResponse!.mwpVisitModel!.remark == null ||
             viewSiteDataResponse!.mwpVisitModel!.remark == "null") {
           _remarkController.text = '';
@@ -281,7 +279,6 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                     SizedBox(
                       height: 10,
                     ),
-                    // Text(viewSiteDataResponse!.mwpVisitModel.toString()),
                     Form(
                       key: _formKey,
                       child: (viewSiteDataResponse!.mwpVisitModel == null)
@@ -325,13 +322,11 @@ class _SiteVisitWidgetState extends State<SiteVisitWidget> {
                                                 null))
                                     ? TextFormField(
                                         controller: _selectedVisitType,
-                                        style:
-                                            FormFieldStyle.formFieldTextStyle,
+                                        style: FormFieldStyle.formFieldTextStyle,
                                         keyboardType: TextInputType.number,
                                         readOnly: true,
                                         enableInteractiveSelection: false,
-                                        decoration: FormFieldStyle
-                                            .buildInputDecoration(),
+                                        decoration: FormFieldStyle.buildInputDecoration(),
                                       )
                                     : visitType,
                                 SizedBox(height: 16),

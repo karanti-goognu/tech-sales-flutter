@@ -1,4 +1,5 @@
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/inf_controller.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/infl_visit_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/provider/inf_provider.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/repository/inf_repository.dart';
 import 'package:get/get.dart';
@@ -16,5 +17,21 @@ class InfBinding implements Bindings {
         ),
       );
     });
+
+    Get.lazyPut<InflVisitController>(() {
+      return InflVisitController(
+        repository: InfRepository(
+          apiClient: MyApiClientInf(
+            httpClient: http.Client(),
+          ),
+        ),
+      );
+    });
+
   }
+
+
+
+
+
 }

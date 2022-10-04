@@ -76,15 +76,9 @@ class _InfluencerViewState extends State<InfluencerView> {
 
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait
     );
     return WillPopScope(
         onWillPop: () async {
@@ -248,15 +242,20 @@ class _InfluencerViewState extends State<InfluencerView> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  new CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          InfluencerDetailView(
-                                              _influencerListModel!
-                                                  .response!
-                                                  .ilpInfluencerEntity![index]
-                                                  .membershipId!)));
+                              Get.to(() => InfluencerDetailView(_influencerListModel!
+                                                      .response!
+                                                      .ilpInfluencerEntity![index]
+                                                      .membershipId!),
+                                  binding: InfBinding());
+                              // Navigator.push(
+                              //     context,
+                              //     new CupertinoPageRoute(
+                              //         builder: (BuildContext context) =>
+                              //             InfluencerDetailView(
+                              //                 _influencerListModel!
+                              //                     .response!
+                              //                     .ilpInfluencerEntity![index]
+                              //                     .membershipId!)));
                             },
                             child: Card(
                               clipBehavior: Clip.antiAlias,

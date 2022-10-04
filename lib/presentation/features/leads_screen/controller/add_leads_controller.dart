@@ -162,12 +162,10 @@ class AddLeadsController extends GetxController {
     String? userSecurityKey = "";
     String? empID = "";
     String? accessKey = await (repository.getAccessKeyNew() );
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    await _prefs.then((SharedPreferences prefs) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
       userSecurityKey = prefs.getString(StringConstants.userSecurityKey);
       empID = prefs.getString(StringConstants.employeeId);
       viewLeadDataResponse = await repository.getLeadDataNew(accessKey, userSecurityKey, leadId, empID);
-    });
     return viewLeadDataResponse;
   }
 

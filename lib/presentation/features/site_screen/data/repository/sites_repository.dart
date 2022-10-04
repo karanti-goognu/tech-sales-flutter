@@ -68,8 +68,7 @@ class MyRepositorySites {
 
   Future<SiteVisitResponseModel>siteVisitSave(String? accessKey,
       String? userSecretKey, SiteVisitRequestModel siteVisitRequestModel) async {
-    return apiClient.siteVisitSave(
-        accessKey, userSecretKey, siteVisitRequestModel);
+    return apiClient.siteVisitSave(accessKey, userSecretKey, siteVisitRequestModel);
   }
 
   getPendingSupplyData(String? accessKey, String securityKey, String url) {

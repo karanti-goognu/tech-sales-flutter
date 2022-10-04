@@ -352,9 +352,9 @@ class MyApiClientLeads {
   Future<ViewLeadDataResponse?>getLeadDataNew(String? accessKey, String? userSecurityKey, int? leadId, String? empID) async {
     ViewLeadDataResponse? viewLeadDataResponse;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
-
     try {
       version = VersionClass.getVersion();
+      print(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID");
       var response = await http.get(Uri.parse(UrlConstants.getLeadData2 + "$leadId"+"&referenceID=$empID"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecurityKey,version) ,
       );

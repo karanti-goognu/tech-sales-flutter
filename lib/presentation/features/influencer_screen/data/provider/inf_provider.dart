@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/UpdateInfluencerRequest.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
@@ -24,8 +27,6 @@ class MyApiClientInf {
 
   Future getAccessKey() async {
     try {
-      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      // version= packageInfo.version;
       version = VersionClass.getVersion();
       var response = await httpClient.get(Uri.parse(UrlConstants.getAccessKey),
           headers: requestHeaders(version) );
@@ -94,6 +95,7 @@ class MyApiClientInf {
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
       version = VersionClass.getVersion();
+      print(UrlConstants.getInfluencerDetail + "$contact");
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetail + "$contact"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version) );
       var data = json.decode(response.body);
@@ -178,6 +180,7 @@ class MyApiClientInf {
     late InfluencerDetailDataModel influencerDetailDataModel;
     Future.delayed(Duration.zero, ()=>Get.dialog(Center(child: CircularProgressIndicator())));
     try {
+      print(UrlConstants.getInfluencerDetailsByMembership + "$membershipId");
       version = VersionClass.getVersion();
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetailsByMembership + "$membershipId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
@@ -189,7 +192,7 @@ class MyApiClientInf {
               data["resp_msg"]), barrierDismissible: false);
         }
         else {
-          influencerDetailDataModel = InfluencerDetailDataModel.fromJson(json.decode(response.body));
+          influencerDetailDataModel = InfluencerDetailDataModel.fromJson(data);
         }} else {
         print('error');
       }
@@ -246,4 +249,38 @@ class MyApiClientInf {
     }
     return influencerResponseModel;
   }
+
+
+
+  Future<SiteVisitResponseModel> influencerVisitSave(String? accessKey, String? userSecretKey, UpdateInfluencerRequest updateInflRequest) async {
+    late SiteVisitResponseModel siteVisitResponseModel;
+    try{
+      version = VersionClass.getVersion();
+      print(UrlConstants.saveUpdateInfluencerVisit);
+      print(json.encode(updateInflRequest));
+      // print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey, version));
+      var response = await http.post(
+        Uri.parse(UrlConstants.saveUpdateInfluencerVisit),
+        headers: requestHeadersWithAccessKeyAndSecretKey(
+            accessKey, userSecretKey, version),
+        body: json.encode(updateInflRequest),
+      );
+      var data = json.decode(response.body);
+      print(response.body);
+      siteVisitResponseModel= SiteVisitResponseModel.fromJson(data);
+      if (response.statusCode == 200) {
+        if (data["resp_code"] == "DM1005") {
+          Get.dialog(CustomDialogs.appUserInactiveDialog(
+              data["resp_msg"]), barrierDismissible: false);
+        }
+      } else {
+        print('error');
+      }
+    } catch (e) {
+      print("Exception at site Repo $e");
+    }
+    return siteVisitResponseModel;
+  }
+
+
 }

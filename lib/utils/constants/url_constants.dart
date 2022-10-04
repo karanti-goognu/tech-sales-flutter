@@ -19,7 +19,7 @@ abstract class UrlConstants {
  // static const String baseUrlforImagesSites = 'https://mobileapps.dalmiabharat.com/tso/sites';
 
 
- // QA
+ /// QA
  static const String baseUrl = 'https://mobileqacloud.dalmiabharat.com/tech_sales_server';
  static const String baseUrlforImages = 'https://mobileqacloud.dalmiabharat.com/tso/leads';
  static const String baseUrlforImagesSites = 'https://mobileqacloud.dalmiabharat.com/tso/site';
@@ -38,9 +38,7 @@ abstract class UrlConstants {
  static const String validateOtp = '$baseUrl/login/login-otp-validate';
  static const String refreshSplashData = '$baseUrl/refresh/refresh-data?referenceID=';
 
-
-
- //Leads
+ ///Leads
  static const String getFilterData = '$baseUrl/leads/lead-filter-data';
  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
  static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
@@ -52,7 +50,7 @@ abstract class UrlConstants {
  static const String leadDistList = '$baseUrl/leads/v2/district-list?referenceID=';
  static const String getTotalSitePotential = '$baseUrl/leads/get-total-site-potential';
 
- //Site
+ ///Site
  static const String getSiteData = '$baseUrl/sites/view-site?siteId=';
  static const String updateSiteData = '$baseUrl/sites/site-update';
  static const String updateVersion2SiteData = '$baseUrl/sites/v2/site-update';
@@ -64,14 +62,11 @@ abstract class UrlConstants {
  static const String getSiteDataVersion3 = '$baseUrl/sites/v3/view-site?siteId=';
  static const String getSiteDataVersion4 = '$baseUrl/sites/v4/view-site?siteId=';
  static const String getFloorDetail = '$baseUrl/sites/getFloorDetailbyStageId?stageId=';
-
  static const String updateVersion3SiteData = '$baseUrl/sites/v3/site-update';
  static const String updateVersion4SiteData = '$baseUrl/sites/v5/site-update';
  static const String siteDistList = '$baseUrl/sites/v2/district-list?referenceID=';
 
-
-
- //MWP
+ ///MWP
  static const String saveMWPData = '$baseUrl/mwp/v2/mwp-save';
  static const String getMWPData = '$baseUrl/mwp/view-mwp?';
  static const String getCalendarEventData = '$baseUrl/mwp/visit-view-list?';
@@ -82,10 +77,11 @@ abstract class UrlConstants {
  static const String getDealersList = '$baseUrl/mwp/add-visit?referenceID=';
  static const String viewVisitData = '$baseUrl/mwp/view-mwp-visit-meet?referenceID=';
  static const String saveUpdateSiteVisit = '$baseUrl/mwp/Save-update-site_visit';
+ static const String saveUpdateInfluencerVisit = '$baseUrl/mwp/Save-update-influencer_visit';
 
 
 
- //SR
+ ///Service Request
  static const String getServiceRequestFormData = '$baseUrl/srcomplaint/sr_complaint_add';
  static const String getServiceRequestFormDataNew = '$baseUrl/srcomplaint/v2/sr_complaint_add';
  static const String getRequestorDetails = '$baseUrl/srcomplaint/sr_requester_search?referenceId=';
@@ -94,17 +90,17 @@ abstract class UrlConstants {
  static const String srComplaintView = '$baseUrl/srcomplaint/sr_complaint_view?referenceId=';
  static const String updateServiceRequest = '$baseUrl/srcomplaint/sr_complaint_update';
 
- //Tutorial
+ ///Tutorial
  static const String AppTutorialList = '$baseUrl/tsoAppTuorial/view';
 
- //Dashboard
+ ///Dashboard
  static const String homepageDashboardData = '$baseUrl/dashboard/view?referenceID=';
  static const String shareReport = '$baseUrl/dashboard/reportSharing?reference-Id=';
  static const String dashboadrMonthlyView = '$baseUrl/dashboard/dashboadrMonthlyView?referenceID=';
  static const String dashboardMtdConvertedVolumeList = '$baseUrl/dashboard/dashboardMtdConvertedVolumeList?referenceID=';
  static const String dashboardMtdGeneratedVolumeSiteList = '$baseUrl/dashboard/dashboardMtdGeneratedVolumeSiteList?referenceID=';
  static const String dashboardYearlyView = '$baseUrl/dashboard/dashboardYearlyView?referenceID=';
-  static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="
+ static String siteKittyPoints = "${baseUrl.replaceAll('tech_sales_server', 'dalmiabharat-smartd')}/tsoappintegration/getKittyPointsByBrand?partyCode="
  // "https://mobiledevcloud.dalmiabharat.com:443/dalmiabharat-smartd/tsoappintegration/getKittyPointsByBrand?partyCode="
      // '$baseUrl/sites/getKittyPointsByBrand?partyCode='
  ;

@@ -5,7 +5,9 @@ import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerResponseModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/StateDistrictListModel.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/UpdateInfluencerRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/provider/inf_provider.dart';
+import 'package:flutter_tech_sales/presentation/features/site_screen/data/models/SiteVisitRequestModel.dart';
 
 class InfRepository {
   final MyApiClientInf apiClient;
@@ -57,4 +59,11 @@ class InfRepository {
     return apiClient.saveNewInfluencer(
         accessKey, userSecretKey, influencerRequestModel, status);
   }
+
+  Future<SiteVisitResponseModel> influencerVisitSave(String? accessKey, String? userSecretKey, UpdateInfluencerRequest updateInflRequest) async {
+    return apiClient.influencerVisitSave(accessKey, userSecretKey,  updateInflRequest);
+  }
+
+
+
 }

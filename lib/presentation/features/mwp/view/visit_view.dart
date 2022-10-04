@@ -48,15 +48,9 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
-      // context:
       context,
-
-      // BoxConstraints(
-      //     maxWidth: MediaQuery.of(context).size.width,
-      //     maxHeight: MediaQuery.of(context).size.height),
       designSize: Size(360, 690),
       minTextAdapt: true,
-      // orientation: Orientation.portrait,
     );
 
     final name = TextFormField(

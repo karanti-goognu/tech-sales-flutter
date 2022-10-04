@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-// import 'package:device_info/device_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
@@ -290,8 +289,7 @@ class MyApiClientSites {
       request.files.add(multipartFileSign);
     }
     String empId;
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
       empId = prefs.getString(StringConstants.employeeId) ?? "empty";
       gv.currentId = empId;
       request.fields['uploadImageWithUpdateSiteModel'] = json.encode(updateDataRequest);
@@ -323,7 +321,6 @@ class MyApiClientSites {
       } catch (_) {
         print('exception ${_.toString()}');
       }
-    });
   }
 
 
@@ -363,6 +360,7 @@ class MyApiClientSites {
         body: json.encode(siteVisitRequestModel),
       );
       var data = json.decode(response.body);
+      print(response.body);
       siteVisitResponseModel= SiteVisitResponseModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data["resp_code"] == "DM1005") {

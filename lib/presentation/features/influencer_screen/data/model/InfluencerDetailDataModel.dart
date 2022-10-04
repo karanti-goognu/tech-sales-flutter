@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerSourceListModel.dart';
 
@@ -29,6 +31,8 @@ class Response {
   List<InfluencerCategoryEntitiesList>? influencerCategoryEntitiesList;
   List<InfluencerSourceList>? influencerSourceList;
   List<SiteBrandList>? siteBrandList;
+  InfluencerModel? influencerModel;
+  String? visitStatus;
 
   Response(
       {this.respCode,
@@ -37,16 +41,37 @@ class Response {
       this.influencerTypeEntitiesList,
       this.influencerCategoryEntitiesList,
       this.influencerSourceList,
-      this.siteBrandList});
+      this.siteBrandList,
+      this.influencerModel,
+      this.visitStatus
+      });
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
     respMsg = json['respMsg'];
+    visitStatus = json['visitStatus'];
 
     if (!json.containsKey('influencerDetails')) influencerDetails = null;
     influencerDetails = json['influencerDetails'] != null
         ? new InfluencerDetails.fromJson(json['influencerDetails'])
         : null;
+
+
+    // if (!json.containsKey('influencerModel')){
+    //   influencerModel = null;
+    //   print("waheguru");
+    // }
+    // else{
+    //   print(json['influencerModel']);
+    //   print("Dhan Guru Nanak");
+    //
+    // }
+    if (!json.containsKey('influencerModel')) influencerModel = null;
+    influencerModel = json['influencerModel'] != null
+        ? new InfluencerModel.fromJson(json['influencerModel'])
+        : null;
+
+
 
     if (!json.containsKey('influencerTypeEntitiesList'))
       influencerTypeEntitiesList =
@@ -121,6 +146,11 @@ class Response {
           this.siteBrandList!.map((v) => v.toJson()).toList();
     }
 
+    if (this.influencerModel != null) {
+      data['influencerModel'] = this.influencerModel!.toJson();
+    }
+    data['visitStatus'] = this.visitStatus;
+
     return data;
   }
 }
@@ -157,7 +187,6 @@ class InfluencerDetails {
   String? baseCity;
   String? email;
   String? ilpregFlag;
-
   String? designation;
   String? departmentName;
   int? preferredBrandId;
@@ -236,7 +265,6 @@ class InfluencerDetails {
     baseCity = json['baseCity'];
     email = json['email'];
     ilpregFlag = json['ilpregFlag'];
-
     designation = json['designation'];
     departmentName = json['departmentName'];
     preferredBrandId = json['preferredBrandId'];
@@ -278,7 +306,6 @@ class InfluencerDetails {
     data['baseCity'] = this.baseCity;
     data['email'] = this.email;
     data['ilpregFlag'] = this.ilpregFlag;
-
     data['designation'] = this.designation;
     data['departmentName'] = this.departmentName;
     data['preferredBrandId'] = this.preferredBrandId;
@@ -329,6 +356,73 @@ class SiteBrandList {
     data['brandName'] = this.brandName;
     data['productName'] = this.productName;
     data['isPrimary'] = this.isPrimary;
+    return data;
+  }
+}
+
+class InfluencerModel {
+  String? ilpMember;
+  int? sitesCount;
+  int? monthlyPotential;
+  int? monthlyLifting;
+  String? primaryCounterName;
+  String? ilpRegFlag;
+  int? inflId;
+  String? inflName;
+  String? inflContact;
+  int? inflTypeId;
+  String? influencerTypeText;
+  int? inflCatId;
+  String? influencerCategoryText;
+
+  InfluencerModel(
+      {required this.ilpMember,
+      required this.sitesCount,
+      required this.monthlyPotential,
+      required this.monthlyLifting,
+      required this.primaryCounterName,
+      required this.ilpRegFlag,
+      required this.inflId,
+      required this.inflName,
+      required this.inflContact,
+      required this.inflTypeId,
+      required this.influencerTypeText,
+      required this.inflCatId,
+      required this.influencerCategoryText});
+
+  InfluencerModel.fromJson(Map<String, dynamic> json) {
+    print(json);
+    print("------------------------------>");
+    ilpMember = json['ilpMember'];
+    sitesCount = json['sitesCount'];
+    monthlyPotential = json['monthlyPotential'];
+    monthlyLifting = json['monthlyLifting'];
+    primaryCounterName = json['primaryCounterName'];
+    ilpRegFlag = json['ilp_reg_flag'];
+    inflId = json['infl_id'];
+    inflName = json['infl_name'];
+    inflContact = json['infl_contact'];
+    inflTypeId = json['infl_type_id'];
+    influencerTypeText = json['influencer_type_text'];
+    inflCatId = json['infl_cat_id'];
+    influencerCategoryText = json['influencer_category_text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ilpMember'] = this.ilpMember;
+    data['sitesCount'] = this.sitesCount;
+    data['monthlyPotential'] = this.monthlyPotential;
+    data['monthlyLifting'] = this.monthlyLifting;
+    data['primaryCounterName'] = this.primaryCounterName;
+    data['ilp_reg_flag'] = this.ilpRegFlag;
+    data['infl_id'] = this.inflId;
+    data['infl_name'] = this.inflName;
+    data['infl_contact'] = this.inflContact;
+    data['infl_type_id'] = this.inflTypeId;
+    data['influencer_type_text'] = this.influencerTypeText;
+    data['infl_cat_id'] = this.inflCatId;
+    data['influencer_category_text'] = this.influencerCategoryText;
     return data;
   }
 }

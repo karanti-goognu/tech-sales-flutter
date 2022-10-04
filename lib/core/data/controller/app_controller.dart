@@ -3,6 +3,7 @@ import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/repository/app_repository.dart';
 import 'package:flutter_tech_sales/core/security/encryt_and_decrypt.dart';
+import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/add_event__controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/calendar_event_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/controller/mwp_plan_controller.dart';
@@ -78,7 +79,9 @@ class AppController extends GetxController {
     });
   }
 
-  getAccessKey(int requestId, BuildContext context) async {
+  getAccessKey(int requestId, BuildContext context,
+      // {bool isInflCall = false, VisitUpdateData? inflUpdateData}
+      ) async {
     Future.delayed(
         Duration.zero,
         () => Get.dialog(Center(child: CircularProgressIndicator()),
@@ -86,8 +89,7 @@ class AppController extends GetxController {
     var data = await repository.getAccessKey();
     this.accessKeyResponse = data;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userSecurityKey =
-        prefs.getString(StringConstants.userSecurityKey) ?? "empty";
+    String userSecurityKey = prefs.getString(StringConstants.userSecurityKey) ?? "empty";
     if (userSecurityKey != "empty") {
       bool hasExpired = JwtDecoder.isExpired(userSecurityKey);
       if (hasExpired) {
@@ -143,7 +145,9 @@ class AppController extends GetxController {
                   .viewMeetData(this.accessKeyResponse.accessKey);
               break;
             case RequestIds.UPDATE_VISIT:
-              _addEventController.updateVisit(this.accessKeyResponse.accessKey);
+              _addEventController.updateVisit(this.accessKeyResponse.accessKey
+                  // , isInflCall, inflUpdateData
+              );
               break;
             case RequestIds.UPDATE_MEET:
               _addEventController.updateMeet(this.accessKeyResponse.accessKey);

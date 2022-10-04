@@ -65,8 +65,6 @@ class ViewSiteDataResponse {
       this.constructionDays});
 
   ViewSiteDataResponse.fromJson(Map<String, dynamic> json) {
-    print("JSON");
-    log(json.toString());
     respCode = json['respCode'];
     respMsg = json['respMsg'];
     supplyDate = json['supplyDate'];
