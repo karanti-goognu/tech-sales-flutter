@@ -41,6 +41,7 @@ abstract class UrlConstants {
  ///Leads
  static const String getFilterData = '$baseUrl/leads/lead-filter-data';
  static const String getLeadsData = '$baseUrl/leads/lead-list-view?referenceID=';
+ static const String getLeadsForVisit = '$baseUrl/leads/lead-list?referenceID=';
  static const String addLeadsData = '$baseUrl/leads/v2/lead-new';
  static const String saveLeadsData = '$baseUrl/leads/v2/lead-save';
  static const String getLeadData = '$baseUrl/leads/view-lead?leadId=';

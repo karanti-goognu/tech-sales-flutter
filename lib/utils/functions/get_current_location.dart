@@ -26,10 +26,8 @@ class GetCurrentLocation{
     permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-
         if (permission == LocationPermission.denied) {
           Get.rawSnackbar(message:'Location permissions are denied');
-
         }
       }
       if (permission == LocationPermission.deniedForever) {
@@ -37,10 +35,10 @@ class GetCurrentLocation{
         Get.rawSnackbar(message:'Location permissions are permanently denied, we cannot request permissions.');
       }
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      _currentPosition = position;
+    _currentPosition = position;
     loc = await getAddressFromLatLng();
-     latLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
-     return LocationDetails(loc,_currentPosition, latLng);
+    latLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+    return LocationDetails(loc,_currentPosition, latLng);
   }
 
 

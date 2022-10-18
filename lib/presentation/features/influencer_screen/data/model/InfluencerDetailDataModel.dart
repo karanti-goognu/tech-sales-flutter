@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerSourceListModel.dart';
 
@@ -43,8 +41,7 @@ class Response {
       this.influencerSourceList,
       this.siteBrandList,
       this.influencerModel,
-      this.visitStatus
-      });
+      this.visitStatus});
 
   Response.fromJson(Map<String, dynamic> json) {
     respCode = json['respCode'];
@@ -56,22 +53,10 @@ class Response {
         ? new InfluencerDetails.fromJson(json['influencerDetails'])
         : null;
 
-
-    // if (!json.containsKey('influencerModel')){
-    //   influencerModel = null;
-    //   print("waheguru");
-    // }
-    // else{
-    //   print(json['influencerModel']);
-    //   print("Dhan Guru Nanak");
-    //
-    // }
     if (!json.containsKey('influencerModel')) influencerModel = null;
     influencerModel = json['influencerModel'] != null
         ? new InfluencerModel.fromJson(json['influencerModel'])
         : null;
-
-
 
     if (!json.containsKey('influencerTypeEntitiesList'))
       influencerTypeEntitiesList =
@@ -87,7 +72,7 @@ class Response {
     }
 
     if (!json.containsKey('influencerCategoryEntitiesList'))
-      new List<InfluencerCategoryEntitiesList>.empty(growable: true);
+      influencerCategoryEntitiesList =  new List<InfluencerCategoryEntitiesList>.empty(growable: true);
 
     if (json['influencerCategoryEntitiesList'] != null) {
       influencerCategoryEntitiesList =
@@ -193,6 +178,11 @@ class InfluencerDetails {
   String? dateOfMarriageAnniversary;
   String? firmName;
   String? primaryCounterName;
+  int? totalSites;
+  int? dalmiaSites;
+  int? totalBags;
+  int? dalmiaBags;
+  String? nextVisitDate;
 
   InfluencerDetails(
       {this.id,
@@ -231,7 +221,12 @@ class InfluencerDetails {
       this.preferredBrandId,
       this.dateOfMarriageAnniversary,
       this.firmName,
-      this.primaryCounterName});
+      this.primaryCounterName,
+      this.dalmiaBags,
+      this.totalBags,
+      this.dalmiaSites,
+      this.totalSites,
+      this.nextVisitDate});
 
   InfluencerDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -271,6 +266,11 @@ class InfluencerDetails {
     dateOfMarriageAnniversary = json['dateOfMarriageAnniversary'];
     firmName = json['firmName'];
     primaryCounterName = json['primaryCounterName'];
+    dalmiaBags = json['dalmiaBags'];
+    totalBags = json['totalBags'];
+    dalmiaSites = json['dalmiaSites'];
+    totalSites = json['totalSites'];
+    nextVisitDate = json['nextVisitDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -312,6 +312,11 @@ class InfluencerDetails {
     data['dateOfMarriageAnniversary'] = this.dateOfMarriageAnniversary;
     data['firmName'] = this.firmName;
     data['primaryCounterName'] = this.primaryCounterName;
+    data['dalmiaBags'] = dalmiaBags;
+    data['totalBags'] = totalBags;
+    data['dalmiaSites'] = dalmiaSites;
+    data['totalSites'] = totalSites;
+    data['nextVisitDate'] = nextVisitDate;
     return data;
   }
 }
@@ -391,8 +396,6 @@ class InfluencerModel {
       required this.influencerCategoryText});
 
   InfluencerModel.fromJson(Map<String, dynamic> json) {
-    print(json);
-    print("------------------------------>");
     ilpMember = json['ilpMember'];
     sitesCount = json['sitesCount'];
     monthlyPotential = json['monthlyPotential'];

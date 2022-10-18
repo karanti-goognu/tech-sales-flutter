@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_tech_sales/core/data/models/AccessKeyModel.dart';
 import 'package:flutter_tech_sales/core/data/models/SecretKeyModel.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/TargetVsActual
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/VisitModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/LeadVisitListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/saveVisitResponse.dart';
 import 'package:flutter_tech_sales/utils/constants/VersionClass.dart';
 import 'package:flutter_tech_sales/utils/constants/string_constants.dart';
@@ -248,6 +250,22 @@ class MyApiClientApp {
      // }
     } catch (_) {
     //  print('exception ${_.toString()}');
+    }
+  }
+
+  Future<LeadVisitListModel?> getLeadList(String? accessKey, String? userSecurityKey) async{
+    try {
+      String url = UrlConstants.getLeadsForVisit;
+      version = VersionClass.getVersion();
+      var response = await httpClient.get(Uri.parse(url),
+          headers: requestHeadersWithAccessKeyAndSecretKey(
+              accessKey, userSecurityKey,version) );
+      print(response.body);
+      var data = json.decode(response.body);
+      return LeadVisitListModel.fromJson(data);
+    } catch (_) {
+       print('exception in App Provider Get Lead List ${_.toString()}');
+       return null;
     }
   }
 

@@ -74,6 +74,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
   TextEditingController _departmentNameController = TextEditingController();
   TextEditingController _dateMarriageAnnController = TextEditingController();
   TextEditingController _firmNameController = TextEditingController();
+  TextEditingController totalSites = TextEditingController();
+  TextEditingController dalmiaSites = TextEditingController();
+  TextEditingController totalBags = TextEditingController();
+  TextEditingController dalmiaBags = TextEditingController();
+  TextEditingController nextVisitDate = TextEditingController();
 
   @override
   void initState() {
@@ -120,6 +125,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       InfluencerDetails _data =
           _influencerDetailDataModel!.response!.influencerDetails!;
       _contactNumberController.text = _data.inflContactNumber!;
+      dalmiaSites.text = _data.dalmiaSites!=null?_data.dalmiaSites.toString():"";
+      totalBags.text = _data.totalBags!=null?_data.totalBags.toString() :"";
+      dalmiaBags.text = _data.dalmiaBags!=null?_data.dalmiaBags.toString():"";
+      totalSites.text = _data.totalSites!=null?_data.totalSites.toString():"";
+      nextVisitDate.text = _data.nextVisitDate!=null?_data.nextVisitDate.toString():"";
       _nameController.text = _data.inflName!;
       _fatherNameController.text =
           _data.fatherName == null ? "" : _data.fatherName!;
@@ -133,10 +143,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
           _data.giftAddressDistrict == null ? "" : _data.giftAddressDistrict!;
       _giftStateController.text =
           _data.giftAddressState == null ? "" : _data.giftAddressState!;
-      _totalPotentialController.text =
-          '${_data.monthlyPotentialVolumeMT}' == "null"
-              ? ""
-              : '${_data.monthlyPotentialVolumeMT}';
+      _totalPotentialController.text = '${_data.monthlyPotentialVolumeMT}' == "null" ? "" : '${_data.monthlyPotentialVolumeMT}';
       _potentialSiteController.text = '${_data.siteAssignedCount}' == "null"
           ? ""
           : '${_data.siteAssignedCount}';
@@ -146,7 +153,7 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
       _emailController.text = _data.email == null ? "" : _data.email!;
       _baseCityController.text = _data.baseCity == null ? "" : _data.baseCity!;
       _talukaController.text = _data.taluka == null ? "" : _data.taluka!;
-      _pincodeController.text = _data.pinCode!;
+      _pincodeController.text =  _data.pinCode == null ? "" : _data.pinCode!;
       _memberType = _data.inflTypeId;
       _primaryCounterController.text =
           _data.primaryCounterName == null ? "" : _data.primaryCounterName!;
@@ -809,8 +816,8 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                                           sourceDropDwn,
                                           SizedBox(height: _height),
                                         ])
-                                  :
-                              InfluencerVisitTab(
+                                  : InfluencerVisitTab(
+                                addInfluencerFormKey: _addInfluencerFormKey,
                                       membershipId: memberShipId!,
                                       empID: empID!,
                                       spacing: _height,
@@ -818,9 +825,9 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                                           _influencerDetailDataModel!,
                                       contactNumberController:
                                           _contactNumberController,
-                                    influencerModel:
-                                    _influencerDetailDataModel!
-                                        .response!.influencerModel,
+                                      influencerModel:
+                                          _influencerDetailDataModel!
+                                              .response!.influencerModel,
                                       eventType: _influencerDetailDataModel!
                                           .response!.influencerTypeEntitiesList!
                                           .where((element) =>
@@ -831,6 +838,11 @@ class _InfluencerDetailViewState extends State<InfluencerDetailView> {
                                                   .inflTypeId)
                                           .first
                                           .profile,
+                                      totalBags: totalBags,
+                                      dalmiaBags: dalmiaBags,
+                                      dalmiaSites: dalmiaSites,
+                                      nextVisitDate: nextVisitDate,
+                                      totalSites: totalSites,
                                     ),
                             )),
                       ),

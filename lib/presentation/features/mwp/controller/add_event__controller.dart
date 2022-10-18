@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/view/influencer_detail_view.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/LeadVisitListModel.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,9 +31,14 @@ class AddEventController extends GetxController {
   set accessKeyResponse(value) => this._accessKeyResponse.value = value;
   final _saveVisitResponse = SaveVisitResponse().obs;
   final _dealerListResponse = DealerListResponse().obs;
+  Rx<LeadListModel> selectedLead = LeadListModel().obs;
+
   final _meetResponseModelView = MeetResponseModelView().obs;
   final _visitResponseModel = VisitResponseModel().obs;
   final _dealerList = List<DealerModel>.empty(growable: true).obs;
+  final _leadList = List<LeadListModel>.empty(growable: true).obs;
+
+
   final _dealerListSelected =
       List<DealerModelSelected>.empty(growable: true).obs;
   final _selectedView = "Visit".obs;
@@ -43,7 +47,7 @@ class AddEventController extends GetxController {
   final _selectedVenueTypeMeet = "BOOKED".obs;
   final _selectedMonth = "January".obs;
   final _phoneNumber = "8860080067".obs;
-  final _siteIdText = "Lead Id".obs;
+  final _siteIdText = "Lead ID".obs;
   final _empId = "_empty".obs;
   final _otpCode = "_empty".obs;
   final _visitId = 0.obs;
@@ -93,6 +97,8 @@ class AddEventController extends GetxController {
   get visitId => this._visitId.value;
 
   get dealerList => this._dealerList;
+
+  get leadList => this._leadList;
 
   get dealerListSelected => this._dealerListSelected;
 
@@ -180,9 +186,12 @@ class AddEventController extends GetxController {
 
   set dealerList(value) => this._dealerList.value = value;
 
+  set leadList(value) => this._leadList.value = value;
+
   set dealerListSelected(value) => this._dealerListSelected.value = value;
 
   set dealerListResponse(value) => this._dealerListResponse.value = value;
+
 
   set visitStartTime(value) => this._visitStartTime.value = value;
 
@@ -274,6 +283,7 @@ class AddEventController extends GetxController {
       this.visitSiteId,
       this.visitDateTime == "Visit Date" ? null : this.visitDateTime,
       this.visitRemarks,
+      //ToDo: add the new fields for request body
     );
     String url = "${UrlConstants.saveVisit}";
     print(url);
@@ -358,11 +368,15 @@ class AddEventController extends GetxController {
         () => Get.dialog(Center(child: CircularProgressIndicator()),
             barrierDismissible: false));
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((SharedPreferences prefs) {
+    _prefs.then((SharedPreferences prefs) async {
       String? userSecurityKey =
           prefs.getString(StringConstants.userSecurityKey);
       String? empId = prefs.getString(StringConstants.employeeId);
       String url = UrlConstants.getDealersList + "$empId";
+      LeadVisitListModel? data= await repository.getLeadList(accessKey, userSecurityKey);
+        this.leadList = data?.leadListModel;
+        print(this.leadList);
+        print(data?.leadListModel);
       repository.getDealerList(accessKey, userSecurityKey, url).then((data) {
         if (data == null) {
           debugPrint('Dealer List Response is null');
@@ -393,6 +407,8 @@ class AddEventController extends GetxController {
       });
     });
   }
+
+
 
   Future<VisitResponseModel> viewVisitData(String accessKey) async {
     //this.isLoadingVisitView = true;

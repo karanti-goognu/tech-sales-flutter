@@ -185,6 +185,7 @@ class MyApiClientInf {
       var response = await http.get(Uri.parse(UrlConstants.getInfluencerDetailsByMembership + "$membershipId"),
           headers: requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey,version));
       var data = json.decode(response.body);
+
       if (response.statusCode == 200) {
         Get.back();
         if (data["resp_code"] == "DM1005") {
@@ -258,7 +259,6 @@ class MyApiClientInf {
       version = VersionClass.getVersion();
       print(UrlConstants.saveUpdateInfluencerVisit);
       print(json.encode(updateInflRequest));
-      // print(requestHeadersWithAccessKeyAndSecretKey(accessKey, userSecretKey, version));
       var response = await http.post(
         Uri.parse(UrlConstants.saveUpdateInfluencerVisit),
         headers: requestHeadersWithAccessKeyAndSecretKey(
@@ -273,6 +273,7 @@ class MyApiClientInf {
           Get.dialog(CustomDialogs.appUserInactiveDialog(
               data["resp_msg"]), barrierDismissible: false);
         }
+        Get.dialog(CustomDialogs.showMessage(siteVisitResponseModel.respMsg!));
       } else {
         print('error');
       }

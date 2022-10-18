@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/LeadVisitListModel.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +46,16 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
     _addEventController.visitRemarks = null;
     _appController.getAccessKey(RequestIds.GET_DEALERS_LIST, context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _addEventController.selectedLead.value.leadId=null;
+    _addEventController.selectedLead.value.contactName=null;
+    _addEventController.selectedLead.value.contactNumber=null;
+    _addEventController.selectedLead.value.leadStatus=null;
+    _addEventController.selectedLead.value.verificationType=null;
+    super.dispose();
   }
 
   @override
@@ -203,47 +216,119 @@ class AddEventVisitScreenPageState extends State<AddEventVisit> {
                         onChanged: (dynamic val) {
                           _addEventController.visitSiteId = val.dealerId;
                         })
-                    : TextFormField(
-                        controller: _addEventController.contactController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "${_addEventController.siteIdText} can't be empty";
-                          }
-                          if (_addEventController.siteIdText ==
-                              "Influencer Contact") {
-                            if (value.isEmpty) {
-                              return "Enter valid Contact number";
-                            }
-                          }
-                          return null;
-                        },
-                        onChanged: (_) {
-                          _addEventController.visitSiteId = _.toString();
-                          if (_addEventController.siteIdText ==
-                              "Influencer Contact") {
-                            apiCallForGetInf(_);
-                          }
-                        },
-                        maxLength: _addEventController.siteIdText ==
-                                "Influencer Contact"
-                            ? 10
-                            : _addEventController.siteIdText == "Lead ID"
-                                ? 6
-                                : null,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.inputBoxHintColor,
-                            fontFamily: "Muli"),
-                        keyboardType: _addEventController.siteIdText ==
-                                "Influencer Contact"
-                            ? TextInputType.numberWithOptions(signed: true)
-                            : TextInputType.text,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: _inputDecoration(
-                            "${_addEventController.siteIdText}", false),
-                      ),
+                    : _addEventController.siteIdText == "Lead ID"
+                        ? Obx(
+                            () => Column(
+                              children: [
+                                DropdownButtonFormField(
+                                    decoration: FormFieldStyle.buildInputDecoration(
+                                        labelText: "Lead ID"),
+                                    items: _addEventController.leadList
+                                        .map<DropdownMenuItem<LeadListModel>>((LeadListModel val) {
+                                      return DropdownMenuItem(
+                                        value: val,
+                                        child: SizedBox(
+                                            width: SizeConfig.screenWidth! - 100,
+                                            child: Text(
+                                                '${val.contactName} (${val.leadId})')),
+                                      );
+                                    }).toList(),
+                                    onChanged: (dynamic val) {
+                                      print(jsonEncode(val));
+                                      _addEventController.selectedLead.value = val;
+                                    }),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  readOnly: true,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                   controller: TextEditingController(text: _addEventController.selectedLead.value.contactName),
+                                   decoration:  FormFieldStyle.buildInputDecoration(
+                                       labelText: "Owner Name"
+                                   ),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  readOnly: true,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  controller: TextEditingController(text: _addEventController.selectedLead.value.contactNumber),
+                                  decoration:  FormFieldStyle.buildInputDecoration(
+                                      labelText: "Owner Contact"
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  readOnly: true,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  controller: TextEditingController(text: _addEventController.selectedLead.value.verificationType),
+                                  decoration:  FormFieldStyle.buildInputDecoration(
+                                      labelText: "Verification Type"
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                TextFormField(
+                                  readOnly: true,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: ColorConstants.inputBoxHintColor,
+                                      fontFamily: "Muli"),
+                                  controller: TextEditingController(text: _addEventController.selectedLead.value.leadStatus),
+                                  decoration:  FormFieldStyle.buildInputDecoration(
+                                      labelText: "Lead Status"
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : TextFormField(
+                            controller: _addEventController.contactController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "${_addEventController.siteIdText} can't be empty";
+                              }
+                              if (_addEventController.siteIdText ==
+                                  "Influencer Contact") {
+                                if (value.isEmpty) {
+                                  return "Enter valid Contact number";
+                                }
+                              }
+                              return null;
+                            },
+                            onChanged: (_) {
+                              _addEventController.visitSiteId = _.toString();
+                              if (_addEventController.siteIdText ==
+                                  "Influencer Contact") {
+                                apiCallForGetInf(_);
+                              }
+                            },
+                            maxLength: _addEventController.siteIdText ==
+                                    "Influencer Contact"
+                                ? 10
+                                : _addEventController.siteIdText == "Lead ID"
+                                    ? 6
+                                    : null,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.inputBoxHintColor,
+                                fontFamily: "Muli"),
+                            keyboardType: _addEventController.siteIdText ==
+                                    "Influencer Contact"
+                                ? TextInputType.numberWithOptions(signed: true)
+                                : TextInputType.text,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            decoration: _inputDecoration(
+                                "${_addEventController.siteIdText}", false),
+                          ),
                 SizedBox(height: 16),
                 Obx(
                   () => Visibility(

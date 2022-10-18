@@ -8,6 +8,7 @@ class SaveVisitRequest {
   String? visitMeetDate;
   String? remarks;
 
+
   SaveVisitRequest(
       this.referenceId,
         this.eventType,

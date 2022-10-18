@@ -4,6 +4,7 @@ import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveMeetReques
 import 'package:flutter_tech_sales/presentation/features/mwp/data/SaveVisitRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateMeetRequest.dart';
 import 'package:flutter_tech_sales/presentation/features/mwp/data/UpdateVisitModel.dart';
+import 'package:flutter_tech_sales/presentation/features/mwp/data/model/LeadVisitListModel.dart';
 
 class MyRepositoryApp {
   final MyApiClientApp apiClient;
@@ -53,6 +54,9 @@ class MyRepositoryApp {
 
   getDealerList(String? accessKey, String? userSecurityKey, String url) {
     return apiClient.getDealerList(accessKey, userSecurityKey, url);
+  }
+  Future<LeadVisitListModel?> getLeadList(String? accessKey, String? userSecurityKey) {
+    return apiClient.getLeadList(accessKey, userSecurityKey);
   }
 
   getVisitData(String? accessKey, String? userSecurityKey, String url) {

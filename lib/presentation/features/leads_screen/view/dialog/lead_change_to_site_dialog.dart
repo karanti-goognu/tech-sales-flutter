@@ -108,11 +108,10 @@ class _ChangeLeadToSiteDialogState extends State<ChangeLeadToSiteDialog> {
         _selectedLeadId = _;
       },
       decoration: FormFieldStyle.buildInputDecoration(
-          labelText: "Please Select Lead Id*"),
+          labelText: "Please Select Counter*"),
     );
 
-    final competitionStatus =
-        DropdownButtonFormField<SiteCompetitionStatusEntity>(
+    final competitionStatus = DropdownButtonFormField<SiteCompetitionStatusEntity>(
       value: _siteCompetitionStatusEntity,
       items: widget.siteCompetitionStatusEntity!
           .map((label) => DropdownMenuItem(

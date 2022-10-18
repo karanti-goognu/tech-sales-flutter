@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/controller/infl_visit_controller.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerDetailDataModel.dart';
-import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/InfluencerTypeEntitiesListModel.dart';
 import 'package:flutter_tech_sales/presentation/features/influencer_screen/data/model/UpdateInfluencerRequest.dart';
 import 'package:flutter_tech_sales/utils/functions/get_current_location.dart';
 import 'package:flutter_tech_sales/utils/styles/button_styles.dart';
 import 'package:flutter_tech_sales/utils/styles/formfield_style.dart';
 import 'package:flutter_tech_sales/utils/tso_logger.dart';
+import 'package:flutter_tech_sales/widgets/custom_dialogs.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_tech_sales/utils/constants/color_constants.dart';
@@ -23,14 +21,15 @@ class InfluencerVisitTab extends StatelessWidget {
   final String empID;
   final int membershipId;
   final InfluencerModel? influencerModel;
-  // final List<InfluencerTypeEntitiesList> influencerTypeEntitiesList;
   final TextEditingController contactNumberController;
+  final TextEditingController totalSites;
+  final TextEditingController dalmiaSites;
+  final TextEditingController totalBags;
+  final TextEditingController dalmiaBags;
+  final TextEditingController nextVisitDate;
+  final GlobalKey<FormState> addInfluencerFormKey;
+
   final InfluencerDetailDataModel influencerDetailDataModel;
-  TextEditingController totalSites = TextEditingController();
-  TextEditingController dalmiaSites = TextEditingController();
-  TextEditingController totalBags = TextEditingController();
-  TextEditingController dalmiaBags = TextEditingController();
-  TextEditingController nextVisitDate = TextEditingController();
 
   InfluencerVisitTab({
     Key? key,
@@ -41,17 +40,13 @@ class InfluencerVisitTab extends StatelessWidget {
     required this.influencerModel,
     required this.eventType,
     required this.empID,
-  }) : super(key: key) {
-    log(jsonEncode(influencerDetailDataModel.response));
-    totalSites.text = influencerDetailDataModel
-            .response?.influencerModel?.sitesCount
-            .toString() ??
-        "";
-    totalBags.text = influencerDetailDataModel
-            .response?.influencerModel?.monthlyPotential
-            .toString() ??
-        "";
-  }
+    required this.totalSites,
+    required this.dalmiaSites,
+    required this.totalBags,
+    required this.dalmiaBags,
+    required this.nextVisitDate,
+    required this.addInfluencerFormKey,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,37 +141,52 @@ class InfluencerVisitTab extends StatelessWidget {
                     onPressed: () async {
                       TsoLogger.printLog("In Create");
                       controller.startVisit("Start");
-                      // if (_formKey.currentState!.validate()) {
-                      //   _formKey.currentState!.save();
-                      //   _getCurrentLocation(0);
-                      // }
-                      LocationDetails result = await GetCurrentLocation.getCurrentLocation();
-                      DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-
-                      UpdateInfluencerRequest updateInflRequest =
-                          UpdateInfluencerRequest.fromJson({
-                        "docId": int.parse(contactNumberController.text),
-                        "inflId": membershipId,
-                        "visitStartLat": result.latLng?.latitude.toString(),
-                        "visitStartLong": result.latLng?.longitude.toString(),
-                        "visitStartTime": dateFormat.format(DateTime.now()),
-                        "visitSubType": eventType!,
-                        "visitType": controller.selectedVisitType!,
-                        "visitDate": selectedDateString,
-                        "nextVisitDate": null,
-                        "referenceId": empID,
-                        "dspAvailableQty": "",
-                        "eventType": "",
-                        "id": 0,
-                        "isDspAvailable": "",
-                        "remark": "",
-                        "visitEndLat": "",
-                        "visitEndLong": "",
-                        "visitEndTime": "",
-                        "visitOutcomes": null,
-                      });
-
-                      controller.updateInfluencer(updateInflRequest);
+                      if (controller.selectedVisitType == null) {
+                        Get.dialog(CustomDialogs.showMessage(
+                            "Please select a visit type"));
+                      } else {
+                        Future.delayed(
+                          Duration.zero,
+                          () => Get.dialog(
+                            Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        );
+                        LocationDetails result =
+                            await GetCurrentLocation.getCurrentLocation()
+                                .whenComplete(() {
+                          Get.back();
+                          // Get.rawSnackbar(
+                          //     message:
+                          //     'Accessing your location. Please ensure location permission is enabled for this app.');
+                        });
+                        DateFormat dateFormat =
+                            DateFormat("yyyy-MM-dd HH:mm:ss");
+                        UpdateInfluencerRequest updateInflRequest =
+                            UpdateInfluencerRequest.fromJson({
+                          "docId": int.parse(contactNumberController.text),
+                          "inflId": membershipId,
+                          "visitStartLat": result.latLng?.latitude.toString(),
+                          "visitStartLong": result.latLng?.longitude.toString(),
+                          "visitStartTime": dateFormat.format(DateTime.now()),
+                          "visitSubType": eventType!,
+                          "visitType": controller.selectedVisitType!,
+                          "visitDate": selectedDateString,
+                          "nextVisitDate": null,
+                          "referenceId": empID,
+                          "dspAvailableQty": "",
+                          "eventType": "",
+                          "id": 0,
+                          "isDspAvailable": "",
+                          "remark": "",
+                          "visitEndLat": "",
+                          "visitEndLong": "",
+                          "visitEndTime": "",
+                          "visitOutcomes": null,
+                        });
+                        controller.updateInfluencer(updateInflRequest);
+                      }
                     },
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
@@ -265,59 +275,83 @@ class InfluencerVisitTab extends StatelessWidget {
                 SizedBox(
                   height: spacing,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.buttonNormalColor,
-                      ),
-                      onPressed: () async {
-                        TsoLogger.printLog("In Create");
-                        controller.startVisit("");
-                        // if (_formKey.currentState!.validate()) {
-                        //   _formKey.currentState!.save();
-                        //   _getCurrentLocation(0);
-                        // }
-                        LocationDetails result = await GetCurrentLocation.getCurrentLocation();
-                        DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+                influencerDetailDataModel.response!.visitStatus != "end"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: ColorConstants.buttonNormalColor,
+                            ),
+                            onPressed: () async {
+                              TsoLogger.printLog("In Create");
+                              controller.startVisit("");
+                              // if (_formKey.currentState!.validate()) {
+                              //   _formKey.currentState!.save();
+                              //   _getCurrentLocation(0);
+                              // }
+                              Future.delayed(
+                                Duration.zero,
+                                () => Get.dialog(
+                                  Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
+                              );
+                              LocationDetails result =
+                                  await GetCurrentLocation.getCurrentLocation()
+                                      .whenComplete(() {
+                                Get.back();
+                              });
+                              DateFormat dateFormat =
+                                  DateFormat("yyyy-MM-dd HH:mm:ss");
 
-                        UpdateInfluencerRequest updateInflRequest =
-                        UpdateInfluencerRequest.fromJson({
-                          "docId": int.parse(contactNumberController.text),
-                          "inflId": membershipId,
-                          "visitStartLat": null,
-                          "visitStartLong": null,
-                          "visitEndLat": result.latLng?.latitude.toString(),
-                          "visitEndLong": result.latLng?.longitude.toString(),
-                          "visitStartTime": dateFormat.format(DateTime.now()),
-                          "visitSubType": eventType!,
-                          "visitType": controller.selectedVisitType!,
-                          "visitDate": selectedDateString,
-                          "nextVisitDate": null,
-                          "referenceId": empID,
-                          "dspAvailableQty": "",
-                          "eventType": "",
-                          "id": 0,
-                          "isDspAvailable": "",
-                          "remark": "",
-                          "visitEndTime": "",
-                          "visitOutcomes": null,
-                        });
+                              UpdateInfluencerRequest updateInflRequest =
+                                  UpdateInfluencerRequest.fromJson({
+                                "docId":
+                                    int.parse(contactNumberController.text),
+                                "inflId": membershipId,
+                                "visitStartLat": null,
+                                "visitStartLong": null,
+                                "visitEndLat":
+                                    result.latLng?.latitude.toString(),
+                                "visitEndLong":
+                                    result.latLng?.longitude.toString(),
+                                "visitStartTime": null,
+                                "visitSubType": eventType!,
+                                "visitType": controller.selectedVisitType ?? "",
+                                "visitDate": selectedDateString,
+                                "nextVisitDate": nextVisitDate.text,
+                                "referenceId": empID,
+                                "totalSites": totalSites.text,
+                                "dalmiaSites": dalmiaSites.text,
+                                "totalBags": totalBags.text,
+                                "dalmiaBags": dalmiaBags.text,
+                                "visitEndTime":
+                                    dateFormat.format(DateTime.now()),
+                                "dspAvailableQty": "",
+                                "eventType": "",
+                                "id": 0,
+                                "isDspAvailable": "",
+                                "remark": "",
+                                "visitOutcomes": null
+                              });
+                              print(jsonEncode(updateInflRequest));
 
-                        controller.updateInfluencer(updateInflRequest);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                        child: Text(
-                          'END',
-                          style: ButtonStyles.buttonStyleBlue,
-                        ),
-                      ),
-                    )
-                  ],
-                )
+                              controller.updateInfluencer(updateInflRequest);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                              child: Text(
+                                'END',
+                                style: ButtonStyles.buttonStyleBlue,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Container()
               ],
             );
     });

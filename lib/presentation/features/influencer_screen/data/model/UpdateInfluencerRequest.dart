@@ -18,27 +18,35 @@ class UpdateInfluencerRequest {
   String? visitStartTime;
   String? visitSubType;
   String? visitType;
+  String? totalSites;
+  String? dalmiaSites;
+  String? totalBags;
+  String? dalmiaBags;
 
   UpdateInfluencerRequest(
       {this.docId,
-        this.inflId,
-        this.dspAvailableQty,
-        this.eventType,
-        this.id,
-        this.isDspAvailable,
-        this.nextVisitDate,
-        this.referenceId,
-        this.remark,
-        this.visitDate,
-        this.visitEndLat,
-        this.visitEndLong,
-        this.visitEndTime,
-        this.visitOutcomes,
-        this.visitStartLat,
-        this.visitStartLong,
-        this.visitStartTime,
-        this.visitSubType,
-        this.visitType});
+      this.inflId,
+      this.dspAvailableQty,
+      this.eventType,
+      this.id,
+      this.isDspAvailable,
+      this.nextVisitDate,
+      this.referenceId,
+      this.remark,
+      this.visitDate,
+      this.visitEndLat,
+      this.visitEndLong,
+      this.visitEndTime,
+      this.visitOutcomes,
+      this.visitStartLat,
+      this.visitStartLong,
+      this.visitStartTime,
+      this.visitSubType,
+      this.visitType,
+      this.totalSites,
+      this.dalmiaSites,
+      this.totalBags,
+      this.dalmiaBags});
 
   UpdateInfluencerRequest.fromJson(Map<String, dynamic> json) {
     docId = json['docId'];
@@ -60,6 +68,10 @@ class UpdateInfluencerRequest {
     visitStartTime = json['visitStartTime'];
     visitSubType = json['visitSubType'];
     visitType = json['visitType'];
+    totalSites = json['totalSites'];
+    dalmiaSites = json['dalmiaSites'];
+    totalBags = json['totalBags'];
+    dalmiaBags = json['dalmiaBags'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +95,11 @@ class UpdateInfluencerRequest {
     data['visitStartTime'] = this.visitStartTime;
     data['visitSubType'] = this.visitSubType;
     data['visitType'] = this.visitType;
+    data['totalSites'] = this.totalSites;
+    data['dalmiaSites'] = this.dalmiaSites;
+    data['totalBags'] = this.totalBags;
+    data['dalmiaBags'] = this.dalmiaBags;
+
     return data;
   }
 }
